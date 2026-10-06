@@ -159,8 +159,8 @@ const Cart = {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       const next = doc.querySelector('[data-cart-root]');
       const current = $('#CartDrawer [data-cart-root]');
+      const count = Number(next?.dataset.count || 0);
       if (next && current) current.replaceWith(next);
-      const count = Number(doc.querySelector('[data-cart-root]')?.dataset.count || 0);
       Cart.updateCount(count);
     }
   },
@@ -294,6 +294,9 @@ class PredictiveSearch extends HTMLElement {
     this.url = this.dataset.url;
     this.controller = null;
     this.input.addEventListener('input', debounce(() => this.search(), 220));
+    this.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { e.preventDefault(); this.closest('dialog')?.close(); }
+    });
     this.input.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowDown') {
         const first = this.results.querySelector('a');
