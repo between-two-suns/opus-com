@@ -26,7 +26,9 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 - Pages: routines (forecast + AM/PM routines), ingredient glossary, climate, about, FAQ (FAQPage schema), contact, **/pages/scan** (QR landing, `?p=<handle>` deep link), shipping/returns placeholders, journal + article, 404, password, gift card, customer accounts
 - EN + AR locales (natural MSA, gender-neutral), full RTL via logical properties, Arabic typography rules
 - Store: 23 `bts.*` metafield defs + values, `bts_ingredient` metaobject (9 key), `bts_inci` metaobject (55, EN + AR), pages, blog, Arabic translations (unpublished language)
-- QA tooling: preview harness, Theme Check, 84 flow tests, axe, Lighthouse scripts (see `QA.md`)
+- **Bundles & offers (2026-10-06):** five curated sets (Full Routine, Evening, Oil-Control Duo, Day Shield Duo, Everyday Starter) on home + new **/pages/sets** ("Sets" in header/footer); **Build-your-routine** builder (tap bottles onto a shelf between the suns; live total, next-saving nudge, one-tap add); cart drawer/page **mix & match tier steps** + **free-delivery progress**; optional **WhatsApp chat** button. All offers are theme settings (Theme settings → Offers) that are **0/blank = hidden** and must mirror a real Shopify discount/shipping rate
+- **Micro-interactions:** 3D tilt on product/set media (fine pointers), magnetic primary CTAs, "✓ Added" button state, cart badge bump; all off for reduced motion and touch
+- QA tooling: preview harness, Theme Check, 116 flow tests, axe, Lighthouse scripts (see `QA.md`)
 
 ## Incomplete / outstanding
 - Real-store visual QA of the staging theme (sandbox can't reach the storefront)
@@ -50,11 +52,11 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 | Art direction | 7.6 | Packshots + light field carry it; no photography, texture or film yet (the single biggest gap) |
 | Typography | 8.5 | Strong EN/AR system; Antonio is a stand-in for the pack face |
 | Layout / composition | 8.3 | Hero, forecast, label band strong; collection and content pages simpler |
-| Motion / interaction | 8.5 | WebGL light field (drift, haze, grain, scroll parting, SKU tint), card→PDP morph, heading reveals; all reduced-motion safe |
+| Motion / interaction | 8.8 | Light field, card→PDP morph, heading reveals, routine builder (bottles land on a shelf, light fills), tilt, magnetic CTAs, added state; all reduced-motion safe. Missing: scroll-choreographed product story, texture/film |
 | Mobile design | 8.6 | First-screen buy box, swipeable label, no overflow |
 | Product discovery | 8.8 | Concerns, routine grid, forecast, full 55-ingredient dictionary linked from every PDP, search |
 | PDP conversion | 8.3 | Printed label band added; still no real prices, reviews or texture media |
-| Cart / conversion UX | 8.5 | Fast drawer, routine upsell, honest totals; checkout config pending |
+| Cart / conversion UX | 8.9 | Drawer routine upsell, 5 sets, builder, tier steps, free-delivery meter, WhatsApp — ready but switched off until the owner sets real values; checkout config pending |
 | English experience | 8.6 | — |
 | Arabic / RTL experience | 8.4 | Complete, mirrored, hero fits the fold, display leading tuned; needs native review + real-store check |
 | Performance | 9.2 | Lab 99 mobile with the shader (skipped on software GL); unverified on Shopify |
@@ -62,10 +64,17 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 | Technical quality | 8.7 | Theme Check 0, 84 flow tests, MD5-verified deploys; harness ≠ real Shopify |
 | Merchant maintainability | 8.5 | Metafields, blocks, bilingual fallbacks, editor labels |
 | **Overall award potential** | **7.8** | Craft is close; art-direction assets (photo/film/texture, current-label packshots) are what separate this from SOTD |
-| **Overall commercial effectiveness** | **7.6** | Blocked on real prices (sheet not readable yet), payments/shipping config, reviews |
+| **Overall commercial effectiveness** | **8.0** | Full offer machinery built; blocked on real prices, tier %/threshold values + matching Shopify discounts, payments/shipping config, reviews |
 
 ## Pricing
 Owner shared a Google Sheet with pricing. Not yet applied: the Google Drive connector in this session has no file-read permission and docs.google.com is blocked by the sandbox network policy. Fix: reconnect Google Drive with read access, add `docs.google.com` to allowed domains, or paste the prices.
+
+## Offers: what the owner sets (nothing shows until set)
+| Setting (Theme settings → Offers) | Must match in Shopify admin |
+|---|---|
+| Mix & match 2 / 3 / 4+ items % | Automatic discount(s) "Amount off products" by quantity (I can create these once values are approved) |
+| Free delivery from (EGP) | Shipping rate with a free tier at the same order value |
+| WhatsApp number | The business WhatsApp number (international format, digits only) |
 
 ## Next five actions
 0. Apply real prices from the owner's sheet (blocked, see Pricing).
@@ -78,6 +87,7 @@ Owner shared a Google Sheet with pricing. Not yet applied: the Google Drive conn
 ## Blockers (need the owner)
 - **Storefront unreachable from sandbox** (network policy). Fix: add `qfj1gi-c9.myshopify.com` and `cdn.shopify.com` to the environment's allowed domains (cloud environment → Edit → Network access).
 - **Figma MCP plan limit** (Starter). Upgrade or provide a Figma token for further exports (fonts/specs/packshots).
+- **Offer values:** tier percentages, free-delivery threshold, WhatsApp number, confirm the five-set line-up.
 - **Business inputs:** prices, payment methods, shipping partners/rates, return policy, final packshots, social links.
 - **Label art on PDPs** (new "Product label" section) shows the current label designs as supplied, including the serum pill typo "Niacinimide" and blank EDA lines. Replace the artwork or turn the section off before launch if the print files change.
 - **Cleanser EDA number:** current label design leaves it blank; the site still shows COSMTOL26130966 from the v5 file. Confirm which is right.

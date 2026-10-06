@@ -109,6 +109,35 @@ for (const loc of ['', '/ar']) {
       ok(`${tag} language switch keeps page`, path.endsWith('/products/clarity-serum') && dir === (loc ? 'ltr' : 'rtl'), `${path} dir=${dir}`);
     }
 
+    // Sets page: routine builder + curated sets
+    await page.goto(`${BASE}${loc}/pages/sets`, { waitUntil: 'networkidle' });
+    const rb = page.locator('routine-builder');
+    ok(`${tag} builder CTA disabled when empty`, await rb.locator('[data-cta]').isDisabled());
+    await rb.locator('.builder__choice[data-step="2"]').click();
+    ok(`${tag} builder choice toggles aria-pressed`, (await rb.locator('.builder__choice[data-step="2"]').getAttribute('aria-pressed')) === 'true');
+    ok(`${tag} builder bottle lands on shelf`, await rb.locator('[data-slot="2"]').evaluate((s) => s.classList.contains('is-in')));
+    await rb.locator('[data-preset="1,2,3"]').click();
+    const on = await rb.locator('.builder__meter li.is-on').count();
+    ok(`${tag} builder preset selects 3`, on === 3, `on=${on}`);
+    const sum = await rb.evaluate((el) => [...el.querySelectorAll('.builder__choice[aria-pressed="true"]')].reduce((t, b) => t + Number(b.dataset.price), 0));
+    const shown = (await rb.locator('[data-total]').textContent()).replace(/[^\d]/g, '');
+    ok(`${tag} builder total = sum of chosen`, Number(shown) === sum, `${shown} vs ${sum}`);
+    const b0 = Number(await count(page));
+    await rb.locator('[data-cta]').click();
+    await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
+    ok(`${tag} builder adds chosen steps`, Number(await count(page)) - b0 === 3, `${b0}→${await count(page)}`);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(300);
+    const sets = await page.locator('.bundle').count();
+    ok(`${tag} sets page lists 5 sets`, sets === 5, `sets=${sets}`);
+    const duo = page.locator('.bundle[data-count="2"]').first();
+    const b1 = Number(await count(page));
+    await duo.locator('button[type="submit"]').click();
+    await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
+    ok(`${tag} duo set adds 2`, Number(await count(page)) - b1 === 2, `${b1}→${await count(page)}`);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(300);
+
     ok(`${tag} no page errors`, errors.length === 0, errors.join(' | '));
     await ctx.close();
   }

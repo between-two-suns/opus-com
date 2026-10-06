@@ -1,6 +1,6 @@
 # QA — Between Two Suns (Opus build)
 
-_Last run: 2026-10-06, after home layout pass 2 (redeployed to staging, MD5-verified). Environment: local preview harness (`tools/preview`, brotli on), Chromium 1194 via Playwright._
+_Last run: 2026-10-06, after the bundles / routine builder / offers update (22 files redeployed to staging, all MD5-verified). Environment: local preview harness (`tools/preview`, brotli on), Chromium 1194 via Playwright._
 
 > **Important limit:** the build sandbox cannot load `*.myshopify.com` (egress policy). All rendered-UI QA below ran on the local Shopify-compatible preview using the same theme files. Real-storefront verification on the staging theme is still outstanding (STATUS → blockers).
 
@@ -9,8 +9,8 @@ _Last run: 2026-10-06, after home layout pass 2 (redeployed to staging, MD5-veri
 cd tools && npm ci            # first time
 ./preview/start.sh             # http://localhost:4321  (EN) / /ar (AR)
 node qa/theme-check.mjs        # Shopify Theme Check (same engine as `shopify theme check`)
-node qa/flows.js               # 84 interaction tests (EN/AR × 390/1440)
-node qa/a11y.js                # axe-core WCAG 2.2 AA + best-practice on 15 routes × 2 locales × 2 viewports
+node qa/flows.js               # 116 interaction tests (EN/AR × 390/1440)
+node qa/a11y.js                # axe-core WCAG 2.2 AA + best-practice on 16 routes × 2 locales × 2 viewports
 node qa/shots.js / /products/clarity-serum --vp=390,1440 --loc=en,ar [--full]   # screenshots + console + overflow
 CHROME_PATH=$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome|head -1) npx lighthouse http://localhost:4321/ --only-categories=performance,accessibility,best-practices,seo
 ```
@@ -20,8 +20,8 @@ CHROME_PATH=$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome|head -1) npx
 | Check | Result |
 |---|---|
 | Shopify Theme Check | **0 offenses** (errors 0, warnings 0) |
-| Interaction tests | **84 / 84 pass**: PDP add → drawer → qty → upsell → remove → Esc, focus management, sticky ATC, forecast AM/PM + conditions + total + add, full-routine bundle, predictive search, mobile menu, mega menu, concern filter, language round-trip |
-| axe-core (WCAG 2.2 AA + best practice) | **0 violations** on 60 page scans (15 routes × EN/AR × 390/1440) |
+| Interaction tests | **116 / 116 pass**: PDP add → drawer → qty → upsell → remove → Esc, focus management, sticky ATC, forecast AM/PM + conditions + total + add, full-routine bundle, predictive search, mobile menu, mega menu, concern filter, language round-trip, routine builder (empty-disabled CTA, aria-pressed, bottle lands, preset, total = sum, adds chosen), sets page (5 sets, duo adds 2) |
+| axe-core (WCAG 2.2 AA + best practice) | **0 violations** on 64 page scans (16 routes × EN/AR × 390/1440) |
 | Console errors | 0 on all routes (only the intentional 404 test page logs its 404 status) |
 | Horizontal overflow | 0 px on every route, EN + AR, 375/390/1440 |
 | Missing translations | 0 (EN/AR key parity verified by script) |
@@ -30,7 +30,8 @@ CHROME_PATH=$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome|head -1) npx
 
 | Route | Perf | A11y | Best pr. | SEO | LCP | TBT | CLS | Weight |
 |---|---|---|---|---|---|---|---|---|
-| `/` | 98 | 100 | 100 | 100 | 2.0 s | 50 ms | 0 | 284 KB |
+| `/` (with sets section) | 99 | 100 | 100 | 100 | 1.8 s | 50 ms | 0 | 292 KB |
+| `/pages/sets` | 100 | 100 | 100 | 100 | 1.5 s | 0 ms | 0 | 245 KB |
 | `/ar` | 98 | 100 | 100 | 100 | 2.1 s | 0 ms | 0.004 | 284 KB |
 | `/collections/all` | 98 | 100 | 100 | 100 | 2.3 s | 0 ms | 0 | 231 KB |
 | `/products/clarity-serum` | 99 | 100 | 100 | 100 | 2.1 s | 0 ms | 0 | 253 KB |
@@ -66,6 +67,13 @@ Expect Shopify TTFB and `content_for_header` scripts (analytics, Shop Pay) to co
 | 23 | Cleanser INCI on site said "Disodium Lauryl Sulfosuccinate"; current label says "Sodium Lauryl Sulfosuccinate" | Fixed in content, Shopify metafield, dictionary entry (handle + AR) |
 | 24 | WebGL hero cost 820 ms TBT under software GL (Lighthouse 77) | Skip software renderers, idle start, 30 fps touch cap → TBT 0, perf 99 |
 | 25 | Decorative footer line failed contrast audit | Rendered from a pseudo-element (aria-hidden, not text content) → Lighthouse a11y 100 |
+| 26 | Set cards: bottle stack clipped at the card edge and over-overlapped | Gap + 74% stack height + bottom margin |
+| 27 | Builder shelf bottles rendered oversized (percentage heights inside a grid slot didn't resolve) | Slot is a bottom-aligned flex column |
+| 28 | Arabic "SPF 50+" rendered as "+SPF 50" (bidi) | LRM after "SPF 50+" in AR locale strings, product content and the Shopify AR title |
+| 29 | Card tilt never applied (`.card:hover` image rule outranked it) | Raised tilt selector specificity |
+
+### Offers check (temporary settings 5/10/15 %, free delivery 1,500 EGP, then restored)
+Builder: 1 item → "Add 1 more to save 5%"; all 4 → "You're saving 15%", LE 1,912.50 with LE 2,250.00 struck. Full Routine set card: same prices + "Save 15%" pill. Drawer with 2 items: tier steps (2 items −5% current), "Add 1 more to save 10%", "LE 400.00 away from free delivery" with meter. EN + AR identical figures. With settings at 0 none of this renders (default).
 
 ## Not yet verified
 - Real Shopify rendering of staging theme `167112540418` (sandbox can't reach the storefront).
