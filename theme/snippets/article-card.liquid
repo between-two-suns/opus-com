@@ -8,7 +8,8 @@
   </a>
   <div class="article-card__body">
     <p class="t-xs t-muted">{{ article.published_at | time_tag: format: 'date' }}</p>
-    <h3 class="article-card__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></h3>
+    {%- assign htag = heading_tag | default: 'h3' -%}
+    <{{ htag }} class="article-card__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></{{ htag }}>
     {%- if article.excerpt != blank -%}
       <p class="t-small t-muted">{{ article.excerpt | strip_html | truncate: 140 }}</p>
     {%- endif -%}

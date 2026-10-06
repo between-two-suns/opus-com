@@ -27,10 +27,10 @@
         <concern-filter class="collection__filter" data-grid="CollectionGrid">
           <p class="t-eyebrow t-muted" id="ConcernFilterLabel">{{ 'collection.filter_label' | t }}</p>
           <div class="cluster" role="group" aria-labelledby="ConcernFilterLabel">
-            <a class="chip" href="{{ collection.url }}" data-concern="" aria-pressed="true">{{ 'concerns.all' | t }}</a>
+            <a class="chip" href="{{ collection.url }}" data-concern="" aria-current="true">{{ 'concerns.all' | t }}</a>
             {%- for id in concern_ids -%}
               {%- assign key = 'concerns.' | append: id -%}
-              <a class="chip" href="{{ collection.url }}?concern={{ id }}" data-concern="{{ id }}" aria-pressed="false">{{ key | t }}</a>
+              <a class="chip" href="{{ collection.url }}?concern={{ id }}" data-concern="{{ id }}" aria-current="false">{{ key | t }}</a>
             {%- endfor -%}
           </div>
           <p class="t-small t-muted" role="status" data-filter-status data-template="{{ 'collection.showing' | t: count: '__COUNT__' | escape }}">{{ 'collection.count' | t: count: collection.products_count }}</p>

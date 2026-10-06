@@ -71,6 +71,22 @@
     </style>
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {%- liquid
+      assign tpl = template.name
+      assign sfx = template.suffix | default: ''
+      if tpl == 'index' or tpl == 'collection' or tpl == 'blog' or tpl == 'article' or sfx == 'climate' or sfx == 'about'
+        echo 'home.css' | asset_url | stylesheet_tag
+      endif
+      if tpl == 'index' or sfx == 'routines'
+        echo 'forecast.css' | asset_url | stylesheet_tag
+      endif
+      if tpl == 'product'
+        echo 'product.css' | asset_url | stylesheet_tag
+      endif
+      if tpl != 'index' and tpl != 'product'
+        echo 'pages.css' | asset_url | stylesheet_tag
+      endif
+    -%}
 
     <script>
       document.documentElement.classList.replace('no-js', 'js');

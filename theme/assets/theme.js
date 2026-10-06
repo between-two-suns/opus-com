@@ -348,12 +348,12 @@ class ConcernFilter extends HTMLElement {
     this.apply(initial, false);
     this.chips.forEach((chip) => chip.addEventListener('click', (e) => {
       e.preventDefault();
-      const value = chip.getAttribute('aria-pressed') === 'true' ? '' : chip.dataset.concern;
+      const value = chip.getAttribute('aria-current') === 'true' ? '' : chip.dataset.concern;
       this.apply(value, true);
     }));
   }
   apply(value, push) {
-    this.chips.forEach((chip) => chip.setAttribute('aria-pressed', String(chip.dataset.concern === value || (!value && chip.dataset.concern === ''))));
+    this.chips.forEach((chip) => chip.setAttribute('aria-current', String(chip.dataset.concern === value || (!value && chip.dataset.concern === ''))));
     let shown = 0;
     $$('[data-concerns]', this.grid).forEach((card) => {
       const li = card.closest('li') || card;

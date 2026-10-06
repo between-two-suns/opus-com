@@ -13,7 +13,7 @@
       {%- if blog.articles.size > 0 -%}
         <ul class="journal__grid" role="list">
           {%- for article in blog.articles -%}
-            <li>{% render 'article-card', article: article %}</li>
+            <li>{% render 'article-card', article: article, heading_tag: 'h2' %}</li>
           {%- endfor -%}
         </ul>
         {%- if paginate.pages > 1 -%}{% render 'pagination', paginate: paginate %}{%- endif -%}

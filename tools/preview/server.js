@@ -7,6 +7,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { Liquid, Tag, Drop, Hash } from 'liquidjs';
 import sharp from 'sharp';
+import zlib from 'node:zlib';
 import { productsFor, ingredientsFor, PAGES, PAGE_BODY, ARTICLES } from './fixtures.js';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
@@ -369,7 +370,7 @@ function globalsFor(locale, data, extra = {}) {
     customer: null,
     content_for_header: '',
     powered_by_link: '',
-    canonical_url: `http://localhost:${PORT}${extra.path || '/'}`,
+    canonical_url: `http://localhost:${PORT}${data.prefix}${extra.path === '/' && data.prefix ? '' : (extra.path || '/')}`,
     page_title: extra.page_title || 'Between Two Suns',
     page_description: extra.page_description || 'Climate-adapted skincare. Made for sun, pollution, changing environments & everyday skin.',
     request: {
@@ -526,6 +527,21 @@ function addItems(cart, items, data) {
 }
 
 const server = http.createServer(async (req, res) => {
+  // Mirror Shopify CDN behaviour: brotli-compress text responses.
+  const origWriteHead = res.writeHead.bind(res);
+  const origEnd = res.end.bind(res);
+  let ctype = '';
+  res.writeHead = (code, headers = {}) => { ctype = headers['Content-Type'] || ''; res._code = code; res._headers = headers; return res; };
+  res.end = (body) => {
+    const accepts = /\bbr\b/.test(req.headers['accept-encoding'] || '');
+    if (body && accepts && /text|javascript|json|svg/.test(ctype)) {
+      const buf = zlib.brotliCompressSync(Buffer.from(body), { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 9 } });
+      origWriteHead(res._code || 200, { ...res._headers, 'Content-Encoding': 'br', Vary: 'Accept-Encoding' });
+      return origEnd(buf);
+    }
+    origWriteHead(res._code || 200, res._headers || {});
+    return origEnd(body);
+  };
   try {
     const url = new URL(req.url, `http://localhost:${PORT}`);
     let pathname = decodeURIComponent(url.pathname);

@@ -69,7 +69,7 @@
                 <a href="{{ product.url }}" class="hero__product-link">
                   <span class="hero__product-sun" aria-hidden="true"></span>
                   {%- if cutout -%}
-                    {{ cutout | image_url: width: 520 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '160,240,320,420,520', sizes: '(min-width: 990px) 15vw, 22vw', alt: '', class: 'hero__img' }}
+                    {{ cutout | image_url: width: 520 | image_tag: loading: 'eager', widths: '160,240,320,420,520', sizes: '(min-width: 990px) 15vw, 22vw', alt: '', class: 'hero__img' }}
                   {%- else -%}
                     <img
                       class="hero__img"
@@ -77,7 +77,6 @@
                       alt=""
                       width="290"
                       height="900"
-                      fetchpriority="high"
                       decoding="async"
                     >
                   {%- endif -%}
