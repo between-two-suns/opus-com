@@ -1,0 +1,19 @@
+<nav class="pagination" aria-label="{{ 'general.pagination.label' | t }}">
+  <ul class="cluster" role="list">
+    {%- if paginate.previous -%}
+      <li><a class="chip" href="{{ paginate.previous.url }}" rel="prev">{% render 'icon', name: 'chevron-left', class: 'icon--sm icon--flip' %}<span class="visually-hidden">{{ 'general.pagination.previous' | t }}</span></a></li>
+    {%- endif -%}
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}
+        <li><a class="chip" href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</a></li>
+      {%- elsif part.title == paginate.current_page -%}
+        <li><span class="chip is-active" aria-current="page" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</span></li>
+      {%- else -%}
+        <li><span class="chip">{{ part.title }}</span></li>
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if paginate.next -%}
+      <li><a class="chip" href="{{ paginate.next.url }}" rel="next">{% render 'icon', name: 'chevron-right', class: 'icon--sm icon--flip' %}<span class="visually-hidden">{{ 'general.pagination.next' | t }}</span></a></li>
+    {%- endif -%}
+  </ul>
+</nav>

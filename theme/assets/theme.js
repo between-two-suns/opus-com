@@ -158,7 +158,7 @@ const Cart = {
     if (html) {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       const next = doc.querySelector('[data-cart-root]');
-      const current = $('[data-cart-root]');
+      const current = $('#CartDrawer [data-cart-root]');
       if (next && current) current.replaceWith(next);
       const count = Number(doc.querySelector('[data-cart-root]')?.dataset.count || 0);
       Cart.updateCount(count);
@@ -248,7 +248,7 @@ const changeLine = debounce(async (line, qty, root) => {
   } catch (err) {
     toast(err.message);
   } finally {
-    $('[data-cart-root]')?.classList.remove('is-updating');
+    $$('[data-cart-root]').forEach((r) => r.classList.remove('is-updating'));
   }
 }, 280);
 

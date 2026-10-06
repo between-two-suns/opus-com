@@ -1,0 +1,19 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+<section class="notfound" aria-labelledby="NotFoundTitle">
+  <div class="suns" aria-hidden="true"><span class="sun sun--warm notfound__sun-a"></span><span class="sun sun--cool notfound__sun-b"></span></div>
+  <div class="container notfound__inner">
+    <p class="notfound__code t-display-xl" aria-hidden="true">404</p>
+    <h1 class="t-display-m" id="NotFoundTitle">{{ 'errors.404_title' | t }}</h1>
+    <p class="t-lead">{{ 'errors.404_text' | t }}</p>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
+      <label class="visually-hidden" for="NotFoundSearch">{{ 'search.label' | t }}</label>
+      <input id="NotFoundSearch" class="search-modal__input" type="search" name="q" placeholder="{{ 'search.placeholder' | t }}">
+      <button type="submit" class="btn btn--secondary">{{ 'search.submit' | t }}</button>
+    </form>
+    <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'errors.404_cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "t:sections.main_404.name", "settings": [] }
+{% endschema %}

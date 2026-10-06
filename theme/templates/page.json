@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "preset": "none",
+        "compact": true
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "main"
+  ]
+}

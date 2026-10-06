@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": { "type": "main-collection", "settings": {} },
+    "facts": {
+      "type": "facts-strip",
+      "blocks": {
+        "f1": { "type": "fact", "settings": { "preset": "routine", "icon": "check" } },
+        "f2": { "type": "fact", "settings": { "preset": "inci", "icon": "flask" } },
+        "f3": { "type": "fact", "settings": { "preset": "spf", "icon": "sun" } },
+        "f4": { "type": "fact", "settings": { "preset": "made_in_egypt", "icon": "globe" } }
+      },
+      "block_order": ["f1", "f2", "f3", "f4"],
+      "settings": {}
+    }
+  },
+  "order": ["main", "facts"]
+}

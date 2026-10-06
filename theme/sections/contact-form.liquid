@@ -1,0 +1,50 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+<section class="section section--tight contact">
+  <div class="container contact__grid">
+    <div class="contact__aside">
+      {%- if page.content != blank -%}<div class="rte">{{ page.content }}</div>{%- endif -%}
+      {%- if section.settings.email != blank -%}
+        <p><a class="link-arrow" href="mailto:{{ section.settings.email }}">{% render 'icon', name: 'mail', class: 'icon--sm' %} {{ section.settings.email }}</a></p>
+      {%- endif -%}
+    </div>
+    {%- form 'contact', id: 'ContactForm', class: 'contact__form', novalidate: 'novalidate' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-status form-status--success" role="status" tabindex="-1">{% render 'icon', name: 'check', class: 'icon--sm' %} {{ 'pages.contact.success' | t }}</p>
+      {%- elsif form.errors -%}
+        <div class="form-status form-status--error" role="alert" tabindex="-1">
+          <ul>
+            {%- for field in form.errors -%}
+              <li><a href="#Contact-{{ field }}">{{ form.errors.translated_fields[field] | capitalize }}</a> {{ form.errors.messages[field] }}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+      <div class="field">
+        <label for="Contact-name">{{ 'pages.contact.name' | t }}</label>
+        <input id="Contact-name" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}">
+      </div>
+      <div class="field">
+        <label for="Contact-email">{{ 'pages.contact.email' | t }} <span class="t-muted">({{ 'pages.contact.required' | t }})</span></label>
+        <input id="Contact-email" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}"{% if form.errors contains 'email' %} aria-invalid="true"{% endif %}>
+      </div>
+      <div class="field">
+        <label for="Contact-phone">{{ 'pages.contact.phone' | t }}</label>
+        <input id="Contact-phone" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}">
+      </div>
+      <div class="field">
+        <label for="Contact-body">{{ 'pages.contact.message' | t }}</label>
+        <textarea id="Contact-body" name="contact[body]" rows="6">{{ form.body }}</textarea>
+      </div>
+      <button type="submit" class="btn">{{ 'pages.contact.send' | t }}</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.contact.name",
+  "settings": [
+    { "type": "text", "id": "email", "label": "t:sections.contact.email", "default": "hello@betweentwosuns.co" }
+  ]
+}
+{% endschema %}

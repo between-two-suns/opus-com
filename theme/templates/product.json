@@ -1,0 +1,141 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "benefit": {
+          "type": "benefit",
+          "settings": {}
+        },
+        "facts": {
+          "type": "facts",
+          "settings": {}
+        },
+        "buy": {
+          "type": "buy",
+          "settings": {}
+        },
+        "claims": {
+          "type": "claims",
+          "settings": {}
+        },
+        "texture": {
+          "type": "texture",
+          "settings": {}
+        },
+        "acc-what": {
+          "type": "accordion",
+          "settings": {
+            "content": "what",
+            "open": true
+          }
+        },
+        "acc-ing": {
+          "type": "accordion",
+          "settings": {
+            "content": "ingredients"
+          }
+        },
+        "acc-how": {
+          "type": "accordion",
+          "settings": {
+            "content": "how"
+          }
+        },
+        "acc-who": {
+          "type": "accordion",
+          "settings": {
+            "content": "who"
+          }
+        },
+        "acc-inci": {
+          "type": "accordion",
+          "settings": {
+            "content": "inci"
+          }
+        },
+        "acc-caution": {
+          "type": "accordion",
+          "settings": {
+            "content": "caution"
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "benefit",
+        "buy",
+        "facts",
+        "claims",
+        "texture",
+        "acc-what",
+        "acc-ing",
+        "acc-how",
+        "acc-who",
+        "acc-inci",
+        "acc-caution"
+      ],
+      "settings": {}
+    },
+    "routine": {
+      "type": "product-routine",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "order"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "am_pm"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "preset": "reapply"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "preset": "inci"
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "preset": "made"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+      ],
+      "settings": {
+        "compact": true,
+        "show_contact": true,
+        "schema": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "routine",
+    "faq"
+  ]
+}

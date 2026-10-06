@@ -1,0 +1,233 @@
+{
+  "general_schema": {
+    "bilingual_fallback": "Leave text fields blank to use the built-in English/Arabic copy. Anything you type here overrides it (translate it with Translate & Adapt).",
+    "eyebrow": "Eyebrow",
+    "heading": "Heading",
+    "text": "Text"
+  },
+  "sections": {
+    "announcement": {
+      "fallback_info": "With no messages added, shows “Climate-adapted skincare · Made in Egypt” in the visitor’s language.",
+      "link": "Link",
+      "message": "Message",
+      "name": "Announcement bar",
+      "show": "Show",
+      "text": "Text",
+      "text_info": "Factual statements only."
+    },
+    "cart_drawer": {
+      "name": "Cart drawer"
+    },
+    "climate": {
+      "link_label": "Link label",
+      "name": "Climate conditions"
+    },
+    "concerns": {
+      "collection": "Collection",
+      "name": "Concern finder"
+    },
+    "contact": {
+      "email": "Email",
+      "name": "Name"
+    },
+    "facts": {
+      "block": "Block",
+      "icon": "Icon",
+      "name": "Facts strip",
+      "preset": "Preset",
+      "title": "Title"
+    },
+    "faq": {
+      "answer": "Answer",
+      "block": "Block",
+      "compact": "Compact",
+      "name": "FAQ",
+      "preset": "Preset",
+      "question": "Question",
+      "schema": "Schema",
+      "show_contact": "Show contact"
+    },
+    "footer": {
+      "description": "Description",
+      "fallback": "Fallback",
+      "heading": "Heading",
+      "menu": "Menu",
+      "menu_block": "Menu block",
+      "name": "Footer",
+      "newsletter_heading": "Newsletter heading",
+      "newsletter_text": "Newsletter text",
+      "tagline": "Tagline"
+    },
+    "forecast": {
+      "collection": "Collection",
+      "data_info": "“Why today” lines come from product metafields bts.forecast_sun / _city / _humidity / _ac / _heat, falling back to bts.benefit.",
+      "name": "Skin forecast"
+    },
+    "glossary": {
+      "name": "Ingredient glossary"
+    },
+    "header": {
+      "enable_mega": "Enable mega",
+      "mega_collection": "Mega collection",
+      "menu": "Menu",
+      "menu_info": "Leave empty to use the built-in bilingual navigation (Shop, Routines, Ingredients, Climate, Journal).",
+      "name": "Header"
+    },
+    "hero": {
+      "collection": "Collection",
+      "collection_info": "Products appear in routine order (01–04). Defaults to all products.",
+      "cta_1_label": "Cta 1 label",
+      "cta_1_link": "Cta 1 link",
+      "cta_2_label": "Cta 2 label",
+      "cta_2_link": "Cta 2 link",
+      "eyebrow": "Eyebrow",
+      "line_1": "Line 1",
+      "line_2": "Line 2",
+      "name": "Hero · The space between",
+      "subcopy": "Subcopy"
+    },
+    "ingredients": {
+      "info": "Content comes from the “BTS ingredient” metaobject (name, INCI, role, products).",
+      "limit": "Limit",
+      "name": "Ingredient spotlight"
+    },
+    "journal": {
+      "blog": "Blog",
+      "name": "Journal teaser"
+    },
+    "main_404": {
+      "name": "Name"
+    },
+    "main_article": {
+      "name": "Name"
+    },
+    "main_blog": {
+      "name": "Name"
+    },
+    "main_cart": {
+      "name": "Name"
+    },
+    "main_collection": {
+      "name": "Name"
+    },
+    "main_customer": {
+      "name": "Name",
+      "view": "View"
+    },
+    "main_list_collections": {
+      "name": "Name"
+    },
+    "main_page": {
+      "name": "Name"
+    },
+    "main_password": {
+      "name": "Name"
+    },
+    "main_product": {
+      "accordion_content": "Accordion content",
+      "blocks": {
+        "accordion": "Accordion",
+        "benefit": "Benefit",
+        "buy": "Buy",
+        "claims": "Claims",
+        "facts": "Facts",
+        "text": "Text",
+        "texture": "Texture",
+        "title": "Title"
+      },
+      "custom_text": "Custom text",
+      "name": "Product page",
+      "open": "Open"
+    },
+    "main_search": {
+      "name": "Name"
+    },
+    "newsletter": {
+      "name": "Newsletter"
+    },
+    "page_hero": {
+      "compact": "Compact",
+      "name": "Page hero",
+      "preset": "Preset"
+    },
+    "product_routine": {
+      "collection": "Collection",
+      "name": "Routine position"
+    },
+    "routine": {
+      "collection": "Collection",
+      "name": "Routine grid",
+      "show_bundle": "Show bundle",
+      "show_bundle_info": "Adds every product in one tap. The price shown is the plain sum (no invented discount)."
+    },
+    "routine_ampm": {
+      "name": "AM & PM routines"
+    },
+    "scan": {
+      "name": "Scan landing"
+    },
+    "story": {
+      "dark": "Dark",
+      "image": "Image",
+      "link": "Link",
+      "link_label": "Link label",
+      "name": "Story rows",
+      "preset": "Preset",
+      "row": "Row"
+    },
+    "ticker": {
+      "items": "Items",
+      "items_info": "Separate items with |. Leave blank for the built-in bilingual forecast notation.",
+      "name": "Forecast ticker"
+    }
+  },
+  "settings_schema": {
+    "brand": {
+      "favicon": "Favicon",
+      "logo_height": "Logo height",
+      "logo_note": "The logo is the exact supplied Between Two Suns vector (assets/bts-wordmark.svg). Replace that file only with a new approved master.",
+      "name": "Name"
+    },
+    "colors": {
+      "base_header": "Base header",
+      "daylight": "Daylight",
+      "ink": "Ink",
+      "name": "Name",
+      "sku_header": "Sku header",
+      "sku_note": "Each routine step has one colour. Colours follow the product (step 01–04 tag or bts.step metafield), never decoration.",
+      "step_1": "Step 1",
+      "step_2": "Step 2",
+      "step_3": "Step 3",
+      "step_4": "Step 4"
+    },
+    "commerce": {
+      "cart_upsell": "Cart upsell",
+      "cod": "Show “Cash on delivery available”",
+      "cod_info": "Turn on only once Cash on Delivery is configured as a payment method.",
+      "dynamic_checkout": "Dynamic checkout",
+      "factual_info": "Only add statements that are true and configured.",
+      "name": "Name",
+      "payment_icons": "Payment icons",
+      "payment_icons_info": "Shows only the payment methods actually enabled in Shopify.",
+      "returns_note": "Returns note",
+      "routine_collection": "Routine collection",
+      "routine_collection_info": "Used for “Complete your routine” in the cart. Defaults to all products.",
+      "shipping_note": "Shipping note",
+      "shipping_note_info": "Optional factual shipping line, e.g. delivery areas. Leave blank to show “Shipping calculated at checkout”.",
+      "zero_price": "Show “Price coming soon” for 0.00 prices",
+      "zero_price_info": "Pre-launch safety: products priced at 0.00 show “Price coming soon” and cannot be added to the bag."
+    },
+    "motion": {
+      "name": "Name",
+      "signature": "Signature",
+      "signature_info": "Scroll-linked hero motion. Always disabled for visitors who prefer reduced motion."
+    },
+    "search": {
+      "name": "Name",
+      "predictive": "Predictive"
+    },
+    "social": {
+      "name": "Name"
+    }
+  }
+}

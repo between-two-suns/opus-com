@@ -1,0 +1,20 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+<section class="section section--tight">
+  <div class="container">
+    <h1 class="t-display-l">{{ 'collection.eyebrow' | t }}</h1>
+    <ul class="journal__grid u-mt-m" role="list" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">
+      {%- for collection in collections -%}
+        <li>
+          <a class="glossary__item" href="{{ collection.url }}" style="display:grid;gap:6px;text-decoration:none">
+            <span class="t-subheading">{{ collection.title | escape }}</span>
+            <span class="t-small t-muted">{{ 'collection.count' | t: count: collection.products_count }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "t:sections.main_list_collections.name", "settings": [] }
+{% endschema %}

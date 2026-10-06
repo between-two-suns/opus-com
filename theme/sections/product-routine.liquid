@@ -1,0 +1,104 @@
+{{ 'product.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  capture this_step
+    render 'product-step', product: product
+  endcapture
+  assign this_step = this_step | strip | plus: 0
+  assign source = section.settings.collection | default: collections.all
+  assign missing_total = 0
+  assign missing_count = 0
+  assign any_zero = false
+-%}
+<section class="section routine-strip" aria-labelledby="RoutineStrip-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{{ 'product.routine.eyebrow' | t }}</p>
+        <h2 class="t-display-m" id="RoutineStrip-{{ section.id }}">{{ 'product.routine.heading' | t }}</h2>
+      </div>
+    </div>
+
+    <ol class="routine-strip__steps" role="list">
+      {%- for s in (1..4) -%}
+        {%- for p in source.products limit: 12 -%}
+          {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+          {%- assign ps = ps | strip | plus: 0 -%}
+          {%- if ps == s -%}
+            {%- assign cutout = p.metafields.bts.cutout.value -%}
+            {%- assign is_this = false -%}
+            {%- if p.id == product.id -%}{%- assign is_this = true -%}{%- endif -%}
+            <li class="routine-strip__step{% if is_this %} is-current{% endif %}" data-step="{{ s }}">
+              <a class="routine-strip__link" href="{{ p.url }}"{% if is_this %} aria-current="page"{% endif %}>
+                <span class="routine-strip__media" aria-hidden="true">
+                  {%- if cutout -%}
+                    {{ cutout | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '(min-width: 990px) 12vw, 22vw', alt: '' }}
+                  {%- elsif p.featured_media -%}
+                    {{ p.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '(min-width: 990px) 12vw, 22vw', alt: '' }}
+                  {%- endif -%}
+                </span>
+                <span class="step-num routine-strip__num" aria-hidden="true">0{{ s }}</span>
+                <span class="routine-strip__name">{{ p.title | escape }}</span>
+                <span class="routine-strip__when t-xs">
+                  {{ 'product.routine.am' | t }}{% if s != 4 %} · {{ 'product.routine.pm' | t }}{% endif %}
+                </span>
+                {%- if is_this -%}<span class="badge routine-strip__this">{{ 'product.routine.this_step' | t }}</span>{%- endif -%}
+              </a>
+            </li>
+            {%- unless is_this -%}
+              {%- liquid
+                assign pv = p.selected_or_first_available_variant
+                if pv.available
+                  assign missing_total = missing_total | plus: pv.price
+                  assign missing_count = missing_count | plus: 1
+                  if pv.price == 0
+                    assign any_zero = true
+                  endif
+                endif
+              -%}
+            {%- endunless -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </ol>
+
+    {%- if missing_count > 0 -%}
+      <div class="bundle-bar routine-strip__bundle">
+        <div>
+          <p class="t-subheading">{{ 'product.routine.complete' | t }}</p>
+          <p class="t-small t-muted">{{ 'product.routine.complete_text' | t }}</p>
+        </div>
+        <product-form data-multi>
+          <form method="post" action="{{ routes.cart_add_url }}">
+            {%- for p in source.products limit: 12 -%}
+              {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+              {%- assign ps = ps | strip | plus: 0 -%}
+              {%- if ps > 0 and p.id != product.id and p.selected_or_first_available_variant.available -%}
+                <input type="hidden" name="items[][id]" value="{{ p.selected_or_first_available_variant.id }}">
+                <input type="hidden" name="items[][quantity]" value="1">
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if any_zero and settings.zero_price_coming_soon -%}
+              <button type="button" class="btn" disabled>{{ 'product.coming_soon' | t }}</button>
+            {%- else -%}
+              <button type="submit" class="btn">
+                <span class="btn__label">{{ 'product.routine.complete_cta' | t: count: missing_count }}</span>
+                <span class="btn__sep" aria-hidden="true">·</span>
+                <span class="btn__price">{{ missing_total | money }}</span>
+              </button>
+            {%- endif -%}
+          </form>
+        </product-form>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.product_routine.name",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "t:sections.product_routine.collection" }
+  ]
+}
+{% endschema %}

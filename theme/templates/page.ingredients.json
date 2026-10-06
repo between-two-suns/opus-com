@@ -1,0 +1,45 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "preset": "ingredients"
+      }
+    },
+    "glossary": {
+      "type": "ingredient-glossary",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "qa",
+          "settings": {
+            "preset": "inci"
+          }
+        },
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "fragrance"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1"
+      ],
+      "settings": {
+        "compact": true,
+        "show_contact": true,
+        "schema": false
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "glossary",
+    "faq"
+  ]
+}

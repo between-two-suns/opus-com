@@ -1,0 +1,36 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+<article class="article" aria-labelledby="ArticleTitle">
+  <header class="page-hero page-hero--compact">
+    <div class="suns" aria-hidden="true"><span class="sun sun--warm page-hero__sun-a"></span><span class="sun sun--cool page-hero__sun-b"></span></div>
+    <div class="container container--text page-hero__inner">
+      <a class="link-arrow article__back" href="{{ blog.url }}">{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip article__back-icon' %} {{ 'blog.back' | t }}</a>
+      <h1 class="t-display-m" id="ArticleTitle">{{ article.title | escape }}</h1>
+      <p class="t-small t-muted">{{ article.published_at | time_tag: format: 'date' }}{% if article.tags.size > 0 %} · {{ 'blog.tagged' | t }} {{ article.tags | join: ', ' }}{% endif %}</p>
+    </div>
+  </header>
+  {%- if article.image -%}
+    <div class="container article__image">
+      {{ article.image | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600,900,1200,1600', sizes: '(min-width: 1200px) 1100px, 92vw', alt: article.image.alt | default: '' }}
+    </div>
+  {%- endif -%}
+  <div class="section section--tight">
+    <div class="container container--text">
+      <div class="rte article__body">{{ article.content }}</div>
+    </div>
+  </div>
+</article>
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": {{ article.title | json }},
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "author": { "@type": "Organization", "name": "Between Two Suns" },
+    "publisher": { "@type": "Organization", "name": "Between Two Suns" },
+    "mainEntityOfPage": {{ request.origin | append: article.url | json }}
+  }
+</script>
+
+{% schema %}
+{ "name": "t:sections.main_article.name", "settings": [] }
+{% endschema %}

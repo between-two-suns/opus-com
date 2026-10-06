@@ -1,0 +1,71 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  /pages/scan — destination for the "Discover More" QR on every pack.
+  The visitor taps the product in their hand and gets how-to-use, routine position and INCI immediately.
+  Supports ?p=<handle> deep links (open that product's panel).
+{%- endcomment -%}
+{%- assign source = section.settings.collection | default: collections.all -%}
+<section class="section section--tight scan">
+  <div class="container">
+    <scan-picker class="scan__list">
+      {%- for s in (1..4) -%}
+        {%- for p in source.products limit: 12 -%}
+          {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+          {%- assign ps = ps | strip | plus: 0 -%}
+          {%- if ps == s -%}
+            {%- assign cutout = p.metafields.bts.cutout.value -%}
+            <details class="scan__item" data-step="{{ s }}" id="scan-{{ p.handle }}" data-handle="{{ p.handle }}">
+              <summary class="scan__summary">
+                <span class="scan__media" aria-hidden="true">
+                  {%- if cutout -%}{{ cutout | image_url: width: 300 | image_tag: loading: 'eager', widths: '150,300', sizes: '120px', alt: '' }}{%- elsif p.featured_media -%}{{ p.featured_media | image_url: width: 300 | image_tag: loading: 'eager', widths: '150,300', sizes: '120px', alt: '' }}{%- endif -%}
+                </span>
+                <span class="scan__label">
+                  <span class="step-tag">{{ 'product.step' | t: number: s }}</span>
+                  <span class="scan__name">{{ p.title | escape }}</span>
+                  {%- if p.metafields.bts.size != blank -%}<span class="t-small t-muted u-ltr">{{ p.metafields.bts.size }}</span>{%- endif -%}
+                </span>
+                <span class="accordion__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="scan__panel">
+                {%- if p.metafields.bts.how_to_use != blank -%}
+                  <h3 class="t-subheading">{{ 'pages.scan.how' | t }}</h3>
+                  <p class="t-body-l">{{ p.metafields.bts.how_to_use }}</p>
+                {%- endif -%}
+                {%- if p.metafields.bts.when_to_use != blank -%}<p class="pill pill--sku">{{ p.metafields.bts.when_to_use }}</p>{%- endif -%}
+                <div class="scan__route" aria-label="{{ 'product.routine.heading' | t }}">
+                  {%- for n in (1..4) -%}
+                    <span class="scan__dot{% if n == s %} is-on{% endif %}" data-step="{{ n }}">0{{ n }}</span>
+                  {%- endfor -%}
+                </div>
+                {%- if p.metafields.bts.caution != blank -%}<p class="t-small t-muted">{{ p.metafields.bts.caution }}</p>{%- endif -%}
+                <a class="btn" href="{{ p.url }}">{{ 'pages.scan.open' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+              </div>
+            </details>
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </scan-picker>
+  </div>
+</section>
+<script type="module">
+  class ScanPicker extends HTMLElement {
+    connectedCallback() {
+      const items = [...this.querySelectorAll('details')];
+      const want = new URLSearchParams(location.search).get('p');
+      const target = items.find((d) => d.dataset.handle === want);
+      if (target) { target.open = true; target.scrollIntoView({ block: 'start' }); }
+      items.forEach((d) => d.addEventListener('toggle', () => { if (d.open) items.forEach((o) => o !== d && (o.open = false)); }));
+    }
+  }
+  if (!customElements.get('scan-picker')) customElements.define('scan-picker', ScanPicker);
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.scan.name",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" }
+  ]
+}
+{% endschema %}

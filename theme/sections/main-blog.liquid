@@ -1,0 +1,29 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+<div class="page-hero page-hero--compact">
+  <div class="suns" aria-hidden="true"><span class="sun sun--warm page-hero__sun-a"></span><span class="sun sun--cool page-hero__sun-b"></span></div>
+  <div class="container page-hero__inner">
+    <p class="t-eyebrow">{{ 'sections.journal.eyebrow' | t }}</p>
+    <h1 class="t-display-l">{{ blog.title | escape }}</h1>
+  </div>
+</div>
+<section class="section section--tight">
+  <div class="container">
+    {%- paginate blog.articles by 12 -%}
+      {%- if blog.articles.size > 0 -%}
+        <ul class="journal__grid" role="list">
+          {%- for article in blog.articles -%}
+            <li>{% render 'article-card', article: article %}</li>
+          {%- endfor -%}
+        </ul>
+        {%- if paginate.pages > 1 -%}{% render 'pagination', paginate: paginate %}{%- endif -%}
+      {%- else -%}
+        <div class="empty-state"><p class="t-lead">{{ 'blog.empty' | t }}</p></div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "t:sections.main_blog.name", "settings": [] }
+{% endschema %}

@@ -1,0 +1,15 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+<div class="section section--tight">
+  <div class="container container--text">
+    {%- if page.content != blank -%}
+      <div class="rte page-content">{{ page.content }}</div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main_page.name",
+  "settings": []
+}
+{% endschema %}

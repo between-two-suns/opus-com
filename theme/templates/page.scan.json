@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "preset": "scan",
+        "compact": true
+      }
+    },
+    "scan": {
+      "type": "scan-landing",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "scan"
+  ]
+}

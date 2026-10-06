@@ -1,0 +1,86 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Editorial story rows (field | seam | field). Each block is a built-in bilingual story preset or custom copy + optional image.
+{%- endcomment -%}
+<section class="section story{% if section.settings.dark %} story--dark{% endif %}">
+  <div class="container story__list">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign p = block.settings.preset
+        assign heading = block.settings.heading
+        assign text = block.settings.text
+        assign eyebrow = ''
+        if p != 'custom'
+          assign hk = 'stories.' | append: p | append: '.heading'
+          assign tk = 'stories.' | append: p | append: '.text'
+          assign ek = 'stories.' | append: p | append: '.eyebrow'
+          if heading == blank
+            assign heading = hk | t
+          endif
+          if text == blank
+            assign text = tk | t
+          endif
+          assign eyebrow = ek | t
+        endif
+      -%}
+      <article class="story__row{% if forloop.index0 == 1 or forloop.index0 == 3 %} story__row--flip{% endif %} reveal" {{ block.shopify_attributes }}>
+        <div class="story__media">
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '(min-width: 990px) 45vw, 92vw', alt: block.settings.image.alt | default: '' }}
+          {%- else -%}
+            <span class="story__art" data-variant="{{ forloop.index | modulo: 4 }}" aria-hidden="true">
+              <span class="sun sun--warm"></span><span class="sun sun--cool"></span>
+              <span class="story__num t-display-xl">0{{ forloop.index }}</span>
+            </span>
+          {%- endif -%}
+        </div>
+        <div class="story__text">
+          {%- if eyebrow != blank -%}<p class="t-eyebrow">{{ eyebrow | escape }}</p>{%- endif -%}
+          <h2 class="t-display-m">{{ heading | escape }}</h2>
+          <p class="t-lead">{{ text | escape }}</p>
+          {%- if block.settings.link != blank and block.settings.link_label != blank -%}
+            <a class="link-arrow" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          {%- endif -%}
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.story.name",
+  "settings": [
+    { "type": "checkbox", "id": "dark", "label": "t:sections.story.dark", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "t:sections.story.row",
+      "settings": [
+        {
+          "type": "select",
+          "id": "preset",
+          "label": "t:sections.story.preset",
+          "options": [
+            { "value": "between", "label": "The space between" },
+            { "value": "routine", "label": "A routine, not a cabinet" },
+            { "value": "made", "label": "Made in Egypt" },
+            { "value": "transparent", "label": "Nothing hidden" },
+            { "value": "not_summer", "label": "Not just summer skincare" },
+            { "value": "light", "label": "Light textures" },
+            { "value": "custom", "label": "Custom" }
+          ],
+          "default": "between"
+        },
+        { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" },
+        { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
+        { "type": "image_picker", "id": "image", "label": "t:sections.story.image" },
+        { "type": "text", "id": "link_label", "label": "t:sections.story.link_label" },
+        { "type": "url", "id": "link", "label": "t:sections.story.link" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:sections.story.name" }]
+}
+{% endschema %}

@@ -1,0 +1,85 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign concern_ids = 'oiliness,dark_spots,dehydration,barrier,sun,pollution' | split: ','
+  assign root = routes.root_url
+  if root == '/'
+    assign root = ''
+  endif
+-%}
+<section class="collection" aria-labelledby="CollectionTitle">
+  <div class="page-hero page-hero--compact">
+    <div class="suns" aria-hidden="true"><span class="sun sun--warm page-hero__sun-a"></span><span class="sun sun--cool page-hero__sun-b"></span></div>
+    <div class="container page-hero__inner">
+      <p class="t-eyebrow">{{ 'collection.eyebrow' | t }}</p>
+      <h1 class="t-display-l" id="CollectionTitle">{{ collection.title | escape }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="t-lead page-hero__text rte">{{ collection.description }}</div>
+      {%- else -%}
+        <p class="t-lead page-hero__text">{{ 'sections.routine.text' | t }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="container section--tight">
+    {%- paginate collection.products by 24 -%}
+      {%- if collection.products.size > 0 -%}
+        <concern-filter class="collection__filter" data-grid="CollectionGrid">
+          <p class="t-eyebrow t-muted" id="ConcernFilterLabel">{{ 'collection.filter_label' | t }}</p>
+          <div class="cluster" role="group" aria-labelledby="ConcernFilterLabel">
+            <a class="chip" href="{{ collection.url }}" data-concern="" aria-pressed="true">{{ 'concerns.all' | t }}</a>
+            {%- for id in concern_ids -%}
+              {%- assign key = 'concerns.' | append: id -%}
+              <a class="chip" href="{{ collection.url }}?concern={{ id }}" data-concern="{{ id }}" aria-pressed="false">{{ key | t }}</a>
+            {%- endfor -%}
+          </div>
+          <p class="t-small t-muted" role="status" data-filter-status data-template="{{ 'collection.showing' | t: count: '__COUNT__' | escape }}">{{ 'collection.count' | t: count: collection.products_count }}</p>
+        </concern-filter>
+
+        <ul class="product-grid collection__grid" id="CollectionGrid" role="list">
+          {%- for s in (1..4) -%}
+            {%- for product in collection.products -%}
+              {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
+              {%- assign step = step | strip | plus: 0 -%}
+              {%- if step == s -%}
+                <li>{% render 'product-card', product: product, section_id: section.id, heading_tag: 'h2', loading: 'eager' %}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+          {%- for product in collection.products -%}
+            {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
+            {%- assign step = step | strip | plus: 0 -%}
+            {%- if step == 0 -%}
+              <li>{% render 'product-card', product: product, section_id: section.id, heading_tag: 'h2' %}</li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+
+        <aside class="collection__cta" aria-labelledby="CollectionCta">
+          <span class="collection__cta-suns" aria-hidden="true"><span class="sun sun--warm"></span><span class="sun sun--cool"></span></span>
+          <div>
+            <h2 class="t-heading" id="CollectionCta">{{ 'collection.routine_card_title' | t }}</h2>
+            <p class="t-muted">{{ 'collection.routine_card_text' | t }}</p>
+          </div>
+          <a class="btn" href="{{ root }}/pages/routines">{{ 'collection.routine_card_cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+        </aside>
+
+        {%- if paginate.pages > 1 -%}
+          {%- render 'pagination', paginate: paginate -%}
+        {%- endif -%}
+      {%- else -%}
+        <div class="empty-state">
+          <p class="t-display-s">{{ 'collection.empty' | t }}</p>
+          <a class="btn" href="{{ routes.root_url }}">{{ 'general.back_home' | t }}</a>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.main_collection.name",
+  "settings": []
+}
+{% endschema %}

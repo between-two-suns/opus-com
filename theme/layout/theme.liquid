@@ -21,10 +21,10 @@
     {%- endif -%}
 
     {%- if is_rtl -%}
-      <link rel="preload" href="{{ 'font-arabic.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin>
+      {{ 'font-arabic.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
     {%- else -%}
-      <link rel="preload" href="{{ 'font-display.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin>
-      <link rel="preload" href="{{ 'font-body.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin>
+      {{ 'font-display.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+      {{ 'font-body.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
     {%- endif -%}
 
     {%- render 'meta-tags' -%}
@@ -84,6 +84,7 @@
           search: {{ routes.predictive_search_url | json }}
         },
         motion: {{ settings.signature_motion | json }},
+        moneyFormat: {{ shop.money_format | json }},
         strings: {
           added: {{ 'cart.added' | t | json }},
           error: {{ 'cart.error' | t | json }},

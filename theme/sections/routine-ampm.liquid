@@ -1,0 +1,89 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign source = section.settings.collection | default: collections.all
+-%}
+<section class="section ampm" aria-label="{{ 'header.nav.routines' | t }}">
+  <div class="container ampm__grid">
+    {%- for slot in (1..2) -%}
+      {%- liquid
+        if slot == 1
+          assign title = 'pages.routines.am_title' | t
+          assign max = 4
+          assign icon = 'sun'
+        else
+          assign title = 'pages.routines.pm_title' | t
+          assign max = 3
+          assign icon = 'moon'
+        endif
+        assign total = 0
+        assign zero = false
+      -%}
+      <div class="ampm__col ampm__col--{{ slot }}">
+        <div class="ampm__head">
+          <span class="ampm__icon">{% render 'icon', name: icon, class: 'icon--lg' %}</span>
+          <h2 class="t-display-m">{{ title }}</h2>
+          <p class="t-muted">{{ 'pages.routines.steps' | t: count: max }}</p>
+        </div>
+        <ol class="ampm__steps" role="list">
+          {%- for s in (1..max) -%}
+            {%- for p in source.products limit: 12 -%}
+              {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+              {%- assign ps = ps | strip | plus: 0 -%}
+              {%- if ps == s -%}
+                {%- assign pv = p.selected_or_first_available_variant -%}
+                {%- assign total = total | plus: pv.price -%}
+                {%- if pv.price == 0 -%}{%- assign zero = true -%}{%- endif -%}
+                {%- assign cutout = p.metafields.bts.cutout.value -%}
+                <li class="ampm__step" data-step="{{ s }}">
+                  <span class="ampm__thumb" aria-hidden="true">
+                    {%- if cutout -%}{{ cutout | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '64px', alt: '' }}{%- elsif p.featured_media -%}{{ p.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '64px', alt: '' }}{%- endif -%}
+                  </span>
+                  <div class="ampm__step-text">
+                    <span class="step-tag">{{ 'product.step' | t: number: s }}</span>
+                    <a class="ampm__name" href="{{ p.url }}">{{ p.title | escape }}</a>
+                    {%- if p.metafields.bts.how_to_use != blank -%}<p class="t-small t-muted">{{ p.metafields.bts.how_to_use }}</p>{%- endif -%}
+                  </div>
+                </li>
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </ol>
+        <product-form data-multi>
+          <form method="post" action="{{ routes.cart_add_url }}">
+            {%- for s in (1..max) -%}
+              {%- for p in source.products limit: 12 -%}
+                {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+                {%- assign ps = ps | strip | plus: 0 -%}
+                {%- if ps == s -%}
+                  <input type="hidden" name="items[][id]" value="{{ p.selected_or_first_available_variant.id }}">
+                  <input type="hidden" name="items[][quantity]" value="1">
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+            {%- if zero and settings.zero_price_coming_soon -%}
+              <button type="button" class="btn btn--full" disabled>{{ 'product.coming_soon' | t }}</button>
+            {%- else -%}
+              <button type="submit" class="btn btn--full">
+                <span class="btn__label">{{ 'pages.routines.add' | t: routine: title }}</span>
+                <span class="btn__sep" aria-hidden="true">·</span>
+                <span class="btn__price">{{ total | money }}</span>
+              </button>
+            {%- endif -%}
+          </form>
+        </product-form>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.routine_ampm.name",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" }
+  ],
+  "presets": [{ "name": "t:sections.routine_ampm.name" }]
+}
+{% endschema %}

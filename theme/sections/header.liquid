@@ -1,10 +1,6 @@
 {%- liquid
   assign menu = section.settings.menu
   assign mega_collection = section.settings.mega_collection | default: collections.all
-  assign is_home = false
-  if request.page_type == 'index'
-    assign is_home = true
-  endif
 -%}
 <site-header class="site-header-wrap">
   <header class="site-header" data-header>

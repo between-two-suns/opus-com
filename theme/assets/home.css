@@ -183,3 +183,9 @@
 .newsletter__sun-b { --sun-size: 520px; inset-block-end: -280px; inset-inline-end: -200px; }
 .newsletter__content { position: relative; z-index: 1; display: grid; gap: 18px; justify-items: center; text-align: center; max-inline-size: 640px; margin-inline: auto; }
 .newsletter__form { inline-size: 100%; display: grid; gap: 10px; }
+
+@media (max-width: 749px) {
+  .ingredients__grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+  .ingredients__grid::-webkit-scrollbar { display: none; }
+  .ing-tile { flex: 0 0 80%; scroll-snap-align: start; }
+}

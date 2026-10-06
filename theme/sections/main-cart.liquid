@@ -1,0 +1,64 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+<section class="section section--tight cart-page" aria-labelledby="CartTitle">
+  <div class="container">
+    <h1 class="t-display-m" id="CartTitle">{{ 'cart.title' | t }}</h1>
+    {%- if cart.item_count == 0 -%}
+      <div class="cart-empty">
+        <p class="t-lead">{{ 'cart.empty_title' | t }}</p>
+        <p class="t-muted">{{ 'cart.empty_text' | t }}</p>
+        <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.shop_routine' | t }}</a>
+      </div>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" class="cart-page__grid" data-cart-root data-count="{{ cart.item_count }}">
+        <ul class="cart-lines" role="list">
+          {%- for item in cart.items -%}
+            {%- capture step -%}{% render 'product-step', product: item.product %}{%- endcapture -%}
+            {%- assign cutout = item.product.metafields.bts.cutout.value -%}
+            <li class="cart-line" data-step="{{ step | strip }}">
+              <a href="{{ item.url }}" class="cart-line__media{% unless cutout %} cart-line__media--photo{% endunless %}" tabindex="-1" aria-hidden="true">
+                {%- if cutout -%}{{ cutout | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120,240', sizes: '96px', alt: '' }}{%- elsif item.image -%}{{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120,240', sizes: '96px', alt: '' }}{%- endif -%}
+              </a>
+              <div class="cart-line__info">
+                <div class="cart-line__top">
+                  <a class="cart-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+                  <span class="cart-line__price">{{ item.final_line_price | money }}</span>
+                </div>
+                {%- unless item.product.has_only_default_variant -%}<p class="t-xs t-muted">{{ item.variant.title | escape }}</p>{%- endunless -%}
+                <div class="cart-line__controls">
+                  <quantity-input class="qty qty--small">
+                    <button type="button" data-step="-1" aria-label="{{ 'cart.decrease' | t: product: item.product.title | escape }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
+                    <label class="visually-hidden" for="CartQty-{{ forloop.index }}">{{ 'cart.quantity_for' | t: product: item.product.title | escape }}</label>
+                    <input id="CartQty-{{ forloop.index }}" type="number" inputmode="numeric" name="updates[]" min="0" value="{{ item.quantity }}" data-line-qty="{{ forloop.index }}">
+                    <button type="button" data-step="1" aria-label="{{ 'cart.increase' | t: product: item.product.title | escape }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
+                  </quantity-input>
+                  <a class="cart-line__remove" href="{{ item.url_to_remove }}">{{ 'cart.remove' | t }}<span class="visually-hidden"> {{ item.product.title | escape }}</span></a>
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <div class="cart-page__summary">
+          <div class="field">
+            <label for="CartNote">{{ 'cart.note' | t }}</label>
+            <textarea id="CartNote" name="note" rows="3">{{ cart.note }}</textarea>
+          </div>
+          <div class="cart-totals">
+            <div class="cart-totals__row">
+              <span class="t-subheading">{{ 'cart.subtotal' | t }}</span>
+              <span class="cart-totals__subtotal">{{ cart.total_price | money_with_currency }}</span>
+            </div>
+            <p class="cart-note-line">{% if cart.taxes_included %}{{ 'cart.taxes_included' | t }}{% else %}{{ 'cart.taxes_excluded' | t }}{% endif %} {% if settings.shipping_note != blank %}{{ settings.shipping_note | escape }}{% else %}{{ 'cart.shipping_at_checkout' | t }}{% endif %}</p>
+            <noscript><button type="submit" name="update" class="btn btn--secondary btn--full">{{ 'cart.update' | t }}</button></noscript>
+            <button type="submit" name="checkout" class="btn btn--full">{% render 'icon', name: 'lock', class: 'icon--sm' %} {{ 'cart.checkout' | t }}</button>
+            <a class="link-arrow" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            {%- render 'payment-icons' -%}
+          </div>
+        </div>
+      </form>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "t:sections.main_cart.name", "settings": [] }
+{% endschema %}

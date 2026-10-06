@@ -66,7 +66,7 @@
                   <p class="t-xs t-muted">{{ item.variant.title | escape }}</p>
                 {%- endunless -%}
                 {%- if item.product.metafields.bts.size != blank -%}
-                  <p class="t-xs t-muted u-ltr" style="justify-self:start">{{ item.product.metafields.bts.size }}</p>
+                  <p class="t-xs t-muted u-ltr">{{ item.product.metafields.bts.size }}</p>
                 {%- endif -%}
                 {%- for discount in item.line_level_discount_allocations -%}
                   <p class="t-xs" style="color:var(--c-success)">{{ discount.discount_application.title | escape }} (−{{ discount.amount | money }})</p>

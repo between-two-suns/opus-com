@@ -1,0 +1,57 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "preset": "routines"
+      }
+    },
+    "forecast": {
+      "type": "skin-forecast",
+      "settings": {}
+    },
+    "ampm": {
+      "type": "routine-ampm",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "qa",
+          "settings": {
+            "preset": "order"
+          }
+        },
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "am_pm"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "reapply"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1",
+        "q2"
+      ],
+      "settings": {
+        "compact": true,
+        "show_contact": true,
+        "schema": false
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "forecast",
+    "ampm",
+    "faq"
+  ]
+}

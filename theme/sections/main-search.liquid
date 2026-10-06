@@ -1,0 +1,56 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+<section class="section section--tight search-page" aria-labelledby="SearchTitle">
+  <div class="container">
+    <h1 class="t-display-m" id="SearchTitle">
+      {%- if search.performed -%}{{ 'search.results_count' | t: count: search.results_count, terms: search.terms }}{%- else -%}{{ 'search.title' | t }}{%- endif -%}
+    </h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
+      <label class="visually-hidden" for="SearchPageInput">{{ 'search.label' | t }}</label>
+      <input id="SearchPageInput" class="search-modal__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'search.placeholder' | t }}" autocomplete="off">
+      <button type="submit" class="btn">{% render 'icon', name: 'search', class: 'icon--sm' %} {{ 'search.submit' | t }}</button>
+    </form>
+
+    {%- if search.performed and search.results_count > 0 -%}
+      {%- assign product_results = search.results | where: 'object_type', 'product' -%}
+      {%- if product_results.size == 0 -%}{%- assign product_results = search.results -%}{%- endif -%}
+      <ul class="product-grid u-mt-l" role="list">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' or item.variants -%}
+            <li>{% render 'product-card', product: item, section_id: section.id, heading_tag: 'h2' %}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+      <ul class="search-page__links" role="list">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'page' or item.object_type == 'article' -%}
+            <li><a href="{{ item.url }}"><strong>{{ item.title | escape }}</strong><span class="t-small t-muted">{{ item.content | strip_html | truncate: 140 }}</span></a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- else -%}
+      <div class="empty-state">
+        {%- if search.performed -%}<p class="t-lead">{{ 'search.no_results' | t: terms: search.terms }}</p>{%- endif -%}
+        <p class="t-muted">{{ 'search.empty_hint' | t }}</p>
+        <div class="cluster">
+          {%- assign terms = 'search.popular_terms' | t | split: ',' -%}
+          {%- for term in terms -%}
+            <a class="chip" href="{{ routes.search_url }}?q={{ term | strip | url_encode }}">{{ term | strip }}</a>
+          {%- endfor -%}
+        </div>
+      </div>
+      <ul class="product-grid u-mt-l" role="list">
+        {%- for s in (1..4) -%}
+          {%- for p in collections.all.products limit: 12 -%}
+            {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+            {%- assign ps = ps | strip | plus: 0 -%}
+            {%- if ps == s -%}<li>{% render 'product-card', product: p, section_id: section.id, heading_tag: 'h2' %}</li>{%- break -%}{%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "t:sections.main_search.name", "settings": [] }
+{% endschema %}

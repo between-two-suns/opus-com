@@ -78,3 +78,7 @@
   .forecast__inner { grid-template-columns: 1fr 1fr; align-items: start; }
   .forecast__panel { position: sticky; inset-block-start: calc(var(--header-h) + 32px); }
 }
+@media (max-width: 480px) {
+  .forecast__time { grid-template-columns: 1fr; }
+  .forecast__dial { display: none; }
+}

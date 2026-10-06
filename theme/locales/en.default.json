@@ -8,15 +8,25 @@
     "breadcrumbs": "Breadcrumbs"
   },
   "general": {
-    "meta": { "tags": "Tagged “{{ tags }}”", "page": "Page {{ page }}" },
+    "meta": {
+      "tags": "Tagged “{{ tags }}”",
+      "page": "Page {{ page }}"
+    },
     "payment_methods": "Payment methods",
-    "language": { "switch_to": "Switch to {{ language }}" },
+    "language": {
+      "switch_to": "Switch to {{ language }}"
+    },
     "close": "Close",
     "announcement": "Announcement",
     "opens_new_window": "(opens in a new window)",
     "home": "Home",
     "back_home": "Back to home",
-    "pagination": { "label": "Pagination", "previous": "Previous page", "next": "Next page", "page": "Page {{ number }}" }
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "next": "Next page",
+      "page": "Page {{ number }}"
+    }
   },
   "announcement": {
     "default_1": "Climate-adapted skincare",
@@ -64,7 +74,11 @@
     "title": "Footer",
     "tagline": "fresh skin. always.",
     "description": "Climate-adapted skincare. Made for sun, pollution, changing environments & everyday skin.",
-    "headings": { "shop": "Shop", "learn": "Learn", "help": "Help" },
+    "headings": {
+      "shop": "Shop",
+      "learn": "Learn",
+      "help": "Help"
+    },
     "links": {
       "shop_all": "Shop all",
       "routines": "Routines",
@@ -101,14 +115,38 @@
     "pollution": "City & pollution"
   },
   "climate": {
-    "sun": { "name": "Sun", "line": "UV shows up every day, not just at the beach." },
-    "pollution": { "name": "Pollution", "line": "Traffic, smog and city air — every single day." },
-    "dust": { "name": "Dust", "line": "Fine dust settles on skin through the day." },
-    "humidity": { "name": "Humidity", "line": "Sticky air, shiny skin." },
-    "heat": { "name": "Heat", "line": "Sweat, oil and makeup that slides." },
-    "ac": { "name": "Air-con", "line": "Cool, dry air for hours on end." },
-    "change": { "name": "Change", "line": "Outside to inside, hot to cold, ten times a day." },
-    "everyday": { "name": "Everyday", "line": "Ordinary days need good skincare too." }
+    "sun": {
+      "name": "Sun",
+      "line": "UV shows up every day, not just at the beach."
+    },
+    "pollution": {
+      "name": "Pollution",
+      "line": "Traffic, smog and city air — every single day."
+    },
+    "dust": {
+      "name": "Dust",
+      "line": "Fine dust settles on skin through the day."
+    },
+    "humidity": {
+      "name": "Humidity",
+      "line": "Sticky air, shiny skin."
+    },
+    "heat": {
+      "name": "Heat",
+      "line": "Sweat, oil and makeup that slides."
+    },
+    "ac": {
+      "name": "Air-con",
+      "line": "Cool, dry air for hours on end."
+    },
+    "change": {
+      "name": "Change",
+      "line": "Outside to inside, hot to cold, ten times a day."
+    },
+    "everyday": {
+      "name": "Everyday",
+      "line": "Ordinary days need good skincare too."
+    }
   },
   "sections": {
     "hero": {
@@ -124,7 +162,9 @@
       "label": "Today’s conditions",
       "items": "SUN ↑|DUST ↑|CITY ↑|HUMIDITY ↑|AC ALL DAY|HEAT ↑|WHATEVER TODAY DOES."
     },
-    "concerns": { "heading": "What’s your skin dealing with?" },
+    "concerns": {
+      "heading": "What’s your skin dealing with?"
+    },
     "routine": {
       "eyebrow": "The routine",
       "heading": "Four steps. Every climate.",
@@ -147,9 +187,21 @@
       "am": "Morning",
       "pm": "Evening",
       "conditions_legend": "Today’s conditions",
-      "conditions": { "sun": "Sun", "city": "City & dust", "humidity": "Humidity", "ac": "Air-con", "heat": "Heat" },
+      "conditions": {
+        "sun": "Sun",
+        "city": "City & dust",
+        "humidity": "Humidity",
+        "ac": "Air-con",
+        "heat": "Heat"
+      },
       "readout_empty": "TAP WHAT TODAY LOOKS LIKE",
-      "readout": { "sun": "SUN", "city": "CITY", "humidity": "HUMIDITY", "ac": "AC", "heat": "HEAT" },
+      "readout": {
+        "sun": "SUN",
+        "city": "CITY",
+        "humidity": "HUMIDITY",
+        "ac": "AC",
+        "heat": "HEAT"
+      },
       "routine_am": "Your morning routine",
       "routine_pm": "Your evening routine",
       "count": "{{ count }} of 4 steps",
@@ -170,11 +222,26 @@
     "facts": {
       "label": "Facts about our products",
       "items": {
-        "made_in_egypt": { "title": "Made in Egypt", "text": "Manufactured in Egypt, for the climate we live in." },
-        "inci": { "title": "Every ingredient, listed", "text": "The full INCI list is on every product page. Nothing hidden." },
-        "spf": { "title": "SPF 50, every morning", "text": "Broad-spectrum UVA/UVB protection with no white cast." },
-        "textures": { "title": "Light, not heavy", "text": "A gel cleanser and a lightweight cream for oily to combination skin." },
-        "routine": { "title": "Four steps, colour-coded", "text": "Mint, blue, lilac, peach — always in that order." }
+        "made_in_egypt": {
+          "title": "Made in Egypt",
+          "text": "Manufactured in Egypt, for the climate we live in."
+        },
+        "inci": {
+          "title": "Every ingredient, listed",
+          "text": "The full INCI list is on every product page. Nothing hidden."
+        },
+        "spf": {
+          "title": "SPF 50, every morning",
+          "text": "Broad-spectrum UVA/UVB protection with no white cast."
+        },
+        "textures": {
+          "title": "Light, not heavy",
+          "text": "A gel cleanser and a lightweight cream for oily to combination skin."
+        },
+        "routine": {
+          "title": "Four steps, colour-coded",
+          "text": "Mint, blue, lilac, peach — always in that order."
+        }
       }
     },
     "journal": {
@@ -289,7 +356,10 @@
       "success": "Thanks — we’ve got your message and will reply by email.",
       "required": "Required"
     },
-    "faq": { "contact_cta": "Still have a question?", "contact_link": "Contact us" },
+    "faq": {
+      "contact_cta": "Still have a question?",
+      "contact_link": "Contact us"
+    },
     "scan": {
       "eyebrow": "You scanned a Between Two Suns pack",
       "heading": "Which one is in your hand?",
@@ -302,12 +372,15 @@
       "search_placeholder": "Type an ingredient",
       "inci_label": "INCI name",
       "in_products": "Found in",
-      "count": "{{ count }} ingredients"
+      "count": "{{ count }} ingredients",
+      "full_lists": "Full ingredient lists",
+      "full_lists_text": "Every product’s INCI, exactly as printed on the pack."
     },
     "routines": {
       "am_title": "Morning",
       "pm_title": "Evening",
-      "steps": "{{ count }} steps"
+      "steps": "{{ count }} steps",
+      "add": "Add the {{ routine }} routine"
     }
   },
   "blog": {
@@ -382,5 +455,115 @@
     "expired": "This gift card has expired.",
     "disabled": "This gift card is disabled.",
     "shop": "Start shopping"
+  },
+  "faq": {
+    "heading": "Questions, answered",
+    "items": {
+      "order": {
+        "q": "In what order do I use the routine?",
+        "a": "Cleanser, then Clarity Serum, then Daily Barrier Moisturizing Cream — morning and night. In the morning, finish with Daily Defense Sunscreen SPF 50 as the last step."
+      },
+      "am_pm": {
+        "q": "Can I use the products morning and night?",
+        "a": "The cleanser, serum and moisturizer are used morning and night. The sunscreen is a morning step."
+      },
+      "reapply": {
+        "q": "How often should I reapply sunscreen?",
+        "a": "The pack direction is to reapply every 2 hours."
+      },
+      "inci": {
+        "q": "Where can I see the full ingredient list?",
+        "a": "On every product page, under “Full ingredients (INCI)” — exactly as printed on the pack."
+      },
+      "skin_type": {
+        "q": "Which skin types are they for?",
+        "a": "The cleanser and the moisturizer are formulated for oily to combination skin. The sunscreen is for all skin types."
+      },
+      "made": {
+        "q": "Where are Between Two Suns products made?",
+        "a": "In Egypt. They are manufactured by Integrated Cosmetics Industries for Nuu Group for Cosmetics."
+      },
+      "climate": {
+        "q": "What does “climate-adapted” mean?",
+        "a": "Skincare designed around the conditions skin actually lives in — sun, pollution, dust, humidity, heat, air-con and constant change — with light textures and a simple four-step routine."
+      },
+      "fragrance": {
+        "q": "Are the products fragrance-free?",
+        "a": "The Daily Barrier Moisturizing Cream is labelled fragrance-free. Each product page lists the full ingredients so you can check."
+      },
+      "payment": {
+        "q": "How can I pay?",
+        "a": "The payment methods available for your order are shown at checkout before you confirm."
+      }
+    }
+  },
+  "page_presets": {
+    "routines": {
+      "eyebrow": "Routine finder",
+      "heading": "Your routine, your climate",
+      "text": "Four steps, colour-coded and in order. Tell the forecast what today looks like — or add the full morning or evening routine in one tap."
+    },
+    "ingredients": {
+      "eyebrow": "Ingredient glossary",
+      "heading": "Nothing hidden",
+      "text": "What each key ingredient is and which products contain it — plus every product’s full INCI list, exactly as printed on the pack."
+    },
+    "climate": {
+      "eyebrow": "Climate-adapted skincare",
+      "heading": "Made for the space between",
+      "text": "Climate-adapted skincare. Made for sun, pollution, changing environments & everyday skin."
+    },
+    "about": {
+      "eyebrow": "About",
+      "heading": "Between two suns",
+      "text": "Skin doesn’t live in one climate. Between morning sun and afternoon sun, street heat and office air-con, it’s constantly adapting. We make skincare for that space in between."
+    },
+    "faq": {
+      "eyebrow": "Help",
+      "heading": "FAQ",
+      "text": "Straight answers, taken from the pack."
+    },
+    "contact": {
+      "eyebrow": "Contact",
+      "heading": "Talk to us",
+      "text": "Questions about a product, an order or your routine? Send a message and we’ll reply by email."
+    },
+    "scan": {
+      "eyebrow": "You scanned a Between Two Suns pack",
+      "heading": "Which one is in your hand?",
+      "text": "Tap your product for how to use it, where it sits in your routine, and the full ingredient list."
+    }
+  },
+  "stories": {
+    "between": {
+      "eyebrow": "The idea",
+      "heading": "Made for the space between",
+      "text": "Skin moves between climates all day — sun to shade, heat to air-con, dust to humidity. Between Two Suns is skincare for that space in between: light, simple, and made to keep up."
+    },
+    "routine": {
+      "eyebrow": "The routine",
+      "heading": "A routine, not a cabinet",
+      "text": "Four products. Each has one job, one colour and one place in your day: reset, clarity, barrier, defense — always in that order."
+    },
+    "made": {
+      "eyebrow": "Made in Egypt",
+      "heading": "From here, for everywhere skin goes",
+      "text": "Our products are manufactured in Egypt — for the climate we know best, and every climate in between."
+    },
+    "transparent": {
+      "eyebrow": "Transparency",
+      "heading": "Nothing hidden",
+      "text": "Every ingredient is listed on every product page, exactly as it’s printed on the pack. No vague claims, no invented numbers."
+    },
+    "not_summer": {
+      "eyebrow": "Why climate-adapted",
+      "heading": "Not just summer skincare",
+      "text": "Heat is only one condition. Air-con dries, dust settles, humidity shines, and UV shows up in January too. Climate-adapted means a routine made for all of it."
+    },
+    "light": {
+      "eyebrow": "Textures",
+      "heading": "Light enough for every day",
+      "text": "A gel cleanser. A lightweight serum. A lightweight cream. A silky, fast-absorbing SPF 50 with no white cast."
+    }
   }
 }

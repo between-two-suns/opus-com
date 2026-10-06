@@ -1,0 +1,61 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign preset = section.settings.preset
+  assign heading = section.settings.heading
+  assign text = section.settings.text
+  assign eyebrow = section.settings.eyebrow
+  if preset != 'none'
+    assign hk = 'page_presets.' | append: preset | append: '.heading'
+    assign tk = 'page_presets.' | append: preset | append: '.text'
+    assign ek = 'page_presets.' | append: preset | append: '.eyebrow'
+    if heading == blank
+      assign heading = hk | t
+    endif
+    if text == blank
+      assign text = tk | t
+    endif
+    if eyebrow == blank
+      assign eyebrow = ek | t
+    endif
+  endif
+  if heading == blank
+    assign heading = page.title | default: page_title
+  endif
+-%}
+<div class="page-hero{% if section.settings.compact %} page-hero--compact{% endif %}">
+  <div class="suns" aria-hidden="true"><span class="sun sun--warm page-hero__sun-a"></span><span class="sun sun--cool page-hero__sun-b"></span></div>
+  <div class="container page-hero__inner">
+    {%- if eyebrow != blank -%}<p class="t-eyebrow">{{ eyebrow | escape }}</p>{%- endif -%}
+    <h1 class="t-display-l">{{ heading | escape }}</h1>
+    {%- if text != blank -%}<p class="t-lead page-hero__text">{{ text | escape }}</p>{%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page_hero.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "preset",
+      "label": "t:sections.page_hero.preset",
+      "options": [
+        { "value": "none", "label": "Page title" },
+        { "value": "routines", "label": "Routines" },
+        { "value": "ingredients", "label": "Ingredients" },
+        { "value": "climate", "label": "Climate" },
+        { "value": "about", "label": "About" },
+        { "value": "faq", "label": "FAQ" },
+        { "value": "contact", "label": "Contact" },
+        { "value": "scan", "label": "Scan" }
+      ],
+      "default": "none"
+    },
+    { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
+    { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
+    { "type": "checkbox", "id": "compact", "label": "t:sections.page_hero.compact", "default": false }
+  ],
+  "presets": [{ "name": "t:sections.page_hero.name" }]
+}
+{% endschema %}

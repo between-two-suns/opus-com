@@ -1,0 +1,386 @@
+{{ 'product.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  capture step
+    render 'product-step', product: product
+  endcapture
+  assign step = step | strip | plus: 0
+  assign mf = product.metafields.bts
+  assign step_label = mf.step_label.value
+  if step_label == blank
+    for tag in product.tags
+      assign head = tag | slice: 0, 2
+      if head == '01' or head == '02' or head == '03' or head == '04'
+        assign step_label = tag | remove_first: head | strip
+        break
+      endif
+    endfor
+  endif
+  assign variant = product.selected_or_first_available_variant
+  assign coming_soon = false
+  if variant.price == 0 and settings.zero_price_coming_soon
+    assign coming_soon = true
+  endif
+  assign cutout = mf.cutout.value
+  assign media_count = product.media.size
+  if cutout
+    assign media_count = media_count | plus: 1
+  endif
+  assign description = mf.description.value | default: product.description
+  assign form_id = 'ProductForm-' | append: section.id
+-%}
+
+<div class="pdp" data-step="{{ step }}">
+  <div class="container">
+    <nav class="breadcrumbs pdp__crumbs" aria-label="{{ 'accessibility.breadcrumbs' | t }}">
+      <ol>
+        <li><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></li>
+        <li><a href="{{ routes.all_products_collection_url }}">{{ 'header.nav.shop' | t }}</a></li>
+        <li aria-current="page">{{ product.title | escape }}</li>
+      </ol>
+    </nav>
+
+    <div class="pdp__grid">
+      {%- comment -%} ------------------------------------------------ Gallery {%- endcomment -%}
+      <media-gallery class="pdp__gallery" aria-label="{{ 'product.gallery' | t }}" role="region">
+        <div class="gallery__track" data-track tabindex="0">
+          {%- assign slide = 0 -%}
+          {%- if cutout -%}
+            {%- assign slide = slide | plus: 1 -%}
+            <div class="gallery__slide gallery__slide--studio" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
+              <span class="gallery__sun gallery__sun--a" aria-hidden="true"></span>
+              <span class="gallery__sun gallery__sun--b" aria-hidden="true"></span>
+              {{ cutout | image_url: width: 900 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '300,450,600,750,900', sizes: '(min-width: 990px) 46vw, 92vw', alt: product.title, class: 'gallery__cutout' }}
+            </div>
+          {%- endif -%}
+          {%- for media in product.media -%}
+            {%- assign slide = slide | plus: 1 -%}
+            <div class="gallery__slide" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
+              {%- case media.media_type -%}
+                {%- when 'image' -%}
+                  {%- if slide == 1 -%}
+                    {{ media | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400,600,800,1000,1200,1400', sizes: '(min-width: 990px) 46vw, 92vw', alt: media.alt | default: product.title }}
+                  {%- else -%}
+                    {{ media | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200,1400', sizes: '(min-width: 990px) 46vw, 92vw', alt: media.alt | default: product.title }}
+                  {%- endif -%}
+                {%- when 'video' -%}
+                  {{ media | video_tag: controls: true, muted: true, playsinline: true, preload: 'none', image_size: '1200x' }}
+                {%- when 'external_video' -%}
+                  {{ media | external_video_tag: loading: 'lazy' }}
+                {%- else -%}
+                  {{ media | media_tag }}
+              {%- endcase -%}
+            </div>
+          {%- endfor -%}
+          {%- if media_count == 0 -%}
+            <div class="gallery__slide" data-slide>{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+          {%- endif -%}
+        </div>
+        {%- if media_count > 1 -%}
+          <div class="gallery__nav">
+            <button type="button" class="gallery__arrow" data-prev aria-label="{{ 'accessibility.previous_slide' | t }}">{% render 'icon', name: 'chevron-left', class: 'icon--flip' %}</button>
+            <div class="gallery__dots" role="group" aria-label="{{ 'product.gallery' | t }}">
+              {%- for i in (1..media_count) -%}
+                <button type="button" class="gallery__dot" data-dot="{{ forloop.index0 }}" aria-label="{{ 'accessibility.slide_n' | t: index: i, count: media_count }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
+              {%- endfor -%}
+            </div>
+            <button type="button" class="gallery__arrow" data-next aria-label="{{ 'accessibility.next_slide' | t }}">{% render 'icon', name: 'chevron-right', class: 'icon--flip' %}</button>
+          </div>
+        {%- endif -%}
+      </media-gallery>
+
+      {%- comment -%} ------------------------------------------------ Info / buy box {%- endcomment -%}
+      <div class="pdp__info">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              <div class="pdp__app">{% render block %}</div>
+
+            {%- when 'title' -%}
+              <div class="pdp__head" {{ block.shopify_attributes }}>
+                {%- if step > 0 -%}
+                  <p class="step-tag pdp__step">{{ 'product.step' | t: number: step }}{% if step_label != blank %} · {{ step_label }}{% endif %}</p>
+                {%- endif -%}
+                <h1 class="pdp__title">{{ product.title | escape }}</h1>
+                {%- if mf.hero_ingredients != blank -%}
+                  <p class="pill pdp__hero-ing">{{ mf.hero_ingredients }}</p>
+                {%- endif -%}
+              </div>
+
+            {%- when 'benefit' -%}
+              {%- if mf.benefit != blank -%}
+                <p class="t-lead pdp__benefit" {{ block.shopify_attributes }}>{{ mf.benefit }}</p>
+              {%- endif -%}
+
+            {%- when 'facts' -%}
+              <dl class="pdp__facts" {{ block.shopify_attributes }}>
+                {%- if mf.size != blank -%}
+                  <div><dt>{{ 'product.size' | t }}</dt><dd class="u-ltr">{{ mf.size }}</dd></div>
+                {%- endif -%}
+                {%- if mf.skin_type != blank -%}
+                  <div><dt>{{ 'product.skin_type' | t }}</dt><dd>{{ mf.skin_type }}</dd></div>
+                {%- endif -%}
+                {%- if mf.when_to_use != blank -%}
+                  <div><dt>{{ 'product.when' | t }}</dt><dd>{{ mf.when_to_use }}</dd></div>
+                {%- endif -%}
+              </dl>
+
+            {%- when 'buy' -%}
+              <div class="pdp__buy" {{ block.shopify_attributes }} id="PdpBuy-{{ section.id }}">
+                <div class="pdp__price-row">
+                  {%- render 'price', product: product, variant: variant, class: 'pdp__price' -%}
+                  {%- unless coming_soon -%}
+                    <p class="t-xs t-muted">{% if cart.taxes_included %}{{ 'product.tax_included' | t }}{% else %}{{ 'product.tax_excluded' | t }}{% endif %} {{ 'product.shipping_checkout' | t }}</p>
+                  {%- endunless -%}
+                </div>
+
+                <product-form class="pdp__form" data-section="{{ section.id }}">
+                  {%- form 'product', product, id: form_id, novalidate: 'novalidate' -%}
+                    <input type="hidden" name="id" value="{{ variant.id }}" data-variant-id>
+
+                    {%- unless product.has_only_default_variant -%}
+                      <variant-picker class="pdp__variants" data-section="{{ section.id }}">
+                        {%- for option in product.options_with_values -%}
+                          <fieldset class="pdp__option">
+                            <legend class="field__label">{{ option.name | escape }}</legend>
+                            <div class="cluster">
+                              {%- for value in option.values -%}
+                                <label class="chip pdp__swatch">
+                                  <input class="visually-hidden" type="radio" name="option-{{ option.position }}" value="{{ value | escape }}"{% if option.selected_value == value %} checked{% endif %}>
+                                  <span>{{ value | escape }}</span>
+                                </label>
+                              {%- endfor -%}
+                            </div>
+                          </fieldset>
+                        {%- endfor -%}
+                        <script type="application/json" data-variants>{{ product.variants | json }}</script>
+                      </variant-picker>
+                    {%- endunless -%}
+
+                    <div class="pdp__actions">
+                      <quantity-input class="qty">
+                        <button type="button" data-step="-1" aria-label="{{ 'product.decrease' | t }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
+                        <label class="visually-hidden" for="Qty-{{ section.id }}">{{ 'product.quantity' | t }}</label>
+                        <input id="Qty-{{ section.id }}" type="number" name="quantity" value="1" min="1" inputmode="numeric">
+                        <button type="button" data-step="1" aria-label="{{ 'product.increase' | t }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
+                      </quantity-input>
+                      <button
+                        type="submit"
+                        name="add"
+                        class="btn pdp__atc"
+                        data-atc
+                        {% if coming_soon or variant.available == false %}disabled{% endif %}
+                      >
+                        <span class="btn__label" data-atc-label>
+                          {%- if coming_soon -%}
+                            {{ 'product.coming_soon' | t }}
+                          {%- elsif variant.available == false -%}
+                            {{ 'product.sold_out' | t }}
+                          {%- else -%}
+                            {{ 'product.add_to_cart' | t }}
+                          {%- endif -%}
+                        </span>
+                      </button>
+                    </div>
+                    <p class="field__error" data-form-error role="alert" hidden></p>
+                    {%- if settings.show_dynamic_checkout and coming_soon == false -%}
+                      <div class="pdp__dynamic">{{ form | payment_button }}</div>
+                    {%- endif -%}
+                  {%- endform -%}
+                </product-form>
+
+                <ul class="pdp__assure" role="list">
+                  {%- if settings.shipping_note != blank -%}
+                    <li>{% render 'icon', name: 'truck', class: 'icon--sm' %}<span>{{ settings.shipping_note | escape }}</span></li>
+                  {%- endif -%}
+                  {%- if settings.show_cod -%}
+                    <li>{% render 'icon', name: 'cash', class: 'icon--sm' %}<span>{{ 'product.cod' | t }}</span></li>
+                  {%- endif -%}
+                  {%- if settings.returns_note != blank -%}
+                    <li>{% render 'icon', name: 'refresh', class: 'icon--sm' %}<span>{{ settings.returns_note | escape }}</span></li>
+                  {%- endif -%}
+                </ul>
+                {%- render 'payment-icons', class: 'pdp__payments' -%}
+              </div>
+
+            {%- when 'claims' -%}
+              {%- assign badges = mf.badges.value -%}
+              {%- if badges.size > 0 -%}
+                <div class="pdp__claims" {{ block.shopify_attributes }}>
+                  <p class="visually-hidden">{{ 'product.claims' | t }}</p>
+                  <ul class="cluster" role="list">
+                    {%- for b in badges -%}
+                      <li class="pill pill--sku">{% render 'icon', name: 'check', class: 'icon--sm' %}{{ b | escape }}</li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+
+            {%- when 'texture' -%}
+              {%- if mf.texture != blank or mf.features != blank -%}
+                <div class="pdp__texture" {{ block.shopify_attributes }}>
+                  <span class="pdp__swirl" aria-hidden="true"></span>
+                  <div>
+                    <p class="t-eyebrow t-muted">{{ 'product.texture' | t }}</p>
+                    {%- if mf.texture != blank -%}<p class="pdp__texture-name">{{ mf.texture }}</p>{%- endif -%}
+                    {%- assign features = mf.features.value -%}
+                    {%- if features.size > 0 -%}
+                      <p class="t-small t-muted">{{ features | join: ' · ' }}</p>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+
+            {%- when 'accordion' -%}
+              {%- liquid
+                assign kind = block.settings.content
+                assign heading = block.settings.heading
+                assign hint = ''
+                if heading == blank
+                  assign hk = 'product.sections.' | append: kind
+                  assign heading = hk | t
+                  assign hint_key = 'product.sections.' | append: kind | append: '_hint'
+                  if kind == 'what' or kind == 'ingredients' or kind == 'inci' or kind == 'caution'
+                    assign hint = hint_key | t
+                  endif
+                endif
+                capture body
+                  case kind
+                    when 'what'
+                      if description != blank
+                        echo '<div class="rte">' | append: description | append: '</div>'
+                      endif
+                    when 'ingredients'
+                      assign kis = mf.key_ingredients.value
+                      if kis.size > 0
+                        echo '<ul class="pdp__ingredients" role="list">'
+                        for ki in kis
+                          assign ki_name = ki.name.value | escape
+                          assign ki_role = ki.role.value | escape
+                          echo '<li><p class="pdp__ing-name">' | append: ki_name | append: '</p><p class="t-small t-muted">' | append: ki_role | append: '</p></li>'
+                        endfor
+                        echo '</ul>'
+                      endif
+                    when 'how'
+                      if mf.how_to_use != blank
+                        echo '<p>' | append: mf.how_to_use.value | append: '</p>'
+                      endif
+                      if mf.when_to_use != blank
+                        echo '<p class="pill pill--quiet">' | append: mf.when_to_use.value | append: '</p>'
+                      endif
+                    when 'who'
+                      if mf.skin_type != blank
+                        echo '<p><strong>' | append: mf.skin_type.value | append: '</strong></p>'
+                      endif
+                      assign cs = mf.concerns.value
+                      if cs.size > 0
+                        echo '<ul class="cluster" role="list">'
+                        for c in cs
+                          assign ck = 'concerns.' | append: c
+                          assign c_label = ck | t
+                          echo '<li class="pill pill--quiet">' | append: c_label | append: '</li>'
+                        endfor
+                        echo '</ul>'
+                      endif
+                    when 'inci'
+                      if mf.inci != blank
+                        echo '<p class="pdp__inci" lang="en" dir="ltr">' | append: mf.inci.value | append: '</p>'
+                      endif
+                    when 'caution'
+                      if mf.caution != blank
+                        echo '<p>' | append: mf.caution.value | append: '</p>'
+                      endif
+                      if mf.legal != blank
+                        echo '<p class="t-small t-muted" lang="en" dir="ltr">' | append: mf.legal.value | append: '</p>'
+                      endif
+                    when 'custom'
+                      echo block.settings.text
+                  endcase
+                endcapture
+              -%}
+              {%- if body != blank -%}
+                <details class="accordion" {{ block.shopify_attributes }}{% if block.settings.open %} open{% endif %}>
+                  <summary>
+                    <span>{{ heading | escape }}{% if hint != blank %}<span class="accordion__hint">{{ hint }}</span>{% endif %}</span>
+                    <span class="accordion__icon" aria-hidden="true"></span>
+                  </summary>
+                  <div class="accordion__content">{{ body }}</div>
+                </details>
+              {%- endif -%}
+
+            {%- when 'text' -%}
+              <div class="rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Sticky add-to-bag: appears once the main button leaves the viewport {%- endcomment -%}
+  <sticky-atc class="sticky-atc" data-target="PdpBuy-{{ section.id }}" hidden>
+    <div class="sticky-atc__inner">
+      <span class="sticky-atc__thumb" aria-hidden="true">
+        {%- if cutout -%}
+          {{ cutout | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '44px', alt: '' }}
+        {%- elsif product.featured_media -%}
+          {{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '44px', alt: '' }}
+        {%- endif -%}
+      </span>
+      <span class="sticky-atc__text">
+        <span class="sticky-atc__title">{{ product.title | escape }}</span>
+        {%- render 'price', product: product, variant: variant, class: 't-small' -%}
+      </span>
+      <button type="submit" form="{{ form_id }}" class="btn btn--small sticky-atc__btn" {% if coming_soon or variant.available == false %}disabled{% endif %}>
+        {%- if coming_soon -%}{{ 'product.coming_soon' | t }}{%- elsif variant.available == false -%}{{ 'product.sold_out' | t }}{%- else -%}{{ 'product.add_to_cart' | t }}{%- endif -%}
+      </button>
+    </div>
+  </sticky-atc>
+</div>
+
+{%- render 'structured-data-product', product: product, description: description -%}
+<script src="{{ 'product.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.main_product.name",
+  "tag": "section",
+  "class": "section-main-product",
+  "blocks": [
+    { "type": "@app" },
+    { "type": "title", "name": "t:sections.main_product.blocks.title", "limit": 1 },
+    { "type": "benefit", "name": "t:sections.main_product.blocks.benefit", "limit": 1 },
+    { "type": "facts", "name": "t:sections.main_product.blocks.facts", "limit": 1 },
+    { "type": "buy", "name": "t:sections.main_product.blocks.buy", "limit": 1 },
+    { "type": "claims", "name": "t:sections.main_product.blocks.claims", "limit": 1 },
+    { "type": "texture", "name": "t:sections.main_product.blocks.texture", "limit": 1 },
+    {
+      "type": "accordion",
+      "name": "t:sections.main_product.blocks.accordion",
+      "settings": [
+        {
+          "type": "select",
+          "id": "content",
+          "label": "t:sections.main_product.accordion_content",
+          "options": [
+            { "value": "what", "label": "What it does (bts.description)" },
+            { "value": "ingredients", "label": "Key ingredients (bts.key_ingredients)" },
+            { "value": "how", "label": "How to use (bts.how_to_use)" },
+            { "value": "who", "label": "Who it's for (bts.skin_type + concerns)" },
+            { "value": "inci", "label": "Full INCI (bts.inci)" },
+            { "value": "caution", "label": "Caution & legal (bts.caution, bts.legal)" },
+            { "value": "custom", "label": "Custom text" }
+          ],
+          "default": "what"
+        },
+        { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" },
+        { "type": "richtext", "id": "text", "label": "t:sections.main_product.custom_text" },
+        { "type": "checkbox", "id": "open", "label": "t:sections.main_product.open", "default": false }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.main_product.blocks.text",
+      "settings": [{ "type": "richtext", "id": "text", "label": "t:general_schema.text" }]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,90 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "preset": "faq",
+        "compact": true
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "qa",
+          "settings": {
+            "preset": "order"
+          }
+        },
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "am_pm"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "reapply"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "preset": "skin_type"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "preset": "inci"
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "preset": "fragrance"
+          }
+        },
+        "q6": {
+          "type": "qa",
+          "settings": {
+            "preset": "climate"
+          }
+        },
+        "q7": {
+          "type": "qa",
+          "settings": {
+            "preset": "made"
+          }
+        },
+        "q8": {
+          "type": "qa",
+          "settings": {
+            "preset": "payment"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6",
+        "q7",
+        "q8"
+      ],
+      "settings": {
+        "compact": false,
+        "show_contact": true,
+        "schema": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "faq"
+  ]
+}

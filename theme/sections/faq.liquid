@@ -1,0 +1,114 @@
+{%- comment -%}
+  FAQ accordion with FAQPage structured data. Blocks use built-in bilingual Q&A (factual, from pack copy)
+  or merchant-written custom Q&A.
+{%- endcomment -%}
+{%- liquid
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'faq.heading' | t
+  endif
+  assign root = routes.root_url
+  if root == '/'
+    assign root = ''
+  endif
+-%}
+<section class="section faq{% if section.settings.compact %} faq--compact{% endif %}" aria-labelledby="FaqTitle-{{ section.id }}">
+  <div class="container faq__inner">
+    <div class="faq__head">
+      <h2 class="{% if section.settings.compact %}t-display-m{% else %}t-display-l{% endif %}" id="FaqTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      {%- if section.settings.show_contact -%}
+        <p class="t-muted">{{ 'pages.faq.contact_cta' | t }} <a href="{{ root }}/pages/contact">{{ 'pages.faq.contact_link' | t }}</a></p>
+      {%- endif -%}
+    </div>
+    <div class="faq__list">
+      {%- capture ld -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign q = block.settings.question
+            assign a = block.settings.answer
+            if block.settings.preset != 'custom'
+              assign qk = 'faq.items.' | append: block.settings.preset | append: '.q'
+              assign ak = 'faq.items.' | append: block.settings.preset | append: '.a'
+              if q == blank
+                assign q = qk | t
+              endif
+              if a == blank
+                assign a = ak | t
+              endif
+            endif
+          -%}
+          {%- if q != blank and a != blank -%}
+            {"@type":"Question","name":{{ q | strip_html | json }},"acceptedAnswer":{"@type":"Answer","text":{{ a | strip_html | json }}}},
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign q = block.settings.question
+          assign a = block.settings.answer
+          if block.settings.preset != 'custom'
+            assign qk = 'faq.items.' | append: block.settings.preset | append: '.q'
+            assign ak = 'faq.items.' | append: block.settings.preset | append: '.a'
+            if q == blank
+              assign q = qk | t
+            endif
+            if a == blank
+              assign a = ak | t
+            endif
+          endif
+        -%}
+        {%- if q != blank and a != blank -%}
+          <details class="accordion" {{ block.shopify_attributes }}>
+            <summary><span>{{ q | escape }}</span><span class="accordion__icon" aria-hidden="true"></span></summary>
+            <div class="accordion__content rte">{{ a }}</div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- assign ld = ld | strip | remove_last: ',' -%}
+  {%- if ld != blank and section.settings.schema -%}
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{ ld }}]}</script>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.faq.name",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" },
+    { "type": "checkbox", "id": "compact", "label": "t:sections.faq.compact", "default": false },
+    { "type": "checkbox", "id": "show_contact", "label": "t:sections.faq.show_contact", "default": true },
+    { "type": "checkbox", "id": "schema", "label": "t:sections.faq.schema", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "t:sections.faq.block",
+      "settings": [
+        {
+          "type": "select",
+          "id": "preset",
+          "label": "t:sections.faq.preset",
+          "options": [
+            { "value": "order", "label": "Routine order" },
+            { "value": "am_pm", "label": "Morning & evening" },
+            { "value": "reapply", "label": "SPF reapplication" },
+            { "value": "inci", "label": "Ingredient lists" },
+            { "value": "skin_type", "label": "Skin types" },
+            { "value": "made", "label": "Where it's made" },
+            { "value": "climate", "label": "What climate-adapted means" },
+            { "value": "fragrance", "label": "Fragrance" },
+            { "value": "payment", "label": "Payment (only if configured)" },
+            { "value": "custom", "label": "Custom" }
+          ],
+          "default": "order"
+        },
+        { "type": "text", "id": "question", "label": "t:sections.faq.question" },
+        { "type": "richtext", "id": "answer", "label": "t:sections.faq.answer" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:sections.faq.name" }]
+}
+{% endschema %}

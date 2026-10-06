@@ -1,0 +1,83 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign entries = shop.metaobjects.bts_ingredient.values
+  assign source = section.settings.collection | default: collections.all
+-%}
+<section class="section glossary" aria-label="{{ 'header.nav.ingredients' | t }}">
+  <div class="container">
+    {%- if entries.size > 0 -%}
+      <ingredient-filter class="glossary__filter js-only">
+        <label class="field">
+          <span class="field__label">{{ 'pages.ingredients.search_label' | t }}</span>
+          <input type="search" placeholder="{{ 'pages.ingredients.search_placeholder' | t }}" data-filter-input autocomplete="off">
+        </label>
+        <p class="t-small t-muted" role="status" data-filter-count data-template="{{ 'pages.ingredients.count' | t: count: '__COUNT__' | escape }}">{{ 'pages.ingredients.count' | t: count: entries.size }}</p>
+      </ingredient-filter>
+      <ul class="glossary__grid" role="list" data-glossary>
+        {%- for entry in entries -%}
+          <li class="glossary__item" data-search="{{ entry.name.value | downcase | escape }} {{ entry.inci.value | downcase | escape }}" id="ing-{{ entry.system.handle | default: entry.handle }}">
+            <div class="ing-tile__dots" aria-hidden="true">
+              {%- for p in entry.products.value -%}
+                {%- capture step -%}{% render 'product-step', product: p %}{%- endcapture -%}
+                <span data-step="{{ step | strip }}"></span>
+              {%- endfor -%}
+            </div>
+            <h2 class="glossary__name">{{ entry.name.value | escape }}</h2>
+            <p class="glossary__inci"><span class="t-muted">{{ 'pages.ingredients.inci_label' | t }}:</span> <span lang="en" dir="ltr">{{ entry.inci.value | escape }}</span></p>
+            <p>{{ entry.role.value | escape }}</p>
+            {%- if entry.products.value.size > 0 -%}
+              <p class="t-small"><span class="t-muted">{{ 'pages.ingredients.in_products' | t }}:</span>
+                {% for p in entry.products.value -%}<a href="{{ p.url }}">{{ p.title | escape }}</a>{% unless forloop.last %}, {% endunless %}{%- endfor %}
+              </p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    <div class="glossary__inci-all">
+      <h2 class="t-display-m">{{ 'pages.ingredients.full_lists' | t }}</h2>
+      <p class="t-muted">{{ 'pages.ingredients.full_lists_text' | t }}</p>
+      {%- for s in (1..4) -%}
+        {%- for p in source.products limit: 12 -%}
+          {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+          {%- assign ps = ps | strip | plus: 0 -%}
+          {%- if ps == s and p.metafields.bts.inci != blank -%}
+            <details class="accordion" data-step="{{ s }}">
+              <summary><span><span class="step-tag">{{ 'product.step' | t: number: s }}</span><br>{{ p.title | escape }}</span><span class="accordion__icon" aria-hidden="true"></span></summary>
+              <div class="accordion__content"><p class="pdp__inci" lang="en" dir="ltr">{{ p.metafields.bts.inci }}</p><a class="link-arrow" href="{{ p.url }}">{{ 'product.view_full' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a></div>
+            </details>
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<script type="module">
+  class IngredientFilter extends HTMLElement {
+    connectedCallback() {
+      const input = this.querySelector('[data-filter-input]');
+      const count = this.querySelector('[data-filter-count]');
+      const items = [...document.querySelectorAll('[data-glossary] > li')];
+      input.addEventListener('input', () => {
+        const q = input.value.trim().toLowerCase();
+        let n = 0;
+        items.forEach((li) => { const m = !q || li.dataset.search.includes(q) || li.textContent.toLowerCase().includes(q); li.hidden = !m; if (m) n++; });
+        count.textContent = count.dataset.template.replace('__COUNT__', n);
+      });
+    }
+  }
+  if (!customElements.get('ingredient-filter')) customElements.define('ingredient-filter', IngredientFilter);
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.glossary.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:sections.ingredients.info" },
+    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" }
+  ],
+  "presets": [{ "name": "t:sections.glossary.name" }]
+}
+{% endschema %}

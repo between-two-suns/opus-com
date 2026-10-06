@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {}
+    },
+    "routine": {
+      "type": "routine-grid",
+      "settings": {
+        "show_bundle": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "routine"
+  ]
+}

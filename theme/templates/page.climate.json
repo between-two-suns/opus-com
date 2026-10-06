@@ -1,0 +1,82 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "preset": "climate"
+      }
+    },
+    "climate": {
+      "type": "climate-conditions",
+      "settings": {}
+    },
+    "story": {
+      "type": "story",
+      "blocks": {
+        "s1": {
+          "type": "row",
+          "settings": {
+            "preset": "not_summer"
+          }
+        },
+        "s2": {
+          "type": "row",
+          "settings": {
+            "preset": "light"
+          }
+        },
+        "s3": {
+          "type": "row",
+          "settings": {
+            "preset": "routine"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {}
+    },
+    "routine": {
+      "type": "routine-grid",
+      "settings": {
+        "show_bundle": true
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "qa",
+          "settings": {
+            "preset": "climate"
+          }
+        },
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "skin_type"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1"
+      ],
+      "settings": {
+        "compact": true,
+        "show_contact": true,
+        "schema": false
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "climate",
+    "story",
+    "routine",
+    "faq"
+  ]
+}
