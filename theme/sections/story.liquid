@@ -2,6 +2,7 @@
 {%- comment -%}
   Editorial story rows (field | seam | field). Each block is a built-in bilingual story preset or custom copy + optional image.
 {%- endcomment -%}
+{%- assign packs = 'pack-reset.webp,pack-clarity.webp,pack-barrier.webp,pack-defense.webp' | split: ',' -%}
 <section class="section story{% if section.settings.dark %} story--dark{% endif %}">
   <div class="container story__list">
     {%- for block in section.blocks -%}
@@ -28,10 +29,45 @@
           {%- if block.settings.image != blank -%}
             {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '(min-width: 990px) 45vw, 92vw', alt: block.settings.image.alt | default: '' }}
           {%- else -%}
-            <span class="story__art" data-variant="{{ forloop.index | modulo: 4 }}" aria-hidden="true">
-              <span class="sun sun--warm"></span><span class="sun sun--cool"></span>
-              <span class="story__num t-display-xl">0{{ forloop.index }}</span>
-            </span>
+            {%- liquid
+              assign visual = block.settings.visual | default: 'auto'
+              if visual == 'auto'
+                case p
+                  when 'routine'
+                    assign visual = 'lineup'
+                  when 'transparent'
+                    assign visual = 'step2'
+                  when 'not_summer'
+                    assign visual = 'step4'
+                  when 'light'
+                    assign visual = 'step3'
+                  else
+                    assign visual = 'number'
+                endcase
+              endif
+            -%}
+            {%- if visual == 'number' -%}
+              <span class="story__art" data-variant="{{ forloop.index | modulo: 4 }}" aria-hidden="true">
+                <span class="sun sun--warm"></span><span class="sun sun--cool"></span>
+                <span class="story__num t-display-xl">0{{ forloop.index }}</span>
+              </span>
+            {%- elsif visual == 'lineup' -%}
+              <span class="story__art story__art--lineup" aria-hidden="true">
+                <span class="sun sun--warm"></span><span class="sun sun--cool"></span>
+                <span class="story__packs">
+                  {%- for pack in packs -%}
+                    <img class="story__pack" data-step="{{ forloop.index }}" src="{{ pack | asset_url }}" alt="" width="290" height="900" loading="lazy" decoding="async">
+                  {%- endfor -%}
+                </span>
+              </span>
+            {%- else -%}
+              {%- assign s = visual | remove: 'step' | plus: 0 -%}
+              {%- assign pack_index = s | minus: 1 -%}
+              <span class="story__art story__art--single" data-step="{{ s }}" aria-hidden="true">
+                <span class="story__glow"></span>
+                <img class="story__pack" src="{{ packs[pack_index] | asset_url }}" alt="" width="290" height="900" loading="lazy" decoding="async">
+              </span>
+            {%- endif -%}
           {%- endif -%}
         </div>
         <div class="story__text">
@@ -76,6 +112,22 @@
         { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" },
         { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
         { "type": "image_picker", "id": "image", "label": "t:sections.story.image" },
+        {
+          "type": "select",
+          "id": "visual",
+          "label": "t:sections.story.visual",
+          "info": "t:sections.story.visual_info",
+          "options": [
+            { "value": "auto", "label": "t:sections.story.visual_auto" },
+            { "value": "number", "label": "t:sections.story.visual_number" },
+            { "value": "lineup", "label": "t:sections.story.visual_lineup" },
+            { "value": "step1", "label": "01 Reset" },
+            { "value": "step2", "label": "02 Clarity" },
+            { "value": "step3", "label": "03 Barrier" },
+            { "value": "step4", "label": "04 Defense" }
+          ],
+          "default": "auto"
+        },
         { "type": "text", "id": "link_label", "label": "t:sections.story.link_label" },
         { "type": "url", "id": "link", "label": "t:sections.story.link" }
       ]

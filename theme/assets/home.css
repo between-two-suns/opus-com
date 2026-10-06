@@ -16,9 +16,8 @@
 [dir='rtl'] .hero { --dir: -1; }
 :lang(ar) .hero { --hero-font: clamp(50px, min(15vw, 14svh), 150px); }
 @media (min-width: 990px) {
-  .hero { min-block-size: calc(100svh - var(--header-h) - 36px); --hero-font: clamp(96px, min(13vw, 15.5svh), 200px); }
-  .hero__products { block-size: clamp(300px, 38svh, 460px); }
-  :lang(ar) .hero { --hero-font: clamp(80px, min(10vw, 12svh), 150px); }
+  .hero { min-block-size: calc(100svh - var(--header-h) - 36px); --hero-font: clamp(88px, min(13vw, 14.5svh), 200px); }
+  :lang(ar) .hero { --hero-font: clamp(72px, min(10vw, 11.2svh), 150px); }
 }
 
 .hero__warm-wash {
@@ -38,12 +37,13 @@
   translate: calc(var(--p) * -9vw * var(--dir)) 0;
 }
 .hero__line--b { translate: calc(var(--p) * 9vw * var(--dir)) 0; z-index: 3; }
+:lang(ar) .hero__line { font-size: var(--hero-font); line-height: 1.15; }
 
 .hero__products {
   list-style: none; margin: 0; padding: 0; position: relative; z-index: 2;
   display: flex; align-items: flex-end; justify-content: center;
   gap: clamp(2px, 1.2vw, 22px);
-  block-size: clamp(220px, min(54vw, 37svh), 440px);
+  block-size: clamp(220px, min(54vw, 34svh), 440px);
   margin-block: calc(var(--hero-font) * -0.08) calc(var(--hero-font) * -0.04);
 }
 .hero__product { --scale: 1; block-size: calc(100% * var(--scale)); position: relative; translate: calc(var(--p) * (var(--i) - 2.5) * 3.2vw * var(--dir)) calc(var(--p) * var(--i) * -1.2vh); }

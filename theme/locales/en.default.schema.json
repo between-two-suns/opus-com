@@ -173,7 +173,12 @@
       "link_label": "Link label",
       "name": "Story rows",
       "preset": "Preset",
-      "row": "Row"
+      "row": "Row",
+      "visual": "Visual (when no image)",
+      "visual_info": "Automatic uses the real packshots where the story is about a product.",
+      "visual_auto": "Automatic",
+      "visual_number": "Number on gradient",
+      "visual_lineup": "All four packs"
     },
     "ticker": {
       "items": "Items",

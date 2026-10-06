@@ -61,6 +61,8 @@ Expect Shopify TTFB and `content_for_header` scripts (analytics, Shop Pay) to co
 | 18 | FAQ section on Climate/Contact pages had no layout (rules lived in `product.css`, which content pages don't load); heading collided with its subline | FAQ rules moved to `base.css` |
 | 19 | Product cards: "Add to bag" buttons at uneven heights when titles/benefits wrapped (notably Arabic) | Card body is a flex column with price row pushed to the bottom; all product grids stretch cards (verified: equal button tops on home, climate, collection, EN/AR, 390/1440) |
 | 20 | Glossary covered only 9 key ingredients; 46 INCI names had no explanation | Full A–Z dictionary (55), PDP INCI names deep-link to entries; verified: filter (Clarity Serum → 15), deep link lands below header/filter at 390 and 1440, EN + AR; mobile filter made non-sticky after it hid the target row |
+| 21 | Arabic desktop hero: headline rendered at 168 px (generic `:lang(ar) .t-display-xl` outranked `.hero__line`), pushing the CTAs ~145 px below the fold at 1440×900; desktop product-stage height rule was dead (overridden by a later base rule) | Hero lines use the fold-aware `--hero-font` in AR; stage height folded into the base rule. Measured CTA bottoms EN/AR: 854/900 (1440×900), 784/800 (1280×800), 990/1080 (1920×1080), 684/844 (390×844) |
+| 22 | Arabic page-hero headings (scan, collection, about): dots and descenders overlapped the subtitle | AR display leading 1.18 → 1.32, extra 0.14em under AR page-hero headings |
 
 ## Not yet verified
 - Real Shopify rendering of staging theme `167112540418` (sandbox can't reach the storefront).

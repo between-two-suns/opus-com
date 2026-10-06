@@ -22,6 +22,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 - PDP (metafield-driven, all 4 products): gallery with studio cutout slide, step tag, pack pill, benefit, price/ATC, facts, claims, texture, 6 collapsed sections (what / ingredients / how / who / INCI / caution + legal), sticky ATC, routine position + complete-the-routine, FAQ, Product + Breadcrumb JSON-LD
 - Collection with concern filter; search + predictive search; cart drawer (routine progress + missing-step upsell) + cart page
 - **Ingredient glossary:** key ingredients + **every ingredient A–Z (all 55 INCI names)** with function, plain-language role (EN/AR), products, search + per-product filter; every INCI name on PDPs links to its entry
+- Story rows (About, Climate) use the real packshots where the story is about a product (editor setting "Visual")
 - Pages: routines (forecast + AM/PM routines), ingredient glossary, climate, about, FAQ (FAQPage schema), contact, **/pages/scan** (QR landing, `?p=<handle>` deep link), shipping/returns placeholders, journal + article, 404, password, gift card, customer accounts
 - EN + AR locales (natural MSA, gender-neutral), full RTL via logical properties, Arabic typography rules
 - Store: 23 `bts.*` metafield defs + values, `bts_ingredient` metaobject (9 key), `bts_inci` metaobject (55, EN + AR), pages, blog, Arabic translations (unpublished language)
@@ -46,21 +47,21 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 |---|---|---|
 | Brand fidelity | 8.5 | Exact logo/colours/pack copy; packshots are older label versions; fonts not brand-licensed |
 | Visual originality | 8.0 | Strong concept; several sections are conventional by design |
-| Art direction | 7.0 | No real photography, texture or film: gradients + renders carry everything |
+| Art direction | 7.3 | Real packshots now carry the story rows; still no photography, texture or film |
 | Typography | 8.5 | Strong EN/AR system; Antonio is a stand-in for the pack face |
 | Layout / composition | 8.0 | Hero and forecast strong; content pages simpler |
 | Motion / interaction | 7.5 | Two purposeful signatures; hero parting is subtle; no texture media |
 | Mobile design | 8.5 | First-screen buy box, thumb-friendly, no overflow |
-| Product discovery | 8.5 | Concerns, routine grid, forecast, glossary, search |
+| Product discovery | 8.8 | Concerns, routine grid, forecast, full 55-ingredient dictionary linked from every PDP, search |
 | PDP conversion | 8.0 | No prices, reviews or texture media yet |
 | Cart / conversion UX | 8.5 | Fast drawer, routine upsell, honest totals; checkout config pending |
 | English experience | 8.5 | — |
-| Arabic / RTL experience | 8.0 | Complete and mirrored; needs native review + real-store check |
+| Arabic / RTL experience | 8.4 | Complete, mirrored, hero fits the fold, display leading tuned; needs native review + real-store check |
 | Performance | 9.0 | Lab 98–99 locally; unverified on Shopify |
 | Accessibility | 9.0 | axe 0, keyboard flows; no screen-reader device pass yet |
 | Technical quality | 8.5 | Theme Check 0, tests; harness ≠ real Shopify |
 | Merchant maintainability | 8.5 | Metafields, blocks, bilingual fallbacks, editor labels |
-| **Overall award potential** | **7.0** | Needs art direction assets (photo/film/texture) and real-store polish |
+| **Overall award potential** | **7.2** | Needs art direction assets (photo/film/texture) and real-store polish |
 | **Overall commercial effectiveness** | **7.5** | Blocked on prices, payments/shipping config, reviews |
 
 ## Next five actions

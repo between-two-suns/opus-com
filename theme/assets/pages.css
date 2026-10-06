@@ -7,6 +7,8 @@
 .page-hero__inner { position: relative; z-index: 1; display: grid; gap: 16px; justify-items: start; padding-block: clamp(48px, 8vw, 120px) clamp(40px, 6vw, 88px); }
 .page-hero--compact .page-hero__inner { padding-block: clamp(36px, 5vw, 72px) clamp(28px, 4vw, 56px); }
 .page-hero__text { max-inline-size: 640px; }
+/* Alexandria's dots and descenders sit well below the baseline at display sizes. */
+:lang(ar) .page-hero h1 { padding-block-end: 0.14em; }
 .page-hero__sun-a { --sun-size: 70vmax; inset-block-start: -40vmax; inset-inline-start: -30vmax; }
 .page-hero__sun-b { --sun-size: 60vmax; inset-block-end: -40vmax; inset-inline-end: -26vmax; }
 
@@ -24,6 +26,18 @@
 .story__art[data-variant='3'] { background: var(--c-ink); }
 .story__num { position: relative; z-index: 1; color: rgba(18, 19, 24, 0.9); font-size: clamp(96px, 14vw, 200px); }
 .story__art[data-variant='3'] .story__num { color: #fff; }
+.story__art--lineup, .story__art--single { display: flex; align-items: center; justify-content: center; }
+.story__art--lineup { background: linear-gradient(170deg, #fff4ea, #eef5f5); }
+.story__packs { position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: center; gap: clamp(4px, 1.4vw, 18px); block-size: 72%; }
+.story__media .story__pack { object-fit: contain; max-inline-size: none; }
+.story__media .story__packs .story__pack { block-size: 100%; inline-size: auto; filter: drop-shadow(0 16px 18px rgba(18, 19, 24, 0.16)); }
+.story__media .story__packs .story__pack[data-step='2'] { block-size: 74%; }
+.story__media .story__packs .story__pack[data-step='3'], .story__media .story__packs .story__pack[data-step='4'] { block-size: 83%; }
+.story__art--single { background: var(--sku-tint, var(--c-paper)); }
+.story__glow { position: absolute; inset: 12% 18%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--sku) 60%, transparent), transparent); }
+.story__media .story__art--single .story__pack { position: relative; z-index: 1; block-size: 78%; inline-size: auto; filter: drop-shadow(0 20px 22px rgba(18, 19, 24, 0.18)); transition: transform var(--dur-slow) var(--ease-out); }
+.story__row:hover .story__art--single .story__pack { transform: translateY(-6px) rotate(-1.5deg); }
+@media (prefers-reduced-motion: reduce) { .story__row:hover .story__art--single .story__pack { transform: none; } }
 .story__text { display: grid; gap: 16px; justify-items: start; max-inline-size: 560px; }
 @media (min-width: 990px) {
   .story__row { grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 96px); }

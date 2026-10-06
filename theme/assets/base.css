@@ -129,7 +129,7 @@ main:focus { outline: none; }
 
 :lang(ar) .t-display, :lang(ar) .t-display-xl, :lang(ar) .t-display-l, :lang(ar) .t-display-m, :lang(ar) .t-display-s {
   text-transform: none;
-  line-height: 1.18;
+  line-height: 1.32;
   font-weight: 800;
 }
 :lang(ar) .t-display-xl { font-size: clamp(48px, 12vw, 168px); }
