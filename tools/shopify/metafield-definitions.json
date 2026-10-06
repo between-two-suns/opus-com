@@ -1,0 +1,277 @@
+{
+ "query": "mutation defs($d0: MetafieldDefinitionInput!, $d1: MetafieldDefinitionInput!, $d2: MetafieldDefinitionInput!, $d3: MetafieldDefinitionInput!, $d4: MetafieldDefinitionInput!, $d5: MetafieldDefinitionInput!, $d6: MetafieldDefinitionInput!, $d7: MetafieldDefinitionInput!, $d8: MetafieldDefinitionInput!, $d9: MetafieldDefinitionInput!, $d10: MetafieldDefinitionInput!, $d11: MetafieldDefinitionInput!, $d12: MetafieldDefinitionInput!, $d13: MetafieldDefinitionInput!, $d14: MetafieldDefinitionInput!, $d15: MetafieldDefinitionInput!, $d16: MetafieldDefinitionInput!, $d17: MetafieldDefinitionInput!, $d18: MetafieldDefinitionInput!, $d19: MetafieldDefinitionInput!, $d20: MetafieldDefinitionInput!, $d21: MetafieldDefinitionInput!, $d22: MetafieldDefinitionInput!) { d0: metafieldDefinitionCreate(definition: $d0) { createdDefinition { id key } userErrors { field message code } } d1: metafieldDefinitionCreate(definition: $d1) { createdDefinition { id key } userErrors { field message code } } d2: metafieldDefinitionCreate(definition: $d2) { createdDefinition { id key } userErrors { field message code } } d3: metafieldDefinitionCreate(definition: $d3) { createdDefinition { id key } userErrors { field message code } } d4: metafieldDefinitionCreate(definition: $d4) { createdDefinition { id key } userErrors { field message code } } d5: metafieldDefinitionCreate(definition: $d5) { createdDefinition { id key } userErrors { field message code } } d6: metafieldDefinitionCreate(definition: $d6) { createdDefinition { id key } userErrors { field message code } } d7: metafieldDefinitionCreate(definition: $d7) { createdDefinition { id key } userErrors { field message code } } d8: metafieldDefinitionCreate(definition: $d8) { createdDefinition { id key } userErrors { field message code } } d9: metafieldDefinitionCreate(definition: $d9) { createdDefinition { id key } userErrors { field message code } } d10: metafieldDefinitionCreate(definition: $d10) { createdDefinition { id key } userErrors { field message code } } d11: metafieldDefinitionCreate(definition: $d11) { createdDefinition { id key } userErrors { field message code } } d12: metafieldDefinitionCreate(definition: $d12) { createdDefinition { id key } userErrors { field message code } } d13: metafieldDefinitionCreate(definition: $d13) { createdDefinition { id key } userErrors { field message code } } d14: metafieldDefinitionCreate(definition: $d14) { createdDefinition { id key } userErrors { field message code } } d15: metafieldDefinitionCreate(definition: $d15) { createdDefinition { id key } userErrors { field message code } } d16: metafieldDefinitionCreate(definition: $d16) { createdDefinition { id key } userErrors { field message code } } d17: metafieldDefinitionCreate(definition: $d17) { createdDefinition { id key } userErrors { field message code } } d18: metafieldDefinitionCreate(definition: $d18) { createdDefinition { id key } userErrors { field message code } } d19: metafieldDefinitionCreate(definition: $d19) { createdDefinition { id key } userErrors { field message code } } d20: metafieldDefinitionCreate(definition: $d20) { createdDefinition { id key } userErrors { field message code } } d21: metafieldDefinitionCreate(definition: $d21) { createdDefinition { id key } userErrors { field message code } } d22: metafieldDefinitionCreate(definition: $d22) { createdDefinition { id key } userErrors { field message code } } }",
+ "variables": {
+  "d0": {
+   "name": "Routine step (1–4)",
+   "namespace": "bts",
+   "key": "step",
+   "type": "number_integer",
+   "ownerType": "PRODUCT",
+   "validations": [
+    {
+     "name": "min",
+     "value": "1"
+    },
+    {
+     "name": "max",
+     "value": "4"
+    }
+   ],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d1": {
+   "name": "Step label (Reset / Clarity / Barrier / Defense)",
+   "namespace": "bts",
+   "key": "step_label",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d2": {
+   "name": "Benefit line (from pack)",
+   "namespace": "bts",
+   "key": "benefit",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d3": {
+   "name": "Hero ingredients pill (from pack)",
+   "namespace": "bts",
+   "key": "hero_ingredients",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d4": {
+   "name": "Skin type (from pack)",
+   "namespace": "bts",
+   "key": "skin_type",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d5": {
+   "name": "Size (e.g. 200 mL)",
+   "namespace": "bts",
+   "key": "size",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d6": {
+   "name": "When to use (AM + PM)",
+   "namespace": "bts",
+   "key": "when_to_use",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d7": {
+   "name": "Pack claims (pills)",
+   "namespace": "bts",
+   "key": "badges",
+   "type": "list.single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d8": {
+   "name": "Pack feature icons",
+   "namespace": "bts",
+   "key": "features",
+   "type": "list.single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d9": {
+   "name": "Texture",
+   "namespace": "bts",
+   "key": "texture",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d10": {
+   "name": "What it does (pack description)",
+   "namespace": "bts",
+   "key": "description",
+   "type": "multi_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d11": {
+   "name": "How to use (pack directions)",
+   "namespace": "bts",
+   "key": "how_to_use",
+   "type": "multi_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d12": {
+   "name": "Full INCI (exactly as printed)",
+   "namespace": "bts",
+   "key": "inci",
+   "type": "multi_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d13": {
+   "name": "Caution (from pack)",
+   "namespace": "bts",
+   "key": "caution",
+   "type": "multi_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d14": {
+   "name": "Manufacturer & EDA notification",
+   "namespace": "bts",
+   "key": "legal",
+   "type": "multi_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d15": {
+   "name": "Concern ids (oiliness, dark_spots, dehydration, barrier, sun, pollution)",
+   "namespace": "bts",
+   "key": "concerns",
+   "type": "list.single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d16": {
+   "name": "Key ingredients",
+   "namespace": "bts",
+   "key": "key_ingredients",
+   "type": "list.metaobject_reference",
+   "ownerType": "PRODUCT",
+   "validations": [
+    {
+     "name": "metaobject_definition_id",
+     "value": "gid://shopify/MetaobjectDefinition/29047161090"
+    }
+   ],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d17": {
+   "name": "Transparent cutout image",
+   "namespace": "bts",
+   "key": "cutout",
+   "type": "file_reference",
+   "ownerType": "PRODUCT",
+   "validations": [
+    {
+     "name": "file_type_options",
+     "value": "[\"Image\"]"
+    }
+   ],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d18": {
+   "name": "Forecast reason — Sun",
+   "namespace": "bts",
+   "key": "forecast_sun",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d19": {
+   "name": "Forecast reason — City & dust",
+   "namespace": "bts",
+   "key": "forecast_city",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d20": {
+   "name": "Forecast reason — Humidity",
+   "namespace": "bts",
+   "key": "forecast_humidity",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d21": {
+   "name": "Forecast reason — Air-con",
+   "namespace": "bts",
+   "key": "forecast_ac",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  },
+  "d22": {
+   "name": "Forecast reason — Heat",
+   "namespace": "bts",
+   "key": "forecast_heat",
+   "type": "single_line_text_field",
+   "ownerType": "PRODUCT",
+   "validations": [],
+   "access": {
+    "storefront": "PUBLIC_READ"
+   }
+  }
+ }
+}

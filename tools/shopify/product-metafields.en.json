@@ -1,0 +1,640 @@
+{
+ "daily-reset-cleanser": [
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "step",
+   "type": "number_integer",
+   "value": "1"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "step_label",
+   "type": "single_line_text_field",
+   "value": "Reset"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "benefit",
+   "type": "single_line_text_field",
+   "value": "Removes oil. Maintains hydration. Feels fresh."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "hero_ingredients",
+   "type": "single_line_text_field",
+   "value": "Zinc PCA + Centella"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "size",
+   "type": "single_line_text_field",
+   "value": "200 mL"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "when_to_use",
+   "type": "single_line_text_field",
+   "value": "AM + PM"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "features",
+   "type": "list.single_line_text_field",
+   "value": "[\"Gel texture\", \"Climate adapted\", \"Soothes skin\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "texture",
+   "type": "single_line_text_field",
+   "value": "Gel texture"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "description",
+   "type": "multi_line_text_field",
+   "value": "A daily gel cleanser with Zinc PCA, Panthenol and Centella. Removes excess oil and environmental buildup without stripping, while hydrating and leaving skin fresh and comfortable."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "how_to_use",
+   "type": "multi_line_text_field",
+   "value": "Apply 1–2 pumps to wet skin, morning and night. Gently massage over the face, then rinse. Follow with serum."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "inci",
+   "type": "multi_line_text_field",
+   "value": "Aqua, Disodium Lauryl Sulfosuccinate, Cocamidopropyl Betaine, Coco-Glucoside, Glycerin, Lauryl Glucoside, Propylene Glycol, PEG-120 Methyl Glucose Dioleate, Phenoxyethanol, PEG-7 Glyceryl Cocoate, Panthenol, Poloxamer 184, Polyquaternium-10, Aloe Barbadensis Leaf Extract, Centella Asiatica Extract, Sodium PCA, Zinc PCA, Ethylhexylglycerin, EDTA, Allantoin, Glycyrrhiza Glabra Root Extract, Citric Acid."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "caution",
+   "type": "multi_line_text_field",
+   "value": "For external use only. Avoid contact with eyes. Keep out of reach of children. Store in a cool, dry place."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "legal",
+   "type": "multi_line_text_field",
+   "value": "Cosmetic product. Manufactured by Integrated Cosmetics Industries for Nuu Group For Cosmetics. Made in Egypt. EDA notification no: COSMTOL26130966."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "concerns",
+   "type": "list.single_line_text_field",
+   "value": "[\"oiliness\", \"dehydration\", \"pollution\", \"barrier\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "key_ingredients",
+   "type": "list.metaobject_reference",
+   "value": "[\"gid://shopify/Metaobject/326932660482\", \"gid://shopify/Metaobject/326932726018\", \"gid://shopify/Metaobject/326932693250\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "cutout",
+   "type": "file_reference",
+   "value": "gid://shopify/MediaImage/46435014017282"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "skin_type",
+   "type": "single_line_text_field",
+   "value": "For oily to combination skin"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "badges",
+   "type": "list.single_line_text_field",
+   "value": "[\"Non-stripping\", \"Soap-free\", \"Non-comedogenic\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "forecast_sun",
+   "type": "single_line_text_field",
+   "value": "Clears sweat and oil before your SPF goes on."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "forecast_city",
+   "type": "single_line_text_field",
+   "value": "Removes excess oil and environmental buildup without stripping."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "forecast_humidity",
+   "type": "single_line_text_field",
+   "value": "Removes oil. Feels fresh."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "forecast_ac",
+   "type": "single_line_text_field",
+   "value": "Cleans while maintaining hydration."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328888049922",
+   "namespace": "bts",
+   "key": "forecast_heat",
+   "type": "single_line_text_field",
+   "value": "Soap-free gel that leaves skin fresh and comfortable."
+  }
+ ],
+ "clarity-serum": [
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "step",
+   "type": "number_integer",
+   "value": "2"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "step_label",
+   "type": "single_line_text_field",
+   "value": "Clarity"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "benefit",
+   "type": "single_line_text_field",
+   "value": "Controls oil. Evens skin tone. Hydrates."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "hero_ingredients",
+   "type": "single_line_text_field",
+   "value": "Niacinamide + Tranexamic Acid"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "size",
+   "type": "single_line_text_field",
+   "value": "30 mL"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "when_to_use",
+   "type": "single_line_text_field",
+   "value": "AM + PM"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "features",
+   "type": "list.single_line_text_field",
+   "value": "[\"Lightweight texture\", \"Climate adapted\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "texture",
+   "type": "single_line_text_field",
+   "value": "Lightweight serum"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "description",
+   "type": "multi_line_text_field",
+   "value": "A daily serum with Niacinamide, Tranexamic Acid and Hyaluronic Acid. Helps even skin tone and helps reduce the appearance of dark spots while controlling excess oil and hydrating skin."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "how_to_use",
+   "type": "multi_line_text_field",
+   "value": "Apply a few drops to cleansed face and neck, morning and night. Gently smooth until absorbed. Follow with moisturizer."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "inci",
+   "type": "multi_line_text_field",
+   "value": "Aqua, Niacinamide, Glycerin, Tranexamic Acid, Propylene Glycol, Phenoxyethanol, Panthenol, Xylitylglucoside, Anhydroxylitol, Xylitol, Sodium Hyaluronate, Ammonium Acryloyldimethyltaurate/VP Copolymer, Ethylhexylglycerin, EDTA, Allantoin."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "caution",
+   "type": "multi_line_text_field",
+   "value": "For external use only. Avoid contact with eyes. Keep out of reach of children. Store in a cool, dry place."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "legal",
+   "type": "multi_line_text_field",
+   "value": "Manufactured by Integrated Cosmetics Industries for Nuu Group For Cosmetics. Made in Egypt."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "concerns",
+   "type": "list.single_line_text_field",
+   "value": "[\"dark_spots\", \"oiliness\", \"dehydration\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "key_ingredients",
+   "type": "list.metaobject_reference",
+   "value": "[\"gid://shopify/Metaobject/326932758786\", \"gid://shopify/Metaobject/326932791554\", \"gid://shopify/Metaobject/326932824322\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "cutout",
+   "type": "file_reference",
+   "value": "gid://shopify/MediaImage/46435020538114"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "forecast_sun",
+   "type": "single_line_text_field",
+   "value": "Helps reduce the appearance of dark spots — pair with SPF every morning."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "forecast_city",
+   "type": "single_line_text_field",
+   "value": "Helps even skin tone."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "forecast_humidity",
+   "type": "single_line_text_field",
+   "value": "Controls excess oil."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "forecast_ac",
+   "type": "single_line_text_field",
+   "value": "Hyaluronic Acid keeps skin hydrated."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890212610",
+   "namespace": "bts",
+   "key": "forecast_heat",
+   "type": "single_line_text_field",
+   "value": "Controls excess oil while hydrating."
+  }
+ ],
+ "daily-barrier-moisturizing-cream": [
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "step",
+   "type": "number_integer",
+   "value": "3"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "step_label",
+   "type": "single_line_text_field",
+   "value": "Barrier"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "benefit",
+   "type": "single_line_text_field",
+   "value": "Strengthens skin barrier. Controls oil. Lightweight."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "hero_ingredients",
+   "type": "single_line_text_field",
+   "value": "Ceramides + Zinc PCA"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "size",
+   "type": "single_line_text_field",
+   "value": "50 g"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "when_to_use",
+   "type": "single_line_text_field",
+   "value": "AM + PM"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "features",
+   "type": "list.single_line_text_field",
+   "value": "[\"Lightweight texture\", \"Climate adapted\", \"Barrier support\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "texture",
+   "type": "single_line_text_field",
+   "value": "Lightweight cream"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "description",
+   "type": "multi_line_text_field",
+   "value": "A daily moisturizer with Ceramides, Niacinamide and Zinc PCA. Hydrates without heaviness, controls oil, and strengthens the skin barrier — protecting against environmental stress."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "how_to_use",
+   "type": "multi_line_text_field",
+   "value": "Apply 1–2 pumps to clean, dry skin, morning and night. Use after serum. Follow with sunscreen in the morning."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "inci",
+   "type": "multi_line_text_field",
+   "value": "Aqua, Glycerin, Niacinamide, Propylene Glycol, Caprylic/Capric Triglyceride, Glyceryl Stearate, PEG-100 Stearate, Cetearyl Alcohol, Isohexadecane, Squalane, Dimethicone, Panthenol, Phenoxyethanol, Ammonium Acryloyldimethyltaurate/VP Copolymer, Zinc PCA, Sodium Hyaluronate, Sodium PCA, Ceramide NP, Ceramide AP, Ceramide EOP, Phytosphingosine, Sodium Lauroyl Lactylate, Ethylhexylglycerin, Cholesterol, Carbomer, Disodium EDTA, Xanthan Gum."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "caution",
+   "type": "multi_line_text_field",
+   "value": "For external use only. Avoid contact with eyes. Keep out of reach of children. Store in a cool, dry place."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "legal",
+   "type": "multi_line_text_field",
+   "value": "Manufactured by Integrated Cosmetics Industries for Nuu Group For Cosmetics. Made in Egypt. EDA notification no: COSMTOL26129668."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "concerns",
+   "type": "list.single_line_text_field",
+   "value": "[\"barrier\", \"oiliness\", \"dehydration\", \"pollution\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "key_ingredients",
+   "type": "list.metaobject_reference",
+   "value": "[\"gid://shopify/Metaobject/326932857090\", \"gid://shopify/Metaobject/326932758786\", \"gid://shopify/Metaobject/326932660482\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "cutout",
+   "type": "file_reference",
+   "value": "gid://shopify/MediaImage/46435022733570"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "skin_type",
+   "type": "single_line_text_field",
+   "value": "For oily to combination skin"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "badges",
+   "type": "list.single_line_text_field",
+   "value": "[\"Oil-control\", \"Non-comedogenic\", \"Fragrance-free\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "forecast_sun",
+   "type": "single_line_text_field",
+   "value": "Hydrates without heaviness under SPF."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "forecast_city",
+   "type": "single_line_text_field",
+   "value": "Strengthens the skin barrier against environmental stress."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "forecast_humidity",
+   "type": "single_line_text_field",
+   "value": "Lightweight. Controls oil."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "forecast_ac",
+   "type": "single_line_text_field",
+   "value": "Ceramides support a barrier that dry, cooled air works against."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890343682",
+   "namespace": "bts",
+   "key": "forecast_heat",
+   "type": "single_line_text_field",
+   "value": "Hydrates without heaviness."
+  }
+ ],
+ "daily-defense-sunscreen-spf-50": [
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "step",
+   "type": "number_integer",
+   "value": "4"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "step_label",
+   "type": "single_line_text_field",
+   "value": "Defense"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "benefit",
+   "type": "single_line_text_field",
+   "value": "Invisible. Lightweight. Fast-absorbing."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "hero_ingredients",
+   "type": "single_line_text_field",
+   "value": "UVA + UVB Filters"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "size",
+   "type": "single_line_text_field",
+   "value": "50 g"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "when_to_use",
+   "type": "single_line_text_field",
+   "value": "AM — reapply every 2 hours"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "features",
+   "type": "list.single_line_text_field",
+   "value": "[\"Silky texture\", \"Climate adapted\", \"UV protection\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "texture",
+   "type": "single_line_text_field",
+   "value": "Silky, fast-absorbing"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "description",
+   "type": "multi_line_text_field",
+   "value": "A daily SPF 50 sunscreen with Niacinamide, Panthenol and Bisabolol. Provides broad-spectrum UVA/UVB protection in a lightweight, fast-absorbing formula with no white cast."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "how_to_use",
+   "type": "multi_line_text_field",
+   "value": "Apply evenly to face and neck every morning as the last step in your routine. Reapply every 2 hours."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "inci",
+   "type": "multi_line_text_field",
+   "value": "Aqua, C12-15 Alkyl Benzoate, Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine, Ethylhexyl Methoxycinnamate, Ethylhexyl Salicylate, Bis-PEG/PPG-16/16 PEG/PPG-16/16 Dimethicone, Propylene Glycol, Glycerin, Methyl Methacrylate Crosspolymer, Niacinamide, Cetearyl Alcohol, Ammonium Acryloyldimethyltaurate/VP Copolymer, Caprylic/Capric Triglyceride, Caprylyl Methicone, Dimethicone, Phenoxyethanol, Panthenol, Bisabolol, Aloe Barbadensis Leaf Extract, Tocopheryl Acetate, Triethanolamine, Ethylhexylglycerin, EDTA."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "caution",
+   "type": "multi_line_text_field",
+   "value": "For external use only. Avoid contact with eyes. Keep out of reach of children. Store in a cool, dry place."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "legal",
+   "type": "multi_line_text_field",
+   "value": "Manufactured by Integrated Cosmetics Industries for Nuu Group For Cosmetics. Made in Egypt."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "concerns",
+   "type": "list.single_line_text_field",
+   "value": "[\"sun\", \"dehydration\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "key_ingredients",
+   "type": "list.metaobject_reference",
+   "value": "[\"gid://shopify/Metaobject/326932922626\", \"gid://shopify/Metaobject/326932758786\", \"gid://shopify/Metaobject/326932726018\", \"gid://shopify/Metaobject/326932889858\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "cutout",
+   "type": "file_reference",
+   "value": "gid://shopify/MediaImage/46435026206978"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "skin_type",
+   "type": "single_line_text_field",
+   "value": "For all skin types"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "badges",
+   "type": "list.single_line_text_field",
+   "value": "[\"Hydrating\", \"No white cast\", \"Non-greasy\"]"
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "forecast_sun",
+   "type": "single_line_text_field",
+   "value": "Broad-spectrum UVA/UVB protection. Reapply every 2 hours."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "forecast_city",
+   "type": "single_line_text_field",
+   "value": "Daily SPF 50 — the last step, every morning."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "forecast_humidity",
+   "type": "single_line_text_field",
+   "value": "Lightweight and non-greasy."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "forecast_ac",
+   "type": "single_line_text_field",
+   "value": "Hydrating SPF — UV still reaches you through windows."
+  },
+  {
+   "ownerId": "gid://shopify/Product/10328890507522",
+   "namespace": "bts",
+   "key": "forecast_heat",
+   "type": "single_line_text_field",
+   "value": "Fast-absorbing, no white cast."
+  }
+ ]
+}
