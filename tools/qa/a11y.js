@@ -2,7 +2,7 @@
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
 const BASE = process.env.BASE || 'http://localhost:4321';
-const routes = ['/', '/collections/all', '/products/daily-reset-cleanser', '/pages/routines', '/pages/ingredients', '/pages/climate', '/pages/about', '/pages/faq', '/pages/contact', '/pages/scan', '/search?q=spf', '/cart', '/blogs/journal', '/blogs/journal/how-to-layer-a-four-step-routine', '/nope'];
+const routes = ['/', '/collections/all', '/products/daily-reset-cleanser', '/pages/routines', '/pages/sets', '/pages/ingredients', '/pages/climate', '/pages/about', '/pages/faq', '/pages/contact', '/pages/scan', '/search?q=spf', '/cart', '/blogs/journal', '/blogs/journal/how-to-layer-a-four-step-routine', '/nope'];
 const browser = await chromium.launch();
 let total = 0;
 const summary = {};

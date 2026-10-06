@@ -189,6 +189,18 @@
       "name": "Product label",
       "show": "Show label artwork",
       "show_info": "Shows the printed label for the product's routine step. Turn off if the artwork doesn't match the pack being sold."
+    },
+    "bundles": {
+      "name": "Bundles (sets)",
+      "info": "Each set adds its products to the bag at their normal prices. Savings show only when a mix & match tier is set in Theme settings → Offers & bundles.",
+      "set": "Set",
+      "preset": "Set",
+      "steps": "Steps in this set",
+      "steps_info": "Routine step numbers, comma-separated, e.g. 1,2,4",
+      "set_name": "Name"
+    },
+    "builder": {
+      "name": "Build your routine"
     }
   },
   "settings_schema": {
@@ -238,6 +250,17 @@
     },
     "social": {
       "name": "Name"
+    },
+    "offers": {
+      "name": "Offers & bundles",
+      "intro": "Savings shown on the site must match real Shopify discounts. Create an automatic discount (Discounts → Amount off products, minimum quantity of items) for each tier you turn on, with the same percentage. Leave at 0 to show no savings.",
+      "tier_2": "Save % on any 2 items",
+      "tier_3": "Save % on any 3 items",
+      "tier_4": "Save % on 4 or more items",
+      "free_shipping": "Free delivery from (EGP)",
+      "free_shipping_info": "Must match your free-shipping rate in Shopify settings. Empty or 0 hides the progress bar.",
+      "whatsapp": "WhatsApp number",
+      "whatsapp_info": "International format without + or spaces, e.g. 201001234567. Empty hides the chat button."
     }
   }
 }

@@ -26,7 +26,9 @@
       "previous": "Previous page",
       "next": "Next page",
       "page": "Page {{ number }}"
-    }
+    },
+    "whatsapp": "Ask us on WhatsApp",
+    "whatsapp_text": "Hi Between Two Suns, I have a question about my routine."
   },
   "announcement": {
     "default_1": "Climate-adapted skincare",
@@ -47,7 +49,8 @@
       "climate": "Climate",
       "journal": "Journal",
       "faq": "FAQ",
-      "contact": "Contact"
+      "contact": "Contact",
+      "sets": "Sets"
     },
     "mega": {
       "title": "Explore",
@@ -90,7 +93,8 @@
       "faq": "FAQ",
       "shipping": "Shipping",
       "returns": "Returns",
-      "contact": "Contact"
+      "contact": "Contact",
+      "sets": "Sets"
     },
     "copyright": "Between Two Suns",
     "made_in": "Made in Egypt",
@@ -257,6 +261,51 @@
       "alt": "Printed label of {{ product }}: name, key ingredients, how to use, description, full ingredient list (INCI) and caution. All of this text is also on this page.",
       "hint": "Swipe to read the whole label.",
       "caption": "Label artwork from the brand. If anything differs, the pack in your hand is the reference."
+    },
+    "bundles": {
+      "eyebrow": "Sets",
+      "heading": "Routines, ready to go.",
+      "text": "Curated sets of the four steps. Each set is priced as the sum of its products.",
+      "count": "{{ count }} steps",
+      "was": "Was",
+      "save": "Save {{ pct }}%",
+      "cta": "Add set to bag",
+      "note": "Set savings are applied at checkout by the mix & match offer.",
+      "sets": {
+        "full": {
+          "name": "The Full Routine",
+          "desc": "Every step, in order: reset, clarity, barrier, defense."
+        },
+        "evening": {
+          "name": "The Evening Routine",
+          "desc": "Cleanse, serum, moisturise. SPF waits for the morning."
+        },
+        "oil": {
+          "name": "Oil-Control Duo",
+          "desc": "Removes oil, then controls it: the first two steps."
+        },
+        "day": {
+          "name": "Day Shield Duo",
+          "desc": "Moisturise, then SPF 50+ as the last step every morning."
+        },
+        "starter": {
+          "name": "Everyday Starter",
+          "desc": "The two steps every day needs: cleanse and protect."
+        }
+      }
+    },
+    "builder": {
+      "eyebrow": "Build your routine",
+      "heading": "Your skin, your steps.",
+      "text": "Tap the steps you want. They line up in the order you use them, and the total updates as you go.",
+      "shelf": "Your routine shelf",
+      "choose": "Choose your steps",
+      "presets": "Quick picks",
+      "count": "{{ count }} of 4 steps",
+      "empty": "Pick a step to start",
+      "added_step": "{{ product }} added to your routine",
+      "removed_step": "{{ product }} removed from your routine",
+      "cta": "Add my routine"
     }
   },
   "product": {
@@ -354,7 +403,15 @@
     "note": "Order note",
     "product": "Product",
     "total": "Total",
-    "continue": "Continue shopping"
+    "continue": "Continue shopping",
+    "tier_next": "Add {{ count }} more to save {{ pct }}%",
+    "tier_reached": "You’re saving {{ pct }}% on your routine",
+    "tier_items": "{{ count }} items",
+    "tier_items_plus": "{{ count }}+ items",
+    "ship_remaining": "{{ amount }} away from free delivery",
+    "ship_unlocked": "Free delivery unlocked",
+    "ship_label": "Progress to free delivery",
+    "added_short": "Added"
   },
   "pages": {
     "contact": {
@@ -570,6 +627,11 @@
       "eyebrow": "You scanned a Between Two Suns pack",
       "heading": "Which one is in your hand?",
       "text": "Tap your product for how to use it, where it sits in your routine, and the full ingredient list."
+    },
+    "sets": {
+      "eyebrow": "Sets & routines",
+      "heading": "Build it. Or pick a set.",
+      "text": "Choose the steps you need, or start from a routine that’s already put together."
     }
   },
   "stories": {

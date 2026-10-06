@@ -40,6 +40,7 @@
               {%- endfor -%}
             {%- else -%}
               <li><button type="button" class="site-nav__link" aria-expanded="false" aria-controls="MegaShop" data-mega-toggle>{{ 'header.nav.shop' | t }} {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}</button></li>
+              <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'header.nav.sets' | t }}</a></li>
               <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{{ 'header.nav.routines' | t }}</a></li>
               <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }}</a></li>
               <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{{ 'header.nav.climate' | t }}</a></li>
@@ -151,6 +152,7 @@
         {%- endfor -%}
       {%- else -%}
         <a class="menu-drawer__link" href="{{ routes.all_products_collection_url }}">{{ 'header.nav.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
+        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'header.nav.sets' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
         <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{{ 'header.nav.routines' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
         <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
         <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{{ 'header.nav.climate' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>

@@ -34,15 +34,54 @@
   {
     "name": "t:settings_schema.colors.name",
     "settings": [
-      { "type": "header", "content": "t:settings_schema.colors.sku_header" },
-      { "type": "paragraph", "content": "t:settings_schema.colors.sku_note" },
-      { "type": "color", "id": "color_step_1", "label": "t:settings_schema.colors.step_1", "default": "#7DB993" },
-      { "type": "color", "id": "color_step_2", "label": "t:settings_schema.colors.step_2", "default": "#89C3C8" },
-      { "type": "color", "id": "color_step_3", "label": "t:settings_schema.colors.step_3", "default": "#D7A6DA" },
-      { "type": "color", "id": "color_step_4", "label": "t:settings_schema.colors.step_4", "default": "#FFA37B" },
-      { "type": "header", "content": "t:settings_schema.colors.base_header" },
-      { "type": "color", "id": "color_ink", "label": "t:settings_schema.colors.ink", "default": "#121318" },
-      { "type": "color", "id": "color_daylight", "label": "t:settings_schema.colors.daylight", "default": "#F6F7F4" }
+      {
+        "type": "header",
+        "content": "t:settings_schema.colors.sku_header"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:settings_schema.colors.sku_note"
+      },
+      {
+        "type": "color",
+        "id": "color_step_1",
+        "label": "t:settings_schema.colors.step_1",
+        "default": "#7DB993"
+      },
+      {
+        "type": "color",
+        "id": "color_step_2",
+        "label": "t:settings_schema.colors.step_2",
+        "default": "#89C3C8"
+      },
+      {
+        "type": "color",
+        "id": "color_step_3",
+        "label": "t:settings_schema.colors.step_3",
+        "default": "#D7A6DA"
+      },
+      {
+        "type": "color",
+        "id": "color_step_4",
+        "label": "t:settings_schema.colors.step_4",
+        "default": "#FFA37B"
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.colors.base_header"
+      },
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "t:settings_schema.colors.ink",
+        "default": "#121318"
+      },
+      {
+        "type": "color",
+        "id": "color_daylight",
+        "label": "t:settings_schema.colors.daylight",
+        "default": "#F6F7F4"
+      }
     ]
   },
   {
@@ -102,6 +141,57 @@
     ]
   },
   {
+    "name": "t:settings_schema.offers.name",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:settings_schema.offers.intro"
+      },
+      {
+        "type": "range",
+        "id": "tier_2_pct",
+        "label": "t:settings_schema.offers.tier_2",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "%",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "tier_3_pct",
+        "label": "t:settings_schema.offers.tier_3",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "%",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "tier_4_pct",
+        "label": "t:settings_schema.offers.tier_4",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "%",
+        "default": 0
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "t:settings_schema.offers.free_shipping",
+        "info": "t:settings_schema.offers.free_shipping_info"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "t:settings_schema.offers.whatsapp",
+        "info": "t:settings_schema.offers.whatsapp_info"
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.motion.name",
     "settings": [
       {
@@ -116,16 +206,37 @@
   {
     "name": "t:settings_schema.social.name",
     "settings": [
-      { "type": "url", "id": "social_instagram", "label": "Instagram" },
-      { "type": "url", "id": "social_tiktok", "label": "TikTok" },
-      { "type": "url", "id": "social_facebook", "label": "Facebook" },
-      { "type": "url", "id": "social_youtube", "label": "YouTube" }
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube",
+        "label": "YouTube"
+      }
     ]
   },
   {
     "name": "t:settings_schema.search.name",
     "settings": [
-      { "type": "checkbox", "id": "predictive_search", "label": "t:settings_schema.search.predictive", "default": true }
+      {
+        "type": "checkbox",
+        "id": "predictive_search",
+        "label": "t:settings_schema.search.predictive",
+        "default": true
+      }
     ]
   }
 ]

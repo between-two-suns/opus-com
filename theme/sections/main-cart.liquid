@@ -10,6 +10,7 @@
       </div>
     {%- else -%}
       <form action="{{ routes.cart_url }}" method="post" class="cart-page__grid" data-cart-root data-count="{{ cart.item_count }}">
+        {%- render 'cart-incentives' -%}
         <ul class="cart-lines" role="list">
           {%- for item in cart.items -%}
             {%- capture step -%}{% render 'product-step', product: item.product %}{%- endcapture -%}

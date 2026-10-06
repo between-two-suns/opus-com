@@ -1,0 +1,75 @@
+{%- comment -%}
+  Honest cart incentives: the next mix & match saving and progress to free delivery.
+  Both come from theme settings that must mirror real Shopify discounts / shipping rates; nothing shows when unset.
+{%- endcomment -%}
+{%- liquid
+  assign n = cart.item_count
+  assign t2 = settings.tier_2_pct | default: 0
+  assign t3 = settings.tier_3_pct | default: 0
+  assign t4 = settings.tier_4_pct | default: 0
+  assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
+  capture current
+    render 'offer-pct', n: n
+  endcapture
+  assign current = current | strip | plus: 0
+  assign next_pct = 0
+  assign need = 0
+  for k in (2..4)
+    if k > n
+      capture p
+        render 'offer-pct', n: k
+      endcapture
+      assign p = p | strip | plus: 0
+      if p > current
+        assign next_pct = p
+        assign need = k | minus: n
+        break
+      endif
+    endif
+  endfor
+-%}
+{%- if t2 > 0 or t3 > 0 or t4 > 0 -%}
+  <div class="incentive" data-incentive="tiers">
+    <p class="incentive__msg t-small">
+      {%- if next_pct > 0 -%}
+        {{ 'cart.tier_next' | t: count: need, pct: next_pct }}
+      {%- elsif current > 0 -%}
+        <strong>{{ 'cart.tier_reached' | t: pct: current }}</strong>
+      {%- endif -%}
+    </p>
+    <ol class="tier-steps" role="list">
+      {%- for k in (2..4) -%}
+        {%- capture p -%}{% render 'offer-pct', n: k %}{%- endcapture -%}
+        {%- assign p = p | strip | plus: 0 -%}
+        {%- assign exact = 0 -%}
+        {%- case k -%}{%- when 2 -%}{%- assign exact = t2 -%}{%- when 3 -%}{%- assign exact = t3 -%}{%- when 4 -%}{%- assign exact = t4 -%}{%- endcase -%}
+        {%- if exact > 0 -%}
+          <li class="tier-steps__step{% if n >= k %} is-on{% endif %}">
+            <span class="tier-steps__n">{% if k == 4 %}{{ 'cart.tier_items_plus' | t: count: k }}{% else %}{{ 'cart.tier_items' | t: count: k }}{% endif %}</span>
+            <span class="tier-steps__pct">−{{ exact }}%</span>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ol>
+  </div>
+{%- endif -%}
+{%- if threshold > 0 -%}
+  {%- liquid
+    assign remaining = threshold | minus: cart.total_price
+    assign progress = cart.total_price | times: 100 | divided_by: threshold
+    if progress > 100
+      assign progress = 100
+    endif
+  -%}
+  <div class="incentive" data-incentive="shipping">
+    <p class="incentive__msg t-small">
+      {%- if remaining > 0 -%}
+        {%- assign remaining_money = remaining | money -%}
+        {{ 'cart.ship_remaining' | t: amount: remaining_money }}
+      {%- else -%}
+        <strong>{{ 'cart.ship_unlocked' | t }}</strong>
+      {%- endif -%}
+    </p>
+    <div class="incentive__meter" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ progress }}" aria-label="{{ 'cart.ship_label' | t }}"><span style="--v: {{ progress }}%"></span></div>
+  </div>
+{%- endif -%}

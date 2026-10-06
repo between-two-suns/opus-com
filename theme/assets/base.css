@@ -644,3 +644,32 @@ html.has-open-dialog { overflow: hidden; }
   content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .5; mix-blend-mode: soft-light;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+/* ---------- Cart incentives (honest: driven by real discount / shipping settings) ---------- */
+.incentive { display: grid; gap: 8px; padding: 12px 14px; border-radius: 14px; background: var(--c-paper); margin-block-end: 12px; }
+.incentive__msg { margin: 0; }
+.incentive__meter { block-size: 6px; border-radius: 99px; background: var(--c-line); overflow: hidden; }
+.incentive__meter span { display: block; block-size: 100%; inline-size: var(--v); border-radius: inherit; background: linear-gradient(90deg, var(--c-step-1), var(--c-step-2), var(--c-step-3), var(--c-step-4)); transition: inline-size var(--dur-slow) var(--ease-out); }
+.tier-steps { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.tier-steps__step { flex: 1; display: grid; gap: 2px; padding: 6px 8px; border-radius: 10px; border: 1px solid var(--c-line); font-size: 12px; line-height: 1.2; text-align: center; transition: background var(--dur) var(--ease-out), border-color var(--dur); }
+.tier-steps__step.is-on { background: var(--c-ink); border-color: var(--c-ink); color: #fff; }
+.tier-steps__pct { font-weight: 700; font-size: 14px; }
+
+/* ---------- Micro-interactions ---------- */
+.card__media img, .bundle__packs { transition: transform 500ms var(--ease-out); }
+.card:hover .card__media.is-tilting img, .card__media.is-tilting img { transform: perspective(700px) rotateY(calc(var(--tx) * 12deg)) rotateX(calc(var(--ty) * -8deg)) translateY(-6px) scale(1.03); }
+.bundle__stage.is-tilting .bundle__packs { transform: perspective(900px) rotateY(calc(var(--tx) * 10deg)) rotateX(calc(var(--ty) * -6deg)); }
+[data-magnetic] { transition: translate 260ms var(--ease-out), background var(--dur), color var(--dur); }
+.btn.is-added { position: relative; }
+.btn.is-added > * { visibility: hidden; }
+.btn.is-added::after { content: '✓  ' var(--added-label); position: absolute; inset: 0; display: grid; place-items: center; visibility: visible; animation: added-in 300ms var(--ease-out) both; }
+@keyframes added-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+[data-cart-count].is-bump { animation: badge-bump 520ms cubic-bezier(.3, 1.6, .5, 1) both; }
+@keyframes badge-bump { 0% { transform: scale(1); } 40% { transform: scale(1.45); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { [data-cart-count].is-bump, .btn.is-added::after { animation: none; } }
+
+/* ---------- WhatsApp chat (only when a number is set) ---------- */
+.wa-fab { position: fixed; inset-block-end: max(16px, env(safe-area-inset-bottom)); inset-inline-end: 16px; z-index: 40; display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; border-radius: 99px; background: var(--c-ink); color: #fff; font-weight: 700; font-size: 14px; text-decoration: none; box-shadow: 0 10px 30px -10px rgba(18, 19, 24, .5); transition: transform var(--dur) var(--ease-out); }
+.wa-fab:hover { transform: translateY(-2px); }
+.wa-fab .icon { inline-size: 20px; block-size: 20px; }
+@media (max-width: 749px) { .wa-fab span { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip: rect(0 0 0 0); } .wa-fab { padding: 14px; } body:has(sticky-atc.is-visible) .wa-fab { inset-block-end: 88px; } }

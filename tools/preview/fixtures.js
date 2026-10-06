@@ -78,6 +78,7 @@ export function inciFor(locale) {
 }
 
 export const PAGES = {
+  sets: { en: 'Sets', ar: 'المجموعات' },
   routines: { en: 'Routines', ar: 'الروتينات' },
   ingredients: { en: 'Ingredient glossary', ar: 'دليل المكوّنات' },
   climate: { en: 'Climate-adapted skincare', ar: 'عناية بالبشرة متكيّفة مع المناخ' },

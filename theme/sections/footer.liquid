@@ -65,6 +65,7 @@
                   {%- case block.settings.fallback -%}
                     {%- when 'shop' -%}
                       <li><a href="{{ routes.all_products_collection_url }}">{{ 'footer.links.shop_all' | t }}</a></li>
+                      <li><a href="{{ root }}/pages/sets">{{ 'footer.links.sets' | t }}</a></li>
                       <li><a href="{{ root }}/pages/routines">{{ 'footer.links.routines' | t }}</a></li>
                       <li><a href="{{ root }}/pages/scan">{{ 'footer.links.scan' | t }}</a></li>
                     {%- when 'learn' -%}

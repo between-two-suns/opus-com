@@ -95,7 +95,7 @@
     <div class="hero__foot">
       <p class="t-lead hero__copy">{{ subcopy | escape }}</p>
       <div class="hero__ctas">
-        <a class="btn" href="{{ cta_1_link }}">{{ cta_1 | escape }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+        <a class="btn" href="{{ cta_1_link }}" data-magnetic>{{ cta_1 | escape }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
         <a class="btn btn--secondary" href="{{ cta_2_link }}">{{ cta_2 | escape }}</a>
       </div>
     </div>

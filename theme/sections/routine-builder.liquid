@@ -1,0 +1,138 @@
+{{ 'bundles.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Build your routine: tap bottles onto the shelf between the two suns. The light grows with each step,
+  the total and the next mix & match saving update live, and one tap adds the routine.
+  Prices are the products' real prices; savings come from Theme settings → Offers (mirroring real discounts).
+{%- endcomment -%}
+{%- liquid
+  assign source = section.settings.collection | default: collections.all
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'sections.builder.heading' | t
+  endif
+-%}
+<section class="section builder" aria-labelledby="BuilderTitle-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{{ 'sections.builder.eyebrow' | t }}</p>
+        <h2 class="t-display-l" id="BuilderTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      </div>
+      <p class="t-lead t-muted bundles__text">{{ 'sections.builder.text' | t }}</p>
+    </div>
+
+    <routine-builder
+      class="builder__ui"
+      data-money="{{ shop.money_format | escape }}"
+      data-t2="{{ settings.tier_2_pct | default: 0 }}"
+      data-t3="{{ settings.tier_3_pct | default: 0 }}"
+      data-t4="{{ settings.tier_4_pct | default: 0 }}"
+      data-coming-soon="{% if settings.zero_price_coming_soon %}true{% endif %}"
+      data-str-count="{{ 'sections.builder.count' | t: count: '__N__' | escape }}"
+      data-str-empty="{{ 'sections.builder.empty' | t | escape }}"
+      data-str-next="{{ 'cart.tier_next' | t: count: '__N__', pct: '__P__' | escape }}"
+      data-str-saving="{{ 'cart.tier_reached' | t: pct: '__P__' | escape }}"
+      data-str-added="{{ 'sections.builder.added_step' | t: product: '__X__' | escape }}"
+      data-str-removed="{{ 'sections.builder.removed_step' | t: product: '__X__' | escape }}"
+    >
+      <div class="builder__stage grain" data-stage style="--fill: 0">
+        <span class="builder__sun builder__sun--warm" aria-hidden="true"></span>
+        <span class="builder__sun builder__sun--cool" aria-hidden="true"></span>
+        <ol class="builder__shelf" role="list" aria-label="{{ 'sections.builder.shelf' | t }}">
+          {%- for s in (1..4) -%}
+            {%- for product in source.products limit: 12 -%}
+              {%- capture ps -%}{% render 'product-step', product: product %}{%- endcapture -%}
+              {%- assign ps = ps | strip | plus: 0 -%}
+              {%- if ps == s -%}
+                {%- assign cutout = product.metafields.bts.cutout.value -%}
+                <li class="builder__slot" data-step="{{ s }}" data-slot="{{ s }}">
+                  <span class="builder__num" aria-hidden="true">0{{ s }}</span>
+                  <span class="builder__bottle" aria-hidden="true">
+                    {%- if cutout -%}
+                      {{ cutout | image_url: width: 420 | image_tag: loading: 'lazy', widths: '200,300,420', sizes: '(min-width: 990px) 12vw, 22vw', alt: '' }}
+                    {%- elsif product.featured_image -%}
+                      {{ product.featured_image | image_url: width: 420 | image_tag: loading: 'lazy', widths: '200,300,420', sizes: '(min-width: 990px) 12vw, 22vw', alt: '' }}
+                    {%- endif -%}
+                  </span>
+                  <span class="builder__base" aria-hidden="true"></span>
+                </li>
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </ol>
+      </div>
+
+      <div class="builder__panel">
+        <fieldset class="builder__choices">
+          <legend class="t-subheading">{{ 'sections.builder.choose' | t }}</legend>
+          {%- for s in (1..4) -%}
+            {%- for product in source.products limit: 12 -%}
+              {%- capture ps -%}{% render 'product-step', product: product %}{%- endcapture -%}
+              {%- assign ps = ps | strip | plus: 0 -%}
+              {%- if ps == s -%}
+                {%- assign v = product.selected_or_first_available_variant -%}
+                <button
+                  type="button"
+                  class="builder__choice"
+                  data-step="{{ s }}"
+                  data-id="{{ v.id }}"
+                  data-price="{{ v.price }}"
+                  data-title="{{ product.title | escape }}"
+                  aria-pressed="false"
+                  {% unless v.available %}disabled{% endunless %}
+                >
+                  <span class="builder__check" aria-hidden="true"></span>
+                  <span class="builder__choice-text">
+                    <span class="builder__choice-step t-xs">{{ 'product.step' | t: number: s }} · {{ product.metafields.bts.step_label.value | default: '' | escape }}</span>
+                    <span class="builder__choice-name">{{ product.title | escape }}</span>
+                  </span>
+                  <span class="builder__choice-price">{% if v.price == 0 and settings.zero_price_coming_soon %}{{ 'product.coming_soon' | t }}{% else %}{{ v.price | money }}{% endif %}</span>
+                </button>
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </fieldset>
+
+        <div class="builder__presets" role="group" aria-label="{{ 'sections.builder.presets' | t }}">
+          <button type="button" class="chip" data-preset="1,2,3,4">{{ 'sections.bundles.sets.full.name' | t }}</button>
+          <button type="button" class="chip" data-preset="1,2,3">{{ 'sections.bundles.sets.evening.name' | t }}</button>
+          <button type="button" class="chip" data-preset="1,2">{{ 'sections.bundles.sets.oil.name' | t }}</button>
+          <button type="button" class="chip" data-preset="3,4">{{ 'sections.bundles.sets.day.name' | t }}</button>
+        </div>
+
+        <div class="builder__summary">
+          <p class="builder__count t-small" data-count aria-live="polite">{{ 'sections.builder.empty' | t }}</p>
+          <ol class="builder__meter" role="list" aria-hidden="true">
+            {%- for n in (1..4) -%}<li data-step="{{ n }}"></li>{%- endfor -%}
+          </ol>
+          <p class="builder__offer t-small" data-offer hidden></p>
+          <product-form class="builder__form">
+            <form method="post" action="{{ routes.cart_add_url }}">
+              <button type="submit" class="btn btn--full" data-cta data-magnetic disabled>
+                <span class="btn__label">{{ 'sections.builder.cta' | t }}</span>
+                <span class="btn__sep" aria-hidden="true" data-total-sep hidden>·</span>
+                <span class="btn__price" data-total></span>
+                <s class="builder__was" data-was hidden></s>
+              </button>
+              <p class="t-xs t-muted" data-form-error hidden></p>
+            </form>
+          </product-form>
+        </div>
+      </div>
+    </routine-builder>
+  </div>
+</section>
+<script src="{{ 'bundles.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.builder.name",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" },
+    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" }
+  ],
+  "presets": [{ "name": "t:sections.builder.name" }]
+}
+{% endschema %}

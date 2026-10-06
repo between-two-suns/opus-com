@@ -386,3 +386,41 @@ if ('onpageswap' in window) {
   }, true);
   window.addEventListener('pageshow', clear);
 }
+
+/* ---------- Micro-interactions (fine pointers only, never with reduced motion) ---------- */
+const fineMotion = window.matchMedia('(pointer: fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (fineMotion) {
+  // Bottles tilt toward the pointer inside product cards and bundle stages.
+  document.addEventListener('pointermove', (e) => {
+    const media = e.target.closest?.('.card__media, .bundle__stage');
+    if (!media) return;
+    const r = media.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    media.style.setProperty('--tx', x.toFixed(3));
+    media.style.setProperty('--ty', y.toFixed(3));
+    media.classList.add('is-tilting');
+  }, { passive: true });
+  document.addEventListener('pointerout', (e) => {
+    const media = e.target.closest?.('.card__media, .bundle__stage');
+    if (media && !media.contains(e.relatedTarget)) { media.classList.remove('is-tilting'); media.style.removeProperty('--tx'); media.style.removeProperty('--ty'); }
+  });
+  // Primary calls to action lean toward the pointer a few pixels.
+  document.addEventListener('pointermove', (e) => {
+    const btn = e.target.closest?.('[data-magnetic]');
+    if (!btn) return;
+    const r = btn.getBoundingClientRect();
+    btn.style.translate = `${((e.clientX - r.left) / r.width - 0.5) * 8}px ${((e.clientY - r.top) / r.height - 0.5) * 6}px`;
+  }, { passive: true });
+  document.addEventListener('pointerout', (e) => {
+    const btn = e.target.closest?.('[data-magnetic]');
+    if (btn && !btn.contains(e.relatedTarget)) btn.style.translate = '';
+  });
+}
+
+// Add-to-bag confirmation on the button itself, and a bump on the bag icon.
+document.addEventListener('cart:added', (e) => {
+  const btn = e.target.querySelector?.('[type="submit"]');
+  if (btn) { btn.classList.add('is-added'); setTimeout(() => btn.classList.remove('is-added'), 1800); }
+  $$('[data-cart-count]').forEach((el) => { el.classList.remove('is-bump'); void el.offsetWidth; el.classList.add('is-bump'); });
+});

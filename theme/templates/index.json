@@ -77,6 +77,54 @@
     "journal": {
       "type": "journal-teaser",
       "settings": {}
+    },
+    "bundles": {
+      "type": "bundles",
+      "blocks": {
+        "b1": {
+          "type": "set",
+          "settings": {
+            "preset": "full",
+            "steps": "1,2,3,4"
+          }
+        },
+        "b2": {
+          "type": "set",
+          "settings": {
+            "preset": "evening",
+            "steps": "1,2,3"
+          }
+        },
+        "b3": {
+          "type": "set",
+          "settings": {
+            "preset": "oil",
+            "steps": "1,2"
+          }
+        },
+        "b4": {
+          "type": "set",
+          "settings": {
+            "preset": "day",
+            "steps": "3,4"
+          }
+        },
+        "b5": {
+          "type": "set",
+          "settings": {
+            "preset": "starter",
+            "steps": "1,4"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -84,6 +132,7 @@
     "ticker",
     "concerns",
     "routine",
+    "bundles",
     "climate",
     "forecast",
     "ingredients",

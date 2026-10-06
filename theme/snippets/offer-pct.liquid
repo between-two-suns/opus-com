@@ -1,0 +1,15 @@
+{%- comment -%}
+  Prints the "mix & match" saving (percent, integer) for a number of items, from the Offers settings.
+  Accepts: n {Number}. Prints 0 when no tier applies. Theme settings must mirror real Shopify automatic discounts.
+{%- endcomment -%}
+{%- liquid
+  assign pct = 0
+  if n >= 4 and settings.tier_4_pct > 0
+    assign pct = settings.tier_4_pct
+  elsif n >= 3 and settings.tier_3_pct > 0
+    assign pct = settings.tier_3_pct
+  elsif n >= 2 and settings.tier_2_pct > 0
+    assign pct = settings.tier_2_pct
+  endif
+  echo pct
+-%}
