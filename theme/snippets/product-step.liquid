@@ -1,0 +1,28 @@
+{%- comment -%}
+  Outputs the routine step number (1–4) for a product, or 0.
+  Source order: metafield bts.step → tag "01 Reset" … "04 Defense".
+  Usage: {% capture step %}{% render 'product-step', product: product %}{% endcapture %}{% assign step = step | strip | plus: 0 %}
+{%- endcomment -%}
+{%- liquid
+  assign s = product.metafields.bts.step.value | default: 0
+  if s == 0
+    for tag in product.tags
+      assign head = tag | slice: 0, 2
+      case head
+        when '01'
+          assign s = 1
+          break
+        when '02'
+          assign s = 2
+          break
+        when '03'
+          assign s = 3
+          break
+        when '04'
+          assign s = 4
+          break
+      endcase
+    endfor
+  endif
+  echo s
+-%}

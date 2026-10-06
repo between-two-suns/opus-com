@@ -1,0 +1,93 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-space-between",
+      "settings": {}
+    },
+    "ticker": {
+      "type": "forecast-ticker",
+      "settings": {}
+    },
+    "concerns": {
+      "type": "concern-finder",
+      "settings": {}
+    },
+    "routine": {
+      "type": "routine-grid",
+      "settings": {
+        "show_bundle": true
+      }
+    },
+    "climate": {
+      "type": "climate-conditions",
+      "settings": {
+        "link": "/pages/climate"
+      }
+    },
+    "forecast": {
+      "type": "skin-forecast",
+      "settings": {}
+    },
+    "ingredients": {
+      "type": "ingredient-spotlight",
+      "settings": {
+        "limit": 6
+      }
+    },
+    "facts": {
+      "type": "facts-strip",
+      "blocks": {
+        "f1": {
+          "type": "fact",
+          "settings": {
+            "preset": "made_in_egypt",
+            "icon": "globe"
+          }
+        },
+        "f2": {
+          "type": "fact",
+          "settings": {
+            "preset": "inci",
+            "icon": "flask"
+          }
+        },
+        "f3": {
+          "type": "fact",
+          "settings": {
+            "preset": "spf",
+            "icon": "sun"
+          }
+        },
+        "f4": {
+          "type": "fact",
+          "settings": {
+            "preset": "textures",
+            "icon": "drop"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {}
+    },
+    "journal": {
+      "type": "journal-teaser",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "ticker",
+    "concerns",
+    "routine",
+    "climate",
+    "forecast",
+    "ingredients",
+    "facts",
+    "journal"
+  ]
+}

@@ -1,0 +1,9 @@
+{%- comment -%}
+  Exact supplied brand vectors (Figma nodes 136:5 wordmark, 136:2 icon). Colour inherits via currentColor.
+  Usage: {% render 'logo', variant: 'wordmark' %} | {% render 'logo', variant: 'icon' %}
+{%- endcomment -%}
+{%- if variant == 'icon' -%}
+  <span class="logo logo--icon" role="img" aria-label="{{ shop.name | default: 'Between Two Suns' | escape }}">{{ 'bts-icon.svg' | inline_asset_content }}</span>
+{%- else -%}
+  <span class="logo logo--wordmark" role="img" aria-label="Between Two Suns">{{ 'bts-wordmark.svg' | inline_asset_content }}</span>
+{%- endif -%}

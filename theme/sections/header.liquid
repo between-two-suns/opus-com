@@ -1,0 +1,244 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign mega_collection = section.settings.mega_collection | default: collections.all
+  assign is_home = false
+  if request.page_type == 'index'
+    assign is_home = true
+  endif
+-%}
+<site-header class="site-header-wrap">
+  <header class="site-header" data-header>
+    <div class="container site-header__inner">
+      <div class="site-header__start">
+        <button
+          type="button"
+          class="header-icon header-only-mobile"
+          aria-controls="MenuDrawer"
+          aria-expanded="false"
+          data-open-dialog="MenuDrawer"
+        >
+          {% render 'icon', name: 'menu', class: 'icon--lg' %}
+          <span class="visually-hidden">{{ 'header.menu' | t }}</span>
+        </button>
+
+        <nav class="site-nav" aria-label="{{ 'header.primary_nav' | t }}">
+          <ul class="site-nav__list" role="list">
+            {%- if menu.links.size > 0 -%}
+              {%- for link in menu.links -%}
+                <li class="site-nav__item">
+                  {%- if forloop.first and section.settings.enable_mega and mega_collection.products_count > 0 -%}
+                    <button
+                      type="button"
+                      class="site-nav__link"
+                      aria-expanded="false"
+                      aria-controls="MegaShop"
+                      data-mega-toggle
+                    >
+                      {{ link.title | escape }}
+                      {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}
+                    </button>
+                  {%- else -%}
+                    <a class="site-nav__link" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            {%- else -%}
+              <li><button type="button" class="site-nav__link" aria-expanded="false" aria-controls="MegaShop" data-mega-toggle>{{ 'header.nav.shop' | t }} {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}</button></li>
+              <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{{ 'header.nav.routines' | t }}</a></li>
+              <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }}</a></li>
+              <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{{ 'header.nav.climate' | t }}</a></li>
+              <li><a class="site-nav__link" href="{{ routes.root_url | append: '/blogs/journal' | replace: '//', '/' }}">{{ 'header.nav.journal' | t }}</a></li>
+            {%- endif -%}
+          </ul>
+        </nav>
+      </div>
+
+      <a href="{{ routes.root_url }}" class="site-header__logo" aria-label="{{ 'header.home' | t: shop: shop.name }}">
+        {%- render 'logo', variant: 'wordmark' -%}
+      </a>
+
+      <div class="site-header__end">
+        <a
+          href="{{ routes.search_url }}"
+          class="header-icon"
+          data-open-dialog="SearchModal"
+          aria-controls="SearchModal"
+          aria-haspopup="dialog"
+        >
+          {% render 'icon', name: 'search' %}
+          <span class="visually-hidden">{{ 'header.search' | t }}</span>
+        </a>
+        <span class="header-hide-mobile">{% render 'language-switch', form_id: 'HeaderLang' %}</span>
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{{ routes.account_url }}" class="header-icon header-hide-mobile">
+            {% render 'icon', name: 'account' %}
+            <span class="visually-hidden">{% if customer %}{{ 'header.account' | t }}{% else %}{{ 'header.log_in' | t }}{% endif %}</span>
+          </a>
+        {%- endif -%}
+        <a
+          href="{{ routes.cart_url }}"
+          class="header-icon"
+          id="CartToggle"
+          data-open-dialog="CartDrawer"
+          aria-controls="CartDrawer"
+          aria-haspopup="dialog"
+        >
+          {% render 'icon', name: 'cart' %}
+          <span class="visually-hidden" data-cart-label>{{ 'cart.count_label' | t: count: cart.item_count }}</span>
+          <span class="cart-count" data-cart-count data-count="{{ cart.item_count }}" aria-hidden="true">{% if cart.item_count > 0 %}{{ cart.item_count }}{% endif %}</span>
+        </a>
+      </div>
+    </div>
+
+    {%- if section.settings.enable_mega -%}
+      <div class="mega" id="MegaShop" hidden data-mega>
+        <div class="container mega__inner">
+          {%- for product in mega_collection.products limit: 4 -%}
+            {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
+            {%- assign step = step | strip -%}
+            {%- assign cutout = product.metafields.bts.cutout.value -%}
+            <a class="mega-card" href="{{ product.url }}" data-step="{{ step }}">
+              <span class="mega-card__media">
+                {%- if cutout -%}
+                  {{ cutout | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '' }}
+                {%- elsif product.featured_media -%}
+                  {{ product.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '' }}
+                {%- endif -%}
+              </span>
+              <span class="step-tag">{{ 'product.step' | t: number: step }}</span>
+              <span class="mega-card__title">{{ product.title | escape }}</span>
+              {%- render 'price', product: product, class: 't-small' -%}
+            </a>
+          {%- endfor -%}
+          <div class="mega__aside">
+            <p class="t-eyebrow t-muted">{{ 'header.mega.title' | t }}</p>
+            <a class="link-arrow" href="{{ mega_collection.url | default: routes.all_products_collection_url }}">{{ 'header.mega.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <a class="link-arrow" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{{ 'header.mega.find_routine' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <a class="link-arrow" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.mega.ingredients' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </header>
+</site-header>
+
+{%- comment -%} Mobile menu {%- endcomment -%}
+<dialog class="drawer drawer--start" id="MenuDrawer" aria-labelledby="MenuDrawerTitle">
+  <div class="drawer__head">
+    <h2 class="drawer__title" id="MenuDrawerTitle">{{ 'header.menu' | t }}</h2>
+    <button type="button" class="header-icon" data-close-dialog>
+      {% render 'icon', name: 'close', class: 'icon--lg' %}
+      <span class="visually-hidden">{{ 'general.close' | t }}</span>
+    </button>
+  </div>
+  <div class="drawer__body">
+    <div class="menu-drawer__products">
+      {%- for product in mega_collection.products limit: 4 -%}
+        {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
+        {%- assign step = step | strip -%}
+        {%- assign cutout = product.metafields.bts.cutout.value -%}
+        <a class="menu-drawer__product" href="{{ product.url }}" data-step="{{ step }}">
+          {%- if cutout -%}
+            {{ cutout | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '100px', alt: '' }}
+          {%- elsif product.featured_media -%}
+            {{ product.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '100px', alt: '' }}
+          {%- endif -%}
+          <span class="step-tag">{{ 'product.step' | t: number: step }}</span>
+          <span>{{ product.title | escape }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+    <nav class="menu-drawer__nav" aria-label="{{ 'header.primary_nav' | t }}">
+      {%- if menu.links.size > 0 -%}
+        {%- for link in menu.links -%}
+          <a class="menu-drawer__link" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
+        {%- endfor -%}
+      {%- else -%}
+        <a class="menu-drawer__link" href="{{ routes.all_products_collection_url }}">{{ 'header.nav.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
+        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{{ 'header.nav.routines' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
+        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
+        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{{ 'header.nav.climate' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
+        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/blogs/journal' | replace: '//', '/' }}">{{ 'header.nav.journal' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
+      {%- endif -%}
+    </nav>
+    <div class="menu-drawer__secondary">
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}">{% render 'icon', name: 'account', class: 'icon--sm' %}&nbsp;{% if customer %}{{ 'header.account' | t }}{% else %}{{ 'header.log_in' | t }}{% endif %}</a>
+      {%- endif -%}
+      <a href="{{ routes.root_url | append: '/pages/faq' | replace: '//', '/' }}">{{ 'header.nav.faq' | t }}</a>
+      <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{{ 'header.nav.contact' | t }}</a>
+      {% render 'language-switch', form_id: 'DrawerLang', class: 'chip', show_label: true %}
+    </div>
+  </div>
+</dialog>
+
+{%- comment -%} Search {%- endcomment -%}
+<dialog class="search-modal" id="SearchModal" aria-labelledby="SearchModalTitle">
+  <div class="search-modal__panel">
+    <div class="container search-modal__inner">
+      <h2 class="visually-hidden" id="SearchModalTitle">{{ 'search.title' | t }}</h2>
+      <predictive-search data-url="{{ routes.predictive_search_url }}">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="search-modal__form">
+          <label class="visually-hidden" for="SearchModalInput">{{ 'search.label' | t }}</label>
+          {% render 'icon', name: 'search', class: 'icon--lg' %}
+          <input
+            id="SearchModalInput"
+            class="search-modal__input"
+            type="search"
+            name="q"
+            placeholder="{{ 'search.placeholder' | t }}"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            role="combobox"
+            aria-expanded="false"
+            aria-controls="PredictiveResults"
+            aria-autocomplete="list"
+          >
+          <input type="hidden" name="options[prefix]" value="last">
+          <button type="button" class="header-icon" data-close-dialog>
+            {% render 'icon', name: 'close', class: 'icon--lg' %}
+            <span class="visually-hidden">{{ 'general.close' | t }}</span>
+          </button>
+        </form>
+        <div class="search-modal__suggest" data-suggestions>
+          <p class="t-eyebrow t-muted">{{ 'search.popular' | t }}</p>
+          <div class="cluster u-mt-s">
+            {%- assign terms = 'search.popular_terms' | t | split: ',' -%}
+            {%- for term in terms -%}
+              <a class="chip" href="{{ routes.search_url }}?q={{ term | strip | url_encode }}">{{ term | strip }}</a>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div id="PredictiveResults" class="search-modal__results" data-results aria-live="polite"></div>
+      </predictive-search>
+    </div>
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "header-section",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:sections.header.menu",
+      "default": "main-menu",
+      "info": "t:sections.header.menu_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mega",
+      "label": "t:sections.header.enable_mega",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "mega_collection",
+      "label": "t:sections.header.mega_collection"
+    }
+  ]
+}
+{% endschema %}

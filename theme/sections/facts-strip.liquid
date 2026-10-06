@@ -1,0 +1,79 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Trust through facts only. Each block is either a built-in, packaging-verified fact (bilingual)
+  or merchant text. No ratings, no endorsements, no invented numbers.
+{%- endcomment -%}
+<section class="section section--tight facts" aria-label="{{ 'sections.facts.label' | t }}">
+  <div class="container">
+    <ul class="facts__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign title = block.settings.title
+          assign body = block.settings.text
+          if title == blank and block.settings.preset != 'custom'
+            assign tk = 'sections.facts.items.' | append: block.settings.preset | append: '.title'
+            assign title = tk | t
+          endif
+          if body == blank and block.settings.preset != 'custom'
+            assign bk = 'sections.facts.items.' | append: block.settings.preset | append: '.text'
+            assign body = bk | t
+          endif
+        -%}
+        <li class="facts__item" {{ block.shopify_attributes }}>
+          <span class="facts__icon" aria-hidden="true">{% render 'icon', name: block.settings.icon, class: 'icon--lg' %}</span>
+          <h2 class="facts__title">{{ title | escape }}</h2>
+          <p class="facts__text t-small t-muted">{{ body | escape }}</p>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.facts.name",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "fact",
+      "name": "t:sections.facts.block",
+      "settings": [
+        {
+          "type": "select",
+          "id": "preset",
+          "label": "t:sections.facts.preset",
+          "options": [
+            { "value": "made_in_egypt", "label": "Made in Egypt" },
+            { "value": "inci", "label": "Full ingredient lists" },
+            { "value": "spf", "label": "SPF 50 UVA/UVB" },
+            { "value": "textures", "label": "Light textures" },
+            { "value": "routine", "label": "4-step routine" },
+            { "value": "custom", "label": "Custom" }
+          ],
+          "default": "made_in_egypt"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:sections.facts.icon",
+          "options": [
+            { "value": "globe", "label": "Globe" },
+            { "value": "flask", "label": "Flask" },
+            { "value": "sun", "label": "Sun" },
+            { "value": "drop", "label": "Drop" },
+            { "value": "check", "label": "Check" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "cash", "label": "Cash" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "refresh", "label": "Refresh" }
+          ],
+          "default": "check"
+        },
+        { "type": "text", "id": "title", "label": "t:sections.facts.title", "info": "t:general_schema.bilingual_fallback" },
+        { "type": "textarea", "id": "text", "label": "t:general_schema.text" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:sections.facts.name" }]
+}
+{% endschema %}

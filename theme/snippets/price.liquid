@@ -1,0 +1,25 @@
+{%- comment -%}
+  Price display. Respects the "0 price = coming soon" pre-launch setting.
+  Usage: {% render 'price', product: product, variant: variant, class: '' %}
+{%- endcomment -%}
+{%- liquid
+  assign target = variant | default: product.selected_or_first_available_variant
+  assign amount = target.price
+  assign compare = target.compare_at_price
+-%}
+<span class="price {{ class }}" data-price>
+  {%- if amount == 0 and settings.zero_price_coming_soon -%}
+    <span class="price__soon">{{ 'product.price_coming_soon' | t }}</span>
+  {%- else -%}
+    {%- if compare > amount -%}
+      <span class="visually-hidden">{{ 'product.sale_price' | t }}</span>
+    {%- else -%}
+      <span class="visually-hidden">{{ 'product.price' | t }}</span>
+    {%- endif -%}
+    <span class="price__current">{{ amount | money }}</span>
+    {%- if compare > amount -%}
+      <span class="visually-hidden">{{ 'product.regular_price' | t }}</span>
+      <s class="price__compare">{{ compare | money }}</s>
+    {%- endif -%}
+  {%- endif -%}
+</span>

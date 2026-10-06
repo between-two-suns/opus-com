@@ -1,0 +1,127 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign line_1 = section.settings.line_1
+  if line_1 == blank
+    assign line_1 = 'sections.hero.line_1' | t
+  endif
+  assign line_2 = section.settings.line_2
+  if line_2 == blank
+    assign line_2 = 'sections.hero.line_2' | t
+  endif
+  assign subcopy = section.settings.subcopy
+  if subcopy == blank
+    assign subcopy = 'sections.hero.subcopy' | t
+  endif
+  assign eyebrow = section.settings.eyebrow
+  if eyebrow == blank
+    assign eyebrow = 'sections.hero.eyebrow' | t
+  endif
+  assign cta_1 = section.settings.cta_1_label
+  if cta_1 == blank
+    assign cta_1 = 'sections.hero.cta_primary' | t
+  endif
+  assign cta_2 = section.settings.cta_2_label
+  if cta_2 == blank
+    assign cta_2 = 'sections.hero.cta_secondary' | t
+  endif
+  assign cta_1_link = section.settings.cta_1_link | default: routes.all_products_collection_url
+  assign cta_2_link = section.settings.cta_2_link
+  if cta_2_link == blank
+    assign cta_2_link = '#forecast'
+  endif
+
+  assign source = section.settings.collection | default: collections.all
+  assign heading_tag = 'h2'
+  if request.page_type == 'index' and section.index == 1
+    assign heading_tag = 'h1'
+  endif
+  assign packs = 'pack-reset.webp,pack-clarity.webp,pack-barrier.webp,pack-defense.webp' | split: ','
+-%}
+
+<space-between
+  class="hero{% if settings.signature_motion %} hero--motion{% endif %}"
+  id="Hero-{{ section.id }}"
+  aria-labelledby="HeroTitle-{{ section.id }}"
+>
+  <div class="suns" aria-hidden="true">
+    <span class="hero__warm-wash"></span>
+    <span class="sun sun--warm hero__sun hero__sun--a"></span>
+    <span class="sun sun--cool hero__sun hero__sun--b"></span>
+  </div>
+
+  <div class="container hero__inner">
+    <p class="t-eyebrow hero__eyebrow">{{ eyebrow | escape }}</p>
+
+    <{{ heading_tag }} class="visually-hidden" id="HeroTitle-{{ section.id }}">{{ shop.name }} — {{ line_1 }} {{ line_2 }}</{{ heading_tag }}>
+
+    <div class="hero__stage">
+      <p class="hero__line hero__line--a t-display-xl" aria-hidden="true">{{ line_1 | escape }}</p>
+
+      <ul class="hero__products" role="list" aria-label="{{ 'sections.hero.lineup' | t }}">
+        {%- for s in (1..4) -%}
+          {%- for product in source.products limit: 12 -%}
+            {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
+            {%- assign step = step | strip | plus: 0 -%}
+            {%- if step == s -%}
+              {%- assign cutout = product.metafields.bts.cutout.value -%}
+              {%- assign pack_index = s | minus: 1 -%}
+              <li class="hero__product" data-step="{{ s }}" style="--i: {{ s }}">
+                <a href="{{ product.url }}" class="hero__product-link">
+                  <span class="hero__product-sun" aria-hidden="true"></span>
+                  {%- if cutout -%}
+                    {{ cutout | image_url: width: 520 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '160,240,320,420,520', sizes: '(min-width: 990px) 15vw, 22vw', alt: '', class: 'hero__img' }}
+                  {%- else -%}
+                    <img
+                      class="hero__img"
+                      src="{{ packs[pack_index] | asset_url }}"
+                      alt=""
+                      width="290"
+                      height="900"
+                      fetchpriority="high"
+                      decoding="async"
+                    >
+                  {%- endif -%}
+                  <span class="hero__product-name">{{ product.title | escape }}</span>
+                </a>
+              </li>
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </ul>
+
+      <p class="hero__line hero__line--b t-display-xl" aria-hidden="true">{{ line_2 | escape }}</p>
+    </div>
+
+    <div class="hero__foot">
+      <p class="t-lead hero__copy">{{ subcopy | escape }}</p>
+      <div class="hero__ctas">
+        <a class="btn" href="{{ cta_1_link }}">{{ cta_1 | escape }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+        <a class="btn btn--secondary" href="{{ cta_2_link }}">{{ cta_2 | escape }}</a>
+      </div>
+    </div>
+  </div>
+</space-between>
+
+<script src="{{ 'hero.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.hero.name",
+  "tag": "section",
+  "class": "section-hero",
+  "settings": [
+    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
+    { "type": "text", "id": "eyebrow", "label": "t:sections.hero.eyebrow" },
+    { "type": "text", "id": "line_1", "label": "t:sections.hero.line_1" },
+    { "type": "text", "id": "line_2", "label": "t:sections.hero.line_2" },
+    { "type": "textarea", "id": "subcopy", "label": "t:sections.hero.subcopy" },
+    { "type": "collection", "id": "collection", "label": "t:sections.hero.collection", "info": "t:sections.hero.collection_info" },
+    { "type": "text", "id": "cta_1_label", "label": "t:sections.hero.cta_1_label" },
+    { "type": "url", "id": "cta_1_link", "label": "t:sections.hero.cta_1_link" },
+    { "type": "text", "id": "cta_2_label", "label": "t:sections.hero.cta_2_label" },
+    { "type": "url", "id": "cta_2_link", "label": "t:sections.hero.cta_2_link" }
+  ],
+  "presets": [{ "name": "t:sections.hero.name" }]
+}
+{% endschema %}

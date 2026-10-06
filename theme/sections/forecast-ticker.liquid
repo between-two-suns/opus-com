@@ -1,0 +1,30 @@
+{%- liquid
+  assign items_text = section.settings.items
+  if items_text == blank
+    assign items_text = 'sections.ticker.items' | t
+  endif
+  assign items = items_text | split: '|'
+-%}
+<div class="ticker" role="region" aria-label="{{ 'sections.ticker.label' | t }}">
+  <p class="visually-hidden">{{ items | join: ', ' }}</p>
+  <div class="ticker__track t-notation" aria-hidden="true">
+    {%- for i in (1..2) -%}
+      {%- for item in items -%}
+        <span class="ticker__item"{% if i == 2 %} aria-hidden="true"{% endif %}>{{ item | strip | escape }}</span>
+      {%- endfor -%}
+      {%- for item in items -%}
+        <span class="ticker__item" aria-hidden="true">{{ item | strip | escape }}</span>
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.ticker.name",
+  "settings": [
+    { "type": "text", "id": "items", "label": "t:sections.ticker.items", "info": "t:sections.ticker.items_info" }
+  ],
+  "presets": [{ "name": "t:sections.ticker.name" }]
+}
+{% endschema %}

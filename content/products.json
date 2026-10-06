@@ -1,0 +1,225 @@
+{
+  "_meta": {
+    "source": "Figma 'Between Two Suns — Ecommerce Master' v5 FINAL packaging frames (136:20, 136:1088, 136:3241, 167:2), extracted 2026-10-06",
+    "rules": "EN copy marked 'pack' is verbatim from packaging. AR copy marked 'pack' is verbatim from packaging. Fields marked 'bts-draft' were written for the web and need brand + native-Arabic + regulatory review. Nothing here is invented efficacy.",
+    "prices": "Shopify currently holds 0.00 EGP for all variants. Real prices are a business decision (see STATUS blockers)."
+  },
+  "products": [
+    {
+      "handle": "daily-reset-cleanser",
+      "step": 1,
+      "step_label": { "en": "Reset", "ar": "تنظيف" },
+      "color": "#7DB993",
+      "color_name": "Mint · Pantone 345 U",
+      "title": { "en": "Daily Reset Cleanser", "ar": "غسول ديلي ريست" },
+      "title_source": "pack (EN) / bts-draft (AR transliteration)",
+      "hero_ingredients": { "en": "Zinc PCA + Centella", "ar": "زنك PCA + سنتيلا" },
+      "benefit": { "en": "Removes oil. Maintains hydration. Feels fresh.", "ar": "يزيل الدهون. يحافظ على الترطيب. إحساس بالانتعاش." },
+      "benefit_source": "pack (EN) / bts-draft (AR)",
+      "skin_type": { "en": "For oily to combination skin", "ar": "للبشرة الدهنية والمختلطة" },
+      "size": "200 mL",
+      "when": { "en": "AM + PM", "ar": "صباحاً ومساءً" },
+      "badges": [
+        { "en": "Non-stripping", "ar": "لا يجرّد البشرة" },
+        { "en": "Soap-free", "ar": "خالٍ من الصابون" },
+        { "en": "Non-comedogenic", "ar": "لا يسد المسام" }
+      ],
+      "features": [
+        { "en": "Gel texture", "ar": "قوام جل" },
+        { "en": "Climate adapted", "ar": "متكيّف مع المناخ" },
+        { "en": "Soothes skin", "ar": "يهدّئ البشرة" }
+      ],
+      "texture": { "en": "Gel texture", "ar": "قوام جل" },
+      "description": {
+        "en": "A daily gel cleanser with Zinc PCA, Panthenol and Centella. Removes excess oil and environmental buildup without stripping, while hydrating and leaving skin fresh and comfortable.",
+        "ar": "غسول جل يومي يحتوي على Zinc PCA، البانثينول، والسنتيلا. ينظف البشرة من الدهون الزائدة وآثار العوامل البيئية، مع الحفاظ على ترطيبها، ويتركها منتعشة، مريحة ومتوازنة."
+      },
+      "how_to_use": {
+        "en": "Apply 1–2 pumps to wet skin, morning and night. Gently massage over the face, then rinse. Follow with serum.",
+        "ar": "يوضع 1–2 ضغطة على بشرة مبللة صباحاً ومساءً. يُوزع على الوجه ثم يُشطف جيداً. يُستخدم قبل السيروم."
+      },
+      "key_ingredients": ["zinc-pca", "panthenol", "centella-asiatica"],
+      "concerns": ["oiliness", "dehydration", "pollution", "barrier"],
+      "inci": "Aqua, Disodium Lauryl Sulfosuccinate, Cocamidopropyl Betaine, Coco-Glucoside, Glycerin, Lauryl Glucoside, Propylene Glycol, PEG-120 Methyl Glucose Dioleate, Phenoxyethanol, PEG-7 Glyceryl Cocoate, Panthenol, Poloxamer 184, Polyquaternium-10, Aloe Barbadensis Leaf Extract, Centella Asiatica Extract, Sodium PCA, Zinc PCA, Ethylhexylglycerin, EDTA, Allantoin, Glycyrrhiza Glabra Root Extract, Citric Acid.",
+      "caution": {
+        "en": "For external use only. Avoid contact with eyes. Keep out of reach of children. Store in a cool, dry place.",
+        "ar": "للاستعمال الخارجي فقط. يُتجنّب ملامسة العينين. يُحفظ بعيداً عن متناول الأطفال. يُحفظ في مكان بارد وجاف."
+      },
+      "legal": "Cosmetic product. Manufactured by Integrated Cosmetics Industries for Nuu Group For Cosmetics. Made in Egypt. EDA notification no: COSMTOL26130966.",
+      "forecast_reasons": {
+        "sun": { "en": "Clears sweat and oil before your SPF goes on.", "ar": "يزيل العرق والدهون قبل وضع واقي الشمس." },
+        "city": { "en": "Removes excess oil and environmental buildup without stripping.", "ar": "ينظف الدهون الزائدة وآثار العوامل البيئية دون تجريد البشرة." },
+        "humidity": { "en": "Removes oil. Feels fresh.", "ar": "يزيل الدهون ويترك إحساساً بالانتعاش." },
+        "ac": { "en": "Cleans while maintaining hydration.", "ar": "ينظف مع الحفاظ على الترطيب." },
+        "heat": { "en": "Soap-free gel that leaves skin fresh and comfortable.", "ar": "جل خالٍ من الصابون يترك البشرة منتعشة ومريحة." }
+      }
+    },
+    {
+      "handle": "clarity-serum",
+      "step": 2,
+      "step_label": { "en": "Clarity", "ar": "صفاء" },
+      "color": "#89C3C8",
+      "color_name": "Pastel blue · Pantone 304 U",
+      "title": { "en": "Clarity Serum", "ar": "سيروم كلاريتي" },
+      "title_source": "pack (EN) / bts-draft (AR transliteration)",
+      "hero_ingredients": { "en": "Niacinamide + Tranexamic Acid", "ar": "نياسيناميد + ترانيكساميك أسيد" },
+      "hero_ingredients_note": "Pack front reads 'Niacinimide' (typo) in Figma v5 FINAL; an older render reads 'Niacinimide + Zinc PCA'. Web uses the correct INCI spelling. CONFIRM before print.",
+      "benefit": { "en": "Controls oil. Evens skin tone. Hydrates.", "ar": "يتحكم في الدهون. يوحّد لون البشرة. يرطّب." },
+      "benefit_source": "pack (EN) / bts-draft (AR)",
+      "skin_type": null,
+      "skin_type_note": "Not stated on the v5 FINAL serum label — CONFIRM before showing a skin-type line.",
+      "size": "30 mL",
+      "when": { "en": "AM + PM", "ar": "صباحاً ومساءً" },
+      "badges": [],
+      "features": [
+        { "en": "Lightweight texture", "ar": "قوام خفيف" },
+        { "en": "Climate adapted", "ar": "متكيّف مع المناخ" }
+      ],
+      "features_note": "Serum frame repeats moisturizer icon row (incl. 'Barrier Support'). 'Barrier Support' withheld on web until confirmed for serum.",
+      "texture": { "en": "Lightweight serum", "ar": "سيروم خفيف القوام" },
+      "description": {
+        "en": "A daily serum with Niacinamide, Tranexamic Acid and Hyaluronic Acid. Helps even skin tone and helps reduce the appearance of dark spots while controlling excess oil and hydrating skin.",
+        "ar": "سيروم يومي بالنياسيناميد، الترانيكساميك أسيد والهيالورونيك أسيد. يساعد على توحيد لون البشرة وتخفيف مظهر التصبغات، والتحكم في الدهون الزائدة مع الحفاظ على ترطيب البشرة."
+      },
+      "how_to_use": {
+        "en": "Apply a few drops to cleansed face and neck, morning and night. Gently smooth until absorbed. Follow with moisturizer.",
+        "ar": "يوضع السيروم صباحاً ومساءً بعد تنظيف البشرة وتجفيفها، على كامل الوجه والرقبة، ثم يوضع المرطب."
+      },
+      "key_ingredients": ["niacinamide", "tranexamic-acid", "sodium-hyaluronate"],
+      "concerns": ["dark_spots", "oiliness", "dehydration"],
+      "inci": "Aqua, Niacinamide, Glycerin, Tranexamic Acid, Propylene Glycol, Phenoxyethanol, Panthenol, Xylitylglucoside, Anhydroxylitol, Xylitol, Sodium Hyaluronate, Ammonium Acryloyldimethyltaurate/VP Copolymer, Ethylhexylglycerin, EDTA, Allantoin.",
+      "caution": {
+        "en": "For external use only. Avoid contact with eyes. Keep out of reach of children. Store in a cool, dry place.",
+        "ar": "للاستعمال الخارجي فقط. يُتجنّب ملامسة العينين. يُحفظ بعيداً عن متناول الأطفال. يُحفظ في مكان بارد وجاف."
+      },
+      "legal": "Manufactured by Integrated Cosmetics Industries for Nuu Group For Cosmetics. Made in Egypt. EDA notification no: (pending on label — CONFIRM).",
+      "forecast_reasons": {
+        "sun": { "en": "Helps reduce the appearance of dark spots — pair with SPF every morning.", "ar": "يساعد على تخفيف مظهر التصبغات — ويُستخدم مع واقي الشمس كل صباح." },
+        "city": { "en": "Helps even skin tone.", "ar": "يساعد على توحيد لون البشرة." },
+        "humidity": { "en": "Controls excess oil.", "ar": "يتحكم في الدهون الزائدة." },
+        "ac": { "en": "Hyaluronic Acid keeps skin hydrated.", "ar": "الهيالورونيك أسيد يحافظ على ترطيب البشرة." },
+        "heat": { "en": "Controls excess oil while hydrating.", "ar": "يتحكم في الدهون الزائدة مع الحفاظ على الترطيب." }
+      }
+    },
+    {
+      "handle": "daily-barrier-moisturizing-cream",
+      "step": 3,
+      "step_label": { "en": "Barrier", "ar": "حاجز" },
+      "color": "#D7A6DA",
+      "color_name": "Lilac · Pantone 2562 U",
+      "title": { "en": "Daily Barrier Moisturizing Cream", "ar": "كريم ديلي باريير المرطّب" },
+      "title_source": "pack (EN) / bts-draft (AR)",
+      "hero_ingredients": { "en": "Ceramides + Zinc PCA", "ar": "سيراميدات + زنك PCA" },
+      "benefit": { "en": "Strengthens skin barrier. Controls oil. Lightweight.", "ar": "يقوّي حاجز البشرة. يتحكم في الدهون. خفيف القوام." },
+      "benefit_source": "pack (EN) / bts-draft (AR)",
+      "skin_type": { "en": "For oily to combination skin", "ar": "للبشرة الدهنية والمختلطة" },
+      "size": "50 g",
+      "when": { "en": "AM + PM", "ar": "صباحاً ومساءً" },
+      "badges": [
+        { "en": "Oil-control", "ar": "يتحكم في الدهون" },
+        { "en": "Non-comedogenic", "ar": "لا يسد المسام" },
+        { "en": "Fragrance-free", "ar": "خالٍ من العطور" }
+      ],
+      "features": [
+        { "en": "Lightweight texture", "ar": "قوام خفيف" },
+        { "en": "Climate adapted", "ar": "متكيّف مع المناخ" },
+        { "en": "Barrier support", "ar": "يدعم حاجز البشرة" }
+      ],
+      "texture": { "en": "Lightweight cream", "ar": "كريم خفيف القوام" },
+      "description": {
+        "en": "A daily moisturizer with Ceramides, Niacinamide and Zinc PCA. Hydrates without heaviness, controls oil, and strengthens the skin barrier — protecting against environmental stress.",
+        "ar": "مرطب يومي يحتوي على السيراميدات، النياسيناميد، و Zinc PCA. يرطب بملمس خفيف، يساعد على التحكم في إفراز الدهون، ويعزز حاجز البشرة — لحماية البشرة من العوامل البيئية."
+      },
+      "description_note": "AR pack text reads 'للحماية البشرة'; corrected to 'لحماية البشرة' for web. Flag for pack reprint.",
+      "how_to_use": {
+        "en": "Apply 1–2 pumps to clean, dry skin, morning and night. Use after serum. Follow with sunscreen in the morning.",
+        "ar": "يوضع 1–2 ضغطة على بشرة نظيفة وجافة صباحاً ومساءً بعد السيروم. يُستخدم قبل واقي الشمس في الصباح."
+      },
+      "key_ingredients": ["ceramides", "niacinamide", "zinc-pca"],
+      "concerns": ["barrier", "oiliness", "dehydration", "pollution"],
+      "inci": "Aqua, Glycerin, Niacinamide, Propylene Glycol, Caprylic/Capric Triglyceride, Glyceryl Stearate, PEG-100 Stearate, Cetearyl Alcohol, Isohexadecane, Squalane, Dimethicone, Panthenol, Phenoxyethanol, Ammonium Acryloyldimethyltaurate/VP Copolymer, Zinc PCA, Sodium Hyaluronate, Sodium PCA, Ceramide NP, Ceramide AP, Ceramide EOP, Phytosphingosine, Sodium Lauroyl Lactylate, Ethylhexylglycerin, Cholesterol, Carbomer, Disodium EDTA, Xanthan Gum.",
+      "caution": {
+        "en": "For external use only. Avoid contact with eyes. Keep out of reach of children. Store in a cool, dry place.",
+        "ar": "للاستعمال الخارجي فقط. يُتجنّب ملامسة العينين. يُحفظ بعيداً عن متناول الأطفال. يُحفظ في مكان بارد وجاف."
+      },
+      "legal": "Manufactured by Integrated Cosmetics Industries for Nuu Group For Cosmetics. Made in Egypt. EDA notification no: COSMTOL26129668.",
+      "forecast_reasons": {
+        "sun": { "en": "Hydrates without heaviness under SPF.", "ar": "يرطّب بملمس خفيف تحت واقي الشمس." },
+        "city": { "en": "Strengthens the skin barrier against environmental stress.", "ar": "يعزز حاجز البشرة في مواجهة العوامل البيئية." },
+        "humidity": { "en": "Lightweight. Controls oil.", "ar": "خفيف القوام ويتحكم في الدهون." },
+        "ac": { "en": "Ceramides support a barrier that dry, cooled air works against.", "ar": "السيراميدات تدعم حاجز البشرة في الهواء المكيّف الجاف." },
+        "heat": { "en": "Hydrates without heaviness.", "ar": "يرطّب دون ثقل." }
+      },
+      "forecast_reasons_note": "'ac' reason is bts-draft phrasing built on the pack claim 'strengthens the skin barrier' — CONFIRM."
+    },
+    {
+      "handle": "daily-defense-sunscreen-spf-50",
+      "step": 4,
+      "step_label": { "en": "Defense", "ar": "حماية" },
+      "color": "#FFA37B",
+      "color_name": "Pastel orange · Pantone 163 U",
+      "title": { "en": "Daily Defense Sunscreen SPF 50", "ar": "واقي الشمس ديلي ديفنس SPF 50" },
+      "title_source": "Shopify title. Figma pack reads 'Daily Defense Sunscreen SPF 50+'; older render reads 'Daily Face Sunscreen SPF 50'. CONFIRM final name and SPF notation.",
+      "hero_ingredients": { "en": "UVA + UVB Filters", "ar": "فلاتر UVA + UVB" },
+      "benefit": { "en": "Invisible. Lightweight. Fast-absorbing.", "ar": "غير مرئي. خفيف. سريع الامتصاص." },
+      "benefit_source": "pack (EN) / bts-draft (AR)",
+      "skin_type": { "en": "For all skin types", "ar": "لجميع أنواع البشرة" },
+      "size": "50 g",
+      "when": { "en": "AM — reapply every 2 hours", "ar": "صباحاً — يُعاد وضعه كل ساعتين" },
+      "badges": [
+        { "en": "Hydrating", "ar": "مرطّب" },
+        { "en": "No white cast", "ar": "بدون أثر أبيض" },
+        { "en": "Non-greasy", "ar": "غير دهني" }
+      ],
+      "features": [
+        { "en": "Silky texture", "ar": "قوام حريري" },
+        { "en": "Climate adapted", "ar": "متكيّف مع المناخ" },
+        { "en": "UV protection", "ar": "حماية من الأشعة فوق البنفسجية" }
+      ],
+      "texture": { "en": "Silky, fast-absorbing", "ar": "قوام حريري سريع الامتصاص" },
+      "description": {
+        "en": "A daily SPF 50 sunscreen with Niacinamide, Panthenol and Bisabolol. Provides broad-spectrum UVA/UVB protection in a lightweight, fast-absorbing formula with no white cast.",
+        "ar": "واقي شمس يومي يحتوي على النياسيناميد، البانثينول والبيسابولول. يوفر حماية واسعة من أشعة UVA وUVB، ويرطب البشرة ويتركها منتعشة ومحمية، بتركيبة خفيفة وغير دهنية لا تترك أثراً أبيض على البشرة."
+      },
+      "how_to_use": {
+        "en": "Apply evenly to face and neck every morning as the last step in your routine. Reapply every 2 hours.",
+        "ar": "يوضع بكمية كافية على الوجه والرقبة صباحاً كآخر خطوة في الروتين اليومي. يُعاد وضعه كل ساعتين."
+      },
+      "key_ingredients": ["uv-filters", "niacinamide", "panthenol", "bisabolol"],
+      "concerns": ["sun", "dehydration"],
+      "inci": "Aqua, C12-15 Alkyl Benzoate, Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine, Ethylhexyl Methoxycinnamate, Ethylhexyl Salicylate, Bis-PEG/PPG-16/16 PEG/PPG-16/16 Dimethicone, Propylene Glycol, Glycerin, Methyl Methacrylate Crosspolymer, Niacinamide, Cetearyl Alcohol, Ammonium Acryloyldimethyltaurate/VP Copolymer, Caprylic/Capric Triglyceride, Caprylyl Methicone, Dimethicone, Phenoxyethanol, Panthenol, Bisabolol, Aloe Barbadensis Leaf Extract, Tocopheryl Acetate, Triethanolamine, Ethylhexylglycerin, EDTA.",
+      "caution": {
+        "en": "For external use only. Avoid contact with eyes. Keep out of reach of children. Store in a cool, dry place.",
+        "ar": "للاستعمال الخارجي فقط. يُتجنّب ملامسة العينين. يُحفظ بعيداً عن متناول الأطفال. يُحفظ في مكان بارد وجاف."
+      },
+      "legal": "Manufactured by Integrated Cosmetics Industries for Nuu Group For Cosmetics. Made in Egypt. EDA notification no: (pending on label — CONFIRM).",
+      "forecast_reasons": {
+        "sun": { "en": "Broad-spectrum UVA/UVB protection. Reapply every 2 hours.", "ar": "حماية واسعة من أشعة UVA وUVB. يُعاد وضعه كل ساعتين." },
+        "city": { "en": "Daily SPF 50 — the last step, every morning.", "ar": "حماية SPF 50 يومية — آخر خطوة كل صباح." },
+        "humidity": { "en": "Lightweight and non-greasy.", "ar": "خفيف وغير دهني." },
+        "ac": { "en": "Hydrating SPF — UV still reaches you through windows.", "ar": "واقٍ مرطّب — الأشعة تصلك حتى عبر النوافذ." },
+        "heat": { "en": "Fast-absorbing, no white cast.", "ar": "سريع الامتصاص وبدون أثر أبيض." }
+      },
+      "forecast_reasons_note": "'ac' reason includes general UVA-through-glass education (bts-draft) — CONFIRM with regulatory."
+    }
+  ],
+  "ingredients": [
+    { "id": "zinc-pca", "name": { "en": "Zinc PCA", "ar": "زنك PCA" }, "inci": "Zinc PCA", "role": { "en": "Zinc salt of PCA, a component of skin's natural moisturizing factor. Used in oil-balancing formulas.", "ar": "ملح الزنك لحمض PCA، أحد مكونات عامل الترطيب الطبيعي في البشرة. يُستخدم في التركيبات الموازِنة للدهون." }, "in": ["daily-reset-cleanser", "daily-barrier-moisturizing-cream"] },
+    { "id": "centella-asiatica", "name": { "en": "Centella", "ar": "سنتيلا" }, "inci": "Centella Asiatica Extract", "role": { "en": "Plant extract (gotu kola) traditionally used in soothing skincare.", "ar": "مستخلص نباتي يُستخدم تقليدياً في منتجات العناية المهدّئة للبشرة." }, "in": ["daily-reset-cleanser"] },
+    { "id": "panthenol", "name": { "en": "Panthenol", "ar": "بانثينول" }, "inci": "Panthenol", "role": { "en": "Pro-vitamin B5. A humectant that helps skin hold on to water.", "ar": "بروفيتامين B5. مادة مرطبة تساعد البشرة على الاحتفاظ بالماء." }, "in": ["daily-reset-cleanser", "clarity-serum", "daily-barrier-moisturizing-cream", "daily-defense-sunscreen-spf-50"] },
+    { "id": "niacinamide", "name": { "en": "Niacinamide", "ar": "نياسيناميد" }, "inci": "Niacinamide", "role": { "en": "Vitamin B3. A multitasking ingredient used for oil balance and more even-looking tone.", "ar": "فيتامين B3. مكوّن متعدد المهام يُستخدم لموازنة الدهون وتوحيد مظهر لون البشرة." }, "in": ["clarity-serum", "daily-barrier-moisturizing-cream", "daily-defense-sunscreen-spf-50"] },
+    { "id": "tranexamic-acid", "name": { "en": "Tranexamic Acid", "ar": "ترانيكساميك أسيد" }, "inci": "Tranexamic Acid", "role": { "en": "Used in cosmetic formulas targeting the appearance of dark spots and uneven tone.", "ar": "يُستخدم في التركيبات التجميلية التي تستهدف مظهر التصبغات وعدم توحّد اللون." }, "in": ["clarity-serum"] },
+    { "id": "sodium-hyaluronate", "name": { "en": "Hyaluronic Acid", "ar": "هيالورونيك أسيد" }, "inci": "Sodium Hyaluronate", "role": { "en": "Salt form of hyaluronic acid. A humectant that binds water for hydration.", "ar": "الصورة الملحية لحمض الهيالورونيك. مادة مرطبة ترتبط بالماء لترطيب البشرة." }, "in": ["clarity-serum", "daily-barrier-moisturizing-cream"] },
+    { "id": "ceramides", "name": { "en": "Ceramides", "ar": "سيراميدات" }, "inci": "Ceramide NP, Ceramide AP, Ceramide EOP", "role": { "en": "Lipids naturally found in skin's outer layer; a core part of the skin barrier.", "ar": "دهون موجودة طبيعياً في الطبقة الخارجية للبشرة، وجزء أساسي من حاجزها." }, "in": ["daily-barrier-moisturizing-cream"] },
+    { "id": "bisabolol", "name": { "en": "Bisabolol", "ar": "بيسابولول" }, "inci": "Bisabolol", "role": { "en": "A component of chamomile, used in comforting formulas.", "ar": "أحد مكونات البابونج، يُستخدم في التركيبات المريحة للبشرة." }, "in": ["daily-defense-sunscreen-spf-50"] },
+    { "id": "uv-filters", "name": { "en": "UVA + UVB filters", "ar": "فلاتر UVA + UVB" }, "inci": "Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine, Ethylhexyl Methoxycinnamate, Ethylhexyl Salicylate", "role": { "en": "The sunscreen filters that provide broad-spectrum UVA/UVB protection.", "ar": "فلاتر الحماية من الشمس التي توفر حماية واسعة من أشعة UVA وUVB." }, "in": ["daily-defense-sunscreen-spf-50"] }
+  ],
+  "concerns": [
+    { "id": "oiliness", "en": "Oiliness", "ar": "الدهون الزائدة" },
+    { "id": "dark_spots", "en": "Dark spots & uneven tone", "ar": "التصبغات وعدم توحّد اللون" },
+    { "id": "dehydration", "en": "Dehydration", "ar": "الجفاف" },
+    { "id": "barrier", "en": "Barrier stress", "ar": "إجهاد حاجز البشرة" },
+    { "id": "sun", "en": "Sun exposure", "ar": "التعرّض للشمس" },
+    { "id": "pollution", "en": "City & pollution", "ar": "المدينة والتلوث" }
+  ]
+}

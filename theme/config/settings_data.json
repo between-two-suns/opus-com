@@ -1,0 +1,29 @@
+{
+  "current": {
+    "logo_height": 40,
+    "color_step_1": "#7DB993",
+    "color_step_2": "#89C3C8",
+    "color_step_3": "#D7A6DA",
+    "color_step_4": "#FFA37B",
+    "color_ink": "#121318",
+    "color_daylight": "#F6F7F4",
+    "zero_price_coming_soon": true,
+    "show_payment_icons": true,
+    "show_cod": false,
+    "show_dynamic_checkout": false,
+    "cart_routine_upsell": true,
+    "signature_motion": true,
+    "predictive_search": true
+  },
+  "presets": {
+    "Default": {
+      "logo_height": 40,
+      "color_step_1": "#7DB993",
+      "color_step_2": "#89C3C8",
+      "color_step_3": "#D7A6DA",
+      "color_step_4": "#FFA37B",
+      "color_ink": "#121318",
+      "color_daylight": "#F6F7F4"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'newsletter.heading' | t
+  endif
+  assign text = section.settings.text
+  if text == blank
+    assign text = 'newsletter.text' | t
+  endif
+  assign form_id = 'Newsletter-' | append: section.id
+-%}
+<section class="section newsletter" aria-labelledby="NewsTitle-{{ section.id }}">
+  <div class="container newsletter__inner">
+    <div class="suns" aria-hidden="true">
+      <span class="sun sun--warm newsletter__sun-a"></span>
+      <span class="sun sun--cool newsletter__sun-b"></span>
+    </div>
+    <div class="newsletter__content">
+      <h2 class="t-display-l" id="NewsTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      <p class="t-lead">{{ text | escape }}</p>
+      {%- form 'customer', id: form_id, class: 'newsletter__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {%- if form.posted_successfully? -%}
+          <p class="form-status form-status--success" role="status">{{ 'newsletter.success' | t }}</p>
+        {%- else -%}
+          <div class="inline-form">
+            <div class="field">
+              <label class="visually-hidden" for="{{ form_id }}-email">{{ 'newsletter.email_label' | t }}</label>
+              <input
+                id="{{ form_id }}-email"
+                type="email"
+                name="contact[email]"
+                autocomplete="email"
+                placeholder="{{ 'newsletter.email_label' | t }}"
+                required
+                {% if form.errors %}aria-invalid="true" aria-describedby="{{ form_id }}-error"{% endif %}
+              >
+            </div>
+            <button type="submit" class="btn">{{ 'newsletter.submit' | t }}</button>
+          </div>
+          {%- if form.errors -%}
+            <p class="field__error" id="{{ form_id }}-error">{% render 'icon', name: 'alert', class: 'icon--sm' %}{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+          {%- endif -%}
+          <p class="t-xs t-muted">{{ 'newsletter.consent' | t }}</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.newsletter.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
+    { "type": "textarea", "id": "text", "label": "t:general_schema.text" }
+  ],
+  "presets": [{ "name": "t:sections.newsletter.name" }]
+}
+{% endschema %}

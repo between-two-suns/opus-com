@@ -1,0 +1,57 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign eyebrow = section.settings.eyebrow
+  if eyebrow == blank
+    assign eyebrow = 'sections.climate.eyebrow' | t
+  endif
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'sections.climate.heading' | t
+  endif
+  assign text = section.settings.text
+  if text == blank
+    assign text = 'sections.climate.text' | t
+  endif
+  assign conditions = 'sun,pollution,dust,humidity,heat,ac,change,everyday' | split: ','
+-%}
+<section class="section climate" aria-labelledby="ClimateTitle-{{ section.id }}">
+  <div class="suns" aria-hidden="true">
+    <span class="sun sun--warm climate__sun-a"></span>
+    <span class="sun sun--cool climate__sun-b"></span>
+  </div>
+  <div class="container climate__inner">
+    <div class="climate__head">
+      <p class="t-eyebrow">{{ eyebrow | escape }}</p>
+      <h2 class="t-display-l" id="ClimateTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      <p class="t-lead climate__text">{{ text | escape }}</p>
+      {%- if section.settings.link != blank -%}
+        <a class="link-arrow" href="{{ section.settings.link }}">{{ 'sections.climate.link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+      {%- endif -%}
+    </div>
+    <ol class="climate__list" role="list">
+      {%- for c in conditions -%}
+        {%- assign name_key = 'climate.' | append: c | append: '.name' -%}
+        {%- assign line_key = 'climate.' | append: c | append: '.line' -%}
+        <li class="climate__item reveal">
+          <span class="climate__index t-notation" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span>
+          <h3 class="climate__name t-display-s">{{ name_key | t }}</h3>
+          <p class="climate__line">{{ line_key | t }}</p>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.climate.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
+    { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
+    { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
+    { "type": "url", "id": "link", "label": "t:sections.climate.link_label" }
+  ],
+  "presets": [{ "name": "t:sections.climate.name" }]
+}
+{% endschema %}

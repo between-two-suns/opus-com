@@ -1,0 +1,131 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Between Two Suns — Opus",
+    "theme_version": "1.0.0",
+    "theme_author": "Between Two Suns",
+    "theme_documentation_url": "https://github.com/between-two-suns/opus-com",
+    "theme_support_url": "https://github.com/between-two-suns/opus-com"
+  },
+  {
+    "name": "t:settings_schema.brand.name",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:settings_schema.brand.logo_note"
+      },
+      {
+        "type": "range",
+        "id": "logo_height",
+        "min": 28,
+        "max": 64,
+        "step": 2,
+        "unit": "px",
+        "label": "t:settings_schema.brand.logo_height",
+        "default": 40
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "t:settings_schema.brand.favicon"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.colors.name",
+    "settings": [
+      { "type": "header", "content": "t:settings_schema.colors.sku_header" },
+      { "type": "paragraph", "content": "t:settings_schema.colors.sku_note" },
+      { "type": "color", "id": "color_step_1", "label": "t:settings_schema.colors.step_1", "default": "#7DB993" },
+      { "type": "color", "id": "color_step_2", "label": "t:settings_schema.colors.step_2", "default": "#89C3C8" },
+      { "type": "color", "id": "color_step_3", "label": "t:settings_schema.colors.step_3", "default": "#D7A6DA" },
+      { "type": "color", "id": "color_step_4", "label": "t:settings_schema.colors.step_4", "default": "#FFA37B" },
+      { "type": "header", "content": "t:settings_schema.colors.base_header" },
+      { "type": "color", "id": "color_ink", "label": "t:settings_schema.colors.ink", "default": "#121318" },
+      { "type": "color", "id": "color_daylight", "label": "t:settings_schema.colors.daylight", "default": "#F6F7F4" }
+    ]
+  },
+  {
+    "name": "t:settings_schema.commerce.name",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "zero_price_coming_soon",
+        "label": "t:settings_schema.commerce.zero_price",
+        "info": "t:settings_schema.commerce.zero_price_info",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "t:settings_schema.commerce.payment_icons",
+        "info": "t:settings_schema.commerce.payment_icons_info",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_cod",
+        "label": "t:settings_schema.commerce.cod",
+        "info": "t:settings_schema.commerce.cod_info",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "shipping_note",
+        "label": "t:settings_schema.commerce.shipping_note",
+        "info": "t:settings_schema.commerce.shipping_note_info"
+      },
+      {
+        "type": "text",
+        "id": "returns_note",
+        "label": "t:settings_schema.commerce.returns_note",
+        "info": "t:settings_schema.commerce.factual_info"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_dynamic_checkout",
+        "label": "t:settings_schema.commerce.dynamic_checkout",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_routine_upsell",
+        "label": "t:settings_schema.commerce.cart_upsell",
+        "default": true
+      },
+      {
+        "type": "collection",
+        "id": "routine_collection",
+        "label": "t:settings_schema.commerce.routine_collection",
+        "info": "t:settings_schema.commerce.routine_collection_info"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.motion.name",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "signature_motion",
+        "label": "t:settings_schema.motion.signature",
+        "info": "t:settings_schema.motion.signature_info",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.social.name",
+    "settings": [
+      { "type": "url", "id": "social_instagram", "label": "Instagram" },
+      { "type": "url", "id": "social_tiktok", "label": "TikTok" },
+      { "type": "url", "id": "social_facebook", "label": "Facebook" },
+      { "type": "url", "id": "social_youtube", "label": "YouTube" }
+    ]
+  },
+  {
+    "name": "t:settings_schema.search.name",
+    "settings": [
+      { "type": "checkbox", "id": "predictive_search", "label": "t:settings_schema.search.predictive", "default": true }
+    ]
+  }
+]

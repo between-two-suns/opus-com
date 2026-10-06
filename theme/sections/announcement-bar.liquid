@@ -1,0 +1,43 @@
+{%- if section.settings.show -%}
+  <div class="announcement" role="region" aria-label="{{ 'general.announcement' | t }}">
+    <div class="container announcement__inner">
+      {%- if section.blocks.size == 0 -%}
+        <p>{{ 'announcement.default_1' | t }}</p>
+        <span class="announcement__dot" aria-hidden="true"></span>
+        <p>{{ 'announcement.default_2' | t }}</p>
+      {%- endif -%}
+      {%- for block in section.blocks -%}
+        {%- if forloop.index > 1 -%}<span class="announcement__dot" aria-hidden="true"></span>{%- endif -%}
+        <p {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">{{ block.settings.text | escape }}</a>
+          {%- else -%}
+            {{ block.settings.text | escape }}
+          {%- endif -%}
+        </p>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.announcement.name",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "checkbox", "id": "show", "label": "t:sections.announcement.show", "default": true },
+    { "type": "paragraph", "content": "t:sections.announcement.fallback_info" }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "t:sections.announcement.message",
+      "settings": [
+        { "type": "text", "id": "text", "label": "t:sections.announcement.text", "info": "t:sections.announcement.text_info" },
+        { "type": "url", "id": "link", "label": "t:sections.announcement.link" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:sections.announcement.name" }]
+}
+{% endschema %}

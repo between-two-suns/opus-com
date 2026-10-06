@@ -1,0 +1,37 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign blog = section.settings.blog | default: blogs.journal
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'sections.journal.heading' | t
+  endif
+-%}
+{%- if blog.articles_count > 0 -%}
+<section class="section journal" aria-labelledby="JournalTitle-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{{ 'sections.journal.eyebrow' | t }}</p>
+        <h2 class="t-display-m" id="JournalTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      </div>
+      <a class="link-arrow" href="{{ blog.url }}">{{ 'sections.journal.view_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+    </div>
+    <ul class="journal__grid" role="list">
+      {%- for article in blog.articles limit: 3 -%}
+        <li>{% render 'article-card', article: article %}</li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.journal.name",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "t:sections.journal.blog" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" }
+  ],
+  "presets": [{ "name": "t:sections.journal.name" }]
+}
+{% endschema %}

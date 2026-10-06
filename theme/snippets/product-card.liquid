@@ -1,0 +1,97 @@
+{%- comment -%}
+  Product card. Colour, step and copy come from the product (tags/metafields), never hard-coded.
+  Params: product (required), section_id, loading ('lazy'|'eager'), sizes, show_add (bool, default true), heading_tag
+{%- endcomment -%}
+{%- liquid
+  capture step
+    render 'product-step', product: product
+  endcapture
+  assign step = step | strip | plus: 0
+  assign step_label = product.metafields.bts.step_label.value
+  if step_label == blank
+    for tag in product.tags
+      assign head = tag | slice: 0, 2
+      if head == '01' or head == '02' or head == '03' or head == '04'
+        assign step_label = tag | remove_first: head | strip
+        break
+      endif
+    endfor
+  endif
+  assign cutout = product.metafields.bts.cutout.value
+  assign variant = product.selected_or_first_available_variant
+  assign coming_soon = false
+  if variant.price == 0 and settings.zero_price_coming_soon
+    assign coming_soon = true
+  endif
+  assign heading_tag = heading_tag | default: 'h3'
+  assign img_loading = loading | default: 'lazy'
+  assign img_sizes = sizes | default: '(min-width: 1100px) 22vw, (min-width: 750px) 45vw, 46vw'
+  assign uid = section_id | append: '-' | append: product.id
+  assign concerns = product.metafields.bts.concerns.value | join: ' '
+-%}
+<article class="card" data-step="{{ step }}" data-concerns="{{ concerns | escape }}" aria-labelledby="CardTitle-{{ uid }}">
+  <div class="card__media{% unless cutout %} card__media--photo{% endunless %}">
+    {%- if step > 0 -%}
+      <span class="card__step">
+        <span class="step-num" aria-hidden="true">0{{ step }}</span>
+      </span>
+    {%- endif -%}
+    {%- if cutout -%}
+      <span class="card__sun" aria-hidden="true"></span>
+      {{ cutout | image_url: width: 600 | image_tag: loading: img_loading, widths: '200,300,400,600', sizes: img_sizes, alt: product.title }}
+    {%- elsif product.featured_media -%}
+      {{ product.featured_media | image_url: width: 900 | image_tag: loading: img_loading, widths: '300,450,600,900', sizes: img_sizes, alt: product.featured_media.alt | default: product.title }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </div>
+  <div class="card__body">
+    {%- if step > 0 -%}
+      <span class="step-tag">{{ 'product.step' | t: number: step }}{% if step_label != blank %} · {{ step_label }}{% endif %}</span>
+    {%- endif -%}
+    <{{ heading_tag }} class="card__title" id="CardTitle-{{ uid }}">
+      <a href="{{ product.url }}">{{ product.title | escape }}</a>
+    </{{ heading_tag }}>
+    {%- if product.metafields.bts.benefit != blank -%}
+      <p class="card__benefit">{{ product.metafields.bts.benefit }}</p>
+    {%- endif -%}
+    <div class="card__meta">
+      <span>
+        {%- render 'price', product: product, variant: variant, class: 'card__price' -%}
+        {%- if product.metafields.bts.size != blank -%}
+          <span class="card__size u-ltr"> · {{ product.metafields.bts.size }}</span>
+        {%- endif -%}
+      </span>
+    </div>
+  </div>
+  {%- unless show_add == false -%}
+    <div class="card__quick">
+      {%- if product.has_only_default_variant -%}
+        <product-form>
+          <form method="post" action="{{ routes.cart_add_url }}" class="card__form" novalidate>
+            <input type="hidden" name="id" value="{{ variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button
+              type="submit"
+              class="btn btn--secondary btn--small btn--full card__add"
+              {% if coming_soon or variant.available == false %}disabled{% endif %}
+              aria-describedby="CardTitle-{{ uid }}"
+            >
+              <span class="btn__label">
+                {%- if coming_soon -%}
+                  {{ 'product.coming_soon' | t }}
+                {%- elsif variant.available == false -%}
+                  {{ 'product.sold_out' | t }}
+                {%- else -%}
+                  {{ 'product.add_to_cart' | t }}
+                {%- endif -%}
+              </span>
+            </button>
+          </form>
+        </product-form>
+      {%- else -%}
+        <a class="btn btn--secondary btn--small btn--full card__add" href="{{ product.url }}" aria-describedby="CardTitle-{{ uid }}">{{ 'product.choose_options' | t }}</a>
+      {%- endif -%}
+    </div>
+  {%- endunless -%}
+</article>

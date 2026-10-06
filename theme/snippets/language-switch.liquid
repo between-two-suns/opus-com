@@ -1,0 +1,23 @@
+{%- comment -%}
+  One-tap EN ⇄ AR switch using Shopify's localization form (works without JS).
+  Renders only when the store has more than one published language.
+{%- endcomment -%}
+{%- if localization.available_languages.size > 1 -%}
+  {%- form 'localization', id: form_id, class: 'lang-form' -%}
+    <input type="hidden" name="return_to" value="{{ request.path }}">
+    {%- for language in localization.available_languages -%}
+      {%- unless language.iso_code == localization.language.iso_code -%}
+        <button
+          type="submit"
+          name="language_code"
+          value="{{ language.iso_code }}"
+          class="{{ class | default: 'header-icon lang-link' }}"
+          lang="{{ language.iso_code }}"
+          aria-label="{{ 'general.language.switch_to' | t: language: language.endonym_name }}"
+        >
+          <span class="{% if language.iso_code == 'ar' %}lang-link__ar{% endif %}">{{ language.endonym_name | capitalize }}</span>
+        </button>
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endform -%}
+{%- endif -%}

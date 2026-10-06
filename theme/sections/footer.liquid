@@ -1,0 +1,168 @@
+{%- liquid
+  assign root = routes.root_url
+  if root == '/'
+    assign root = ''
+  endif
+  assign tagline = section.settings.tagline | default: ''
+  if tagline == blank
+    assign tagline = 'footer.tagline' | t
+  endif
+  assign description = section.settings.description
+  if description == blank
+    assign description = 'footer.description' | t
+  endif
+  assign news_heading = section.settings.newsletter_heading
+  if news_heading == blank
+    assign news_heading = 'newsletter.heading' | t
+  endif
+  assign news_text = section.settings.newsletter_text
+  if news_text == blank
+    assign news_text = 'newsletter.text' | t
+  endif
+-%}
+<footer class="site-footer" aria-labelledby="FooterTitle">
+  <h2 class="visually-hidden" id="FooterTitle">{{ 'footer.title' | t }}</h2>
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a href="{{ routes.root_url }}" aria-label="{{ 'header.home' | t: shop: shop.name }}">{% render 'logo', variant: 'wordmark' %}</a>
+        <p class="t-lead">{{ tagline | escape }}</p>
+        <p class="t-small" style="color: rgba(255,255,255,.72)">{{ description | escape }}</p>
+        {%- liquid
+          assign has_social = false
+          if settings.social_instagram != blank or settings.social_tiktok != blank or settings.social_facebook != blank or settings.social_youtube != blank
+            assign has_social = true
+          endif
+        -%}
+        {%- if has_social -%}
+          <ul class="social" role="list">
+            {%- if settings.social_instagram != blank -%}<li><a href="{{ settings.social_instagram }}" rel="noopener" target="_blank">{% render 'icon', name: 'instagram' %}<span class="visually-hidden">Instagram {{ 'general.opens_new_window' | t }}</span></a></li>{%- endif -%}
+            {%- if settings.social_tiktok != blank -%}<li><a href="{{ settings.social_tiktok }}" rel="noopener" target="_blank">{% render 'icon', name: 'tiktok' %}<span class="visually-hidden">TikTok {{ 'general.opens_new_window' | t }}</span></a></li>{%- endif -%}
+            {%- if settings.social_facebook != blank -%}<li><a href="{{ settings.social_facebook }}" rel="noopener" target="_blank">{% render 'icon', name: 'facebook' %}<span class="visually-hidden">Facebook {{ 'general.opens_new_window' | t }}</span></a></li>{%- endif -%}
+            {%- if settings.social_youtube != blank -%}<li><a href="{{ settings.social_youtube }}" rel="noopener" target="_blank">{% render 'icon', name: 'youtube' %}<span class="visually-hidden">YouTube {{ 'general.opens_new_window' | t }}</span></a></li>{%- endif -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      <div class="footer__cols">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'menu' -%}
+            <div class="footer__col" {{ block.shopify_attributes }}>
+              {%- liquid
+                assign col_heading = block.settings.heading
+                if col_heading == blank
+                  assign col_key = 'footer.headings.' | append: block.settings.fallback
+                  assign col_heading = col_key | t
+                endif
+              -%}
+              <h2>{{ col_heading | escape }}</h2>
+              <ul role="list">
+                {%- if block.settings.menu.links.size > 0 -%}
+                  {%- for link in block.settings.menu.links -%}
+                    <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+                  {%- endfor -%}
+                {%- else -%}
+                  {%- case block.settings.fallback -%}
+                    {%- when 'shop' -%}
+                      <li><a href="{{ routes.all_products_collection_url }}">{{ 'footer.links.shop_all' | t }}</a></li>
+                      <li><a href="{{ root }}/pages/routines">{{ 'footer.links.routines' | t }}</a></li>
+                      <li><a href="{{ root }}/pages/scan">{{ 'footer.links.scan' | t }}</a></li>
+                    {%- when 'learn' -%}
+                      <li><a href="{{ root }}/pages/climate">{{ 'footer.links.climate' | t }}</a></li>
+                      <li><a href="{{ root }}/pages/ingredients">{{ 'footer.links.ingredients' | t }}</a></li>
+                      <li><a href="{{ root }}/pages/about">{{ 'footer.links.about' | t }}</a></li>
+                      <li><a href="{{ root }}/blogs/journal">{{ 'footer.links.journal' | t }}</a></li>
+                    {%- when 'help' -%}
+                      <li><a href="{{ root }}/pages/faq">{{ 'footer.links.faq' | t }}</a></li>
+                      <li><a href="{{ root }}/pages/shipping">{{ 'footer.links.shipping' | t }}</a></li>
+                      <li><a href="{{ root }}/pages/returns">{{ 'footer.links.returns' | t }}</a></li>
+                      <li><a href="{{ root }}/pages/contact">{{ 'footer.links.contact' | t }}</a></li>
+                  {%- endcase -%}
+                {%- endif -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="footer__news">
+        <h2 class="t-display-s">{{ news_heading | escape }}</h2>
+        <p class="t-small" style="color: rgba(255,255,255,.72)">{{ news_text | escape }}</p>
+        {%- form 'customer', id: 'FooterNewsletter', class: 'footer__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          {%- if form.posted_successfully? -%}
+            <p class="form-status form-status--success" role="status" tabindex="-1" autofocus>{{ 'newsletter.success' | t }}</p>
+          {%- else -%}
+            <div class="inline-form">
+              <div class="field">
+                <label class="visually-hidden" for="FooterNewsletterEmail">{{ 'newsletter.email_label' | t }}</label>
+                <input
+                  id="FooterNewsletterEmail"
+                  type="email"
+                  name="contact[email]"
+                  autocomplete="email"
+                  placeholder="{{ 'newsletter.email_label' | t }}"
+                  required
+                  {% if form.errors %}aria-invalid="true" aria-describedby="FooterNewsletterError"{% endif %}
+                >
+              </div>
+              <button type="submit" class="btn">{{ 'newsletter.submit' | t }}</button>
+            </div>
+            {%- if form.errors -%}
+              <p class="field__error" id="FooterNewsletterError">{% render 'icon', name: 'alert', class: 'icon--sm' %}{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+            {%- endif -%}
+            <p class="t-xs" style="color: rgba(255,255,255,.6)">{{ 'newsletter.consent' | t }}</p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ 'footer.copyright' | t }} · {{ 'footer.made_in' | t }}</p>
+      <nav aria-label="{{ 'footer.legal' | t }}">
+        <ul class="footer__legal" role="list">
+          {%- for policy in shop.policies -%}
+            <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+      {%- render 'language-switch', form_id: 'FooterLang', class: 'chip', show_label: true -%}
+      {%- render 'payment-icons' -%}
+    </div>
+  </div>
+  <div class="footer__mark" aria-hidden="true">{{ 'bts-icon.svg' | inline_asset_content }}</div>
+</footer>
+
+{% schema %}
+{
+  "name": "t:sections.footer.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
+    { "type": "text", "id": "tagline", "label": "t:sections.footer.tagline" },
+    { "type": "textarea", "id": "description", "label": "t:sections.footer.description" },
+    { "type": "text", "id": "newsletter_heading", "label": "t:sections.footer.newsletter_heading" },
+    { "type": "textarea", "id": "newsletter_text", "label": "t:sections.footer.newsletter_text" }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "t:sections.footer.menu_block",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:sections.footer.heading" },
+        { "type": "link_list", "id": "menu", "label": "t:sections.footer.menu" },
+        {
+          "type": "select",
+          "id": "fallback",
+          "label": "t:sections.footer.fallback",
+          "options": [
+            { "value": "shop", "label": "Shop" },
+            { "value": "learn", "label": "Learn" },
+            { "value": "help", "label": "Help" }
+          ],
+          "default": "shop"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

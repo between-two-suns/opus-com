@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Signature 2 · Today's Skin Forecast
+   Ambient layers are opacity-only (composited). Each condition tints the light.
+   ========================================================================== */
+.forecast { position: relative; isolation: isolate; overflow: clip; display: block; padding-block: var(--section-y); scroll-margin-top: var(--header-h); }
+.forecast__ambient { position: absolute; inset: 0; z-index: -1; }
+.forecast__layer { position: absolute; inset: 0; opacity: 0; transition: opacity 900ms var(--ease-out); }
+.forecast__layer--base { opacity: 1; background: linear-gradient(180deg, #f3f6f4 0%, #eef2f1 100%); }
+.forecast__layer--sun { background: radial-gradient(60vmax 60vmax at 12% 8%, #ffd8bf 0%, rgba(255, 196, 160, 0.55) 35%, transparent 70%); }
+.forecast__layer--city { background: radial-gradient(70vmax 50vmax at 88% 20%, #e3d3e6 0%, rgba(215, 166, 218, 0.35) 40%, transparent 72%), linear-gradient(180deg, rgba(120, 118, 130, 0.08), transparent); }
+.forecast__layer--humidity { background: radial-gradient(70vmax 60vmax at 20% 95%, #cfeedd 0%, rgba(125, 185, 147, 0.4) 40%, transparent 72%); }
+.forecast__layer--ac { background: radial-gradient(70vmax 60vmax at 90% 90%, #d4eef1 0%, rgba(137, 195, 200, 0.5) 40%, transparent 72%); }
+.forecast__layer--heat { background: radial-gradient(80vmax 50vmax at 50% 0%, #ffcfb3 0%, rgba(255, 163, 123, 0.45) 38%, transparent 70%); }
+.forecast[data-sun='true'] .forecast__layer--sun,
+.forecast[data-city='true'] .forecast__layer--city,
+.forecast[data-humidity='true'] .forecast__layer--humidity,
+.forecast[data-ac='true'] .forecast__layer--ac,
+.forecast[data-heat='true'] .forecast__layer--heat { opacity: 1; }
+.forecast[data-time='pm'] .forecast__layer--base { background: linear-gradient(180deg, #e9ecf3 0%, #e4e6ef 100%); }
+
+.forecast__inner { display: grid; gap: clamp(32px, 5vw, 72px); }
+.forecast__panel { display: grid; gap: 18px; align-content: start; }
+.forecast__title { max-inline-size: 12ch; font-size: clamp(48px, 6.6vw, 104px); }
+:lang(ar) .forecast__title { max-inline-size: 14ch; }
+.forecast__intro { max-inline-size: 520px; }
+.forecast__instrument { display: grid; gap: 24px; margin-block-start: 8px; }
+.forecast fieldset { border: 0; margin: 0; padding: 0; min-inline-size: 0; }
+.forecast__legend { font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-block-end: 12px; padding: 0; }
+:lang(ar) .forecast__legend { text-transform: none; font-size: 14px; }
+
+.forecast__time { display: grid; grid-template-columns: auto 1fr; gap: 16px 20px; align-items: center; }
+.forecast__time .forecast__legend { grid-column: 1 / -1; margin: 0; }
+.forecast__dial { position: relative; inline-size: 132px; aspect-ratio: 200 / 110; color: var(--c-line-strong); }
+.forecast__arc { inline-size: 100%; block-size: 100%; overflow: visible; }
+.forecast__orb { position: absolute; inline-size: 26px; block-size: 26px; border-radius: 50%; inset-block-start: 0; left: 53px; transition: transform 900ms var(--ease-out), opacity 600ms; }
+.forecast__orb--am { background: radial-gradient(circle at 40% 40%, #fff1e6, var(--c-step-4)); box-shadow: 0 0 24px 6px rgba(255, 163, 123, 0.55); transform: rotate(-62deg); transform-origin: 13px 66px; }
+.forecast__orb--pm { background: radial-gradient(circle at 40% 40%, #f2fbfc, var(--c-step-2)); box-shadow: 0 0 22px 5px rgba(137, 195, 200, 0.6); transform: rotate(62deg); transform-origin: 13px 66px; opacity: 0.35; }
+.forecast[data-time='pm'] .forecast__orb--am { opacity: 0.35; }
+.forecast[data-time='pm'] .forecast__orb--pm { opacity: 1; }
+[dir='rtl'] .forecast__orb--am { transform: rotate(58deg); }
+[dir='rtl'] .forecast__orb--pm { transform: rotate(-58deg); }
+
+.forecast__seg { display: inline-flex; padding: 4px; border-radius: 999px; background: rgba(255, 255, 255, 0.7); border: 1px solid var(--c-line); justify-self: start; }
+.forecast__seg-btn { display: inline-flex; align-items: center; gap: 8px; min-block-size: 44px; padding: 0 18px; border-radius: 999px; border: 0; background: none; font-weight: 650; font-size: 15px; }
+.forecast__seg-btn[aria-checked='true'] { background: var(--c-ink); color: #fff; }
+
+.forecast__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.forecast__chip { background: rgba(255, 255, 255, 0.72); }
+.forecast__arrow { display: inline-block; font-family: var(--font-display); font-weight: 700; opacity: 0; translate: 0 4px; transition: opacity var(--dur-fast), translate var(--dur-fast); }
+.forecast__chip[aria-pressed='true'] .forecast__arrow { opacity: 1; translate: 0 0; }
+.forecast__readout { margin-block-start: 14px; min-block-size: 1em; color: var(--c-muted); }
+
+.forecast__routine { background: rgba(255, 255, 255, 0.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-radius: var(--radius-l); padding: clamp(16px, 2.4vw, 28px); box-shadow: 0 24px 60px -36px rgba(18, 19, 24, 0.35); align-self: start; }
+.forecast__routine-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-block-end: 8px; }
+.forecast__steps { list-style: none; margin: 0; padding: 0; }
+.forecast__step { position: relative; border-block-end: 1px solid var(--c-line); padding-block: 12px; transition: opacity var(--dur); }
+.forecast__step-row { display: grid; grid-template-columns: auto 56px 1fr auto; gap: 12px; align-items: center; cursor: pointer; }
+.no-js .forecast__step-row { grid-template-columns: 56px 1fr auto; }
+.forecast__check { inline-size: 22px; block-size: 22px; accent-color: var(--c-ink); margin: 0; }
+.forecast__thumb { position: relative; inline-size: 56px; block-size: 68px; border-radius: 12px; background: var(--sku-tint); overflow: hidden; }
+.forecast__thumb img { position: absolute; inset: 6%; inline-size: 88%; block-size: 88%; object-fit: contain; }
+.forecast__step-text { display: grid; gap: 3px; min-inline-size: 0; }
+.forecast__step-name { font-weight: 700; font-size: 15px; line-height: 1.25; }
+.forecast__reason { font-size: 13.5px; line-height: 1.4; color: var(--c-muted); }
+.forecast__step-side { display: grid; justify-items: end; gap: 4px; text-align: end; }
+.forecast__key { display: inline-flex; padding: 2px 8px; border-radius: 999px; background: var(--sku); color: var(--c-ink); font-weight: 700; white-space: nowrap; }
+.forecast__step-link { position: absolute; inset-block-end: 12px; inset-inline-end: 0; display: none; }
+.forecast__pm-note { padding-inline-start: 34px; margin-block-start: 6px; }
+.forecast__step.is-excluded .forecast__step-row { opacity: 0.45; }
+.forecast__step.is-key .forecast__step-name::after { content: ''; }
+.forecast__form { display: grid; gap: 10px; margin-block-start: 16px; }
+.forecast__fine { text-align: center; }
+
+@media (min-width: 750px) {
+  .forecast__step-link { display: inline; position: static; margin-inline-start: 102px; }
+}
+@media (min-width: 990px) {
+  .forecast__inner { grid-template-columns: 1fr 1fr; align-items: start; }
+  .forecast__panel { position: sticky; inset-block-start: calc(var(--header-h) + 32px); }
+}

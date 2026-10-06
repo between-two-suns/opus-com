@@ -1,0 +1,45 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'sections.concerns.heading' | t
+  endif
+  assign source = section.settings.collection | default: collections.all
+  assign target = source.url | default: routes.all_products_collection_url
+  assign concern_ids = 'oiliness,dark_spots,dehydration,barrier,sun,pollution' | split: ','
+-%}
+<section class="section section--tight concerns" aria-labelledby="ConcernsTitle-{{ section.id }}">
+  <div class="container concerns__inner">
+    <h2 class="t-heading concerns__title" id="ConcernsTitle-{{ section.id }}">{{ heading | escape }}</h2>
+    <ul class="concerns__list" role="list">
+      {%- for id in concern_ids -%}
+        {%- assign key = 'concerns.' | append: id -%}
+        <li>
+          <a class="chip concerns__chip" href="{{ target }}?concern={{ id }}">
+            <span>{{ key | t }}</span>
+            <span class="concerns__dots" aria-hidden="true">
+              {%- for product in source.products limit: 12 -%}
+                {%- if product.metafields.bts.concerns.value contains id -%}
+                  {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
+                  <span class="concerns__dot" data-step="{{ step | strip }}"></span>
+                {%- endif -%}
+              {%- endfor -%}
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.concerns.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
+    { "type": "collection", "id": "collection", "label": "t:sections.concerns.collection" }
+  ],
+  "presets": [{ "name": "t:sections.concerns.name" }]
+}
+{% endschema %}

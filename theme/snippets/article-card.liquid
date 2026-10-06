@@ -1,0 +1,16 @@
+<article class="article-card">
+  <a class="article-card__media" href="{{ article.url }}" tabindex="-1" aria-hidden="true">
+    {%- if article.image -%}
+      {{ article.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 990px) 30vw, 90vw', alt: '' }}
+    {%- else -%}
+      <span class="article-card__placeholder"><span class="sun sun--warm"></span><span class="sun sun--cool"></span></span>
+    {%- endif -%}
+  </a>
+  <div class="article-card__body">
+    <p class="t-xs t-muted">{{ article.published_at | time_tag: format: 'date' }}</p>
+    <h3 class="article-card__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></h3>
+    {%- if article.excerpt != blank -%}
+      <p class="t-small t-muted">{{ article.excerpt | strip_html | truncate: 140 }}</p>
+    {%- endif -%}
+  </div>
+</article>

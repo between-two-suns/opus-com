@@ -1,0 +1,177 @@
+{%- comment -%}
+  Cart drawer. Re-rendered through the Section Rendering API (?sections=cart-drawer) after every cart change.
+  Only [data-cart-root] is swapped so the <dialog> open state and focus are preserved.
+{%- endcomment -%}
+{%- liquid
+  assign upsell_source = settings.routine_collection | default: collections.all
+  assign in_cart_steps = ''
+  for item in cart.items
+    capture s
+      render 'product-step', product: item.product
+    endcapture
+    assign s = s | strip
+    assign in_cart_steps = in_cart_steps | append: '|' | append: s
+  endfor
+-%}
+<dialog class="drawer cart-drawer" id="CartDrawer" aria-labelledby="CartDrawerTitle">
+  <div class="cart-drawer__root" data-cart-root data-count="{{ cart.item_count }}" style="display:flex;flex-direction:column;block-size:100%;">
+    <div class="drawer__head">
+      <h2 class="drawer__title" id="CartDrawerTitle">
+        {{ 'cart.title' | t }}
+        {%- if cart.item_count > 0 %} <span class="t-muted">({{ cart.item_count }})</span>{% endif -%}
+      </h2>
+      <button type="button" class="header-icon" data-close-dialog>
+        {% render 'icon', name: 'close', class: 'icon--lg' %}
+        <span class="visually-hidden">{{ 'general.close' | t }}</span>
+      </button>
+    </div>
+
+    <div class="drawer__body">
+      {%- if cart.item_count == 0 -%}
+        <div class="cart-empty">
+          <p class="t-display-s">{{ 'cart.empty_title' | t }}</p>
+          <p class="t-muted">{{ 'cart.empty_text' | t }}</p>
+          <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.shop_routine' | t }}</a>
+        </div>
+      {%- else -%}
+        {%- comment -%} Routine progress: which of the four steps are in the bag {%- endcomment -%}
+        <div class="cart-routine">
+          <p class="t-small"><strong>{{ 'cart.routine_progress' | t }}</strong></p>
+          <div class="cart-progress" aria-hidden="true">
+            {%- for n in (1..4) -%}
+              {%- assign needle = '|' | append: n -%}
+              <span data-step="{{ n }}"{% if in_cart_steps contains needle %} class="is-on"{% endif %}></span>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <ul class="cart-lines" role="list">
+          {%- for item in cart.items -%}
+            {%- capture step -%}{% render 'product-step', product: item.product %}{%- endcapture -%}
+            {%- assign cutout = item.product.metafields.bts.cutout.value -%}
+            <li class="cart-line" data-step="{{ step | strip }}">
+              <a href="{{ item.url }}" class="cart-line__media{% unless cutout %} cart-line__media--photo{% endunless %}" tabindex="-1" aria-hidden="true">
+                {%- if cutout -%}
+                  {{ cutout | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '84px', alt: '' }}
+                {%- elsif item.image -%}
+                  {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '84px', alt: '' }}
+                {%- endif -%}
+              </a>
+              <div class="cart-line__info">
+                <div class="cart-line__top">
+                  <a class="cart-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+                  <span class="cart-line__price">{{ item.final_line_price | money }}</span>
+                </div>
+                {%- unless item.product.has_only_default_variant -%}
+                  <p class="t-xs t-muted">{{ item.variant.title | escape }}</p>
+                {%- endunless -%}
+                {%- if item.product.metafields.bts.size != blank -%}
+                  <p class="t-xs t-muted u-ltr" style="justify-self:start">{{ item.product.metafields.bts.size }}</p>
+                {%- endif -%}
+                {%- for discount in item.line_level_discount_allocations -%}
+                  <p class="t-xs" style="color:var(--c-success)">{{ discount.discount_application.title | escape }} (−{{ discount.amount | money }})</p>
+                {%- endfor -%}
+                <div class="cart-line__controls">
+                  <quantity-input class="qty qty--small">
+                    <button type="button" data-step="-1" aria-label="{{ 'cart.decrease' | t: product: item.product.title | escape }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
+                    <label class="visually-hidden" for="DrawerQty-{{ forloop.index }}">{{ 'cart.quantity_for' | t: product: item.product.title | escape }}</label>
+                    <input id="DrawerQty-{{ forloop.index }}" type="number" inputmode="numeric" min="0" value="{{ item.quantity }}" data-line-qty="{{ forloop.index }}">
+                    <button type="button" data-step="1" aria-label="{{ 'cart.increase' | t: product: item.product.title | escape }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
+                  </quantity-input>
+                  <a class="cart-line__remove" href="{{ item.url_to_remove }}" data-line-remove="{{ forloop.index }}">
+                    {{ 'cart.remove' | t }}<span class="visually-hidden"> {{ item.product.title | escape }}</span>
+                  </a>
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- if settings.cart_routine_upsell -%}
+          {%- capture upsell_items -%}
+            {%- for s in (1..4) -%}
+              {%- assign needle = '|' | append: s -%}
+              {%- unless in_cart_steps contains needle -%}
+                {%- for product in upsell_source.products limit: 12 -%}
+                  {%- capture ps -%}{% render 'product-step', product: product %}{%- endcapture -%}
+                  {%- assign ps = ps | strip | plus: 0 -%}
+                  {%- if ps == s and product.available -%}
+                    {%- assign v = product.selected_or_first_available_variant -%}
+                    {%- assign cutout = product.metafields.bts.cutout.value -%}
+                    <li class="cart-upsell__item" data-step="{{ s }}">
+                      <span class="cart-upsell__img" aria-hidden="true">
+                        {%- if cutout -%}
+                          {{ cutout | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '52px', alt: '' }}
+                        {%- elsif product.featured_media -%}
+                          {{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '52px', alt: '' }}
+                        {%- endif -%}
+                      </span>
+                      <span>
+                        <span class="step-tag">{{ 'product.step' | t: number: s }}</span><br>
+                        <a href="{{ product.url }}" class="t-small" style="font-weight:650;text-decoration:none">{{ product.title | escape }}</a>
+                      </span>
+                      {%- unless v.price == 0 and settings.zero_price_coming_soon -%}
+                        <product-form>
+                          <form method="post" action="{{ routes.cart_add_url }}">
+                            <input type="hidden" name="id" value="{{ v.id }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn--secondary btn--small" aria-label="{{ 'cart.add_item' | t: product: product.title | escape }}">
+                              <span class="btn__label">+ {{ v.price | money }}</span>
+                            </button>
+                          </form>
+                        </product-form>
+                      {%- endunless -%}
+                    </li>
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endunless -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if upsell_items != blank -%}
+            <div class="cart-upsell">
+              <p class="t-subheading">{{ 'cart.complete_routine' | t }}</p>
+              <ul class="cart-lines" role="list" style="gap:12px">{{ upsell_items }}</ul>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      <div class="drawer__foot">
+        <form action="{{ routes.cart_url }}" method="post" class="cart-totals">
+          {%- for discount in cart.cart_level_discount_applications -%}
+            <div class="cart-totals__row t-small" style="color:var(--c-success)">
+              <span>{{ discount.title | escape }}</span><span>−{{ discount.total_allocated_amount | money }}</span>
+            </div>
+          {%- endfor -%}
+          <div class="cart-totals__row">
+            <span class="t-subheading">{{ 'cart.subtotal' | t }}</span>
+            <span class="cart-totals__subtotal">{{ cart.total_price | money_with_currency }}</span>
+          </div>
+          <p class="cart-note-line">
+            {%- if cart.taxes_included -%}{{ 'cart.taxes_included' | t }}{%- else -%}{{ 'cart.taxes_excluded' | t }}{%- endif %}
+            {% if settings.shipping_note != blank %}{{ settings.shipping_note | escape }}{% else %}{{ 'cart.shipping_at_checkout' | t }}{% endif -%}
+          </p>
+          {%- if settings.show_cod -%}
+            <p class="cart-note-line">{% render 'icon', name: 'cash', class: 'icon--sm' %} {{ 'cart.cod_available' | t }}</p>
+          {%- endif -%}
+          <button type="submit" name="checkout" class="btn btn--full u-mt-s">
+            {% render 'icon', name: 'lock', class: 'icon--sm' %}
+            {{ 'cart.checkout' | t }}
+          </button>
+          <a class="btn btn--secondary btn--full btn--small" href="{{ routes.cart_url }}">{{ 'cart.view_cart' | t }}</a>
+          {%- render 'payment-icons', class: 'u-mt-s' -%}
+        </form>
+      </div>
+    {%- endif -%}
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "t:sections.cart_drawer.name",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,105 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign eyebrow = section.settings.eyebrow
+  if eyebrow == blank
+    assign eyebrow = 'sections.routine.eyebrow' | t
+  endif
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'sections.routine.heading' | t
+  endif
+  assign text = section.settings.text
+  if text == blank
+    assign text = 'sections.routine.text' | t
+  endif
+  assign source = section.settings.collection | default: collections.all
+
+  assign total = 0
+  assign any_unpriced = false
+  assign any_unavailable = false
+  assign bundle_ids = ''
+-%}
+<section class="section routine" id="routine" aria-labelledby="RoutineTitle-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{{ eyebrow | escape }}</p>
+        <h2 class="t-display-l" id="RoutineTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      </div>
+      <p class="t-lead t-muted routine__text">{{ text | escape }}</p>
+    </div>
+
+    <ul class="product-grid routine__grid" role="list">
+      {%- for s in (1..4) -%}
+        {%- for product in source.products limit: 12 -%}
+          {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
+          {%- assign step = step | strip | plus: 0 -%}
+          {%- if step == s -%}
+            {%- liquid
+              assign v = product.selected_or_first_available_variant
+              assign total = total | plus: v.price
+              if v.price == 0
+                assign any_unpriced = true
+              endif
+              unless v.available
+                assign any_unavailable = true
+              endunless
+              assign bundle_ids = bundle_ids | append: v.id | append: ','
+            -%}
+            <li class="routine__item">
+              {%- render 'product-card', product: product, section_id: section.id, loading: 'lazy' -%}
+            </li>
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </ul>
+
+    {%- assign bundle = bundle_ids | split: ',' -%}
+    {%- if section.settings.show_bundle and bundle.size > 1 -%}
+      <div class="bundle-bar">
+        <div class="bundle-bar__info">
+          <div class="bundle-bar__dots" aria-hidden="true">
+            <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span>
+          </div>
+          <div>
+            <p class="t-subheading">{{ 'sections.routine.bundle_title' | t: count: bundle.size }}</p>
+            <p class="t-small t-muted">{{ 'sections.routine.bundle_note' | t }}</p>
+          </div>
+        </div>
+        <product-form data-multi>
+          <form method="post" action="{{ routes.cart_add_url }}" class="bundle-bar__form">
+            {%- for id in bundle -%}
+              <input type="hidden" name="items[][id]" value="{{ id }}">
+              <input type="hidden" name="items[][quantity]" value="1">
+            {%- endfor -%}
+            {%- if any_unpriced and settings.zero_price_coming_soon -%}
+              <button type="button" class="btn" disabled><span class="btn__label">{{ 'product.coming_soon' | t }}</span></button>
+            {%- else -%}
+              <button type="submit" class="btn"{% if any_unavailable %} disabled{% endif %}>
+                <span class="btn__label">{{ 'sections.routine.bundle_cta' | t }}</span>
+                <span class="btn__sep" aria-hidden="true">·</span>
+                <span class="btn__price">{{ total | money }}</span>
+              </button>
+            {%- endif -%}
+          </form>
+        </product-form>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.routine.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
+    { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
+    { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
+    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" },
+    { "type": "checkbox", "id": "show_bundle", "label": "t:sections.routine.show_bundle", "default": true, "info": "t:sections.routine.show_bundle_info" }
+  ],
+  "presets": [{ "name": "t:sections.routine.name" }]
+}
+{% endschema %}

@@ -1,0 +1,74 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign eyebrow = section.settings.eyebrow
+  if eyebrow == blank
+    assign eyebrow = 'sections.ingredients.eyebrow' | t
+  endif
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'sections.ingredients.heading' | t
+  endif
+  assign text = section.settings.text
+  if text == blank
+    assign text = 'sections.ingredients.text' | t
+  endif
+  assign entries = shop.metaobjects.bts_ingredient.values
+  assign root = routes.root_url
+  if root == '/'
+    assign root = ''
+  endif
+-%}
+{%- if entries.size > 0 -%}
+<section class="section ingredients" aria-labelledby="IngTitle-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{{ eyebrow | escape }}</p>
+        <h2 class="t-display-l" id="IngTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      </div>
+      <div class="ingredients__aside">
+        <p class="t-lead t-muted">{{ text | escape }}</p>
+        <a class="link-arrow" href="{{ root }}/pages/ingredients">{{ 'sections.ingredients.link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+      </div>
+    </div>
+    <ul class="ingredients__grid" role="list">
+      {%- for entry in entries limit: section.settings.limit -%}
+        <li class="ing-tile reveal">
+          <div class="ing-tile__dots" aria-hidden="true">
+            {%- for p in entry.products.value -%}
+              {%- capture step -%}{% render 'product-step', product: p %}{%- endcapture -%}
+              <span data-step="{{ step | strip }}"></span>
+            {%- endfor -%}
+          </div>
+          <h3 class="ing-tile__name">{{ entry.name.value | escape }}</h3>
+          <p class="ing-tile__role">{{ entry.role.value | escape }}</p>
+          {%- if entry.products.value.size > 0 -%}
+            <p class="ing-tile__in t-xs">
+              <span class="t-muted">{{ 'sections.ingredients.found_in' | t }}</span>
+              {% for p in entry.products.value -%}
+                <a href="{{ p.url }}">{{ p.title | escape }}</a>{% unless forloop.last %}, {% endunless %}
+              {%- endfor %}
+            </p>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+{%- elsif request.design_mode -%}
+  <div class="container section--tight"><p class="t-muted">{{ 'sections.ingredients.empty_editor' | t }}</p></div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.ingredients.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:sections.ingredients.info" },
+    { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
+    { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
+    { "type": "range", "id": "limit", "label": "t:sections.ingredients.limit", "min": 3, "max": 12, "step": 1, "default": 6 }
+  ],
+  "presets": [{ "name": "t:sections.ingredients.name" }]
+}
+{% endschema %}

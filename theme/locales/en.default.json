@@ -1,0 +1,386 @@
+{
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "loading": "Loading",
+    "previous_slide": "Previous image",
+    "next_slide": "Next image",
+    "slide_n": "Image {{ index }} of {{ count }}",
+    "breadcrumbs": "Breadcrumbs"
+  },
+  "general": {
+    "meta": { "tags": "Tagged “{{ tags }}”", "page": "Page {{ page }}" },
+    "payment_methods": "Payment methods",
+    "language": { "switch_to": "Switch to {{ language }}" },
+    "close": "Close",
+    "announcement": "Announcement",
+    "opens_new_window": "(opens in a new window)",
+    "home": "Home",
+    "back_home": "Back to home",
+    "pagination": { "label": "Pagination", "previous": "Previous page", "next": "Next page", "page": "Page {{ number }}" }
+  },
+  "announcement": {
+    "default_1": "Climate-adapted skincare",
+    "default_2": "Made in Egypt"
+  },
+  "header": {
+    "menu": "Menu",
+    "primary_nav": "Main",
+    "home": "{{ shop }} — home",
+    "search": "Search",
+    "account": "Account",
+    "log_in": "Log in",
+    "nav": {
+      "shop": "Shop",
+      "shop_all": "Shop all",
+      "routines": "Routines",
+      "ingredients": "Ingredients",
+      "climate": "Climate",
+      "journal": "Journal",
+      "faq": "FAQ",
+      "contact": "Contact"
+    },
+    "mega": {
+      "title": "Explore",
+      "shop_all": "Shop all four",
+      "find_routine": "Find your routine",
+      "ingredients": "Ingredient glossary"
+    }
+  },
+  "search": {
+    "title": "Search",
+    "label": "Search the store",
+    "placeholder": "Search products, ingredients, concerns",
+    "popular": "Popular",
+    "popular_terms": "Niacinamide, SPF, Oily skin, Cleanser, Dark spots",
+    "no_results": "No results for “{{ terms }}”.",
+    "products": "Products",
+    "learn": "Learn",
+    "view_all": "See all results for “{{ terms }}”",
+    "results_count": "{{ count }} results for “{{ terms }}”",
+    "submit": "Search",
+    "empty_hint": "Try an ingredient (niacinamide), a concern (oiliness) or a step (SPF)."
+  },
+  "footer": {
+    "title": "Footer",
+    "tagline": "fresh skin. always.",
+    "description": "Climate-adapted skincare. Made for sun, pollution, changing environments & everyday skin.",
+    "headings": { "shop": "Shop", "learn": "Learn", "help": "Help" },
+    "links": {
+      "shop_all": "Shop all",
+      "routines": "Routines",
+      "scan": "Scan your pack",
+      "climate": "Climate-adapted",
+      "ingredients": "Ingredients",
+      "about": "About",
+      "journal": "Journal",
+      "faq": "FAQ",
+      "shipping": "Shipping",
+      "returns": "Returns",
+      "contact": "Contact"
+    },
+    "copyright": "Between Two Suns",
+    "made_in": "Made in Egypt",
+    "legal": "Legal"
+  },
+  "newsletter": {
+    "heading": "Get the forecast",
+    "text": "Launch news, routines and skin notes for changing weather. No spam.",
+    "success": "You’re in. Watch your inbox.",
+    "email_label": "Email address",
+    "submit": "Sign up",
+    "consent": "By signing up you agree to receive emails from Between Two Suns. Unsubscribe any time."
+  },
+  "concerns": {
+    "label": "Skin concern",
+    "all": "All",
+    "oiliness": "Oiliness",
+    "dark_spots": "Dark spots",
+    "dehydration": "Dehydration",
+    "barrier": "Barrier stress",
+    "sun": "Sun",
+    "pollution": "City & pollution"
+  },
+  "climate": {
+    "sun": { "name": "Sun", "line": "UV shows up every day, not just at the beach." },
+    "pollution": { "name": "Pollution", "line": "Traffic, smog and city air — every single day." },
+    "dust": { "name": "Dust", "line": "Fine dust settles on skin through the day." },
+    "humidity": { "name": "Humidity", "line": "Sticky air, shiny skin." },
+    "heat": { "name": "Heat", "line": "Sweat, oil and makeup that slides." },
+    "ac": { "name": "Air-con", "line": "Cool, dry air for hours on end." },
+    "change": { "name": "Change", "line": "Outside to inside, hot to cold, ten times a day." },
+    "everyday": { "name": "Everyday", "line": "Ordinary days need good skincare too." }
+  },
+  "sections": {
+    "hero": {
+      "eyebrow": "Climate-adapted skincare",
+      "line_1": "Whatever",
+      "line_2": "today does.",
+      "subcopy": "Made for sun, pollution, changing environments & everyday skin. Four steps, one routine.",
+      "cta_primary": "Shop the routine",
+      "cta_secondary": "Find your routine",
+      "lineup": "The four-step routine"
+    },
+    "ticker": {
+      "label": "Today’s conditions",
+      "items": "SUN ↑|DUST ↑|CITY ↑|HUMIDITY ↑|AC ALL DAY|HEAT ↑|WHATEVER TODAY DOES."
+    },
+    "concerns": { "heading": "What’s your skin dealing with?" },
+    "routine": {
+      "eyebrow": "The routine",
+      "heading": "Four steps. Every climate.",
+      "text": "Reset, clarity, barrier, defense. Each step has its colour — and its place in your day.",
+      "bundle_title": "The full routine · {{ count }} steps",
+      "bundle_note": "All four in one tap. The price shown is the sum of each product.",
+      "bundle_cta": "Add the full routine"
+    },
+    "climate": {
+      "eyebrow": "Climate-adapted",
+      "heading": "Your skin doesn’t live in one climate.",
+      "text": "Morning sun, a dusty commute, eight hours of air-con, a humid evening. Between Two Suns is skincare made for all of it — not just summer.",
+      "link": "Why climate-adapted"
+    },
+    "forecast": {
+      "eyebrow": "Routine finder",
+      "heading": "Today’s skin forecast",
+      "text": "Tell us what today looks like. We’ll show which steps matter most — and why, in the words on the bottle.",
+      "time_legend": "When",
+      "am": "Morning",
+      "pm": "Evening",
+      "conditions_legend": "Today’s conditions",
+      "conditions": { "sun": "Sun", "city": "City & dust", "humidity": "Humidity", "ac": "Air-con", "heat": "Heat" },
+      "readout_empty": "TAP WHAT TODAY LOOKS LIKE",
+      "readout": { "sun": "SUN", "city": "CITY", "humidity": "HUMIDITY", "ac": "AC", "heat": "HEAT" },
+      "routine_am": "Your morning routine",
+      "routine_pm": "Your evening routine",
+      "count": "{{ count }} of 4 steps",
+      "key_today": "Key today",
+      "view": "Details",
+      "pm_skip": "SPF is a morning step — skip it tonight.",
+      "cta": "Add today’s routine",
+      "fine": "You can change quantities in your bag before checkout."
+    },
+    "ingredients": {
+      "eyebrow": "Ingredients",
+      "heading": "What’s inside, in plain sight.",
+      "text": "Every ingredient on every bottle, listed in full. These are the key ones.",
+      "link": "Ingredient glossary",
+      "found_in": "In:",
+      "empty_editor": "Add entries to the “BTS ingredient” metaobject to show this section."
+    },
+    "facts": {
+      "label": "Facts about our products",
+      "items": {
+        "made_in_egypt": { "title": "Made in Egypt", "text": "Manufactured in Egypt, for the climate we live in." },
+        "inci": { "title": "Every ingredient, listed", "text": "The full INCI list is on every product page. Nothing hidden." },
+        "spf": { "title": "SPF 50, every morning", "text": "Broad-spectrum UVA/UVB protection with no white cast." },
+        "textures": { "title": "Light, not heavy", "text": "A gel cleanser and a lightweight cream for oily to combination skin." },
+        "routine": { "title": "Four steps, colour-coded", "text": "Mint, blue, lilac, peach — always in that order." }
+      }
+    },
+    "journal": {
+      "eyebrow": "Journal",
+      "heading": "Notes from between two suns",
+      "view_all": "All stories"
+    }
+  },
+  "product": {
+    "step": "Step {{ number }}",
+    "add_to_cart": "Add to bag",
+    "adding": "Adding…",
+    "sold_out": "Sold out",
+    "unavailable": "Unavailable",
+    "coming_soon": "Coming soon",
+    "price_coming_soon": "Price coming soon",
+    "choose_options": "Choose options",
+    "price": "Price",
+    "sale_price": "Sale price",
+    "regular_price": "Regular price",
+    "quantity": "Quantity",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "size": "Size",
+    "skin_type": "Skin type",
+    "when": "When to use",
+    "tax_included": "Tax included.",
+    "tax_excluded": "Tax calculated at checkout.",
+    "shipping_checkout": "Shipping calculated at checkout.",
+    "cod": "Cash on delivery available at checkout.",
+    "gallery": "Product images",
+    "texture": "Texture",
+    "feel": "How it feels",
+    "claims": "On the pack",
+    "sections": {
+      "what": "What it does",
+      "what_hint": "The formula, in plain words",
+      "ingredients": "Key ingredients",
+      "ingredients_hint": "What each one is there for",
+      "how": "How to use",
+      "who": "Who it’s for",
+      "inci": "Full ingredients (INCI)",
+      "inci_hint": "Exactly as printed on the pack",
+      "caution": "Caution & product info",
+      "caution_hint": "Safety, storage and regulatory details"
+    },
+    "routine": {
+      "eyebrow": "Your routine",
+      "heading": "Where it sits in your routine",
+      "this_step": "This step",
+      "am": "AM",
+      "pm": "PM",
+      "complete": "Complete the routine",
+      "complete_text": "Add the steps you don’t have yet.",
+      "complete_cta": "Add {{ count }} more",
+      "complete_done": "You’ve got the full routine in this view.",
+      "add": "Add",
+      "added": "In bag"
+    },
+    "faq_heading": "Questions",
+    "reviews_heading": "Reviews",
+    "sticky_label": "Quick add",
+    "view_full": "View full details",
+    "share": "Share"
+  },
+  "collection": {
+    "eyebrow": "Shop",
+    "count": "{{ count }} products",
+    "filter_label": "Filter by concern",
+    "showing": "Showing {{ count }} products",
+    "empty": "No products here yet.",
+    "routine_card_title": "Not sure where to start?",
+    "routine_card_text": "Answer one question about your day and we’ll build your routine.",
+    "routine_card_cta": "Open the forecast",
+    "sort": "Sort"
+  },
+  "cart": {
+    "added": "Added to your bag",
+    "error": "Something went wrong. Please try again.",
+    "count_label": "Bag ({{ count }})",
+    "title": "Your bag",
+    "empty_title": "Your bag is empty",
+    "empty_text": "Start with one step or add the whole routine.",
+    "shop_routine": "Shop the routine",
+    "routine_progress": "Your routine",
+    "decrease": "Decrease quantity of {{ product }}",
+    "increase": "Increase quantity of {{ product }}",
+    "quantity_for": "Quantity of {{ product }}",
+    "remove": "Remove",
+    "complete_routine": "Complete your routine",
+    "add_item": "Add {{ product }} to bag",
+    "subtotal": "Subtotal",
+    "taxes_included": "Taxes included.",
+    "taxes_excluded": "Taxes calculated at checkout.",
+    "shipping_at_checkout": "Shipping calculated at checkout.",
+    "cod_available": "Cash on delivery available at checkout.",
+    "checkout": "Check out",
+    "view_cart": "View bag",
+    "update": "Update",
+    "note": "Order note",
+    "product": "Product",
+    "total": "Total",
+    "continue": "Continue shopping"
+  },
+  "pages": {
+    "contact": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "message": "Message",
+      "send": "Send message",
+      "success": "Thanks — we’ve got your message and will reply by email.",
+      "required": "Required"
+    },
+    "faq": { "contact_cta": "Still have a question?", "contact_link": "Contact us" },
+    "scan": {
+      "eyebrow": "You scanned a Between Two Suns pack",
+      "heading": "Which one is in your hand?",
+      "text": "Pick your product for how to use it, where it sits in your routine, and the full ingredient list.",
+      "how": "How to use",
+      "open": "Open product page"
+    },
+    "ingredients": {
+      "search_label": "Filter ingredients",
+      "search_placeholder": "Type an ingredient",
+      "inci_label": "INCI name",
+      "in_products": "Found in",
+      "count": "{{ count }} ingredients"
+    },
+    "routines": {
+      "am_title": "Morning",
+      "pm_title": "Evening",
+      "steps": "{{ count }} steps"
+    }
+  },
+  "blog": {
+    "read_more": "Read",
+    "back": "Back to the journal",
+    "empty": "Stories are coming soon.",
+    "minutes": "{{ count }} min read",
+    "tagged": "Filed under"
+  },
+  "errors": {
+    "404_title": "This page went out in the sun.",
+    "404_text": "We couldn’t find what you were looking for. Try the routine, or search.",
+    "404_cta": "Shop the routine"
+  },
+  "password": {
+    "heading": "Opening soon",
+    "text": "Climate-adapted skincare, made in Egypt. Leave your email and we’ll tell you first.",
+    "login": "Enter with password",
+    "password": "Password",
+    "enter": "Enter",
+    "admin": "Are you the store owner?",
+    "admin_link": "Log in here"
+  },
+  "customer": {
+    "login": "Log in",
+    "email": "Email",
+    "password": "Password",
+    "forgot": "Forgot your password?",
+    "submit": "Sign in",
+    "create": "Create account",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "register": "Create account",
+    "account": "Your account",
+    "orders": "Orders",
+    "no_orders": "You haven’t placed any orders yet.",
+    "logout": "Log out",
+    "addresses": "Addresses",
+    "reset": "Reset your password",
+    "reset_text": "We’ll send you an email to reset your password.",
+    "send": "Send",
+    "cancel": "Cancel",
+    "guest": "Checking out as a guest is always available.",
+    "order": "Order {{ name }}",
+    "date": "Date",
+    "payment": "Payment",
+    "fulfillment": "Fulfillment",
+    "total": "Total",
+    "activate": "Activate account",
+    "confirm_password": "Confirm password",
+    "new_password": "New password",
+    "add_address": "Add address",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "default": "Default",
+    "address1": "Address",
+    "address2": "Apartment, suite, etc.",
+    "city": "City",
+    "country": "Country",
+    "province": "Governorate",
+    "zip": "Postal code",
+    "phone": "Phone",
+    "company": "Company",
+    "set_default": "Set as default address"
+  },
+  "gift_card": {
+    "title": "Your gift card",
+    "code": "Gift card code",
+    "copy": "Copy code",
+    "balance": "Remaining balance",
+    "expired": "This gift card has expired.",
+    "disabled": "This gift card is disabled.",
+    "shop": "Start shopping"
+  }
+}

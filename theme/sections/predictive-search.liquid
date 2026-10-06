@@ -1,0 +1,47 @@
+{%- comment -%} Rendered by /search/suggest?section_id=predictive-search {%- endcomment -%}
+<div data-predictive class="predictive">
+  {%- if predictive_search.performed -%}
+    {%- assign total = predictive_search.resources.products.size | plus: predictive_search.resources.articles.size | plus: predictive_search.resources.pages.size -%}
+    {%- if total == 0 -%}
+      <p class="predictive__empty">{{ 'search.no_results' | t: terms: predictive_search.terms }}</p>
+    {%- else -%}
+      {%- if predictive_search.resources.products.size > 0 -%}
+        <p class="t-eyebrow t-muted">{{ 'search.products' | t }}</p>
+        <ul class="predictive__products" role="list">
+          {%- for product in predictive_search.resources.products -%}
+            {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
+            {%- assign cutout = product.metafields.bts.cutout.value -%}
+            <li data-step="{{ step | strip }}">
+              <a class="predictive__product" href="{{ product.url }}">
+                <span class="predictive__img" aria-hidden="true">
+                  {%- if cutout -%}
+                    {{ cutout | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '48px', alt: '' }}
+                  {%- elsif product.featured_media -%}
+                    {{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '48px', alt: '' }}
+                  {%- endif -%}
+                </span>
+                <span>
+                  <span class="predictive__title">{{ product.title | escape }}</span>
+                  {%- if product.metafields.bts.benefit != blank -%}<span class="t-xs t-muted">{{ product.metafields.bts.benefit }}</span>{%- endif -%}
+                </span>
+                {%- render 'price', product: product, class: 't-small' -%}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if predictive_search.resources.articles.size > 0 or predictive_search.resources.pages.size > 0 -%}
+        <p class="t-eyebrow t-muted u-mt-m">{{ 'search.learn' | t }}</p>
+        <ul class="predictive__links" role="list">
+          {%- for page in predictive_search.resources.pages -%}
+            <li><a href="{{ page.url }}">{{ page.title | escape }}</a></li>
+          {%- endfor -%}
+          {%- for article in predictive_search.resources.articles -%}
+            <li><a href="{{ article.url }}">{{ article.title | escape }}</a></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <a class="link-arrow u-mt-m" href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}">{{ 'search.view_all' | t: terms: predictive_search.terms }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+    {%- endif -%}
+  {%- endif -%}
+</div>
