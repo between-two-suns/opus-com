@@ -26,6 +26,8 @@
   opacity: calc(1 - var(--p) * 0.85);
 }
 .hero__sun { --sun-size: max(88vmax, 900px); }
+.hero__field { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; opacity: 0; transition: opacity 1400ms var(--ease-out); }
+.hero__field.is-on { opacity: 1; }
 .hero__sun--a { inset-block-start: calc(var(--sun-size) * -0.52); inset-inline-start: calc(var(--sun-size) * -0.46); translate: calc(var(--p) * -18vw * var(--dir)) calc(var(--p) * -10vh); }
 .hero__sun--b { inset-block-end: calc(var(--sun-size) * -0.58); inset-inline-end: calc(var(--sun-size) * -0.48); translate: calc(var(--p) * 18vw * var(--dir)) calc(var(--p) * 8vh); }
 

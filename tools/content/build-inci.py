@@ -92,7 +92,7 @@ D = {
     "Disodium EDTA": ("chelating", "Disodium EDTA", "ثنائي صوديوم EDTA",
         "Binds trace metals in water to keep the formula stable.",
         "يرتبط بالمعادن الدقيقة في الماء للحفاظ على ثبات التركيبة.", None),
-    "Disodium Lauryl Sulfosuccinate": ("cleansing", "Disodium lauryl sulfosuccinate", "ثنائي صوديوم لوريل سلفوسكسينات",
+    "Sodium Lauryl Sulfosuccinate": ("cleansing", "Sodium lauryl sulfosuccinate", "صوديوم لوريل سلفوسكسينات",
         "Surfactant that lifts away oil and dirt.",
         "مادة منظّفة تزيل الدهون والأوساخ.", None),
     "EDTA": ("chelating", "EDTA", "EDTA",

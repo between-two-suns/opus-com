@@ -370,3 +370,19 @@ class ConcernFilter extends HTMLElement {
   }
 }
 customElements.define('concern-filter', ConcernFilter);
+
+/* ---------- Product morph between pages (cross-document View Transitions) ----------
+   The PDP's studio cutout is always named `pack-hero`; here we give the same name to the
+   bottle the visitor actually tapped, just before navigation, so only that one morphs. */
+if ('onpageswap' in window) {
+  const clear = () => $$('[data-vt]').forEach((el) => { el.style.viewTransitionName = ''; el.removeAttribute('data-vt'); });
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href*="/products/"]');
+    if (!link || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const scope = link.closest('.card, .hero__product, .routine-strip__item, .menu-tile, .forecast__step') || link;
+    const img = scope.querySelector('img');
+    clear();
+    if (img) { img.style.viewTransitionName = 'pack-hero'; img.setAttribute('data-vt', ''); }
+  }, true);
+  window.addEventListener('pageshow', clear);
+}

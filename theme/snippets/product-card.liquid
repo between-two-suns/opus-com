@@ -30,7 +30,7 @@
   assign concerns = product.metafields.bts.concerns.value | join: ' '
 -%}
 <article class="card" data-step="{{ step }}" data-concerns="{{ concerns | escape }}" aria-labelledby="CardTitle-{{ uid }}">
-  <div class="card__media{% unless cutout %} card__media--photo{% endunless %}">
+  <div class="card__media grain{% unless cutout %} card__media--photo{% endunless %}">
     {%- if step > 0 -%}
       <span class="card__step">
         <span class="step-num" aria-hidden="true">0{{ step }}</span>

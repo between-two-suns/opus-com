@@ -123,3 +123,18 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
   .pdp__info { gap: 16px; }
   .pdp__title { font-size: clamp(40px, 11vw, 56px); }
 }
+.gallery__cutout { view-transition-name: pack-hero; }
+.label-band { background: var(--sku-tint, var(--c-paper)); }
+.label-band__inner { display: grid; gap: clamp(20px, 3vw, 36px); }
+.label-band__head { display: grid; gap: 12px; max-inline-size: 640px; }
+.label-band__figure { margin: 0; display: grid; gap: 12px; }
+.label-band__scroller { overflow-x: auto; border-radius: var(--radius-l); box-shadow: 0 30px 60px -30px rgba(18, 19, 24, .35); scrollbar-width: thin; overscroll-behavior-inline: contain; }
+.label-band__scroller:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 4px; }
+.label-band__img { display: block; inline-size: 100%; block-size: auto; max-inline-size: none; }
+.label-band__hint { display: none; font-weight: 700; color: var(--c-ink); }
+@media (max-width: 989px) {
+  /* Natural size on small screens so the pack text stays legible; swipe to read. */
+  .label-band__img { inline-size: 1100px; }
+  .label-band__hint { display: inline; }
+  .label-band__scroller { margin-inline: calc(var(--gutter) * -1); border-radius: 0; }
+}

@@ -184,6 +184,11 @@
       "items": "Items",
       "items_info": "Separate items with |. Leave blank for the built-in bilingual forecast notation.",
       "name": "Forecast ticker"
+    },
+    "product_label": {
+      "name": "Product label",
+      "show": "Show label artwork",
+      "show_info": "Shows the printed label for the product's routine step. Turn off if the artwork doesn't match the pack being sold."
     }
   },
   "settings_schema": {

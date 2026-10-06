@@ -129,6 +129,7 @@
       {%- render 'language-switch', form_id: 'FooterLang', class: 'chip', show_label: true -%}
       {%- render 'payment-icons' -%}
     </div>
+    <p class="footer__closing" aria-hidden="true" data-text="{{ tagline | escape }}"></p>
   </div>
   <div class="footer__mark" aria-hidden="true">{{ 'bts-icon.svg' | inline_asset_content }}</div>
 </footer>

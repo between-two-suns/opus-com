@@ -1,0 +1,61 @@
+{%- comment -%}
+  The printed label, in full. Uses the brand's own label artwork (assets/label-*.webp, by routine step).
+  Every word on it is also on the page as text (description, how to use, INCI, caution), so the image is a
+  companion for reading the real pack, never the only source.
+{%- endcomment -%}
+{%- liquid
+  capture step
+    render 'product-step', product: product
+  endcapture
+  assign step = step | strip | plus: 0
+  assign labels = 'label-reset.webp,label-clarity.webp,label-barrier.webp,label-defense.webp' | split: ','
+  assign label_index = step | minus: 1
+  assign label = labels[label_index]
+  assign heights = '962,518,795,799' | split: ','
+  assign label_h = heights[label_index]
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'sections.product_label.heading' | t
+  endif
+-%}
+{%- if section.settings.show and step > 0 and label != blank -%}
+  {{ 'product.css' | asset_url | stylesheet_tag }}
+  <section class="section label-band" data-step="{{ step }}" aria-labelledby="LabelTitle-{{ section.id }}">
+    <div class="container label-band__inner">
+      <div class="label-band__head">
+        <p class="t-eyebrow">{{ 'sections.product_label.eyebrow' | t }}</p>
+        <h2 class="t-display-m" id="LabelTitle-{{ section.id }}">{{ heading | escape }}</h2>
+        <p class="t-muted">{{ 'sections.product_label.text' | t }}</p>
+      </div>
+      <figure class="label-band__figure">
+        <div class="label-band__scroller" tabindex="0" role="region" aria-label="{{ 'sections.product_label.scroller' | t: product: product.title | escape }}">
+          <img
+            src="{{ label | asset_url }}"
+            alt="{{ 'sections.product_label.alt' | t: product: product.title | escape }}"
+            width="1290"
+            height="{{ label_h }}"
+            loading="lazy"
+            decoding="async"
+            class="label-band__img"
+          >
+        </div>
+        <figcaption class="t-xs t-muted">
+          <span class="label-band__hint">{{ 'sections.product_label.hint' | t }}</span>
+          {{ 'sections.product_label.caption' | t }}
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.product_label.name",
+  "settings": [
+    { "type": "checkbox", "id": "show", "label": "t:sections.product_label.show", "info": "t:sections.product_label.show_info", "default": true },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" }
+  ],
+  "enabled_on": { "templates": ["product"] },
+  "presets": [{ "name": "t:sections.product_label.name" }]
+}
+{% endschema %}

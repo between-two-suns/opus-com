@@ -131,10 +131,17 @@
         "show_contact": true,
         "schema": false
       }
+    },
+    "label": {
+      "type": "product-label",
+      "settings": {
+        "show": true
+      }
     }
   },
   "order": [
     "main",
+    "label",
     "routine",
     "faq"
   ]

@@ -494,6 +494,10 @@ html.has-open-dialog { overflow: hidden; }
 .footer__legal { display: flex; flex-wrap: wrap; gap: 4px 18px; }
 .footer__legal a { min-block-size: 32px; display: inline-flex; align-items: center; }
 .footer__mark { position: absolute; inset-block-end: -6vw; inset-inline-end: -4vw; inline-size: 38vw; max-inline-size: 520px; color: rgba(255,255,255,.05); pointer-events: none; }
+/* Closing statement: the pack line, at display scale, quiet. */
+.footer__closing { position: relative; z-index: 1; margin: 0; padding-block: clamp(16px, 3vw, 40px) clamp(8px, 1.5vw, 20px); font-weight: 700; letter-spacing: -0.045em; line-height: 0.9; font-size: clamp(52px, 11.6vw, 184px); white-space: nowrap; color: rgba(255,255,255,.1); user-select: none; }
+.footer__closing::before { content: attr(data-text); }
+:lang(ar) .footer__closing { letter-spacing: 0; line-height: 1.25; font-size: clamp(44px, 9.6vw, 150px); }
 .payment-icons { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
 .payment-icons svg { block-size: 24px; inline-size: auto; }
 .social { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; }
@@ -606,4 +610,37 @@ html.has-open-dialog { overflow: hidden; }
 @media (min-width: 990px) {
   .faq__inner { grid-template-columns: 1fr 1.6fr; gap: 64px; }
   .faq__head { position: sticky; inset-block-start: calc(var(--header-h) + 24px); }
+}
+
+/* ---------- Page transitions (cross-document View Transitions; progressive) ---------- */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 260ms; animation-timing-function: var(--ease-out); }
+::view-transition-group(pack-hero) { animation-duration: 520ms; animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+::view-transition-old(pack-hero), ::view-transition-new(pack-hero) { block-size: 100%; inline-size: auto; object-fit: contain; margin-inline: auto; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+
+/* ---------- Display heading reveal (scroll-driven; transform + clip only, never hides) ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section .t-display-l, .section .t-display-m, .section-head h2 {
+      animation: heading-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 75%;
+    }
+  }
+}
+@keyframes heading-rise {
+  from { transform: translateY(0.35em); clip-path: inset(0 0 35% 0); }
+  to { transform: none; clip-path: inset(-0.2em -0.1em -0.3em -0.1em); }
+}
+
+/* ---------- Grain: tactile texture over flat gradients (static, no JS) ---------- */
+.grain { position: relative; isolation: isolate; }
+.grain > img, .card__media.grain img { z-index: 1; }
+.story__media.grain > img { position: relative; z-index: 1; }
+.grain::after {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .5; mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }

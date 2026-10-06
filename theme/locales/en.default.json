@@ -248,6 +248,15 @@
       "eyebrow": "Journal",
       "heading": "Notes from between two suns",
       "view_all": "All stories"
+    },
+    "product_label": {
+      "eyebrow": "The label",
+      "heading": "The whole label, in plain sight.",
+      "text": "This is the printed label, exactly as it is on the pack. Everything on it is also written out on this page.",
+      "scroller": "Printed label of {{ product }}",
+      "alt": "Printed label of {{ product }}: name, key ingredients, how to use, description, full ingredient list (INCI) and caution. All of this text is also on this page.",
+      "hint": "Swipe to read the whole label.",
+      "caption": "Label artwork from the brand. If anything differs, the pack in your hand is the reference."
     }
   },
   "product": {
@@ -490,7 +499,7 @@
     "items": {
       "order": {
         "q": "In what order do I use the routine?",
-        "a": "Cleanser, then Clarity Serum, then Daily Barrier Moisturizing Cream — morning and night. In the morning, finish with Daily Defense Sunscreen SPF 50 as the last step."
+        "a": "Cleanser, then Clarity Serum, then Daily Barrier Moisturizing Cream — morning and night. In the morning, finish with Daily Defense Sunscreen SPF 50+ as the last step."
       },
       "am_pm": {
         "q": "Can I use the products morning and night?",

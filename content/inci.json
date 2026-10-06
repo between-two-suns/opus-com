@@ -424,23 +424,6 @@
    "key_ingredient": null
   },
   {
-   "handle": "disodium-lauryl-sulfosuccinate",
-   "inci": "Disodium Lauryl Sulfosuccinate",
-   "name": {
-    "en": "Disodium lauryl sulfosuccinate",
-    "ar": "ثنائي صوديوم لوريل سلفوسكسينات"
-   },
-   "group": "cleansing",
-   "description": {
-    "en": "Surfactant that lifts away oil and dirt.",
-    "ar": "مادة منظّفة تزيل الدهون والأوساخ."
-   },
-   "products": [
-    "daily-reset-cleanser"
-   ],
-   "key_ingredient": null
-  },
-  {
    "handle": "edta",
    "inci": "EDTA",
    "name": {
@@ -831,6 +814,23 @@
    },
    "products": [
     "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "sodium-lauryl-sulfosuccinate",
+   "inci": "Sodium Lauryl Sulfosuccinate",
+   "name": {
+    "en": "Sodium lauryl sulfosuccinate",
+    "ar": "صوديوم لوريل سلفوسكسينات"
+   },
+   "group": "cleansing",
+   "description": {
+    "en": "Surfactant that lifts away oil and dirt.",
+    "ar": "مادة منظّفة تزيل الدهون والأوساخ."
+   },
+   "products": [
+    "daily-reset-cleanser"
    ],
    "key_ingredient": null
   },

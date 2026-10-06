@@ -22,7 +22,7 @@
     assign heading = page.title | default: page_title
   endif
 -%}
-<div class="page-hero{% if section.settings.compact %} page-hero--compact{% endif %}">
+<div class="page-hero grain{% if section.settings.compact %} page-hero--compact{% endif %}">
   <div class="suns" aria-hidden="true"><span class="sun sun--warm page-hero__sun-a"></span><span class="sun sun--cool page-hero__sun-b"></span></div>
   <div class="container page-hero__inner">
     {%- if eyebrow != blank -%}<p class="t-eyebrow">{{ eyebrow | escape }}</p>{%- endif -%}
