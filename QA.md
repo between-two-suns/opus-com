@@ -1,6 +1,6 @@
 # QA — Between Two Suns (Opus build)
 
-_Last run: 2026-10-06, commit after "Shopify staging deploy". Environment: local preview harness (`tools/preview`, brotli on), Chromium 1194 via Playwright._
+_Last run: 2026-10-06, after home layout pass 2 (redeployed to staging, MD5-verified). Environment: local preview harness (`tools/preview`, brotli on), Chromium 1194 via Playwright._
 
 > **Important limit:** the build sandbox cannot load `*.myshopify.com` (egress policy). All rendered-UI QA below ran on the local Shopify-compatible preview using the same theme files. Real-storefront verification on the staging theme is still outstanding (STATUS → blockers).
 
@@ -56,6 +56,8 @@ Expect Shopify TTFB and `content_for_header` scripts (analytics, Shop Pay) to co
 | 13 | Forecast time toggle overflowed at 390 px | Dial hidden ≤480 px |
 | 14 | LTR fragments ("200 mL") mis-aligned in RTL grids | `.u-ltr { justify-self: start }` |
 | 15 | Internal "CONFIRM" note in a customer-facing legal line | Moved to `legal_note` field |
+| 16 | Desktop home: concern chips wrapped to a second row; ingredient grid left a 4+2 orphan row; a single journal story sat in a third-width tile | Narrow title column + right-aligned 48 px chips; 3-column ingredient grid ≥990 px; `journal__grid--n1` feature card (EN + AR verified) |
+| 17 | Preview harness (not theme): brotli wrapper assigned `res._headers`, which Node maps to its internal header store, wiping the cart `Set-Cookie`, so every cart change hit an empty cart | Renamed to private fields; flows back to 84/84 |
 
 ## Not yet verified
 - Real Shopify rendering of staging theme `167112540418` (sandbox can't reach the storefront).

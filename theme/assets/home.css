@@ -93,8 +93,10 @@
 .concerns__dots { display: inline-flex; gap: 3px; }
 .concerns__dot { inline-size: 9px; block-size: 9px; border-radius: 50%; background: var(--sku); }
 @media (min-width: 990px) {
-  .concerns__inner { grid-template-columns: auto 1fr; align-items: center; gap: 32px; }
-  .concerns__list { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+  .concerns__inner { grid-template-columns: minmax(0, 300px) 1fr; align-items: center; gap: 40px; }
+  .concerns__title { text-wrap: balance; }
+  .concerns__list { flex-wrap: wrap; justify-content: flex-end; overflow: visible; margin: 0; padding: 0; }
+  .concerns__chip { min-block-size: 48px; padding-inline: 20px; font-size: 16px; }
 }
 
 /* ---------- Routine grid ---------- */
@@ -145,6 +147,7 @@
 /* ---------- Ingredients ---------- */
 .ingredients__aside { display: grid; gap: 16px; max-inline-size: 420px; justify-items: start; }
 .ingredients__grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); list-style: none; margin: 0; padding: 0; }
+@media (min-width: 990px) { .ingredients__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .ing-tile { display: grid; gap: 10px; align-content: start; padding: 22px; border-radius: var(--radius-l); background: var(--c-paper); min-block-size: 220px; }
 .ing-tile__dots { display: flex; gap: 4px; }
 .ing-tile__dots span { inline-size: 12px; block-size: 12px; border-radius: 50%; background: var(--sku); }
@@ -163,7 +166,15 @@
 
 /* ---------- Journal ---------- */
 .journal__grid { display: grid; gap: 24px; list-style: none; margin: 0; padding: 0; }
-@media (min-width: 750px) { .journal__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 750px) {
+  .journal__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .journal__grid--n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* One story: a wide feature card instead of a lonely third-width tile. */
+  .journal__grid--n1 { grid-template-columns: minmax(0, 1fr); }
+  .journal__grid--n1 .article-card { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; gap: clamp(24px, 4vw, 64px); }
+  .journal__grid--n1 .article-card__media { aspect-ratio: 16 / 9; }
+  .journal__grid--n1 .article-card__title { font-size: clamp(24px, 2.4vw, 34px); }
+}
 .article-card { display: grid; gap: 14px; }
 .article-card__media { display: block; aspect-ratio: 4 / 3; border-radius: var(--radius-l); overflow: hidden; background: var(--c-paper); position: relative; }
 .article-card__media img { inline-size: 100%; block-size: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-out); }

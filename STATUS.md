@@ -11,14 +11,14 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 | Theme | `BTS Opus — staging` · `gid://shopify/OnlineStoreTheme/167112540418` · UNPUBLISHED |
 | Live theme | Horizon (MAIN): **untouched** |
 | Repo / branch | `between-two-suns/opus-com` · `opus-build` |
-| Last commit | see `git log -1` (push pending: GitHub credential issue, see blockers) |
+| Last commit | see `git log -1 origin/opus-build` (pushed; GitHub access restored) |
 
 ## Complete
 - Research + strategy: `RESEARCH.md`, `UX_STRATEGY.md`
 - Design system (`base.css`), exact brand vectors, subset fonts (EN ≈ 33 KB, AR +31 KB)
 - **Signature 1:** "The Space Between" hero (split headline, bottles in the gap, scroll-parting suns; CSS scroll-timeline + JS fallback; reduced-motion safe)
 - **Signature 2:** "Today's Skin Forecast" (AM/PM + conditions → ambient light, key steps, "why today" from pack copy, one-tap add of chosen steps)
-- Home: hero, forecast ticker, concern finder, routine grid + full-routine bundle, climate conditions, forecast, ingredient spotlight, facts, journal teaser
+- Home (layout pass 2: one-row concern chips, 3×2 ingredient grid, feature card when the journal has a single story): hero, forecast ticker, concern finder, routine grid + full-routine bundle, climate conditions, forecast, ingredient spotlight, facts, journal teaser
 - PDP (metafield-driven, all 4 products): gallery with studio cutout slide, step tag, pack pill, benefit, price/ATC, facts, claims, texture, 6 collapsed sections (what / ingredients / how / who / INCI / caution + legal), sticky ATC, routine position + complete-the-routine, FAQ, Product + Breadcrumb JSON-LD
 - Collection with concern filter; search + predictive search; cart drawer (routine progress + missing-step upsell) + cart page
 - Pages: routines (forecast + AM/PM routines), ingredient glossary (filterable + full INCI per product), climate, about, FAQ (FAQPage schema), contact, **/pages/scan** (QR landing, `?p=<handle>` deep link), shipping/returns placeholders, journal + article, 404, password, gift card, customer accounts
@@ -70,7 +70,6 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 5. Craft pass: hero scroll choreography, PDP gallery texture slide, story imagery, journal launch articles.
 
 ## Blockers (need the owner)
-- **GitHub push 403.** This session's git credentials predate the Claude GitHub App install. Fix: reconnect GitHub (https://claude.ai/customize/connectors?auth_start=github&auth_start_force=1) or start a new session on this repo. Work is committed locally and the theme is deployed to Shopify.
 - **Storefront unreachable from sandbox** (network policy). Fix: add `qfj1gi-c9.myshopify.com` and `cdn.shopify.com` to the environment's allowed domains (cloud environment → Edit → Network access).
 - **Figma MCP plan limit** (Starter). Upgrade or provide a Figma token for further exports (fonts/specs/packshots).
 - **Business inputs:** prices, payment methods, shipping partners/rates, return policy, final packshots, social links.
@@ -80,3 +79,4 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 1. `cd theme && zip -qr ../bts-opus.zip assets config layout locales sections snippets templates`
 2. Admin GraphQL `stagedUploadsCreate` (resource `FILE`, `application/zip`) → POST the zip to the returned target.
 3. Either `themeCreate(source: resourceUrl, role: UNPUBLISHED)` for a fresh theme, or `themeFilesUpsert` on theme `167112540418` for updates. **Never publish without owner approval.**
+4. Verify: query `theme.files(filenames: …) { checksumMd5 }` and compare with local `md5sum`; it must match byte for byte.

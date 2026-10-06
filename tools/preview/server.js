@@ -531,15 +531,15 @@ const server = http.createServer(async (req, res) => {
   const origWriteHead = res.writeHead.bind(res);
   const origEnd = res.end.bind(res);
   let ctype = '';
-  res.writeHead = (code, headers = {}) => { ctype = headers['Content-Type'] || ''; res._code = code; res._headers = headers; return res; };
+  res.writeHead = (code, headers = {}) => { ctype = headers['Content-Type'] || ''; res._btsCode = code; res._btsHeaders = headers; return res; };
   res.end = (body) => {
     const accepts = /\bbr\b/.test(req.headers['accept-encoding'] || '');
     if (body && accepts && /text|javascript|json|svg/.test(ctype)) {
       const buf = zlib.brotliCompressSync(Buffer.from(body), { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 9 } });
-      origWriteHead(res._code || 200, { ...res._headers, 'Content-Encoding': 'br', Vary: 'Accept-Encoding' });
+      origWriteHead(res._btsCode || 200, { ...res._btsHeaders, 'Content-Encoding': 'br', Vary: 'Accept-Encoding' });
       return origEnd(buf);
     }
-    origWriteHead(res._code || 200, res._headers || {});
+    origWriteHead(res._btsCode || 200, res._btsHeaders || {});
     return origEnd(body);
   };
   try {

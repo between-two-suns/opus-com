@@ -16,7 +16,8 @@
       </div>
       <a class="link-arrow" href="{{ blog.url }}">{{ 'sections.journal.view_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
     </div>
-    <ul class="journal__grid" role="list">
+    {%- assign shown = blog.articles_count | at_most: 3 -%}
+    <ul class="journal__grid journal__grid--n{{ shown }}" role="list">
       {%- for article in blog.articles limit: 3 -%}
         <li>{% render 'article-card', article: article %}</li>
       {%- endfor -%}

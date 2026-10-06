@@ -44,3 +44,4 @@ Each entry: decision · why · reversibility. Newest last.
 29. Enabled **Arabic as an unpublished** store language; registered translations for product titles, metafields, metaobjects and pages.
 30. Created pages `routines, ingredients, climate, about, faq, scan, shipping, returns` (with template suffixes) and blog `journal`. Shipping/returns bodies say "To be confirmed before launch" — no invented policy.
 31. **Did not change** product titles, descriptions, prices, images, menus, payments, shipping, taxes, domains, or customers.
+32. **Incremental staging deploys use `themeFilesUpsert` on `167112540418` only, verified by MD5** against the repo. Avoids creating extra themes; MAIN writes are impossible through this path.
