@@ -68,6 +68,9 @@
 .pdp__ingredients { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
 .pdp__ing-name { font-weight: 700; }
 .pdp__inci { font-size: 14px; line-height: 1.7; color: var(--c-muted); text-align: start; }
+.pdp__inci a { color: inherit; text-decoration: underline; text-decoration-color: var(--c-line-strong, rgba(18,19,24,.25)); text-underline-offset: 3px; }
+.pdp__inci a:hover { color: var(--c-ink); text-decoration-color: currentColor; }
+.pdp__inci-hint { margin-block-start: 6px; }
 .pdp__info .accordion:first-of-type { margin-block-start: 8px; }
 
 /* Sticky add-to-bag */

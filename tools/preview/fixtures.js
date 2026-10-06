@@ -68,6 +68,15 @@ export function ingredientsFor(locale) {
   }));
 }
 
+const inci = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/inci.json'), 'utf8'));
+export function inciFor(locale) {
+  const L = locale === 'ar' ? 'ar' : 'en';
+  return inci.entries.map((e) => ({
+    handle: e.handle, inci: e.inci, name: e.name[L] || e.name.en, group: e.group,
+    description: e.description[L] || e.description.en, products: e.products, key: e.key_ingredient,
+  }));
+}
+
 export const PAGES = {
   routines: { en: 'Routines', ar: 'الروتينات' },
   ingredients: { en: 'Ingredient glossary', ar: 'دليل المكوّنات' },

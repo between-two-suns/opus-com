@@ -21,9 +21,10 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 - Home (layout pass 2: one-row concern chips, 3×2 ingredient grid, feature card when the journal has a single story): hero, forecast ticker, concern finder, routine grid + full-routine bundle, climate conditions, forecast, ingredient spotlight, facts, journal teaser
 - PDP (metafield-driven, all 4 products): gallery with studio cutout slide, step tag, pack pill, benefit, price/ATC, facts, claims, texture, 6 collapsed sections (what / ingredients / how / who / INCI / caution + legal), sticky ATC, routine position + complete-the-routine, FAQ, Product + Breadcrumb JSON-LD
 - Collection with concern filter; search + predictive search; cart drawer (routine progress + missing-step upsell) + cart page
-- Pages: routines (forecast + AM/PM routines), ingredient glossary (filterable + full INCI per product), climate, about, FAQ (FAQPage schema), contact, **/pages/scan** (QR landing, `?p=<handle>` deep link), shipping/returns placeholders, journal + article, 404, password, gift card, customer accounts
+- **Ingredient glossary:** key ingredients + **every ingredient A–Z (all 55 INCI names)** with function, plain-language role (EN/AR), products, search + per-product filter; every INCI name on PDPs links to its entry
+- Pages: routines (forecast + AM/PM routines), ingredient glossary, climate, about, FAQ (FAQPage schema), contact, **/pages/scan** (QR landing, `?p=<handle>` deep link), shipping/returns placeholders, journal + article, 404, password, gift card, customer accounts
 - EN + AR locales (natural MSA, gender-neutral), full RTL via logical properties, Arabic typography rules
-- Store: 23 `bts.*` metafield defs + values, `bts_ingredient` metaobject (9), pages, blog, Arabic translations (unpublished language)
+- Store: 23 `bts.*` metafield defs + values, `bts_ingredient` metaobject (9 key), `bts_inci` metaobject (55, EN + AR), pages, blog, Arabic translations (unpublished language)
 - QA tooling: preview harness, Theme Check, 84 flow tests, axe, Lighthouse scripts (see `QA.md`)
 
 ## Incomplete / outstanding
@@ -66,7 +67,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 1. Verify the staging theme on the real store (owner opens preview; or allow `qfj1gi-c9.myshopify.com` in the environment network policy so I can screenshot it) and fix any Shopify-vs-harness differences.
 2. Replace packshots with final v5-label renders; commission texture swatches and application/lifestyle imagery; add texture media to PDP gallery.
 3. Set real prices; configure payments (Paymob/COD) and shipping (Bosta/ShipBlu); then turn on COD/shipping notes in theme settings.
-4. Native Arabic + regulatory review of `content/products.json` `bts-draft` lines and forecast reasons; PROMAT submission if required.
+4. Native Arabic + regulatory review of `content/products.json` `bts-draft` lines, forecast reasons and the 55 ingredient descriptions in `content/inci.json`; PROMAT submission if required.
 5. Craft pass: hero scroll choreography, PDP gallery texture slide, story imagery, journal launch articles.
 
 ## Blockers (need the owner)

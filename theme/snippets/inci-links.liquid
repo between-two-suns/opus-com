@@ -1,0 +1,14 @@
+{%- comment -%}
+  Renders a pack INCI string with every ingredient linked to its entry in the
+  ingredient glossary (bts_inci metaobject handles = INCI name | handleize).
+  Accepts:
+  - inci {String} comma-separated INCI, as printed on the pack
+  - base {String} glossary URL, or '' when rendered on the glossary itself
+{%- endcomment -%}
+{%- assign names = inci | strip | remove_last: '.' | split: ', ' -%}
+<p class="pdp__inci" lang="en" dir="ltr">
+  {%- for name in names -%}
+    {%- assign n = name | strip -%}
+    <a href="{{ base }}#inci-{{ n | handleize }}">{{ n }}</a>{% unless forloop.last %}, {% endunless %}
+  {%- endfor -%}.
+</p>

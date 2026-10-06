@@ -8,7 +8,7 @@ import crypto from 'node:crypto';
 import { Liquid, Tag, Drop, Hash } from 'liquidjs';
 import sharp from 'sharp';
 import zlib from 'node:zlib';
-import { productsFor, ingredientsFor, PAGES, PAGE_BODY, ARTICLES } from './fixtures.js';
+import { productsFor, ingredientsFor, inciFor, PAGES, PAGE_BODY, ARTICLES } from './fixtures.js';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const THEME = path.join(ROOT, 'theme');
@@ -102,6 +102,12 @@ function buildData(locale, cart) {
     products: new Metafield(i.products.map((h) => byHandle[h]).filter(Boolean)), handle: i.id, id: i.id,
   }));
   const ingById = Object.fromEntries(ingredients.map((i) => [i.id, i]));
+  // bts_inci: one metaobject per INCI name (content/inci.json)
+  const inci = inciFor(locale).map((e) => ({
+    handle: e.handle, id: e.handle, system: { handle: e.handle },
+    inci: new Metafield(e.inci), name: new Metafield(e.name), group: new Metafield(e.group), description: new Metafield(e.description),
+    products: new Metafield(e.products.map((h) => byHandle[h]).filter(Boolean)), key_ingredient: new Metafield(e.key ? ingById[e.key] : null),
+  }));
   for (const p of products) {
     const keys = p.metafields.bts.key_ingredients?.value || [];
     p.metafields.bts.key_ingredients = new Metafield(keys.map((k) => ingById[k]).filter(Boolean), 'list.metaobject_reference');
@@ -153,7 +159,7 @@ function buildData(locale, cart) {
 
   return {
     products, byHandle, byVariant, collections, pages, journal, cartObj, routes, language, languages,
-    ingredients,
+    ingredients, inci,
   };
 }
 
@@ -357,7 +363,7 @@ function globalsFor(locale, data, extra = {}) {
         { title: locale === 'ar' ? 'شروط الخدمة' : 'Terms of service', url: `${data.prefix}/policies/terms-of-service` },
         { title: locale === 'ar' ? 'سياسة الشحن' : 'Shipping policy', url: `${data.prefix}/policies/shipping-policy` },
       ],
-      metaobjects: { bts_ingredient: { values: data.ingredients } },
+      metaobjects: { bts_ingredient: { values: data.ingredients }, bts_inci: { values: data.inci } },
     },
     routes: data.routes,
     localization: { language: data.language, available_languages: data.languages, country: { iso_code: 'EG', name: 'Egypt', currency: { iso_code: 'EGP', symbol: 'LE' } }, available_countries: [] },

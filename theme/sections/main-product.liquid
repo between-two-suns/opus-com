@@ -6,6 +6,7 @@
   assign step = step | strip | plus: 0
   assign mf = product.metafields.bts
   assign step_label = mf.step_label.value
+  assign inci_hint = 'product.inci_hint' | t
   if step_label == blank
     for tag in product.tags
       assign head = tag | slice: 0, 2
@@ -283,7 +284,9 @@
                       endif
                     when 'inci'
                       if mf.inci != blank
-                        echo '<p class="pdp__inci" lang="en" dir="ltr">' | append: mf.inci.value | append: '</p>'
+                        assign glossary_url = routes.root_url | append: '/pages/ingredients' | replace: '//', '/'
+                        render 'inci-links', inci: mf.inci.value, base: glossary_url
+                        echo '<p class="t-xs t-muted pdp__inci-hint">' | append: inci_hint | append: '</p>'
                       endif
                     when 'caution'
                       if mf.caution != blank

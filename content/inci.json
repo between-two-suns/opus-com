@@ -1,0 +1,993 @@
+{
+ "_meta": {
+  "source": "INCI names and membership: content/products.json (Figma v5 FINAL labels). Groups: EU CosIng function categories.",
+  "status": "bts-draft descriptions (functional, no efficacy claims): need brand, native-Arabic and regulatory review.",
+  "count": 55
+ },
+ "groups": [
+  "solvent",
+  "cleansing",
+  "humectant",
+  "emollient",
+  "emulsifier",
+  "thickener",
+  "conditioning",
+  "lipid",
+  "uv_filter",
+  "antioxidant",
+  "preservative",
+  "chelating",
+  "ph",
+  "texture",
+  "extract"
+ ],
+ "entries": [
+  {
+   "handle": "allantoin",
+   "inci": "Allantoin",
+   "name": {
+    "en": "Allantoin",
+    "ar": "ألانتوين"
+   },
+   "group": "conditioning",
+   "description": {
+    "en": "Skin-conditioning ingredient commonly used in soothing formulas.",
+    "ar": "مكوّن مكيّف للبشرة يُستخدم عادةً في التركيبات المهدّئة."
+   },
+   "products": [
+    "daily-reset-cleanser",
+    "clarity-serum"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "aloe-barbadensis-leaf-extract",
+   "inci": "Aloe Barbadensis Leaf Extract",
+   "name": {
+    "en": "Aloe vera leaf extract",
+    "ar": "مستخلص أوراق الصبار"
+   },
+   "group": "extract",
+   "description": {
+    "en": "Extract of aloe vera leaf, used for skin conditioning.",
+    "ar": "مستخلص من أوراق نبات الصبار، يُستخدم لتكييف البشرة."
+   },
+   "products": [
+    "daily-reset-cleanser",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "ammonium-acryloyldimethyltaurate-vp-copolymer",
+   "inci": "Ammonium Acryloyldimethyltaurate/VP Copolymer",
+   "name": {
+    "en": "Texture polymer",
+    "ar": "بوليمر القوام"
+   },
+   "group": "thickener",
+   "description": {
+    "en": "Polymer that gives the formula its texture and keeps it stable.",
+    "ar": "بوليمر يمنح التركيبة قوامها ويحافظ على ثباتها."
+   },
+   "products": [
+    "clarity-serum",
+    "daily-barrier-moisturizing-cream",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "anhydroxylitol",
+   "inci": "Anhydroxylitol",
+   "name": {
+    "en": "Anhydroxylitol",
+    "ar": "أنهيدروكسيليتول"
+   },
+   "group": "humectant",
+   "description": {
+    "en": "Sugar-derived humectant (from xylitol) that attracts water.",
+    "ar": "مادة مرطّبة مشتقة من السكر (من الزيليتول) تجذب الماء."
+   },
+   "products": [
+    "clarity-serum"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "aqua",
+   "inci": "Aqua",
+   "name": {
+    "en": "Water",
+    "ar": "ماء"
+   },
+   "group": "solvent",
+   "description": {
+    "en": "The base of the formula that the other ingredients dissolve in.",
+    "ar": "أساس التركيبة الذي تذوب فيه بقية المكونات."
+   },
+   "products": [
+    "daily-reset-cleanser",
+    "clarity-serum",
+    "daily-barrier-moisturizing-cream",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "bis-ethylhexyloxyphenol-methoxyphenyl-triazine",
+   "inci": "Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine",
+   "name": {
+    "en": "Bemotrizinol",
+    "ar": "بيموتريزينول"
+   },
+   "group": "uv_filter",
+   "description": {
+    "en": "Broad-spectrum UV filter that absorbs both UVA and UVB.",
+    "ar": "فلتر واسع الطيف يمتص الأشعة فوق البنفسجية من النوعين UVA وUVB."
+   },
+   "products": [
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": "uv-filters"
+  },
+  {
+   "handle": "bis-peg-ppg-16-16-peg-ppg-16-16-dimethicone",
+   "inci": "Bis-PEG/PPG-16/16 PEG/PPG-16/16 Dimethicone",
+   "name": {
+    "en": "Silicone emulsifier",
+    "ar": "مستحلِب سيليكوني"
+   },
+   "group": "emulsifier",
+   "description": {
+    "en": "Silicone emulsifier that keeps the oil and water phases mixed.",
+    "ar": "مستحلِب سيليكوني يحافظ على امتزاج طوري الزيت والماء."
+   },
+   "products": [
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "bisabolol",
+   "inci": "Bisabolol",
+   "name": {
+    "en": "Bisabolol",
+    "ar": "بيسابولول"
+   },
+   "group": "conditioning",
+   "description": {
+    "en": "A component of chamomile, used in comforting formulas.",
+    "ar": "أحد مكونات البابونج، يُستخدم في التركيبات المريحة للبشرة."
+   },
+   "products": [
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": "bisabolol"
+  },
+  {
+   "handle": "c12-15-alkyl-benzoate",
+   "inci": "C12-15 Alkyl Benzoate",
+   "name": {
+    "en": "C12-15 alkyl benzoate",
+    "ar": "ألكيل بنزوات C12-15"
+   },
+   "group": "emollient",
+   "description": {
+    "en": "Light emollient that helps UV filters spread evenly.",
+    "ar": "مادة مليّنة خفيفة تساعد فلاتر الأشعة على الانتشار بالتساوي."
+   },
+   "products": [
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "caprylic-capric-triglyceride",
+   "inci": "Caprylic/Capric Triglyceride",
+   "name": {
+    "en": "Caprylic/capric triglyceride",
+    "ar": "دهون ثلاثية كابريليك/كابريك"
+   },
+   "group": "emollient",
+   "description": {
+    "en": "Light emollient made from fatty acids and glycerin.",
+    "ar": "مادة مليّنة خفيفة مصنوعة من أحماض دهنية وجلسرين."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "caprylyl-methicone",
+   "inci": "Caprylyl Methicone",
+   "name": {
+    "en": "Caprylyl methicone",
+    "ar": "كابريليل ميثيكون"
+   },
+   "group": "emollient",
+   "description": {
+    "en": "Light silicone that gives a smooth, non-greasy feel.",
+    "ar": "سيليكون خفيف يمنح ملمسًا ناعمًا غير دهني."
+   },
+   "products": [
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "carbomer",
+   "inci": "Carbomer",
+   "name": {
+    "en": "Carbomer",
+    "ar": "كاربومر"
+   },
+   "group": "thickener",
+   "description": {
+    "en": "Gelling agent that gives the cream its body.",
+    "ar": "عامل تهلّم يمنح الكريم قوامه."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "centella-asiatica-extract",
+   "inci": "Centella Asiatica Extract",
+   "name": {
+    "en": "Centella (gotu kola) extract",
+    "ar": "مستخلص السنتيلا"
+   },
+   "group": "extract",
+   "description": {
+    "en": "Plant extract (gotu kola) traditionally used in soothing skincare.",
+    "ar": "مستخلص نباتي يُستخدم تقليدياً في منتجات العناية المهدّئة للبشرة."
+   },
+   "products": [
+    "daily-reset-cleanser"
+   ],
+   "key_ingredient": "centella-asiatica"
+  },
+  {
+   "handle": "ceramide-ap",
+   "inci": "Ceramide AP",
+   "name": {
+    "en": "Ceramide AP",
+    "ar": "سيراميد AP"
+   },
+   "group": "lipid",
+   "description": {
+    "en": "One of the lipids naturally found in the skin’s outer layer.",
+    "ar": "أحد الدهون الموجودة طبيعيًا في الطبقة الخارجية من البشرة."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": "ceramides"
+  },
+  {
+   "handle": "ceramide-eop",
+   "inci": "Ceramide EOP",
+   "name": {
+    "en": "Ceramide EOP",
+    "ar": "سيراميد EOP"
+   },
+   "group": "lipid",
+   "description": {
+    "en": "One of the lipids naturally found in the skin’s outer layer.",
+    "ar": "أحد الدهون الموجودة طبيعيًا في الطبقة الخارجية من البشرة."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": "ceramides"
+  },
+  {
+   "handle": "ceramide-np",
+   "inci": "Ceramide NP",
+   "name": {
+    "en": "Ceramide NP",
+    "ar": "سيراميد NP"
+   },
+   "group": "lipid",
+   "description": {
+    "en": "One of the lipids naturally found in the skin’s outer layer.",
+    "ar": "أحد الدهون الموجودة طبيعيًا في الطبقة الخارجية من البشرة."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": "ceramides"
+  },
+  {
+   "handle": "cetearyl-alcohol",
+   "inci": "Cetearyl Alcohol",
+   "name": {
+    "en": "Cetearyl alcohol",
+    "ar": "كحول سيتيريل"
+   },
+   "group": "emollient",
+   "description": {
+    "en": "Fatty alcohol (not a drying alcohol) that softens and stabilises the cream.",
+    "ar": "كحول دهني (وليس كحولًا مجففًا) يليّن الكريم ويثبّته."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "cholesterol",
+   "inci": "Cholesterol",
+   "name": {
+    "en": "Cholesterol",
+    "ar": "كوليسترول"
+   },
+   "group": "lipid",
+   "description": {
+    "en": "Lipid naturally present in the skin’s outer layer, used alongside ceramides.",
+    "ar": "دهن موجود طبيعيًا في الطبقة الخارجية من البشرة، يُستخدم إلى جانب السيراميدات."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "citric-acid",
+   "inci": "Citric Acid",
+   "name": {
+    "en": "Citric acid",
+    "ar": "حمض الستريك"
+   },
+   "group": "ph",
+   "description": {
+    "en": "Adjusts the formula’s pH.",
+    "ar": "يضبط درجة حموضة التركيبة."
+   },
+   "products": [
+    "daily-reset-cleanser"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "cocamidopropyl-betaine",
+   "inci": "Cocamidopropyl Betaine",
+   "name": {
+    "en": "Cocamidopropyl betaine",
+    "ar": "كوكاميدوبروبيل بيتاين"
+   },
+   "group": "cleansing",
+   "description": {
+    "en": "Coconut-derived surfactant that cleanses and boosts foam.",
+    "ar": "مادة منظّفة مشتقة من جوز الهند تنظّف وتعزّز الرغوة."
+   },
+   "products": [
+    "daily-reset-cleanser"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "coco-glucoside",
+   "inci": "Coco-Glucoside",
+   "name": {
+    "en": "Coco-glucoside",
+    "ar": "كوكو غلوكوسيد"
+   },
+   "group": "cleansing",
+   "description": {
+    "en": "Surfactant made from coconut fatty alcohol and sugar.",
+    "ar": "مادة منظّفة مصنوعة من كحول جوز الهند الدهني والسكر."
+   },
+   "products": [
+    "daily-reset-cleanser"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "dimethicone",
+   "inci": "Dimethicone",
+   "name": {
+    "en": "Dimethicone",
+    "ar": "ديميثيكون"
+   },
+   "group": "emollient",
+   "description": {
+    "en": "Silicone that gives a smooth, silky feel.",
+    "ar": "سيليكون يمنح ملمسًا ناعمًا حريريًا."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "disodium-edta",
+   "inci": "Disodium EDTA",
+   "name": {
+    "en": "Disodium EDTA",
+    "ar": "ثنائي صوديوم EDTA"
+   },
+   "group": "chelating",
+   "description": {
+    "en": "Binds trace metals in water to keep the formula stable.",
+    "ar": "يرتبط بالمعادن الدقيقة في الماء للحفاظ على ثبات التركيبة."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "disodium-lauryl-sulfosuccinate",
+   "inci": "Disodium Lauryl Sulfosuccinate",
+   "name": {
+    "en": "Disodium lauryl sulfosuccinate",
+    "ar": "ثنائي صوديوم لوريل سلفوسكسينات"
+   },
+   "group": "cleansing",
+   "description": {
+    "en": "Surfactant that lifts away oil and dirt.",
+    "ar": "مادة منظّفة تزيل الدهون والأوساخ."
+   },
+   "products": [
+    "daily-reset-cleanser"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "edta",
+   "inci": "EDTA",
+   "name": {
+    "en": "EDTA",
+    "ar": "EDTA"
+   },
+   "group": "chelating",
+   "description": {
+    "en": "Binds trace metals in water to keep the formula stable.",
+    "ar": "يرتبط بالمعادن الدقيقة في الماء للحفاظ على ثبات التركيبة."
+   },
+   "products": [
+    "daily-reset-cleanser",
+    "clarity-serum",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "ethylhexyl-methoxycinnamate",
+   "inci": "Ethylhexyl Methoxycinnamate",
+   "name": {
+    "en": "Octinoxate",
+    "ar": "أوكتينوكسات"
+   },
+   "group": "uv_filter",
+   "description": {
+    "en": "UV filter that absorbs UVB.",
+    "ar": "فلتر يمتص الأشعة فوق البنفسجية من النوع UVB."
+   },
+   "products": [
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": "uv-filters"
+  },
+  {
+   "handle": "ethylhexyl-salicylate",
+   "inci": "Ethylhexyl Salicylate",
+   "name": {
+    "en": "Octisalate",
+    "ar": "أوكتيسالات"
+   },
+   "group": "uv_filter",
+   "description": {
+    "en": "UV filter that absorbs UVB.",
+    "ar": "فلتر يمتص الأشعة فوق البنفسجية من النوع UVB."
+   },
+   "products": [
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": "uv-filters"
+  },
+  {
+   "handle": "ethylhexylglycerin",
+   "inci": "Ethylhexylglycerin",
+   "name": {
+    "en": "Ethylhexylglycerin",
+    "ar": "إيثيل هكسيل جلسرين"
+   },
+   "group": "conditioning",
+   "description": {
+    "en": "Skin-conditioning agent that also supports the preservative system.",
+    "ar": "عامل مكيّف للبشرة يدعم أيضًا نظام الحفظ في التركيبة."
+   },
+   "products": [
+    "daily-reset-cleanser",
+    "clarity-serum",
+    "daily-barrier-moisturizing-cream",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "glycerin",
+   "inci": "Glycerin",
+   "name": {
+    "en": "Glycerin",
+    "ar": "جلسرين"
+   },
+   "group": "humectant",
+   "description": {
+    "en": "Humectant that draws water into the skin’s surface.",
+    "ar": "مادة مرطّبة تجذب الماء إلى سطح البشرة."
+   },
+   "products": [
+    "daily-reset-cleanser",
+    "clarity-serum",
+    "daily-barrier-moisturizing-cream",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "glyceryl-stearate",
+   "inci": "Glyceryl Stearate",
+   "name": {
+    "en": "Glyceryl stearate",
+    "ar": "جليسريل ستيارات"
+   },
+   "group": "emulsifier",
+   "description": {
+    "en": "Emulsifier that blends oil and water into a cream.",
+    "ar": "مستحلِب يمزج الزيت والماء في قوام كريمي."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "glycyrrhiza-glabra-root-extract",
+   "inci": "Glycyrrhiza Glabra Root Extract",
+   "name": {
+    "en": "Licorice root extract",
+    "ar": "مستخلص جذر العرقسوس"
+   },
+   "group": "extract",
+   "description": {
+    "en": "Extract of licorice root, used for skin conditioning.",
+    "ar": "مستخلص من جذر العرقسوس، يُستخدم لتكييف البشرة."
+   },
+   "products": [
+    "daily-reset-cleanser"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "isohexadecane",
+   "inci": "Isohexadecane",
+   "name": {
+    "en": "Isohexadecane",
+    "ar": "إيزوهكساديكان"
+   },
+   "group": "emollient",
+   "description": {
+    "en": "Light, fast-spreading emollient.",
+    "ar": "مادة مليّنة خفيفة سريعة الانتشار."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "lauryl-glucoside",
+   "inci": "Lauryl Glucoside",
+   "name": {
+    "en": "Lauryl glucoside",
+    "ar": "لوريل غلوكوسيد"
+   },
+   "group": "cleansing",
+   "description": {
+    "en": "Sugar-based surfactant.",
+    "ar": "مادة منظّفة أساسها السكر."
+   },
+   "products": [
+    "daily-reset-cleanser"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "methyl-methacrylate-crosspolymer",
+   "inci": "Methyl Methacrylate Crosspolymer",
+   "name": {
+    "en": "Methyl methacrylate crosspolymer",
+    "ar": "بوليمر ميثيل ميثاكريلات المتشابك"
+   },
+   "group": "texture",
+   "description": {
+    "en": "Fine spherical powder that gives a smooth, soft-matte finish.",
+    "ar": "مسحوق كروي ناعم يمنح لمسة نهائية ناعمة غير لامعة."
+   },
+   "products": [
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "niacinamide",
+   "inci": "Niacinamide",
+   "name": {
+    "en": "Niacinamide (vitamin B3)",
+    "ar": "نياسيناميد (فيتامين B3)"
+   },
+   "group": "conditioning",
+   "description": {
+    "en": "Vitamin B3. A multitasking ingredient used for oil balance and more even-looking tone.",
+    "ar": "فيتامين B3. مكوّن متعدد المهام يُستخدم لموازنة الدهون وتوحيد مظهر لون البشرة."
+   },
+   "products": [
+    "clarity-serum",
+    "daily-barrier-moisturizing-cream",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": "niacinamide"
+  },
+  {
+   "handle": "panthenol",
+   "inci": "Panthenol",
+   "name": {
+    "en": "Panthenol (pro-vitamin B5)",
+    "ar": "بانثينول (بروفيتامين B5)"
+   },
+   "group": "humectant",
+   "description": {
+    "en": "Pro-vitamin B5. A humectant that helps skin hold on to water.",
+    "ar": "بروفيتامين B5. مادة مرطبة تساعد البشرة على الاحتفاظ بالماء."
+   },
+   "products": [
+    "daily-reset-cleanser",
+    "clarity-serum",
+    "daily-barrier-moisturizing-cream",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": "panthenol"
+  },
+  {
+   "handle": "peg-100-stearate",
+   "inci": "PEG-100 Stearate",
+   "name": {
+    "en": "PEG-100 stearate",
+    "ar": "PEG-100 ستيارات"
+   },
+   "group": "emulsifier",
+   "description": {
+    "en": "Emulsifier that blends oil and water into a cream.",
+    "ar": "مستحلِب يمزج الزيت والماء في قوام كريمي."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "peg-120-methyl-glucose-dioleate",
+   "inci": "PEG-120 Methyl Glucose Dioleate",
+   "name": {
+    "en": "PEG-120 methyl glucose dioleate",
+    "ar": "PEG-120 ميثيل غلوكوز ديوليات"
+   },
+   "group": "thickener",
+   "description": {
+    "en": "Thickens the cleanser into a gel.",
+    "ar": "يكثّف الغسول ليصبح جلًا."
+   },
+   "products": [
+    "daily-reset-cleanser"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "peg-7-glyceryl-cocoate",
+   "inci": "PEG-7 Glyceryl Cocoate",
+   "name": {
+    "en": "PEG-7 glyceryl cocoate",
+    "ar": "PEG-7 جليسريل كوكوات"
+   },
+   "group": "emollient",
+   "description": {
+    "en": "Coconut-derived emollient used in cleansers.",
+    "ar": "مادة مليّنة مشتقة من جوز الهند تُستخدم في الغسولات."
+   },
+   "products": [
+    "daily-reset-cleanser"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "phenoxyethanol",
+   "inci": "Phenoxyethanol",
+   "name": {
+    "en": "Phenoxyethanol",
+    "ar": "فينوكسي إيثانول"
+   },
+   "group": "preservative",
+   "description": {
+    "en": "Preservative that keeps the formula free from microbial growth.",
+    "ar": "مادة حافظة تحمي التركيبة من نمو الميكروبات."
+   },
+   "products": [
+    "daily-reset-cleanser",
+    "clarity-serum",
+    "daily-barrier-moisturizing-cream",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "phytosphingosine",
+   "inci": "Phytosphingosine",
+   "name": {
+    "en": "Phytosphingosine",
+    "ar": "فيتوسفينغوسين"
+   },
+   "group": "lipid",
+   "description": {
+    "en": "Lipid building block related to ceramides.",
+    "ar": "وحدة بناء دهنية مرتبطة بالسيراميدات."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "poloxamer-184",
+   "inci": "Poloxamer 184",
+   "name": {
+    "en": "Poloxamer 184",
+    "ar": "بولوكسامر 184"
+   },
+   "group": "cleansing",
+   "description": {
+    "en": "Surfactant that helps dissolve other ingredients into the cleanser.",
+    "ar": "مادة خافضة للتوتر السطحي تساعد على إذابة المكونات الأخرى في الغسول."
+   },
+   "products": [
+    "daily-reset-cleanser"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "polyquaternium-10",
+   "inci": "Polyquaternium-10",
+   "name": {
+    "en": "Polyquaternium-10",
+    "ar": "بوليكواتيرنيوم-10"
+   },
+   "group": "conditioning",
+   "description": {
+    "en": "Conditioning polymer that leaves a soft feel after rinsing.",
+    "ar": "بوليمر مكيّف يترك ملمسًا ناعمًا بعد الشطف."
+   },
+   "products": [
+    "daily-reset-cleanser"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "propylene-glycol",
+   "inci": "Propylene Glycol",
+   "name": {
+    "en": "Propylene glycol",
+    "ar": "بروبيلين غليكول"
+   },
+   "group": "humectant",
+   "description": {
+    "en": "Humectant and solvent that helps other ingredients dissolve.",
+    "ar": "مادة مرطّبة ومذيبة تساعد على إذابة المكونات الأخرى."
+   },
+   "products": [
+    "daily-reset-cleanser",
+    "clarity-serum",
+    "daily-barrier-moisturizing-cream",
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "sodium-hyaluronate",
+   "inci": "Sodium Hyaluronate",
+   "name": {
+    "en": "Sodium hyaluronate (hyaluronic acid)",
+    "ar": "هيالورونات الصوديوم (هيالورونيك أسيد)"
+   },
+   "group": "humectant",
+   "description": {
+    "en": "Salt form of hyaluronic acid. A humectant that binds water for hydration.",
+    "ar": "الصورة الملحية لحمض الهيالورونيك. مادة مرطبة ترتبط بالماء لترطيب البشرة."
+   },
+   "products": [
+    "clarity-serum",
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": "sodium-hyaluronate"
+  },
+  {
+   "handle": "sodium-lauroyl-lactylate",
+   "inci": "Sodium Lauroyl Lactylate",
+   "name": {
+    "en": "Sodium lauroyl lactylate",
+    "ar": "صوديوم لورويل لاكتيلات"
+   },
+   "group": "emulsifier",
+   "description": {
+    "en": "Emulsifier that helps disperse the ceramides in the cream.",
+    "ar": "مستحلِب يساعد على توزيع السيراميدات في الكريم."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "sodium-pca",
+   "inci": "Sodium PCA",
+   "name": {
+    "en": "Sodium PCA",
+    "ar": "صوديوم PCA"
+   },
+   "group": "humectant",
+   "description": {
+    "en": "Humectant; a component of skin’s natural moisturizing factor.",
+    "ar": "مادة مرطّبة، وأحد مكونات عامل الترطيب الطبيعي في البشرة."
+   },
+   "products": [
+    "daily-reset-cleanser",
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "squalane",
+   "inci": "Squalane",
+   "name": {
+    "en": "Squalane",
+    "ar": "سكوالان"
+   },
+   "group": "emollient",
+   "description": {
+    "en": "Stable form of squalene, a lipid found in skin’s own oils.",
+    "ar": "شكل ثابت من السكوالين، وهو دهن موجود في زيوت البشرة الطبيعية."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "tocopheryl-acetate",
+   "inci": "Tocopheryl Acetate",
+   "name": {
+    "en": "Vitamin E acetate",
+    "ar": "أسيتات فيتامين E"
+   },
+   "group": "antioxidant",
+   "description": {
+    "en": "Antioxidant that helps protect the formula from oxidation.",
+    "ar": "مضاد للأكسدة يساعد على حماية التركيبة من التأكسد."
+   },
+   "products": [
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "tranexamic-acid",
+   "inci": "Tranexamic Acid",
+   "name": {
+    "en": "Tranexamic acid",
+    "ar": "ترانيكساميك أسيد"
+   },
+   "group": "conditioning",
+   "description": {
+    "en": "Used in cosmetic formulas targeting the appearance of dark spots and uneven tone.",
+    "ar": "يُستخدم في التركيبات التجميلية التي تستهدف مظهر التصبغات وعدم توحّد اللون."
+   },
+   "products": [
+    "clarity-serum"
+   ],
+   "key_ingredient": "tranexamic-acid"
+  },
+  {
+   "handle": "triethanolamine",
+   "inci": "Triethanolamine",
+   "name": {
+    "en": "Triethanolamine",
+    "ar": "ثلاثي إيثانول أمين"
+   },
+   "group": "ph",
+   "description": {
+    "en": "Adjusts the formula’s pH.",
+    "ar": "يضبط درجة حموضة التركيبة."
+   },
+   "products": [
+    "daily-defense-sunscreen-spf-50"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "xanthan-gum",
+   "inci": "Xanthan Gum",
+   "name": {
+    "en": "Xanthan gum",
+    "ar": "صمغ الزانثان"
+   },
+   "group": "thickener",
+   "description": {
+    "en": "Gum made by fermentation that thickens and stabilises.",
+    "ar": "صمغ يُنتج بالتخمير يكثّف التركيبة ويثبّتها."
+   },
+   "products": [
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "xylitol",
+   "inci": "Xylitol",
+   "name": {
+    "en": "Xylitol",
+    "ar": "زيليتول"
+   },
+   "group": "humectant",
+   "description": {
+    "en": "Sugar alcohol used as a humectant.",
+    "ar": "كحول سكري يُستخدم كمادة مرطّبة."
+   },
+   "products": [
+    "clarity-serum"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "xylitylglucoside",
+   "inci": "Xylitylglucoside",
+   "name": {
+    "en": "Xylitylglucoside",
+    "ar": "زيليتيل غلوكوسيد"
+   },
+   "group": "humectant",
+   "description": {
+    "en": "Sugar-derived humectant (from xylitol and glucose).",
+    "ar": "مادة مرطّبة مشتقة من السكر (من الزيليتول والغلوكوز)."
+   },
+   "products": [
+    "clarity-serum"
+   ],
+   "key_ingredient": null
+  },
+  {
+   "handle": "zinc-pca",
+   "inci": "Zinc PCA",
+   "name": {
+    "en": "Zinc PCA",
+    "ar": "زنك PCA"
+   },
+   "group": "conditioning",
+   "description": {
+    "en": "Zinc salt of PCA, a component of skin's natural moisturizing factor. Used in oil-balancing formulas.",
+    "ar": "ملح الزنك لحمض PCA، أحد مكونات عامل الترطيب الطبيعي في البشرة. يُستخدم في التركيبات الموازِنة للدهون."
+   },
+   "products": [
+    "daily-reset-cleanser",
+    "daily-barrier-moisturizing-cream"
+   ],
+   "key_ingredient": "zinc-pca"
+  }
+ ]
+}

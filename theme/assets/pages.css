@@ -58,7 +58,47 @@
 :lang(ar) .glossary__name { text-transform: none; font-weight: 800; line-height: 1.25; font-size: clamp(24px, 2.4vw, 30px); }
 .glossary__inci { font-size: 14px; }
 .glossary__item a { font-weight: 600; }
-.glossary__inci-all { margin-block-start: clamp(48px, 7vw, 96px); display: grid; gap: 12px; }
+.glossary__block + .glossary__block { margin-block-start: clamp(56px, 8vw, 112px); }
+.glossary__jump { margin-block-end: clamp(28px, 4vw, 48px); }
+.glossary__jump .cluster { gap: 8px; }
+#key-ingredients, #all-ingredients, #full-lists { scroll-margin-top: calc(var(--header-h) + 16px); }
+.glossary__head { display: grid; gap: 16px; max-inline-size: 720px; margin-block-end: clamp(20px, 3vw, 32px); }
+.glossary__inci-all { margin-block-start: clamp(56px, 8vw, 112px); display: grid; gap: 12px; }
+
+/* Every ingredient, A–Z */
+.dict__filter { display: grid; gap: 14px; margin-block-end: 8px; padding-block: 12px; background: var(--c-daylight); border-block-end: 1px solid var(--c-line); }
+.dict__filter .field { max-inline-size: 420px; }
+.dict__chips { gap: 8px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); padding-block: 2px; }
+.dict__chips::-webkit-scrollbar { display: none; }
+.dict__chips .chip { flex: none; }
+.dict__chips .chip { gap: 8px; }
+.dict__chips .chip[aria-pressed='true'] .dict__dot { box-shadow: 0 0 0 2px #fff; }
+.dict__dot { display: inline-block; inline-size: 10px; block-size: 10px; border-radius: 50%; background: var(--sku, var(--c-ink)); flex: none; }
+.dict__list { list-style: none; margin: 0; padding: 0; }
+.dict__row { display: grid; gap: 8px; padding-block: 20px; border-block-end: 1px solid var(--c-line); scroll-margin-top: calc(var(--header-h) + 16px); }
+.dict__row:target { background: var(--c-paper); box-shadow: 0 0 0 3px var(--c-ink); border-radius: 12px; padding-inline: 14px; }
+.dict__inci { font-size: 18px; line-height: 1.3; font-weight: 700; overflow-wrap: anywhere; }
+:lang(ar) .dict__inci { text-align: right; unicode-bidi: plaintext; }
+.dict__common { font-size: 14px; color: var(--c-muted); }
+.dict__group { margin: 0; }
+.dict__desc { font-size: 15px; line-height: 1.5; }
+.dict__in { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; }
+.dict__products { display: flex; flex-wrap: wrap; gap: 4px 14px; list-style: none; margin: 0; padding: 0; }
+.dict__product { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; text-decoration: none; min-block-size: 24px; }
+.dict__product:hover { text-decoration: underline; }
+.dict__key { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; }
+.dict__note { margin-block-start: 20px; }
+.dict__empty { padding-block: 32px; }
+@media (min-width: 990px) {
+  .dict__filter { grid-template-columns: minmax(240px, 360px) 1fr auto; align-items: end; gap: 20px; position: sticky; inset-block-start: var(--header-h); z-index: 3; }
+  .dict__chips { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+  .dict__row { scroll-margin-top: calc(var(--header-h) + var(--dict-filter-h, 140px)); }
+  .dict__row { grid-template-columns: minmax(0, 3.2fr) minmax(0, 1.6fr) minmax(0, 4fr) minmax(0, 3fr); align-items: baseline; gap: 24px; padding-block: 22px; }
+  .dict__in { flex-direction: column; align-items: flex-start; }
+  .dict__products { flex-direction: column; }
+}
+.pdp__inci a { color: inherit; text-decoration: underline; text-decoration-color: var(--c-line-strong, rgba(18,19,24,.25)); text-underline-offset: 3px; }
+.pdp__inci a:hover { color: var(--c-ink); text-decoration-color: currentColor; }
 .glossary__inci-all .accordion .step-tag { margin-block-end: 4px; }
 .ing-tile__dots { display: flex; gap: 4px; }
 .ing-tile__dots span { inline-size: 12px; block-size: 12px; border-radius: 50%; background: var(--sku); }

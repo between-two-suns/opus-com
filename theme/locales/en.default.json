@@ -305,7 +305,8 @@
     "reviews_heading": "Reviews",
     "sticky_label": "Quick add",
     "view_full": "View full details",
-    "share": "Share"
+    "share": "Share",
+    "inci_hint": "Tap any ingredient to see what it does."
   },
   "collection": {
     "eyebrow": "Shop",
@@ -374,7 +375,35 @@
       "in_products": "Found in",
       "count": "{{ count }} ingredients",
       "full_lists": "Full ingredient lists",
-      "full_lists_text": "Every product’s INCI, exactly as printed on the pack."
+      "full_lists_text": "Every product’s INCI, exactly as printed on the pack.",
+      "key_heading": "Key ingredients",
+      "key_text": "The ingredients each formula is built around, and what they do.",
+      "az_heading": "Every ingredient, A–Z",
+      "az_text": "All {{ count }} ingredients across the four products, by INCI name, with what each one does in the formula.",
+      "filter_products": "Show ingredients in",
+      "filter_all": "All products",
+      "function_label": "Function",
+      "key_link": "Key ingredient",
+      "no_results": "No ingredient matches that search.",
+      "groups_note": "Functions follow the categories of the EU CosIng cosmetic ingredient database.",
+      "groups": {
+        "solvent": "Solvent",
+        "cleansing": "Cleansing agent",
+        "humectant": "Humectant",
+        "emollient": "Emollient",
+        "emulsifier": "Emulsifier",
+        "thickener": "Thickener",
+        "conditioning": "Skin conditioning",
+        "lipid": "Skin lipid",
+        "uv_filter": "UV filter",
+        "antioxidant": "Antioxidant",
+        "preservative": "Preservative",
+        "chelating": "Chelating agent",
+        "ph": "pH adjuster",
+        "texture": "Texture agent",
+        "extract": "Plant extract"
+      },
+      "jump_label": "On this page"
     },
     "routines": {
       "am_title": "Morning",
