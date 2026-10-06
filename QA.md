@@ -63,6 +63,9 @@ Expect Shopify TTFB and `content_for_header` scripts (analytics, Shop Pay) to co
 | 20 | Glossary covered only 9 key ingredients; 46 INCI names had no explanation | Full A–Z dictionary (55), PDP INCI names deep-link to entries; verified: filter (Clarity Serum → 15), deep link lands below header/filter at 390 and 1440, EN + AR; mobile filter made non-sticky after it hid the target row |
 | 21 | Arabic desktop hero: headline rendered at 168 px (generic `:lang(ar) .t-display-xl` outranked `.hero__line`), pushing the CTAs ~145 px below the fold at 1440×900; desktop product-stage height rule was dead (overridden by a later base rule) | Hero lines use the fold-aware `--hero-font` in AR; stage height folded into the base rule. Measured CTA bottoms EN/AR: 854/900 (1440×900), 784/800 (1280×800), 990/1080 (1920×1080), 684/844 (390×844) |
 | 22 | Arabic page-hero headings (scan, collection, about): dots and descenders overlapped the subtitle | AR display leading 1.18 → 1.32, extra 0.14em under AR page-hero headings |
+| 23 | Cleanser INCI on site said "Disodium Lauryl Sulfosuccinate"; current label says "Sodium Lauryl Sulfosuccinate" | Fixed in content, Shopify metafield, dictionary entry (handle + AR) |
+| 24 | WebGL hero cost 820 ms TBT under software GL (Lighthouse 77) | Skip software renderers, idle start, 30 fps touch cap → TBT 0, perf 99 |
+| 25 | Decorative footer line failed contrast audit | Rendered from a pseudo-element (aria-hidden, not text content) → Lighthouse a11y 100 |
 
 ## Not yet verified
 - Real Shopify rendering of staging theme `167112540418` (sandbox can't reach the storefront).

@@ -45,26 +45,30 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 ## Current scores (honest, see rubric in brief)
 | Area | Score | Why not higher |
 |---|---|---|
-| Brand fidelity | 8.5 | Exact logo/colours/pack copy; packshots are older label versions; fonts not brand-licensed |
-| Visual originality | 8.0 | Strong concept; several sections are conventional by design |
-| Art direction | 7.3 | Real packshots now carry the story rows; still no photography, texture or film |
+| Brand fidelity | 8.7 | Copy + INCI now re-checked against the current label designs; packshot renders still show older labels ("Daily Face", "Niacinimide + Zinc PCA") |
+| Visual originality | 8.3 | Light-field hero, label band and morph transitions are distinctive; mid-page sections still conventional |
+| Art direction | 7.6 | Packshots + light field carry it; no photography, texture or film yet (the single biggest gap) |
 | Typography | 8.5 | Strong EN/AR system; Antonio is a stand-in for the pack face |
-| Layout / composition | 8.0 | Hero and forecast strong; content pages simpler |
-| Motion / interaction | 7.5 | Two purposeful signatures; hero parting is subtle; no texture media |
-| Mobile design | 8.5 | First-screen buy box, thumb-friendly, no overflow |
+| Layout / composition | 8.3 | Hero, forecast, label band strong; collection and content pages simpler |
+| Motion / interaction | 8.5 | WebGL light field (drift, haze, grain, scroll parting, SKU tint), card→PDP morph, heading reveals; all reduced-motion safe |
+| Mobile design | 8.6 | First-screen buy box, swipeable label, no overflow |
 | Product discovery | 8.8 | Concerns, routine grid, forecast, full 55-ingredient dictionary linked from every PDP, search |
-| PDP conversion | 8.0 | No prices, reviews or texture media yet |
+| PDP conversion | 8.3 | Printed label band added; still no real prices, reviews or texture media |
 | Cart / conversion UX | 8.5 | Fast drawer, routine upsell, honest totals; checkout config pending |
-| English experience | 8.5 | — |
+| English experience | 8.6 | — |
 | Arabic / RTL experience | 8.4 | Complete, mirrored, hero fits the fold, display leading tuned; needs native review + real-store check |
-| Performance | 9.0 | Lab 98–99 locally; unverified on Shopify |
-| Accessibility | 9.0 | axe 0, keyboard flows; no screen-reader device pass yet |
-| Technical quality | 8.5 | Theme Check 0, tests; harness ≠ real Shopify |
+| Performance | 9.2 | Lab 99 mobile with the shader (skipped on software GL); unverified on Shopify |
+| Accessibility | 9.2 | axe 0, Lighthouse 100, keyboard flows; no screen-reader device pass yet |
+| Technical quality | 8.7 | Theme Check 0, 84 flow tests, MD5-verified deploys; harness ≠ real Shopify |
 | Merchant maintainability | 8.5 | Metafields, blocks, bilingual fallbacks, editor labels |
-| **Overall award potential** | **7.2** | Needs art direction assets (photo/film/texture) and real-store polish |
-| **Overall commercial effectiveness** | **7.5** | Blocked on prices, payments/shipping config, reviews |
+| **Overall award potential** | **7.8** | Craft is close; art-direction assets (photo/film/texture, current-label packshots) are what separate this from SOTD |
+| **Overall commercial effectiveness** | **7.6** | Blocked on real prices (sheet not readable yet), payments/shipping config, reviews |
+
+## Pricing
+Owner shared a Google Sheet with pricing. Not yet applied: the Google Drive connector in this session has no file-read permission and docs.google.com is blocked by the sandbox network policy. Fix: reconnect Google Drive with read access, add `docs.google.com` to allowed domains, or paste the prices.
 
 ## Next five actions
+0. Apply real prices from the owner's sheet (blocked, see Pricing).
 1. Verify the staging theme on the real store (owner opens preview; or allow `qfj1gi-c9.myshopify.com` in the environment network policy so I can screenshot it) and fix any Shopify-vs-harness differences.
 2. Replace packshots with final v5-label renders; commission texture swatches and application/lifestyle imagery; add texture media to PDP gallery.
 3. Set real prices; configure payments (Paymob/COD) and shipping (Bosta/ShipBlu); then turn on COD/shipping notes in theme settings.
@@ -75,6 +79,8 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 - **Storefront unreachable from sandbox** (network policy). Fix: add `qfj1gi-c9.myshopify.com` and `cdn.shopify.com` to the environment's allowed domains (cloud environment → Edit → Network access).
 - **Figma MCP plan limit** (Starter). Upgrade or provide a Figma token for further exports (fonts/specs/packshots).
 - **Business inputs:** prices, payment methods, shipping partners/rates, return policy, final packshots, social links.
+- **Label art on PDPs** (new "Product label" section) shows the current label designs as supplied, including the serum pill typo "Niacinimide" and blank EDA lines. Replace the artwork or turn the section off before launch if the print files change.
+- **Cleanser EDA number:** current label design leaves it blank; the site still shows COSMTOL26130966 from the v5 file. Confirm which is right.
 - **Packaging/label conflicts to confirm before print:** serum pack front reads "Niacinimide" (typo); older render says "Niacinimide + Zinc PCA" / "Prevents breakouts" vs v5 "Niacinamide + Tranexamic Acid"; SPF named "Daily Face" (render) vs "Daily Defense … SPF 50+" (v5) vs "SPF 50" (Shopify); serum/SPF labels lack EDA numbers; serum skin type not stated; moisturizer AR text "للحماية البشرة" grammar.
 
 ## Deploy procedure (repeatable)
