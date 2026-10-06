@@ -367,6 +367,8 @@ html.has-open-dialog { overflow: hidden; }
 .product-grid { display: grid; gap: clamp(12px, 1.6vw, 24px); grid-template-columns: repeat(var(--cols-mobile, 2), minmax(0, 1fr)); }
 @media (min-width: 750px) { .product-grid { grid-template-columns: repeat(var(--cols-tablet, 2), minmax(0, 1fr)); } }
 @media (min-width: 1100px) { .product-grid { grid-template-columns: repeat(var(--cols-desktop, 4), minmax(0, 1fr)); } }
+.product-grid > li { display: flex; }
+.product-grid > li > .card { inline-size: 100%; }
 
 .card {
   position: relative; display: flex; flex-direction: column; gap: 14px; min-inline-size: 0;
@@ -387,14 +389,14 @@ html.has-open-dialog { overflow: hidden; }
 .card:hover .card__sun { transform: scale(1.08); }
 .card__step { position: absolute; inset-block-start: 14px; inset-inline-start: 14px; z-index: 1; }
 .card__step .step-num { font-size: 28px; line-height: 1; }
-.card__body { display: grid; gap: 6px; }
+.card__body { display: flex; flex-direction: column; gap: 6px; flex: 1; }
 .card__title { font-size: 17px; line-height: 1.25; font-weight: 700; letter-spacing: -0.005em; }
 .card__title a { text-decoration: none; }
 .card__title a::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: var(--radius-l); }
 .card__title a:focus-visible { outline: none; }
 .card__title a:focus-visible::after { outline: 3px solid var(--c-focus); outline-offset: 3px; }
 .card__benefit { font-size: 14px; line-height: 1.45; color: var(--c-muted); }
-.card__meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-block-start: 4px; }
+.card__meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-block-start: auto; padding-block-start: 4px; }
 .card__price { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .card__size { font-size: 13px; color: var(--c-muted); }
 .card__add { position: relative; z-index: 2; }
@@ -596,3 +598,12 @@ html.has-open-dialog { overflow: hidden; }
 .predictive__empty { color: var(--c-muted); }
 .lang-form { display: inline-flex; }
 .chip.lang-link, .lang-form .chip { gap: 8px; }
+
+/* FAQ (used on PDPs and content pages, so it lives in base) */
+.faq__inner { display: grid; gap: 28px; }
+.faq__head { display: grid; gap: 12px; align-content: start; }
+.faq__head a { font-weight: 650; }
+@media (min-width: 990px) {
+  .faq__inner { grid-template-columns: 1fr 1.6fr; gap: 64px; }
+  .faq__head { position: sticky; inset-block-start: calc(var(--header-h) + 24px); }
+}
