@@ -13,6 +13,13 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 | Repo / branch | `between-two-suns/opus-com` · `opus-build` |
 | Last commit | see `git log -1 origin/opus-build` (pushed; GitHub access restored) |
 
+## Restore points (revert here if needed)
+| Date | Shopify theme (unpublished, untouched copy) | Git commit on `opus-build` |
+|---|---|---|
+| 2026-10-11, before the award redesign | `BTS Opus — snapshot 2026-10-11 (pre-redesign)` · `gid://shopify/OnlineStoreTheme/167303545090` (MD5-identical to staging at that point) | `5e78baf` |
+
+To revert the site: in Shopify, preview or rename that snapshot theme (or copy its files back to staging); in code, `git checkout 5e78baf -- theme/`. Never published.
+
 ## Complete
 - Research + strategy: `RESEARCH.md`, `UX_STRATEGY.md`
 - Design system (`base.css`), exact brand vectors, subset fonts (EN ≈ 33 KB, AR +31 KB)

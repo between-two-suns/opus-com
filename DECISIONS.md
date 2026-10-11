@@ -60,3 +60,4 @@ Each entry: decision · why · reversibility. Newest last.
 45. **WhatsApp chat as an optional floating button** (common, trusted channel in Egypt); prefilled neutral message; no third-party script.
 46. **Micro-interactions limited to fine pointers and motion-allowed users:** tilt, magnetic CTAs; feedback states ("✓ Added", badge bump) for everyone, without motion when reduced.
 47. **Store change:** created page **Sets** (`/pages/sets`, template `page.sets`, id 161643168002) with Arabic title translation. Reversible: delete the page.
+48. **Restore point before every major redesign.** 2026-10-11: duplicated staging to unpublished theme `167303545090` ("BTS Opus — snapshot 2026-10-11 (pre-redesign)") and recorded commit `5e78baf`. Additive and reversible (delete the copy when no longer needed). Git tags can't be pushed from this environment (only `opus-build` is writable), so restore points are recorded as commit hashes.
