@@ -201,6 +201,9 @@
     },
     "builder": {
       "name": "Build your routine"
+    },
+    "dayline": {
+      "name": "Routine day (pinned)"
     }
   },
   "settings_schema": {

@@ -392,7 +392,7 @@ const fineMotion = window.matchMedia('(pointer: fine)').matches && !window.match
 if (fineMotion) {
   // Bottles tilt toward the pointer inside product cards and bundle stages.
   document.addEventListener('pointermove', (e) => {
-    const media = e.target.closest?.('.card__media, .bundle__stage');
+    const media = e.target.closest?.('.card__media, .bundle__stage, .gallery__slide--studio');
     if (!media) return;
     const r = media.getBoundingClientRect();
     const x = (e.clientX - r.left) / r.width - 0.5;
@@ -402,7 +402,7 @@ if (fineMotion) {
     media.classList.add('is-tilting');
   }, { passive: true });
   document.addEventListener('pointerout', (e) => {
-    const media = e.target.closest?.('.card__media, .bundle__stage');
+    const media = e.target.closest?.('.card__media, .bundle__stage, .gallery__slide--studio');
     if (media && !media.contains(e.relatedTarget)) { media.classList.remove('is-tilting'); media.style.removeProperty('--tx'); media.style.removeProperty('--ty'); }
   });
   // Primary calls to action lean toward the pointer a few pixels.
@@ -424,3 +424,52 @@ document.addEventListener('cart:added', (e) => {
   if (btn) { btn.classList.add('is-added'); setTimeout(() => btn.classList.remove('is-added'), 1800); }
   $$('[data-cart-count]').forEach((el) => { el.classList.remove('is-bump'); void el.offsetWidth; el.classList.add('is-bump'); });
 });
+
+/* ---------- Time of day: page tone follows the section in the middle of the screen ---------- */
+{
+  const toned = $$('[data-tone]');
+  if (toned.length && 'IntersectionObserver' in window) {
+    const root = document.documentElement;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const c = getComputedStyle(e.target).getPropertyValue('--tone-c').trim();
+        if (c) root.style.setProperty('--tone', c);
+      });
+    }, { rootMargin: '-50% 0px -50% 0px' });
+    toned.forEach((el) => io.observe(el));
+  }
+}
+
+/* ---------- Sunlight cursor: a soft light follows the pointer under the content; products get a label ---------- */
+if (fineMotion) {
+  const wrap = document.createElement('div');
+  wrap.className = 'cursor';
+  wrap.setAttribute('aria-hidden', 'true');
+  wrap.innerHTML = '<span class="cursor__light"></span>';
+  const label = document.createElement('span');
+  label.className = 'cursor__label';
+  label.setAttribute('aria-hidden', 'true');
+  document.body.append(wrap, label);
+  const light = wrap.firstChild;
+  const viewText = document.documentElement.dataset.viewLabel || '';
+  const pos = { x: innerWidth / 2, y: innerHeight / 2, lx: innerWidth / 2, ly: innerHeight / 2, tx: 0, ty: 0 };
+  let raf = 0;
+  const loop = () => {
+    pos.lx += (pos.tx - pos.lx) * 0.12; pos.ly += (pos.ty - pos.ly) * 0.12;
+    pos.x += (pos.tx - pos.x) * 0.35; pos.y += (pos.ty - pos.y) * 0.35;
+    light.style.transform = `translate3d(${pos.lx}px, ${pos.ly}px, 0)`;
+    label.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+    raf = Math.abs(pos.tx - pos.lx) + Math.abs(pos.ty - pos.ly) > 0.5 ? requestAnimationFrame(loop) : 0;
+  };
+  document.addEventListener('pointermove', (e) => {
+    pos.tx = e.clientX; pos.ty = e.clientY;
+    wrap.classList.add('is-on');
+    const t = e.target.closest?.('[data-cursor], .card__media');
+    const text = t ? (t.dataset.cursor || viewText) : '';
+    if (text) label.textContent = text;
+    label.classList.toggle('is-on', !!text);
+    if (!raf) raf = requestAnimationFrame(loop);
+  }, { passive: true });
+  document.documentElement.addEventListener('pointerleave', () => { wrap.classList.remove('is-on'); label.classList.remove('is-on'); });
+}

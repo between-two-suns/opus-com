@@ -30,7 +30,7 @@
   assign form_id = 'ProductForm-' | append: section.id
 -%}
 
-<div class="pdp" data-step="{{ step }}">
+<div class="pdp" data-step="{{ step }}" data-tone="sku">
   <div class="container">
     <nav class="breadcrumbs pdp__crumbs" aria-label="{{ 'accessibility.breadcrumbs' | t }}">
       <ol>
@@ -50,6 +50,10 @@
             <div class="gallery__slide gallery__slide--studio" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
               <span class="gallery__sun gallery__sun--a" aria-hidden="true"></span>
               <span class="gallery__sun gallery__sun--b" aria-hidden="true"></span>
+              {%- if step_label != blank -%}<span class="gallery__word" aria-hidden="true">{{ step_label | escape }}</span>{%- endif -%}
+              {%- if step > 0 -%}
+                <span class="gallery__arc" aria-hidden="true"><svg viewBox="0 0 200 100" preserveAspectRatio="none" focusable="false"><path d="M2 100 A98 98 0 0 1 198 100" vector-effect="non-scaling-stroke"/></svg><span class="gallery__arc-sun"></span><span class="gallery__arc-step t-notation">0{{ step }} / 04</span></span>
+              {%- endif -%}
               {{ cutout | image_url: width: 900 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '300,450,600,750,900', sizes: '(min-width: 990px) 46vw, 92vw', alt: product.title, class: 'gallery__cutout' }}
             </div>
           {%- endif -%}

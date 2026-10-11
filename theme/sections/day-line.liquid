@@ -1,0 +1,162 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Signature 3 · One day, four steps.
+  A pinned stage: as you scroll, the sun travels its arc and each bottle takes the centre in routine order,
+  the light turning to its colour. Every step can be added from the stage; the full routine sits underneath.
+  Without JS, or with reduced motion, this is a plain list of the four steps (nothing hidden, nothing pinned).
+{%- endcomment -%}
+{%- liquid
+  assign eyebrow = section.settings.eyebrow
+  if eyebrow == blank
+    assign eyebrow = 'sections.routine.eyebrow' | t
+  endif
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'sections.routine.heading' | t
+  endif
+  assign source = section.settings.collection | default: collections.all
+  assign total = 0
+  assign any_unpriced = false
+  assign any_unavailable = false
+  assign bundle_ids = ''
+  assign n = 0
+-%}
+<section class="dayline" id="routine" data-tone="day" aria-labelledby="DayTitle-{{ section.id }}">
+  <day-line class="dayline__track">
+    <div class="dayline__stage">
+      <div class="dayline__skies" aria-hidden="true">
+        {%- for s in (1..4) -%}<span class="dayline__sky" data-step="{{ s }}" style="--a: {% if forloop.first %}0{% else %}1{% endif %}"></span>{%- endfor -%}
+      </div>
+
+      <div class="dayline__arc" aria-hidden="true">
+        <svg viewBox="0 0 200 100" preserveAspectRatio="none" focusable="false"><path d="M2 100 A98 98 0 0 1 198 100" vector-effect="non-scaling-stroke"/></svg>
+        <span class="dayline__sun"></span>
+      </div>
+
+      <header class="dayline__head container">
+        <p class="t-eyebrow">{{ eyebrow | escape }}</p>
+        <h2 class="dayline__title t-display-m" id="DayTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      </header>
+
+      <ol class="dayline__steps" role="list">
+        {%- for s in (1..4) -%}
+          {%- for product in source.products limit: 12 -%}
+            {%- capture ps -%}{% render 'product-step', product: product %}{%- endcapture -%}
+            {%- assign ps = ps | strip | plus: 0 -%}
+            {%- if ps == s -%}
+              {%- liquid
+                assign v = product.selected_or_first_available_variant
+                assign total = total | plus: v.price
+                assign coming_soon = false
+                if v.price == 0 and settings.zero_price_coming_soon
+                  assign coming_soon = true
+                  assign any_unpriced = true
+                endif
+                unless v.available
+                  assign any_unavailable = true
+                endunless
+                assign bundle_ids = bundle_ids | append: v.id | append: ','
+                assign cutout = product.metafields.bts.cutout.value
+                assign label = product.metafields.bts.step_label.value
+                assign uid = section.id | append: '-' | append: product.id
+              -%}
+              {%- if n > 1 -%}{%- assign a0 = 2 -%}{%- else -%}{%- assign a0 = n -%}{%- endif -%}
+              <li class="dayline__step{% if n == 0 %} is-active{% endif %}" data-step="{{ s }}" style="--i: {{ n }}; --o: {{ n }}; --a: {{ a0 }}" data-index="{{ n }}">
+                <span class="dayline__word" aria-hidden="true">{{ label | default: product.title | escape }}</span>
+                <a class="dayline__bottle" href="{{ product.url }}" tabindex="-1" aria-hidden="true" data-cursor="{{ 'general.view' | t }}">
+                  {%- if cutout -%}
+                    {{ cutout | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 990px) 30vw, 60vw', alt: '' }}
+                  {%- elsif product.featured_image -%}
+                    {{ product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 990px) 30vw, 60vw', alt: '' }}
+                  {%- endif -%}
+                </a>
+                <div class="dayline__info">
+                  <p class="step-tag">{{ 'product.step' | t: number: s }}{% if label != blank %} · {{ label | escape }}{% endif %}</p>
+                  <h3 class="dayline__name" id="DayName-{{ uid }}"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+                  {%- if product.metafields.bts.benefit != blank -%}
+                    <p class="dayline__benefit">{{ product.metafields.bts.benefit }}</p>
+                  {%- endif -%}
+                  <p class="dayline__price">
+                    {%- render 'price', product: product, variant: v -%}
+                    {%- if product.metafields.bts.size != blank -%}<span class="t-muted u-ltr"> · {{ product.metafields.bts.size }}</span>{%- endif -%}
+                  </p>
+                  <div class="dayline__actions">
+                    <product-form>
+                      <form method="post" action="{{ routes.cart_add_url }}" novalidate>
+                        <input type="hidden" name="id" value="{{ v.id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn" data-magnetic aria-describedby="DayName-{{ uid }}"{% if coming_soon or v.available == false %} disabled{% endif %}>
+                          <span class="btn__label">
+                            {%- if coming_soon -%}{{ 'product.coming_soon' | t }}{%- elsif v.available == false -%}{{ 'product.sold_out' | t }}{%- else -%}{{ 'product.add_to_cart' | t }}{%- endif -%}
+                          </span>
+                        </button>
+                        <p class="t-xs t-muted" data-form-error hidden></p>
+                      </form>
+                    </product-form>
+                    <a class="link-arrow" href="{{ product.url }}" aria-describedby="DayName-{{ uid }}">{{ 'general.details' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+                  </div>
+                </div>
+              </li>
+              {%- assign n = n | plus: 1 -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </ol>
+
+      <nav class="dayline__nav" aria-label="{{ 'sections.routine.nav' | t }}">
+        {%- for s in (1..4) -%}
+          <button type="button" class="dayline__dot" data-step="{{ s }}" data-go="{{ forloop.index0 }}" aria-label="{{ 'product.step' | t: number: s }}"><span aria-hidden="true">0{{ s }}</span></button>
+        {%- endfor -%}
+      </nav>
+    </div>
+  </day-line>
+
+  {%- assign bundle = bundle_ids | split: ',' -%}
+  {%- if section.settings.show_bundle and bundle.size > 1 -%}
+    <div class="container">
+      <div class="dayline__bundle">
+        <div class="dayline__bundle-text">
+          <span class="dayline__bundle-dots" aria-hidden="true">{%- for s in (1..4) -%}<span data-step="{{ s }}"></span>{%- endfor -%}</span>
+          <div>
+            <p class="t-subheading">{{ 'sections.routine.bundle_title' | t: count: bundle.size }}</p>
+            <p class="t-small t-muted">{{ 'sections.routine.bundle_note' | t }}</p>
+          </div>
+        </div>
+        <product-form data-multi>
+          <form method="post" action="{{ routes.cart_add_url }}">
+            {%- for id in bundle -%}
+              <input type="hidden" name="items[][id]" value="{{ id }}">
+              <input type="hidden" name="items[][quantity]" value="1">
+            {%- endfor -%}
+            {%- if any_unpriced -%}
+              <button type="button" class="btn" disabled><span class="btn__label">{{ 'product.coming_soon' | t }}</span></button>
+            {%- else -%}
+              <button type="submit" class="btn" data-magnetic{% if any_unavailable %} disabled{% endif %}>
+                <span class="btn__label">{{ 'sections.routine.bundle_cta' | t }}</span>
+                <span class="btn__sep" aria-hidden="true">·</span>
+                <span class="btn__price">{{ total | money }}</span>
+              </button>
+            {%- endif -%}
+            <p class="t-xs t-muted" data-form-error hidden></p>
+          </form>
+        </product-form>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+<script src="{{ 'dayline.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.dayline.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
+    { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
+    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" },
+    { "type": "checkbox", "id": "show_bundle", "label": "t:sections.routine.show_bundle", "default": true }
+  ],
+  "presets": [{ "name": "t:sections.dayline.name" }]
+}
+{% endschema %}

@@ -50,7 +50,7 @@
 .forecast__chip[aria-pressed='true'] .forecast__arrow { opacity: 1; translate: 0 0; }
 .forecast__readout { margin-block-start: 14px; min-block-size: 1em; color: var(--c-muted); }
 
-.forecast__routine { background: rgba(255, 255, 255, 0.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-radius: var(--radius-l); padding: clamp(16px, 2.4vw, 28px); box-shadow: 0 24px 60px -36px rgba(18, 19, 24, 0.35); align-self: start; }
+.forecast__routine { background: rgba(255, 255, 255, 0.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-radius: var(--radius-l); padding: clamp(16px, 2.4vw, 28px); box-shadow: 0 24px 60px -36px rgba(32, 35, 58, 0.35); align-self: start; }
 .forecast__routine-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-block-end: 8px; }
 .forecast__steps { list-style: none; margin: 0; padding: 0; }
 .forecast__step { position: relative; border-block-end: 1px solid var(--c-line); padding-block: 12px; transition: opacity var(--dur); }

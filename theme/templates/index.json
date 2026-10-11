@@ -12,12 +12,6 @@
       "type": "concern-finder",
       "settings": {}
     },
-    "routine": {
-      "type": "routine-grid",
-      "settings": {
-        "show_bundle": true
-      }
-    },
     "climate": {
       "type": "climate-conditions",
       "settings": {
@@ -125,13 +119,19 @@
         "b5"
       ],
       "settings": {}
+    },
+    "routine": {
+      "type": "day-line",
+      "settings": {
+        "show_bundle": true
+      }
     }
   },
   "order": [
     "hero",
     "ticker",
-    "concerns",
     "routine",
+    "concerns",
     "bundles",
     "climate",
     "forecast",

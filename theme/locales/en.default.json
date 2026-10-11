@@ -28,7 +28,9 @@
       "page": "Page {{ number }}"
     },
     "whatsapp": "Ask us on WhatsApp",
-    "whatsapp_text": "Hi Between Two Suns, I have a question about my routine."
+    "whatsapp_text": "Hi Between Two Suns, I have a question about my routine.",
+    "view": "View",
+    "details": "Details"
   },
   "announcement": {
     "default_1": "Climate-adapted skincare",
@@ -175,7 +177,8 @@
       "text": "Reset, clarity, barrier, defense. Each step has its colour — and its place in your day.",
       "bundle_title": "The full routine · {{ count }} steps",
       "bundle_note": "All four in one tap. The price shown is the sum of each product.",
-      "bundle_cta": "Add the full routine"
+      "bundle_cta": "Add the full routine",
+      "nav": "Go to routine step"
     },
     "climate": {
       "eyebrow": "Climate-adapted",

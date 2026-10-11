@@ -65,10 +65,23 @@ for (const loc of ['', '/ar']) {
     await page.waitForTimeout(300);
 
     const before = Number(await count(page));
-    await page.locator('.bundle-bar button[type="submit"]').first().click();
+    await page.locator('.dayline__bundle button[type="submit"]').first().click();
     await page.waitForTimeout(1000);
     const after = Number(await count(page));
     ok(`${tag} full-routine bundle adds 4`, after - before === 4, `${before}→${after}`);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(300);
+
+    // Pinned routine day: dots move the stage, the centred step can be added
+    const pinned = await page.$eval('.dayline', (d) => d.classList.contains('is-pinned'));
+    ok(`${tag} routine day is pinned`, pinned);
+    await page.locator('.dayline__dot[data-go="2"]').click();
+    await page.waitForFunction(() => document.querySelector('.dayline__step[data-index="2"]')?.classList.contains('is-active'), null, { timeout: 5000 }).catch(() => {});
+    ok(`${tag} routine dot 03 brings step 3 to centre`, await page.$eval('.dayline__step[data-index="2"]', (s) => s.classList.contains('is-active')));
+    const d0 = Number(await count(page));
+    await page.locator('.dayline__step.is-active button[type="submit"]').click();
+    await page.waitForFunction((n) => Number(document.querySelector('[data-cart-count]').textContent.trim() || 0) === n + 1, d0, { timeout: 5000 }).catch(() => {});
+    ok(`${tag} routine day adds the centred step`, Number(await count(page)) === d0 + 1, `${d0}→${await count(page)}`);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
 

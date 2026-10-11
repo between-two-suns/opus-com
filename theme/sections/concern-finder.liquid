@@ -8,7 +8,7 @@
   assign target = source.url | default: routes.all_products_collection_url
   assign concern_ids = 'oiliness,dark_spots,dehydration,barrier,sun,pollution' | split: ','
 -%}
-<section class="section section--tight concerns" aria-labelledby="ConcernsTitle-{{ section.id }}">
+<section class="section section--tight concerns" data-tone="day" aria-labelledby="ConcernsTitle-{{ section.id }}">
   <div class="container concerns__inner">
     <h2 class="t-heading concerns__title" id="ConcernsTitle-{{ section.id }}">{{ heading | escape }}</h2>
     <ul class="concerns__list" role="list">

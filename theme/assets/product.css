@@ -20,8 +20,24 @@
 .gallery__track:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 3px; }
 .gallery__slide { position: relative; aspect-ratio: 4 / 5; scroll-snap-align: start; background: var(--c-paper); overflow: hidden; isolation: isolate; }
 .gallery__slide > img, .gallery__slide > video, .gallery__slide > svg { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
-.gallery__slide--studio { background: var(--sku-tint); }
-.gallery__slide--studio .gallery__cutout { position: absolute; inset: 8% 10% 6%; inline-size: 80%; block-size: 86%; object-fit: contain; filter: drop-shadow(0 26px 30px rgba(18, 19, 24, 0.18)); }
+.gallery__slide--studio { background: radial-gradient(80% 60% at 50% 40%, color-mix(in srgb, var(--sku) 30%, #fff), color-mix(in srgb, var(--sku) 34%, var(--c-daylight)) 70%); }
+/* The product's step word, huge and soft behind the pack; the sun sits on the day's arc at this step. */
+.gallery__word { position: absolute; z-index: -1; inset-block-start: 46%; inset-inline-start: 50%; translate: -50% -50%; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .8; white-space: nowrap; font-size: clamp(96px, 19vw, 300px); color: color-mix(in srgb, var(--sku) 48%, #fff); user-select: none; }
+[dir='rtl'] .gallery__word { translate: 50% -50%; }
+:lang(ar) .gallery__word { text-transform: none; line-height: 1.2; font-size: clamp(72px, 14vw, 220px); }
+@media (min-width: 990px) { .gallery__word { font-size: clamp(110px, 12vw, 220px); } }
+.gallery__arc { position: absolute; z-index: -1; inset-inline: 7%; inset-block-end: 8%; aspect-ratio: 2 / 1; }
+.gallery__arc svg { inline-size: 100%; block-size: 100%; overflow: visible; }
+.gallery__arc path { fill: none; stroke: color-mix(in srgb, var(--c-ink) 22%, transparent); stroke-width: 1.25; stroke-dasharray: 2 7; stroke-linecap: round; }
+.gallery__arc-sun { position: absolute; inline-size: 24px; aspect-ratio: 1; border-radius: 50%; translate: -50% -50%; background: radial-gradient(circle at 40% 40%, #fff6ee, var(--sun-warm) 70%); box-shadow: 0 0 0 8px color-mix(in srgb, var(--sun-warm) 24%, transparent), 0 0 50px 18px color-mix(in srgb, var(--sun-warm) 42%, transparent); left: var(--sx); top: var(--sy); }
+.pdp[data-step='1'] .gallery__arc-sun { --sx: 3.5%; --sy: 63%; }
+.pdp[data-step='2'] .gallery__arc-sun { --sx: 30.5%; --sy: 8%; }
+.pdp[data-step='3'] .gallery__arc-sun { --sx: 69.5%; --sy: 8%; }
+.pdp[data-step='4'] .gallery__arc-sun { --sx: 96.5%; --sy: 63%; }
+[dir='rtl'] .gallery__arc-sun { left: calc(100% - var(--sx)); }
+.gallery__arc-step { position: absolute; inset-block-end: -4px; inset-inline-end: 0; font-size: 13px; color: color-mix(in srgb, var(--c-ink) 60%, transparent); }
+.gallery__slide--studio .gallery__cutout { position: absolute; inset: 8% 10% 6%; inline-size: 80%; block-size: 86%; object-fit: contain; filter: drop-shadow(0 30px 34px rgba(32, 35, 58, 0.22)); transition: transform 500ms var(--ease-out); }
+.gallery__slide--studio.is-tilting .gallery__cutout { transform: perspective(900px) rotateY(calc(var(--tx) * 10deg)) rotateX(calc(var(--ty) * -6deg)) translateY(-6px); }
 .gallery__sun { position: absolute; aspect-ratio: 1; border-radius: 50%; z-index: -1; }
 .gallery__sun--a { inline-size: 70%; inset-block-start: 6%; inset-inline-start: 15%; background: radial-gradient(closest-side, color-mix(in srgb, #fff 65%, var(--sku)), color-mix(in srgb, var(--sku) 50%, transparent) 60%, transparent); }
 .gallery__sun--b { inline-size: 46%; inset-block-end: -14%; inset-inline-end: -10%; background: radial-gradient(closest-side, rgba(255, 255, 255, 0.85), transparent); }
@@ -47,7 +63,7 @@
 :lang(ar) .pdp__facts dt { text-transform: none; font-size: 13px; }
 .pdp__facts dd { margin: 0; font-size: 14.5px; font-weight: 650; line-height: 1.3; }
 .pdp__facts dd.u-ltr { justify-self: start; }
-.pdp__buy { display: grid; gap: 14px; padding: 18px; border-radius: var(--radius-l); background: var(--c-paper); }
+.pdp__buy { display: grid; gap: 14px; padding: 18px; border-radius: var(--radius-l); background: color-mix(in srgb, #fff 62%, transparent); -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .8), 0 30px 60px -46px rgba(32, 35, 58, .45); }
 .pdp__price-row { display: grid; gap: 2px; }
 .pdp__price { font-size: 26px; }
 .pdp__actions { display: grid; grid-template-columns: auto 1fr; gap: 10px; }
@@ -68,7 +84,7 @@
 .pdp__ingredients { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
 .pdp__ing-name { font-weight: 700; }
 .pdp__inci { font-size: 14px; line-height: 1.7; color: var(--c-muted); text-align: start; }
-.pdp__inci a { color: inherit; text-decoration: underline; text-decoration-color: var(--c-line-strong, rgba(18,19,24,.25)); text-underline-offset: 3px; }
+.pdp__inci a { color: inherit; text-decoration: underline; text-decoration-color: var(--c-line-strong, rgba(32,35,58,.25)); text-underline-offset: 3px; }
 .pdp__inci a:hover { color: var(--c-ink); text-decoration-color: currentColor; }
 .pdp__inci-hint { margin-block-start: 6px; }
 .pdp__info .accordion:first-of-type { margin-block-start: 8px; }
@@ -128,7 +144,7 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
 .label-band__inner { display: grid; gap: clamp(20px, 3vw, 36px); }
 .label-band__head { display: grid; gap: 12px; max-inline-size: 640px; }
 .label-band__figure { margin: 0; display: grid; gap: 12px; }
-.label-band__scroller { overflow-x: auto; border-radius: var(--radius-l); box-shadow: 0 30px 60px -30px rgba(18, 19, 24, .35); scrollbar-width: thin; overscroll-behavior-inline: contain; }
+.label-band__scroller { overflow-x: auto; border-radius: var(--radius-l); box-shadow: 0 30px 60px -30px rgba(32, 35, 58, .35); scrollbar-width: thin; overscroll-behavior-inline: contain; }
 .label-band__scroller:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 4px; }
 .label-band__img { display: block; inline-size: 100%; block-size: auto; max-inline-size: none; }
 .label-band__hint { display: none; font-weight: 700; color: var(--c-ink); }

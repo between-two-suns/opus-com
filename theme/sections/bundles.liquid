@@ -14,7 +14,7 @@
     assign text = 'sections.bundles.text' | t
   endif
 -%}
-<section class="section bundles" id="sets" aria-labelledby="BundlesTitle-{{ section.id }}">
+<section class="section bundles" id="sets" data-tone="lilac" aria-labelledby="BundlesTitle-{{ section.id }}">
   <div class="container">
     <div class="section-head">
       <div class="section-head__text">
@@ -88,7 +88,7 @@
           {%- assign keep = 100 | minus: pct -%}
           {%- assign sale = total | times: keep | divided_by: 100 -%}
           {%- assign item_ids = ids | split: ',' -%}
-          <li class="bundle reveal" data-count="{{ count }}" {{ block.shopify_attributes }}>
+          <li class="bundle reveal" data-count="{{ count }}" style="--a: var(--c-step-{{ steps.first | strip }}); --b: var(--c-step-{{ steps.last | strip }});" {{ block.shopify_attributes }}>
             <div class="bundle__stage grain" aria-hidden="true">
               <span class="bundle__glow"></span>
               <span class="bundle__packs" style="--n: {{ count }}">{{ packs }}</span>
