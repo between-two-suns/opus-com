@@ -1,6 +1,6 @@
 # STATUS — Between Two Suns (Opus build)
 
-_Updated: 2026-10-06_
+_Updated: 2026-10-11_
 
 ## Current build state
 Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, with store content (metafields, metaobjects, pages, Arabic translations) wired up. QA on the local preview is green. Real-storefront visual verification is still outstanding: the build sandbox cannot reach `*.myshopify.com`.
@@ -34,8 +34,9 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - EN + AR locales (natural MSA, gender-neutral), full RTL via logical properties, Arabic typography rules
 - Store: 23 `bts.*` metafield defs + values, `bts_ingredient` metaobject (9 key), `bts_inci` metaobject (55, EN + AR), pages, blog, Arabic translations (unpublished language)
 - **Bundles & offers (2026-10-06):** five curated sets (Full Routine, Evening, Oil-Control Duo, Day Shield Duo, Everyday Starter) on home + new **/pages/sets** ("Sets" in header/footer); **Build-your-routine** builder (tap bottles onto a shelf between the suns; live total, next-saving nudge, one-tap add); cart drawer/page **mix & match tier steps** + **free-delivery progress**; optional **WhatsApp chat** button. All offers are theme settings (Theme settings → Offers) that are **0/blank = hidden** and must mirror a real Shopify discount/shipping rate
+- **Redesign pass 1 (2026-10-11, after owner feedback "not award level, blacks too rough"):** soft night-ink (#20233A) replaces near-black everywhere; primary buttons carry two suns (warm/cool glow that swells on hover); pastel announcement bar; **pinned "one day, four steps" routine stage** on home (sun travels its arc, each bottle takes the centre in its colour, add from the stage, dots + keyboard jump); **climate lab** replaces the black climate block (8 conditions set the weather on a sticky stage: glare, smog, dust, droplets, heat haze, air-con airflow, split); **time-of-day page tones** (page colour drifts dawn → day → aqua → lilac → sand as you scroll); **dusk footer** with two setting suns; **sunlight cursor** + "View" label (desktop); **product-coloured PDPs** (page takes the product colour, step word + sun on the routine arc behind the pack, frosted buy box, tilt); set cards tinted with their steps' colours
 - **Micro-interactions:** 3D tilt on product/set media (fine pointers), magnetic primary CTAs, "✓ Added" button state, cart badge bump; all off for reduced motion and touch
-- QA tooling: preview harness, Theme Check, 116 flow tests, axe, Lighthouse scripts (see `QA.md`)
+- QA tooling: preview harness, Theme Check, 128 flow tests, axe, Lighthouse scripts (see `QA.md`)
 
 ## Incomplete / outstanding
 - Real-store visual QA of the staging theme (sandbox can't reach the storefront)
@@ -55,14 +56,14 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 | Area | Score | Why not higher |
 |---|---|---|
 | Brand fidelity | 8.7 | Copy + INCI now re-checked against the current label designs; packshot renders still show older labels ("Daily Face", "Niacinimide + Zinc PCA") |
-| Visual originality | 8.3 | Light-field hero, label band and morph transitions are distinctive; mid-page sections still conventional |
-| Art direction | 7.6 | Packshots + light field carry it; no photography, texture or film yet (the single biggest gap) |
+| Visual originality | 8.9 | Pinned day stage, climate lab, tones, dusk, product-coloured PDPs are ownable; collection/content pages still conventional |
+| Art direction | 8.0 | Coherent sun/day language end to end; still no photography, texture or film (the biggest remaining gap) |
 | Typography | 8.5 | Strong EN/AR system; Antonio is a stand-in for the pack face |
 | Layout / composition | 8.3 | Hero, forecast, label band strong; collection and content pages simpler |
-| Motion / interaction | 8.8 | Light field, card→PDP morph, heading reveals, routine builder (bottles land on a shelf, light fills), tilt, magnetic CTAs, added state; all reduced-motion safe. Missing: scroll-choreographed product story, texture/film |
+| Motion / interaction | 9.1 | Light field, pinned day stage, climate lab weather, tones, cursor light, morphs, builder; all reduced-motion safe, Lighthouse 99 |
 | Mobile design | 8.6 | First-screen buy box, swipeable label, no overflow |
 | Product discovery | 8.8 | Concerns, routine grid, forecast, full 55-ingredient dictionary linked from every PDP, search |
-| PDP conversion | 8.3 | Printed label band added; still no real prices, reviews or texture media |
+| PDP conversion | 8.6 | Product-coloured stage, frosted buy box, label band; still no real prices, reviews or texture media |
 | Cart / conversion UX | 8.9 | Drawer routine upsell, 5 sets, builder, tier steps, free-delivery meter, WhatsApp — ready but switched off until the owner sets real values; checkout config pending |
 | English experience | 8.6 | — |
 | Arabic / RTL experience | 8.4 | Complete, mirrored, hero fits the fold, display leading tuned; needs native review + real-store check |
@@ -70,7 +71,7 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 | Accessibility | 9.2 | axe 0, Lighthouse 100, keyboard flows; no screen-reader device pass yet |
 | Technical quality | 8.7 | Theme Check 0, 84 flow tests, MD5-verified deploys; harness ≠ real Shopify |
 | Merchant maintainability | 8.5 | Metafields, blocks, bilingual fallbacks, editor labels |
-| **Overall award potential** | **7.8** | Craft is close; art-direction assets (photo/film/texture, current-label packshots) are what separate this from SOTD |
+| **Overall award potential** | **8.5** | Interaction + system now award-grade; needs real photography/film, current-label packshots, and the same treatment on collection/content pages |
 | **Overall commercial effectiveness** | **8.0** | Full offer machinery built; blocked on real prices, tier %/threshold values + matching Shopify discounts, payments/shipping config, reviews |
 
 ## Pricing

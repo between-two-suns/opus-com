@@ -1,6 +1,6 @@
 # QA — Between Two Suns (Opus build)
 
-_Last run: 2026-10-06, after the bundles / routine builder / offers update (22 files redeployed to staging, all MD5-verified). Environment: local preview harness (`tools/preview`, brotli on), Chromium 1194 via Playwright._
+_Last run: 2026-10-11, after redesign pass 1 (24 files redeployed to staging; 23 MD5-identical, `settings_data.json` identical apart from Shopify's auto-generated header comment). Environment: local preview harness (`tools/preview`, brotli on), Chromium 1194 via Playwright._
 
 > **Important limit:** the build sandbox cannot load `*.myshopify.com` (egress policy). All rendered-UI QA below ran on the local Shopify-compatible preview using the same theme files. Real-storefront verification on the staging theme is still outstanding (STATUS → blockers).
 
@@ -9,7 +9,7 @@ _Last run: 2026-10-06, after the bundles / routine builder / offers update (22 f
 cd tools && npm ci            # first time
 ./preview/start.sh             # http://localhost:4321  (EN) / /ar (AR)
 node qa/theme-check.mjs        # Shopify Theme Check (same engine as `shopify theme check`)
-node qa/flows.js               # 116 interaction tests (EN/AR × 390/1440)
+node qa/flows.js               # 128 interaction tests (EN/AR × 390/1440)
 node qa/a11y.js                # axe-core WCAG 2.2 AA + best-practice on 16 routes × 2 locales × 2 viewports
 node qa/shots.js / /products/clarity-serum --vp=390,1440 --loc=en,ar [--full]   # screenshots + console + overflow
 CHROME_PATH=$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome|head -1) npx lighthouse http://localhost:4321/ --only-categories=performance,accessibility,best-practices,seo
@@ -20,7 +20,7 @@ CHROME_PATH=$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome|head -1) npx
 | Check | Result |
 |---|---|
 | Shopify Theme Check | **0 offenses** (errors 0, warnings 0) |
-| Interaction tests | **116 / 116 pass**: PDP add → drawer → qty → upsell → remove → Esc, focus management, sticky ATC, forecast AM/PM + conditions + total + add, full-routine bundle, predictive search, mobile menu, mega menu, concern filter, language round-trip, routine builder (empty-disabled CTA, aria-pressed, bottle lands, preset, total = sum, adds chosen), sets page (5 sets, duo adds 2) |
+| Interaction tests | **128 / 128 pass** (adds pinned routine day: pinned, dot 03 centres step 3, adds the centred step): PDP add → drawer → qty → upsell → remove → Esc, focus management, sticky ATC, forecast AM/PM + conditions + total + add, full-routine bundle, predictive search, mobile menu, mega menu, concern filter, language round-trip, routine builder (empty-disabled CTA, aria-pressed, bottle lands, preset, total = sum, adds chosen), sets page (5 sets, duo adds 2) |
 | axe-core (WCAG 2.2 AA + best practice) | **0 violations** on 64 page scans (16 routes × EN/AR × 390/1440) |
 | Console errors | 0 on all routes (only the intentional 404 test page logs its 404 status) |
 | Horizontal overflow | 0 px on every route, EN + AR, 375/390/1440 |
@@ -30,7 +30,8 @@ CHROME_PATH=$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome|head -1) npx
 
 | Route | Perf | A11y | Best pr. | SEO | LCP | TBT | CLS | Weight |
 |---|---|---|---|---|---|---|---|---|
-| `/` (with sets section) | 99 | 100 | 100 | 100 | 1.8 s | 50 ms | 0 | 292 KB |
+| `/` (redesign pass 1) | 99 | 100 | 100 | 100 | 1.9 s | 0 ms | 0 | 299 KB |
+| `/ar` (redesign pass 1) | 98 | 100 | 100 | 100 | 2.2 s | 0 ms | 0.006 | 299 KB |
 | `/pages/sets` | 100 | 100 | 100 | 100 | 1.5 s | 0 ms | 0 | 245 KB |
 | `/ar` | 98 | 100 | 100 | 100 | 2.1 s | 0 ms | 0.004 | 284 KB |
 | `/collections/all` | 98 | 100 | 100 | 100 | 2.3 s | 0 ms | 0 | 231 KB |
@@ -70,6 +71,9 @@ Expect Shopify TTFB and `content_for_header` scripts (analytics, Shop Pay) to co
 | 26 | Set cards: bottle stack clipped at the card edge and over-overlapped | Gap + 74% stack height + bottom margin |
 | 27 | Builder shelf bottles rendered oversized (percentage heights inside a grid slot didn't resolve) | Slot is a bottom-aligned flex column |
 | 28 | Arabic "SPF 50+" rendered as "+SPF 50" (bidi) | LRM after "SPF 50+" in AR locale strings, product content and the Shopify AR title |
+| 30 | Pinned routine stage switched layout only when its script loaded (one cold Lighthouse run: CLS 0.23, TBT 1 s) | Pinned layout applied from first paint via CSS (`.js` + motion media query), initial step state inline → CLS 0, TBT 0 on repeat runs |
+| 31 | Climate lab bottles missing in preview (`metafield.value \| default:` on an image) | Explicit if/elsif fallback, as elsewhere in the theme |
+| 32 | Mobile climate lab: active condition was the one hidden behind the sticky stage | Mobile activation line moved to 70% of the viewport |
 | 29 | Card tilt never applied (`.card:hover` image rule outranked it) | Raised tilt selector specificity |
 
 ### Offers check (temporary settings 5/10/15 %, free delivery 1,500 EGP, then restored)
