@@ -1,0 +1,50 @@
+{%- comment -%}
+  A one-line offer for a fixed-price bundle: name, saving vs separately (+ ships free), add button with the
+  real bundle price and the singles total struck through. Falls back to nothing if the bundle doesn't exist.
+  Params: handle (bundle product handle), class (extra class on the wrapper)
+{%- endcomment -%}
+{%- assign bp = all_products[handle] -%}
+{%- if bp != blank and bp.id -%}
+  {%- liquid
+    capture def
+      render 'bundle-def', handle: bp.handle
+    endcapture
+    assign steps = def | strip | split: '|' | first | split: ','
+    assign v = bp.selected_or_first_available_variant
+    assign name_key = 'bundles.names.' | append: bp.handle
+    assign name = name_key | t
+    if name contains 'translation missing'
+      assign name = bp.title
+    endif
+    assign saving = 0
+    if v.compare_at_price > v.price
+      assign saving = v.compare_at_price | minus: v.price
+    endif
+    assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
+  -%}
+  <div class="bundle-offer {{ class }}" data-handle="{{ bp.handle }}">
+    <div class="bundle-offer__text">
+      <span class="bundle-offer__dots" aria-hidden="true">{%- for st in steps -%}<span data-step="{{ st | strip }}"></span>{%- endfor -%}</span>
+      <div>
+        <p class="t-subheading">{{ name | escape }} · {{ 'sections.bundles.count' | t: count: steps.size }}</p>
+        <p class="t-small bundle-offer__save">
+          {%- if saving > 0 -%}{%- capture amt -%}{% render 'egp', cents: saving %}{%- endcapture -%}{{ 'bundles.save_vs' | t: amount: amt }}{%- endif -%}
+          {%- if threshold > 0 and v.price >= threshold -%}{% if saving > 0 %} · {% endif %}{{ 'bundles.ships_free' | t }}{%- endif -%}
+        </p>
+      </div>
+    </div>
+    <product-form>
+      <form method="post" action="{{ routes.cart_add_url }}">
+        <input type="hidden" name="id" value="{{ v.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="btn" data-magnetic{% unless v.available %} disabled{% endunless %}>
+          <span class="btn__label">{{ 'cart.add_item' | t: product: name }}</span>
+          <span class="btn__sep" aria-hidden="true">·</span>
+          <span class="btn__price">{% render 'egp', cents: v.price %}</span>
+          {%- if saving > 0 -%}<s class="bundle-offer__was"><span class="visually-hidden">{{ 'sections.bundles.was' | t }} </span>{% render 'egp', cents: v.compare_at_price %}</s>{%- endif -%}
+        </button>
+        <p class="t-xs t-muted" data-form-error hidden></p>
+      </form>
+    </product-form>
+  </div>
+{%- endif -%}

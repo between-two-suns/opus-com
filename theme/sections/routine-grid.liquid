@@ -14,10 +14,6 @@
   endif
   assign source = section.settings.collection | default: collections.all
 
-  assign total = 0
-  assign any_unpriced = false
-  assign any_unavailable = false
-  assign bundle_ids = ''
 -%}
 <section class="section routine" id="routine" aria-labelledby="RoutineTitle-{{ section.id }}">
   <div class="container">
@@ -35,17 +31,6 @@
           {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
           {%- assign step = step | strip | plus: 0 -%}
           {%- if step == s -%}
-            {%- liquid
-              assign v = product.selected_or_first_available_variant
-              assign total = total | plus: v.price
-              if v.price == 0
-                assign any_unpriced = true
-              endif
-              unless v.available
-                assign any_unavailable = true
-              endunless
-              assign bundle_ids = bundle_ids | append: v.id | append: ','
-            -%}
             <li class="routine__item">
               {%- render 'product-card', product: product, section_id: section.id, loading: 'lazy' -%}
             </li>
@@ -55,37 +40,7 @@
       {%- endfor -%}
     </ul>
 
-    {%- assign bundle = bundle_ids | split: ',' -%}
-    {%- if section.settings.show_bundle and bundle.size > 1 -%}
-      <div class="bundle-bar">
-        <div class="bundle-bar__info">
-          <div class="bundle-bar__dots" aria-hidden="true">
-            <span data-step="1"></span><span data-step="2"></span><span data-step="3"></span><span data-step="4"></span>
-          </div>
-          <div>
-            <p class="t-subheading">{{ 'sections.routine.bundle_title' | t: count: bundle.size }}</p>
-            <p class="t-small t-muted">{{ 'sections.routine.bundle_note' | t }}</p>
-          </div>
-        </div>
-        <product-form data-multi>
-          <form method="post" action="{{ routes.cart_add_url }}" class="bundle-bar__form">
-            {%- for id in bundle -%}
-              <input type="hidden" name="items[][id]" value="{{ id }}">
-              <input type="hidden" name="items[][quantity]" value="1">
-            {%- endfor -%}
-            {%- if any_unpriced and settings.zero_price_coming_soon -%}
-              <button type="button" class="btn" disabled><span class="btn__label">{{ 'product.coming_soon' | t }}</span></button>
-            {%- else -%}
-              <button type="submit" class="btn"{% if any_unavailable %} disabled{% endif %}>
-                <span class="btn__label">{{ 'sections.routine.bundle_cta' | t }}</span>
-                <span class="btn__sep" aria-hidden="true">·</span>
-                <span class="btn__price">{{ total | money }}</span>
-              </button>
-            {%- endif -%}
-          </form>
-        </product-form>
-      </div>
-    {%- endif -%}
+    {%- if section.settings.show_bundle -%}<div class="routine__bundle">{% render 'bundle-bar', handle: 'the-full-ritual' %}</div>{%- endif -%}
   </div>
 </section>
 

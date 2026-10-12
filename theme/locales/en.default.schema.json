@@ -192,12 +192,13 @@
     },
     "bundles": {
       "name": "Bundles (sets)",
-      "info": "Each set adds its products to the bag at their normal prices. Savings show only when a mix & match tier is set in Theme settings → Offers & bundles.",
+      "info": "Pick Shopify bundle products. Price, struck-through singles total and saving come from the product.",
       "set": "Set",
       "preset": "Set",
       "steps": "Steps in this set",
       "steps_info": "Routine step numbers, comma-separated, e.g. 1,2,4",
-      "set_name": "Name"
+      "set_name": "Name",
+      "product": "Bundle product"
     },
     "builder": {
       "name": "Build your routine"
@@ -211,6 +212,13 @@
     "facts_band": {
       "name": "Facts band",
       "ingredients_label": "Number of ingredients listed (all packs)"
+    },
+    "creators": {
+      "name": "Creators landing"
+    },
+    "creator_apply": {
+      "name": "Creator application",
+      "info": "Applications arrive in the store’s contact email (Settings → Notifications → Staff notifications → Contact customer). Nothing is stored on the site."
     }
   },
   "settings_schema": {
@@ -270,7 +278,15 @@
       "free_shipping": "Free delivery from (EGP)",
       "free_shipping_info": "Must match your free-shipping rate in Shopify settings. Empty or 0 hides the progress bar.",
       "whatsapp": "WhatsApp number",
-      "whatsapp_info": "International format without + or spaces, e.g. 201001234567. Empty hides the chat button."
+      "whatsapp_info": "International format without + or spaces, e.g. 201001234567. Empty hides the chat button.",
+      "delivery_fee": "Standard delivery fee below the threshold (EGP)",
+      "delivery_fee_info": "Must match your Shopify shipping rate. Used only for upgrade messages in the bag (e.g. \"for EGP 400 more and get free delivery\"). 0 hides them.",
+      "welcome_header": "Welcome offer (sign-up card)",
+      "welcome_enable": "Show the welcome offer card",
+      "welcome_info": "Shown once per visitor. After sign-up it reveals the code below. The code, amount and minimum must match a real discount in Shopify → Discounts.",
+      "welcome_code": "Discount code",
+      "welcome_amount": "Amount off (EGP)",
+      "welcome_min": "Minimum subtotal (EGP)"
     }
   }
 }

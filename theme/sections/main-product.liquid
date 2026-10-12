@@ -28,7 +28,13 @@
   endif
   assign description = mf.description.value | default: product.description
   assign form_id = 'ProductForm-' | append: section.id
+  capture bdef
+    render 'bundle-def', handle: product.handle
+  endcapture
+  assign bdef = bdef | strip
 -%}
+{%- assign qty_max = 5 -%}
+{%- if bdef != blank -%}{%- assign qty_max = 3 -%}{{ 'bundles.css' | asset_url | stylesheet_tag }}{%- endif -%}
 
 <div class="pdp" data-step="{{ step }}" data-tone="sku">
   <div class="container">
@@ -113,9 +119,7 @@
               {%- endcase -%}
             </div>
           {%- endfor -%}
-          {%- if media_count == 0 -%}
-            <div class="gallery__slide" data-slide>{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
-          {%- endif -%}
+          {%- if media_count == 0 -%}{%- render 'pdp-bundle', part: 'stage', handle: product.handle -%}{%- endif -%}
         </div>
         {%- if media_count > 1 -%}
           <div class="gallery__nav">
@@ -209,6 +213,7 @@
               <div class="pdp__buy" {{ block.shopify_attributes }} id="PdpBuy-{{ section.id }}">
                 <div class="pdp__price-row">
                   {%- render 'price', product: product, variant: variant, class: 'pdp__price' -%}
+                  {%- render 'pdp-bundle', part: 'info', handle: product.handle, variant: variant -%}
                   {%- unless coming_soon -%}
                     <p class="t-xs t-muted">{% if cart.taxes_included %}{{ 'product.tax_included' | t }}{% else %}{{ 'product.tax_excluded' | t }}{% endif %} {{ 'product.shipping_checkout' | t }}</p>
                   {%- endunless -%}
@@ -241,7 +246,7 @@
                       <quantity-input class="qty">
                         <button type="button" data-step="-1" aria-label="{{ 'product.decrease' | t }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
                         <label class="visually-hidden" for="Qty-{{ section.id }}">{{ 'product.quantity' | t }}</label>
-                        <input id="Qty-{{ section.id }}" type="number" name="quantity" value="1" min="1" inputmode="numeric">
+                        <input id="Qty-{{ section.id }}" type="number" name="quantity" value="1" min="1" max="{{ qty_max }}" inputmode="numeric">
                         <button type="button" data-step="1" aria-label="{{ 'product.increase' | t }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
                       </quantity-input>
                       <button

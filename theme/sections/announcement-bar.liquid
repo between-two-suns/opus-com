@@ -2,9 +2,18 @@
   <div class="announcement" role="region" aria-label="{{ 'general.announcement' | t }}">
     <div class="container announcement__inner">
       {%- if section.blocks.size == 0 -%}
-        <p>{{ 'announcement.default_1' | t }}</p>
-        <span class="announcement__dot" aria-hidden="true"></span>
-        <p>{{ 'announcement.default_2' | t }}</p>
+        {%- comment -%} Free-delivery line only when a threshold is set (Theme settings → Offers); it must mirror the shipping rates. {%- endcomment -%}
+        {%- if settings.free_shipping_threshold > 0 -%}
+          {%- assign fs_cents = settings.free_shipping_threshold | times: 100 -%}
+          {%- capture fs_amt -%}{% render 'egp', cents: fs_cents %}{%- endcapture -%}
+          <p>{{ 'announcement.free_delivery' | t: amount: fs_amt }}</p>
+          <span class="announcement__dot announcement__wide" aria-hidden="true"></span>
+          <p class="announcement__wide">{{ 'announcement.default_1' | t }}</p>
+        {%- else -%}
+          <p>{{ 'announcement.default_1' | t }}</p>
+          <span class="announcement__dot" aria-hidden="true"></span>
+          <p>{{ 'announcement.default_2' | t }}</p>
+        {%- endif -%}
       {%- endif -%}
       {%- for block in section.blocks -%}
         {%- if forloop.index > 1 -%}<span class="announcement__dot" aria-hidden="true"></span>{%- endif -%}

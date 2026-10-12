@@ -29,7 +29,11 @@ class RoutineBuilder extends HTMLElement {
     }));
 
     const form = this.querySelector('product-form');
-    if (form) form.itemsOverride = () => this.chosen().map((b) => ({ id: Number(b.dataset.id), quantity: 1 }));
+    if (form) form.itemsOverride = () => {
+      const match = window.BTS?.matchBundle?.(this.chosen().map((b) => b.dataset.step));
+      return match ? [{ id: match.id, quantity: 1 }] : this.chosen().map((b) => ({ id: Number(b.dataset.id), quantity: 1 }));
+    };
+    this.matchNote = this.querySelector('[data-bundle-match]');
     this.update();
   }
 
@@ -86,10 +90,19 @@ class RoutineBuilder extends HTMLElement {
 
     this.cta.disabled = n === 0 || unpriced;
     const show = n > 0 && !unpriced;
+    // A selection that is exactly one of the fixed-price bundles is added (and priced) as that bundle.
+    const match = window.BTS?.matchBundle?.(items.map((b) => b.dataset.step));
     this.totalSep.hidden = !show;
-    this.totalEl.textContent = show ? fmt(pct ? Math.round((sum * (100 - pct)) / 100) : sum) : '';
-    this.wasEl.hidden = !(show && pct);
-    this.wasEl.textContent = show && pct ? fmt(sum) : '';
+    if (match) {
+      this.totalEl.textContent = fmt(match.price);
+      this.wasEl.hidden = !(match.compare > match.price);
+      this.wasEl.textContent = match.compare > match.price ? fmt(match.compare) : '';
+    } else {
+      this.totalEl.textContent = show ? fmt(pct ? Math.round((sum * (100 - pct)) / 100) : sum) : '';
+      this.wasEl.hidden = !(show && pct);
+      this.wasEl.textContent = show && pct ? fmt(sum) : '';
+    }
+    if (this.matchNote) { this.matchNote.textContent = window.BTS?.bundleNote?.(match) || ''; this.matchNote.hidden = !match; }
   }
 }
 if (!customElements.get('routine-builder')) customElements.define('routine-builder', RoutineBuilder);

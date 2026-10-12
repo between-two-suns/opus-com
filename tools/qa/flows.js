@@ -11,6 +11,8 @@ for (const loc of ['', '/ar']) {
   for (const vp of [{ width: 390, height: 844, isMobile: true, hasTouch: true }, { width: 1440, height: 900 }]) {
     const tag = `${loc || '/en'} ${vp.width}`;
     const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.isMobile, hasTouch: vp.hasTouch });
+    // The welcome card has its own test below; keep it out of the way of the other flows.
+    await ctx.addInitScript(() => { try { localStorage.setItem('bts:welcome', 'seen'); } catch (e) {} });
     const page = await ctx.newPage();
     const errors = [];
     page.on('pageerror', (e) => errors.push(e.message));
@@ -56,11 +58,14 @@ for (const loc of ['', '/ar']) {
     ok(`${tag} forecast AC marks 2 key steps`, keyShown === 2, `key=${keyShown}`);
     ok(`${tag} forecast ambient state set`, (await page.$eval('#forecast', (f) => f.dataset.ac)) === 'true');
     const total = await page.$eval('#forecast [data-total]', (e) => e.textContent.trim());
-    ok(`${tag} forecast total = sum of included`, /1,650\.00/.test(total), total);
+    // PM + AC = cleanse, treat, hydrate = The Night Ritual, so the bundle price (EGP 1,299) is used.
+    ok(`${tag} forecast total uses the matching bundle`, /1,299/.test(total), total);
+    ok(`${tag} forecast says which bundle it matched`, await page.locator('#forecast [data-bundle-match]').isVisible());
+    const forecastLines0 = Number(await count(page)) ? (await page.evaluate(() => fetch('/cart.js').then((r) => r.json()))).items.length : 0;
     await page.click('[data-forecast-cta]');
     await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
     const afterForecast = await page.$$eval('#CartDrawer .cart-line', (l) => l.length);
-    ok(`${tag} forecast adds its routine`, afterForecast === 3, `lines=${afterForecast}`);
+    ok(`${tag} forecast adds its routine as one bundle`, afterForecast === forecastLines0 + 1, `lines ${forecastLines0}→${afterForecast}`);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
 
@@ -68,7 +73,7 @@ for (const loc of ['', '/ar']) {
     await page.locator('.dayline__bundle button[type="submit"]').first().click();
     await page.waitForTimeout(1000);
     const after = Number(await count(page));
-    ok(`${tag} full-routine bundle adds 4`, after - before === 4, `${before}→${after}`);
+    ok(`${tag} full-ritual bundle adds 1 bundle`, after - before === 1, `${before}→${after}`);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
 
@@ -109,8 +114,9 @@ for (const loc of ['', '/ar']) {
     }
 
     await page.goto(`${BASE}${loc}/collections/all?concern=sun`, { waitUntil: 'networkidle' });
-    const visible = await page.$$eval('#CollectionGrid > li', (l) => l.filter((x) => !x.hidden).length);
-    ok(`${tag} concern filter (sun) narrows grid`, visible === 1, `visible=${visible}`);
+    const grid = await page.$$eval('#CollectionGrid > li', (l) => l.map((x) => ({ hidden: x.hidden, c: (x.querySelector('[data-concerns]')?.dataset.concerns || '').split(' ') })));
+    const vis = grid.filter((x) => !x.hidden);
+    ok(`${tag} concern filter (sun) narrows grid to sun picks`, vis.length > 0 && vis.length < grid.length && vis.every((x) => x.c.includes('sun')), `visible=${vis.length}/${grid.length}`);
 
     // Language switch round trip
     if (vp.width > 1000) {
@@ -133,6 +139,15 @@ for (const loc of ['', '/ar']) {
     await cs.locator('[data-cta]').click();
     await page.waitForSelector('#CartDrawer[open]', { timeout: 5000 }).catch(() => {});
     ok(`${tag} climate switch adds its 2 steps`, Number(await count(page)) - c0 === 2, `${c0}→${await count(page)}`);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(300);
+    // Sun = treat + protect = Clear & Protect Duo, so the bundle is added instead of two singles.
+    await cs.locator('.cs__opt[data-c="sun"]').click();
+    ok(`${tag} climate switch notes the matching duo`, await cs.locator('[data-bundle-match]').isVisible());
+    const c1 = Number(await count(page));
+    await cs.locator('[data-cta]').click();
+    await page.waitForSelector('#CartDrawer[open]', { timeout: 5000 }).catch(() => {});
+    ok(`${tag} climate switch (sun) adds 1 duo`, Number(await count(page)) - c1 === 1, `${c1}→${await count(page)}`);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
 
@@ -159,13 +174,14 @@ for (const loc of ['', '/ar']) {
     await rb.locator('[data-preset="1,2,3"]').click();
     const on = await rb.locator('.builder__meter li.is-on').count();
     ok(`${tag} builder preset selects 3`, on === 3, `on=${on}`);
-    const sum = await rb.evaluate((el) => [...el.querySelectorAll('.builder__choice[aria-pressed="true"]')].reduce((t, b) => t + Number(b.dataset.price), 0));
+    const want = await page.evaluate(() => Math.floor(window.BTS.matchBundle(['1', '2', '3']).price / 100));
     const shown = (await rb.locator('[data-total]').textContent()).replace(/[^\d]/g, '');
-    ok(`${tag} builder total = sum of chosen`, Number(shown) === sum, `${shown} vs ${sum}`);
+    ok(`${tag} builder total = matching Night Ritual price`, Number(shown) === want, `${shown} vs ${want}`);
+    ok(`${tag} builder button fits its panel`, await rb.locator('[data-cta]').evaluate((b) => b.getBoundingClientRect().right <= b.closest('.builder__summary').getBoundingClientRect().right + 1));
     const b0 = Number(await count(page));
     await rb.locator('[data-cta]').click();
     await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
-    ok(`${tag} builder adds chosen steps`, Number(await count(page)) - b0 === 3, `${b0}→${await count(page)}`);
+    ok(`${tag} builder adds the matching bundle`, Number(await count(page)) - b0 === 1, `${b0}→${await count(page)}`);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
     const sets = await page.locator('.bundle').count();
@@ -174,12 +190,85 @@ for (const loc of ['', '/ar']) {
     const b1 = Number(await count(page));
     await duo.locator('button[type="submit"]').click();
     await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
-    ok(`${tag} duo set adds 2`, Number(await count(page)) - b1 === 2, `${b1}→${await count(page)}`);
+    ok(`${tag} duo set adds 1 bundle`, Number(await count(page)) - b1 === 1, `${b1}→${await count(page)}`);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
 
+    // Prices: whole pounds, comma thousands, EGP before (EN) / ج.م after (AR)
+    const setPrice = (await page.locator('.bundle .bundle__now').first().textContent()).trim();
+    ok(`${tag} bundle price in EGP format`, loc ? /^1,349 ج\.م$/.test(setPrice) : /^EGP 1,349$/.test(setPrice), setPrice);
+
+    // Quantity limit: a bundle stops at 3
+    await page.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
+    await page.goto(`${BASE}${loc}/products/the-day-ritual`, { waitUntil: 'networkidle' });
+    for (let i = 0; i < 4; i++) {
+      await page.evaluate(() => window.BTS.Cart.add([{ id: window.BTS.bundles.find((b) => String(b.steps) === '1,2,4').id, quantity: 1 }]));
+    }
+    await page.waitForTimeout(500);
+    ok(`${tag} bundle quantity capped at 3`, (await count(page)) === '3', `count=${await count(page)}`);
+
+    // Upgrade: Clear & Protect Duo in the bag → offer The Day Ritual, swap on click
+    await page.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
+    await page.goto(`${BASE}${loc}/products/clear-protect-duo`, { waitUntil: 'networkidle' });
+    await page.click('.pdp__atc');
+    await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
+    ok(`${tag} bag offers the Day Ritual upgrade`, await page.locator('#CartDrawer .cart-upgrade').isVisible());
+    await page.locator('#CartDrawer [data-upgrade-line]').click();
+    await page.waitForFunction(() => !document.querySelector('#CartDrawer .cart-upgrade'), null, { timeout: 5000 }).catch(() => {});
+    const upLines = await page.$$eval('#CartDrawer .cart-line', (l) => l.map((x) => x.textContent));
+    ok(`${tag} upgrade swaps duo for Day Ritual`, upLines.length === 1 && (await count(page)) === '1', `lines=${upLines.length} count=${await count(page)}`);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(300);
+    await page.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
+
     ok(`${tag} no page errors`, errors.length === 0, errors.join(' | '));
     await ctx.close();
+
+    // Creators: required fields block an empty submit; a full one shows the thank-you and takes focus
+    const cctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.isMobile, hasTouch: vp.hasTouch });
+    await cctx.addInitScript(() => { try { localStorage.setItem('bts:welcome', 'seen'); } catch (e) {} });
+    const cp = await cctx.newPage();
+    const cerr = [];
+    cp.on('pageerror', (e) => cerr.push(e.message));
+    await cp.goto(`${BASE}${loc}/pages/creators`, { waitUntil: 'networkidle' });
+    ok(`${tag} creators shows 4 reels`, (await cp.locator('.cr-reel').count()) === 4);
+    await cp.locator('.cr-hero a[href="#CreatorApply"]').click();
+    await cp.waitForTimeout(600);
+    ok(`${tag} creators CTA jumps to the form`, await cp.locator('#CreatorApply').evaluate((el) => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }));
+    ok(`${tag} creators empty form is invalid`, !(await cp.locator('#CreatorForm').evaluate((f) => f.checkValidity())));
+    await cp.fill('#Cr-name', 'Test Creator');
+    await cp.fill('#Cr-email', 'creator@example.com');
+    await cp.fill('#Cr-handle', '@testcreator');
+    await cp.locator('.cr-check').first().click();
+    await cp.locator('.cr-consent input').check();
+    await Promise.all([cp.waitForNavigation({ waitUntil: 'networkidle' }), cp.locator('#CreatorForm [type="submit"]').click()]);
+    await cp.waitForTimeout(500);
+    ok(`${tag} creators thank-you shown`, await cp.locator('[data-cr-done]').isVisible());
+    ok(`${tag} creators thank-you takes focus`, await cp.evaluate(() => document.activeElement?.hasAttribute('data-cr-done')));
+    ok(`${tag} creators no page errors`, cerr.length === 0, cerr.join(' | '));
+    await cctx.close();
+
+    // Welcome card (fresh visitor): shows without taking focus, closes, stays closed
+    const wctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.isMobile, hasTouch: vp.hasTouch });
+    const w = await wctx.newPage();
+    await w.goto(`${BASE}${loc}/`, { waitUntil: 'networkidle' });
+    ok(`${tag} welcome card hidden on arrival`, await w.locator('welcome-offer').isHidden());
+    await w.evaluate(() => document.querySelector('welcome-offer').tryShow());
+    await w.waitForTimeout(700);
+    ok(`${tag} welcome card shows`, await w.locator('welcome-offer .welcome__card').isVisible());
+    ok(`${tag} welcome card doesn't steal focus`, await w.evaluate(() => !document.querySelector('welcome-offer').contains(document.activeElement)));
+    await w.locator('[data-welcome-close]').click();
+    await w.waitForTimeout(500);
+    ok(`${tag} welcome card closes`, await w.locator('welcome-offer').isHidden());
+    await w.reload({ waitUntil: 'networkidle' });
+    await w.evaluate(() => document.querySelector('welcome-offer').tryShow());
+    await w.waitForTimeout(300);
+    ok(`${tag} welcome card shows once per visitor`, await w.locator('welcome-offer').isHidden());
+    await w.goto(`${BASE}${loc}/?customer_posted=true`, { waitUntil: 'networkidle' });
+    await w.waitForTimeout(600);
+    ok(`${tag} welcome reveals code after sign-up`, (await w.locator('[data-welcome-code]').textContent()).trim() === 'WELCOME75');
+    ok(`${tag} welcome success takes focus`, await w.evaluate(() => document.activeElement?.id === 'WelcomeTitle'));
+    await wctx.close();
   }
 }
 await browser.close();

@@ -34,7 +34,8 @@
   },
   "announcement": {
     "default_1": "Climate-adapted skincare",
-    "default_2": "Made in Egypt"
+    "default_2": "Made in Egypt",
+    "free_delivery": "Free standard delivery on eligible orders of {{ amount }}+"
   },
   "header": {
     "menu": "Menu",
@@ -96,7 +97,8 @@
       "shipping": "Shipping",
       "returns": "Returns",
       "contact": "Contact",
-      "sets": "Sets"
+      "sets": "Sets",
+      "creators": "Creators"
     },
     "copyright": "Between Two Suns",
     "made_in": "Made in Egypt",
@@ -268,7 +270,7 @@
     "bundles": {
       "eyebrow": "Sets",
       "heading": "Routines, ready to go.",
-      "text": "Curated sets of the four steps. Each set is priced as the sum of its products.",
+      "text": "Fixed-price sets of the four steps. The saving is against buying the same products separately.",
       "count": "{{ count }} steps",
       "was": "Was",
       "save": "Save {{ pct }}%",
@@ -605,6 +607,30 @@
       "payment": {
         "q": "How can I pay?",
         "a": "The payment methods available for your order are shown at checkout before you confirm."
+      },
+      "cr_followers": {
+        "q": "Do I need a lot of followers?",
+        "a": "No. We look at how honest and well-made your content is, not just the numbers."
+      },
+      "cr_paid": {
+        "q": "Is it paid?",
+        "a": "Every accepted creator gets the full routine. Depending on the collaboration, it can also include commission on sales through your code, or a paid project. We agree everything with you before you post."
+      },
+      "cr_rights": {
+        "q": "Can you use my content?",
+        "a": "Only with your permission. If we’d like to use a piece on our site, channels or ads, we ask first and agree how, where and for how long."
+      },
+      "cr_post": {
+        "q": "Do I have to post?",
+        "a": "We ask for honest content after you’ve lived with the routine for a while. What and when, we agree together. We never script your opinion."
+      },
+      "cr_where": {
+        "q": "Who can apply?",
+        "a": "Creators based in Egypt, for now. Any platform, any follower count."
+      },
+      "cr_disclose": {
+        "q": "Do I need to mark posts as an ad?",
+        "a": "Yes. Mark gifted or paid posts the way your platform asks, for example with the paid-partnership label or #ad."
       }
     }
   },
@@ -689,5 +715,177 @@
     "home": "Home",
     "search": "Search",
     "bag": "Bag"
+  },
+  "bundles": {
+    "names": {
+      "the-day-ritual": "The Day Ritual",
+      "the-full-ritual": "The Full Ritual",
+      "clear-protect-duo": "Clear & Protect Duo",
+      "the-night-ritual": "The Night Ritual",
+      "the-core-duo": "The Core Duo",
+      "spf-stock-up": "SPF Stock-Up",
+      "serum-stock-up": "Serum Stock-Up"
+    },
+    "desc": {
+      "the-day-ritual": "Cleanse, clarity, defense: the morning three.",
+      "the-full-ritual": "All four steps, in order.",
+      "clear-protect-duo": "Clarity Serum plus daily SPF.",
+      "the-night-ritual": "Cleanse, clarity, barrier. SPF waits for the morning.",
+      "the-core-duo": "The first two steps: cleanse, then clarity.",
+      "spf-stock-up": "Two tubes of SPF 50+, for every morning.",
+      "serum-stock-up": "Two bottles of Clarity Serum."
+    },
+    "badges": {
+      "bts_pick": "BTS Pick",
+      "best_value": "Best value",
+      "daily_essential": "Daily Essential"
+    },
+    "save_vs": "Save {{ amount }} vs buying separately",
+    "ships_free": "Ships free",
+    "upgrade": "Add {{ product }} for {{ amount }} more and get free delivery",
+    "upgrade_cta": "Upgrade to {{ bundle }}",
+    "match": "Your picks make {{ bundle }}",
+    "qty_limit": "Maximum {{ count }} per order",
+    "complete_heading": "Complete the routine",
+    "stock_heading": "Stock up"
+  },
+  "welcome": {
+    "eyebrow": "Welcome to the list",
+    "heading": "{{ amount }} off your first order",
+    "text": "Launch news and skin notes for changing weather. Your code appears here the moment you sign up.",
+    "submit": "Get my code",
+    "success_eyebrow": "You’re on the list",
+    "success_heading": "Here’s your {{ amount }} off",
+    "copy": "Copy",
+    "copied": "Copied",
+    "apply": "Apply to my bag",
+    "applied": "Applied. You’ll see it at checkout",
+    "terms": "One use per customer. {{ minimum }} minimum. Not valid on Stock-Up packs. Can’t be combined with other product discounts."
+  },
+  "creators": {
+    "eyebrow": "Creators · Between Two Suns",
+    "heading": "Show us your weather.",
+    "text": "Sun at noon, AC by two, dust on the commute. If you make honest, good-looking content about real skin in real Egyptian weather, let’s make things together.",
+    "cta": "Apply to join",
+    "how_link": "How it works",
+    "reel_captions": {
+      "city": "the commute reset",
+      "humidity": "humid day, light layers",
+      "ac": "8 hours of office AC",
+      "sun": "38° and reapplying"
+    },
+    "offer_eyebrow": "What you get",
+    "offer_heading": "Made with you, not around you",
+    "offers": {
+      "routine": {
+        "title": "The full routine, on us",
+        "text": "All four steps, sent to you to live with properly before you make anything."
+      },
+      "code": {
+        "title": "Your own code",
+        "text": "A personal code that gives your followers 10% off.",
+        "note": "For accepted creators."
+      },
+      "earn": {
+        "title": "Commission or paid collabs",
+        "text": "Depending on the collaboration: product, or product plus commission on sales through your code. We agree it with you, in writing, before you post."
+      },
+      "featured": {
+        "title": "Featured, with credit",
+        "text": "Our favourite work is shown on our site and channels, always credited and only with your permission."
+      }
+    },
+    "how_eyebrow": "How it works",
+    "how_heading": "Four steps, no scripts",
+    "steps": {
+      "s1": {
+        "title": "Apply",
+        "text": "Two minutes. Tell us who you are and what you make."
+      },
+      "s2": {
+        "title": "We get in touch",
+        "text": "We read every application. If it’s a fit, we message you to agree what the collaboration looks like."
+      },
+      "s3": {
+        "title": "Your routine arrives",
+        "text": "Use it in your real weather for a while. Your skin, your pace."
+      },
+      "s4": {
+        "title": "Create and share",
+        "text": "Make it your way and tag us. The best work gets featured, with credit."
+      }
+    },
+    "ideas_eyebrow": "What we love",
+    "ideas_heading": "Real days, real weather",
+    "ideas_text": "No studio needed. The best content looks like your actual day.",
+    "ideas": {
+      "morning": "Your morning routine on a 38° day",
+      "office": "Desk-day skin vs. office AC",
+      "commute": "The commute: dust, traffic and the reset after",
+      "coast": "Humid weekends on the coast",
+      "night": "Your night routine in 60 seconds",
+      "texture": "Close-up textures and honest first impressions"
+    },
+    "rules_heading": "The few rules",
+    "rules": {
+      "r1": "Be honest. Say what you really think, and mark posts as gifted or #ad as your platform requires.",
+      "r2": "Real skin. No filters or edits on skin results.",
+      "r3": "No medical claims. Talk about how it feels and how it fits your day.",
+      "r4": "Your content stays yours. We only reuse it with your permission, on terms we agree first."
+    },
+    "apply_eyebrow": "Apply",
+    "apply_heading": "Create with us",
+    "apply_text": "Any follower count. We care more about honest, well-made content than numbers.",
+    "apply_note": "For creators based in Egypt for now. If it’s a fit, we’ll reply on WhatsApp or email.",
+    "success_heading": "Application received",
+    "success_text": "Thank you. We read every application, and if it’s a fit we’ll reach out on WhatsApp or email.",
+    "form": {
+      "about": "About you",
+      "name": "Full name",
+      "email": "Email",
+      "whatsapp": "WhatsApp number",
+      "city": "City",
+      "channels": "Your channels",
+      "platform": "Main platform",
+      "platforms": {
+        "instagram": "Instagram",
+        "tiktok": "TikTok",
+        "youtube": "YouTube",
+        "other": "Other"
+      },
+      "handle": "Main account",
+      "audience": "Audience size",
+      "sizes": {
+        "under_1k": "Under 1K",
+        "1k_10k": "1K–10K",
+        "10k_50k": "10K–50K",
+        "50k_100k": "50K–100K",
+        "over_100k": "100K+"
+      },
+      "other": "Other accounts (optional)",
+      "audience_note": "Small accounts are welcome. This just helps us plan.",
+      "content": "Your content",
+      "kinds": {
+        "video": "Short video (Reels, TikTok)",
+        "photo": "Photos",
+        "review": "Reviews",
+        "tutorial": "Tutorials & routines",
+        "ugc": "UGC for brands"
+      },
+      "best": "Link to a piece you’re proud of",
+      "skin": "Your skin type",
+      "skins": {
+        "oily": "Oily",
+        "combination": "Combination",
+        "normal": "Normal",
+        "dry": "Dry",
+        "sensitive": "Sensitive",
+        "unsure": "Not sure"
+      },
+      "why": "Why Between Two Suns?",
+      "why_hint": "A few lines are plenty.",
+      "consent": "I agree that Between Two Suns can contact me about this application.",
+      "submit": "Send my application"
+    }
   }
 }

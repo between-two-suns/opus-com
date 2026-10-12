@@ -16,10 +16,10 @@
     {%- else -%}
       <span class="visually-hidden">{{ 'product.price' | t }}</span>
     {%- endif -%}
-    <span class="price__current">{{ amount | money }}</span>
+    <span class="price__current">{% render 'egp', cents: amount %}</span>
     {%- if compare > amount -%}
       <span class="visually-hidden">{{ 'product.regular_price' | t }}</span>
-      <s class="price__compare">{{ compare | money }}</s>
+      <s class="price__compare">{% render 'egp', cents: compare %}</s>
     {%- endif -%}
   {%- endif -%}
 </span>

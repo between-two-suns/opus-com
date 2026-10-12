@@ -1,0 +1,6 @@
+{"note":"Product state before applying the Pricing & Offers spec (2026-10-12). Use to revert.","products":[
+{"handle":"daily-reset-cleanser","variant":"gid://shopify/ProductVariant/50557240017154","price":"0.00","sku":"BTS-RESET-200","tags":["01 Reset","AM + PM","BTS Launch","Development"],"tracked":false},
+{"handle":"clarity-serum","variant":"gid://shopify/ProductVariant/50557242999042","price":"0.00","sku":"BTS-CLARITY-30","tags":["02 Clarity","AM + PM","BTS Launch","Development"],"tracked":false},
+{"handle":"daily-barrier-moisturizing-cream","variant":"gid://shopify/ProductVariant/50557243130114","price":"0.00","sku":"BTS-BARRIER-50","tags":["03 Barrier","AM + PM","BTS Launch","Development"],"tracked":false},
+{"handle":"daily-defense-sunscreen-spf-50","variant":"gid://shopify/ProductVariant/50557243293954","price":"0.00","sku":"BTS-DEFENSE-50","tags":["04 Defense","AM","BTS Launch","Development"],"tracked":false}
+]}

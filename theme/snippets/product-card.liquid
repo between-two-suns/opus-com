@@ -2,6 +2,11 @@
   Product card. Colour, step and copy come from the product (tags/metafields), never hard-coded.
   Params: product (required), section_id, loading ('lazy'|'eager'), sizes, show_add (bool, default true), heading_tag
 {%- endcomment -%}
+{%- capture card_bdef -%}{% render 'bundle-def', handle: product.handle %}{%- endcapture -%}
+{%- if card_bdef != blank -%}
+  {{ 'bundles.css' | asset_url | stylesheet_tag }}
+  {%- render 'bundle-card', product: product, tag: 'div' -%}
+{%- else -%}
 {%- liquid
   capture step
     render 'product-step', product: product
@@ -95,3 +100,4 @@
     </div>
   {%- endunless -%}
 </article>
+{%- endif -%}

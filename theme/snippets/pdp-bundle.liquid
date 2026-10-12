@@ -1,0 +1,48 @@
+{%- comment -%}
+  Bundle parts of the product page (Pricing & Offers spec).
+  part 'stage': the component packs fanned out when the bundle has no photos (placeholder for any other product).
+  part 'info': saving vs buying separately (+ ships free when it reaches the threshold) and what's inside.
+  Params: part, handle, variant (info)
+{%- endcomment -%}
+{%- liquid
+  capture bdef
+    render 'bundle-def', handle: handle
+  endcapture
+  assign bdef = bdef | strip
+  assign bundle_steps = bdef | split: '|' | first | split: ','
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+-%}
+{%- if part == 'stage' and bdef == blank -%}
+<div class="gallery__slide" data-slide>{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+{%- elsif bdef == blank -%}
+{%- comment -%} not a bundle: no info {%- endcomment -%}
+{%- elsif part == 'stage' -%}
+<div class="gallery__slide gallery__slide--bundle" data-slide style="--a: var(--c-step-{{ bundle_steps.first }}); --b: var(--c-step-{{ bundle_steps.last }});">
+  <span class="bundle__packs gallery__packs" style="--n: {{ bundle_steps.size }}">
+    {%- for st in bundle_steps -%}
+      {%- assign si = st | plus: 0 -%}
+      {%- assign comp = all_products[step_handles[si]] -%}
+      {%- assign cc = comp.metafields.bts.cutout.value -%}
+      <span class="bundle__pack" data-step="{{ st }}" style="--k: {{ forloop.index0 }}">
+        {%- if cc -%}{{ cc | image_url: width: 600 | image_tag: loading: 'eager', widths: '300,450,600', sizes: '(min-width: 990px) 16vw, 30vw', alt: comp.title }}{%- endif -%}
+      </span>
+    {%- endfor -%}
+  </span>
+</div>
+{%- else -%}
+{%- if variant.compare_at_price > variant.price -%}
+  {%- assign bsave = variant.compare_at_price | minus: variant.price -%}
+  {%- capture bsave_m -%}{% render 'egp', cents: bsave %}{%- endcapture -%}
+  {%- assign bthr = settings.free_shipping_threshold | default: 0 | times: 100 -%}
+  <p class="bundle__save t-small">{{ 'bundles.save_vs' | t: amount: bsave_m }}{% if bthr > 0 and variant.price >= bthr %} · {{ 'bundles.ships_free' | t }}{% endif %}</p>
+{%- endif -%}
+<ul class="bundle__items pdp__bundle-items" role="list">
+    {%- assign buniq = bundle_steps | uniq -%}
+    {%- for st in buniq -%}
+      {%- assign si = st | plus: 0 -%}
+      {%- assign comp = all_products[step_handles[si]] -%}
+      {%- assign q = 0 -%}{%- for x in bundle_steps -%}{%- if x == st -%}{%- assign q = q | plus: 1 -%}{%- endif -%}{%- endfor -%}
+      <li data-step="{{ st }}"><span class="bundle__dot" aria-hidden="true"></span>{% if q > 1 %}{{ q }} × {% endif %}<a href="{{ comp.url }}">{{ comp.title | escape }}</a></li>
+    {%- endfor -%}
+</ul>
+{%- endif -%}

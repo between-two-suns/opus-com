@@ -435,3 +435,4 @@ climate-switch.is-entered .cs__line:not([hidden]) { animation: cs-in 420ms var(-
 .facts-band__mark svg { block-size: 100%; inline-size: auto; }
 .facts-band__text { font-size: 15px; font-weight: 600; line-height: 1.35; max-inline-size: 22ch; }
 @media (min-width: 990px) { .facts-band__list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; } }
+.routine__bundle { margin-block-start: clamp(24px, 3vw, 40px); }

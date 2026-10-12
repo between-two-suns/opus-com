@@ -8,7 +8,7 @@ import crypto from 'node:crypto';
 import { Liquid, Tag, Drop, Hash } from 'liquidjs';
 import sharp from 'sharp';
 import zlib from 'node:zlib';
-import { productsFor, ingredientsFor, inciFor, PAGES, PAGE_BODY, ARTICLES } from './fixtures.js';
+import { productsFor, ingredientsFor, inciFor, PAGES, PAGE_BODY, ARTICLES, BUNDLES } from './fixtures.js';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const THEME = path.join(ROOT, 'theme');
@@ -93,6 +93,26 @@ function buildData(locale, cart) {
     variant.product = prod;
     return prod;
   });
+  // Bundles: plain products with a compare-at price (singles total), no images or bts metafields.
+  for (const b of BUNDLES) {
+    const variant = {
+      id: b.variantId, title: 'Default Title', price: b.price, compare_at_price: b.compare, available: true,
+      sku: b.sku, inventory_management: null, options: ['Default Title'], option1: 'Default Title',
+      url: `${prefix}/products/${b.handle}?variant=${b.variantId}`, featured_media: null,
+    };
+    const prod = {
+      ...b, vendor: 'BETWEEN TWO SUNS', type: 'Bundle', description: '',
+      url: `${prefix}/products/${b.handle}`,
+      variants: [variant], selected_or_first_available_variant: variant, first_available_variant: variant, selected_variant: null,
+      has_only_default_variant: true, available: true, price: b.price, price_min: b.price, price_max: b.price, compare_at_price: b.compare,
+      options: ['Title'], options_with_values: [{ name: 'Title', values: ['Default Title'], position: 1 }],
+      featured_media: null, featured_image: null, images: [], media: [],
+      metafields: toMetafields({ bts: {} }), content: '', collections: [],
+      requires_selling_plan: false, selling_plan_groups: [], gift_card: false,
+    };
+    variant.product = prod;
+    products.push(prod);
+  }
   const byHandle = Object.fromEntries(products.map((p) => [p.handle, p]));
   const byVariant = Object.fromEntries(products.map((p) => [p.variantId, p]));
 
@@ -174,6 +194,17 @@ const engine = new Liquid({
   ownPropertyOnly: false,
   dynamicPartials: true,
   cache: false,
+  // Shopify allows `posted_successfully?`; liquidjs doesn't, so strip the `?` when snippets load.
+  fs: {
+    sep: path.sep,
+    dirname: (f) => path.dirname(f),
+    resolve: (root, file, ext) => path.resolve(root, file.endsWith(ext) ? file : file + ext),
+    contains: (root, file) => path.resolve(file).startsWith(path.resolve(root)),
+    exists: async (f) => fs.existsSync(f),
+    existsSync: (f) => fs.existsSync(f),
+    readFile: async (f) => fs.readFileSync(f, 'utf8').replace(/\.posted_successfully\?/g, '.posted_successfully'),
+    readFileSync: (f) => fs.readFileSync(f, 'utf8').replace(/\.posted_successfully\?/g, '.posted_successfully'),
+  },
 });
 
 // Shopify-only tags --------------------------------------------------------
@@ -214,7 +245,7 @@ engine.registerTag('form', class extends Tag {
     action = prefix + action;
     const extra = Object.entries(attrs).map(([k, v]) => `${k}="${String(v).replace(/"/g, '&quot;')}"`).join(' ');
     emitter.write(`<form method="post" action="${action}" accept-charset="UTF-8" ${extra}><input type="hidden" name="form_type" value="${this.type}"><input type="hidden" name="utf8" value="✓">`);
-    ctx.push({ form: { posted_successfully: false, errors: null, id: attrs.id } });
+    ctx.push({ form: { posted_successfully: (this.type === 'customer' && globalThis.__customerPosted === true) || (this.type === 'contact' && globalThis.__contactPosted === true), errors: null, id: attrs.id } });
     yield this.liquid.renderer.renderTemplates(this.tpls, ctx, emitter);
     ctx.pop();
     emitter.write('</form>');
@@ -456,7 +487,7 @@ function cartJson(data) {
   const c = data.cartObj;
   return {
     token: 'preview', item_count: c.item_count, total_price: c.total_price, items_subtotal_price: c.items_subtotal_price, currency: 'EGP',
-    items: c.items.map((i) => ({ id: i.id, variant_id: i.id, key: i.key, quantity: i.quantity, title: i.title, product_title: i.product.title, price: i.price, line_price: i.line_price, final_line_price: i.final_line_price, url: i.url, handle: i.product.handle })),
+    items: c.items.map((i) => ({ id: i.id, variant_id: i.id, key: i.key, quantity: i.quantity, title: i.title, product_title: i.product.title, price: i.price, line_price: i.line_price, final_line_price: i.final_line_price, url: i.url, handle: i.product.handle, product_type: i.product.type || '' })),
   };
 }
 async function sectionsPayload(names, locale, data, pathName) {
@@ -550,6 +581,8 @@ const server = http.createServer(async (req, res) => {
   };
   try {
     const url = new URL(req.url, `http://localhost:${PORT}`);
+    globalThis.__customerPosted = url.searchParams.get('customer_posted') === 'true';
+    globalThis.__contactPosted = url.searchParams.get('contact_posted') === 'true';
     let pathname = decodeURIComponent(url.pathname);
     let locale = 'en';
     if (pathname === '/ar' || pathname.startsWith('/ar/')) { locale = 'ar'; pathname = pathname.slice(3) || '/'; }
@@ -584,7 +617,8 @@ const server = http.createServer(async (req, res) => {
       try {
         if (pathname === '/cart/add.js') addItems(cart, body.items || [{ id: body.id, quantity: body.quantity || 1 }], data);
         if (pathname === '/cart/change.js') {
-          const idx = Number(body.line) - 1;
+          // Shopify accepts a 1-based line or an id (line key or variant id).
+          const idx = body.line ? Number(body.line) - 1 : cart.lines.findIndex((l) => `${l.id}:k` === String(body.id) || String(l.id) === String(body.id));
           if (cart.lines[idx]) { if (Number(body.quantity) <= 0) cart.lines.splice(idx, 1); else cart.lines[idx].quantity = Number(body.quantity); }
         }
       } catch (e) {
@@ -597,6 +631,7 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify(payload));
     }
+    if (req.method === 'POST' && pathname === '/cart/clear.js') { cart.lines.splice(0); data = buildData(locale, cart); res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(cartJson(data))); }
     if (pathname === '/cart.js') { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(cartJson(data))); }
     if (req.method === 'POST' && pathname === '/cart/add') {
       const { items } = parseForm(await readBody(req));
@@ -624,7 +659,9 @@ const server = http.createServer(async (req, res) => {
       return res.end();
     }
     if (req.method === 'POST' && pathname === '/contact') {
-      res.writeHead(302, { Location: `${req.headers.referer || '/'}?customer_posted=true` });
+      const ft = new URLSearchParams(await readBody(req)).get('form_type');
+      const back = (req.headers.referer || '/').split('?')[0].split('#')[0];
+      res.writeHead(302, { Location: `${back}?${ft === 'contact' ? 'contact_posted' : 'customer_posted'}=true` });
       return res.end();
     }
 

@@ -1,12 +1,12 @@
 // Fixtures for the local preview, generated from content/products.json (approved pack copy).
-// PREVIEW-ONLY: prices are SAMPLE values so cart/total flows can be exercised. Real prices live in Shopify.
+// Prices mirror Shopify (Pricing & Offers spec, applied 2026-10-12).
 import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const content = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/products.json'), 'utf8'));
 
-export const SAMPLE_PRICES = { 1: 45000, 2: 65000, 3: 55000, 4: 60000 }; // cents — SAMPLE ONLY
+export const SAMPLE_PRICES = { 1: 39900, 2: 49900, 3: 44900, 4: 49900 }; // cents, = Shopify list prices
 const PHOTO = { 1: 'render-cleanser.webp', 2: 'render-serum.webp', 3: 'render-moisturizer.webp', 4: 'render-spf.webp' };
 const CUT = { 1: 'cut-cleanser.png', 2: 'cut-serum.png', 3: 'cut-moisturizer.png', 4: 'cut-spf.png' };
 const TAGS = { 1: '01 Reset', 2: '02 Clarity', 3: '03 Barrier', 4: '04 Defense' };
@@ -46,11 +46,11 @@ export function productsFor(locale) {
       title: pick(p.title),
       vendor: 'BETWEEN TWO SUNS',
       type: TYPES[s],
-      tags: [TAGS[s], s === 4 ? 'AM' : 'AM + PM', 'BTS Launch'],
+      tags: [TAGS[s], s === 4 ? 'AM' : 'AM + PM', 'BTS Launch', 'singles'],
       description: 'Development product record for the BETWEEN TWO SUNS storefront. Final approved ecommerce copy will replace this before launch.',
       price: SAMPLE_PRICES[s],
       variantId: VIDS[s],
-      sku: ['', 'BTS-RESET-200', 'BTS-CLARITY-30', 'BTS-BARRIER-50', 'BTS-DEFENSE-50'][s],
+      sku: ['', 'BTS-CLN-200', 'BTS-SRM-030', 'BTS-MST-050', 'BTS-SPF-050'][s],
       photo: { __image: PHOTO[s], width: 1024, height: 1536, alt: pick(p.title) },
       metafields: { bts: mf },
     };
@@ -85,6 +85,7 @@ export const PAGES = {
   about: { en: 'About Between Two Suns', ar: 'عن Between Two Suns' },
   faq: { en: 'FAQ', ar: 'الأسئلة الشائعة' },
   contact: { en: 'Contact', ar: 'تواصل معنا' },
+  creators: { en: 'Creators', ar: 'صنّاع المحتوى' },
   scan: { en: 'Scan your pack', ar: 'امسح عبوتك' },
   shipping: { en: 'Shipping', ar: 'الشحن' },
   returns: { en: 'Returns', ar: 'الاسترجاع' },
@@ -116,4 +117,15 @@ export const ARTICLES = [
     published_at: '2026-10-01T09:00:00Z',
     image: null,
   },
+];
+
+// The seven fixed-price bundles, as created in Shopify (productBundleCreate, 2026-10-12).
+export const BUNDLES = [
+  { id: 10408389181698, variantId: 50722896281858, handle: 'the-day-ritual', title: 'The Day Ritual', price: 134900, compare: 139700, sku: 'BTS-SET-DAY', tags: ['bundle', 'rituals'] },
+  { id: 10408389083394, variantId: 50722896019714, handle: 'the-full-ritual', title: 'The Full Ritual', price: 169900, compare: 184600, sku: 'BTS-SET-FULL', tags: ['bundle', 'rituals'] },
+  { id: 10408389247234, variantId: 50722896347394, handle: 'clear-protect-duo', title: 'Clear & Protect Duo', price: 94900, compare: 99800, sku: 'BTS-SET-CLEAR', tags: ['bundle', 'duos'] },
+  { id: 10408389214466, variantId: 50722896314626, handle: 'the-night-ritual', title: 'The Night Ritual', price: 129900, compare: 134700, sku: 'BTS-SET-NIGHT', tags: ['bundle', 'rituals'] },
+  { id: 10408389312770, variantId: 50722896412930, handle: 'the-core-duo', title: 'The Core Duo', price: 84900, compare: 89800, sku: 'BTS-SET-CORE', tags: ['bundle', 'duos'] },
+  { id: 10408389345538, variantId: 50722896445698, handle: 'spf-stock-up', title: 'SPF Stock-Up', price: 89900, compare: 99800, sku: 'BTS-SET-SPF2', tags: ['bundle', 'stock-up'] },
+  { id: 10408389378306, variantId: 50722896478466, handle: 'serum-stock-up', title: 'Serum Stock-Up', price: 89900, compare: 99800, sku: 'BTS-SET-SRM2', tags: ['bundle', 'stock-up'] },
 ];

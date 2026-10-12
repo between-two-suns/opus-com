@@ -20,7 +20,7 @@
       <h1 class="t-display-m">{{ 'gift_card.title' | t }}</h1>
       {%- if gift_card.expired -%}<p class="form-status form-status--error">{{ 'gift_card.expired' | t }}</p>{%- endif -%}
       {%- unless gift_card.enabled -%}<p class="form-status form-status--error">{{ 'gift_card.disabled' | t }}</p>{%- endunless -%}
-      <p class="t-display-l">{{ gift_card.balance | money }}</p>
+      <p class="t-display-l">{% render 'egp', cents: gift_card.balance %}</p>
       <p class="t-muted">{{ 'gift_card.balance' | t }}</p>
       <label class="field" style="inline-size:min(100%,420px)">
         <span class="field__label">{{ 'gift_card.code' | t }}</span>

@@ -52,7 +52,7 @@
             <thead><tr><th scope="col">#</th><th scope="col">{{ 'customer.date' | t }}</th><th scope="col">{{ 'customer.payment' | t }}</th><th scope="col">{{ 'customer.fulfillment' | t }}</th><th scope="col">{{ 'customer.total' | t }}</th></tr></thead>
             <tbody>
               {%- for order in customer.orders -%}
-                <tr><td><a href="{{ order.customer_url }}">{{ order.name }}</a></td><td>{{ order.created_at | time_tag: format: 'date' }}</td><td>{{ order.financial_status_label }}</td><td>{{ order.fulfillment_status_label }}</td><td>{{ order.total_net_amount | money_with_currency }}</td></tr>
+                <tr><td><a href="{{ order.customer_url }}">{{ order.name }}</a></td><td>{{ order.created_at | time_tag: format: 'date' }}</td><td>{{ order.financial_status_label }}</td><td>{{ order.fulfillment_status_label }}</td><td>{% render 'egp', cents: order.total_net_amount %}</td></tr>
               {%- endfor -%}
             </tbody>
           </table>
@@ -65,12 +65,12 @@
         <p class="t-muted">{{ order.created_at | time_tag: format: 'date' }} · {{ order.financial_status_label }} · {{ order.fulfillment_status_label }}</p>
         <ul class="cart-lines u-mt-m" role="list">
           {%- for item in order.line_items -%}
-            <li class="cart-line" style="grid-template-columns:1fr auto"><span>{{ item.title | escape }} × {{ item.quantity }}</span><span class="cart-line__price">{{ item.final_line_price | money }}</span></li>
+            <li class="cart-line" style="grid-template-columns:1fr auto"><span>{{ item.title | escape }} × {{ item.quantity }}</span><span class="cart-line__price">{% render 'egp', cents: item.final_line_price %}</span></li>
           {%- endfor -%}
         </ul>
         <div class="cart-totals u-mt-m">
-          <div class="cart-totals__row"><span>{{ 'cart.subtotal' | t }}</span><span>{{ order.line_items_subtotal_price | money }}</span></div>
-          <div class="cart-totals__row"><span class="t-subheading">{{ 'customer.total' | t }}</span><span class="cart-totals__subtotal">{{ order.total_net_amount | money_with_currency }}</span></div>
+          <div class="cart-totals__row"><span>{{ 'cart.subtotal' | t }}</span><span>{% render 'egp', cents: order.line_items_subtotal_price %}</span></div>
+          <div class="cart-totals__row"><span class="t-subheading">{{ 'customer.total' | t }}</span><span class="cart-totals__subtotal">{% render 'egp', cents: order.total_net_amount %}</span></div>
         </div>
         <a class="link-arrow u-mt-m" href="{{ routes.account_url }}">{{ 'customer.account' | t }}</a>
       {%- when 'addresses' -%}

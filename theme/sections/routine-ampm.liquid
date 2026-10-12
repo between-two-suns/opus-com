@@ -16,7 +16,6 @@
           assign icon = 'moon'
         endif
         assign total = 0
-        assign zero = false
       -%}
       <div class="ampm__col ampm__col--{{ slot }}">
         <div class="ampm__head">
@@ -32,7 +31,6 @@
               {%- if ps == s -%}
                 {%- assign pv = p.selected_or_first_available_variant -%}
                 {%- assign total = total | plus: pv.price -%}
-                {%- if pv.price == 0 -%}{%- assign zero = true -%}{%- endif -%}
                 {%- assign cutout = p.metafields.bts.cutout.value -%}
                 <li class="ampm__step" data-step="{{ s }}">
                   <span class="ampm__thumb" aria-hidden="true">
@@ -49,30 +47,8 @@
             {%- endfor -%}
           {%- endfor -%}
         </ol>
-        <product-form data-multi>
-          <form method="post" action="{{ routes.cart_add_url }}">
-            {%- for s in (1..max) -%}
-              {%- for p in source.products limit: 12 -%}
-                {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
-                {%- assign ps = ps | strip | plus: 0 -%}
-                {%- if ps == s -%}
-                  <input type="hidden" name="items[][id]" value="{{ p.selected_or_first_available_variant.id }}">
-                  <input type="hidden" name="items[][quantity]" value="1">
-                  {%- break -%}
-                {%- endif -%}
-              {%- endfor -%}
-            {%- endfor -%}
-            {%- if zero and settings.zero_price_coming_soon -%}
-              <button type="button" class="btn btn--full" disabled>{{ 'product.coming_soon' | t }}</button>
-            {%- else -%}
-              <button type="submit" class="btn btn--full">
-                <span class="btn__label">{{ 'pages.routines.add' | t: routine: title }}</span>
-                <span class="btn__sep" aria-hidden="true">·</span>
-                <span class="btn__price">{{ total | money }}</span>
-              </button>
-            {%- endif -%}
-          </form>
-        </product-form>
+        {%- comment -%} AM = all four steps = The Full Ritual; PM = cleanse, clarity, barrier = The Night Ritual (spec bundles). {%- endcomment -%}
+        {%- if slot == 1 -%}{% render 'bundle-bar', handle: 'the-full-ritual' %}{%- else -%}{% render 'bundle-bar', handle: 'the-night-ritual' %}{%- endif -%}
       </div>
     {%- endfor -%}
   </div>

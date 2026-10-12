@@ -1,0 +1,146 @@
+{{ 'creators.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Creators landing ("Show us your weather"). Honest offer only: every accepted creator gets the routine;
+  commission or paid work is agreed one-to-one before anything is posted; content is reused only with
+  permission. No follower counts, views, earnings or deadlines are shown or promised.
+  Frames are phone-shaped "reels" built from the real product cutouts and the brand's climate conditions.
+{%- endcomment -%}
+{%- liquid
+  assign eyebrow = section.settings.eyebrow
+  if eyebrow == blank
+    assign eyebrow = 'creators.eyebrow' | t
+  endif
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'creators.heading' | t
+  endif
+  assign text = section.settings.text
+  if text == blank
+    assign text = 'creators.text' | t
+  endif
+  assign frames = 'daily-reset-cleanser:city:dust:1,clarity-serum:humidity:drop:2,daily-barrier-moisturizing-cream:ac:ac:3,daily-defense-sunscreen-spf-50:sun:sun:4' | split: ','
+  assign offers = 'routine,code,earn,featured' | split: ','
+  assign ideas = 'morning:sun,office:ac,commute:dust,coast:drop,night:moon,texture:layers' | split: ','
+-%}
+<div class="creators">
+  <section class="cr-hero grain" aria-labelledby="CrTitle-{{ section.id }}">
+    <span class="cr-hero__mark" aria-hidden="true"></span>
+    <div class="container cr-hero__inner">
+      <div class="cr-hero__copy">
+        <p class="t-eyebrow">{{ eyebrow | escape }}</p>
+        <h1 class="t-display-l cr-hero__title" id="CrTitle-{{ section.id }}">{{ heading | escape }}</h1>
+        <p class="t-lead">{{ text | escape }}</p>
+        <div class="cluster cr-hero__ctas">
+          <a class="btn" href="#CreatorApply" data-magnetic>{{ 'creators.cta' | t }}</a>
+          <a class="link-arrow" href="#CrHow-{{ section.id }}">{{ 'creators.how_link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+        </div>
+      </div>
+      <ul class="cr-reels" role="list" aria-hidden="true">
+        {%- for f in frames -%}
+          {%- assign parts = f | split: ':' -%}
+          {%- assign p = all_products[parts[0]] -%}
+          {%- assign cut = p.metafields.bts.cutout.value -%}
+          {%- assign ck = 'sections.forecast.conditions.' | append: parts[1] -%}
+          {%- assign cap = 'creators.reel_captions.' | append: parts[1] -%}
+          <li class="cr-reel" style="--sku: var(--c-step-{{ parts[3] }}); --sku-tint: var(--c-step-{{ parts[3] }}-tint); --i: {{ forloop.index0 }}">
+            <span class="cr-reel__chip">{% render 'icon', name: parts[2], class: 'icon--sm' %}{{ ck | t }}</span>
+            <span class="cr-reel__media">
+              {%- if cut -%}
+                {{ cut | image_url: width: 420 | image_tag: loading: 'eager', widths: '210,320,420', sizes: '(min-width: 990px) 12vw, 28vw', alt: '' }}
+              {%- elsif p.featured_image -%}
+                {{ p.featured_image | image_url: width: 420 | image_tag: loading: 'eager', widths: '210,320,420', sizes: '(min-width: 990px) 12vw, 28vw', alt: '' }}
+              {%- endif -%}
+            </span>
+            <span class="cr-reel__cap">{{ cap | t }}</span>
+            <span class="cr-reel__bar"><span></span></span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section cr-offer" data-tone="day" aria-labelledby="CrOffer-{{ section.id }}">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__text">
+          <p class="t-eyebrow">{{ 'creators.offer_eyebrow' | t }}</p>
+          <h2 class="t-display-m" id="CrOffer-{{ section.id }}">{{ 'creators.offer_heading' | t }}</h2>
+        </div>
+      </div>
+      <ul class="cr-offer__grid" role="list">
+        {%- for o in offers -%}
+          {%- assign tk = 'creators.offers.' | append: o | append: '.title' -%}
+          {%- assign bk = 'creators.offers.' | append: o | append: '.text' -%}
+          {%- assign nk = 'creators.offers.' | append: o | append: '.note' -%}
+          {%- assign note = nk | t -%}
+          <li class="cr-card" style="--sku: var(--c-step-{{ forloop.index }}); --sku-tint: var(--c-step-{{ forloop.index }}-tint);">
+            <span class="cr-card__num step-num" aria-hidden="true">0{{ forloop.index }}</span>
+            <h3 class="cr-card__title">{{ tk | t }}</h3>
+            <p class="t-small">{{ bk | t }}</p>
+            {%- unless note contains 'translation missing' or note == nk or note == blank -%}<p class="t-xs t-muted">{{ note }}</p>{%- endunless -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section cr-how" id="CrHow-{{ section.id }}" aria-labelledby="CrHowTitle-{{ section.id }}">
+    <div class="container cr-how__inner">
+      <div>
+        <p class="t-eyebrow">{{ 'creators.how_eyebrow' | t }}</p>
+        <h2 class="t-display-m" id="CrHowTitle-{{ section.id }}">{{ 'creators.how_heading' | t }}</h2>
+      </div>
+      <ol class="cr-steps" role="list">
+        {%- for n in (1..4) -%}
+          {%- assign tk = 'creators.steps.s' | append: n | append: '.title' -%}
+          {%- assign bk = 'creators.steps.s' | append: n | append: '.text' -%}
+          <li class="cr-step" style="--sku: var(--c-step-{{ n }});">
+            <span class="cr-step__dot" aria-hidden="true"></span>
+            <span class="cr-step__num step-num" aria-hidden="true">0{{ n }}</span>
+            <h3 class="cr-step__title">{{ tk | t }}</h3>
+            <p class="t-small t-muted">{{ bk | t }}</p>
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section cr-ideas" data-tone="aqua" aria-labelledby="CrIdeas-{{ section.id }}">
+    <div class="container cr-ideas__inner">
+      <div class="cr-ideas__head">
+        <p class="t-eyebrow">{{ 'creators.ideas_eyebrow' | t }}</p>
+        <h2 class="t-display-m" id="CrIdeas-{{ section.id }}">{{ 'creators.ideas_heading' | t }}</h2>
+        <p class="t-lead">{{ 'creators.ideas_text' | t }}</p>
+      </div>
+      <ul class="cr-ideas__list" role="list">
+        {%- for i in ideas -%}
+          {%- assign parts = i | split: ':' -%}
+          {%- assign ik = 'creators.ideas.' | append: parts[0] -%}
+          <li class="cr-idea">{% render 'icon', name: parts[1] %}<span>{{ ik | t }}</span></li>
+        {%- endfor -%}
+      </ul>
+      <div class="cr-rules">
+        <h3 class="cr-rules__title">{{ 'creators.rules_heading' | t }}</h3>
+        <ul class="cr-rules__list" role="list">
+          {%- for n in (1..4) -%}
+            {%- assign rk = 'creators.rules.r' | append: n -%}
+            <li>{% render 'icon', name: 'check', class: 'icon--sm' %}<span>{{ rk | t }}</span></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.creators.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
+    { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
+    { "type": "textarea", "id": "text", "label": "t:general_schema.text" }
+  ],
+  "presets": [{ "name": "t:sections.creators.name" }]
+}
+{% endschema %}

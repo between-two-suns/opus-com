@@ -24,7 +24,11 @@ class ClimateSwitch extends HTMLElement {
       next.focus(); this.set(next.dataset.c); e.preventDefault();
     });
     const form = this.querySelector('product-form');
-    if (form) form.itemsOverride = () => this.chosen().map((k) => ({ id: Number(k.dataset.id), quantity: 1 }));
+    if (form) form.itemsOverride = () => {
+      const match = window.BTS?.matchBundle?.(this.chosen().map((k) => k.dataset.step));
+      return match ? [{ id: match.id, quantity: 1 }] : this.chosen().map((k) => ({ id: Number(k.dataset.id), quantity: 1 }));
+    };
+    this.matchNote = this.querySelector('[data-bundle-match]');
     this.set(this.opts[0]?.dataset.c || 'sun', true);
   }
 
@@ -39,7 +43,9 @@ class ClimateSwitch extends HTMLElement {
     this.keys.forEach((k) => { k.hidden = !steps.has(k.dataset.step); });
     this.bottles.forEach((b) => b.classList.toggle('is-key', steps.has(b.dataset.step)));
     const items = this.chosen();
-    const sum = items.reduce((t, k) => t + Number(k.dataset.price || 0), 0);
+    const match = window.BTS?.matchBundle?.(items.map((k) => k.dataset.step));
+    const sum = match ? match.price : items.reduce((t, k) => t + Number(k.dataset.price || 0), 0);
+    if (this.matchNote) { this.matchNote.textContent = window.BTS?.bundleNote?.(match) || ''; this.matchNote.hidden = !match; }
     const unpriced = this.dataset.comingSoon === 'true' && items.some((k) => Number(k.dataset.price) === 0);
     const fmt = (v) => (window.BTS?.formatMoney ? window.BTS.formatMoney(v, this.dataset.money) : String(v / 100));
     this.ctaLabel.textContent = (this.dataset.strCta || '').replace('__N__', items.length);

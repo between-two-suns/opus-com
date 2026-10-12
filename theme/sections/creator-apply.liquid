@@ -1,0 +1,165 @@
+{{ 'creators.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Creator application. Uses Shopify's contact form, so each application arrives in the store's
+  notification email (Settings → Notifications → Staff), labelled "Creator application".
+  Nothing is stored on the site. Required: name, email, main account, consent.
+{%- endcomment -%}
+{%- liquid
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'creators.apply_heading' | t
+  endif
+  assign platforms = 'instagram,tiktok,youtube,other' | split: ','
+  assign sizes = 'under_1k,1k_10k,10k_50k,50k_100k,over_100k' | split: ','
+  assign kinds = 'video,photo,review,tutorial,ugc' | split: ','
+  assign skins = 'oily,combination,normal,dry,sensitive,unsure' | split: ','
+-%}
+<section class="section cr-apply" id="CreatorApply" aria-labelledby="CrApplyTitle-{{ section.id }}">
+  <div class="container cr-apply__inner">
+    <div class="cr-apply__aside">
+      <p class="t-eyebrow">{{ 'creators.apply_eyebrow' | t }}</p>
+      <h2 class="t-display-m" id="CrApplyTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      <p class="t-lead">{{ 'creators.apply_text' | t }}</p>
+      <p class="t-small t-muted">{{ 'creators.apply_note' | t }}</p>
+    </div>
+
+    <div class="cr-apply__card">
+      {%- form 'contact', id: 'CreatorForm', class: 'cr-form' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="cr-form__done" role="status" tabindex="-1" data-cr-done>
+            <span class="cr-form__done-mark" aria-hidden="true"></span>
+            <h3 class="t-display-s">{{ 'creators.success_heading' | t }}</h3>
+            <p>{{ 'creators.success_text' | t }}</p>
+          </div>
+        {%- else -%}
+          {%- if form.errors -%}
+            <div class="form-status form-status--error" role="alert" tabindex="-1" data-cr-errors>
+              <ul>
+                {%- for field in form.errors -%}
+                  <li>{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+          <input type="hidden" name="contact[Form]" value="Creator application">
+
+          <fieldset class="cr-form__group">
+            <legend class="cr-form__legend"><span class="step-num">01</span> {{ 'creators.form.about' | t }}</legend>
+            <div class="cr-form__row">
+              <div class="field">
+                <label for="Cr-name">{{ 'creators.form.name' | t }} <span class="t-muted">({{ 'pages.contact.required' | t }})</span></label>
+                <input id="Cr-name" type="text" name="contact[name]" autocomplete="name" required value="{{ form.name }}">
+              </div>
+              <div class="field">
+                <label for="Cr-email">{{ 'creators.form.email' | t }} <span class="t-muted">({{ 'pages.contact.required' | t }})</span></label>
+                <input id="Cr-email" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}"{% if form.errors contains 'email' %} aria-invalid="true"{% endif %}>
+              </div>
+            </div>
+            <div class="cr-form__row">
+              <div class="field">
+                <label for="Cr-phone">{{ 'creators.form.whatsapp' | t }}</label>
+                <input id="Cr-phone" type="tel" name="contact[phone]" autocomplete="tel" inputmode="tel" value="{{ form.phone }}">
+              </div>
+              <div class="field">
+                <label for="Cr-city">{{ 'creators.form.city' | t }}</label>
+                <input id="Cr-city" type="text" name="contact[City]" autocomplete="address-level2">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="cr-form__group">
+            <legend class="cr-form__legend"><span class="step-num">02</span> {{ 'creators.form.channels' | t }}</legend>
+            <div class="cr-form__row">
+              <div class="field">
+                <label for="Cr-platform">{{ 'creators.form.platform' | t }}</label>
+                <select id="Cr-platform" name="contact[Main platform]">
+                  {%- for pl in platforms -%}
+                    {%- assign pk = 'creators.form.platforms.' | append: pl -%}
+                    <option value="{{ pk | t | escape }}">{{ pk | t }}</option>
+                  {%- endfor -%}
+                </select>
+              </div>
+              <div class="field">
+                <label for="Cr-handle">{{ 'creators.form.handle' | t }} <span class="t-muted">({{ 'pages.contact.required' | t }})</span></label>
+                <input id="Cr-handle" type="text" name="contact[Main account]" required autocapitalize="off" spellcheck="false" placeholder="@" dir="ltr">
+              </div>
+            </div>
+            <div class="cr-form__row">
+              <div class="field">
+                <label for="Cr-size">{{ 'creators.form.audience' | t }}</label>
+                <select id="Cr-size" name="contact[Audience]">
+                  {%- for sz in sizes -%}
+                    {%- assign sk = 'creators.form.sizes.' | append: sz -%}
+                    <option value="{{ sk | t | escape }}">{{ sk | t }}</option>
+                  {%- endfor -%}
+                </select>
+              </div>
+              <div class="field">
+                <label for="Cr-other">{{ 'creators.form.other' | t }}</label>
+                <input id="Cr-other" type="text" name="contact[Other accounts]" autocapitalize="off" spellcheck="false" dir="ltr">
+              </div>
+            </div>
+            <p class="t-xs t-muted">{{ 'creators.form.audience_note' | t }}</p>
+          </fieldset>
+
+          <fieldset class="cr-form__group">
+            <legend class="cr-form__legend"><span class="step-num">03</span> {{ 'creators.form.content' | t }}</legend>
+            <div class="cr-form__checks">
+              {%- for k in kinds -%}
+                {%- assign kk = 'creators.form.kinds.' | append: k -%}
+                <label class="cr-check">
+                  <input type="checkbox" name="contact[Makes: {{ kk | t | escape }}]" value="✓">
+                  <span>{{ kk | t }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+            <div class="cr-form__row">
+              <div class="field">
+                <label for="Cr-best">{{ 'creators.form.best' | t }}</label>
+                <input id="Cr-best" type="url" name="contact[Best piece]" inputmode="url" placeholder="https://" dir="ltr">
+              </div>
+              <div class="field">
+                <label for="Cr-skin">{{ 'creators.form.skin' | t }}</label>
+                <select id="Cr-skin" name="contact[Skin type]">
+                  {%- for s in skins -%}
+                    {%- assign kk = 'creators.form.skins.' | append: s -%}
+                    <option value="{{ kk | t | escape }}">{{ kk | t }}</option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="Cr-why">{{ 'creators.form.why' | t }}</label>
+              <textarea id="Cr-why" name="contact[body]" rows="4" placeholder="{{ 'creators.form.why_hint' | t | escape }}">{{ form.body }}</textarea>
+            </div>
+          </fieldset>
+
+          <label class="cr-consent">
+            <input type="checkbox" name="contact[Consent]" value="Agreed to be contacted about this application" required>
+            <span>{{ 'creators.form.consent' | t }}</span>
+          </label>
+          <button type="submit" class="btn btn--full" data-magnetic>{{ 'creators.form.submit' | t }}</button>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    const t = document.querySelector('[data-cr-done], [data-cr-errors]');
+    if (!t) return;
+    const go = () => { t.scrollIntoView({ block: 'center' }); t.focus({ preventScroll: true }); };
+    document.readyState === 'complete' ? go() : addEventListener('load', go, { once: true });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.creator_apply.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:sections.creator_apply.info" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading" }
+  ],
+  "presets": [{ "name": "t:sections.creator_apply.name" }]
+}
+{% endschema %}

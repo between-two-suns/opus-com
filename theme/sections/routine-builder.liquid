@@ -87,7 +87,7 @@
                     <span class="builder__choice-step t-xs">{{ 'product.step' | t: number: s }} · {{ product.metafields.bts.step_label.value | default: '' | escape }}</span>
                     <span class="builder__choice-name">{{ product.title | escape }}</span>
                   </span>
-                  <span class="builder__choice-price">{% if v.price == 0 and settings.zero_price_coming_soon %}{{ 'product.coming_soon' | t }}{% else %}{{ v.price | money }}{% endif %}</span>
+                  <span class="builder__choice-price">{% if v.price == 0 and settings.zero_price_coming_soon %}{{ 'product.coming_soon' | t }}{% else %}{% render 'egp', cents: v.price %}{% endif %}</span>
                 </button>
                 {%- break -%}
               {%- endif -%}
@@ -116,6 +116,7 @@
                 <span class="btn__price" data-total></span>
                 <s class="builder__was" data-was hidden></s>
               </button>
+              <p class="t-xs bundle-match" data-bundle-match hidden></p>
               <p class="t-xs t-muted" data-form-error hidden></p>
             </form>
           </product-form>

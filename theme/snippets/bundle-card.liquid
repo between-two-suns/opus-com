@@ -1,0 +1,109 @@
+{%- comment -%}
+  One fixed-price bundle (Pricing & Offers spec). Price and compare-at come from the Shopify bundle product
+  (compare-at = the singles total, a real price). Saving wording: "Save EGP X vs buying separately",
+  plus "Ships free" only when the price reaches the free-delivery threshold set in Theme settings → Offers.
+  Params: product (bundle product), tag ('li' default), heading_tag ('h3')
+{%- endcomment -%}
+{%- liquid
+  capture def
+    render 'bundle-def', handle: product.handle
+  endcapture
+  assign def = def | strip | split: '|'
+  assign steps = def[0] | split: ','
+  assign badge = def[1]
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign v = product.selected_or_first_available_variant
+  assign wrap = tag | default: 'li'
+  assign htag = heading_tag | default: 'h3'
+  assign name_key = 'bundles.names.' | append: product.handle
+  assign name = name_key | t
+  if name contains 'translation missing' or name == name_key
+    assign name = product.title
+  endif
+  assign desc_key = 'bundles.desc.' | append: product.handle
+  assign desc = desc_key | t
+  if desc contains 'translation missing' or desc == desc_key
+    assign desc = ''
+  endif
+  assign saving = 0
+  if v.compare_at_price > v.price
+    assign saving = v.compare_at_price | minus: v.price
+  endif
+  assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
+  assign ships_free = false
+  if threshold > 0 and v.price >= threshold
+    assign ships_free = true
+  endif
+  assign first = steps.first | plus: 0
+  assign last = steps.last | plus: 0
+  assign uniq = steps | uniq
+  assign concerns = ''
+  for st in uniq
+    assign s = st | plus: 0
+    assign comp_concerns = all_products[step_handles[s]].metafields.bts.concerns.value | join: ' '
+    assign concerns = concerns | append: ' ' | append: comp_concerns
+  endfor
+  assign concerns = concerns | strip | split: ' ' | uniq | join: ' '
+-%}
+<{{ wrap }} class="bundle" data-count="{{ steps.size }}" data-concerns="{{ concerns | escape }}" data-handle="{{ product.handle }}" style="--a: var(--c-step-{{ first }}); --b: var(--c-step-{{ last }});">
+  <a class="bundle__stage grain" href="{{ product.url }}" tabindex="-1" aria-hidden="true" data-cursor="{{ 'general.view' | t }}">
+    <span class="bundle__glow"></span>
+    {%- if badge != blank -%}
+      {%- assign badge_key = 'bundles.badges.' | append: badge -%}
+      <span class="bundle__badge">{{ badge_key | t }}</span>
+    {%- endif -%}
+    <span class="bundle__packs" style="--n: {{ steps.size }}">
+      {%- for st in steps -%}
+        {%- assign s = st | plus: 0 -%}
+        {%- assign comp = all_products[step_handles[s]] -%}
+        {%- assign cutout = comp.metafields.bts.cutout.value -%}
+        <span class="bundle__pack" data-step="{{ s }}" style="--k: {{ forloop.index0 }}">
+          {%- if cutout -%}
+            {{ cutout | image_url: width: 360 | image_tag: loading: 'lazy', widths: '180,270,360', sizes: '120px', alt: '' }}
+          {%- elsif comp.featured_image -%}
+            {{ comp.featured_image | image_url: width: 360 | image_tag: loading: 'lazy', widths: '180,270,360', sizes: '120px', alt: '' }}
+          {%- endif -%}
+        </span>
+      {%- endfor -%}
+    </span>
+  </a>
+  <div class="bundle__body">
+    <p class="bundle__count t-xs">{{ 'sections.bundles.count' | t: count: steps.size }}</p>
+    <{{ htag }} class="bundle__name"><a href="{{ product.url }}">{{ name | escape }}</a></{{ htag }}>
+    {%- if desc != blank -%}<p class="t-small t-muted">{{ desc | escape }}</p>{%- endif -%}
+    <ul class="bundle__items" role="list">
+      {%- for st in uniq -%}
+        {%- assign s = st | plus: 0 -%}
+        {%- assign comp = all_products[step_handles[s]] -%}
+        {%- assign qty = 0 -%}
+        {%- for x in steps -%}{%- if x == st -%}{%- assign qty = qty | plus: 1 -%}{%- endif -%}{%- endfor -%}
+        <li data-step="{{ s }}"><span class="bundle__dot" aria-hidden="true"></span>{% if qty > 1 %}{{ qty }} × {% endif %}{{ comp.title | escape }}</li>
+      {%- endfor -%}
+    </ul>
+    <div class="bundle__buy">
+      <div class="bundle__price">
+        <span class="bundle__now">{% render 'egp', cents: v.price %}</span>
+        {%- if saving > 0 -%}
+          <s class="bundle__was"><span class="visually-hidden">{{ 'sections.bundles.was' | t }} </span>{% render 'egp', cents: v.compare_at_price %}</s>
+        {%- endif -%}
+      </div>
+      {%- if saving > 0 or ships_free -%}
+        <p class="bundle__save t-small">
+          {%- if saving > 0 -%}{%- capture amt -%}{% render 'egp', cents: saving %}{%- endcapture -%}{{ 'bundles.save_vs' | t: amount: amt }}{%- endif -%}
+          {%- if saving > 0 and ships_free %} · {% endif -%}
+          {%- if ships_free -%}{{ 'bundles.ships_free' | t }}{%- endif -%}
+        </p>
+      {%- endif -%}
+      <product-form>
+        <form method="post" action="{{ routes.cart_add_url }}">
+          <input type="hidden" name="id" value="{{ v.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="btn btn--full" data-magnetic{% unless v.available %} disabled{% endunless %} aria-label="{{ 'cart.add_item' | t: product: name | escape }}">
+            <span class="btn__label">{% if v.available %}{{ 'sections.bundles.cta' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif %}</span>
+          </button>
+          <p class="t-xs t-muted" data-form-error hidden></p>
+        </form>
+      </product-form>
+    </div>
+  </div>
+</{{ wrap }}>

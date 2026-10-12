@@ -22,7 +22,7 @@
               <div class="cart-line__info">
                 <div class="cart-line__top">
                   <a class="cart-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
-                  <span class="cart-line__price">{{ item.final_line_price | money }}</span>
+                  <span class="cart-line__price">{% render 'egp', cents: item.final_line_price %}</span>
                 </div>
                 {%- unless item.product.has_only_default_variant -%}<p class="t-xs t-muted">{{ item.variant.title | escape }}</p>{%- endunless -%}
                 <div class="cart-line__controls">
@@ -46,7 +46,7 @@
           <div class="cart-totals">
             <div class="cart-totals__row">
               <span class="t-subheading">{{ 'cart.subtotal' | t }}</span>
-              <span class="cart-totals__subtotal">{{ cart.total_price | money_with_currency }}</span>
+              <span class="cart-totals__subtotal">{% render 'egp', cents: cart.total_price %}</span>
             </div>
             <p class="cart-note-line">{% if cart.taxes_included %}{{ 'cart.taxes_included' | t }}{% else %}{{ 'cart.taxes_excluded' | t }}{% endif %} {% if settings.shipping_note != blank %}{{ settings.shipping_note | escape }}{% else %}{{ 'cart.shipping_at_checkout' | t }}{% endif %}</p>
             <noscript><button type="submit" name="update" class="btn btn--secondary btn--full">{{ 'cart.update' | t }}</button></noscript>

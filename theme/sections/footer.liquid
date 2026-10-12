@@ -73,6 +73,7 @@
                       <li><a href="{{ root }}/pages/ingredients">{{ 'footer.links.ingredients' | t }}</a></li>
                       <li><a href="{{ root }}/pages/about">{{ 'footer.links.about' | t }}</a></li>
                       <li><a href="{{ root }}/blogs/journal">{{ 'footer.links.journal' | t }}</a></li>
+                      <li><a href="{{ root }}/pages/creators">{{ 'footer.links.creators' | t }}</a></li>
                     {%- when 'help' -%}
                       <li><a href="{{ root }}/pages/faq">{{ 'footer.links.faq' | t }}</a></li>
                       <li><a href="{{ root }}/pages/shipping">{{ 'footer.links.shipping' | t }}</a></li>
@@ -92,7 +93,7 @@
         {%- form 'customer', id: 'FooterNewsletter', class: 'footer__form' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
           {%- if form.posted_successfully? -%}
-            <p class="form-status form-status--success" role="status" tabindex="-1" autofocus>{{ 'newsletter.success' | t }}</p>
+            <p class="form-status form-status--success" role="status" tabindex="-1"{% unless settings.welcome_enable %} autofocus{% endunless %}>{{ 'newsletter.success' | t }}</p>
           {%- else -%}
             <div class="inline-form">
               <div class="field">

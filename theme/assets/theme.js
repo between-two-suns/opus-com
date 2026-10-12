@@ -8,25 +8,27 @@ const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
 /* ---------- Utilities ---------- */
-export function formatMoney(cents, format) {
-  const fmt = format || BTS.moneyFormat || '{{amount}}';
-  const value = Number(cents) / 100;
-  const fixed = (n, d, ts = ',', ds = '.') => {
-    const parts = n.toFixed(d).split('.');
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ts);
-    return parts.join(ds);
-  };
-  return fmt.replace(/\{\{\s*(\w+)\s*\}\}/, (_, key) => {
-    switch (key) {
-      case 'amount_no_decimals': return fixed(value, 0);
-      case 'amount_with_comma_separator': return fixed(value, 2, '.', ',');
-      case 'amount_no_decimals_with_comma_separator': return fixed(value, 0, '.', ',');
-      case 'amount_with_apostrophe_separator': return fixed(value, 2, "'", '.');
-      default: return fixed(value, 2);
-    }
-  });
+// Prices the BTS way (Pricing & Offers spec): whole pounds, rounded down, "EGP 1,349" / "1,349 ج.م".
+// Mirrors snippets/egp.liquid; the store money format is intentionally not used.
+export function formatMoney(cents) {
+  const pounds = Math.floor(Number(cents || 0) / 100);
+  const num = String(pounds).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return (document.documentElement.lang || '').startsWith('ar') ? `${num} ج.م` : `EGP ${num}`;
 }
 BTS.formatMoney = formatMoney;
+// A selection of routine steps that is exactly one of the fixed-price bundles → that bundle (or null).
+// One line for a matched bundle: "Your picks make The Day Ritual · Save EGP 48 vs buying separately".
+BTS.bundleNote = (b) => {
+  if (!b) return '';
+  const st = BTS.strings || {};
+  const parts = [(st.bundleMatch || '').replace('__X__', b.name)];
+  if (b.compare > b.price) parts.push((st.saveVs || '').replace('__A__', formatMoney(b.compare - b.price)));
+  return parts.join(' · ');
+};
+BTS.matchBundle = (steps) => {
+  const key = [...steps].map(String).sort().join(',');
+  return (BTS.bundles || []).find((b) => b.available && b.steps.split(',').sort().join(',') === key) || null;
+};
 
 export function announce(message) {
   const region = document.getElementById('a11y-status');
@@ -185,6 +187,15 @@ const Cart = {
   async add(items) {
     const data = await Cart.request(BTS.routes.cartAdd + '.js', { items });
     Cart.render(data.sections);
+    // Spec limits: 5 per single, 3 per bundle. Trim any line the add pushed over, and say why.
+    for (const it of data.items || []) {
+      const max = it.product_type === 'Bundle' ? 3 : 5;
+      if (it.quantity > max) {
+        const fixed = await Cart.request(BTS.routes.cartChange + '.js', { id: it.key, quantity: max });
+        Cart.render(fixed.sections);
+        toast((BTS.strings?.qtyLimit || '').replace('__N__', max));
+      }
+    }
     return data;
   },
   async change(line, quantity) {
@@ -341,7 +352,31 @@ document.addEventListener('click', (event) => {
 
 document.addEventListener('change', (event) => {
   const input = event.target.closest('[data-line-qty]');
-  if (input) changeLine(Number(input.dataset.lineQty), Math.max(0, Number(input.value)), input.closest('[data-cart-root]'));
+  if (!input) return;
+  // Spec limits: 5 per single product, 3 per bundle (the input's max).
+  const max = input.max ? Number(input.max) : Infinity;
+  let qty = Math.max(0, Number(input.value));
+  if (qty > max) { qty = max; input.value = max; toast((BTS.strings?.qtyLimit || '').replace('__N__', max)); }
+  changeLine(Number(input.dataset.lineQty), qty, input.closest('[data-cart-root]'));
+});
+
+// Bag: upgrade a duo to The Day Ritual (remove the duo line, add the ritual) in one tap.
+document.addEventListener('click', async (event) => {
+  const btn = event.target.closest('[data-upgrade-line]');
+  if (!btn) return;
+  event.preventDefault();
+  const root = btn.closest('[data-cart-root]');
+  root?.classList.add('is-updating');
+  btn.classList.add('is-loading');
+  try {
+    await fetch(BTS.routes.cartChange + '.js', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: btn.dataset.upgradeLine, quantity: 0 }) });
+    await Cart.add([{ id: Number(btn.dataset.upgradeTo), quantity: 1 }]);
+    announce(BTS.strings?.added || 'Added');
+  } catch (err) {
+    toast(err.message);
+  } finally {
+    $$('[data-cart-root]').forEach((r) => r.classList.remove('is-updating'));
+  }
 });
 
 /* ---------- Quantity stepper ---------- */

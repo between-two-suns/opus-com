@@ -64,7 +64,7 @@
   <div class="incentive" data-incentive="shipping">
     <p class="incentive__msg t-small">
       {%- if remaining > 0 -%}
-        {%- assign remaining_money = remaining | money -%}
+        {%- capture remaining_money -%}{% render 'egp', cents: remaining %}{%- endcapture -%}
         {{ 'cart.ship_remaining' | t: amount: remaining_money }}
       {%- else -%}
         <strong>{{ 'cart.ship_unlocked' | t }}</strong>

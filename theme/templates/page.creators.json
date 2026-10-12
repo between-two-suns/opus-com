@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "main": {
+      "type": "creators",
+      "settings": {}
+    },
+    "apply": {
+      "type": "creator-apply",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": { "type": "qa", "settings": { "preset": "cr_paid" } },
+        "q1": { "type": "qa", "settings": { "preset": "cr_followers" } },
+        "q2": { "type": "qa", "settings": { "preset": "cr_rights" } },
+        "q3": { "type": "qa", "settings": { "preset": "cr_post" } },
+        "q4": { "type": "qa", "settings": { "preset": "cr_where" } },
+        "q5": { "type": "qa", "settings": { "preset": "cr_disclose" } }
+      },
+      "block_order": ["q0", "q1", "q2", "q3", "q4", "q5"],
+      "settings": { "compact": true }
+    }
+  },
+  "order": ["main", "apply", "faq"]
+}

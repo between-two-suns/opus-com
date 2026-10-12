@@ -13,48 +13,43 @@
     "bundles": {
       "type": "bundles",
       "blocks": {
-        "b1": {
-          "type": "set",
+        "bundle_1": {
+          "type": "bundle",
           "settings": {
-            "preset": "full",
-            "steps": "1,2,3,4"
+            "product": "the-day-ritual"
           }
         },
-        "b2": {
-          "type": "set",
+        "bundle_2": {
+          "type": "bundle",
           "settings": {
-            "preset": "evening",
-            "steps": "1,2,3"
+            "product": "the-full-ritual"
           }
         },
-        "b3": {
-          "type": "set",
+        "bundle_3": {
+          "type": "bundle",
           "settings": {
-            "preset": "oil",
-            "steps": "1,2"
+            "product": "clear-protect-duo"
           }
         },
-        "b4": {
-          "type": "set",
+        "bundle_4": {
+          "type": "bundle",
           "settings": {
-            "preset": "day",
-            "steps": "3,4"
+            "product": "the-night-ritual"
           }
         },
-        "b5": {
-          "type": "set",
+        "bundle_5": {
+          "type": "bundle",
           "settings": {
-            "preset": "starter",
-            "steps": "1,4"
+            "product": "the-core-duo"
           }
         }
       },
       "block_order": [
-        "b1",
-        "b2",
-        "b3",
-        "b4",
-        "b5"
+        "bundle_1",
+        "bundle_2",
+        "bundle_3",
+        "bundle_4",
+        "bundle_5"
       ],
       "settings": {}
     },

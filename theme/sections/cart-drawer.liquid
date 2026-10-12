@@ -5,12 +5,31 @@
 {%- liquid
   assign upsell_source = settings.routine_collection | default: collections.all
   assign in_cart_steps = ''
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign has_ritual = false
+  assign duo_line = nil
   for item in cart.items
     capture s
       render 'product-step', product: item.product
     endcapture
     assign s = s | strip
     assign in_cart_steps = in_cart_steps | append: '|' | append: s
+    capture bdef
+      render 'bundle-def', handle: item.product.handle
+    endcapture
+    assign bdef = bdef | strip
+    if bdef != blank
+      assign bsteps = bdef | split: '|' | first | split: ','
+      for b in bsteps
+        assign in_cart_steps = in_cart_steps | append: '|' | append: b
+      endfor
+      if bdef contains '|ritual'
+        assign has_ritual = true
+      endif
+      if item.product.handle == 'the-core-duo' or item.product.handle == 'clear-protect-duo'
+        assign duo_line = item
+      endif
+    endif
   endfor
 -%}
 <dialog class="drawer cart-drawer" id="CartDrawer" aria-labelledby="CartDrawerTitle">
@@ -52,8 +71,20 @@
             {%- capture step -%}{% render 'product-step', product: item.product %}{%- endcapture -%}
             {%- assign cutout = item.product.metafields.bts.cutout.value -%}
             <li class="cart-line" data-step="{{ step | strip }}">
-              <a href="{{ item.url }}" class="cart-line__media{% unless cutout %} cart-line__media--photo{% endunless %}" tabindex="-1" aria-hidden="true">
-                {%- if cutout -%}
+              {%- capture ldef -%}{% render 'bundle-def', handle: item.product.handle %}{%- endcapture -%}
+              {%- assign ldef = ldef | strip -%}
+              <a href="{{ item.url }}" class="cart-line__media{% unless cutout or ldef != blank %} cart-line__media--photo{% endunless %}{% if ldef != blank %} cart-line__media--bundle{% endif %}" tabindex="-1" aria-hidden="true">
+                {%- if ldef != blank -%}
+                  {%- assign lsteps = ldef | split: '|' | first | split: ',' -%}
+                  <span class="cart-line__packs" style="--n: {{ lsteps.size }}">
+                    {%- for st in lsteps -%}
+                      {%- assign si = st | plus: 0 -%}
+                      {%- assign comp = all_products[step_handles[si]] -%}
+                      {%- assign cc = comp.metafields.bts.cutout.value -%}
+                      {%- if cc -%}<span style="--k: {{ forloop.index0 }}">{{ cc | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '40px', alt: '' }}</span>{%- endif -%}
+                    {%- endfor -%}
+                  </span>
+                {%- elsif cutout -%}
                   {{ cutout | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '84px', alt: '' }}
                 {%- elsif item.image -%}
                   {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '84px', alt: '' }}
@@ -62,7 +93,7 @@
               <div class="cart-line__info">
                 <div class="cart-line__top">
                   <a class="cart-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
-                  <span class="cart-line__price">{{ item.final_line_price | money }}</span>
+                  <span class="cart-line__price">{% render 'egp', cents: item.final_line_price %}</span>
                 </div>
                 {%- unless item.product.has_only_default_variant -%}
                   <p class="t-xs t-muted">{{ item.variant.title | escape }}</p>
@@ -71,13 +102,13 @@
                   <p class="t-xs t-muted u-ltr">{{ item.product.metafields.bts.size }}</p>
                 {%- endif -%}
                 {%- for discount in item.line_level_discount_allocations -%}
-                  <p class="t-xs" style="color:var(--c-success)">{{ discount.discount_application.title | escape }} (−{{ discount.amount | money }})</p>
+                  <p class="t-xs" style="color:var(--c-success)">{{ discount.discount_application.title | escape }} (−{% render 'egp', cents: discount.amount %})</p>
                 {%- endfor -%}
                 <div class="cart-line__controls">
                   <quantity-input class="qty qty--small">
                     <button type="button" data-step="-1" aria-label="{{ 'cart.decrease' | t: product: item.product.title | escape }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
                     <label class="visually-hidden" for="DrawerQty-{{ forloop.index }}">{{ 'cart.quantity_for' | t: product: item.product.title | escape }}</label>
-                    <input id="DrawerQty-{{ forloop.index }}" type="number" inputmode="numeric" min="0" value="{{ item.quantity }}" data-line-qty="{{ forloop.index }}">
+                    <input id="DrawerQty-{{ forloop.index }}" type="number" inputmode="numeric" min="0" max="{% if ldef != blank %}3{% else %}5{% endif %}" value="{{ item.quantity }}" data-line-qty="{{ forloop.index }}">
                     <button type="button" data-step="1" aria-label="{{ 'cart.increase' | t: product: item.product.title | escape }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
                   </quantity-input>
                   <a class="cart-line__remove" href="{{ item.url_to_remove }}" data-line-remove="{{ forloop.index }}">
@@ -88,6 +119,27 @@
             </li>
           {%- endfor -%}
         </ul>
+
+        {%- comment -%} Spec: duo → Day Ritual upgrade, phrased net of the delivery fee it saves. {%- endcomment -%}
+        {%- assign day = all_products['the-day-ritual'] -%}
+        {%- assign threshold = settings.free_shipping_threshold | default: 0 | times: 100 -%}
+        {%- assign fee = settings.delivery_fee | default: 0 | times: 100 -%}
+        {%- if duo_line and day.id and has_ritual == false and threshold > 0 and fee > 0 -%}
+          {%- assign dv = day.selected_or_first_available_variant -%}
+          {%- assign after = cart.total_price | minus: duo_line.final_line_price | plus: dv.price -%}
+          {%- if cart.total_price < threshold and after >= threshold and dv.available and duo_line.quantity == 1 -%}
+            {%- if duo_line.product.handle == 'the-core-duo' -%}{%- assign missing = all_products[step_handles[4]] -%}{%- else -%}{%- assign missing = all_products[step_handles[1]] -%}{%- endif -%}
+            {%- assign extra = dv.price | minus: duo_line.final_line_price | minus: fee -%}
+            {%- capture extra_money -%}{% render 'egp', cents: extra %}{%- endcapture -%}
+            {%- assign day_name = 'bundles.names.the-day-ritual' | t -%}
+            <div class="cart-upgrade" data-step="{% if duo_line.product.handle == 'the-core-duo' %}4{% else %}1{% endif %}">
+              <p class="t-small"><strong>{{ 'bundles.upgrade' | t: product: missing.title, amount: extra_money }}</strong></p>
+              <button type="button" class="btn btn--deep btn--small" data-upgrade-line="{{ duo_line.key }}" data-upgrade-to="{{ dv.id }}">
+                <span class="btn__label">{{ 'bundles.upgrade_cta' | t: bundle: day_name }}</span>
+              </button>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
 
         {%- if settings.cart_routine_upsell -%}
           {%- capture upsell_items -%}
@@ -118,7 +170,7 @@
                             <input type="hidden" name="id" value="{{ v.id }}">
                             <input type="hidden" name="quantity" value="1">
                             <button type="submit" class="btn btn--secondary btn--small" aria-label="{{ 'cart.add_item' | t: product: product.title | escape }}">
-                              <span class="btn__label">+ {{ v.price | money }}</span>
+                              <span class="btn__label">+ {% render 'egp', cents: v.price %}</span>
                             </button>
                           </form>
                         </product-form>
@@ -145,12 +197,12 @@
         <form action="{{ routes.cart_url }}" method="post" class="cart-totals">
           {%- for discount in cart.cart_level_discount_applications -%}
             <div class="cart-totals__row t-small" style="color:var(--c-success)">
-              <span>{{ discount.title | escape }}</span><span>−{{ discount.total_allocated_amount | money }}</span>
+              <span>{{ discount.title | escape }}</span><span>−{% render 'egp', cents: discount.total_allocated_amount %}</span>
             </div>
           {%- endfor -%}
           <div class="cart-totals__row">
             <span class="t-subheading">{{ 'cart.subtotal' | t }}</span>
-            <span class="cart-totals__subtotal">{{ cart.total_price | money_with_currency }}</span>
+            <span class="cart-totals__subtotal">{% render 'egp', cents: cart.total_price %}</span>
           </div>
           <p class="cart-note-line">
             {%- if cart.taxes_included -%}{{ 'cart.taxes_included' | t }}{%- else -%}{{ 'cart.taxes_excluded' | t }}{%- endif %}

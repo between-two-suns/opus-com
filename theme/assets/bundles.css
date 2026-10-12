@@ -35,7 +35,9 @@
 .bundles__note { margin-block-start: 16px; }
 
 /* ---------- Build your routine ---------- */
-.builder__ui { display: grid; gap: clamp(20px, 3vw, 40px); align-items: stretch; }
+.builder__ui { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); align-items: stretch; }
+.builder__panel, .builder__summary, .builder__form { min-inline-size: 0; }
+.builder__summary .btn { flex-wrap: wrap; row-gap: 0; padding-inline: 18px; }
 @media (min-width: 990px) { .builder__ui { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); } }
 .builder__stage { --fill: 0; position: relative; isolation: isolate; overflow: hidden; border-radius: var(--radius-l); min-block-size: clamp(320px, 42vw, 560px); display: flex; align-items: flex-end; background: linear-gradient(170deg, #fff6ef 0%, #f6f7f4 55%, #eef6f6 100%); }
 .builder__sun { position: absolute; z-index: -1; aspect-ratio: 1; border-radius: 50%; inline-size: calc(55% + var(--fill) * 35%); transition: inline-size 900ms var(--ease-out), opacity 900ms var(--ease-out); opacity: calc(.45 + var(--fill) * .55); }
@@ -83,3 +85,13 @@
 .builder__offer { margin: 0; }
 .builder__was { margin-inline-start: 6px; opacity: .6; font-weight: 400; }
 .bundle .bundle__stage.grain::after { opacity: .16; }
+
+/* Fixed-price bundles (spec): badge, saving line, grid by count */
+@media (min-width: 1100px) {
+  .bundles__grid[data-n='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .bundles__grid[data-n='3'] .bundle { grid-column: auto; }
+}
+.bundle__stage { text-decoration: none; }
+.bundle__badge { position: absolute; z-index: 2; inset-block-start: 14px; inset-inline-start: 14px; padding: 6px 12px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+.bundle__name a { text-decoration: none; }
+.bundle__save { margin: 0; color: var(--c-success); font-weight: 650; }

@@ -102,6 +102,19 @@
           search: {{ routes.predictive_search_url | json }}
         },
         motion: {{ settings.signature_motion | json }},
+        {%- comment -%} Fixed-price bundles (spec) so pickers can offer the bundle when a selection matches one. {%- endcomment -%}
+        bundles: [
+          {%- assign bh = 'the-day-ritual,the-full-ritual,clear-protect-duo,the-night-ritual,the-core-duo' | split: ',' -%}
+          {%- for h in bh -%}
+            {%- assign bp = all_products[h] -%}
+            {%- if bp.id -%}
+              {%- capture bd -%}{% render 'bundle-def', handle: h %}{%- endcapture -%}
+              {%- assign bk = 'bundles.names.' | append: h -%}
+              {%- assign bv = bp.selected_or_first_available_variant -%}
+              { steps: {{ bd | strip | split: '|' | first | json }}, id: {{ bv.id }}, price: {{ bv.price }}, compare: {{ bv.compare_at_price | default: 0 }}, available: {{ bv.available | json }}, name: {{ bk | t | json }} },
+            {%- endif -%}
+          {%- endfor -%}
+        ],
         moneyFormat: {{ shop.money_format | json }},
         strings: {
           added: {{ 'cart.added' | t | json }},
@@ -109,7 +122,10 @@
           addToCart: {{ 'product.add_to_cart' | t | json }},
           adding: {{ 'product.adding' | t | json }},
           soldOut: {{ 'product.sold_out' | t | json }},
-          cartCount: {{ 'cart.count_label' | t | json }}
+          cartCount: {{ 'cart.count_label' | t | json }},
+          qtyLimit: {{ 'bundles.qty_limit' | t: count: '__N__' | json }},
+          bundleMatch: {{ 'bundles.match' | t: bundle: '__X__' | json }},
+          saveVs: {{ 'bundles.save_vs' | t: amount: '__A__' | json }}
         }
       };
     </script>
@@ -131,6 +147,7 @@
 
     {%- section 'cart-drawer' -%}
     {%- render 'bottom-dock' -%}
+    {%- render 'welcome-offer' -%}
     <template id="BtsMark">{{ 'bts-icon.svg' | inline_asset_content }}</template>
 
     <div class="visually-hidden" aria-live="polite" aria-atomic="true" id="a11y-status"></div>

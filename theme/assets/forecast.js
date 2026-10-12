@@ -37,7 +37,12 @@ class SkinForecast extends HTMLElement {
 
     // Override the add form so only included steps are added.
     const pf = this.querySelector('[data-forecast-form]');
-    if (pf) pf.itemsOverride = () => this.included().map((s) => ({ id: Number(s.dataset.variant), quantity: 1 }));
+    if (pf) pf.itemsOverride = () => {
+      const chosen = this.included();
+      const match = window.BTS?.matchBundle?.(chosen.map((s) => s.dataset.step));
+      return match ? [{ id: match.id, quantity: 1 }] : chosen.map((s) => ({ id: Number(s.dataset.variant), quantity: 1 }));
+    };
+    this.matchNote = this.querySelector('[data-bundle-match]');
 
     this.setTime(this.time, true);
   }
@@ -94,8 +99,10 @@ class SkinForecast extends HTMLElement {
     });
 
     const chosen = this.included();
-    const sum = chosen.reduce((acc, s) => acc + Number(s.dataset.price || 0), 0);
+    const match = window.BTS?.matchBundle?.(chosen.map((s) => s.dataset.step));
+    const sum = match ? match.price : chosen.reduce((acc, s) => acc + Number(s.dataset.price || 0), 0);
     if (this.total) this.total.textContent = window.BTS?.formatMoney ? window.BTS.formatMoney(sum, this.format) : '';
+    if (this.matchNote) { this.matchNote.textContent = window.BTS?.bundleNote?.(match) || ''; this.matchNote.hidden = !match; }
     if (this.cta) {
       const zero = chosen.some((s) => Number(s.dataset.price) === 0) && this.dataset.zeroSoon === 'true';
       this.cta.disabled = chosen.length === 0 || zero;

@@ -1,0 +1,28 @@
+{%- comment -%}
+  Prices the BTS way (Pricing & Offers spec): whole Egyptian pounds, VAT-inclusive, rounded DOWN to the pound.
+  English "EGP 1,349" · Arabic "1,349 ج.م". Usage: {% render 'egp', cents: product.price %}
+{%- endcomment -%}
+{%- liquid
+  assign pounds = cents | default: 0 | divided_by: 100 | floor
+  assign negative = false
+  if pounds < 0
+    assign negative = true
+    assign pounds = pounds | times: -1
+  endif
+  if pounds >= 1000
+    assign thousands = pounds | divided_by: 1000 | floor
+    assign rest = pounds | modulo: 1000
+    assign rest_s = rest | prepend: '00' | slice: -3, 3
+    assign num = thousands | append: ',' | append: rest_s
+  else
+    assign num = pounds | append: ''
+  endif
+  if negative
+    assign num = num | prepend: '−'
+  endif
+  if request.locale.iso_code == 'ar'
+    echo num | append: ' ج.م'
+  else
+    echo 'EGP ' | append: num
+  endif
+-%}

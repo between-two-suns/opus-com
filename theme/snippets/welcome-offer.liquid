@@ -1,0 +1,80 @@
+{%- comment -%}
+  WELCOME75 sign-up card (Pricing & Offers spec). One shared Shopify discount code, revealed after the
+  newsletter sign-up posts. Non-modal: it never takes focus on its own, closes with Esc or ×, and shows
+  once per visitor. No timers, no countdowns. The code, amount and minimum must match the real discount
+  in Shopify (Theme settings → Offers).
+{%- endcomment -%}
+{%- liquid
+  assign skip = false
+  if settings.welcome_enable == false or settings.welcome_code == blank
+    assign skip = true
+  endif
+  case template.name
+    when 'cart', 'password', 'gift_card', 'customers/account', 'customers/order', 'customers/addresses'
+      assign skip = true
+  endcase
+  if customer and customer.accepts_marketing
+    assign skip = true
+  endif
+  assign amount_cents = settings.welcome_amount | default: 0 | times: 100
+  assign min_cents = settings.welcome_min | default: 0 | times: 100
+-%}
+{%- unless skip -%}
+  {%- capture amt -%}{% render 'egp', cents: amount_cents %}{%- endcapture -%}
+  {%- capture min -%}{% render 'egp', cents: min_cents %}{%- endcapture -%}
+  <welcome-offer class="welcome" hidden data-code="{{ settings.welcome_code | escape }}">
+    <div class="welcome__card grain" role="dialog" aria-modal="false" aria-labelledby="WelcomeTitle">
+      <span class="welcome__mark" aria-hidden="true"></span>
+      <button type="button" class="welcome__close" data-welcome-close aria-label="{{ 'general.close' | t }}">
+        {% render 'icon', name: 'close' %}
+      </button>
+      {%- form 'customer', id: 'WelcomeOffer', class: 'welcome__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter,welcome-offer">
+        {%- if form.posted_successfully? -%}
+          <div class="welcome__done" data-welcome-success>
+            <p class="t-eyebrow">{{ 'welcome.success_eyebrow' | t }}</p>
+            <h2 class="welcome__title" id="WelcomeTitle" tabindex="-1">{{ 'welcome.success_heading' | t: amount: amt }}</h2>
+            <div class="welcome__code">
+              <code data-welcome-code>{{ settings.welcome_code | escape }}</code>
+              <button type="button" class="btn btn--small btn--secondary" data-welcome-copy>
+                <span class="btn__label" data-label-default>{{ 'welcome.copy' | t }}</span>
+                <span class="btn__label" data-label-done hidden>{{ 'welcome.copied' | t }}</span>
+              </button>
+            </div>
+            <button type="button" class="btn btn--full" data-welcome-apply>
+              <span class="btn__label" data-label-default>{{ 'welcome.apply' | t }}</span>
+              <span class="btn__label" data-label-done hidden>{{ 'welcome.applied' | t }}</span>
+            </button>
+            <p class="t-xs t-muted welcome__terms">{{ 'welcome.terms' | t: minimum: min }}</p>
+            <p class="visually-hidden" role="status" data-welcome-status></p>
+          </div>
+        {%- else -%}
+          <p class="t-eyebrow">{{ 'welcome.eyebrow' | t }}</p>
+          <h2 class="welcome__title" id="WelcomeTitle">{{ 'welcome.heading' | t: amount: amt }}</h2>
+          <p class="t-small welcome__text">{{ 'welcome.text' | t: minimum: min }}</p>
+          <div class="inline-form">
+            <div class="field">
+              <label class="visually-hidden" for="WelcomeEmail">{{ 'newsletter.email_label' | t }}</label>
+              <input
+                id="WelcomeEmail"
+                type="email"
+                name="contact[email]"
+                autocomplete="email"
+                inputmode="email"
+                placeholder="{{ 'newsletter.email_label' | t }}"
+                required
+                {% if form.errors %}aria-invalid="true" aria-describedby="WelcomeError" data-welcome-error{% endif %}
+              >
+            </div>
+            <button type="submit" class="btn">{{ 'welcome.submit' | t }}</button>
+          </div>
+          {%- if form.errors -%}
+            <p class="field__error" id="WelcomeError">{% render 'icon', name: 'alert', class: 'icon--sm' %}{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+          {%- endif -%}
+          <p class="t-xs t-muted welcome__terms">{{ 'welcome.terms' | t: minimum: min }} {{ 'newsletter.consent' | t }}</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </welcome-offer>
+  <script src="{{ 'welcome-offer.js' | asset_url }}" type="module" defer></script>
+{%- endunless -%}

@@ -204,3 +204,9 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
 @media (max-width: 989px) {
   .gallery__slide { aspect-ratio: 1 / 1; }
 }
+.routine-strip__offers { display: grid; gap: 12px; margin-block-start: clamp(20px, 3vw, 32px); }
+/* Bundle product page: the packs on a two-colour stage */
+.gallery__slide--bundle { background: radial-gradient(70% 60% at 50% 40%, rgba(255, 255, 255, .85), transparent 70%), linear-gradient(160deg, color-mix(in srgb, var(--a) 32%, #fff), color-mix(in srgb, var(--b) 30%, #fff)); display: flex; align-items: flex-end; justify-content: center; }
+.gallery__packs { block-size: 70%; margin-block-end: 9%; }
+.pdp__bundle-items { margin-block-start: 6px; font-size: 14px; }
+.pdp__bundle-items a { text-decoration: none; }

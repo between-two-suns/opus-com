@@ -1,0 +1,16 @@
+{%- comment -%}
+  The seven fixed-price bundles from the Pricing & Offers spec (prices live on the Shopify bundle products).
+  Returns a pipe string for a handle: "steps|badge|place|kind", e.g. "1,2,4|bts_pick|featured-1|ritual".
+  steps: routine steps in the box (repeats = units) · place: featured-N (home + shop), sets (bundles page),
+  pdp-2 / pdp-4 (stock-ups, only on that step's product page).
+  Usage: {% capture def %}{% render 'bundle-def', handle: product.handle %}{% endcapture %}
+{%- endcomment -%}
+{%- case handle -%}
+  {%- when 'the-day-ritual' -%}1,2,4|bts_pick|featured-1|ritual
+  {%- when 'the-full-ritual' -%}1,2,3,4|best_value|featured-2|ritual
+  {%- when 'clear-protect-duo' -%}2,4|daily_essential|featured-3|duo
+  {%- when 'the-night-ritual' -%}1,2,3||sets|ritual
+  {%- when 'the-core-duo' -%}1,2||sets|duo
+  {%- when 'spf-stock-up' -%}4,4||pdp-4|stock
+  {%- when 'serum-stock-up' -%}2,2||pdp-2|stock
+{%- endcase -%}

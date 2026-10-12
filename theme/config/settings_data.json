@@ -13,7 +13,13 @@
     "show_dynamic_checkout": false,
     "cart_routine_upsell": true,
     "signature_motion": true,
-    "predictive_search": true
+    "predictive_search": true,
+    "free_shipping_threshold": 1200,
+    "delivery_fee": 100,
+    "welcome_enable": true,
+    "welcome_code": "WELCOME75",
+    "welcome_amount": 75,
+    "welcome_min": 800
   },
   "presets": {
     "Default": {

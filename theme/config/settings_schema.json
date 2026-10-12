@@ -184,6 +184,41 @@
         "info": "t:settings_schema.offers.free_shipping_info"
       },
       {
+        "type": "number",
+        "id": "delivery_fee",
+        "label": "t:settings_schema.offers.delivery_fee",
+        "info": "t:settings_schema.offers.delivery_fee_info"
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.offers.welcome_header"
+      },
+      {
+        "type": "checkbox",
+        "id": "welcome_enable",
+        "label": "t:settings_schema.offers.welcome_enable",
+        "info": "t:settings_schema.offers.welcome_info",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "welcome_code",
+        "label": "t:settings_schema.offers.welcome_code",
+        "default": "WELCOME75"
+      },
+      {
+        "type": "number",
+        "id": "welcome_amount",
+        "label": "t:settings_schema.offers.welcome_amount",
+        "default": 75
+      },
+      {
+        "type": "number",
+        "id": "welcome_min",
+        "label": "t:settings_schema.offers.welcome_min",
+        "default": 800
+      },
+      {
         "type": "text",
         "id": "whatsapp_number",
         "label": "t:settings_schema.offers.whatsapp",
