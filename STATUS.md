@@ -16,6 +16,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 ## Restore points (revert here if needed)
 | Date | Shopify theme (unpublished, untouched copy) | Git commit on `opus-build` |
 |---|---|---|
+| 2026-10-12, after pass 2 / before pricing, WELCOME75 card and creators page | `BTS Opus — snapshot (pass 2, before pricing)` · `gid://shopify/OnlineStoreTheme/167347749122` | `e289f09` (store data: `content/store-snapshots/2026-10-12-products-before-pricing.json`) |
 | 2026-10-12, after pass 1 / before pass 2 | `BTS Opus — snapshot 2026-10-12 (pass 1, before pass 2)` · `gid://shopify/OnlineStoreTheme/167328219394` | `eed0b31` |
 | 2026-10-11, before the award redesign | `BTS Opus — snapshot 2026-10-11 (pre-redesign)` · `gid://shopify/OnlineStoreTheme/167303545090` (MD5-identical to staging at that point) | `5e78baf` |
 
@@ -44,11 +45,13 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
   - **Home:** hero framed by the brand mark's arcs (parting on scroll); **compact climate switch** (5 icons → stage weather, lifts the steps that matter, "Add these N steps" at real summed prices) replaces the long climate lab (lab stays on /pages/climate); **facts band** with real numbers (04 · 55 · 50+ · mark)
   - **Warm ivory** base (#F5F1EA), deep product-colour buttons (same hue, fixed lightness for ≥ 4.5:1), brand mark in loading states and the announcement bar
 - **Micro-interactions:** 3D tilt on product/set media (fine pointers), magnetic primary CTAs, "✓ Added" button state, cart badge bump; all off for reduced motion and touch
-- QA tooling: preview harness, Theme Check, 154 flow tests, axe, Lighthouse scripts (see `QA.md`)
+- **Pricing & offers (2026-10-12, owner's Pricing & Offers spec):** real prices + SKUs on the 4 singles; **7 Shopify-native bundles** (Full / Day / Night Ritual, Clear & Protect Duo, Core Duo, SPF and Serum Stock-Up) with compare-at = singles total; collections singles/duos/rituals/stock-up; **WELCOME75** discount. Theme: EGP format ("EGP 1,349" / "1,349 ج.م"), bundle cards everywhere (home, Sets, collections, routines, bundle product pages with a packs stage), Day Ritual offer on every single product page + Stock-Up on serum/SPF, pickers add the matching bundle, bag upgrade duo → Day Ritual when it unlocks free delivery, quantity limits 5/3, free-delivery line in the announcement bar, **WELCOME75 sign-up card** (shared code revealed after sign-up)
+- **Creators page** `/pages/creators` ("Show us your weather"): phone-frame reels of the real bottles in sun / AC / dust / humidity, honest offer (routine; personal 10% code; commission or paid collabs agreed one-to-one; credited features with permission), how it works, content ideas, rules, application form, creator FAQ. EN + AR; footer link
+- QA tooling: preview harness, Theme Check, 238 flow tests, axe, Lighthouse scripts (see `QA.md`)
 
 ## Incomplete / outstanding
 - Real-store visual QA of the staging theme (sandbox can't reach the storefront)
-- Prices are 0.00 in Shopify (theme shows "Price coming soon")
+- Owner setup for the pricing spec (see checklist below): taxes, shipping rates, payments, COD limit, inventory counts
 - Final packshots matching v5 FINAL labels; no lifestyle/texture photography or video yet
 - Native Arabic review; legal/EDA review of web claims (PROMAT)
 - Navigation menus are the theme's built-in bilingual fallbacks (no Shopify menus created, intentionally)
@@ -71,29 +74,36 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 | Motion / interaction | 9.1 | Light field, pinned day stage, climate lab weather, tones, cursor light, morphs, builder; all reduced-motion safe, Lighthouse 99 |
 | Mobile design | 9.1 | App dock, buy bar hand-over, bottom-sheet bag, swipe routine cards; real-device check outstanding |
 | Product discovery | 8.8 | Concerns, routine grid, forecast, full 55-ingredient dictionary linked from every PDP, search |
-| PDP conversion | 9.0 | Buy always one tap away, routine tabs, callouts, pairs-with in the bag; no real prices, reviews or texture photography yet |
-| Cart / conversion UX | 9.1 | Fly-to-bag, bottom sheet, routine cards, climate 'add these steps', sets, builder, tier/free-delivery (off until set) |
+| PDP conversion | 9.2 | Real prices, Day Ritual + Stock-Up offers on every PDP, buy always one tap away; no reviews or texture photography yet |
+| Cart / conversion UX | 9.3 | Bundles everywhere, pickers add the matching bundle, duo → ritual upgrade, free-delivery line, WELCOME75 card; checkout depends on owner setup |
 | English experience | 8.6 | — |
 | Arabic / RTL experience | 8.4 | Complete, mirrored, hero fits the fold, display leading tuned; needs native review + real-store check |
 | Performance | 9.2 | Lab 99 mobile with the shader (skipped on software GL); unverified on Shopify |
 | Accessibility | 9.2 | axe 0, Lighthouse 100, keyboard flows; no screen-reader device pass yet |
-| Technical quality | 8.7 | Theme Check 0, 84 flow tests, MD5-verified deploys; harness ≠ real Shopify |
+| Technical quality | 8.8 | Theme Check 0, 238 flow tests, checksum-verified deploys; harness ≠ real Shopify |
 | Merchant maintainability | 8.5 | Metafields, blocks, bilingual fallbacks, editor labels |
 | **Overall award potential** | **8.8** | Interaction + system award-grade; real photography/film and current-label packshots are the remaining gap; collection/content pages next |
-| **Overall commercial effectiveness** | **8.6** | Mobile buy path now app-grade; blocked on real prices, offer values, payments/shipping, reviews |
+| **Overall commercial effectiveness** | **9.0** | Real prices + bundles + welcome offer + creator funnel live on staging; payments/shipping/inventory setup and reviews still needed |
 
-## Pricing
-Owner shared a Google Sheet with pricing. Not yet applied: the Google Drive connector in this session has no file-read permission and docs.google.com is blocked by the sandbox network policy. Fix: reconnect Google Drive with read access, add `docs.google.com` to allowed domains, or paste the prices.
+## Pricing (applied 2026-10-12)
+Applied from the owner's Pricing & Offers PDF (sizes: SPF and moisturizer in gm; competitor per-ml comparisons skipped, per owner). See DECISIONS 67–81 for every store change and how to undo it.
 
-## Offers: what the owner sets (nothing shows until set)
-| Setting (Theme settings → Offers) | Must match in Shopify admin |
-|---|---|
-| Mix & match 2 / 3 / 4+ items % | Automatic discount(s) "Amount off products" by quantity (I can create these once values are approved) |
-| Free delivery from (EGP) | Shipping rate with a free tier at the same order value |
-| WhatsApp number | The business WhatsApp number (international format, digits only) |
+## Owner checklist (manual, "we can get to the manual stuff later")
+| Area | What to set | Why it matters on the site |
+|---|---|---|
+| Taxes | Prices include 14% VAT (Settings → Taxes: "Include tax in prices") | Prices shown are tax-inclusive |
+| Shipping | Standard EGP 100 below EGP 1,200, free from EGP 1,200 (and any express rate) | "Ships free", the announcement line and the bag upgrade use the theme settings `free_shipping_threshold` 1,200 / `delivery_fee` 100: change both together |
+| Payments | Paymob (cards/wallets) + Cash on Delivery | Only configured methods appear (theme never fakes icons) |
+| COD limit + "Pay online for priority dispatch" | Needs a checkout rule (Shopify Plus / Functions app) | Not shown on site until it exists |
+| Inventory | Enter counts, then turn on "Track quantity" for the 4 singles (bundles follow) | Sold-out states and bundle availability |
+| Barcodes / weights | Per product | Shipping rates and labels |
+| Creator codes | One `[NAME]10` discount per accepted creator (10%, excludes Stock-Up if wanted) | The creators page promises a personal code |
+| Welcome email | Shopify Email/Flow welcome message repeating WELCOME75 | Code is shown on site; email is a backup |
+| Abandoned checkout | Settings → Notifications | Recovery |
+| Contact email | Settings → Notifications → staff "Contact customer" goes to the right inbox | Creator applications arrive there |
 
 ## Next five actions
-0. Apply real prices from the owner's sheet (blocked, see Pricing).
+0. Owner checklist above (taxes, shipping, payments, inventory), then a real test order with WELCOME75 and a bundle.
 1. Verify the staging theme on the real store (owner opens preview; or allow `qfj1gi-c9.myshopify.com` in the environment network policy so I can screenshot it) and fix any Shopify-vs-harness differences.
 2. Replace packshots with final v5-label renders; commission texture swatches and application/lifestyle imagery; add texture media to PDP gallery.
 3. Set real prices; configure payments (Paymob/COD) and shipping (Bosta/ShipBlu); then turn on COD/shipping notes in theme settings.
@@ -103,8 +113,7 @@ Owner shared a Google Sheet with pricing. Not yet applied: the Google Drive conn
 ## Blockers (need the owner)
 - **Storefront unreachable from sandbox** (network policy). Fix: add `qfj1gi-c9.myshopify.com` and `cdn.shopify.com` to the environment's allowed domains (cloud environment → Edit → Network access).
 - **Figma MCP plan limit** (Starter). Upgrade or provide a Figma token for further exports (fonts/specs/packshots).
-- **Offer values:** tier percentages, free-delivery threshold, WhatsApp number, confirm the five-set line-up.
-- **Business inputs:** prices, payment methods, shipping partners/rates, return policy, final packshots, social links.
+- **Business inputs:** payment methods, shipping partners/rates, return policy, final packshots, social links, WhatsApp number, creator compensation once decided.
 - **Label art on PDPs** (new "Product label" section) shows the current label designs as supplied, including the serum pill typo "Niacinimide" and blank EDA lines. Replace the artwork or turn the section off before launch if the print files change.
 - **Cleanser EDA number:** current label design leaves it blank; the site still shows COSMTOL26130966 from the v5 file. Confirm which is right.
 - **Packaging/label conflicts to confirm before print:** serum pack front reads "Niacinimide" (typo); older render says "Niacinimide + Zinc PCA" / "Prevents breakouts" vs v5 "Niacinamide + Tranexamic Acid"; SPF named "Daily Face" (render) vs "Daily Defense … SPF 50+" (v5) vs "SPF 50" (Shopify); serum/SPF labels lack EDA numbers; serum skin type not stated; moisturizer AR text "للحماية البشرة" grammar.
@@ -114,4 +123,5 @@ Owner shared a Google Sheet with pricing. Not yet applied: the Google Drive conn
 2. Admin GraphQL `stagedUploadsCreate` (resource `FILE`, `application/zip`) → POST the zip to the returned target.
 3. Either `themeCreate(source: resourceUrl, role: UNPUBLISHED)` for a fresh theme, or `themeFilesUpsert` on theme `167112540418` for updates. **Never publish without owner approval.**
 4. Large files: `stagedUploadsCreate` (FILE, `text/css` etc.) → POST the file → `themeFilesUpsert` with body `{type: URL, value: resourceUrl}` (processed async; the mutation returns an empty list).
-5. Verify: query `theme.files(filenames: …) { checksumMd5 }` and compare with local `md5sum`; it must match byte for byte.
+5. Verify: query `theme.files(filenames: …) { checksumMd5 }` and compare with local `md5sum`; it must match byte for byte. JSON templates and `settings_data.json` get Shopify's header comment on save, so compare those by content.
+6. Upsert sections/snippets **before** templates that reference new sections or block types and wait for that job to finish; a template sent in a parallel batch is rejected silently (empty result, no userError).

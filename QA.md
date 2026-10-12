@@ -9,8 +9,8 @@ _Last run: 2026-10-12, after pass 2 (27 files redeployed to staging; 26 MD5-iden
 cd tools && npm ci            # first time
 ./preview/start.sh             # http://localhost:4321  (EN) / /ar (AR)
 node qa/theme-check.mjs        # Shopify Theme Check (same engine as `shopify theme check`)
-node qa/flows.js               # 154 interaction tests (EN/AR × 390/1440)
-node qa/a11y.js                # axe-core WCAG 2.2 AA + best-practice on 16 routes × 2 locales × 2 viewports
+node qa/flows.js               # 238 interaction tests (EN/AR × 390/1440)
+node qa/a11y.js                # axe-core WCAG 2.2 AA + best-practice on 18 routes × 2 locales × 2 viewports
 node qa/shots.js / /products/clarity-serum --vp=390,1440 --loc=en,ar [--full]   # screenshots + console + overflow
 CHROME_PATH=$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome|head -1) npx lighthouse http://localhost:4321/ --only-categories=performance,accessibility,best-practices,seo
 ```
@@ -20,8 +20,8 @@ CHROME_PATH=$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome|head -1) npx
 | Check | Result |
 |---|---|
 | Shopify Theme Check | **0 offenses** (errors 0, warnings 0) |
-| Interaction tests | **154 / 154 pass** (adds climate switch AC → steps 2,3 and adds both; PDP routine tabs + 3 callouts; dock visible on mobile / hidden on desktop; buy bar replaces dock while Add is off screen) |
-| axe-core (WCAG 2.2 AA + best practice) | **0 violations** on 64 page scans (16 routes × EN/AR × 390/1440) |
+| Interaction tests | **238 / 238 pass** (3 consecutive runs). New: forecast/climate/builder add the matching bundle (Night Ritual, Clear & Protect) with a match note; Full Ritual and duo cards add 1 bundle; EGP format; bundle qty capped at 3; bag upgrade swaps duo → Day Ritual; concern filter keeps only sun-relevant cards incl. bundles; WELCOME75 card hidden on arrival, no focus steal, closes, once per visitor, code + focus after sign-up; creators: 4 reels, CTA jumps to form, empty form invalid, submit → thank-you with focus |
+| axe-core (WCAG 2.2 AA + best practice) | **0 violations** on 72 page scans (18 routes incl. `/pages/creators` and a bundle PDP × EN/AR × 390/1440) |
 | Console errors | 0 on all routes (only the intentional 404 test page logs its 404 status) |
 | Horizontal overflow | 0 px on every route, EN + AR, 375/390/1440 |
 | Missing translations | 0 (EN/AR key parity verified by script) |
@@ -30,6 +30,11 @@ CHROME_PATH=$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome|head -1) npx
 
 | Route | Perf | A11y | Best pr. | SEO | LCP | TBT | CLS | Weight |
 |---|---|---|---|---|---|---|---|---|
+| `/` (pricing + WELCOME75) | 96 | 100 | 100 | 100 | 2.2 s | 130 ms | 0 | 246 KB |
+| `/ar` (pricing + WELCOME75) | 97 | 100 | 100 | 100 | 2.3 s | 90 ms | 0.006 | 246 KB |
+| `/products/the-day-ritual` | 98 | 100 | 100 | 100 | 2.3 s | 0 ms | 0 | 206 KB |
+| `/pages/creators` | 99 | 100 | 100 | 100 | 2.0 s | 0 ms | 0 | 173 KB |
+| `/ar/pages/creators` | 99 | 100 | 100 | 100 | 2.0 s | 0 ms | 0.001 | 174 KB |
 | `/` (pass 2) | 98 | 100 | 100 | 100 | 2.1 s | 0 ms | 0 | 242 KB |
 | `/ar` (pass 2) | 96 | 100 | 100 | 100 | 2.3 s | 110 ms | 0.006 | 243 KB |
 | `/products/daily-reset-cleanser` (pass 2) | 99 | 100 | 100 | 100 | 2.1 s | 0 ms | 0 | 180 KB |
@@ -81,6 +86,13 @@ Expect Shopify TTFB and `content_for_header` scripts (analytics, Shop Pay) to co
 | 36 | Arabic routine heading (3 lines) touched the bottle on phones | Arabic stage heading sized to 1–2 lines |
 | 37 | Inactive dock labels / product tabs below 4.5:1 | Muted text colour → axe 0 |
 | 29 | Card tilt never applied (`.card:hover` image rule outranked it) | Raised tilt selector specificity |
+| 38 | Builder: the struck-through bundle price made the Add button wider than its panel, pushing the whole builder column off-screen at 390 px | Grid columns `minmax(0, 1fr)`, panel `min-inline-size: 0`, button wraps |
+| 39 | Concern filter ignored bundle cards (no `data-concerns`), so "Sun" showed 8 of 11 | Bundle cards carry the union of their products' concerns |
+| 40 | Bundle packs looked up `step_handles[st]` with a string index (works in the harness, returns nothing in Shopify Liquid) | Index cast to a number in PDP and bag |
+| 41 | Leftover totals from the old bundle bars; `main-product` over Theme Check's complexity limit | Dead variables removed; bundle PDP parts moved to `snippets/pdp-bundle.liquid` → Theme Check 0 |
+| 42 | WELCOME75 card on phones covered ~45% of the screen; after sign-up the footer form's autofocus scrolled to the footer | Shorter copy, one-row email + button, 11.5 px terms; footer autofocus only when the card is off |
+| 43 | Creators thank-you focus raced page scripts (1 of 8 runs) | Focus moved to `load` → 3 × 238/238 |
+| 44 | Deploy: a template batch sent alongside the section batch was rejected silently (new block types not yet known) | Re-upserted after the section job finished; procedure updated in STATUS |
 
 ### Offers check (temporary settings 5/10/15 %, free delivery 1,500 EGP, then restored)
 Builder: 1 item → "Add 1 more to save 5%"; all 4 → "You're saving 15%", LE 1,912.50 with LE 2,250.00 struck. Full Routine set card: same prices + "Save 15%" pill. Drawer with 2 items: tier steps (2 items −5% current), "Add 1 more to save 10%", "LE 400.00 away from free delivery" with meter. EN + AR identical figures. With settings at 0 none of this renders (default).
@@ -90,4 +102,6 @@ Builder: 1 item → "Add 1 more to save 5%"; all 4 → "You're saving 15%", LE 1
 - Arabic on the real store (language is unpublished; preview via Theme editor → language selector).
 - iOS Safari (no WebKit binary in sandbox; Chromium mobile emulation only). Scroll-driven CSS falls back to `hero.js` on Safari < 26.
 - Screen-reader pass with VoiceOver/TalkBack (axe + keyboard flows only so far).
-- Shopify checkout (Shopify-hosted; depends on payment/shipping config).
+- Shopify checkout (Shopify-hosted; depends on payment/shipping config), including WELCOME75 at checkout, bundle checkout and `/discount/WELCOME75` apply.
+- Creator application email delivery (Shopify contact form → store contact email).
+- Quantity limits at checkout (the theme enforces them; checkout itself doesn't).
