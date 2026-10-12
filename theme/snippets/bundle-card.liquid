@@ -98,8 +98,8 @@
         <form method="post" action="{{ routes.cart_add_url }}">
           <input type="hidden" name="id" value="{{ v.id }}">
           <input type="hidden" name="quantity" value="1">
-          <button type="submit" class="btn btn--full" data-magnetic{% unless v.available %} disabled{% endunless %} aria-label="{{ 'cart.add_item' | t: product: name | escape }}">
-            <span class="btn__label">{% if v.available %}{{ 'sections.bundles.cta' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif %}</span>
+          <button type="submit" class="btn btn--full" data-magnetic{% unless v.available %} disabled{% endunless %}>
+            <span class="btn__label">{% if v.available %}{{ 'sections.bundles.cta' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif %}<span class="visually-hidden">: {{ name | escape }}</span></span>
           </button>
           <p class="t-xs t-muted" data-form-error hidden></p>
         </form>

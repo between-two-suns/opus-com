@@ -21,12 +21,22 @@
       assign saving = v.compare_at_price | minus: v.price
     endif
     assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
+    assign uniq = steps | uniq
+    capture what
+      if uniq.size == 1
+        assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+        assign si = uniq.first | plus: 0
+        echo steps.size | append: ' × ' | append: all_products[step_handles[si]].title
+      else
+        echo 'sections.bundles.count' | t: count: steps.size
+      endif
+    endcapture
   -%}
   <div class="bundle-offer {{ class }}" data-handle="{{ bp.handle }}">
     <div class="bundle-offer__text">
       <span class="bundle-offer__dots" aria-hidden="true">{%- for st in steps -%}<span data-step="{{ st | strip }}"></span>{%- endfor -%}</span>
       <div>
-        <p class="t-subheading">{{ name | escape }} · {{ 'sections.bundles.count' | t: count: steps.size }}</p>
+        <p class="t-subheading">{{ name | escape }} · {{ what | strip | escape }}</p>
         <p class="t-small bundle-offer__save">
           {%- if saving > 0 -%}{%- capture amt -%}{% render 'egp', cents: saving %}{%- endcapture -%}{{ 'bundles.save_vs' | t: amount: amt }}{%- endif -%}
           {%- if threshold > 0 and v.price >= threshold -%}{% if saving > 0 %} · {% endif %}{{ 'bundles.ships_free' | t }}{%- endif -%}
@@ -38,7 +48,7 @@
         <input type="hidden" name="id" value="{{ v.id }}">
         <input type="hidden" name="quantity" value="1">
         <button type="submit" class="btn" data-magnetic{% unless v.available %} disabled{% endunless %}>
-          <span class="btn__label">{{ 'cart.add_item' | t: product: name }}</span>
+          <span class="btn__label">{{ 'product.add_to_cart' | t }}<span class="visually-hidden">: {{ name | escape }}</span></span>
           <span class="btn__sep" aria-hidden="true">·</span>
           <span class="btn__price">{% render 'egp', cents: v.price %}</span>
           {%- if saving > 0 -%}<s class="bundle-offer__was"><span class="visually-hidden">{{ 'sections.bundles.was' | t }} </span>{% render 'egp', cents: v.compare_at_price %}</s>{%- endif -%}
