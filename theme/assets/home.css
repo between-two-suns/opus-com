@@ -11,7 +11,7 @@
   --hero-font: clamp(64px, min(20vw, 19svh), 208px);
   position: relative; display: grid; isolation: isolate; overflow: clip;
   padding-block: clamp(20px, 3vw, 40px) clamp(32px, 4vw, 56px);
-  background: #eef5f5;
+  background: var(--c-daylight);
 }
 [dir='rtl'] .hero { --dir: -1; }
 :lang(ar) .hero { --hero-font: clamp(50px, min(15vw, 14svh), 150px); }
@@ -69,6 +69,24 @@
   .hero__foot { grid-template-columns: 1fr auto; align-items: center; text-align: start; max-inline-size: 980px; gap: 32px; }
   .hero__copy { text-wrap: pretty; }
 }
+
+/* The mark, oversized behind the line-up. Each arc carries a pack colour and drifts outward with --p. */
+.hero__mark { position: absolute; z-index: 0; inset-block-start: 50%; inset-inline-start: 50%; block-size: min(118%, 1180px); aspect-ratio: 501 / 547; translate: -50% -48%; pointer-events: none; }
+[dir='rtl'] .hero__mark { translate: 50% -48%; }
+.hero__mark svg { inline-size: 100%; block-size: 100%; overflow: visible; }
+.hero__mark path { transform-box: fill-box; transform-origin: center; }
+.hero__mark path:first-child { fill: color-mix(in srgb, var(--c-step-2) 46%, #fff); transform: translateX(calc(14% + var(--p) * 30%)); opacity: .85; }
+.hero__mark path:last-child { fill: color-mix(in srgb, var(--c-step-1) 46%, #fff); transform: translateX(calc(-14% - var(--p) * 30%)); opacity: .85; }
+@media (max-width: 749px) {
+  .hero__mark { block-size: 92%; translate: -50% -46%; }
+  [dir='rtl'] .hero__mark { translate: 50% -46%; }
+  .hero__mark path:first-child { transform: translateX(calc(46% + var(--p) * 30%)); }
+  .hero__mark path:last-child { transform: translateX(calc(-46% - var(--p) * 30%)); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero--motion .hero__mark path { animation: mark-in 1200ms var(--ease-out) both; }
+}
+@keyframes mark-in { from { opacity: 0; scale: .94; } }
 
 /* Intro (images only, never the LCP headline) */
 @media (prefers-reduced-motion: no-preference) {
@@ -147,32 +165,32 @@
 .lab__bottle img { block-size: 100%; inline-size: auto; filter: drop-shadow(var(--sx) var(--sy) 18px var(--shadow)); transition: filter 900ms var(--ease-out); }
 
 /* Weather states */
-climate-lab[data-active='sun'] .lab__stage { --sky: #ffd9c2; --lx: 12%; --ly: -6%; --li: 1; --shadow: rgba(120, 50, 20, .32); --sx: 26px; --sy: 30px; }
-climate-lab[data-active='sun'] .lab__fx--light { background: radial-gradient(55% 55% at 10% -4%, #fff, rgba(255, 238, 220, .8) 30%, transparent 72%); }
-climate-lab[data-active='pollution'] .lab__stage { --sky: #d6d2cf; --li: .2; --shadow: rgba(60, 55, 55, .25); }
-climate-lab[data-active='pollution'] .lab__fx--haze { opacity: 1; }
-climate-lab[data-active='dust'] .lab__stage { --sky: #ecd3b2; --li: .35; --shadow: rgba(110, 70, 30, .28); }
-climate-lab[data-active='dust'] .lab__fx--particles { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><g fill='%238a5a2b'><circle cx='84.2' cy='39.2' r='2.0' fill-opacity='0.27'/><circle cx='213.5' cy='24.5' r='1.5' fill-opacity='0.28'/><circle cx='131.9' cy='9.7' r='1.2' fill-opacity='0.44'/><circle cx='62.6' cy='143.3' r='0.6' fill-opacity='0.62'/><circle cx='32.2' cy='58.0' r='2.0' fill-opacity='0.51'/><circle cx='16.1' cy='152.2' r='0.6' fill-opacity='0.69'/><circle cx='12.1' cy='223.2' r='1.0' fill-opacity='0.44'/><circle cx='140.6' cy='148.4' r='1.5' fill-opacity='0.62'/><circle cx='47.0' cy='151.2' r='2.0' fill-opacity='0.33'/><circle cx='25.3' cy='185.1' r='1.5' fill-opacity='0.28'/><circle cx='53.5' cy='176.9' r='1.2' fill-opacity='0.60'/><circle cx='121.1' cy='240.1' r='1.0' fill-opacity='0.38'/><circle cx='206.5' cy='181.7' r='0.8' fill-opacity='0.29'/><circle cx='78.1' cy='128.7' r='1.0' fill-opacity='0.58'/><circle cx='74.9' cy='254.8' r='0.6' fill-opacity='0.48'/><circle cx='42.9' cy='88.9' r='1.2' fill-opacity='0.44'/><circle cx='250.1' cy='20.2' r='1.5' fill-opacity='0.51'/><circle cx='227.6' cy='81.6' r='2.0' fill-opacity='0.41'/><circle cx='129.1' cy='207.2' r='0.6' fill-opacity='0.63'/><circle cx='245.6' cy='123.3' r='2.0' fill-opacity='0.28'/><circle cx='190.1' cy='80.5' r='1.5' fill-opacity='0.70'/><circle cx='213.7' cy='74.0' r='1.2' fill-opacity='0.65'/><circle cx='90.2' cy='244.6' r='1.0' fill-opacity='0.33'/><circle cx='30.4' cy='15.3' r='2.6' fill-opacity='0.38'/><circle cx='192.0' cy='103.5' r='2.6' fill-opacity='0.47'/><circle cx='43.3' cy='104.4' r='1.0' fill-opacity='0.65'/><circle cx='213.0' cy='224.6' r='1.0' fill-opacity='0.57'/><circle cx='256.5' cy='177.5' r='1.2' fill-opacity='0.68'/><circle cx='39.2' cy='45.8' r='0.8' fill-opacity='0.55'/><circle cx='3.1' cy='216.1' r='0.8' fill-opacity='0.37'/><circle cx='1.1' cy='108.9' r='1.0' fill-opacity='0.52'/><circle cx='82.8' cy='32.6' r='2.6' fill-opacity='0.48'/><circle cx='160.6' cy='175.8' r='0.6' fill-opacity='0.46'/><circle cx='226.5' cy='247.5' r='2.0' fill-opacity='0.61'/><circle cx='102.0' cy='103.7' r='0.6' fill-opacity='0.47'/><circle cx='104.1' cy='49.6' r='0.8' fill-opacity='0.45'/><circle cx='28.6' cy='156.2' r='0.6' fill-opacity='0.25'/><circle cx='39.3' cy='26.4' r='1.0' fill-opacity='0.53'/><circle cx='18.3' cy='54.1' r='1.2' fill-opacity='0.32'/><circle cx='65.6' cy='90.3' r='1.0' fill-opacity='0.46'/><circle cx='30.0' cy='126.9' r='1.2' fill-opacity='0.47'/><circle cx='81.1' cy='37.5' r='2.0' fill-opacity='0.40'/><circle cx='68.8' cy='215.5' r='0.8' fill-opacity='0.48'/><circle cx='53.4' cy='247.5' r='1.0' fill-opacity='0.32'/><circle cx='141.2' cy='7.0' r='1.5' fill-opacity='0.38'/><circle cx='167.2' cy='23.7' r='2.6' fill-opacity='0.37'/><circle cx='95.3' cy='43.4' r='2.6' fill-opacity='0.35'/><circle cx='140.8' cy='130.7' r='2.0' fill-opacity='0.35'/><circle cx='211.0' cy='256.1' r='2.6' fill-opacity='0.34'/><circle cx='62.2' cy='104.2' r='2.6' fill-opacity='0.35'/><circle cx='134.6' cy='92.4' r='0.6' fill-opacity='0.70'/><circle cx='205.4' cy='122.8' r='0.8' fill-opacity='0.56'/><circle cx='248.7' cy='116.3' r='2.0' fill-opacity='0.69'/><circle cx='248.3' cy='94.8' r='0.8' fill-opacity='0.30'/><circle cx='122.2' cy='87.8' r='1.2' fill-opacity='0.53'/><circle cx='234.1' cy='218.5' r='1.2' fill-opacity='0.66'/><circle cx='89.4' cy='167.2' r='2.6' fill-opacity='0.55'/><circle cx='236.5' cy='203.4' r='2.6' fill-opacity='0.34'/><circle cx='231.1' cy='112.8' r='2.0' fill-opacity='0.40'/><circle cx='208.2' cy='252.6' r='1.2' fill-opacity='0.46'/><circle cx='193.3' cy='22.1' r='0.8' fill-opacity='0.33'/><circle cx='33.0' cy='39.3' r='1.2' fill-opacity='0.61'/><circle cx='38.0' cy='214.9' r='1.2' fill-opacity='0.55'/><circle cx='91.1' cy='142.7' r='0.8' fill-opacity='0.26'/><circle cx='207.8' cy='188.9' r='0.6' fill-opacity='0.49'/><circle cx='242.7' cy='112.8' r='2.6' fill-opacity='0.34'/><circle cx='227.2' cy='7.3' r='0.8' fill-opacity='0.38'/><circle cx='62.5' cy='152.5' r='1.0' fill-opacity='0.49'/><circle cx='216.9' cy='15.8' r='2.0' fill-opacity='0.41'/><circle cx='119.1' cy='151.7' r='1.5' fill-opacity='0.44'/><circle cx='238.6' cy='130.4' r='1.5' fill-opacity='0.32'/><circle cx='132.7' cy='226.9' r='2.6' fill-opacity='0.33'/><circle cx='1.0' cy='207.8' r='0.8' fill-opacity='0.31'/><circle cx='161.0' cy='31.3' r='0.6' fill-opacity='0.40'/><circle cx='134.8' cy='144.4' r='2.6' fill-opacity='0.60'/><circle cx='229.6' cy='14.8' r='0.8' fill-opacity='0.37'/><circle cx='200.8' cy='132.0' r='1.5' fill-opacity='0.26'/><circle cx='232.4' cy='16.5' r='1.0' fill-opacity='0.53'/><circle cx='131.4' cy='133.2' r='2.0' fill-opacity='0.37'/><circle cx='132.1' cy='209.9' r='1.5' fill-opacity='0.67'/><circle cx='181.8' cy='227.9' r='1.0' fill-opacity='0.67'/><circle cx='232.1' cy='52.7' r='1.2' fill-opacity='0.31'/><circle cx='31.6' cy='115.0' r='0.6' fill-opacity='0.55'/><circle cx='111.4' cy='55.3' r='1.0' fill-opacity='0.60'/><circle cx='233.2' cy='40.2' r='2.0' fill-opacity='0.54'/><circle cx='95.2' cy='65.8' r='0.8' fill-opacity='0.69'/><circle cx='57.1' cy='247.7' r='1.2' fill-opacity='0.65'/><circle cx='42.3' cy='173.6' r='0.8' fill-opacity='0.32'/><circle cx='112.2' cy='134.1' r='1.0' fill-opacity='0.44'/><circle cx='92.7' cy='24.0' r='1.0' fill-opacity='0.26'/></g></svg>"); background-size: 260px 260px; animation: lab-dust 26s linear infinite; }
-climate-lab[data-active='dust'] .lab__fx--haze { opacity: .55; --haze: rgba(205, 160, 105, .6); }
-climate-lab[data-active='humidity'] .lab__stage { --sky: #c9e6e2; --li: .5; }
-climate-lab[data-active='humidity'] .lab__fx--drops { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><defs><radialGradient id='g' cx='.35' cy='.35' r='.65'><stop offset='0' stop-color='%23fff' stop-opacity='.95'/><stop offset='.5' stop-color='%23fff' stop-opacity='.35'/><stop offset='1' stop-color='%23fff' stop-opacity='0'/></radialGradient></defs><circle cx='117.6' cy='145.5' r='6' fill='url%28%23g%29'/><circle cx='117.5' cy='222.3' r='4' fill='url%28%23g%29'/><circle cx='48.0' cy='133.1' r='10' fill='url%28%23g%29'/><circle cx='159.6' cy='48.4' r='6' fill='url%28%23g%29'/><circle cx='78.9' cy='23.6' r='10' fill='url%28%23g%29'/><circle cx='165.0' cy='154.8' r='6' fill='url%28%23g%29'/><circle cx='250.8' cy='170.0' r='8' fill='url%28%23g%29'/><circle cx='169.0' cy='162.0' r='8' fill='url%28%23g%29'/><circle cx='16.4' cy='9.3' r='4' fill='url%28%23g%29'/><circle cx='155.9' cy='202.3' r='5' fill='url%28%23g%29'/><circle cx='114.5' cy='219.0' r='8' fill='url%28%23g%29'/><circle cx='60.7' cy='76.5' r='3' fill='url%28%23g%29'/><circle cx='172.2' cy='118.9' r='5' fill='url%28%23g%29'/><circle cx='105.8' cy='143.3' r='3' fill='url%28%23g%29'/><circle cx='184.0' cy='82.0' r='4' fill='url%28%23g%29'/><circle cx='133.4' cy='7.7' r='8' fill='url%28%23g%29'/><circle cx='199.2' cy='104.1' r='5' fill='url%28%23g%29'/><circle cx='100.5' cy='249.1' r='10' fill='url%28%23g%29'/><circle cx='0.1' cy='54.5' r='3' fill='url%28%23g%29'/><circle cx='122.2' cy='254.9' r='6' fill='url%28%23g%29'/><circle cx='109.1' cy='147.2' r='4' fill='url%28%23g%29'/><circle cx='202.4' cy='70.1' r='3' fill='url%28%23g%29'/><circle cx='80.9' cy='3.9' r='6' fill='url%28%23g%29'/><circle cx='197.1' cy='30.7' r='4' fill='url%28%23g%29'/><circle cx='183.8' cy='2.8' r='6' fill='url%28%23g%29'/><circle cx='207.2' cy='46.2' r='8' fill='url%28%23g%29'/></svg>"); background-size: 260px 260px; -webkit-backdrop-filter: blur(1.4px); backdrop-filter: blur(1.4px); }
-climate-lab[data-active='humidity'] .lab__fx--haze { opacity: .6; --haze: rgba(255, 255, 255, .7); }
-climate-lab[data-active='heat'] .lab__stage { --sky: #ffb795; --lx: 50%; --ly: -10%; --li: .9; --shadow: rgba(140, 40, 10, .3); --sy: 12px; }
-climate-lab[data-active='heat'] .lab__fx--haze { opacity: .7; --haze: rgba(255, 120, 80, .45); animation-duration: 4s; }
-climate-lab[data-active='heat'] .lab__bottle { animation-duration: 1.6s; }
-climate-lab[data-active='ac'] .lab__stage { --sky: #d5e6f4; --lx: 80%; --li: .7; --shadow: rgba(40, 70, 110, .22); }
-climate-lab[data-active='ac'] .lab__fx--air { opacity: 1; }
-climate-lab[data-active='change'] .lab__stage { --sky: #efe5ec; --li: .3; }
-climate-lab[data-active='change'] .lab__fx--split { opacity: 1; }
-climate-lab[data-active='everyday'] .lab__stage { --sky: #eef1ef; --lx: 50%; --li: .8; }
-climate-lab[data-active='sun'] .lab__word[data-c='sun'] { opacity: 1; translate: 0 0; }
-climate-lab[data-active='pollution'] .lab__word[data-c='pollution'] { opacity: 1; translate: 0 0; }
-climate-lab[data-active='dust'] .lab__word[data-c='dust'] { opacity: 1; translate: 0 0; }
-climate-lab[data-active='humidity'] .lab__word[data-c='humidity'] { opacity: 1; translate: 0 0; }
-climate-lab[data-active='heat'] .lab__word[data-c='heat'] { opacity: 1; translate: 0 0; }
-climate-lab[data-active='ac'] .lab__word[data-c='ac'] { opacity: 1; translate: 0 0; }
-climate-lab[data-active='change'] .lab__word[data-c='change'] { opacity: 1; translate: 0 0; }
-climate-lab[data-active='everyday'] .lab__word[data-c='everyday'] { opacity: 1; translate: 0 0; }
+:is(climate-lab, climate-switch)[data-active='sun'] .lab__stage { --sky: #ffd9c2; --lx: 12%; --ly: -6%; --li: 1; --shadow: rgba(120, 50, 20, .32); --sx: 26px; --sy: 30px; }
+:is(climate-lab, climate-switch)[data-active='sun'] .lab__fx--light { background: radial-gradient(55% 55% at 10% -4%, #fff, rgba(255, 238, 220, .8) 30%, transparent 72%); }
+:is(climate-lab, climate-switch)[data-active='pollution'] .lab__stage { --sky: #d6d2cf; --li: .2; --shadow: rgba(60, 55, 55, .25); }
+:is(climate-lab, climate-switch)[data-active='pollution'] .lab__fx--haze { opacity: 1; }
+:is(climate-lab, climate-switch)[data-active='dust'] .lab__stage { --sky: #ecd3b2; --li: .35; --shadow: rgba(110, 70, 30, .28); }
+:is(climate-lab, climate-switch)[data-active='dust'] .lab__fx--particles { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><g fill='%238a5a2b'><circle cx='84.2' cy='39.2' r='2.0' fill-opacity='0.27'/><circle cx='213.5' cy='24.5' r='1.5' fill-opacity='0.28'/><circle cx='131.9' cy='9.7' r='1.2' fill-opacity='0.44'/><circle cx='62.6' cy='143.3' r='0.6' fill-opacity='0.62'/><circle cx='32.2' cy='58.0' r='2.0' fill-opacity='0.51'/><circle cx='16.1' cy='152.2' r='0.6' fill-opacity='0.69'/><circle cx='12.1' cy='223.2' r='1.0' fill-opacity='0.44'/><circle cx='140.6' cy='148.4' r='1.5' fill-opacity='0.62'/><circle cx='47.0' cy='151.2' r='2.0' fill-opacity='0.33'/><circle cx='25.3' cy='185.1' r='1.5' fill-opacity='0.28'/><circle cx='53.5' cy='176.9' r='1.2' fill-opacity='0.60'/><circle cx='121.1' cy='240.1' r='1.0' fill-opacity='0.38'/><circle cx='206.5' cy='181.7' r='0.8' fill-opacity='0.29'/><circle cx='78.1' cy='128.7' r='1.0' fill-opacity='0.58'/><circle cx='74.9' cy='254.8' r='0.6' fill-opacity='0.48'/><circle cx='42.9' cy='88.9' r='1.2' fill-opacity='0.44'/><circle cx='250.1' cy='20.2' r='1.5' fill-opacity='0.51'/><circle cx='227.6' cy='81.6' r='2.0' fill-opacity='0.41'/><circle cx='129.1' cy='207.2' r='0.6' fill-opacity='0.63'/><circle cx='245.6' cy='123.3' r='2.0' fill-opacity='0.28'/><circle cx='190.1' cy='80.5' r='1.5' fill-opacity='0.70'/><circle cx='213.7' cy='74.0' r='1.2' fill-opacity='0.65'/><circle cx='90.2' cy='244.6' r='1.0' fill-opacity='0.33'/><circle cx='30.4' cy='15.3' r='2.6' fill-opacity='0.38'/><circle cx='192.0' cy='103.5' r='2.6' fill-opacity='0.47'/><circle cx='43.3' cy='104.4' r='1.0' fill-opacity='0.65'/><circle cx='213.0' cy='224.6' r='1.0' fill-opacity='0.57'/><circle cx='256.5' cy='177.5' r='1.2' fill-opacity='0.68'/><circle cx='39.2' cy='45.8' r='0.8' fill-opacity='0.55'/><circle cx='3.1' cy='216.1' r='0.8' fill-opacity='0.37'/><circle cx='1.1' cy='108.9' r='1.0' fill-opacity='0.52'/><circle cx='82.8' cy='32.6' r='2.6' fill-opacity='0.48'/><circle cx='160.6' cy='175.8' r='0.6' fill-opacity='0.46'/><circle cx='226.5' cy='247.5' r='2.0' fill-opacity='0.61'/><circle cx='102.0' cy='103.7' r='0.6' fill-opacity='0.47'/><circle cx='104.1' cy='49.6' r='0.8' fill-opacity='0.45'/><circle cx='28.6' cy='156.2' r='0.6' fill-opacity='0.25'/><circle cx='39.3' cy='26.4' r='1.0' fill-opacity='0.53'/><circle cx='18.3' cy='54.1' r='1.2' fill-opacity='0.32'/><circle cx='65.6' cy='90.3' r='1.0' fill-opacity='0.46'/><circle cx='30.0' cy='126.9' r='1.2' fill-opacity='0.47'/><circle cx='81.1' cy='37.5' r='2.0' fill-opacity='0.40'/><circle cx='68.8' cy='215.5' r='0.8' fill-opacity='0.48'/><circle cx='53.4' cy='247.5' r='1.0' fill-opacity='0.32'/><circle cx='141.2' cy='7.0' r='1.5' fill-opacity='0.38'/><circle cx='167.2' cy='23.7' r='2.6' fill-opacity='0.37'/><circle cx='95.3' cy='43.4' r='2.6' fill-opacity='0.35'/><circle cx='140.8' cy='130.7' r='2.0' fill-opacity='0.35'/><circle cx='211.0' cy='256.1' r='2.6' fill-opacity='0.34'/><circle cx='62.2' cy='104.2' r='2.6' fill-opacity='0.35'/><circle cx='134.6' cy='92.4' r='0.6' fill-opacity='0.70'/><circle cx='205.4' cy='122.8' r='0.8' fill-opacity='0.56'/><circle cx='248.7' cy='116.3' r='2.0' fill-opacity='0.69'/><circle cx='248.3' cy='94.8' r='0.8' fill-opacity='0.30'/><circle cx='122.2' cy='87.8' r='1.2' fill-opacity='0.53'/><circle cx='234.1' cy='218.5' r='1.2' fill-opacity='0.66'/><circle cx='89.4' cy='167.2' r='2.6' fill-opacity='0.55'/><circle cx='236.5' cy='203.4' r='2.6' fill-opacity='0.34'/><circle cx='231.1' cy='112.8' r='2.0' fill-opacity='0.40'/><circle cx='208.2' cy='252.6' r='1.2' fill-opacity='0.46'/><circle cx='193.3' cy='22.1' r='0.8' fill-opacity='0.33'/><circle cx='33.0' cy='39.3' r='1.2' fill-opacity='0.61'/><circle cx='38.0' cy='214.9' r='1.2' fill-opacity='0.55'/><circle cx='91.1' cy='142.7' r='0.8' fill-opacity='0.26'/><circle cx='207.8' cy='188.9' r='0.6' fill-opacity='0.49'/><circle cx='242.7' cy='112.8' r='2.6' fill-opacity='0.34'/><circle cx='227.2' cy='7.3' r='0.8' fill-opacity='0.38'/><circle cx='62.5' cy='152.5' r='1.0' fill-opacity='0.49'/><circle cx='216.9' cy='15.8' r='2.0' fill-opacity='0.41'/><circle cx='119.1' cy='151.7' r='1.5' fill-opacity='0.44'/><circle cx='238.6' cy='130.4' r='1.5' fill-opacity='0.32'/><circle cx='132.7' cy='226.9' r='2.6' fill-opacity='0.33'/><circle cx='1.0' cy='207.8' r='0.8' fill-opacity='0.31'/><circle cx='161.0' cy='31.3' r='0.6' fill-opacity='0.40'/><circle cx='134.8' cy='144.4' r='2.6' fill-opacity='0.60'/><circle cx='229.6' cy='14.8' r='0.8' fill-opacity='0.37'/><circle cx='200.8' cy='132.0' r='1.5' fill-opacity='0.26'/><circle cx='232.4' cy='16.5' r='1.0' fill-opacity='0.53'/><circle cx='131.4' cy='133.2' r='2.0' fill-opacity='0.37'/><circle cx='132.1' cy='209.9' r='1.5' fill-opacity='0.67'/><circle cx='181.8' cy='227.9' r='1.0' fill-opacity='0.67'/><circle cx='232.1' cy='52.7' r='1.2' fill-opacity='0.31'/><circle cx='31.6' cy='115.0' r='0.6' fill-opacity='0.55'/><circle cx='111.4' cy='55.3' r='1.0' fill-opacity='0.60'/><circle cx='233.2' cy='40.2' r='2.0' fill-opacity='0.54'/><circle cx='95.2' cy='65.8' r='0.8' fill-opacity='0.69'/><circle cx='57.1' cy='247.7' r='1.2' fill-opacity='0.65'/><circle cx='42.3' cy='173.6' r='0.8' fill-opacity='0.32'/><circle cx='112.2' cy='134.1' r='1.0' fill-opacity='0.44'/><circle cx='92.7' cy='24.0' r='1.0' fill-opacity='0.26'/></g></svg>"); background-size: 260px 260px; animation: lab-dust 26s linear infinite; }
+:is(climate-lab, climate-switch)[data-active='dust'] .lab__fx--haze { opacity: .55; --haze: rgba(205, 160, 105, .6); }
+:is(climate-lab, climate-switch)[data-active='humidity'] .lab__stage { --sky: #c9e6e2; --li: .5; }
+:is(climate-lab, climate-switch)[data-active='humidity'] .lab__fx--drops { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><defs><radialGradient id='g' cx='.35' cy='.35' r='.65'><stop offset='0' stop-color='%23fff' stop-opacity='.95'/><stop offset='.5' stop-color='%23fff' stop-opacity='.35'/><stop offset='1' stop-color='%23fff' stop-opacity='0'/></radialGradient></defs><circle cx='117.6' cy='145.5' r='6' fill='url%28%23g%29'/><circle cx='117.5' cy='222.3' r='4' fill='url%28%23g%29'/><circle cx='48.0' cy='133.1' r='10' fill='url%28%23g%29'/><circle cx='159.6' cy='48.4' r='6' fill='url%28%23g%29'/><circle cx='78.9' cy='23.6' r='10' fill='url%28%23g%29'/><circle cx='165.0' cy='154.8' r='6' fill='url%28%23g%29'/><circle cx='250.8' cy='170.0' r='8' fill='url%28%23g%29'/><circle cx='169.0' cy='162.0' r='8' fill='url%28%23g%29'/><circle cx='16.4' cy='9.3' r='4' fill='url%28%23g%29'/><circle cx='155.9' cy='202.3' r='5' fill='url%28%23g%29'/><circle cx='114.5' cy='219.0' r='8' fill='url%28%23g%29'/><circle cx='60.7' cy='76.5' r='3' fill='url%28%23g%29'/><circle cx='172.2' cy='118.9' r='5' fill='url%28%23g%29'/><circle cx='105.8' cy='143.3' r='3' fill='url%28%23g%29'/><circle cx='184.0' cy='82.0' r='4' fill='url%28%23g%29'/><circle cx='133.4' cy='7.7' r='8' fill='url%28%23g%29'/><circle cx='199.2' cy='104.1' r='5' fill='url%28%23g%29'/><circle cx='100.5' cy='249.1' r='10' fill='url%28%23g%29'/><circle cx='0.1' cy='54.5' r='3' fill='url%28%23g%29'/><circle cx='122.2' cy='254.9' r='6' fill='url%28%23g%29'/><circle cx='109.1' cy='147.2' r='4' fill='url%28%23g%29'/><circle cx='202.4' cy='70.1' r='3' fill='url%28%23g%29'/><circle cx='80.9' cy='3.9' r='6' fill='url%28%23g%29'/><circle cx='197.1' cy='30.7' r='4' fill='url%28%23g%29'/><circle cx='183.8' cy='2.8' r='6' fill='url%28%23g%29'/><circle cx='207.2' cy='46.2' r='8' fill='url%28%23g%29'/></svg>"); background-size: 260px 260px; -webkit-backdrop-filter: blur(1.4px); backdrop-filter: blur(1.4px); }
+:is(climate-lab, climate-switch)[data-active='humidity'] .lab__fx--haze { opacity: .6; --haze: rgba(255, 255, 255, .7); }
+:is(climate-lab, climate-switch)[data-active='heat'] .lab__stage { --sky: #ffb795; --lx: 50%; --ly: -10%; --li: .9; --shadow: rgba(140, 40, 10, .3); --sy: 12px; }
+:is(climate-lab, climate-switch)[data-active='heat'] .lab__fx--haze { opacity: .7; --haze: rgba(255, 120, 80, .45); animation-duration: 4s; }
+:is(climate-lab, climate-switch)[data-active='heat'] .lab__bottle { animation-duration: 1.6s; }
+:is(climate-lab, climate-switch)[data-active='ac'] .lab__stage { --sky: #d5e6f4; --lx: 80%; --li: .7; --shadow: rgba(40, 70, 110, .22); }
+:is(climate-lab, climate-switch)[data-active='ac'] .lab__fx--air { opacity: 1; }
+:is(climate-lab, climate-switch)[data-active='change'] .lab__stage { --sky: #efe5ec; --li: .3; }
+:is(climate-lab, climate-switch)[data-active='change'] .lab__fx--split { opacity: 1; }
+:is(climate-lab, climate-switch)[data-active='everyday'] .lab__stage { --sky: #eef1ef; --lx: 50%; --li: .8; }
+:is(climate-lab, climate-switch)[data-active='sun'] .lab__word[data-c='sun'] { opacity: 1; translate: 0 0; }
+:is(climate-lab, climate-switch)[data-active='pollution'] .lab__word[data-c='pollution'] { opacity: 1; translate: 0 0; }
+:is(climate-lab, climate-switch)[data-active='dust'] .lab__word[data-c='dust'] { opacity: 1; translate: 0 0; }
+:is(climate-lab, climate-switch)[data-active='humidity'] .lab__word[data-c='humidity'] { opacity: 1; translate: 0 0; }
+:is(climate-lab, climate-switch)[data-active='heat'] .lab__word[data-c='heat'] { opacity: 1; translate: 0 0; }
+:is(climate-lab, climate-switch)[data-active='ac'] .lab__word[data-c='ac'] { opacity: 1; translate: 0 0; }
+:is(climate-lab, climate-switch)[data-active='change'] .lab__word[data-c='change'] { opacity: 1; translate: 0 0; }
+:is(climate-lab, climate-switch)[data-active='everyday'] .lab__word[data-c='everyday'] { opacity: 1; translate: 0 0; }
 
 @keyframes lab-drift { to { transform: translate(6%, -4%) scale(1.1); } }
 @keyframes lab-dust { to { background-position: 260px -260px; } }
@@ -286,61 +304,134 @@ climate-lab[data-active='everyday'] .lab__word[data-c='everyday'] { opacity: 1; 
   .dayline__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* Pinned from first paint when JS + motion are available (no layout jump when dayline.js loads). */
+/* Pinned from first paint when JS + motion are available (no layout jump when dayline.js loads).
+   One number drives everything: --pos (0..3), the routine position with a rest on every step.
+   Where supported it comes straight from the scroll timeline (no JS in the loop, so it can't lag);
+   elsewhere dayline.js eases it. Each piece derives its offset --o and distance --a from --pos in CSS. */
+@property --pos { syntax: '<number>'; inherits: true; initial-value: 0; }
+@keyframes day-pos {
+  0%, 12% { --pos: 0; animation-timing-function: cubic-bezier(.45, 0, .25, 1); }
+  28%, 42% { --pos: 1; animation-timing-function: cubic-bezier(.45, 0, .25, 1); }
+  58%, 72% { --pos: 2; animation-timing-function: cubic-bezier(.45, 0, .25, 1); }
+  88%, 100% { --pos: 3; }
+}
 @media (prefers-reduced-motion: no-preference) {
-  /* Pinned: one sticky viewport, the day plays out as you scroll. */
-  .js .dayline .dayline__track { block-size: 380svh; }
+  .js .dayline .dayline__track { block-size: 380svh; --pos: 0; }
+  @supports (animation-timeline: view()) {
+    .js .dayline .dayline__track[data-n='4'] { animation: day-pos linear both; animation-timeline: view(); animation-range: contain 0% contain 100%; }
+  }
   .js .dayline .dayline__stage { position: sticky; inset-block-start: 0; block-size: 100svh; overflow: clip; padding: 0; display: block; isolation: isolate; }
-  .js .dayline .dayline__skies { display: block; position: absolute; inset: 0; z-index: -2; background: var(--c-daylight); }
-  .js .dayline .dayline__sky { position: absolute; inset: 0; opacity: calc(1 - var(--a, 1)); background: radial-gradient(70% 60% at 50% 62%, color-mix(in srgb, var(--sku) 46%, #fff) 0%, color-mix(in srgb, var(--sku) 22%, var(--c-daylight)) 46%, var(--c-daylight) 100%); }
-  .js .dayline .dayline__arc { display: block; position: absolute; z-index: -1; inset-inline-start: 50%; inset-block-end: 9svh; translate: -50% 0; inline-size: min(150vw, 1240px); aspect-ratio: 2 / 1; }
+  .js .dayline .dayline__skies { display: block; position: absolute; inset: 0; z-index: -2; }
+  .js .dayline .dayline__sky {
+    --a: min(1, max(calc(var(--i) - var(--pos)), calc(var(--pos) - var(--i))));
+    position: absolute; inset: 0; opacity: calc(1 - var(--a));
+    background: radial-gradient(75% 62% at 50% 60%, color-mix(in srgb, var(--sku) 44%, #fff) 0%, color-mix(in srgb, var(--sku) 20%, var(--tone, var(--c-daylight))) 48%, var(--tone, var(--c-daylight)) 100%);
+  }
+  .js .dayline .dayline__arc { display: block; position: absolute; z-index: -1; inset-inline-start: 50%; inset-block-end: calc(9svh + var(--dock-h, 0px)); translate: -50% 0; inline-size: min(150vw, 1240px); aspect-ratio: 2 / 1; }
   [dir='rtl'].js .dayline .dayline__arc { translate: 50% 0; }
   .dayline__arc svg { inline-size: 100%; block-size: 100%; overflow: visible; }
   .dayline__arc path { fill: none; stroke: color-mix(in srgb, var(--c-ink) 22%, transparent); stroke-width: 1.25; stroke-dasharray: 2 7; stroke-linecap: round; }
-  .dayline__sun { position: absolute; left: 0; top: 100%; inline-size: 30px; aspect-ratio: 1; border-radius: 50%; translate: -50% -50%; background: radial-gradient(circle at 40% 40%, #fff6ee, var(--sun-warm) 70%); box-shadow: 0 0 0 10px color-mix(in srgb, var(--sun-warm) 26%, transparent), 0 0 60px 24px color-mix(in srgb, var(--sun-warm) 45%, transparent); }
+  /* The sun rides the half-ellipse: angle 180° → 0° as the routine advances. */
+  .dayline__sun {
+    --ang: calc((1 - var(--pos) / 3) * 180deg);
+    position: absolute; left: calc(50% + 50% * cos(var(--ang))); top: calc(100% - 100% * sin(var(--ang)));
+    inline-size: 30px; aspect-ratio: 1; border-radius: 50%; translate: -50% -50%;
+    background: radial-gradient(circle at 40% 40%, #fff6ee, var(--sun-warm) 70%);
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--sun-warm) 26%, transparent), 0 0 60px 24px color-mix(in srgb, var(--sun-warm) 45%, transparent);
+  }
+  [dir='rtl'] .dayline__sun { left: calc(50% - 50% * cos(var(--ang))); }
   .js .dayline .dayline__head { position: relative; z-index: 3; padding-block-start: calc(var(--header-h) + clamp(16px, 3svh, 36px)); gap: 10px; }
   .js .dayline .dayline__title { font-size: clamp(34px, min(5.4vw, 7svh), 84px); max-inline-size: 11ch; }
+  .js .dayline:lang(ar) .dayline__title { font-size: clamp(26px, min(4.6vw, 4.6svh), 64px); line-height: 1.2; max-inline-size: none; }
   .js .dayline .dayline__steps { position: absolute; inset: 0; padding: 0; max-inline-size: none; display: block; }
-  .js .dayline .dayline__step { position: absolute; inset: 0; display: block; padding: 0; border-radius: 0; background: none; pointer-events: none; }
+  .js .dayline .dayline__step {
+    --o: calc(var(--i) - var(--pos));
+    --a: min(2, max(var(--o), calc(var(--o) * -1)));
+    position: absolute; inset: 0; display: block; padding: 0; border-radius: 0; background: none; pointer-events: none;
+  }
   .js .dayline .dayline__step.is-active .dayline__info, .js .dayline .dayline__step.is-active .dayline__bottle { pointer-events: auto; }
   .js .dayline .dayline__word {
-    display: block; position: absolute; inset-block-start: 52%; inset-inline-start: 50%; z-index: 0;
+    display: block; position: absolute; inset-block-start: 50%; inset-inline-start: 50%; z-index: 0;
     font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .8; white-space: nowrap;
-    font-size: clamp(120px, min(26vw, 34svh), 420px); color: color-mix(in srgb, var(--sku) 52%, #fff);
-    translate: calc(-50% + var(--o, 0) * 110vw) -50%; opacity: clamp(0, calc(1 - var(--a, 0) * 1.5), 1); user-select: none;
+    font-size: clamp(120px, min(26vw, 34svh), 420px); color: color-mix(in srgb, var(--sku) 55%, #fff);
+    transform: translate3d(calc(-50% + var(--o) * 110vw), -50%, 0); opacity: clamp(0, calc(1 - var(--a) * 1.6), 1); user-select: none; will-change: transform, opacity;
   }
-  [dir='rtl'].js .dayline .dayline__word { translate: calc(50% - var(--o, 0) * 110vw) -50%; }
-  :lang(ar) .js .dayline .dayline__word { text-transform: none; line-height: 1.2; font-size: clamp(90px, min(20vw, 26svh), 320px); }
+  [dir='rtl'].js .dayline .dayline__word { transform: translate3d(calc(50% - var(--o) * 110vw), -50%, 0); }
+  .js .dayline:lang(ar) .dayline__word { text-transform: none; line-height: 1.2; font-size: clamp(90px, min(20vw, 26svh), 320px); }
   .js .dayline .dayline__bottle {
-    position: absolute; z-index: 1; inset-inline-start: 50%; inset-block-end: max(212px, 26svh); aspect-ratio: auto;
-    block-size: min(44svh, 400px); inline-size: min(64vw, 320px);
-    translate: calc(-50% + var(--o, 0) * 64vw) 0; rotate: calc(var(--o, 0) * 10deg); scale: calc(1 - var(--a, 0) * .3);
-    opacity: clamp(0, calc(1 - var(--a, 0) * .62), 1); filter: blur(calc(var(--a, 0) * 3px)); transform-origin: 50% 100%;
+    position: absolute; z-index: 1; inset-inline-start: 50%; inset-block-end: calc(max(206px, 25svh) + var(--dock-h, 0px)); aspect-ratio: auto;
+    block-size: min(42svh, 400px); inline-size: min(64vw, 320px); transform-origin: 50% 100%;
+    transform: translate3d(calc(-50% + var(--o) * 64vw), 0, 0) rotate(calc(var(--o) * 10deg)) scale(calc(1 - var(--a) * .3));
+    opacity: clamp(0, calc(1 - var(--a) * .6), 1); will-change: transform, opacity;
   }
-  [dir='rtl'].js .dayline .dayline__bottle { translate: calc(50% - var(--o, 0) * 64vw) 0; rotate: calc(var(--o, 0) * -10deg); }
-  .js .dayline .dayline__bottle img { filter: drop-shadow(0 30px 30px rgba(32, 35, 58, .2)); }
+  [dir='rtl'].js .dayline .dayline__bottle { transform: translate3d(calc(50% - var(--o) * 64vw), 0, 0) rotate(calc(var(--o) * -10deg)) scale(calc(1 - var(--a) * .3)); }
+  .js .dayline .dayline__bottle img { filter: drop-shadow(0 26px 26px rgba(32, 35, 58, .18)); }
   .js .dayline .dayline__info {
-    position: absolute; z-index: 2; inset-inline: var(--gutter); inset-block-end: max(20px, 3svh); gap: 6px;
-    opacity: clamp(0, calc(1 - var(--a, 0) * 2.6), 1); translate: 0 calc(var(--a, 0) * 28px);
+    position: absolute; z-index: 2; inset-inline: var(--gutter); inset-block-end: calc(max(18px, 2.6svh) + var(--dock-h, 0px)); gap: 6px;
+    opacity: clamp(0, calc(1 - var(--a) * 2.6), 1); transform: translate3d(0, calc(var(--a) * 28px), 0); will-change: transform, opacity;
   }
   .js .dayline .dayline__benefit { font-size: 14px; }
   .js .dayline .dayline__nav { display: flex; gap: 6px; position: absolute; z-index: 3; inset-inline-end: var(--gutter); inset-block-start: calc(var(--header-h) + clamp(16px, 3svh, 36px)); }
-  .dayline__dot { display: grid; place-items: center; inline-size: 44px; block-size: 44px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--c-ink) 18%, transparent); background: color-mix(in srgb, #fff 55%, transparent); font-family: var(--font-display); font-weight: 700; font-size: 14px; transition: background var(--dur), border-color var(--dur), transform var(--dur) var(--ease-out); }
-  .dayline__dot[aria-current='step'] { background: var(--sku); border-color: var(--sku); transform: scale(1.08); }
+  .dayline__dot { display: grid; place-items: center; inline-size: 44px; block-size: 44px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--c-ink) 18%, transparent); background: color-mix(in srgb, #fff 60%, transparent); font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--c-ink); transition: background-color var(--dur), border-color var(--dur), transform var(--dur) var(--ease-out), color var(--dur); }
+  .dayline__dot[aria-current='step'] { background: var(--sku-deep, var(--c-ink)); border-color: var(--sku-deep, var(--c-ink)); color: #fff; transform: scale(1.06); }
   @media (max-width: 749px) {
-    .js .dayline .dayline__nav { inset-block-start: auto; inset-block-end: calc(max(20px, 3svh) + 4px); }
-    .js .dayline .dayline__dot { inline-size: 36px; block-size: 36px; font-size: 12px; }
+    .js .dayline .dayline__nav { inset-block-start: auto; inset-block-end: calc(max(18px, 2.6svh) + var(--dock-h, 0px) + 6px); }
+    .js .dayline .dayline__dot { inline-size: 40px; block-size: 40px; font-size: 13px; }
     .js .dayline .dayline__actions .link-arrow { display: none; }
-    .js .dayline .dayline__info { inset-inline-end: calc(var(--gutter) + 156px); }
+    .js .dayline .dayline__info { inset-inline-end: calc(var(--gutter) + 178px); }
     .js .dayline .dayline__benefit { display: none; }
   }
   @media (min-width: 990px) {
     .js .dayline .dayline__track { block-size: 420svh; }
-    .js .dayline .dayline__bottle { inset-block-end: 11svh; block-size: min(60svh, 600px); inline-size: 30vw; translate: calc(-50% + var(--o, 0) * 44vw) 0; }
-    [dir='rtl'].js .dayline .dayline__bottle { translate: calc(50% - var(--o, 0) * 44vw) 0; }
+    .js .dayline .dayline__bottle { inset-block-end: 11svh; block-size: min(60svh, 600px); inline-size: 30vw; opacity: clamp(0, calc(1 - var(--a) * .72), 1); transform: translate3d(calc(-50% + var(--o) * 52vw), 0, 0) rotate(calc(var(--o) * 10deg)) scale(calc(1 - var(--a) * .36)); }
+    [dir='rtl'].js .dayline .dayline__bottle { transform: translate3d(calc(50% - var(--o) * 52vw), 0, 0) rotate(calc(var(--o) * -10deg)) scale(calc(1 - var(--a) * .36)); }
     .js .dayline .dayline__info { inset-inline: auto var(--gutter); inset-block-end: 12svh; inline-size: min(340px, 26vw); }
     .js .dayline .dayline__benefit { font-size: 16px; }
     .js .dayline .dayline__nav { inset-block-start: auto; inset-inline: var(--gutter) auto; inset-block-end: 12svh; flex-direction: column; }
     .js .dayline .dayline__arc { inset-block-end: 8svh; }
   }
 }
+
+/* ---------- Climate switch (compact) ---------- */
+.cs__inner { display: grid; gap: 18px; }
+.cs__head { display: grid; gap: 10px; }
+.cs__switch { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.cs__opt { display: grid; justify-items: center; align-content: start; gap: 6px; padding: 0; border: 0; background: none; color: var(--c-muted); font-size: 12px; font-weight: 650; line-height: 1.2; text-align: center; -webkit-tap-highlight-color: transparent; }
+.cs__ico { display: grid; place-items: center; inline-size: clamp(52px, 14vw, 64px); aspect-ratio: 1; border-radius: 50%; background: color-mix(in srgb, #fff 70%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-ink) 10%, transparent); color: var(--c-ink); transition: background-color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), box-shadow var(--dur); }
+.cs__ico .icon { inline-size: 24px; block-size: 24px; }
+.cs__opt:hover .cs__ico { transform: translateY(-2px); }
+.cs__opt[aria-pressed='true'] { color: var(--c-ink); }
+.cs__opt[aria-pressed='true'] .cs__ico { background: var(--c-ink); color: #fff; box-shadow: 0 10px 22px -12px rgba(32, 35, 58, .7); }
+.cs__opt-label { position: relative; padding-block-end: 6px; }
+.cs__opt[aria-pressed='true'] .cs__opt-label::after { content: ''; position: absolute; inset-inline: 30%; inset-block-end: 0; block-size: 2px; border-radius: 2px; background: currentColor; }
+.cs__stage { block-size: auto; aspect-ratio: 4 / 3; min-block-size: 0; }
+.cs__bottles { position: absolute; inset-inline: 7%; inset-block-end: 8%; z-index: 1; display: flex; align-items: flex-end; justify-content: center; gap: 3%; block-size: 62%; }
+.cs__bottle { block-size: 100%; display: block; opacity: .38; filter: saturate(.6); transform: translateY(6%) scale(.92); transform-origin: 50% 100%; transition: opacity 600ms var(--ease-out), transform 700ms cubic-bezier(.2, .9, .25, 1.15), filter 600ms; }
+.cs__bottle[data-step='2'] { block-size: 76%; }
+.cs__bottle[data-step='3'], .cs__bottle[data-step='4'] { block-size: 86%; }
+.cs__bottle img { block-size: 100%; inline-size: auto; filter: drop-shadow(var(--sx) var(--sy) 16px var(--shadow)); transition: filter 900ms var(--ease-out); }
+.cs__bottle.is-key { opacity: 1; filter: none; transform: translateY(-4%) scale(1.04); }
+.cs__read { display: grid; gap: 12px; justify-items: start; }
+.cs__line { font-size: clamp(17px, 1.6vw, 21px); line-height: 1.4; font-weight: 500; max-inline-size: 36ch; }
+.cs__keys { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; font-weight: 650; }
+.cs__key { display: inline-flex; align-items: center; gap: 8px; }
+.cs__key a { text-decoration: none; }
+.cs__key a:hover { text-decoration: underline; }
+climate-switch.is-entered .cs__line:not([hidden]) { animation: cs-in 420ms var(--ease-out) both; }
+@keyframes cs-in { from { opacity: 0; translate: 0 6px; } }
+@media (min-width: 990px) {
+  .cs__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); grid-template-rows: 1fr auto auto auto 1fr; grid-template-areas: '. stage' 'head stage' 'switch stage' 'read stage' '. stage'; column-gap: clamp(32px, 5vw, 80px); row-gap: 24px; }
+  .cs__head { grid-area: head; align-self: end; }
+  .cs__switch { grid-area: switch; max-inline-size: 520px; }
+  .cs__stage { grid-area: stage; aspect-ratio: 5 / 6; max-block-size: 680px; inline-size: 100%; justify-self: end; }
+  .cs__read { grid-area: read; align-self: start; }
+}
+
+/* ---------- Facts band ---------- */
+.facts-band__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
+.facts-band__item { display: grid; gap: 8px; align-content: start; padding-block-start: 14px; border-block-start: 1.5px solid color-mix(in srgb, var(--c-ink) 14%, transparent); }
+.facts-band__big { font-family: var(--font-display); font-weight: 700; line-height: .85; font-size: clamp(64px, 17vw, 150px); color: var(--sku-deep); letter-spacing: -.01em; }
+.facts-band__mark { display: block; block-size: clamp(54px, 14vw, 128px); inline-size: auto; color: var(--sku-deep); }
+.facts-band__mark svg { block-size: 100%; inline-size: auto; }
+.facts-band__text { font-size: 15px; font-weight: 600; line-height: 1.35; max-inline-size: 22ch; }
+@media (min-width: 990px) { .facts-band__list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; } }

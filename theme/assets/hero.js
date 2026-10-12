@@ -18,7 +18,7 @@ void main(){
   vec2 a=vec2(.5*as-d*(.46*as+p*.2*as),1.05+p*.14)+vec2(sin(t*.07),cos(t*.05))*.035+m*.05;
   vec2 b=vec2(.5*as+d*(.46*as+p*.2*as),-.08-p*.12)+vec2(cos(t*.06),sin(t*.08))*.035-m*.05;
   float sa=smoothstep(R,0.,length(q-a)),sb=smoothstep(R*.92,0.,length(q-b));
-  vec3 col=mix(vec3(.965,.969,.957),vec3(1.,.96,.925),uv.y*.7);
+  vec3 col=mix(vec3(.961,.945,.918),vec3(1.,.957,.918),uv.y*.7);
   col=mix(col,mix(vec3(1.,.71,.56),vec3(1.,.89,.81),sa*sa),pow(sa,1.5)*.96);
   col=mix(col,mix(vec3(.62,.82,.84),vec3(.87,.94,.95),sb*sb),pow(sb,1.5)*.9);
   col=mix(col,mix(col,tc,.42),ta*pow(sb,1.1)+ta*.25*pow(sa,2.));

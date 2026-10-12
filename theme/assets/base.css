@@ -51,12 +51,12 @@
 }
 
 /* Time of day: sections name a tone; the page drifts to it as the section reaches the middle of the screen. */
-[data-tone='dawn'] { --tone-c: #fbf0e8; }
-[data-tone='day'] { --tone-c: #f6f7f4; }
-[data-tone='aqua'] { --tone-c: #e7f1f1; }
-[data-tone='lilac'] { --tone-c: #f1ecf5; }
-[data-tone='sand'] { --tone-c: #f7f1e9; }
-[data-tone='sku'] { --tone-c: color-mix(in srgb, var(--sku) 16%, #f6f7f4); }
+[data-tone='dawn'] { --tone-c: #f8ede3; }
+[data-tone='day'] { --tone-c: #f5f1ea; }
+[data-tone='aqua'] { --tone-c: #e9f0ec; }
+[data-tone='lilac'] { --tone-c: #f2ecef; }
+[data-tone='sand'] { --tone-c: #f4ecdf; }
+[data-tone='sku'] { --tone-c: color-mix(in srgb, var(--sku) 14%, #f5f1ea); }
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -207,6 +207,7 @@ main:focus { outline: none; }
 .btn--light { --btn-bg: #fff; --btn-fg: var(--c-ink); --btn-bd: #fff; --glow: .35; }
 .btn--sku { --btn-bg: var(--sku, var(--c-step-1)); --btn-fg: var(--c-ink); --btn-bd: var(--sku, var(--c-step-1)); --glow: 0; }
 .btn[disabled]::before, .btn[aria-disabled='true']::before { opacity: 0; }
+.btn--deep { --btn-bg: var(--sku-deep); --btn-bd: var(--sku-deep); --glow: .55; }
 .btn--full { width: 100%; }
 .btn--small { min-height: 44px; padding: 0 18px; font-size: 14px; }
 .btn--icon { width: 44px; min-height: 44px; padding: 0; }
@@ -261,6 +262,13 @@ main:focus { outline: none; }
 .step-num { font-family: var(--font-display); font-weight: 700; font-variant-numeric: tabular-nums; }
 
 /* SKU colour helpers */
+/* --sku-deep: the product colour deepened with night ink, for buttons with white text (≥ 5:1). */
+:root { --sku-deep: var(--c-ink); }
+[data-step] { --sku-deep: color-mix(in srgb, var(--sku) 50%, var(--c-ink)); }
+@supports (color: oklch(from red l c h)) {
+  /* Same hue, richer: fixed lightness keeps white text at ≥ 4.5:1 for every pack colour. */
+  [data-step] { --sku-deep: oklch(from var(--sku) .47 calc(c * 1.3) h); }
+}
 [data-step='1'] { --sku: var(--c-step-1); --sku-tint: var(--c-step-1-tint); }
 [data-step='2'] { --sku: var(--c-step-2); --sku-tint: var(--c-step-2-tint); }
 [data-step='3'] { --sku: var(--c-step-3); --sku-tint: var(--c-step-3-tint); }
@@ -287,7 +295,7 @@ main:focus { outline: none; }
 .announcement { background: linear-gradient(90deg, var(--c-step-1-tint), var(--c-step-2-tint) 38%, var(--c-step-3-tint) 66%, var(--c-step-4-tint)); color: var(--c-ink); font-size: 13px; font-weight: 600; line-height: 1.3; }
 .announcement__inner { display: flex; align-items: center; justify-content: center; gap: 18px; min-height: 36px; padding-block: 6px; text-align: center; }
 .announcement a { color: inherit; }
-.announcement__dot { inline-size: 4px; block-size: 4px; border-radius: 50%; background: currentColor; opacity: .5; }
+.announcement__dot { inline-size: 10px; block-size: 11px; background: currentColor; opacity: .55; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
 
 /* ---------- Header ---------- */
 .site-header-wrap { position: sticky; inset-block-start: 0; z-index: 50; }
@@ -709,3 +717,76 @@ html.has-open-dialog { overflow: hidden; }
 .cursor__light { position: absolute; top: -320px; left: -320px; inline-size: 640px; block-size: 640px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 190, 150, .34), rgba(255, 210, 180, .14) 45%, transparent 72%); will-change: transform; }
 .cursor__label { position: fixed; z-index: 60; top: 0; left: 0; pointer-events: none; translate: 14px 14px; padding: 7px 12px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .04em; white-space: nowrap; opacity: 0; scale: .6; transition: opacity 220ms var(--ease-out), scale 260ms var(--ease-out); will-change: transform; }
 .cursor__label.is-on { opacity: 1; scale: 1; }
+
+/* ---------- App dock (mobile/tablet): Shop · Routine · icon/Home · Search · Bag ---------- */
+:root { --dock-h: 0px; }
+.dock { display: none; }
+.header-lang { display: inline-flex; }
+@media (max-width: 989px) {
+  :root { --dock-h: calc(76px + env(safe-area-inset-bottom)); }
+  body { padding-block-end: var(--dock-h); }
+  .dock {
+    position: fixed; z-index: 45; inset-inline: 10px; inset-block-end: calc(8px + env(safe-area-inset-bottom));
+    display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; block-size: 64px; padding-inline: 6px;
+    border-radius: 24px; background: color-mix(in srgb, #fff 82%, transparent);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .9), 0 18px 40px -18px rgba(32, 35, 58, .35), 0 2px 8px -4px rgba(32, 35, 58, .15);
+    transition: transform 420ms var(--ease-out), opacity 300ms var(--ease-out);
+  }
+  .dock__item { display: grid; justify-items: center; gap: 3px; min-block-size: 56px; align-content: center; border: 0; background: none; padding: 0; color: var(--c-muted); text-decoration: none; font-size: 11px; font-weight: 650; letter-spacing: .02em; -webkit-tap-highlight-color: transparent; transition: color var(--dur-fast); }
+  .dock__item .icon { inline-size: 22px; block-size: 22px; transition: transform 260ms var(--ease-out); }
+  .dock__item:active .icon { transform: scale(.88); }
+  .dock__item[aria-current='page'] { color: var(--c-ink); }
+  .dock__item[aria-current='page'] .icon { stroke-width: 2; }
+  .dock__label { line-height: 1; }
+  .dock__home { justify-self: center; display: grid; place-items: center; inline-size: 52px; block-size: 52px; border-radius: 50%; background: var(--c-ink); color: #fff; box-shadow: 0 10px 22px -10px rgba(32, 35, 58, .7); transition: transform 300ms var(--ease-out); -webkit-tap-highlight-color: transparent; }
+  .dock__home:active { transform: scale(.92); }
+  .dock__mark { display: block; inline-size: 22px; block-size: 24px; }
+  .dock__mark svg { inline-size: 100%; block-size: 100%; }
+  .dock__mark path { transition: transform 420ms cubic-bezier(.3, 1.4, .5, 1); transform-box: fill-box; transform-origin: center; }
+  /* The mark breathes apart while you're home (the space between). */
+  .dock__home[aria-current='page'] .dock__mark path:first-child { transform: translateX(10%); }
+  .dock__home[aria-current='page'] .dock__mark path:last-child { transform: translateX(-10%); }
+  .dock__bag-icon { position: relative; display: inline-flex; }
+  .dock__count { inset-block-start: -7px; inset-inline-end: -10px; }
+  /* On product pages the buy bar takes the dock's place. */
+  html.is-buying .dock { transform: translateY(calc(100% + 24px)); opacity: 0; pointer-events: none; }
+  .wa-fab { inset-block-end: calc(var(--dock-h) + 12px); }
+  .toast { inset-block-end: calc(var(--dock-h) + 12px); }
+  .header-lang .lang-link { min-inline-size: 44px; }
+}
+@media (max-width: 989px) and (prefers-reduced-motion: reduce) { .dock, .dock__mark path { transition: none; } }
+
+/* ---------- Bag as a bottom sheet on phones ---------- */
+@media (max-width: 749px) {
+  .cart-drawer.drawer { inset: auto 0 0 0; inline-size: 100vw; block-size: min(88dvh, 760px); max-block-size: 88dvh; border-start-start-radius: 26px; border-start-end-radius: 26px; transform: translateY(100%); box-shadow: 0 -20px 50px -20px rgba(32, 35, 58, .35); }
+  .cart-drawer.drawer[open] { transform: translateY(0); }
+  @starting-style { .cart-drawer.drawer[open] { transform: translateY(100%); } }
+  [dir='rtl'] .cart-drawer.drawer { inset: auto 0 0 0; transform: translateY(100%); }
+  [dir='rtl'] .cart-drawer.drawer[open] { transform: translateY(0); }
+  @starting-style { [dir='rtl'] .cart-drawer.drawer[open] { transform: translateY(100%); } }
+  .cart-drawer .drawer__head { position: relative; padding-block-start: 18px; }
+  .cart-drawer .drawer__head::before { content: ''; position: absolute; inset-block-start: 8px; inset-inline-start: 50%; translate: -50% 0; inline-size: 40px; block-size: 4px; border-radius: 4px; background: color-mix(in srgb, var(--c-ink) 20%, transparent); }
+}
+
+/* ---------- "Next in your routine" (bag): swipeable cards ---------- */
+.cart-upsell { background: none; padding: 0; margin-block-start: 18px; }
+.cart-upsell > .cart-lines { display: flex !important; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); padding-block: 4px 8px; }
+.cart-upsell > .cart-lines::-webkit-scrollbar { display: none; }
+.cart-upsell__item { flex: 0 0 min(78%, 300px); scroll-snap-align: start; grid-template-columns: 64px 1fr; grid-template-rows: auto auto; padding: 12px; border-radius: 18px; background: linear-gradient(150deg, color-mix(in srgb, var(--sku) 26%, #fff), #fff 70%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .8), 0 14px 30px -24px rgba(32, 35, 58, .45); }
+.cart-upsell__item .cart-upsell__img { grid-row: span 2; inline-size: 64px; block-size: 80px; background: none; }
+.cart-upsell__item product-form { grid-column: 2; justify-self: start; }
+.cart-upsell__item .btn { --btn-bg: var(--sku-deep); --btn-fg: #fff; --btn-bd: var(--sku-deep); --glow: .5; box-shadow: none; }
+.cart-upsell__item:first-child { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--sku) 70%, #fff), 0 14px 30px -24px rgba(32, 35, 58, .45); }
+
+/* ---------- Fly to bag + the mark closing around it (theme.js) ---------- */
+.fly { position: fixed; z-index: 120; inset-block-start: 0; left: 0; pointer-events: none; will-change: transform, opacity; filter: drop-shadow(0 16px 18px rgba(32, 35, 58, .25)); }
+.fly img { inline-size: 100%; block-size: 100%; object-fit: contain; }
+.bag-mark { position: fixed; z-index: 121; inline-size: 46px; block-size: 50px; left: 0; top: 0; pointer-events: none; color: var(--sku-deep, var(--c-ink)); }
+.bag-mark svg { inline-size: 100%; block-size: 100%; }
+.bag-mark path { transform-box: fill-box; transform-origin: center; }
+
+/* Loading: the mark breathes inside the button while the bag updates. */
+.btn.is-loading > * { opacity: .15; }
+.btn.is-loading::after { content: ''; position: absolute; inset: 0; margin: auto; inline-size: 18px; block-size: 20px; background: currentColor; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; animation: mark-breathe 700ms ease-in-out infinite alternate; }
+@keyframes mark-breathe { from { transform: scaleX(.7); opacity: .55; } to { transform: scaleX(1.12); opacity: 1; } }

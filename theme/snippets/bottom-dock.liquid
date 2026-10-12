@@ -1,0 +1,33 @@
+{%- comment -%}
+  App-style bottom dock (mobile/tablet only). The brand icon sits in the centre as Home.
+  On product pages the dock hands its place to the buy bar (sticky-atc) once the main button scrolls away.
+{%- endcomment -%}
+{%- liquid
+  assign here = ''
+  if template.name == 'index'
+    assign here = 'home'
+  elsif template.name == 'collection' or template.name == 'list-collections'
+    assign here = 'shop'
+  elsif request.path contains '/pages/sets' or request.path contains '/pages/routines'
+    assign here = 'routine'
+  endif
+-%}
+<nav class="dock" id="Dock" aria-label="{{ 'dock.label' | t }}">
+  <a class="dock__item" href="{{ routes.all_products_collection_url }}"{% if here == 'shop' %} aria-current="page"{% endif %}>
+    {% render 'icon', name: 'grid' %}<span class="dock__label">{{ 'dock.shop' | t }}</span>
+  </a>
+  <a class="dock__item" href="{{ routes.root_url }}pages/sets"{% if here == 'routine' %} aria-current="page"{% endif %}>
+    {% render 'icon', name: 'layers' %}<span class="dock__label">{{ 'dock.routine' | t }}</span>
+  </a>
+  <a class="dock__home" href="{{ routes.root_url }}"{% if here == 'home' %} aria-current="page"{% endif %} aria-label="{{ 'dock.home' | t }}">
+    <span class="dock__mark" aria-hidden="true">{{ 'bts-icon.svg' | inline_asset_content }}</span>
+  </a>
+  <button type="button" class="dock__item" data-open-dialog="SearchModal" aria-controls="SearchModal">
+    {% render 'icon', name: 'search' %}<span class="dock__label">{{ 'dock.search' | t }}</span>
+  </button>
+  <a class="dock__item dock__bag" href="{{ routes.cart_url }}" data-open-dialog="CartDrawer" aria-controls="CartDrawer" data-bag-target>
+    <span class="dock__bag-icon">{% render 'icon', name: 'cart' %}<span class="cart-count dock__count" data-cart-count data-count="{{ cart.item_count }}" aria-hidden="true">{% if cart.item_count > 0 %}{{ cart.item_count }}{% endif %}</span></span>
+    <span class="dock__label">{{ 'dock.bag' | t }}</span>
+    <span class="visually-hidden" data-cart-label>{{ 'cart.count_label' | t: count: cart.item_count }}</span>
+  </a>
+</nav>

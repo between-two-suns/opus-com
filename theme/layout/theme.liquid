@@ -63,6 +63,7 @@
         --c-ink: {{ settings.color_ink }};
         --c-daylight: {{ settings.color_daylight }};
         --added-label: {{ 'cart.added_short' | t | json }};
+        --mark: url('{{ 'bts-icon.svg' | asset_url }}');
         --c-step-1: {{ settings.color_step_1 }};
         --c-step-2: {{ settings.color_step_2 }};
         --c-step-3: {{ settings.color_step_3 }};
@@ -129,6 +130,8 @@
     {% sections 'footer-group' %}
 
     {%- section 'cart-drawer' -%}
+    {%- render 'bottom-dock' -%}
+    <template id="BtsMark">{{ 'bts-icon.svg' | inline_asset_content }}</template>
 
     <div class="visually-hidden" aria-live="polite" aria-atomic="true" id="a11y-status"></div>
 

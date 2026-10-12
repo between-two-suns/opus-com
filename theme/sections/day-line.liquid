@@ -25,7 +25,7 @@
   <day-line class="dayline__track">
     <div class="dayline__stage">
       <div class="dayline__skies" aria-hidden="true">
-        {%- for s in (1..4) -%}<span class="dayline__sky" data-step="{{ s }}" style="--a: {% if forloop.first %}0{% else %}1{% endif %}"></span>{%- endfor -%}
+        {%- for s in (1..4) -%}<span class="dayline__sky" data-step="{{ s }}" style="--i: {{ forloop.index0 }}"></span>{%- endfor -%}
       </div>
 
       <div class="dayline__arc" aria-hidden="true">
@@ -60,8 +60,7 @@
                 assign label = product.metafields.bts.step_label.value
                 assign uid = section.id | append: '-' | append: product.id
               -%}
-              {%- if n > 1 -%}{%- assign a0 = 2 -%}{%- else -%}{%- assign a0 = n -%}{%- endif -%}
-              <li class="dayline__step{% if n == 0 %} is-active{% endif %}" data-step="{{ s }}" style="--i: {{ n }}; --o: {{ n }}; --a: {{ a0 }}" data-index="{{ n }}">
+              <li class="dayline__step{% if n == 0 %} is-active{% endif %}" data-step="{{ s }}" style="--i: {{ n }}" data-index="{{ n }}">
                 <span class="dayline__word" aria-hidden="true">{{ label | default: product.title | escape }}</span>
                 <a class="dayline__bottle" href="{{ product.url }}" tabindex="-1" aria-hidden="true" data-cursor="{{ 'general.view' | t }}">
                   {%- if cutout -%}
@@ -85,7 +84,7 @@
                       <form method="post" action="{{ routes.cart_add_url }}" novalidate>
                         <input type="hidden" name="id" value="{{ v.id }}">
                         <input type="hidden" name="quantity" value="1">
-                        <button type="submit" class="btn" data-magnetic aria-describedby="DayName-{{ uid }}"{% if coming_soon or v.available == false %} disabled{% endif %}>
+                        <button type="submit" class="btn btn--deep" data-magnetic aria-describedby="DayName-{{ uid }}"{% if coming_soon or v.available == false %} disabled{% endif %}>
                           <span class="btn__label">
                             {%- if coming_soon -%}{{ 'product.coming_soon' | t }}{%- elsif v.available == false -%}{{ 'product.sold_out' | t }}{%- else -%}{{ 'product.add_to_cart' | t }}{%- endif -%}
                           </span>

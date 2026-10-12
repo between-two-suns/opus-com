@@ -309,6 +309,17 @@
       "added_step": "{{ product }} added to your routine",
       "removed_step": "{{ product }} removed from your routine",
       "cta": "Add my routine"
+    },
+    "climate_switch": {
+      "heading": "What’s today like?",
+      "label": "Today’s conditions",
+      "cta": "Add these {{ count }} steps"
+    },
+    "facts_band": {
+      "steps": "steps, one routine",
+      "ingredients": "ingredients, every one listed",
+      "spf": "SPF, every morning",
+      "egypt": "Made in Egypt, for the climate we live in"
     }
   },
   "product": {
@@ -367,7 +378,9 @@
     "sticky_label": "Quick add",
     "view_full": "View full details",
     "share": "Share",
-    "inci_hint": "Tap any ingredient to see what it does."
+    "inci_hint": "Tap any ingredient to see what it does.",
+    "routine_tabs": "The routine, step by step",
+    "made_for": "Made for"
   },
   "collection": {
     "eyebrow": "Shop",
@@ -668,5 +681,13 @@
       "heading": "Light enough for every day",
       "text": "A gel cleanser. A lightweight serum. A lightweight cream. A silky, fast-absorbing SPF 50 with no white cast."
     }
+  },
+  "dock": {
+    "label": "Quick navigation",
+    "shop": "Shop",
+    "routine": "Routine",
+    "home": "Home",
+    "search": "Search",
+    "bag": "Bag"
   }
 }

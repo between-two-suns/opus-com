@@ -57,7 +57,7 @@
       <div class="site-header__end">
         <a
           href="{{ routes.search_url }}"
-          class="header-icon"
+          class="header-icon header-hide-mobile"
           data-open-dialog="SearchModal"
           aria-controls="SearchModal"
           aria-haspopup="dialog"
@@ -65,7 +65,7 @@
           {% render 'icon', name: 'search' %}
           <span class="visually-hidden">{{ 'header.search' | t }}</span>
         </a>
-        <span class="header-hide-mobile">{% render 'language-switch', form_id: 'HeaderLang' %}</span>
+        <span class="header-lang">{% render 'language-switch', form_id: 'HeaderLang' %}</span>
         {%- if shop.customer_accounts_enabled -%}
           <a href="{{ routes.account_url }}" class="header-icon header-hide-mobile">
             {% render 'icon', name: 'account' %}
@@ -74,7 +74,7 @@
         {%- endif -%}
         <a
           href="{{ routes.cart_url }}"
-          class="header-icon"
+          class="header-icon header-hide-mobile"
           id="CartToggle"
           data-open-dialog="CartDrawer"
           aria-controls="CartDrawer"

@@ -6,7 +6,7 @@
     "color_step_3": "#D7A6DA",
     "color_step_4": "#FFA37B",
     "color_ink": "#20233A",
-    "color_daylight": "#F6F7F4",
+    "color_daylight": "#F5F1EA",
     "zero_price_coming_soon": true,
     "show_payment_icons": true,
     "show_cod": false,
@@ -23,7 +23,7 @@
       "color_step_3": "#D7A6DA",
       "color_step_4": "#FFA37B",
       "color_ink": "#20233A",
-      "color_daylight": "#F6F7F4"
+      "color_daylight": "#F5F1EA"
     }
   }
 }

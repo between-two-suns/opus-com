@@ -1,0 +1,35 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Facts as numbers, only true ones: four steps, every INCI name listed (55 across the four packs, see the
+  ingredient dictionary), SPF 50+ from the pack, and made in Egypt (shown with the brand mark).
+{%- endcomment -%}
+<section class="section facts-band" data-tone="sand" aria-label="{{ 'sections.facts.label' | t }}">
+  <div class="container"><ul class="facts-band__list" role="list">
+    <li class="facts-band__item" data-step="1">
+      <span class="facts-band__big u-ltr" aria-hidden="true">04</span>
+      <span class="facts-band__text"><span class="visually-hidden">4 </span>{{ 'sections.facts_band.steps' | t }}</span>
+    </li>
+    <li class="facts-band__item" data-step="2">
+      <span class="facts-band__big u-ltr" aria-hidden="true">{{ section.settings.ingredients | default: 55 }}</span>
+      <span class="facts-band__text"><span class="visually-hidden">{{ section.settings.ingredients | default: 55 }} </span>{{ 'sections.facts_band.ingredients' | t }}</span>
+    </li>
+    <li class="facts-band__item" data-step="4">
+      <span class="facts-band__big u-ltr" aria-hidden="true">50+</span>
+      <span class="facts-band__text"><span class="visually-hidden">SPF 50+ ‎</span>{{ 'sections.facts_band.spf' | t }}</span>
+    </li>
+    <li class="facts-band__item" data-step="3">
+      <span class="facts-band__big facts-band__mark" aria-hidden="true">{{ 'bts-icon.svg' | inline_asset_content }}</span>
+      <span class="facts-band__text">{{ 'sections.facts_band.egypt' | t }}</span>
+    </li>
+  </ul></div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.facts_band.name",
+  "settings": [
+    { "type": "number", "id": "ingredients", "label": "t:sections.facts_band.ingredients_label", "default": 55 }
+  ],
+  "presets": [{ "name": "t:sections.facts_band.name" }]
+}
+{% endschema %}

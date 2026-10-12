@@ -55,7 +55,7 @@ for (const loc of ['', '/ar']) {
     const keyShown = await page.$$eval('.forecast__step [data-key]:not([hidden])', (b) => b.length);
     ok(`${tag} forecast AC marks 2 key steps`, keyShown === 2, `key=${keyShown}`);
     ok(`${tag} forecast ambient state set`, (await page.$eval('#forecast', (f) => f.dataset.ac)) === 'true');
-    const total = await page.$eval('[data-total]', (e) => e.textContent.trim());
+    const total = await page.$eval('#forecast [data-total]', (e) => e.textContent.trim());
     ok(`${tag} forecast total = sum of included`, /1,650\.00/.test(total), total);
     await page.click('[data-forecast-cta]');
     await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
@@ -73,7 +73,7 @@ for (const loc of ['', '/ar']) {
     await page.waitForTimeout(300);
 
     // Pinned routine day: dots move the stage, the centred step can be added
-    const pinned = await page.$eval('.dayline', (d) => d.classList.contains('is-pinned'));
+    const pinned = await page.$eval('.dayline__stage', (d) => getComputedStyle(d).position === 'sticky');
     ok(`${tag} routine day is pinned`, pinned);
     await page.locator('.dayline__dot[data-go="2"]').click();
     await page.waitForFunction(() => document.querySelector('.dayline__step[data-index="2"]')?.classList.contains('is-active'), null, { timeout: 5000 }).catch(() => {});
@@ -87,7 +87,7 @@ for (const loc of ['', '/ar']) {
 
     // Search modal + predictive
     await page.evaluate(() => window.scrollTo(0, 0));
-    await page.click('[data-open-dialog="SearchModal"]');
+    await page.locator('[data-open-dialog="SearchModal"]:visible').first().click();
     await page.waitForTimeout(350);
     await page.keyboard.type(loc ? 'سيروم' : 'serum');
     await page.waitForSelector('.predictive__product', { timeout: 4000 }).catch(() => {});
@@ -120,6 +120,33 @@ for (const loc of ['', '/ar']) {
       const dir = await page.evaluate(() => document.documentElement.dir);
       const path = new URL(page.url()).pathname;
       ok(`${tag} language switch keeps page`, path.endsWith('/products/clarity-serum') && dir === (loc ? 'ltr' : 'rtl'), `${path} dir=${dir}`);
+    }
+
+    // Climate switch: picking a condition lifts its steps and prices the add button
+    await page.goto(`${BASE}${loc}/`, { waitUntil: 'networkidle' });
+    const cs = page.locator('climate-switch');
+    await cs.locator('.cs__opt[data-c="ac"]').click();
+    ok(`${tag} climate switch marks AC pressed`, (await cs.locator('.cs__opt[data-c="ac"]').getAttribute('aria-pressed')) === 'true');
+    const keys = await cs.locator('.cs__bottle.is-key').evaluateAll((b) => b.map((x) => x.dataset.step).sort().join(','));
+    ok(`${tag} climate switch lifts AC steps (2,3)`, keys === '2,3', keys);
+    const c0 = Number(await count(page));
+    await cs.locator('[data-cta]').click();
+    await page.waitForSelector('#CartDrawer[open]', { timeout: 5000 }).catch(() => {});
+    ok(`${tag} climate switch adds its 2 steps`, Number(await count(page)) - c0 === 2, `${c0}→${await count(page)}`);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(300);
+
+    // Product page: routine tabs + callouts; mobile dock hands over to the buy bar
+    await page.goto(`${BASE}${loc}/products/daily-reset-cleanser`, { waitUntil: 'networkidle' });
+    ok(`${tag} PDP routine tabs mark current step`, (await page.locator('.pdp-tabs__link[aria-current="page"] .pdp-tabs__num').textContent()).trim() === '01');
+    ok(`${tag} PDP shows 3 label callouts`, (await page.locator('.callouts__item').count()) === 3);
+    if (vp.isMobile) {
+      ok(`${tag} dock visible on mobile`, await page.locator('#Dock').isVisible());
+      await page.waitForTimeout(400);
+      const buying = await page.evaluate(() => document.documentElement.classList.contains('is-buying'));
+      ok(`${tag} buy bar replaces dock while Add is off screen`, buying && await page.locator('sticky-atc.is-visible').count() === 1);
+    } else {
+      ok(`${tag} dock hidden on desktop`, !(await page.locator('#Dock').isVisible()));
     }
 
     // Sets page: routine builder + curated sets

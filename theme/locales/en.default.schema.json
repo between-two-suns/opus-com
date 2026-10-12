@@ -204,6 +204,13 @@
     },
     "dayline": {
       "name": "Routine day (pinned)"
+    },
+    "climate_switch": {
+      "name": "Climate switch"
+    },
+    "facts_band": {
+      "name": "Facts band",
+      "ingredients_label": "Number of ingredients listed (all packs)"
     }
   },
   "settings_schema": {

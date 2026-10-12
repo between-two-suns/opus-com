@@ -44,11 +44,19 @@ class StickyAtc extends HTMLElement {
     this.hidden = false;
     let pastTarget = false;
     let footerVisible = false;
-    const update = () => this.classList.toggle('is-visible', pastTarget && !footerVisible);
+    const update = () => {
+      const on = pastTarget && !footerVisible;
+      this.classList.toggle('is-visible', on);
+      document.documentElement.classList.toggle('is-buying', on);
+    };
+    // Visible whenever the main Add button isn't fully in view (above, below, or hidden behind the dock),
+    // so buying is always one tap away.
+    const atc = target.querySelector('[data-atc]') || target;
+    const dock = window.matchMedia('(max-width: 989px)').matches ? 96 : 0;
     new IntersectionObserver(([e]) => {
-      pastTarget = !e.isIntersecting && e.boundingClientRect.top < 0;
+      pastTarget = !e.isIntersecting;
       update();
-    }).observe(target);
+    }, { rootMargin: `0px 0px -${dock}px 0px`, threshold: 1 }).observe(atc);
     const footer = document.querySelector('.site-footer');
     if (footer) new IntersectionObserver(([e]) => { footerVisible = e.isIntersecting; update(); }).observe(footer);
   }

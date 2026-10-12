@@ -32,7 +32,30 @@
 
 <div class="pdp" data-step="{{ step }}" data-tone="sku">
   <div class="container">
-    <nav class="breadcrumbs pdp__crumbs" aria-label="{{ 'accessibility.breadcrumbs' | t }}">
+    {%- comment -%} The routine as app tabs: 01–04, current step marked; links to each product. {%- endcomment -%}
+    {%- assign tab_source = settings.routine_collection | default: collections.all -%}
+    {%- if step > 0 -%}
+      <nav class="pdp-tabs" aria-label="{{ 'product.routine_tabs' | t }}">
+        <ol class="pdp-tabs__list" role="list">
+          {%- for s in (1..4) -%}
+            {%- for p in tab_source.products limit: 12 -%}
+              {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+              {%- assign ps = ps | strip | plus: 0 -%}
+              {%- if ps == s -%}
+                <li class="pdp-tabs__item" data-step="{{ s }}">
+                  <a class="pdp-tabs__link" href="{{ p.url }}"{% if p.id == product.id %} aria-current="page"{% endif %}>
+                    <span class="pdp-tabs__num">0{{ s }}</span>
+                    <span class="pdp-tabs__name">{{ p.metafields.bts.step_label.value | default: p.title | escape }}</span>
+                  </a>
+                </li>
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </ol>
+      </nav>
+    {%- endif -%}
+    <nav class="breadcrumbs pdp__crumbs visually-hidden" aria-label="{{ 'accessibility.breadcrumbs' | t }}">
       <ol>
         <li><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></li>
         <li><a href="{{ routes.all_products_collection_url }}">{{ 'header.nav.shop' | t }}</a></li>
@@ -48,11 +71,25 @@
           {%- if cutout -%}
             {%- assign slide = slide | plus: 1 -%}
             <div class="gallery__slide gallery__slide--studio" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
-              <span class="gallery__sun gallery__sun--a" aria-hidden="true"></span>
-              <span class="gallery__sun gallery__sun--b" aria-hidden="true"></span>
+              {%- liquid
+                assign textures = 'texture-foam.svg,texture-drops.svg,texture-cream.svg,texture-sand.svg' | split: ','
+                assign tex_index = step | minus: 1
+                assign tex = textures[tex_index]
+              -%}
+              {%- if tex != blank -%}<span class="gallery__texture" aria-hidden="true" style="--tex: url('{{ tex | asset_url }}')"></span>{%- endif -%}
               {%- if step_label != blank -%}<span class="gallery__word" aria-hidden="true">{{ step_label | escape }}</span>{%- endif -%}
-              {%- if step > 0 -%}
-                <span class="gallery__arc" aria-hidden="true"><svg viewBox="0 0 200 100" preserveAspectRatio="none" focusable="false"><path d="M2 100 A98 98 0 0 1 198 100" vector-effect="non-scaling-stroke"/></svg><span class="gallery__arc-sun"></span><span class="gallery__arc-step t-notation">0{{ step }} / 04</span></span>
+              {%- if mf.benefit != blank -%}
+                {%- assign callouts = mf.benefit | split: '.' -%}
+                <ul class="callouts" role="list" aria-hidden="true">
+                  {%- assign shown = 0 -%}
+                  {%- for c in callouts -%}
+                    {%- assign c = c | strip -%}
+                    {%- if c != blank and shown < 3 -%}
+                      <li class="callouts__item" style="--k: {{ shown }}"><span class="callouts__text">{{ c }}</span><span class="callouts__line"></span></li>
+                      {%- assign shown = shown | plus: 1 -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
               {%- endif -%}
               {{ cutout | image_url: width: 900 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '300,450,600,750,900', sizes: '(min-width: 990px) 46vw, 92vw', alt: product.title, class: 'gallery__cutout' }}
             </div>
@@ -113,7 +150,46 @@
 
             {%- when 'benefit' -%}
               {%- if mf.benefit != blank -%}
-                <p class="t-lead pdp__benefit" {{ block.shopify_attributes }}>{{ mf.benefit }}</p>
+                <p class="t-lead pdp__benefit{% if cutout %} pdp__benefit--callouts{% endif %}" {{ block.shopify_attributes }}>{{ mf.benefit }}</p>
+              {%- endif -%}
+              {%- comment -%} Made for: the conditions this step answers (same mapping as the forecast). {%- endcomment -%}
+              {%- liquid
+                case step
+                  when 1
+                    assign made_for = 'city,humidity,heat'
+                  when 2
+                    assign made_for = 'sun,humidity,ac'
+                  when 3
+                    assign made_for = 'city,ac'
+                  when 4
+                    assign made_for = 'sun,heat'
+                  else
+                    assign made_for = ''
+                endcase
+                assign made_for = made_for | split: ','
+              -%}
+              {%- if made_for.size > 0 -%}
+                <p class="pdp__made-for">
+                  <span class="pdp__made-label">{{ 'product.made_for' | t }}</span>
+                  {%- for c in made_for -%}
+                    {%- liquid
+                      case c
+                        when 'sun'
+                          assign ic = 'sun'
+                        when 'city'
+                          assign ic = 'dust'
+                        when 'humidity'
+                          assign ic = 'drop'
+                        when 'ac'
+                          assign ic = 'ac'
+                        else
+                          assign ic = 'thermo'
+                      endcase
+                      assign ck = 'sections.forecast.conditions.' | append: c
+                    -%}
+                    <span class="pdp__made-chip">{% render 'icon', name: ic, class: 'icon--sm' %}{{ ck | t }}</span>
+                  {%- endfor -%}
+                </p>
               {%- endif -%}
 
             {%- when 'facts' -%}
@@ -171,7 +247,7 @@
                       <button
                         type="submit"
                         name="add"
-                        class="btn pdp__atc"
+                        class="btn btn--deep pdp__atc"
                         data-atc
                         {% if coming_soon or variant.available == false %}disabled{% endif %}
                       >
@@ -336,8 +412,9 @@
         <span class="sticky-atc__title">{{ product.title | escape }}</span>
         {%- render 'price', product: product, variant: variant, class: 't-small' -%}
       </span>
-      <button type="submit" form="{{ form_id }}" class="btn btn--small sticky-atc__btn" {% if coming_soon or variant.available == false %}disabled{% endif %}>
-        {%- if coming_soon -%}{{ 'product.coming_soon' | t }}{%- elsif variant.available == false -%}{{ 'product.sold_out' | t }}{%- else -%}{{ 'product.add_to_cart' | t }}{%- endif -%}
+      <button type="submit" form="{{ form_id }}" class="btn btn--deep btn--small sticky-atc__btn" data-magnetic {% if coming_soon or variant.available == false %}disabled{% endif %}>
+        <span class="btn__label">{%- if coming_soon -%}{{ 'product.coming_soon' | t }}{%- elsif variant.available == false -%}{{ 'product.sold_out' | t }}{%- else -%}{{ 'product.add_to_cart' | t }}{%- endif -%}</span>
+        {%- unless coming_soon or variant.available == false -%}{% render 'icon', name: 'cart' %}{%- endunless -%}
       </button>
     </div>
   </sticky-atc>

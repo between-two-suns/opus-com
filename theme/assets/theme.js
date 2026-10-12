@@ -160,7 +160,15 @@ const Cart = {
       const next = doc.querySelector('[data-cart-root]');
       const current = $('#CartDrawer [data-cart-root]');
       const count = Number(next?.dataset.count || 0);
+      // Keep keyboard focus inside the open bag across the re-render (same control if it still exists).
+      const drawer = document.getElementById('CartDrawer');
+      const had = drawer?.contains(document.activeElement) ? document.activeElement : null;
+      const key = had && (had.dataset.lineRemove ? `[data-line-remove="${had.dataset.lineRemove}"]` : had.id ? `#${CSS.escape(had.id)}` : null);
       if (next && current) current.replaceWith(next);
+      if (drawer?.open && !drawer.contains(document.activeElement)) {
+        const target = (key && drawer.querySelector(key)) || drawer.querySelector('[data-close-dialog]');
+        target?.focus({ preventScroll: true });
+      }
       Cart.updateCount(count);
     }
   },
@@ -205,6 +213,72 @@ function formToItems(form) {
   return [item];
 }
 
+
+/* ---------- Add to bag: the bottle flies into the bag, and the brand mark closes around it ---------- */
+const isShown = (el) => !!el && (el.checkVisibility ? el.checkVisibility() : el.getClientRects().length > 0);
+function visibleBag() {
+  return $$('[data-bag-target], #CartToggle').find(isShown) || document.getElementById('CartToggle');
+}
+const inView = (el) => { const r = el?.getBoundingClientRect(); return !!r && r.width > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth; };
+function sourceImage(form, button) {
+  const scope = (button?.closest('sticky-atc') ? null : form.closest('.dayline__step, .card, .bundle, .cart-upsell__item, routine-builder, .cs'));
+  const candidates = [
+    scope?.querySelector('.dayline__bottle img, .card__media img, .bundle__packs img, .builder__slot.is-in img, .cs__bottle.is-key img'),
+    $('.sticky-atc.is-visible .sticky-atc__thumb img'),
+    $('.gallery__slide--studio img, .gallery__cutout, .pdp__gallery img'),
+  ];
+  return candidates.find((el) => el && inView(el));
+}
+function flyToBag(form, button) {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const img = sourceImage(form, button);
+  const bag = visibleBag();
+  if (reduce || !img || !bag) return Promise.resolve();
+  const a = img.getBoundingClientRect();
+  const b = bag.getBoundingClientRect();
+  if (!a.width || !a.height) return Promise.resolve();
+  const h = Math.min(a.height, 260);
+  const w = (a.width / a.height) * h;
+  const sx = a.left + a.width / 2 - w / 2;
+  const sy = a.top + a.height / 2 - h / 2;
+  const tx = b.left + b.width / 2 - w / 2;
+  const ty = b.top + b.height / 2 - h / 2;
+  const fly = document.createElement('div');
+  fly.className = 'fly';
+  fly.setAttribute('aria-hidden', 'true');
+  fly.style.cssText = `width:${w}px;height:${h}px`;
+  fly.innerHTML = `<img src="${img.currentSrc || img.src}" alt="">`;
+  document.body.appendChild(fly);
+  const mx = (sx + tx) / 2;
+  const my = Math.min(sy, ty) - 90;
+  const anim = fly.animate([
+    { transform: `translate(${sx}px, ${sy}px) scale(1) rotate(0deg)`, opacity: 1 },
+    { transform: `translate(${mx}px, ${my}px) scale(.55) rotate(-12deg)`, opacity: 1, offset: 0.5 },
+    { transform: `translate(${tx}px, ${ty}px) scale(.12) rotate(0deg)`, opacity: 0.4 },
+  ], { duration: 680, easing: 'cubic-bezier(.55, 0, .3, 1)', fill: 'forwards' });
+  return new Promise((resolve) => {
+    const done = () => { fly.remove(); closeMark(b); resolve(); };
+    anim.onfinish = done;
+    anim.oncancel = done;
+    setTimeout(resolve, 760);
+  });
+}
+function closeMark(rect) {
+  const tpl = document.getElementById('BtsMark');
+  if (!tpl) return;
+  const mark = document.createElement('div');
+  mark.className = 'bag-mark';
+  mark.setAttribute('aria-hidden', 'true');
+  mark.appendChild(tpl.content.cloneNode(true));
+  mark.style.transform = `translate(${rect.left + rect.width / 2 - 23}px, ${rect.top + rect.height / 2 - 25}px)`;
+  document.body.appendChild(mark);
+  const [right, left] = mark.querySelectorAll('path');
+  const opts = { duration: 620, easing: 'cubic-bezier(.3, 1.3, .5, 1)', fill: 'forwards' };
+  right?.animate([{ transform: 'translateX(80%)', opacity: 0 }, { transform: 'translateX(0)', opacity: 1, offset: 0.6 }, { transform: 'translateX(-6%)', opacity: 0 }], opts);
+  const last = left?.animate([{ transform: 'translateX(-80%)', opacity: 0 }, { transform: 'translateX(0)', opacity: 1, offset: 0.6 }, { transform: 'translateX(6%)', opacity: 0 }], opts);
+  if (last) last.onfinish = () => mark.remove(); else mark.remove();
+}
+
 class ProductForm extends HTMLElement {
   connectedCallback() {
     this.form = this.querySelector('form');
@@ -217,6 +291,8 @@ class ProductForm extends HTMLElement {
     if (!button || button.disabled || button.classList.contains('is-loading')) return;
     const items = this.itemsOverride ? this.itemsOverride() : formToItems(this.form);
     if (!items.length) return;
+    // Decide now, while attached: adds from inside a dialog (the bag's routine cards) never fly or reopen it.
+    const fromDialog = !!this.closest('dialog');
     const error = this.querySelector('[data-form-error]');
     if (error) { error.hidden = true; error.textContent = ''; }
     button.classList.add('is-loading');
@@ -224,8 +300,11 @@ class ProductForm extends HTMLElement {
     try {
       await Cart.add(items);
       announce(BTS.strings?.added || 'Added');
-      openDialog('CartDrawer', document.getElementById('CartToggle'));
       this.dispatchEvent(new CustomEvent('cart:added', { bubbles: true, detail: { items } }));
+      if (!fromDialog) {
+        await flyToBag(this, button);
+        if (!$('dialog[open]')) openDialog('CartDrawer', visibleBag());
+      }
     } catch (err) {
       const msg = err.message || BTS.strings?.error;
       if (error) { error.textContent = msg; error.hidden = false; } else { toast(msg); }
