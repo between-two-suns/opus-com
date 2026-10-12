@@ -1,6 +1,6 @@
 # STATUS — Between Two Suns (Opus build)
 
-_Updated: 2026-10-11_
+_Updated: 2026-10-12_
 
 ## Current build state
 Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, with store content (metafields, metaobjects, pages, Arabic translations) wired up. QA on the local preview is green. Real-storefront visual verification is still outstanding: the build sandbox cannot reach `*.myshopify.com`.
@@ -16,6 +16,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 ## Restore points (revert here if needed)
 | Date | Shopify theme (unpublished, untouched copy) | Git commit on `opus-build` |
 |---|---|---|
+| 2026-10-12, after pass 1 / before pass 2 | `BTS Opus — snapshot 2026-10-12 (pass 1, before pass 2)` · `gid://shopify/OnlineStoreTheme/167328219394` | `eed0b31` |
 | 2026-10-11, before the award redesign | `BTS Opus — snapshot 2026-10-11 (pre-redesign)` · `gid://shopify/OnlineStoreTheme/167303545090` (MD5-identical to staging at that point) | `5e78baf` |
 
 To revert the site: in Shopify, preview or rename that snapshot theme (or copy its files back to staging); in code, `git checkout 5e78baf -- theme/`. Never published.
@@ -35,8 +36,15 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - Store: 23 `bts.*` metafield defs + values, `bts_ingredient` metaobject (9 key), `bts_inci` metaobject (55, EN + AR), pages, blog, Arabic translations (unpublished language)
 - **Bundles & offers (2026-10-06):** five curated sets (Full Routine, Evening, Oil-Control Duo, Day Shield Duo, Everyday Starter) on home + new **/pages/sets** ("Sets" in header/footer); **Build-your-routine** builder (tap bottles onto a shelf between the suns; live total, next-saving nudge, one-tap add); cart drawer/page **mix & match tier steps** + **free-delivery progress**; optional **WhatsApp chat** button. All offers are theme settings (Theme settings → Offers) that are **0/blank = hidden** and must mirror a real Shopify discount/shipping rate
 - **Redesign pass 1 (2026-10-11, after owner feedback "not award level, blacks too rough"):** soft night-ink (#20233A) replaces near-black everywhere; primary buttons carry two suns (warm/cool glow that swells on hover); pastel announcement bar; **pinned "one day, four steps" routine stage** on home (sun travels its arc, each bottle takes the centre in its colour, add from the stage, dots + keyboard jump); **climate lab** replaces the black climate block (8 conditions set the weather on a sticky stage: glare, smog, dust, droplets, heat haze, air-con airflow, split); **time-of-day page tones** (page colour drifts dawn → day → aqua → lilac → sand as you scroll); **dusk footer** with two setting suns; **sunlight cursor** + "View" label (desktop); **product-coloured PDPs** (page takes the product colour, step word + sun on the routine arc behind the pack, frosted buy box, tilt); set cards tinted with their steps' colours
+- **Pass 2 (2026-10-12, owner feedback: "flawless, smoother, mobile-first app feel, sticky buy, recommendations, more of our icon, climate not overkill"):**
+  - Routine stage rebuilt on the browser scroll timeline (no JS lag) with a rest on each product and a gentle settle when you stop between two; no blur; dock-aware on mobile
+  - **App dock** on phones/tablets: Shop · Routine · brand mark (Home) · Search · Bag; on product pages it hands its place to a **buy bar in the product's deep colour** whenever the main Add button is out of view
+  - **Add to bag:** the bottle flies into the bag, the brand mark's two arcs close around it, then the bag opens; on phones the bag is a **bottom sheet** with swipeable **"Complete your routine"** cards
+  - **Product pages:** 01–04 routine tabs, the step word huge in product colour, tilted pack on a generated texture (foam / droplets / cream / sand; no product in it), **label callouts** drawn from the pack's own benefit words, **"Made for"** climate chips (forecast mapping)
+  - **Home:** hero framed by the brand mark's arcs (parting on scroll); **compact climate switch** (5 icons → stage weather, lifts the steps that matter, "Add these N steps" at real summed prices) replaces the long climate lab (lab stays on /pages/climate); **facts band** with real numbers (04 · 55 · 50+ · mark)
+  - **Warm ivory** base (#F5F1EA), deep product-colour buttons (same hue, fixed lightness for ≥ 4.5:1), brand mark in loading states and the announcement bar
 - **Micro-interactions:** 3D tilt on product/set media (fine pointers), magnetic primary CTAs, "✓ Added" button state, cart badge bump; all off for reduced motion and touch
-- QA tooling: preview harness, Theme Check, 128 flow tests, axe, Lighthouse scripts (see `QA.md`)
+- QA tooling: preview harness, Theme Check, 154 flow tests, axe, Lighthouse scripts (see `QA.md`)
 
 ## Incomplete / outstanding
 - Real-store visual QA of the staging theme (sandbox can't reach the storefront)
@@ -56,23 +64,23 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 | Area | Score | Why not higher |
 |---|---|---|
 | Brand fidelity | 8.7 | Copy + INCI now re-checked against the current label designs; packshot renders still show older labels ("Daily Face", "Niacinimide + Zinc PCA") |
-| Visual originality | 8.9 | Pinned day stage, climate lab, tones, dusk, product-coloured PDPs are ownable; collection/content pages still conventional |
+| Visual originality | 9.1 | Brand-mark arcs, product-coloured stages, callouts, climate switch, dock mark — ownable system; content pages still plainer |
 | Art direction | 8.0 | Coherent sun/day language end to end; still no photography, texture or film (the biggest remaining gap) |
 | Typography | 8.5 | Strong EN/AR system; Antonio is a stand-in for the pack face |
 | Layout / composition | 8.3 | Hero, forecast, label band strong; collection and content pages simpler |
 | Motion / interaction | 9.1 | Light field, pinned day stage, climate lab weather, tones, cursor light, morphs, builder; all reduced-motion safe, Lighthouse 99 |
-| Mobile design | 8.6 | First-screen buy box, swipeable label, no overflow |
+| Mobile design | 9.1 | App dock, buy bar hand-over, bottom-sheet bag, swipe routine cards; real-device check outstanding |
 | Product discovery | 8.8 | Concerns, routine grid, forecast, full 55-ingredient dictionary linked from every PDP, search |
-| PDP conversion | 8.6 | Product-coloured stage, frosted buy box, label band; still no real prices, reviews or texture media |
-| Cart / conversion UX | 8.9 | Drawer routine upsell, 5 sets, builder, tier steps, free-delivery meter, WhatsApp — ready but switched off until the owner sets real values; checkout config pending |
+| PDP conversion | 9.0 | Buy always one tap away, routine tabs, callouts, pairs-with in the bag; no real prices, reviews or texture photography yet |
+| Cart / conversion UX | 9.1 | Fly-to-bag, bottom sheet, routine cards, climate 'add these steps', sets, builder, tier/free-delivery (off until set) |
 | English experience | 8.6 | — |
 | Arabic / RTL experience | 8.4 | Complete, mirrored, hero fits the fold, display leading tuned; needs native review + real-store check |
 | Performance | 9.2 | Lab 99 mobile with the shader (skipped on software GL); unverified on Shopify |
 | Accessibility | 9.2 | axe 0, Lighthouse 100, keyboard flows; no screen-reader device pass yet |
 | Technical quality | 8.7 | Theme Check 0, 84 flow tests, MD5-verified deploys; harness ≠ real Shopify |
 | Merchant maintainability | 8.5 | Metafields, blocks, bilingual fallbacks, editor labels |
-| **Overall award potential** | **8.5** | Interaction + system now award-grade; needs real photography/film, current-label packshots, and the same treatment on collection/content pages |
-| **Overall commercial effectiveness** | **8.0** | Full offer machinery built; blocked on real prices, tier %/threshold values + matching Shopify discounts, payments/shipping config, reviews |
+| **Overall award potential** | **8.8** | Interaction + system award-grade; real photography/film and current-label packshots are the remaining gap; collection/content pages next |
+| **Overall commercial effectiveness** | **8.6** | Mobile buy path now app-grade; blocked on real prices, offer values, payments/shipping, reviews |
 
 ## Pricing
 Owner shared a Google Sheet with pricing. Not yet applied: the Google Drive connector in this session has no file-read permission and docs.google.com is blocked by the sandbox network policy. Fix: reconnect Google Drive with read access, add `docs.google.com` to allowed domains, or paste the prices.
