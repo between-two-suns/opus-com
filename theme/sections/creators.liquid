@@ -42,10 +42,13 @@
           {%- assign cut = p.metafields.bts.cutout.value -%}
           {%- assign ck = 'sections.forecast.conditions.' | append: parts[1] -%}
           {%- assign cap = 'creators.reel_captions.' | append: parts[1] -%}
-          <li class="cr-reel" style="--sku: var(--c-step-{{ parts[3] }}); --sku-tint: var(--c-step-{{ parts[3] }}-tint); --i: {{ forloop.index0 }}">
+          {%- assign shot = p.media[1] -%}
+          <li class="cr-reel{% if shot %} cr-reel--photo{% endif %}" style="--sku: var(--c-step-{{ parts[3] }}); --sku-tint: var(--c-step-{{ parts[3] }}-tint); --i: {{ forloop.index0 }}">
             <span class="cr-reel__chip">{% render 'icon', name: parts[2], class: 'icon--sm' %}{{ ck | t }}</span>
             <span class="cr-reel__media">
-              {%- if cut -%}
+              {%- if shot -%}
+                {{ shot | image_url: width: 520 | image_tag: loading: 'eager', widths: '260,390,520', sizes: '(min-width: 990px) 14vw, 28vw', alt: '' }}
+              {%- elsif cut -%}
                 {{ cut | image_url: width: 420 | image_tag: loading: 'eager', widths: '210,320,420', sizes: '(min-width: 990px) 12vw, 28vw', alt: '' }}
               {%- elsif p.featured_image -%}
                 {{ p.featured_image | image_url: width: 420 | image_tag: loading: 'eager', widths: '210,320,420', sizes: '(min-width: 990px) 12vw, 28vw', alt: '' }}

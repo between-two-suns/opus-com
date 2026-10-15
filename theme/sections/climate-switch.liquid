@@ -55,6 +55,37 @@
     </div>
 
     <div class="cs__stage lab__stage grain" aria-hidden="true">
+      {%- comment -%}
+        One real scene per condition (Shopify Files, by name: bts-climate-<condition>-wide.jpg / -tall.jpg; replace a file
+        in Content → Files keeping its name to change it). Tall on desktop (portrait stage), wide on phones.
+      {%- endcomment -%}
+      {%- for c in conditions -%}
+        {%- liquid
+          case c
+            when 'city'
+              assign fx = 'dust'
+            else
+              assign fx = c
+          endcase
+          assign wk = 'bts-climate-' | append: c | append: '-wide.jpg'
+          assign tk = 'bts-climate-' | append: c | append: '-tall.jpg'
+          assign wide = images[wk]
+          assign tall = images[tk]
+        -%}
+        {%- if wide or tall -%}
+          <picture class="cs__photo" data-fx="{{ fx }}">
+            {%- if tall -%}<source media="(min-width: 990px)" srcset="{{ tall | image_url: width: 700 }} 700w, {{ tall | image_url: width: 1000 }} 1000w, {{ tall | image_url: width: 1400 }} 1400w" sizes="45vw">{%- endif -%}
+            {%- liquid
+              assign base = wide
+              unless wide
+                assign base = tall
+              endunless
+            -%}
+            {{ base | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '480,720,960,1200', sizes: '(min-width: 990px) 45vw, 92vw', alt: '' }}
+          </picture>
+        {%- endif -%}
+      {%- endfor -%}
+      <span class="cs__scrim"></span>
       <span class="lab__fx lab__fx--light"></span>
       <span class="lab__fx lab__fx--haze"></span>
       <span class="lab__fx lab__fx--particles"></span>

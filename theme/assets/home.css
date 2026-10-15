@@ -405,6 +405,15 @@
 .cs__opt-label { position: relative; padding-block-end: 6px; }
 .cs__opt[aria-pressed='true'] .cs__opt-label::after { content: ''; position: absolute; inset-inline: 30%; inset-block-end: 0; block-size: 2px; border-radius: 2px; background: currentColor; }
 .cs__stage { block-size: auto; aspect-ratio: 4 / 3; min-block-size: 0; }
+.cs__photo { position: absolute; inset: 0; opacity: 0; transition: opacity 900ms var(--ease-out); }
+.cs__photo img { inline-size: 100%; block-size: 100%; object-fit: cover; transform: scale(1.06); transition: transform 2400ms var(--ease-out); }
+climate-switch[data-active='sun'] .cs__photo[data-fx='sun'], climate-switch[data-active='dust'] .cs__photo[data-fx='dust'], climate-switch[data-active='humidity'] .cs__photo[data-fx='humidity'], climate-switch[data-active='ac'] .cs__photo[data-fx='ac'], climate-switch[data-active='heat'] .cs__photo[data-fx='heat'] { opacity: 1; }
+climate-switch[data-active='sun'] .cs__photo[data-fx='sun'] img, climate-switch[data-active='dust'] .cs__photo[data-fx='dust'] img, climate-switch[data-active='humidity'] .cs__photo[data-fx='humidity'] img, climate-switch[data-active='ac'] .cs__photo[data-fx='ac'] img, climate-switch[data-active='heat'] .cs__photo[data-fx='heat'] img { transform: none; }
+/* Scrim keeps the bottles readable over any scene: soft ivory floor under them, scene clear above. */
+.cs__scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(245, 241, 234, .92) 0%, rgba(245, 241, 234, .55) 30%, rgba(245, 241, 234, 0) 62%); pointer-events: none; }
+.cs__stage:has(.cs__photo) .cs__bottle { opacity: .6; }
+.cs__stage:has(.cs__photo) .cs__bottle.is-key { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .cs__photo, .cs__photo img { transition: none; transform: none; } }
 .cs__bottles { position: absolute; inset-inline: 7%; inset-block-end: 8%; z-index: 1; display: flex; align-items: flex-end; justify-content: center; gap: 3%; block-size: 62%; }
 .cs__bottle { block-size: 100%; display: block; opacity: .38; filter: saturate(.6); transform: translateY(6%) scale(.92); transform-origin: 50% 100%; transition: opacity 600ms var(--ease-out), transform 700ms cubic-bezier(.2, .9, .25, 1.15), filter 600ms; }
 .cs__bottle[data-step='2'] { block-size: 76%; }

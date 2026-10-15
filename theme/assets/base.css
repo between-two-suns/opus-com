@@ -269,6 +269,8 @@ main:focus { outline: none; }
   /* Same hue, richer: fixed lightness keeps white text at ≥ 4.5:1 for every pack colour. */
   [data-step] { --sku-deep: oklch(from var(--sku) .47 calc(c * 1.3) h); }
 }
+/* Bundles and anything without a step (data-step="0") keep night ink, never an empty colour. */
+[data-step='0'], [data-step=''] { --sku-deep: var(--c-ink); }
 [data-step='1'] { --sku: var(--c-step-1); --sku-tint: var(--c-step-1-tint); }
 [data-step='2'] { --sku: var(--c-step-2); --sku-tint: var(--c-step-2-tint); }
 [data-step='3'] { --sku: var(--c-step-3); --sku-tint: var(--c-step-3-tint); }
@@ -417,7 +419,15 @@ html.has-open-dialog { overflow: hidden; }
 .card__media--photo img { inset: 0; block-size: 100%; inline-size: 100%; object-fit: cover; }
 .card:hover .card__media img { transform: translateY(-6px) scale(1.02); }
 .card:hover .card__sun { transform: scale(1.08); }
-.card__step { position: absolute; inset-block-start: 14px; inset-inline-start: 14px; z-index: 1; }
+.card__alt { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .card__alt { display: block; position: absolute; inset: 0; z-index: 2; opacity: 0; transition: opacity var(--dur-slow) var(--ease-out); }
+  .card__media .card__alt img { inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; transform: scale(1.04); transition: transform 900ms var(--ease-out); }
+  .card:hover .card__alt, .card:focus-within .card__alt { opacity: 1; }
+  .card:hover .card__alt img { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .card__alt, .card__media .card__alt img { transition: none; } }
+.card__step { position: absolute; inset-block-start: 14px; inset-inline-start: 14px; z-index: 3; }
 .card__step .step-num { font-size: 28px; line-height: 1; }
 .card__body { display: flex; flex-direction: column; gap: 6px; flex: 1; }
 .card__title { font-size: 17px; line-height: 1.25; font-weight: 700; letter-spacing: -0.005em; }

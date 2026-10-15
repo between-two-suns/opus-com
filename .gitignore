@@ -4,3 +4,4 @@ tools/qa/reports/tmp/
 .DS_Store
 *.log
 tools/qa/reports/
+_source/photos/

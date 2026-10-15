@@ -16,19 +16,22 @@
         "s1": {
           "type": "row",
           "settings": {
-            "preset": "not_summer"
+            "preset": "not_summer",
+            "image": "shopify://shop_images/bts-portrait-terrace-wide.jpg"
           }
         },
         "s2": {
           "type": "row",
           "settings": {
-            "preset": "light"
+            "preset": "light",
+            "image": "shopify://shop_images/bts-daily-barrier-moisturizing-cream-texture.jpg"
           }
         },
         "s3": {
           "type": "row",
           "settings": {
-            "preset": "routine"
+            "preset": "routine",
+            "image": "shopify://shop_images/bts-the-full-ritual.jpg"
           }
         }
       },

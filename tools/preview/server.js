@@ -12,7 +12,14 @@ import { productsFor, ingredientsFor, inciFor, PAGES, PAGE_BODY, ARTICLES, BUNDL
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const THEME = path.join(ROOT, 'theme');
-const IMG_DIRS = [path.join(ROOT, '_source/packshots'), path.join(THEME, 'assets')];
+const IMG_DIRS = [path.join(ROOT, '_source/photos'), path.join(ROOT, '_source/packshots'), path.join(THEME, 'assets')];
+// Store photos (Shopify Files) mirrored by preview/fetch-photos.sh. Sizes are the originals' (Shopify reports these).
+const PHOTO_DIR = path.join(ROOT, '_source/photos');
+const PHOTO_SIZE = (n) => (/-(front|angle|back)\.png$/.test(n) ? [1600, 2400] : /-(application|in-hand)\.jpg$/.test(n) ? [2400, 3000]
+  : /-texture\.jpg$/.test(n) ? [2000, 2500] : /-routine\.jpg$/.test(n) ? [2000, 2000] : /-wide\.jpg$/.test(n) ? (n.includes('climate') ? [3200, 1800] : [3000, 2000])
+  : /-tall\.jpg$/.test(n) ? [1600, 2000] : n === 'bts-lineup-sky.jpg' ? [1920, 1080] : [2400, 2400]);
+const hasPhoto = (n) => fs.existsSync(path.join(PHOTO_DIR, n));
+const photoObj = (n, alt = '') => { const [w, h] = PHOTO_SIZE(n); return { __image: n, width: w, height: h, alt }; };
 const PORT = Number(process.env.PORT || 4321);
 const MONEY = 'LE {{amount}}';
 const MONEY_CUR = 'LE {{amount}} EGP';
@@ -76,16 +83,18 @@ function buildData(locale, cart) {
       sku: p.sku, inventory_management: null, options: ['Default Title'], option1: 'Default Title',
       url: `${prefix}/products/${p.handle}?variant=${p.variantId}`, featured_media: null,
     };
-    const photo = new ImageDrop(p.photo);
-    const media = [{ id: p.id * 10, media_type: 'image', alt: p.photo.alt, preview_image: photo, aspect_ratio: photo.aspect_ratio, ...photo, src: photo.src, position: 1 }];
-    media[0].valueOf = () => photo.src;
+    const order = ['front.png', 'application.jpg', 'texture.jpg', 'angle.png', 'back.png', 'in-hand.jpg'].map((k) => `bts-${p.handle}-${k}`).filter(hasPhoto);
+    const pics = order.length ? order.map((n) => new ImageDrop(photoObj(n, p.title))) : [new ImageDrop(p.photo)];
+    if (order.length) p.metafields.bts.cutout = photoObj(order[0]);
+    const photo = pics[0];
+    const media = pics.map((img, i) => { const m = { id: p.id * 10 + i, media_type: 'image', alt: img.alt, preview_image: img, aspect_ratio: img.aspect_ratio, ...img, src: img.src, position: i + 1 }; m.valueOf = () => img.src; return m; });
     const prod = {
       ...p,
       url: `${prefix}/products/${p.handle}`,
       variants: [variant], selected_or_first_available_variant: variant, first_available_variant: variant, selected_variant: null,
       has_only_default_variant: true, available: true, price: p.price, price_min: p.price, price_max: p.price, compare_at_price: null,
       options: ['Title'], options_with_values: [{ name: 'Title', values: ['Default Title'], position: 1 }],
-      featured_media: media[0], featured_image: photo, images: [photo], media,
+      featured_media: media[0], featured_image: photo, images: pics, media,
       metafields: toMetafields(p.metafields),
       content: p.description, collections: [],
       requires_selling_plan: false, selling_plan_groups: [], gift_card: false,
@@ -106,7 +115,14 @@ function buildData(locale, cart) {
       variants: [variant], selected_or_first_available_variant: variant, first_available_variant: variant, selected_variant: null,
       has_only_default_variant: true, available: true, price: b.price, price_min: b.price, price_max: b.price, compare_at_price: b.compare,
       options: ['Title'], options_with_values: [{ name: 'Title', values: ['Default Title'], position: 1 }],
-      featured_media: null, featured_image: null, images: [], media: [],
+      ...(() => {
+        const n = `bts-${b.handle}.jpg`;
+        if (!hasPhoto(n)) return { featured_media: null, featured_image: null, images: [], media: [] };
+        const img = new ImageDrop(photoObj(n, b.title));
+        const m = { id: b.id * 10, media_type: 'image', alt: img.alt, preview_image: img, aspect_ratio: img.aspect_ratio, ...img, src: img.src, position: 1 };
+        m.valueOf = () => img.src;
+        return { featured_media: m, featured_image: img, images: [img], media: [m] };
+      })(),
       metafields: toMetafields({ bts: {} }), content: '', collections: [],
       requires_selling_plan: false, selling_plan_groups: [], gift_card: false,
     };
@@ -280,6 +296,7 @@ function resolveSetting(def, value, data) {
     case 'link_list': return null; // store has no custom menus; theme uses bilingual fallbacks
     case 'product_list': return (value || []).map((h) => data.byHandle[h]).filter(Boolean);
     case 'url': return value.startsWith('/') && data.prefix ? data.prefix + value : value;
+    case 'image_picker': { const n = String(value).replace('shopify://shop_images/', ''); return hasPhoto(n) ? new ImageDrop(photoObj(n)) : null; }
     default: return value;
   }
 }
@@ -383,8 +400,11 @@ function globalsFor(locale, data, extra = {}) {
   const settings = {};
   for (const group of schema) for (const def of group.settings || []) if (def.id) settings[def.id] = resolveSetting(def, settingsData[def.id], data);
   data.prefix = locale === 'ar' ? '/ar' : '';
+  const images = {};
+  if (fs.existsSync(PHOTO_DIR)) for (const n of fs.readdirSync(PHOTO_DIR)) images[n] = new ImageDrop(photoObj(n));
   return {
     settings,
+    images,
     shop: {
       name: 'Between Two Suns', description: 'Climate-adapted skincare.', url: `http://localhost:${PORT}`, secure_url: `http://localhost:${PORT}`,
       money_format: MONEY, money_with_currency_format: MONEY_CUR, currency: 'EGP', enabled_payment_types: [], customer_accounts_enabled: true,

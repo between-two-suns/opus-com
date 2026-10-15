@@ -103,6 +103,10 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
 .routine-strip__link { display: grid; gap: 6px; text-decoration: none; justify-items: start; position: relative; }
 .routine-strip__media { position: relative; inline-size: 100%; aspect-ratio: 3 / 4; border-radius: var(--radius-m); background: var(--sku-tint); overflow: hidden; transition: transform var(--dur) var(--ease-out); }
 .routine-strip__media img { position: absolute; inset: 8%; inline-size: 84%; block-size: 84%; object-fit: contain; }
+.routine-strip__media--photo { aspect-ratio: 1; }
+.routine-strip__media .routine-strip__photo { inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; transition: transform 900ms var(--ease-out); }
+.routine-strip__media .routine-strip__pack { inset: auto; inset-block-end: 6%; inset-inline-end: 5%; inline-size: auto; block-size: 34%; filter: drop-shadow(0 6px 10px rgba(32, 35, 58, .35)); }
+.routine-strip__link:hover .routine-strip__photo { transform: scale(1.04); }
 .routine-strip__link:hover .routine-strip__media { transform: translateY(-4px); }
 .routine-strip__step.is-current .routine-strip__media { box-shadow: 0 0 0 3px var(--c-ink); }
 .routine-strip__num { font-size: clamp(20px, 2.4vw, 32px); line-height: 1; }

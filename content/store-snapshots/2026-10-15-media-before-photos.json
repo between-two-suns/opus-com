@@ -1,0 +1,13 @@
+{
+  "taken": "2026-10-15",
+  "restore_theme": "gid://shopify/OnlineStoreTheme/167479836930",
+  "git_before": "ee84c34",
+  "products": {
+    "daily-reset-cleanser": {"id": "gid://shopify/Product/10328888049922", "media": ["gid://shopify/MediaImage/46433024966914"], "cutout_metafield": "gid://shopify/Metafield/64746999316738", "cutout": "gid://shopify/MediaImage/46435014017282"},
+    "clarity-serum": {"id": "gid://shopify/Product/10328890212610", "media": ["gid://shopify/MediaImage/46433028997378"], "cutout_metafield": "gid://shopify/Metafield/64747025957122", "cutout": "gid://shopify/MediaImage/46435020538114"},
+    "daily-barrier-moisturizing-cream": {"id": "gid://shopify/Product/10328890343682", "media": ["gid://shopify/MediaImage/46433032438018"], "cutout_metafield": "gid://shopify/Metafield/64747044536578", "cutout": "gid://shopify/MediaImage/46435022733570"},
+    "daily-defense-sunscreen-spf-50": {"id": "gid://shopify/Product/10328890507522", "media": ["gid://shopify/MediaImage/46433037385986"], "cutout_metafield": "gid://shopify/Metafield/64747068096770", "cutout": "gid://shopify/MediaImage/46435026206978"},
+    "bundles": "no media on any of the 7 bundle products"
+  },
+  "revert": "Detach new media (fileUpdate referencesToRemove), re-attach the old media IDs above (referencesToAdd), set bts.cutout back to the old MediaImage IDs. Old files were detached, never deleted."
+}

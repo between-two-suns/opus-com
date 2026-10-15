@@ -22,12 +22,17 @@
           {%- assign ps = ps | strip | plus: 0 -%}
           {%- if ps == s -%}
             {%- assign cutout = p.metafields.bts.cutout.value -%}
+            {%- assign rk = 'bts-' | append: p.handle | append: '-routine.jpg' -%}
+            {%- assign routine_photo = images[rk] -%}
             {%- assign is_this = false -%}
             {%- if p.id == product.id -%}{%- assign is_this = true -%}{%- endif -%}
             <li class="routine-strip__step{% if is_this %} is-current{% endif %}" data-step="{{ s }}">
               <a class="routine-strip__link" href="{{ p.url }}"{% if is_this %} aria-current="page"{% endif %}>
-                <span class="routine-strip__media" aria-hidden="true">
-                  {%- if cutout -%}
+                <span class="routine-strip__media{% if routine_photo %} routine-strip__media--photo{% endif %}" aria-hidden="true">
+                  {%- if routine_photo -%}
+                    {{ routine_photo | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,450,600', sizes: '(min-width: 990px) 22vw, 45vw', alt: '', class: 'routine-strip__photo' }}
+                    {%- if cutout -%}{{ cutout | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '64px', alt: '', class: 'routine-strip__pack' }}{%- endif -%}
+                  {%- elsif cutout -%}
                     {{ cutout | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '(min-width: 990px) 12vw, 22vw', alt: '' }}
                   {%- elsif p.featured_media -%}
                     {{ p.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '(min-width: 990px) 12vw, 22vw', alt: '' }}

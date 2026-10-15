@@ -12,25 +12,29 @@
         "s1": {
           "type": "row",
           "settings": {
-            "preset": "between"
+            "preset": "between",
+            "image": "shopify://shop_images/bts-portrait-window-wide.jpg"
           }
         },
         "s2": {
           "type": "row",
           "settings": {
-            "preset": "routine"
+            "preset": "routine",
+            "image": "shopify://shop_images/bts-the-full-ritual.jpg"
           }
         },
         "s3": {
           "type": "row",
           "settings": {
-            "preset": "made"
+            "preset": "made",
+            "image": "shopify://shop_images/bts-lineup-sky.jpg"
           }
         },
         "s4": {
           "type": "row",
           "settings": {
-            "preset": "transparent"
+            "preset": "transparent",
+            "image": "shopify://shop_images/bts-clarity-serum-back.png"
           }
         }
       },

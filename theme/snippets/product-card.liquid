@@ -44,6 +44,11 @@
     {%- if cutout -%}
       <span class="card__sun" aria-hidden="true"></span>
       {{ cutout | image_url: width: 600 | image_tag: loading: img_loading, widths: '200,300,400,600', sizes: img_sizes, alt: product.title }}
+      {%- comment -%} Hover (fine pointers only): the product in use, the second product image. {%- endcomment -%}
+      {%- assign alt_media = product.media[1] -%}
+      {%- if alt_media and alt_media.media_type == 'image' -%}
+        <span class="card__alt" aria-hidden="true">{{ alt_media | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350,500,700', sizes: img_sizes, alt: '' }}</span>
+      {%- endif -%}
     {%- elsif product.featured_media -%}
       {{ product.featured_media | image_url: width: 900 | image_tag: loading: img_loading, widths: '300,450,600,900', sizes: img_sizes, alt: product.featured_media.alt | default: product.title }}
     {%- else -%}

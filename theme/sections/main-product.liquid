@@ -22,9 +22,15 @@
     assign coming_soon = true
   endif
   assign cutout = mf.cutout.value
+  comment
+    With a cutout, the first product image (the front packshot, also used at checkout) is shown on the studio
+    stage instead, so the gallery skips it.
+  endcomment
   assign media_count = product.media.size
+  assign skip_media = 0
   if cutout
-    assign media_count = media_count | plus: 1
+    assign skip_media = 1
+    assign media_count = media_count | at_least: 1
   endif
   assign description = mf.description.value | default: product.description
   assign form_id = 'ProductForm-' | append: section.id
@@ -100,7 +106,7 @@
               {{ cutout | image_url: width: 900 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '300,450,600,750,900', sizes: '(min-width: 990px) 46vw, 92vw', alt: product.title, class: 'gallery__cutout' }}
             </div>
           {%- endif -%}
-          {%- for media in product.media -%}
+          {%- for media in product.media offset: skip_media -%}
             {%- assign slide = slide | plus: 1 -%}
             <div class="gallery__slide" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
               {%- case media.media_type -%}
