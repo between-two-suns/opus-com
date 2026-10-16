@@ -5,7 +5,7 @@
 {%- liquid
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'faq.heading' | t
+    assign heading = 'faq.heading' | t | replace: '&amp;', '&'
   endif
   assign root = routes.root_url
   if root == '/'
@@ -30,10 +30,10 @@
               assign qk = 'faq.items.' | append: block.settings.preset | append: '.q'
               assign ak = 'faq.items.' | append: block.settings.preset | append: '.a'
               if q == blank
-                assign q = qk | t
+                assign q = qk | t | replace: '&amp;', '&'
               endif
               if a == blank
-                assign a = ak | t
+                assign a = ak | t | replace: '&amp;', '&'
               endif
             endif
           -%}
@@ -50,10 +50,10 @@
             assign qk = 'faq.items.' | append: block.settings.preset | append: '.q'
             assign ak = 'faq.items.' | append: block.settings.preset | append: '.a'
             if q == blank
-              assign q = qk | t
+              assign q = qk | t | replace: '&amp;', '&'
             endif
             if a == blank
-              assign a = ak | t
+              assign a = ak | t | replace: '&amp;', '&'
             endif
           endif
         -%}

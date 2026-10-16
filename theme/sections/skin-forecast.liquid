@@ -2,15 +2,15 @@
 {%- liquid
   assign eyebrow = section.settings.eyebrow
   if eyebrow == blank
-    assign eyebrow = 'sections.forecast.eyebrow' | t
+    assign eyebrow = 'sections.forecast.eyebrow' | t | replace: '&amp;', '&'
   endif
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'sections.forecast.heading' | t
+    assign heading = 'sections.forecast.heading' | t | replace: '&amp;', '&'
   endif
   assign text = section.settings.text
   if text == blank
-    assign text = 'sections.forecast.text' | t
+    assign text = 'sections.forecast.text' | t | replace: '&amp;', '&'
   endif
   assign source = section.settings.collection | default: collections.all
   assign conditions = 'sun,city,humidity,ac,heat' | split: ','
@@ -75,9 +75,9 @@
             class="forecast__readout t-notation"
             aria-hidden="true"
             data-readout
-            data-empty="{{ 'sections.forecast.readout_empty' | t | escape }}"
+            data-empty="{{ 'sections.forecast.readout_empty' | t }}"
             {%- for c in conditions -%}
-              {%- assign rk = 'sections.forecast.readout.' | append: c %} data-{{ c }}="{{ rk | t | escape }}"
+              {%- assign rk = 'sections.forecast.readout.' | append: c %} data-{{ c }}="{{ rk | t }}"
             {%- endfor -%}
           >{{ 'sections.forecast.readout_empty' | t }}</p>
         </fieldset>
@@ -86,8 +86,8 @@
 
     <div class="forecast__routine">
       <div class="forecast__routine-head">
-        <h3 class="t-subheading" data-routine-title data-am="{{ 'sections.forecast.routine_am' | t | escape }}" data-pm="{{ 'sections.forecast.routine_pm' | t | escape }}">{{ 'sections.forecast.routine_am' | t }}</h3>
-        <p class="t-small t-muted js-only" data-routine-count data-template="{{ 'sections.forecast.count' | t: count: '__COUNT__' | escape }}"></p>
+        <h3 class="t-subheading" data-routine-title data-am="{{ 'sections.forecast.routine_am' | t }}" data-pm="{{ 'sections.forecast.routine_pm' | t }}">{{ 'sections.forecast.routine_am' | t }}</h3>
+        <p class="t-small t-muted js-only" data-routine-count data-template="{{ 'sections.forecast.count' | t: count: '__COUNT__'  }}"></p>
       </div>
       <ol class="forecast__steps" role="list">
         {%- for s in (1..4) -%}

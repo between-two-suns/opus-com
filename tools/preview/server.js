@@ -338,7 +338,9 @@ engine.registerFilter('t', function (key, ...args) {
     const n = Number(vars.count);
     v = (n === 0 && v.zero) || (n === 1 && v.one) || (n === 2 && v.two) || v.other || v.many || v.few || '';
   }
-  return String(v).replace(/\{\{\s*(\w+)\s*\}\}/g, (_, k) => (vars[k] !== undefined ? vars[k] : ''));
+  const out = String(v).replace(/\{\{\s*(\w+)\s*\}\}/g, (_, k) => (vars[k] !== undefined ? vars[k] : ''));
+  // Like Shopify: translations are HTML-escaped unless the key ends in _html (so `| t | escape` double-escapes).
+  return /_html$/.test(key) ? out : out.replace(/&(?!(?:[a-z]+|#\d+);)/gi, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 });
 engine.registerFilter('asset_url', (name) => `/assets/${name}?v=${assetVersion(name)}`);
 engine.registerFilter('asset_img_url', (name) => `/assets/${name}`);

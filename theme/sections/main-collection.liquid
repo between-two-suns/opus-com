@@ -33,7 +33,7 @@
               <a class="chip" href="{{ collection.url }}?concern={{ id }}" data-concern="{{ id }}" aria-current="false">{{ key | t }}</a>
             {%- endfor -%}
           </div>
-          <p class="t-small t-muted" role="status" data-filter-status data-template="{{ 'collection.showing' | t: count: '__COUNT__' | escape }}">{{ 'collection.count' | t: count: collection.products_count }}</p>
+          <p class="t-small t-muted" role="status" data-filter-status data-template="{{ 'collection.showing' | t: count: '__COUNT__'  }}">{{ 'collection.count' | t: count: collection.products_count }}</p>
         </concern-filter>
 
         <ul class="product-grid collection__grid" id="CollectionGrid" role="list">

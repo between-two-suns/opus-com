@@ -2,15 +2,15 @@
 {%- liquid
   assign eyebrow = section.settings.eyebrow
   if eyebrow == blank
-    assign eyebrow = 'sections.routine.eyebrow' | t
+    assign eyebrow = 'sections.routine.eyebrow' | t | replace: '&amp;', '&'
   endif
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'sections.routine.heading' | t
+    assign heading = 'sections.routine.heading' | t | replace: '&amp;', '&'
   endif
   assign text = section.settings.text
   if text == blank
-    assign text = 'sections.routine.text' | t
+    assign text = 'sections.routine.text' | t | replace: '&amp;', '&'
   endif
   assign source = section.settings.collection | default: collections.all
 

@@ -2,15 +2,15 @@
 {%- liquid
   assign eyebrow = section.settings.eyebrow
   if eyebrow == blank
-    assign eyebrow = 'sections.ingredients.eyebrow' | t
+    assign eyebrow = 'sections.ingredients.eyebrow' | t | replace: '&amp;', '&'
   endif
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'sections.ingredients.heading' | t
+    assign heading = 'sections.ingredients.heading' | t | replace: '&amp;', '&'
   endif
   assign text = section.settings.text
   if text == blank
-    assign text = 'sections.ingredients.text' | t
+    assign text = 'sections.ingredients.text' | t | replace: '&amp;', '&'
   endif
   assign entries = shop.metaobjects.bts_ingredient.values
   assign root = routes.root_url

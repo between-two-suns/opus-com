@@ -27,10 +27,10 @@
                 {%- unless item.product.has_only_default_variant -%}<p class="t-xs t-muted">{{ item.variant.title | escape }}</p>{%- endunless -%}
                 <div class="cart-line__controls">
                   <quantity-input class="qty qty--small">
-                    <button type="button" data-step="-1" aria-label="{{ 'cart.decrease' | t: product: item.product.title | escape }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
-                    <label class="visually-hidden" for="CartQty-{{ forloop.index }}">{{ 'cart.quantity_for' | t: product: item.product.title | escape }}</label>
+                    <button type="button" data-step="-1" aria-label="{{ 'cart.decrease' | t: product: item.product.title  }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
+                    <label class="visually-hidden" for="CartQty-{{ forloop.index }}">{{ 'cart.quantity_for' | t: product: item.product.title  }}</label>
                     <input id="CartQty-{{ forloop.index }}" type="number" inputmode="numeric" name="updates[]" min="0" value="{{ item.quantity }}" data-line-qty="{{ forloop.index }}">
-                    <button type="button" data-step="1" aria-label="{{ 'cart.increase' | t: product: item.product.title | escape }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
+                    <button type="button" data-step="1" aria-label="{{ 'cart.increase' | t: product: item.product.title  }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
                   </quantity-input>
                   <a class="cart-line__remove" href="{{ item.url_to_remove }}">{{ 'cart.remove' | t }}<span class="visually-hidden"> {{ item.product.title | escape }}</span></a>
                 </div>

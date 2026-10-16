@@ -6,7 +6,7 @@
   assign step = step | strip | plus: 0
   assign mf = product.metafields.bts
   assign step_label = mf.step_label.value
-  assign inci_hint = 'product.inci_hint' | t
+  assign inci_hint = 'product.inci_hint' | t | replace: '&amp;', '&'
   if step_label == blank
     for tag in product.tags
       assign head = tag | slice: 0, 2
@@ -329,10 +329,10 @@
                 assign hint = ''
                 if heading == blank
                   assign hk = 'product.sections.' | append: kind
-                  assign heading = hk | t
+                  assign heading = hk | t | replace: '&amp;', '&'
                   assign hint_key = 'product.sections.' | append: kind | append: '_hint'
                   if kind == 'what' or kind == 'ingredients' or kind == 'inci' or kind == 'caution'
-                    assign hint = hint_key | t
+                    assign hint = hint_key | t | replace: '&amp;', '&'
                   endif
                 endif
                 capture body
@@ -368,7 +368,7 @@
                         echo '<ul class="cluster" role="list">'
                         for c in cs
                           assign ck = 'concerns.' | append: c
-                          assign c_label = ck | t
+                          assign c_label = ck | t | replace: '&amp;', '&'
                           echo '<li class="pill pill--quiet">' | append: c_label | append: '</li>'
                         endfor
                         echo '</ul>'

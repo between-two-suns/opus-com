@@ -7,7 +7,7 @@
 {%- liquid
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'creators.apply_heading' | t
+    assign heading = 'creators.apply_heading' | t | replace: '&amp;', '&'
   endif
   assign platforms = 'instagram,tiktok,youtube,other' | split: ','
   assign sizes = 'under_1k,1k_10k,10k_50k,50k_100k,over_100k' | split: ','
@@ -75,7 +75,7 @@
                 <select id="Cr-platform" name="contact[Main platform]">
                   {%- for pl in platforms -%}
                     {%- assign pk = 'creators.form.platforms.' | append: pl -%}
-                    <option value="{{ pk | t | escape }}">{{ pk | t }}</option>
+                    <option value="{{ pk | t }}">{{ pk | t }}</option>
                   {%- endfor -%}
                 </select>
               </div>
@@ -90,7 +90,7 @@
                 <select id="Cr-size" name="contact[Audience]">
                   {%- for sz in sizes -%}
                     {%- assign sk = 'creators.form.sizes.' | append: sz -%}
-                    <option value="{{ sk | t | escape }}">{{ sk | t }}</option>
+                    <option value="{{ sk | t }}">{{ sk | t }}</option>
                   {%- endfor -%}
                 </select>
               </div>
@@ -108,7 +108,7 @@
               {%- for k in kinds -%}
                 {%- assign kk = 'creators.form.kinds.' | append: k -%}
                 <label class="cr-check">
-                  <input type="checkbox" name="contact[Makes: {{ kk | t | escape }}]" value="✓">
+                  <input type="checkbox" name="contact[Makes: {{ kk | t }}]" value="✓">
                   <span>{{ kk | t }}</span>
                 </label>
               {%- endfor -%}
@@ -123,14 +123,14 @@
                 <select id="Cr-skin" name="contact[Skin type]">
                   {%- for s in skins -%}
                     {%- assign kk = 'creators.form.skins.' | append: s -%}
-                    <option value="{{ kk | t | escape }}">{{ kk | t }}</option>
+                    <option value="{{ kk | t }}">{{ kk | t }}</option>
                   {%- endfor -%}
                 </select>
               </div>
             </div>
             <div class="field">
               <label for="Cr-why">{{ 'creators.form.why' | t }}</label>
-              <textarea id="Cr-why" name="contact[body]" rows="4" placeholder="{{ 'creators.form.why_hint' | t | escape }}">{{ form.body }}</textarea>
+              <textarea id="Cr-why" name="contact[body]" rows="4" placeholder="{{ 'creators.form.why_hint' | t }}">{{ form.body }}</textarea>
             </div>
           </fieldset>
 

@@ -3,7 +3,7 @@
   assign blog = section.settings.blog | default: blogs.journal
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'sections.journal.heading' | t
+    assign heading = 'sections.journal.heading' | t | replace: '&amp;', '&'
   endif
 -%}
 {%- if blog.articles_count > 0 -%}

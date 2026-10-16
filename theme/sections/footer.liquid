@@ -5,19 +5,19 @@
   endif
   assign tagline = section.settings.tagline | default: ''
   if tagline == blank
-    assign tagline = 'footer.tagline' | t
+    assign tagline = 'footer.tagline' | t | replace: '&amp;', '&'
   endif
   assign description = section.settings.description
   if description == blank
-    assign description = 'footer.description' | t
+    assign description = 'footer.description' | t | replace: '&amp;', '&'
   endif
   assign news_heading = section.settings.newsletter_heading
   if news_heading == blank
-    assign news_heading = 'newsletter.heading' | t
+    assign news_heading = 'newsletter.heading' | t | replace: '&amp;', '&'
   endif
   assign news_text = section.settings.newsletter_text
   if news_text == blank
-    assign news_text = 'newsletter.text' | t
+    assign news_text = 'newsletter.text' | t | replace: '&amp;', '&'
   endif
 -%}
 <footer class="site-footer" aria-labelledby="FooterTitle">
@@ -52,7 +52,7 @@
                 assign col_heading = block.settings.heading
                 if col_heading == blank
                   assign col_key = 'footer.headings.' | append: block.settings.fallback
-                  assign col_heading = col_key | t
+                  assign col_heading = col_key | t | replace: '&amp;', '&'
                 endif
               -%}
               <h2>{{ col_heading | escape }}</h2>

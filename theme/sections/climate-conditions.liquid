@@ -7,15 +7,15 @@
 {%- liquid
   assign eyebrow = section.settings.eyebrow
   if eyebrow == blank
-    assign eyebrow = 'sections.climate.eyebrow' | t
+    assign eyebrow = 'sections.climate.eyebrow' | t | replace: '&amp;', '&'
   endif
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'sections.climate.heading' | t
+    assign heading = 'sections.climate.heading' | t | replace: '&amp;', '&'
   endif
   assign text = section.settings.text
   if text == blank
-    assign text = 'sections.climate.text' | t
+    assign text = 'sections.climate.text' | t | replace: '&amp;', '&'
   endif
   assign conditions = 'sun,pollution,dust,humidity,heat,ac,change,everyday' | split: ','
   assign source = section.settings.collection | default: collections.all

@@ -15,7 +15,7 @@
   assign label_h = heights[label_index]
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'sections.product_label.heading' | t
+    assign heading = 'sections.product_label.heading' | t | replace: '&amp;', '&'
   endif
 -%}
 {%- if section.settings.show and step > 0 and label != blank -%}
@@ -28,10 +28,10 @@
         <p class="t-muted">{{ 'sections.product_label.text' | t }}</p>
       </div>
       <figure class="label-band__figure">
-        <div class="label-band__scroller" tabindex="0" role="region" aria-label="{{ 'sections.product_label.scroller' | t: product: product.title | escape }}">
+        <div class="label-band__scroller" tabindex="0" role="region" aria-label="{{ 'sections.product_label.scroller' | t: product: product.title  }}">
           <img
             src="{{ label | asset_url }}"
-            alt="{{ 'sections.product_label.alt' | t: product: product.title | escape }}"
+            alt="{{ 'sections.product_label.alt' | t: product: product.title  }}"
             width="1290"
             height="{{ label_h }}"
             loading="lazy"

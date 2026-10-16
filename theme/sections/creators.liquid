@@ -8,15 +8,15 @@
 {%- liquid
   assign eyebrow = section.settings.eyebrow
   if eyebrow == blank
-    assign eyebrow = 'creators.eyebrow' | t
+    assign eyebrow = 'creators.eyebrow' | t | replace: '&amp;', '&'
   endif
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'creators.heading' | t
+    assign heading = 'creators.heading' | t | replace: '&amp;', '&'
   endif
   assign text = section.settings.text
   if text == blank
-    assign text = 'creators.text' | t
+    assign text = 'creators.text' | t | replace: '&amp;', '&'
   endif
   assign frames = 'daily-reset-cleanser:city:dust:1,clarity-serum:humidity:drop:2,daily-barrier-moisturizing-cream:ac:ac:3,daily-defense-sunscreen-spf-50:sun:sun:4' | split: ','
   assign offers = 'routine,code,earn,featured' | split: ','
@@ -75,7 +75,7 @@
           {%- assign tk = 'creators.offers.' | append: o | append: '.title' -%}
           {%- assign bk = 'creators.offers.' | append: o | append: '.text' -%}
           {%- assign nk = 'creators.offers.' | append: o | append: '.note' -%}
-          {%- assign note = nk | t -%}
+          {%- assign note = nk | t | replace: '&amp;', '&' -%}
           <li class="cr-card" style="--sku: var(--c-step-{{ forloop.index }}); --sku-tint: var(--c-step-{{ forloop.index }}-tint);">
             <span class="cr-card__num step-num" aria-hidden="true">0{{ forloop.index }}</span>
             <h3 class="cr-card__title">{{ tk | t }}</h3>

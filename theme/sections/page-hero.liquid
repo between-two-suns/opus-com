@@ -9,13 +9,13 @@
     assign tk = 'page_presets.' | append: preset | append: '.text'
     assign ek = 'page_presets.' | append: preset | append: '.eyebrow'
     if heading == blank
-      assign heading = hk | t
+      assign heading = hk | t | replace: '&amp;', '&'
     endif
     if text == blank
-      assign text = tk | t
+      assign text = tk | t | replace: '&amp;', '&'
     endif
     if eyebrow == blank
-      assign eyebrow = ek | t
+      assign eyebrow = ek | t | replace: '&amp;', '&'
     endif
   endif
   if heading == blank

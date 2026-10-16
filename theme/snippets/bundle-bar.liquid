@@ -12,7 +12,7 @@
     assign steps = def | strip | split: '|' | first | split: ','
     assign v = bp.selected_or_first_available_variant
     assign name_key = 'bundles.names.' | append: bp.handle
-    assign name = name_key | t
+    assign name = name_key | t | replace: '&amp;', '&'
     if name contains 'translation missing'
       assign name = bp.title
     endif

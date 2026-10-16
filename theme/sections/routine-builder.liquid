@@ -8,7 +8,7 @@
   assign source = section.settings.collection | default: collections.all
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'sections.builder.heading' | t
+    assign heading = 'sections.builder.heading' | t | replace: '&amp;', '&'
   endif
 -%}
 <section class="section builder" aria-labelledby="BuilderTitle-{{ section.id }}">
@@ -28,12 +28,12 @@
       data-t3="{{ settings.tier_3_pct | default: 0 }}"
       data-t4="{{ settings.tier_4_pct | default: 0 }}"
       data-coming-soon="{% if settings.zero_price_coming_soon %}true{% endif %}"
-      data-str-count="{{ 'sections.builder.count' | t: count: '__N__' | escape }}"
-      data-str-empty="{{ 'sections.builder.empty' | t | escape }}"
-      data-str-next="{{ 'cart.tier_next' | t: count: '__N__', pct: '__P__' | escape }}"
-      data-str-saving="{{ 'cart.tier_reached' | t: pct: '__P__' | escape }}"
-      data-str-added="{{ 'sections.builder.added_step' | t: product: '__X__' | escape }}"
-      data-str-removed="{{ 'sections.builder.removed_step' | t: product: '__X__' | escape }}"
+      data-str-count="{{ 'sections.builder.count' | t: count: '__N__'  }}"
+      data-str-empty="{{ 'sections.builder.empty' | t }}"
+      data-str-next="{{ 'cart.tier_next' | t: count: '__N__', pct: '__P__'  }}"
+      data-str-saving="{{ 'cart.tier_reached' | t: pct: '__P__'  }}"
+      data-str-added="{{ 'sections.builder.added_step' | t: product: '__X__'  }}"
+      data-str-removed="{{ 'sections.builder.removed_step' | t: product: '__X__'  }}"
     >
       <div class="builder__stage grain" data-stage style="--fill: 0">
         <span class="builder__sun builder__sun--warm" aria-hidden="true"></span>

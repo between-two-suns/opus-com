@@ -16,12 +16,12 @@
   assign wrap = tag | default: 'li'
   assign htag = heading_tag | default: 'h3'
   assign name_key = 'bundles.names.' | append: product.handle
-  assign name = name_key | t
+  assign name = name_key | t | replace: '&amp;', '&'
   if name contains 'translation missing' or name == name_key
     assign name = product.title
   endif
   assign desc_key = 'bundles.desc.' | append: product.handle
-  assign desc = desc_key | t
+  assign desc = desc_key | t | replace: '&amp;', '&'
   if desc contains 'translation missing' or desc == desc_key
     assign desc = ''
   endif

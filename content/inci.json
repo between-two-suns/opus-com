@@ -818,11 +818,11 @@
    "key_ingredient": null
   },
   {
-   "handle": "sodium-lauryl-sulfosuccinate",
-   "inci": "Sodium Lauryl Sulfosuccinate",
+   "handle": "disodium-lauryl-sulfosuccinate",
+   "inci": "Disodium Lauryl Sulfosuccinate",
    "name": {
-    "en": "Sodium lauryl sulfosuccinate",
-    "ar": "صوديوم لوريل سلفوسكسينات"
+    "en": "Disodium lauryl sulfosuccinate",
+    "ar": "ثنائي صوديوم لوريل سلفوسكسينات"
    },
    "group": "cleansing",
    "description": {

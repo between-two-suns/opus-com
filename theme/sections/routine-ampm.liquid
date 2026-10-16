@@ -7,11 +7,11 @@
     {%- for slot in (1..2) -%}
       {%- liquid
         if slot == 1
-          assign title = 'pages.routines.am_title' | t
+          assign title = 'pages.routines.am_title' | t | replace: '&amp;', '&'
           assign max = 4
           assign icon = 'sun'
         else
-          assign title = 'pages.routines.pm_title' | t
+          assign title = 'pages.routines.pm_title' | t | replace: '&amp;', '&'
           assign max = 3
           assign icon = 'moon'
         endif

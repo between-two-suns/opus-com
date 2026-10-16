@@ -2,11 +2,11 @@
 {%- liquid
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'newsletter.heading' | t
+    assign heading = 'newsletter.heading' | t | replace: '&amp;', '&'
   endif
   assign text = section.settings.text
   if text == blank
-    assign text = 'newsletter.text' | t
+    assign text = 'newsletter.text' | t | replace: '&amp;', '&'
   endif
   assign form_id = 'Newsletter-' | append: section.id
 -%}

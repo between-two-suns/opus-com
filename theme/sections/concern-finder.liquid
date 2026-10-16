@@ -2,7 +2,7 @@
 {%- liquid
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'sections.concerns.heading' | t
+    assign heading = 'sections.concerns.heading' | t | replace: '&amp;', '&'
   endif
   assign source = section.settings.collection | default: collections.all
   assign target = source.url | default: routes.all_products_collection_url

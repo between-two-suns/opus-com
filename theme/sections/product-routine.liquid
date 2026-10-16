@@ -54,7 +54,13 @@
 
     {%- comment -%} Spec: every single-product page offers The Day Ritual; stock-ups only on their own product page. {%- endcomment -%}
     <div class="routine-strip__offers">
-      {%- unless product.handle == 'the-day-ritual' -%}{% render 'bundle-bar', handle: 'the-day-ritual' %}{%- endunless -%}
+      {%- comment -%} Only offer sets that contain this product: the moisturizer (step 3) isn't in The Day Ritual. {%- endcomment -%}
+      {%- if this_step == 3 -%}
+        {% render 'bundle-bar', handle: 'the-night-ritual' %}
+        {% render 'bundle-bar', handle: 'the-full-ritual' %}
+      {%- elsif this_step > 0 -%}
+        {% render 'bundle-bar', handle: 'the-day-ritual' %}
+      {%- endif -%}
       {%- if this_step == 2 -%}{% render 'bundle-bar', handle: 'serum-stock-up' %}{%- endif -%}
       {%- if this_step == 4 -%}{% render 'bundle-bar', handle: 'spf-stock-up' %}{%- endif -%}
     </div>

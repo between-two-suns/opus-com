@@ -12,11 +12,11 @@
           assign body = block.settings.text
           if title == blank and block.settings.preset != 'custom'
             assign tk = 'sections.facts.items.' | append: block.settings.preset | append: '.title'
-            assign title = tk | t
+            assign title = tk | t | replace: '&amp;', '&'
           endif
           if body == blank and block.settings.preset != 'custom'
             assign bk = 'sections.facts.items.' | append: block.settings.preset | append: '.text'
-            assign body = bk | t
+            assign body = bk | t | replace: '&amp;', '&'
           endif
         -%}
         <li class="facts__item" {{ block.shopify_attributes }}>

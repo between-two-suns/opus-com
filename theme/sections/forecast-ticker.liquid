@@ -1,7 +1,7 @@
 {%- liquid
   assign items_text = section.settings.items
   if items_text == blank
-    assign items_text = 'sections.ticker.items' | t
+    assign items_text = 'sections.ticker.items' | t | replace: '&amp;', '&'
   endif
   assign items = items_text | split: '|'
 -%}

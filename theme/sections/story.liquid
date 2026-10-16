@@ -16,12 +16,12 @@
           assign tk = 'stories.' | append: p | append: '.text'
           assign ek = 'stories.' | append: p | append: '.eyebrow'
           if heading == blank
-            assign heading = hk | t
+            assign heading = hk | t | replace: '&amp;', '&'
           endif
           if text == blank
-            assign text = tk | t
+            assign text = tk | t | replace: '&amp;', '&'
           endif
-          assign eyebrow = ek | t
+          assign eyebrow = ek | t | replace: '&amp;', '&'
         endif
       -%}
       <article class="story__row{% if forloop.index0 == 1 or forloop.index0 == 3 %} story__row--flip{% endif %} reveal" {{ block.shopify_attributes }}>

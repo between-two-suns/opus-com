@@ -6,11 +6,11 @@
 {%- liquid
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'sections.bundles.heading' | t
+    assign heading = 'sections.bundles.heading' | t | replace: '&amp;', '&'
   endif
   assign text = section.settings.text
   if text == blank
-    assign text = 'sections.bundles.text' | t
+    assign text = 'sections.bundles.text' | t | replace: '&amp;', '&'
   endif
 -%}
 <section class="section bundles" id="sets" data-tone="lilac" aria-labelledby="BundlesTitle-{{ section.id }}">
