@@ -16,13 +16,27 @@
         "q1": {
           "type": "qa",
           "settings": {
-            "preset": "skin_type"
+            "preset": "ac_steps"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "reapply"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "preset": "all_four"
           }
         }
       },
       "block_order": [
         "q0",
-        "q1"
+        "q1",
+        "q2",
+        "q3"
       ],
       "settings": {
         "compact": true,

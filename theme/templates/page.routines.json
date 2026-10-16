@@ -32,6 +32,18 @@
         "q2": {
           "type": "qa",
           "settings": {
+            "preset": "all_four"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "preset": "spf_last"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
             "preset": "reapply"
           }
         }
@@ -39,7 +51,9 @@
       "block_order": [
         "q0",
         "q1",
-        "q2"
+        "q2",
+        "q3",
+        "q4"
       ],
       "settings": {
         "compact": true,

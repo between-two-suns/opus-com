@@ -25,43 +25,109 @@
         "q2": {
           "type": "qa",
           "settings": {
-            "preset": "reapply"
+            "preset": "all_four"
           }
         },
         "q3": {
           "type": "qa",
           "settings": {
-            "preset": "skin_type"
+            "preset": "start_where"
           }
         },
         "q4": {
           "type": "qa",
           "settings": {
-            "preset": "inci"
+            "preset": "spf_last"
           }
         },
         "q5": {
           "type": "qa",
           "settings": {
-            "preset": "fragrance"
+            "preset": "reapply"
           }
         },
         "q6": {
           "type": "qa",
           "settings": {
-            "preset": "climate"
+            "preset": "skin_type"
           }
         },
         "q7": {
           "type": "qa",
           "settings": {
-            "preset": "made"
+            "preset": "fragrance"
           }
         },
         "q8": {
           "type": "qa",
           "settings": {
+            "preset": "climate"
+          }
+        },
+        "q9": {
+          "type": "qa",
+          "settings": {
+            "preset": "ac_steps"
+          }
+        },
+        "q10": {
+          "type": "qa",
+          "settings": {
+            "preset": "inci"
+          }
+        },
+        "q11": {
+          "type": "qa",
+          "settings": {
+            "preset": "inci_what"
+          }
+        },
+        "q12": {
+          "type": "qa",
+          "settings": {
+            "preset": "ingredients_order"
+          }
+        },
+        "q13": {
+          "type": "qa",
+          "settings": {
+            "preset": "made"
+          }
+        },
+        "q14": {
+          "type": "qa",
+          "settings": {
+            "preset": "set_full_size"
+          }
+        },
+        "q15": {
+          "type": "qa",
+          "settings": {
+            "preset": "set_saving"
+          }
+        },
+        "q16": {
+          "type": "qa",
+          "settings": {
+            "preset": "delivery_free"
+          }
+        },
+        "q17": {
+          "type": "qa",
+          "settings": {
             "preset": "payment"
+          }
+        },
+        "q18": {
+          "type": "qa",
+          "settings": {
+            "preset": "returns"
+          }
+        },
+        "q19": {
+          "type": "qa",
+          "settings": {
+            "preset": "contact_reply"
           }
         }
       },
@@ -74,12 +140,25 @@
         "q5",
         "q6",
         "q7",
-        "q8"
+        "q8",
+        "q9",
+        "q10",
+        "q11",
+        "q12",
+        "q13",
+        "q14",
+        "q15",
+        "q16",
+        "q17",
+        "q18",
+        "q19"
       ],
       "settings": {
         "compact": false,
         "show_contact": true,
-        "schema": true
+        "schema": true,
+        "hub": true,
+        "heading": ""
       }
     }
   },

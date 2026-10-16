@@ -1,7 +1,8 @@
 {%- comment -%}
-  A one-line offer for a fixed-price bundle: name, saving vs separately (+ ships free), add button with the
-  real bundle price and the singles total struck through. Falls back to nothing if the bundle doesn't exist.
-  Params: handle (bundle product handle), class (extra class on the wrapper)
+  A set offer card: the set's picture (photo or colour bands), what's inside (the product you're looking at is
+  marked), the saving vs buying separately, a "Ships free" badge when it reaches the free-delivery setting,
+  and one add button with the real price. Renders nothing if the set doesn't exist.
+  Params: handle (set product handle), class (extra class on the wrapper)
 {%- endcomment -%}
 {%- assign bp = all_products[handle] -%}
 {%- if bp != blank and bp.id -%}
@@ -9,7 +10,11 @@
     capture def
       render 'bundle-def', handle: bp.handle
     endcapture
-    assign steps = def | strip | split: '|' | first | split: ','
+    assign def = def | strip | split: '|'
+    assign steps = def[0] | split: ','
+    assign kind = def[3]
+    assign uniq = steps | uniq
+    assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
     assign v = bp.selected_or_first_available_variant
     assign name_key = 'bundles.names.' | append: bp.handle
     assign name = name_key | t | replace: '&amp;', '&'
@@ -21,40 +26,42 @@
       assign saving = v.compare_at_price | minus: v.price
     endif
     assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
-    assign uniq = steps | uniq
-    capture what
-      if uniq.size == 1
-        assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
-        assign si = uniq.first | plus: 0
-        echo steps.size | append: ' × ' | append: all_products[step_handles[si]].title
-      else
-        echo 'sections.bundles.count' | t: count: steps.size
-      endif
-    endcapture
+    if kind == 'stock'
+      assign eyebrow = 'bundle_offer.stock' | t
+    else
+      assign eyebrow = 'bundle_offer.complete' | t
+    endif
   -%}
-  <div class="bundle-offer {{ class }}" data-handle="{{ bp.handle }}">
-    <div class="bundle-offer__text">
-      <span class="bundle-offer__dots" aria-hidden="true">{%- for st in steps -%}<span data-step="{{ st | strip }}"></span>{%- endfor -%}</span>
-      <div>
-        <p class="t-subheading">{{ name | escape }} · {{ what | strip | escape }}</p>
-        <p class="t-small bundle-offer__save">
-          {%- if saving > 0 -%}{%- capture amt -%}{% render 'egp', cents: saving %}{%- endcapture -%}{{ 'bundles.save_vs' | t: amount: amt }}{%- endif -%}
-          {%- if threshold > 0 and v.price >= threshold -%}{% if saving > 0 %} · {% endif %}{{ 'bundles.ships_free' | t }}{%- endif -%}
-        </p>
+  <article class="offer {{ class }}" data-handle="{{ bp.handle }}" aria-labelledby="Offer-{{ bp.id }}-{{ class | handleize }}">
+    <a class="offer__visual" href="{{ bp.url }}" tabindex="-1" aria-hidden="true">{%- render 'set-visual', product: bp, sizes: '(min-width: 990px) 220px, 120px' -%}</a>
+    <div class="offer__body">
+      <p class="offer__eyebrow">{{ eyebrow }}</p>
+      <h3 class="offer__name" id="Offer-{{ bp.id }}-{{ class | handleize }}"><a href="{{ bp.url }}">{{ name | escape }}</a></h3>
+      <ul class="offer__items" role="list">
+        {%- for st in uniq -%}
+          {%- assign si = st | plus: 0 -%}
+          {%- assign comp = all_products[step_handles[si]] -%}
+          {%- assign q = 0 -%}{%- for x in steps -%}{%- if x == st -%}{%- assign q = q | plus: 1 -%}{%- endif -%}{%- endfor -%}
+          <li data-step="{{ si }}"{% if product and comp.id == product.id %} class="is-here"{% endif %}><span class="bundle__dot" aria-hidden="true"></span>{% if q > 1 %}{{ q }} × {% endif %}{{ comp.title | escape }}{% if product and comp.id == product.id %} <span class="offer__here">{{ 'bundle_offer.this_one' | t }}</span>{% endif %}</li>
+        {%- endfor -%}
+      </ul>
+      <div class="offer__meta">
+        {%- if saving > 0 -%}{%- capture amt -%}{% render 'egp', cents: saving %}{%- endcapture -%}<p class="bundle__save t-small">{{ 'bundles.save_vs' | t: amount: amt }}</p>{%- endif -%}
+        {%- if threshold > 0 and v.price >= threshold -%}<p class="ship-badge">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</p>{%- endif -%}
       </div>
     </div>
-    <product-form>
-      <form method="post" action="{{ routes.cart_add_url }}">
-        <input type="hidden" name="id" value="{{ v.id }}">
-        <input type="hidden" name="quantity" value="1">
-        <button type="submit" class="btn" data-magnetic{% unless v.available %} disabled{% endunless %}>
-          <span class="btn__label">{{ 'product.add_to_cart' | t }}<span class="visually-hidden">: {{ name | escape }}</span></span>
-          <span class="btn__sep" aria-hidden="true">·</span>
-          <span class="btn__price">{% render 'egp', cents: v.price %}</span>
-          {%- if saving > 0 -%}<s class="bundle-offer__was"><span class="visually-hidden">{{ 'sections.bundles.was' | t }} </span>{% render 'egp', cents: v.compare_at_price %}</s>{%- endif -%}
-        </button>
-        <p class="t-xs t-muted" data-form-error hidden></p>
-      </form>
-    </product-form>
-  </div>
+    <div class="offer__buy">
+      <p class="offer__price"><span class="offer__now">{% render 'egp', cents: v.price %}</span>{%- if saving > 0 -%} <s class="offer__was"><span class="visually-hidden">{{ 'sections.bundles.was' | t }} </span>{% render 'egp', cents: v.compare_at_price %}</s>{%- endif -%}</p>
+      <product-form>
+        <form method="post" action="{{ routes.cart_add_url }}">
+          <input type="hidden" name="id" value="{{ v.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="btn btn--full"{% unless v.available %} disabled{% endunless %}>
+            <span class="btn__label">{{ 'sections.bundles.cta' | t }}<span class="visually-hidden">: {{ name | escape }}</span></span>
+          </button>
+          <p class="t-xs t-muted" data-form-error hidden></p>
+        </form>
+      </product-form>
+    </div>
+  </article>
 {%- endif -%}

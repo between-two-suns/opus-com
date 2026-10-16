@@ -47,6 +47,53 @@
     "editorial": {
       "type": "editorial-band",
       "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "qa",
+          "settings": {
+            "preset": "start_where"
+          }
+        },
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "all_four"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "order"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "preset": "delivery_free"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "preset": "made"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "compact": true,
+        "show_contact": true,
+        "schema": false
+      }
     }
   },
   "order": [
@@ -55,6 +102,7 @@
     "bundles",
     "climate",
     "ingredient_heroes",
-    "editorial"
+    "editorial",
+    "faq"
   ]
 }

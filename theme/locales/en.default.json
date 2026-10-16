@@ -105,8 +105,8 @@
     "legal": "Legal"
   },
   "newsletter": {
-    "heading": "Get the forecast",
-    "text": "Launch news, routines and skin notes for changing weather. No spam.",
+    "heading": "Hear it first",
+    "text": "Launches, routines and skin notes, straight to your inbox. No spam.",
     "success": "You’re in. Watch your inbox.",
     "email_label": "Email address",
     "submit": "Sign up",
@@ -451,7 +451,9 @@
     "ship_remaining": "{{ amount }} away from free delivery",
     "ship_unlocked": "Free delivery unlocked",
     "ship_label": "Progress to free delivery",
-    "added_short": "Added"
+    "added_short": "Added",
+    "routine_count": "{{ count }} of 4 steps",
+    "add_short": "Add"
   },
   "pages": {
     "contact": {
@@ -461,7 +463,27 @@
       "message": "Message",
       "send": "Send message",
       "success": "Thanks — we’ve got your message and will reply by email.",
-      "required": "Required"
+      "required": "Required",
+      "title": "Talk to us.",
+      "lede": "A question about a product, an order or your routine? Pick a topic and write to us. We reply by email.",
+      "way_email": "Email us",
+      "way_wa": "Chat with us",
+      "way_ig": "Send a DM",
+      "way_faq": "Quick answers",
+      "way_faq_sub": "Routine, products, sets and delivery",
+      "way_creators": "Creators",
+      "way_creators_sub": "Make content with us",
+      "topic": "What is it about?",
+      "topics": {
+        "product": "A product",
+        "order": "My order",
+        "routine": "My routine",
+        "creators": "Creators",
+        "other": "Something else"
+      },
+      "message_ph": "Tell us a little about it…",
+      "note": "We only use your details to reply.",
+      "done_title": "Message sent."
     },
     "faq": {
       "contact_cta": "Still have a question?",
@@ -509,7 +531,14 @@
         "texture": "Texture agent",
         "extract": "Plant extract"
       },
-      "jump_label": "On this page"
+      "jump_label": "On this page",
+      "ref_eyebrow": "Nothing hidden",
+      "ref_heading": "Every ingredient, A to Z.",
+      "ref_text": "All of them, by their label (INCI) name, with what each one is there to do and which products contain it.",
+      "ref_open": "Open the full list",
+      "ref_close": "Close the list",
+      "built_around": "What does it",
+      "benefits_label": "What each formula does for your skin"
     },
     "routines": {
       "am_title": "Morning",
@@ -580,7 +609,15 @@
     "zip": "Postal code",
     "phone": "Phone",
     "company": "Company",
-    "set_default": "Set as default address"
+    "set_default": "Set as default address",
+    "welcome_back": "Welcome back.",
+    "join_title": "Join Between Two Suns.",
+    "perks_title": "Your routine, remembered.",
+    "perk_orders": "Track every order",
+    "perk_address": "Save your address for faster checkout",
+    "perk_reorder": "See what you bought, reorder in a tap",
+    "marketing": "Email me launches, routines and offers. Unsubscribe any time.",
+    "reset_sent": "Check your inbox for a link to reset your password."
   },
   "gift_card": {
     "title": "Your gift card",
@@ -665,8 +702,54 @@
       "set_saving": {
         "q": "How is the saving worked out?",
         "a": "Against buying the same products separately at today’s prices. The set price is the price you pay; it is shown before you add it to your bag."
+      },
+      "start_where": {
+        "q": "Which set should I start with?",
+        "a": "Starting from nothing: The Full Ritual, all four steps for morning and night. Mostly mornings: The Day Ritual. Oil and sun: the Clear & Protect Duo. Or pick single steps on the Sets page."
+      },
+      "all_four": {
+        "q": "Do I need all four steps?",
+        "a": "No. Start with the steps you need and add the rest when you want. Used together they go in order: cleanser, serum, moisturizer, then sunscreen as the last step in the morning."
+      },
+      "delivery_free": {
+        "q": "Is delivery free?",
+        "a": "Standard delivery is free on eligible orders of {{ amount }} or more. The delivery cost for your order is shown at checkout before you pay."
+      },
+      "returns": {
+        "q": "Can I return a product?",
+        "a": "What can be returned, and how, is set out in our refund policy:"
+      },
+      "contact_reply": {
+        "q": "How do I reach you?",
+        "a": "Send us a message from the Contact page or email us. We reply by email."
+      },
+      "inci_what": {
+        "q": "What is INCI?",
+        "a": "The International Nomenclature of Cosmetic Ingredients: the standard names used on cosmetic labels, so an ingredient list reads the same in every country."
+      },
+      "ingredients_order": {
+        "q": "Why is water (Aqua) listed first?",
+        "a": "Ingredient lists name ingredients from the largest amount down. Water is the base of most formulas, so it usually comes first."
+      },
+      "ac_steps": {
+        "q": "What should I use for long days in air-con?",
+        "a": "Our pick for air-con days is Daily Barrier Moisturizing Cream with Clarity Serum. The Climate page shows the steps we pair with each condition."
       }
-    }
+    },
+    "eyebrow": "Good to know",
+    "search": "Search questions",
+    "topics": "Topics",
+    "no_results": "Nothing matches yet. Try another word, or ask us.",
+    "cats": {
+      "all": "All",
+      "routine": "Routine",
+      "products": "Products",
+      "sets": "Sets",
+      "orders": "Orders & delivery",
+      "other": "More"
+    },
+    "help_title": "Still stuck?",
+    "help_text": "Send us a message and we’ll reply by email."
   },
   "page_presets": {
     "routines": {
@@ -691,8 +774,8 @@
     },
     "faq": {
       "eyebrow": "Help",
-      "heading": "FAQ",
-      "text": "Straight answers, taken from the pack."
+      "heading": "Ask us anything.",
+      "text": "Search, or pick a topic. Answers come from the pack and from how the store actually works."
     },
     "contact": {
       "eyebrow": "Contact",
@@ -797,8 +880,8 @@
     "terms": "One use per customer. {{ minimum }} minimum. Not valid on Stock-Up packs. Can’t be combined with other product discounts."
   },
   "creators": {
-    "eyebrow": "Creators · Between Two Suns",
-    "heading": "Show us your weather.",
+    "eyebrow": "Creators",
+    "heading": "Film the space between.",
     "text": "Sun at noon, AC by two, dust on the commute. If you make honest, good-looking content about real skin in real Egyptian weather, let’s make things together.",
     "cta": "Apply to join",
     "how_link": "How it works",
@@ -939,7 +1022,9 @@
       "the-core-duo": "The two-step start: cleanse, then treat.",
       "spf-stock-up": "Already on our SPF? Two tubes, so the morning step never runs out.",
       "serum-stock-up": "Already on the serum? Two bottles, so it never runs out."
-    }
+    },
+    "others_eyebrow": "Compare",
+    "others_heading": "Other sets"
   },
   "climate_story": {
     "eyebrow": "Climate-adapted skincare",
@@ -956,5 +1041,10 @@
     "end_eyebrow": "Then tomorrow",
     "end_heading": "One routine for the whole day.",
     "end_text": "Four light steps, morning and night. Sunscreen is the last step every morning."
+  },
+  "bundle_offer": {
+    "complete": "Complete the routine",
+    "stock": "Stock up",
+    "this_one": "(this one)"
   }
 }

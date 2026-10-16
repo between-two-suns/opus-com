@@ -446,74 +446,80 @@ climate-switch.is-entered .cs__line:not([hidden]) { animation: cs-in 420ms var(-
 @media (min-width: 990px) { .facts-band__list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; } }
 .routine__bundle { margin-block-start: clamp(24px, 3vw, 40px); }
 
-/* ---------- Hero v3 · four colour blocks ---------- */
-.hp { position: relative; background: var(--c-daylight); padding-block-start: clamp(20px, 3.6vw, 44px); }
-.hp__head { display: grid; justify-items: center; text-align: center; gap: 14px; padding-block-end: clamp(36px, 3.4vw, 44px); }
-.hp__eyebrow { color: var(--c-muted); }
-.hp__title { display: grid; font-size: clamp(50px, 14.2vw, 148px); line-height: .86; }
-.hp__line { display: block; }
-:lang(ar) .hp__title { font-size: clamp(42px, 11vw, 112px); line-height: 1.12; margin-block-end: 6px; }
-.hp__copy { max-inline-size: 36ch; font-size: clamp(17px, 1.5vw, 20px); }
-.hp__ctas { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 26px; margin-block-start: 6px; }
-.hp__buy { min-height: 56px; padding-inline: 30px; font-size: 16px; }
-.hp__build { border: 0; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 6px; padding-inline: 4px; }
-
-.hp__stage { position: relative; }
-.hp__panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.hp__panel { position: relative; animation: hp-rise .9s var(--ease-out) both; animation-delay: calc(var(--i) * 70ms + 120ms); }
-.hp__link { display: block; position: relative; color: var(--c-ink); text-decoration: none; }
+/* ---------- Hero v3.1 · four colour bands, full screen ----------
+   Each band is one product: its studio photo sits in the lower part and fades into a flat band of the
+   photo's own background colour, so the headline can sit across all four. Phones get four narrow bands. */
+.hp { position: relative; background: var(--c-daylight); }
+.hp__stage { position: relative; isolation: isolate; block-size: clamp(560px, 70svh, 640px); overflow: hidden; }
+.hp__panels { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.hp__panel { position: relative; --band: var(--sku); }
+.hp__panel[data-step='1'] { --band: #3aad78; }
+.hp__panel[data-step='2'] { --band: #67c3e5; }
+.hp__panel[data-step='3'] { --band: #ac8ede; }
+.hp__panel[data-step='4'] { --band: #f79f73; }
+.hp__link { position: absolute; inset: 0; display: block; background: var(--band); color: var(--c-ink); text-decoration: none; }
 .hp__link:focus-visible { outline-offset: -6px; border-radius: 0; }
-.hp__media { display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--sku); }
-.hp__img { inline-size: 100%; block-size: 100%; object-fit: cover; transition: scale 900ms var(--ease-out); }
-.hp__img--contain { object-fit: contain; padding: 12%; }
-.hp__link:hover .hp__img { scale: 1.045; }
-.hp__cap {
-  position: absolute; inset-inline: 8px; inset-block-end: 8px;
-  display: grid; gap: 0; padding: 8px 10px 9px; border-radius: 12px;
-  background: color-mix(in srgb, #fff 86%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-  transition: translate var(--dur) var(--ease-out);
-}
-.hp__link:hover .hp__cap { translate: 0 -4px; }
-.hp__step { display: none; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; align-items: center; gap: 6px; }
-.hp__step::before { content: ''; inline-size: 9px; block-size: 9px; border-radius: 50%; background: var(--sku); flex: none; }
-:lang(ar) .hp__step { text-transform: none; letter-spacing: 0; font-size: 12.5px; }
-.hp__name { font-size: 13px; font-weight: 680; line-height: 1.2; letter-spacing: -0.01em; }
-.hp__price { font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--c-muted); }
+.hp__media { position: absolute; inset-inline: 0; inset-block-end: 0; block-size: 66%; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%); mask-image: linear-gradient(to bottom, transparent 0, #000 22%); }
+.hp__img { inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 50% 60%; transform-origin: 50% 80%;
+  animation: hp-rise 1s var(--ease-out) both; animation-delay: calc(var(--i) * 80ms + 100ms); transition: scale 900ms var(--ease-out); }
+.hp__img--contain { object-fit: contain; padding: 10%; }
+.hp__link:hover .hp__img { scale: 1.05; }
+.hp__cap { position: absolute; inset-inline: 0; inset-block-end: 0; display: flex; align-items: end; gap: 10px; padding: 12px 10px; }
+.hp__num { font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1; color: #fff; text-shadow: 0 1px 10px rgba(32, 35, 58, .25); }
+.hp__cap-text { display: none; }
 
-/* The brand mark on the seam where the hero meets the blocks; its two arcs part as the hero scrolls away. */
-.hp__mark {
-  position: absolute; inset-block-start: 0; inset-inline-start: 50%; translate: -50% -50%; z-index: 2; pointer-events: none;
-  inline-size: 46px; color: var(--c-ink);
-}
-[dir='rtl'] .hp__mark { translate: 50% -50%; }
+.hp__overlay { position: relative; z-index: 2; display: grid; justify-items: center; text-align: center; gap: 10px; padding: 22px var(--gutter) 0; pointer-events: none; }
+.hp__overlay a { pointer-events: auto; }
+.hp__eyebrow { color: var(--c-ink); }
+.hp__title { display: grid; font-size: clamp(46px, 13.4vw, 160px); line-height: .86; }
+.hp__line { display: block; }
+:lang(ar) .hp__title { font-size: clamp(40px, 11vw, 120px); line-height: 1.12; }
+.hp__copy { max-inline-size: 38ch; font-size: clamp(16px, 1.4vw, 19px); }
+.hp__ctas { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 22px; margin-block-start: 8px; }
+.hp__buy { min-height: 54px; padding-inline: 28px; font-size: 16px; }
+.hp__build { border: 0; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 6px; padding-inline: 4px; }
+.hp__foot { display: grid; justify-items: center; text-align: center; gap: 10px; }
+.hp__foot--in { display: none; }
+.hp__foot--out { padding-block: 22px 8px; }
+
+/* The brand mark above the headline; its two arcs part as the hero scrolls away. */
+.hp__mark { display: block; inline-size: 40px; color: var(--c-ink); margin-block-end: 2px; }
 .hp__mark svg { inline-size: 100%; block-size: auto; overflow: visible; }
 .hp__arc { transform-box: fill-box; transform-origin: center; }
 
 @media (min-width: 990px) {
-  .hp__head { grid-template-columns: 1fr auto; text-align: start; justify-items: start; align-items: end; column-gap: 48px; row-gap: 18px; padding-block-end: 40px; }
-  .hp__eyebrow, .hp__title { grid-column: 1 / -1; }
-  .hp__title { display: block; font-size: min(8.1vw, 140px); white-space: nowrap; }
+  .hp__stage { block-size: clamp(620px, calc(100svh - var(--header-h) - 48px), 980px); }
+  .hp__overlay { padding-block-start: clamp(28px, 6svh, 64px); gap: 12px; }
+  .hp__title { display: block; font-size: min(8.2vw, 14svh, 150px); white-space: nowrap; }
   .hp__line { display: inline; }
-  :lang(ar) .hp__title { font-size: min(6.4vw, 104px); }
-  .hp__copy { max-inline-size: 44ch; }
-  .hp__ctas { justify-content: flex-end; }
-  .hp__panels { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .hp__media { aspect-ratio: auto; block-size: clamp(440px, calc(100svh - 400px), 760px); }
-  .hp__cap { inset-inline: 16px; inset-block-end: 16px; padding: 14px 16px 15px; border-radius: 16px; grid-template-columns: 1fr auto; column-gap: 12px; row-gap: 2px; align-items: end; }
-  .hp__step { display: flex; grid-column: 1 / -1; }
-  .hp__name { font-size: 16px; }
-  .hp__price { font-size: 15px; color: var(--c-ink); }
-  /* Desktop: the mark sits in the middle of the line-up, where Clarity meets Barrier. */
-  .hp__mark { inset-block-start: 50%; inline-size: clamp(64px, 5.6vw, 92px); color: #fff; filter: drop-shadow(0 6px 16px rgba(32, 35, 58, .18)); }
+  :lang(ar) .hp__title { font-size: min(7vw, 12svh, 116px); }
+  .hp__foot--in { display: grid; }
+  .hp__foot--out { display: none; }
+  .hp__media { block-size: 60%; }
+  .hp__mark { inline-size: 52px; }
+  .hp__cap { inset-inline: 14px; inset-block-end: 14px; padding: 12px 14px; border-radius: 16px; gap: 12px; align-items: center;
+    background: color-mix(in srgb, #fff 86%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transition: translate var(--dur) var(--ease-out); }
+  .hp__link:hover .hp__cap { translate: 0 -4px; }
+  .hp__num { color: var(--c-ink); text-shadow: none; font-size: 30px; }
+  .hp__cap-text { display: grid; gap: 0; min-inline-size: 0; }
+  .hp__step { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c-muted); }
+  :lang(ar) .hp__step { letter-spacing: 0; text-transform: none; font-size: 12.5px; }
+  .hp__name { font-size: 15px; font-weight: 680; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hp__price { font-size: 14px; font-weight: 600; }
+}
+@media (min-width: 750px) and (max-width: 989px) {
+  .hp__stage { block-size: clamp(620px, 72svh, 760px); }
+  .hp__title { font-size: clamp(60px, 11vw, 110px); }
 }
 
-@keyframes hp-rise { from { translate: 0 28px; } }
+@keyframes hp-rise { from { translate: 0 24px; opacity: .001; } }
 @keyframes hp-part-a { to { translate: -260% 0; opacity: 0; } }
 @keyframes hp-part-b { to { translate: 260% 0; opacity: 0; } }
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .hp__stage { view-timeline: --hp-stage block; }
-    .hp__arc { animation: linear both; animation-timeline: --hp-stage; animation-range: contain 0% exit 70%; }
+    .hp__arc { animation: linear both; animation-timeline: --hp-stage; animation-range: exit 0% exit 60%; }
     .hp__arc--a { animation-name: hp-part-a; }
     .hp__arc--b { animation-name: hp-part-b; }
   }
@@ -577,4 +583,35 @@ climate-switch[data-active='sun'] .cs__badge[data-fx='sun'], climate-switch[data
 @media (min-width: 750px) {
   .eb__inner { justify-items: end; }
   .eb__img { object-position: 30% 22%; }
+}
+/* v3.1 hero tuning */
+@media (min-width: 990px) { .hp__media { block-size: 54%; } }
+@media (max-width: 749px) {
+  .hp__stage { block-size: clamp(520px, 62svh, 580px); }
+  .hp__overlay { padding-block-start: 18px; gap: 8px; }
+  .hp__mark { inline-size: 30px; }
+  .hp__eyebrow { font-size: 11px; }
+  .hp__media { block-size: 330px; -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%); mask-image: linear-gradient(to bottom, transparent 0, #000 14%); }
+  /* Each band is a quarter of the screen: draw the photo ~3.3x the band width so the whole bottle fits. */
+  .hp__img { position: absolute; inset-block-end: 0; inset-inline-start: 50%; inline-size: 330%; block-size: auto; max-inline-size: none; translate: -50% 0; object-fit: contain; }
+  [dir='rtl'] .hp__img { translate: 50% 0; }
+  .hp__img { animation-name: hp-rise-m; }
+  .hp__num { font-size: 20px; }
+  .hp__foot--out { padding-block: 18px 4px; }
+  .hp__foot--out .hp__ctas { order: -1; margin-block-start: 0; }
+  .hp__foot--out .hp__copy { font-size: 15.5px; color: var(--c-muted); }
+}
+@keyframes hp-rise-m { from { opacity: .001; transform: translateY(24px); } }
+@media (max-width: 749px) { .hp__img { inline-size: 255%; } }
+@media (min-width: 750px) and (max-width: 989px) {
+  .hp__foot--in { display: grid; }
+  .hp__foot--out { display: none; }
+  .hp__media { block-size: 50%; }
+  .hp__overlay { padding-block-start: 32px; }
+}
+@media (max-width: 749px) { .hp__img { inline-size: 228%; } }
+@media (max-width: 749px) {
+  .hp__stage { block-size: clamp(470px, 57svh, 510px); }
+  .hp__media { block-size: 100%; -webkit-mask-image: none; mask-image: none; }
+  .hp__img { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 34%); mask-image: linear-gradient(to bottom, transparent 0, #000 34%); }
 }

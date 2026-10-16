@@ -131,6 +131,24 @@
         </div>
       {%- endif -%}
     </div>
+
+    {%- comment -%} Other sets, so a visitor comparing never hits a dead end. {%- endcomment -%}
+    {%- assign others = 'the-full-ritual,the-day-ritual,the-night-ritual,clear-protect-duo,the-core-duo' | split: ',' -%}
+    {{ 'bundles.css' | asset_url | stylesheet_tag }}
+    <div class="bi__others">
+      <div class="section-head">
+        <div class="section-head__text">
+          <p class="t-eyebrow">{{ 'bundle_inside.others_eyebrow' | t }}</p>
+          <h2 class="t-display-m">{{ 'bundle_inside.others_heading' | t }}</h2>
+        </div>
+        <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'sections.bundles.see_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+      </div>
+      <ul class="sets-rail" role="list">
+        {%- for h in others -%}
+          {%- if h != product.handle and all_products[h].id -%}{%- render 'bundle-card', product: all_products[h], heading_tag: 'h3' -%}{%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
   </div>
 </section>
 {%- endif -%}

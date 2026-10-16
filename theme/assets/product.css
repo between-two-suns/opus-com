@@ -255,3 +255,18 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
 .bi__seq { gap: 6px 22px; }
 .bi__seq li { position: relative; }
 .bi__seq li + li::before { position: absolute; inset-inline-start: -18px; margin: 0; }
+
+/* v3.1 gallery: every slide keeps its 4:5 shape. On desktop the gallery narrows to fit the screen height
+   instead of squashing slides into landscape crops. Transparent PNG details sit whole on the product tint. */
+@media (min-width: 990px) {
+  .gallery__slide { max-block-size: none; }
+  .pdp__gallery { inline-size: min(100%, calc((100svh - var(--header-h) - 120px) * 0.8)); justify-self: center; }
+}
+.gallery__slide--png { background: var(--sku-tint); }
+.gallery__slide--png > img { object-fit: contain; padding: 6%; }
+.gallery__slide--set, .gallery__slide--studio-photo { background: var(--sku, var(--c-paper)); }
+.gallery__slide--studio-photo[data-step='1'] { --sku: var(--c-step-1); }
+.gallery__slide--studio-photo[data-step='2'] { --sku: var(--c-step-2); }
+.gallery__slide--studio-photo[data-step='3'] { --sku: var(--c-step-3); }
+.gallery__slide--studio-photo[data-step='4'] { --sku: var(--c-step-4); }
+.gallery__slide--set .set-visual__band img { block-size: 74%; inset-block-end: 0; }

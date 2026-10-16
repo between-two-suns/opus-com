@@ -9,7 +9,9 @@
     },
     "glossary": {
       "type": "ingredient-glossary",
-      "settings": {}
+      "settings": {
+        "reference": true
+      }
     },
     "faq": {
       "type": "faq",
@@ -17,19 +19,40 @@
         "q0": {
           "type": "qa",
           "settings": {
-            "preset": "inci"
+            "preset": "inci_what"
           }
         },
         "q1": {
           "type": "qa",
           "settings": {
+            "preset": "ingredients_order"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "inci"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
             "preset": "fragrance"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "preset": "skin_type"
           }
         }
       },
       "block_order": [
         "q0",
-        "q1"
+        "q1",
+        "q2",
+        "q3",
+        "q4"
       ],
       "settings": {
         "compact": true,
@@ -37,17 +60,14 @@
         "schema": false
       }
     },
-    "heroes": {
-      "type": "ingredient-heroes",
-      "settings": {
-        "eyebrow": "",
-        "heading": ""
-      }
+    "benefits": {
+      "type": "ingredient-benefits",
+      "settings": {}
     }
   },
   "order": [
     "hero",
-    "heroes",
+    "benefits",
     "glossary",
     "faq"
   ]

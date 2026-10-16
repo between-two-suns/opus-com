@@ -1,12 +1,5 @@
 {
   "sections": {
-    "hero": {
-      "type": "page-hero",
-      "settings": {
-        "preset": "contact",
-        "compact": true
-      }
-    },
     "form": {
       "type": "contact-form",
       "settings": {
@@ -19,19 +12,33 @@
         "q0": {
           "type": "qa",
           "settings": {
-            "preset": "payment"
+            "preset": "contact_reply"
           }
         },
         "q1": {
           "type": "qa",
           "settings": {
-            "preset": "order"
+            "preset": "delivery_free"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "returns"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "preset": "payment"
           }
         }
       },
       "block_order": [
         "q0",
-        "q1"
+        "q1",
+        "q2",
+        "q3"
       ],
       "settings": {
         "compact": true,
@@ -41,7 +48,6 @@
     }
   },
   "order": [
-    "hero",
     "form",
     "faq"
   ]

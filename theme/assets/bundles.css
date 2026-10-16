@@ -147,3 +147,32 @@
   .builder__summary > .builder__form { grid-row: 1 / span 3; grid-column: 2; min-inline-size: 320px; }
 }
 .page-hero--compact + .shopify-section .bundles, .shopify-section:has(.page-hero--compact) + .shopify-section .bundles { padding-block-start: 8px; }
+
+/* v3.1: "Ships free" is a badge, not a footnote. */
+.ship-badge { display: inline-flex; align-items: center; gap: 7px; justify-self: start; margin: 0; padding: 6px 12px 6px 10px; border-radius: 999px; background: color-mix(in srgb, var(--c-step-1) 26%, #fff); color: #0f5132; font-size: 13px; font-weight: 700; }
+.ship-badge--lg { font-size: 14px; padding: 8px 14px 8px 12px; }
+.bundle__save { margin: 0; color: var(--c-success); font-weight: 650; }
+/* v3.1 phones: sets swipe as full cards instead of cramped rows. */
+@media (max-width: 749px) {
+  .bundles__grid { display: grid !important; grid-auto-flow: column; grid-auto-columns: min(84vw, 340px); grid-template-columns: none !important; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--gutter) * -1); padding: 4px var(--gutter) 12px; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
+  .bundles__grid::-webkit-scrollbar { display: none; }
+  .bundles__grid .bundle { display: flex !important; scroll-snap-align: start; }
+  .bundles__grid .bundle__stage { aspect-ratio: 4 / 3 !important; min-block-size: 0; }
+  .bundles__grid .bundle__body > .t-small, .bundles__grid .bundle__items { display: revert; }
+  .bundles__grid .bundle__body { padding: 4px 18px 18px; }
+}
+/* v3 shop: four products, then a sets rail. */
+.collection__sets { margin-block-start: clamp(56px, 8vw, 112px); }
+.sets-rail {
+  display: grid; grid-auto-flow: column; grid-auto-columns: min(82vw, 360px); gap: 14px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+  margin-inline: calc(var(--gutter) * -1); padding: 4px var(--gutter) 12px; scrollbar-width: thin;
+}
+.sets-rail > .bundle { scroll-snap-align: start; }
+.collection__cta { margin-block-start: clamp(40px, 6vw, 72px); }
+@media (min-width: 1100px) { .sets-rail { grid-auto-columns: calc((100% - 3 * 14px) / 3.4); } }
+.sets-rail > .bundle { grid-column: auto !important; }
+.sets-rail .bundle__stage { aspect-ratio: 4 / 3 !important; }
+.sets-rail > .bundle { grid-column: auto !important; }
+.sets-rail .bundle__stage { aspect-ratio: 4 / 3 !important; }
+.bi__others { margin-block-start: clamp(56px, 8vw, 104px); }

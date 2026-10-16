@@ -61,8 +61,8 @@
       assign progress = 100
     endif
   -%}
-  <div class="incentive" data-incentive="shipping">
-    <p class="incentive__msg t-small">
+  <div class="incentive incentive--ship{% if remaining <= 0 %} is-done{% endif %}" data-incentive="shipping">
+    <p class="incentive__msg t-small">{% render 'icon', name: 'truck', class: 'icon--sm' %}
       {%- if remaining > 0 -%}
         {%- capture remaining_money -%}{% render 'egp', cents: remaining %}{%- endcapture -%}
         {{ 'cart.ship_remaining' | t: amount: remaining_money }}

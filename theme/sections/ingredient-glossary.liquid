@@ -3,8 +3,17 @@
   assign entries = shop.metaobjects.bts_ingredient.values
   assign source = section.settings.collection | default: collections.all
 -%}
-<section class="section glossary" aria-label="{{ 'header.nav.ingredients' | t }}">
+<section class="section glossary{% if section.settings.reference %} glossary--ref{% endif %}" aria-label="{{ 'header.nav.ingredients' | t }}">
   <div class="container">
+    {%- if section.settings.reference -%}
+      <div class="glossary__ref-head">
+        <p class="t-eyebrow">{{ 'pages.ingredients.ref_eyebrow' | t }}</p>
+        <h2 class="t-display-m">{{ 'pages.ingredients.ref_heading' | t }}</h2>
+        <p class="t-lead t-muted">{{ 'pages.ingredients.ref_text' | t }}</p>
+      </div>
+      <details class="glossary__ref" id="all-ingredients-ref">
+        <summary class="btn btn--secondary glossary__ref-btn"><span data-closed>{{ 'pages.ingredients.ref_open' | t }}</span><span data-open>{{ 'pages.ingredients.ref_close' | t }}</span>{% render 'icon', name: 'chevron-down', class: 'icon--sm' %}</summary>
+    {%- else -%}
     <nav class="glossary__jump" aria-label="{{ 'pages.ingredients.jump_label' | t }}">
       <ul class="cluster" role="list">
         {%- if entries.size > 0 -%}<li><a class="chip" href="#key-ingredients">{{ 'pages.ingredients.key_heading' | t }}</a></li>{%- endif -%}
@@ -12,7 +21,8 @@
         <li><a class="chip" href="#full-lists">{{ 'pages.ingredients.full_lists' | t }}</a></li>
       </ul>
     </nav>
-    {%- if entries.size > 0 -%}
+    {%- endif -%}
+    {%- if entries.size > 0 and section.settings.reference != true -%}
       <div class="glossary__block" id="key-ingredients">
         <div class="glossary__head">
           <h2 class="t-display-m">{{ 'pages.ingredients.key_heading' | t }}</h2>
@@ -138,6 +148,7 @@
         {%- endfor -%}
       {%- endfor -%}
     </div>
+    {%- if section.settings.reference -%}</details>{%- endif -%}
   </div>
 </section>
 <script type="module">
@@ -184,7 +195,8 @@
   "name": "t:sections.glossary.name",
   "settings": [
     { "type": "paragraph", "content": "t:sections.ingredients.info" },
-    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" }
+    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" },
+    { "type": "checkbox", "id": "reference", "label": "t:sections.glossary.reference", "default": false }
   ],
   "presets": [{ "name": "t:sections.glossary.name" }]
 }

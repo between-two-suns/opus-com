@@ -55,7 +55,8 @@
       {%- else -%}
         {%- comment -%} Routine progress: which of the four steps are in the bag {%- endcomment -%}
         <div class="cart-routine">
-          <p class="t-small"><strong>{{ 'cart.routine_progress' | t }}</strong></p>
+          {%- assign steps_in = 0 -%}{%- for n in (1..4) -%}{%- assign needle = '|' | append: n -%}{%- if in_cart_steps contains needle -%}{%- assign steps_in = steps_in | plus: 1 -%}{%- endif -%}{%- endfor -%}
+          <p class="t-small cart-routine__label"><strong>{{ 'cart.routine_progress' | t }}</strong><span class="t-muted">{{ 'cart.routine_count' | t: count: steps_in }}</span></p>
           <div class="cart-progress" aria-hidden="true">
             {%- for n in (1..4) -%}
               {%- assign needle = '|' | append: n -%}
@@ -70,20 +71,15 @@
           {%- for item in cart.items -%}
             {%- capture step -%}{% render 'product-step', product: item.product %}{%- endcapture -%}
             {%- assign cutout = item.product.metafields.bts.cutout.value -%}
+            {%- assign studio_k = 'bts-' | append: item.product.handle | append: '-studio.jpg' -%}
             <li class="cart-line" data-step="{{ step | strip }}">
               {%- capture ldef -%}{% render 'bundle-def', handle: item.product.handle %}{%- endcapture -%}
               {%- assign ldef = ldef | strip -%}
-              <a href="{{ item.url }}" class="cart-line__media{% unless cutout or ldef != blank %} cart-line__media--photo{% endunless %}{% if ldef != blank %} cart-line__media--bundle{% endif %}" tabindex="-1" aria-hidden="true">
+              <a href="{{ item.url }}" class="cart-line__media{% if images[studio_k] or ldef != blank %} cart-line__media--photo{% elsif cutout == blank %} cart-line__media--photo{% endif %}{% if ldef != blank %} cart-line__media--set{% endif %}" tabindex="-1" aria-hidden="true">
                 {%- if ldef != blank -%}
-                  {%- assign lsteps = ldef | split: '|' | first | split: ',' -%}
-                  <span class="cart-line__packs" style="--n: {{ lsteps.size }}">
-                    {%- for st in lsteps -%}
-                      {%- assign si = st | plus: 0 -%}
-                      {%- assign comp = all_products[step_handles[si]] -%}
-                      {%- assign cc = comp.metafields.bts.cutout.value -%}
-                      {%- if cc -%}<span style="--k: {{ forloop.index0 }}">{{ cc | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '40px', alt: '' }}</span>{%- endif -%}
-                    {%- endfor -%}
-                  </span>
+                  {%- render 'set-visual', product: item.product, sizes: '84px' -%}
+                {%- elsif images[studio_k] -%}
+                  {{ images[studio_k] | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120,240', sizes: '84px', alt: '' }}
                 {%- elsif cutout -%}
                   {{ cutout | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '84px', alt: '' }}
                 {%- elsif item.image -%}
@@ -153,8 +149,11 @@
                     {%- assign v = product.selected_or_first_available_variant -%}
                     {%- assign cutout = product.metafields.bts.cutout.value -%}
                     <li class="cart-upsell__item" data-step="{{ s }}">
-                      <span class="cart-upsell__img" aria-hidden="true">
-                        {%- if cutout -%}
+                      {%- assign uk = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
+                      <span class="cart-upsell__img{% if images[uk] %} cart-upsell__img--photo{% endif %}" aria-hidden="true">
+                        {%- if images[uk] -%}
+                          {{ images[uk] | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '64px', alt: '' }}
+                        {%- elsif cutout -%}
                           {{ cutout | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '52px', alt: '' }}
                         {%- elsif product.featured_media -%}
                           {{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '52px', alt: '' }}
@@ -162,7 +161,8 @@
                       </span>
                       <span>
                         <span class="step-tag">{{ 'product.step' | t: number: s }}</span><br>
-                        <a href="{{ product.url }}" class="t-small" style="font-weight:650;text-decoration:none">{{ product.title | escape }}</a>
+                        <a href="{{ product.url }}" class="cart-upsell__name">{{ product.title | escape }}</a>
+                        {%- if product.metafields.bts.benefit != blank -%}<span class="cart-upsell__why">{{ product.metafields.bts.benefit.value | split: '. ' | first | remove: '.' }}</span>{%- endif -%}
                       </span>
                       {%- unless v.price == 0 and settings.zero_price_coming_soon -%}
                         <product-form>
@@ -170,7 +170,7 @@
                             <input type="hidden" name="id" value="{{ v.id }}">
                             <input type="hidden" name="quantity" value="1">
                             <button type="submit" class="btn btn--secondary btn--small" aria-label="{{ 'cart.add_item' | t: product: product.title  }}">
-                              <span class="btn__label">+ {% render 'egp', cents: v.price %}</span>
+                              <span class="btn__label">{{ 'cart.add_short' | t }} · {% render 'egp', cents: v.price %}</span>
                             </button>
                           </form>
                         </product-form>

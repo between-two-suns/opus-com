@@ -47,7 +47,8 @@
       "schema": "Schema",
       "show_contact": "Show contact",
       "steps": "Show on steps (product pages)",
-      "steps_info": "Comma list: 1–4 for the steps, 0 for sets. Leave empty to show everywhere."
+      "steps_info": "Comma list: 1–4 for the steps, 0 for sets. Leave empty to show everywhere.",
+      "hub": "FAQ page layout (search + topic filters)"
     },
     "footer": {
       "description": "Description",
@@ -66,7 +67,8 @@
       "name": "Skin forecast"
     },
     "glossary": {
-      "name": "Ingredient glossary"
+      "name": "Ingredient glossary",
+      "reference": "Show as a collapsed reference list (no key-ingredient cards)"
     },
     "header": {
       "enable_mega": "Enable mega",
@@ -245,6 +247,10 @@
     "climate_story": {
       "name": "Climate: a day story",
       "info": "Five hours of an Egyptian day. Photos come from Files named bts-climate-[condition]-wide.jpg and -tall.jpg; replace a file keeping its name to change a scene."
+    },
+    "ingredient_benefits": {
+      "name": "Ingredients: benefits",
+      "info": "One chapter per product, from its benefit line and key ingredients."
     }
   },
   "settings_schema": {

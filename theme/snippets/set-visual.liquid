@@ -1,0 +1,35 @@
+{%- comment -%}
+  The picture for a set: its own photo from Files (bts-<handle>.jpg) when there is one; otherwise the set drawn as
+  colour bands, one per product, from the studio photos (the same language as the home hero).
+  Params: product (the set), sizes, loading ('lazy'), class
+{%- endcomment -%}
+{%- liquid
+  capture sv_def
+    render 'bundle-def', handle: product.handle
+  endcapture
+  assign sv_steps = sv_def | strip | split: '|' | first | split: ','
+  assign sv_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign sv_key = 'bts-' | append: product.handle | append: '.jpg'
+  assign sv_photo = images[sv_key]
+  assign sv_loading = loading | default: 'lazy'
+  assign sv_sizes = sizes | default: '(min-width: 990px) 33vw, 90vw'
+-%}
+{%- if sv_photo -%}
+  {{ sv_photo | image_url: width: 1200 | image_tag: loading: sv_loading, widths: '400,600,800,1000,1200', sizes: sv_sizes, alt: '', class: 'set-visual set-visual--photo' }}
+{%- else -%}
+  <span class="set-visual set-visual--bands {{ class }}" style="--n: {{ sv_steps.size }}" aria-hidden="true">
+    {%- for st in sv_steps -%}
+      {%- assign si = st | plus: 0 -%}
+      {%- assign comp = all_products[sv_handles[si]] -%}
+      {%- assign ck = 'bts-' | append: sv_handles[si] | append: '-studio.jpg' -%}
+      {%- assign studio = images[ck] -%}
+      <span class="set-visual__band" data-step="{{ si }}">
+        {%- if studio -%}
+          {{ studio | image_url: width: 600 | image_tag: loading: sv_loading, widths: '300,450,600', sizes: '(min-width: 990px) 14vw, 40vw', alt: '' }}
+        {%- elsif comp.featured_media -%}
+          {{ comp.featured_media | image_url: width: 400 | image_tag: loading: sv_loading, alt: '' }}
+        {%- endif -%}
+      </span>
+    {%- endfor -%}
+  </span>
+{%- endif -%}

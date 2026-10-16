@@ -52,11 +52,45 @@
       "settings": {
         "show_bundle": true
       }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "qa",
+          "settings": {
+            "preset": "made"
+          }
+        },
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "climate"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "inci"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1",
+        "q2"
+      ],
+      "settings": {
+        "compact": true,
+        "show_contact": true,
+        "schema": false
+      }
     }
   },
   "order": [
     "hero",
     "story",
-    "routine"
+    "routine",
+    "faq"
   ]
 }

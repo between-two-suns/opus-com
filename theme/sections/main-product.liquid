@@ -38,6 +38,14 @@
     render 'bundle-def', handle: product.handle
   endcapture
   assign bdef = bdef | strip
+  comment
+    Sets: the gallery is the set's own picture (photo or colour bands) plus each product's studio shot,
+    not the product media (which may be pack templates).
+  endcomment
+  if bdef != blank
+    assign set_steps = bdef | split: '|' | first | split: ',' | uniq
+    assign media_count = set_steps.size | plus: 1
+  endif
 -%}
 {%- assign qty_max = 5 -%}
 {%- if bdef != blank -%}{%- assign qty_max = 3 -%}{{ 'bundles.css' | asset_url | stylesheet_tag }}{%- endif -%}
@@ -106,9 +114,10 @@
               {{ cutout | image_url: width: 900 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '300,450,600,750,900', sizes: '(min-width: 990px) 46vw, 92vw', alt: product.title, class: 'gallery__cutout' }}
             </div>
           {%- endif -%}
+          {%- if bdef != blank -%}{%- render 'pdp-bundle', part: 'gallery', handle: product.handle, count: media_count -%}{%- else -%}
           {%- for media in product.media offset: skip_media -%}
             {%- assign slide = slide | plus: 1 -%}
-            <div class="gallery__slide" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
+            <div class="gallery__slide{% if media.preview_image.src contains '.png' %} gallery__slide--png{% endif %}" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
               {%- case media.media_type -%}
                 {%- when 'image' -%}
                   {%- if slide == 1 -%}
@@ -125,7 +134,7 @@
               {%- endcase -%}
             </div>
           {%- endfor -%}
-          {%- if media_count == 0 -%}{%- render 'pdp-bundle', part: 'stage', handle: product.handle -%}{%- endif -%}
+          {%- endif -%}
         </div>
         {%- if media_count > 1 -%}
           <div class="gallery__nav">

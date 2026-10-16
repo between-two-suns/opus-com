@@ -119,3 +119,21 @@
 .cr-form__done:focus { outline: none; }
 .cr-form__done > * { margin: 0; }
 .cr-form__done-mark { inline-size: 56px; block-size: 60px; background: linear-gradient(135deg, var(--c-step-1), var(--c-step-2) 40%, var(--c-step-3) 70%, var(--c-step-4)); -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+
+/* v3.1 creators: calm daylight hero, display headline, solid-tint cards, steps as a row. */
+.cr-hero { background: var(--c-daylight); }
+.cr-hero__mark { background: var(--c-step-2-tint); opacity: .5; }
+.cr-hero__title { font-family: var(--font-display); text-transform: uppercase; font-weight: 700; letter-spacing: 0; line-height: .86; font-size: clamp(58px, 9vw, 132px); }
+:lang(ar) .cr-hero__title { text-transform: none; line-height: 1.15; font-size: clamp(46px, 7vw, 100px); }
+.cr-card { background: var(--sku-tint); box-shadow: none; }
+.cr-card::before { content: none; }
+.cr-card__num { font-size: 44px; line-height: .9; }
+.cr-how__inner { grid-template-columns: minmax(0, 1fr) !important; }
+.cr-steps { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.cr-step { grid-template-columns: 1fr; row-gap: 8px; padding: 22px; border-radius: var(--radius-l); background: var(--c-paper); box-shadow: 0 1px 0 var(--c-line); }
+.cr-step::before { content: none; }
+.cr-step__dot { inline-size: 44px; block-size: 44px; }
+.cr-step__num { font-size: 15px; }
+.cr-rules { background: var(--c-step-1); color: var(--c-ink); }
+.cr-rules .icon { color: var(--c-ink); }
+.cr-rules__list li { color: var(--c-ink); } .cr-rules__list .icon { color: var(--c-ink); }

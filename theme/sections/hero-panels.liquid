@@ -34,26 +34,19 @@
   endif
 -%}
 
-<section class="hp" id="Hero-{{ section.id }}" aria-labelledby="HeroTitle-{{ section.id }}">
-  <div class="container hp__head">
-    <p class="t-eyebrow hp__eyebrow">{{ eyebrow | escape }}</p>
-    <{{ heading_tag }} class="hp__title t-display" id="HeroTitle-{{ section.id }}">
-      <span class="hp__line">{{ line_1 | escape }}</span>
-      <span class="hp__line">{{ line_2 | escape }}</span>
-    </{{ heading_tag }}>
-    <p class="t-lead hp__copy">{{ subcopy | escape }}</p>
-    <div class="hp__ctas">
-      {%- if set -%}
-        <a class="btn hp__buy" href="{{ set.url }}">
-          <span>{{ 'sections.hero_panels.cta_primary' | t }}</span>
-          <span class="btn__sep" aria-hidden="true">·</span>
-          <span class="btn__price">{% render 'egp', cents: set.price %}</span>
-        </a>
-      {%- endif -%}
-      <a class="link-arrow hp__build" href="{{ cta_2_link }}">{{ 'sections.hero_panels.cta_secondary' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-    </div>
+{%- capture hp_foot -%}
+  <p class="t-lead hp__copy">{{ subcopy | escape }}</p>
+  <div class="hp__ctas">
+    {%- if set -%}
+      <a class="btn hp__buy" href="{{ set.url }}">
+        <span>{{ 'sections.hero_panels.cta_primary' | t }}</span>
+        {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}
+      </a>
+    {%- endif -%}
+    <a class="link-arrow hp__build" href="{{ cta_2_link }}">{{ 'sections.hero_panels.cta_secondary' | t }}</a>
   </div>
-
+{%- endcapture -%}
+<section class="hp" id="Hero-{{ section.id }}" aria-labelledby="HeroTitle-{{ section.id }}">
   <div class="hp__stage">
     <ul class="hp__panels" role="list" aria-label="{{ 'sections.hero.lineup' | t }}">
       {%- for s in (1..4) -%}
@@ -70,15 +63,18 @@
               <a class="hp__link" href="{{ product.url }}">
                 <span class="hp__media">
                   {%- if studio -%}
-                    {{ studio | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '360,540,720,960,1200', sizes: '(min-width: 990px) 25vw, 50vw', alt: '', class: 'hp__img' }}
+                    {{ studio | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '480,720,960,1200', sizes: '(min-width: 990px) 25vw, 60vw', alt: '', class: 'hp__img' }}
                   {%- elsif product.featured_media -%}
                     {{ product.featured_media | image_url: width: 900 | image_tag: loading: 'eager', widths: '360,540,720,900', sizes: '(min-width: 990px) 25vw, 50vw', alt: '', class: 'hp__img hp__img--contain' }}
                   {%- endif -%}
                 </span>
                 <span class="hp__cap">
-                  <span class="hp__step">0{{ s }}{% if label != blank %} · {{ label | escape }}{% endif %}</span>
-                  <span class="hp__name">{{ product.title | escape }}</span>
-                  {%- render 'price', product: product, class: 'hp__price' -%}
+                  <span class="hp__num">0{{ s }}</span>
+                  <span class="hp__cap-text">
+                    <span class="hp__step">{% if label != blank %}{{ label | escape }}{% endif %}</span>
+                    <span class="hp__name">{{ product.title | escape }}</span>
+                    {%- render 'price', product: product, class: 'hp__price' -%}
+                  </span>
                 </span>
               </a>
             </li>
@@ -87,13 +83,22 @@
         {%- endfor -%}
       {%- endfor -%}
     </ul>
-    <span class="hp__mark" aria-hidden="true">
-      <svg viewBox="0 0 501 547" focusable="false">
-        <path class="hp__arc hp__arc--a" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z" fill="currentColor"/>
-        <path class="hp__arc hp__arc--b" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z" fill="currentColor"/>
-      </svg>
-    </span>
+    <div class="hp__overlay">
+      <span class="hp__mark" aria-hidden="true">
+        <svg viewBox="0 0 501 547" focusable="false">
+          <path class="hp__arc hp__arc--a" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z" fill="currentColor"/>
+          <path class="hp__arc hp__arc--b" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z" fill="currentColor"/>
+        </svg>
+      </span>
+      <p class="t-eyebrow hp__eyebrow">{{ eyebrow | escape }}</p>
+      <{{ heading_tag }} class="hp__title t-display" id="HeroTitle-{{ section.id }}">
+        <span class="hp__line">{{ line_1 | escape }}</span>
+        <span class="hp__line">{{ line_2 | escape }}</span>
+      </{{ heading_tag }}>
+      <div class="hp__foot hp__foot--in">{{ hp_foot }}</div>
+    </div>
   </div>
+  <div class="container hp__foot hp__foot--out">{{ hp_foot }}</div>
 </section>
 
 {% schema %}

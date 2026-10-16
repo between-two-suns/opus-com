@@ -1,0 +1,82 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Ingredients, benefit first: one chapter per product. What your skin gets (the pack's own line, bts.benefit),
+  on the product's texture photo, then the ingredients that do it and what each is there for
+  (bts.key_ingredients → metaobject name + role). Nothing here goes beyond the label and the glossary.
+{%- endcomment -%}
+{%- liquid
+  assign source = section.settings.collection | default: collections.all
+-%}
+<section class="section ibn" aria-label="{{ 'pages.ingredients.benefits_label' | t }}">
+  <div class="container">
+    <nav class="ibn__jump" aria-label="{{ 'pages.ingredients.jump_label' | t }}">
+      <ul class="cluster" role="list">
+        {%- for s in (1..4) -%}
+          {%- for p in source.products limit: 12 -%}
+            {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+            {%- assign ps = ps | strip | plus: 0 -%}
+            {%- if ps == s -%}
+              {%- assign lead = p.metafields.bts.benefit.value | default: p.title | split: '. ' | first | remove: '.' -%}
+              <li data-step="{{ s }}"><a class="chip ibn__chip" href="#ibn-{{ s }}"><span class="bundle__dot" aria-hidden="true"></span>{{ lead | escape }}</a></li>
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    {%- for s in (1..4) -%}
+      {%- for p in source.products limit: 12 -%}
+        {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+        {%- assign ps = ps | strip | plus: 0 -%}
+        {%- if ps == s -%}
+          {%- liquid
+            assign benefit = p.metafields.bts.benefit.value | default: ''
+            assign lead = benefit | split: '. ' | first | remove: '.'
+            assign rest = benefit | remove_first: lead | remove_first: '.' | strip
+            assign tk = 'bts-' | append: p.handle | append: '-texture.jpg'
+            assign tex = images[tk]
+            assign sk = 'bts-' | append: p.handle | append: '-studio.jpg'
+            assign studio = images[sk]
+            assign kis = p.metafields.bts.key_ingredients.value
+            assign label = p.metafields.bts.step_label.value
+          -%}
+          <article class="ibn__ch" id="ibn-{{ s }}" data-step="{{ s }}" aria-labelledby="IbnH-{{ s }}">
+            <div class="ibn__media">
+              {%- if tex -%}{{ tex | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1200,1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: '', class: 'ibn__tex' }}{%- endif -%}
+              {%- if studio -%}<span class="ibn__pack">{{ studio | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200,300,400', sizes: '160px', alt: '' }}</span>{%- endif -%}
+            </div>
+            <div class="ibn__copy">
+              <p class="step-tag">{{ 'product.step' | t: number: s }}{% if label != blank %} · {{ label | escape }}{% endif %}</p>
+              <h2 class="ibn__lead" id="IbnH-{{ s }}">{{ lead | escape }}.</h2>
+              {%- if rest != blank -%}<p class="ibn__rest">{{ rest | escape }}</p>{%- endif -%}
+              {%- if kis.size > 0 -%}
+                <p class="ibn__built">{{ 'pages.ingredients.built_around' | t }}</p>
+                <ul class="ibn__ings" role="list">
+                  {%- for ki in kis -%}
+                    <li><span class="ibn__ing-name">{{ ki.name.value | escape }}</span><span class="ibn__ing-role">{{ ki.role.value | escape }}</span></li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+              <div class="ibn__links">
+                <a class="btn btn--deep" href="{{ p.url }}">{{ p.title | escape }} · {% render 'egp', cents: p.price %}</a>
+              </div>
+            </div>
+          </article>
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.ingredient_benefits.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:sections.ingredient_benefits.info" },
+    { "type": "collection", "id": "collection", "label": "t:sections.hero.collection" }
+  ],
+  "presets": [{ "name": "t:sections.ingredient_benefits.name" }]
+}
+{% endschema %}

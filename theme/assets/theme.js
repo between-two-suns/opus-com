@@ -112,7 +112,11 @@ class SiteHeader extends HTMLElement {
     onScroll();
 
     if (this.toggle && this.panel) {
-      this.toggle.addEventListener('click', () => this.setMega(this.panel.hidden));
+      // A hover may already have opened it: a click right after must not close it again.
+      this.toggle.addEventListener('click', () => {
+        if (!this.panel.hidden && Date.now() - (this.openedAt || 0) < 800) return;
+        this.setMega(this.panel.hidden);
+      });
       this.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !this.panel.hidden) { this.setMega(false); this.toggle.focus(); }
       });
@@ -126,11 +130,13 @@ class SiteHeader extends HTMLElement {
         li.addEventListener('mouseenter', () => { clearTimeout(t); t = setTimeout(() => this.setMega(true), 120); });
         this.header.addEventListener('mouseleave', () => { clearTimeout(t); t = setTimeout(() => this.setMega(false), 220); });
         this.panel.addEventListener('mouseenter', () => clearTimeout(t));
+        this.panel.addEventListener('mouseleave', () => { clearTimeout(t); t = setTimeout(() => this.setMega(false), 220); });
       }
     }
   }
   setMega(open) {
     if (!this.panel) return;
+    if (open && this.panel.hidden) this.openedAt = Date.now();
     this.panel.hidden = !open;
     this.toggle.setAttribute('aria-expanded', String(open));
   }
@@ -518,4 +524,23 @@ if ('onpageswap' in window) {
 // A bump on the bag icon (the button's own moment is celebrate(), above).
 document.addEventListener('cart:added', () => {
   $$('[data-cart-count]').forEach((el) => { el.classList.remove('is-bump'); void el.offsetWidth; el.classList.add('is-bump'); });
+});
+
+/* Step-to-step reveal on product pages (cross-document view transitions; no-op where unsupported). */
+document.addEventListener('click', (e) => {
+  const t = e.target.closest?.('.pdp-tabs__link');
+  if (!t || t.getAttribute('aria-current') === 'page') return;
+  const r = t.getBoundingClientRect();
+  try { sessionStorage.setItem('bts:vt', JSON.stringify({ x: r.left + r.width / 2, y: r.top + r.height / 2, t: Date.now() })); } catch (err) {}
+});
+window.addEventListener('pagereveal', (e) => {
+  if (!e.viewTransition) return;
+  let d = null;
+  try { d = JSON.parse(sessionStorage.getItem('bts:vt') || 'null'); sessionStorage.removeItem('bts:vt'); } catch (err) {}
+  if (!d || Date.now() - d.t > 5000) return;
+  const root = document.documentElement;
+  root.style.setProperty('--vt-x', `${d.x}px`);
+  root.style.setProperty('--vt-y', `${d.y}px`);
+  root.classList.add('vt-step');
+  e.viewTransition.finished.finally(() => root.classList.remove('vt-step'));
 });

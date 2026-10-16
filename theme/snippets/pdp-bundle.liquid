@@ -12,29 +12,29 @@
   assign bundle_steps = bdef | split: '|' | first | split: ','
   assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
 -%}
-{%- if part == 'stage' and bdef == blank -%}
-<div class="gallery__slide" data-slide>{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
-{%- elsif bdef == blank -%}
-{%- comment -%} not a bundle: no info {%- endcomment -%}
-{%- elsif part == 'stage' -%}
-<div class="gallery__slide gallery__slide--bundle" data-slide style="--a: var(--c-step-{{ bundle_steps.first }}); --b: var(--c-step-{{ bundle_steps.last }});">
-  <span class="bundle__packs gallery__packs" style="--n: {{ bundle_steps.size }}">
-    {%- for st in bundle_steps -%}
-      {%- assign si = st | plus: 0 -%}
-      {%- assign comp = all_products[step_handles[si]] -%}
-      {%- assign cc = comp.metafields.bts.cutout.value -%}
-      <span class="bundle__pack" data-step="{{ st }}" style="--k: {{ forloop.index0 }}">
-        {%- if cc -%}{{ cc | image_url: width: 600 | image_tag: loading: 'eager', widths: '300,450,600', sizes: '(min-width: 990px) 16vw, 30vw', alt: comp.title }}{%- endif -%}
-      </span>
-    {%- endfor -%}
-  </span>
+{%- if bdef == blank -%}
+{%- comment -%} not a set: nothing {%- endcomment -%}
+{%- elsif part == 'gallery' -%}
+<div class="gallery__slide gallery__slide--set" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: 1, count: count }}" data-slide>
+  {%- render 'set-visual', product: product, loading: 'eager', sizes: '(min-width: 990px) 46vw, 92vw' -%}
 </div>
+{%- assign buniq = bundle_steps | uniq -%}
+{%- for st in buniq -%}
+  {%- assign si = st | plus: 0 -%}
+  {%- assign comp = all_products[step_handles[si]] -%}
+  {%- assign ck = 'bts-' | append: comp.handle | append: '-studio.jpg' -%}
+  {%- assign studio = images[ck] | default: comp.featured_media -%}
+  <div class="gallery__slide gallery__slide--studio-photo" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: forloop.index | plus: 1, count: count }}" data-slide data-step="{{ si }}">
+    {%- if studio -%}{{ studio | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1400', sizes: '(min-width: 990px) 46vw, 92vw', alt: comp.title }}{%- endif -%}
+  </div>
+{%- endfor -%}
 {%- else -%}
 {%- if variant.compare_at_price > variant.price -%}
   {%- assign bsave = variant.compare_at_price | minus: variant.price -%}
   {%- capture bsave_m -%}{% render 'egp', cents: bsave %}{%- endcapture -%}
   {%- assign bthr = settings.free_shipping_threshold | default: 0 | times: 100 -%}
-  <p class="bundle__save t-small">{{ 'bundles.save_vs' | t: amount: bsave_m }}{% if bthr > 0 and variant.price >= bthr %} · {{ 'bundles.ships_free' | t }}{% endif %}</p>
+  <p class="bundle__save t-small">{{ 'bundles.save_vs' | t: amount: bsave_m }}</p>
+  {%- if bthr > 0 and variant.price >= bthr -%}<p class="ship-badge ship-badge--lg">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</p>{%- endif -%}
 {%- endif -%}
 <ul class="bundle__items pdp__bundle-items" role="list">
     {%- assign buniq = bundle_steps | uniq -%}

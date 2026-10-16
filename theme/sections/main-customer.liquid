@@ -6,40 +6,65 @@
 <section class="section section--tight account">
   <div class="container container--narrow">
     {%- case section.settings.view -%}
-      {%- when 'login' -%}
-        <h1 class="t-display-m">{{ 'customer.login' | t }}</h1>
-        <div class="account__grid">
-          <div id="Login">
-            {%- form 'customer_login', novalidate: 'novalidate', class: 'account__form' -%}
-              {%- if form.errors -%}<div class="form-status form-status--error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
-              <div class="field"><label for="LoginEmail">{{ 'customer.email' | t }}</label><input id="LoginEmail" type="email" name="customer[email]" autocomplete="email" required></div>
-              <div class="field"><label for="LoginPassword">{{ 'customer.password' | t }}</label><input id="LoginPassword" type="password" name="customer[password]" autocomplete="current-password" required></div>
-              <a href="#Recover" class="t-small">{{ 'customer.forgot' | t }}</a>
-              <button type="submit" class="btn btn--full">{{ 'customer.submit' | t }}</button>
-            {%- endform -%}
-            <p class="t-small t-muted u-mt-s">{{ 'customer.guest' | t }}</p>
-            <a class="btn btn--secondary btn--full u-mt-s" href="{{ routes.account_register_url }}">{{ 'customer.create' | t }}</a>
-          </div>
-          <div id="Recover">
-            <h2 class="t-subheading">{{ 'customer.reset' | t }}</h2>
-            <p class="t-small t-muted">{{ 'customer.reset_text' | t }}</p>
-            {%- form 'recover_customer_password', class: 'account__form' -%}
-              {%- if form.posted_successfully? -%}<p class="form-status form-status--success" role="status">{{ 'newsletter.success' | t }}</p>{%- endif -%}
-              <div class="field"><label for="RecoverEmail">{{ 'customer.email' | t }}</label><input id="RecoverEmail" type="email" name="email" autocomplete="email" required></div>
-              <button type="submit" class="btn btn--secondary">{{ 'customer.send' | t }}</button>
-            {%- endform -%}
+      {%- when 'login', 'register' -%}
+        {%- assign is_login = false -%}{%- if section.settings.view == 'login' -%}{%- assign is_login = true -%}{%- endif -%}
+        <div class="auth">
+          <aside class="auth__brand" aria-hidden="true">
+            <span class="auth__bands">
+              {%- assign hs = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ',' -%}
+              {%- for h in hs -%}
+                {%- assign k = 'bts-' | append: h | append: '-studio.jpg' -%}
+                <span class="set-visual__band" data-step="{{ forloop.index }}">{%- if images[k] -%}{{ images[k] | image_url: width: 500 | image_tag: loading: 'eager', widths: '250,500', sizes: '12vw', alt: '' }}{%- endif -%}</span>
+              {%- endfor -%}
+            </span>
+            <span class="auth__brand-copy">
+              <span class="auth__brand-title">{{ 'customer.perks_title' | t }}</span>
+              <span class="auth__perks">
+                <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'customer.perk_orders' | t }}</span>
+                <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'customer.perk_address' | t }}</span>
+                <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'customer.perk_reorder' | t }}</span>
+              </span>
+            </span>
+          </aside>
+          <div class="auth__card">
+            <nav class="auth__tabs" aria-label="{{ 'customer.account' | t }}">
+              <a href="{{ routes.account_login_url }}"{% if is_login %} aria-current="page"{% endif %}>{{ 'customer.login' | t }}</a>
+              <a href="{{ routes.account_register_url }}"{% unless is_login %} aria-current="page"{% endunless %}>{{ 'customer.create' | t }}</a>
+            </nav>
+            {%- if is_login -%}
+              <h1 class="auth__title">{{ 'customer.welcome_back' | t }}</h1>
+              {%- form 'customer_login', novalidate: 'novalidate', class: 'account__form' -%}
+                {%- if form.errors -%}<div class="form-status form-status--error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+                <div class="field"><label for="LoginEmail">{{ 'customer.email' | t }}</label><input id="LoginEmail" type="email" name="customer[email]" autocomplete="email" required></div>
+                <div class="field"><label for="LoginPassword">{{ 'customer.password' | t }}</label><input id="LoginPassword" type="password" name="customer[password]" autocomplete="current-password" required></div>
+                <button type="submit" class="btn btn--full">{{ 'customer.submit' | t }}</button>
+              {%- endform -%}
+              <details class="auth__recover" id="Recover">
+                <summary>{{ 'customer.forgot' | t }}</summary>
+                <p class="t-small t-muted">{{ 'customer.reset_text' | t }}</p>
+                {%- form 'recover_customer_password', class: 'account__form' -%}
+                  {%- if form.posted_successfully? -%}<p class="form-status form-status--success" role="status">{{ 'customer.reset_sent' | t }}</p>{%- endif -%}
+                  <div class="field"><label for="RecoverEmail">{{ 'customer.email' | t }}</label><input id="RecoverEmail" type="email" name="email" autocomplete="email" required></div>
+                  <button type="submit" class="btn btn--secondary btn--full">{{ 'customer.send' | t }}</button>
+                {%- endform -%}
+              </details>
+            {%- else -%}
+              <h1 class="auth__title">{{ 'customer.join_title' | t }}</h1>
+              {%- form 'create_customer', novalidate: 'novalidate', class: 'account__form' -%}
+                {%- if form.errors -%}<div class="form-status form-status--error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+                <div class="auth__row">
+                  <div class="field"><label for="RegFirst">{{ 'customer.first_name' | t }}</label><input id="RegFirst" type="text" name="customer[first_name]" autocomplete="given-name"></div>
+                  <div class="field"><label for="RegLast">{{ 'customer.last_name' | t }}</label><input id="RegLast" type="text" name="customer[last_name]" autocomplete="family-name"></div>
+                </div>
+                <div class="field"><label for="RegEmail">{{ 'customer.email' | t }}</label><input id="RegEmail" type="email" name="customer[email]" autocomplete="email" required></div>
+                <div class="field"><label for="RegPassword">{{ 'customer.password' | t }}</label><input id="RegPassword" type="password" name="customer[password]" autocomplete="new-password" required></div>
+                <label class="auth__check"><input type="checkbox" name="customer[accepts_marketing]" value="true"> <span>{{ 'customer.marketing' | t }}</span></label>
+                <button type="submit" class="btn btn--full">{{ 'customer.register' | t }}</button>
+              {%- endform -%}
+            {%- endif -%}
+            <p class="t-small t-muted auth__guest">{{ 'customer.guest' | t }}</p>
           </div>
         </div>
-      {%- when 'register' -%}
-        <h1 class="t-display-m">{{ 'customer.register' | t }}</h1>
-        {%- form 'create_customer', novalidate: 'novalidate', class: 'account__form' -%}
-          {%- if form.errors -%}<div class="form-status form-status--error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
-          <div class="field"><label for="RegFirst">{{ 'customer.first_name' | t }}</label><input id="RegFirst" type="text" name="customer[first_name]" autocomplete="given-name"></div>
-          <div class="field"><label for="RegLast">{{ 'customer.last_name' | t }}</label><input id="RegLast" type="text" name="customer[last_name]" autocomplete="family-name"></div>
-          <div class="field"><label for="RegEmail">{{ 'customer.email' | t }}</label><input id="RegEmail" type="email" name="customer[email]" autocomplete="email" required></div>
-          <div class="field"><label for="RegPassword">{{ 'customer.password' | t }}</label><input id="RegPassword" type="password" name="customer[password]" autocomplete="new-password" required></div>
-          <button type="submit" class="btn btn--full">{{ 'customer.register' | t }}</button>
-        {%- endform -%}
       {%- when 'account' -%}
         <div class="account__top">
           <h1 class="t-display-m">{{ 'customer.account' | t }}</h1>

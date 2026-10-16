@@ -85,46 +85,48 @@
       </div>
     </div>
 
-    {%- if section.settings.enable_mega -%}
-      <div class="mega" id="MegaShop" hidden data-mega>
-        <div class="container mega__inner">
-          {%- for product in mega_collection.products limit: 4 -%}
-            {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
-            {%- assign step = step | strip -%}
-            {%- assign cutout = product.metafields.bts.cutout.value -%}
-            {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
-            {%- assign studio = images[studio_key] -%}
-            <a class="mega-card" href="{{ product.url }}" data-step="{{ step }}">
-              <span class="mega-card__media">
-                {%- if studio -%}
-                  {{ studio | image_url: width: 480 | image_tag: loading: 'lazy', widths: '240,360,480', sizes: '240px', alt: '', class: 'mega-card__photo' }}
-                {%- elsif cutout -%}
-                  {{ cutout | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '' }}
-                {%- elsif product.featured_media -%}
-                  {{ product.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '' }}
-                {%- endif -%}
-              </span>
-              <span class="step-tag">{{ 'product.step' | t: number: step }}</span>
-              <span class="mega-card__title">{{ product.title | escape }}</span>
-              {%- render 'price', product: product, class: 't-small' -%}
-            </a>
-          {%- endfor -%}
-          <div class="mega__aside">
-            <p class="t-eyebrow t-muted">{{ 'header.mega.title' | t }}</p>
-            <a class="link-arrow" href="{{ mega_collection.url | default: routes.all_products_collection_url }}">{{ 'header.mega.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-            <a class="link-arrow" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{{ 'header.mega.find_routine' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-            <a class="link-arrow" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.mega.ingredients' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-          </div>
+  </header>
+  {%- if section.settings.enable_mega -%}
+    <div class="mega" id="MegaShop" hidden data-mega>
+      <div class="container mega__inner">
+        {%- for product in mega_collection.products limit: 4 -%}
+          {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
+          {%- assign step = step | strip -%}
+          {%- assign cutout = product.metafields.bts.cutout.value -%}
+          {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
+          {%- assign studio = images[studio_key] -%}
+          <a class="mega-card" href="{{ product.url }}" data-step="{{ step }}">
+            <span class="mega-card__media">
+              {%- if studio -%}
+                {{ studio | image_url: width: 480 | image_tag: loading: 'lazy', widths: '240,360,480', sizes: '240px', alt: '', class: 'mega-card__photo' }}
+              {%- elsif cutout -%}
+                {{ cutout | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '' }}
+              {%- elsif product.featured_media -%}
+                {{ product.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '' }}
+              {%- endif -%}
+            </span>
+            <span class="step-tag">{{ 'product.step' | t: number: step }}</span>
+            <span class="mega-card__title">{{ product.title | escape }}</span>
+            {%- render 'price', product: product, class: 't-small' -%}
+          </a>
+        {%- endfor -%}
+        <div class="mega__aside">
+          <p class="t-eyebrow t-muted">{{ 'header.mega.title' | t }}</p>
+          <a class="link-arrow" href="{{ mega_collection.url | default: routes.all_products_collection_url }}">{{ 'header.mega.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <a class="link-arrow" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{{ 'header.mega.find_routine' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <a class="link-arrow" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.mega.ingredients' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <a class="mega__creators" href="{{ routes.root_url | append: '/pages/creators' | replace: '//', '/' }}"><span class="mega__creators-mark" aria-hidden="true"></span><span><strong>{{ 'footer.links.creators' | t }}</strong><br><span class="t-small t-muted">{{ 'pages.contact.way_creators_sub' | t }}</span></span></a>
         </div>
       </div>
-    {%- endif -%}
-  </header>
+    </div>
+  {%- endif -%}
 </site-header>
 
 {%- comment -%} Mobile menu {%- endcomment -%}
 <dialog class="drawer drawer--start" id="MenuDrawer" aria-labelledby="MenuDrawerTitle">
   <div class="drawer__head">
-    <h2 class="drawer__title" id="MenuDrawerTitle">{{ 'header.menu' | t }}</h2>
+    <h2 class="visually-hidden" id="MenuDrawerTitle">{{ 'header.menu' | t }}</h2>
+    <a class="menu-drawer__logo" href="{{ routes.root_url }}" aria-label="{{ 'header.home' | t: shop: shop.name }}">{%- render 'logo', variant: 'wordmark' -%}</a>
     <button type="button" class="header-icon" data-close-dialog>
       {% render 'icon', name: 'close', class: 'icon--lg' %}
       <span class="visually-hidden">{{ 'general.close' | t }}</span>
@@ -136,8 +138,12 @@
         {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
         {%- assign step = step | strip -%}
         {%- assign cutout = product.metafields.bts.cutout.value -%}
+        {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
+        {%- assign studio = images[studio_key] -%}
         <a class="menu-drawer__product" href="{{ product.url }}" data-step="{{ step }}">
-          {%- if cutout -%}
+          {%- if studio -%}
+            {{ studio | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '', class: 'menu-drawer__photo' }}
+          {%- elsif cutout -%}
             {{ cutout | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '100px', alt: '' }}
           {%- elsif product.featured_media -%}
             {{ product.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '100px', alt: '' }}
@@ -148,6 +154,7 @@
       {%- endfor -%}
     </div>
     <nav class="menu-drawer__nav" aria-label="{{ 'header.primary_nav' | t }}">
+      <a class="menu-drawer__link" href="{{ routes.root_url }}"{% if request.page_type == 'index' %} aria-current="page"{% endif %}>{{ 'general.home' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
       {%- if menu.links.size > 0 -%}
         {%- for link in menu.links -%}
           <a class="menu-drawer__link" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
@@ -167,6 +174,7 @@
       {%- endif -%}
       <a href="{{ routes.root_url | append: '/pages/faq' | replace: '//', '/' }}">{{ 'header.nav.faq' | t }}</a>
       <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{{ 'header.nav.contact' | t }}</a>
+      <a href="{{ routes.root_url | append: '/pages/creators' | replace: '//', '/' }}">{{ 'footer.links.creators' | t }}</a>
       {% render 'language-switch', form_id: 'DrawerLang', class: 'chip', show_label: true %}
     </div>
   </div>
