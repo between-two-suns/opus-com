@@ -20,7 +20,7 @@ CHROME_PATH=$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome|head -1) npx
 | Check | Result |
 |---|---|
 | Shopify Theme Check | **0 offenses** (errors 0, warnings 0) |
-| Interaction tests | **238 / 238 pass** (3 consecutive runs). New: forecast/climate/builder add the matching bundle (Night Ritual, Clear & Protect) with a match note; Full Ritual and duo cards add 1 bundle; EGP format; bundle qty capped at 3; bag upgrade swaps duo → Day Ritual; concern filter keeps only sun-relevant cards incl. bundles; WELCOME75 card hidden on arrival, no focus steal, closes, once per visitor, code + focus after sign-up; creators: 4 reels, CTA jumps to form, empty form invalid, submit → thank-you with focus |
+| Interaction tests | **272 / 272 pass** (v3, 2026-10-16). v3 adds: 4 shoppable hero panels in step order, hero CTA → Full Ritual, h1 is the headline, home set card adds 1 bundle, set pages list their products and work out the saving, no empty FAQ rows, no routine strip on sets, serum FAQ shows only its 4 relevant questions, phone PDP shows the buy bar from the start. Earlier (238): New: forecast/climate/builder add the matching bundle (Night Ritual, Clear & Protect) with a match note; Full Ritual and duo cards add 1 bundle; EGP format; bundle qty capped at 3; bag upgrade swaps duo → Day Ritual; concern filter keeps only sun-relevant cards incl. bundles; WELCOME75 card hidden on arrival, no focus steal, closes, once per visitor, code + focus after sign-up; creators: 4 reels, CTA jumps to form, empty form invalid, submit → thank-you with focus |
 | axe-core (WCAG 2.2 AA + best practice) | **0 violations** on 72 page scans (18 routes incl. `/pages/creators` and a bundle PDP × EN/AR × 390/1440) |
 | Console errors | 0 on all routes (only the intentional 404 test page logs its 404 status) |
 | Horizontal overflow | 0 px on every route, EN + AR, 375/390/1440 |
@@ -43,6 +43,10 @@ CHROME_PATH=$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome|head -1) npx
 | `/collections/all` | 98 | 100 | 100 | 100 | 2.3 s | 0 ms | 0 | 231 KB |
 | `/products/clarity-serum` | 99 | 100 | 100 | 100 | 2.1 s | 0 ms | 0 | 253 KB |
 | `/pages/routines` | 99 | 100 | 100 | 100 | 1.8 s | 0 ms | 0 | 143 KB |
+
+| `/` (v3, 2026-10-16) | 94 | 100 | 100 | 100 | 2.1 s | 140 ms | 0 | — |
+| `/products/clarity-serum` (v3; tilt/cursor/magnetic JS removed) | 99 | 100 | 100 | 100 | 2.1 s | 0 ms | 0 | — |
+| `/pages/climate` (v3 day story) | 99 | 100 | 100 | 100 | 1.9 s | 0 ms | 0 | — |
 
 Expect Shopify TTFB and `content_for_header` scripts (analytics, Shop Pay) to cost roughly 2–6 points on the real store.
 

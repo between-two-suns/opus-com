@@ -16,6 +16,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 ## Restore points (revert here if needed)
 | Date | Shopify theme (unpublished, untouched copy) | Git commit on `opus-build` |
 |---|---|---|
+| 2026-10-16, before the v3 redesign loop | `BTS Opus — snapshot 2026-10-16 (before redesign loop)` · `gid://shopify/OnlineStoreTheme/167484195074` | `8ed2427` |
 | 2026-10-15, before photos | `BTS Opus — snapshot 2026-10-15 (before photos)` · `gid://shopify/OnlineStoreTheme/167479836930` | `ee84c34` (product media: `content/store-snapshots/2026-10-15-media-before-photos.json`) |
 | 2026-10-12, after pass 2 / before pricing, WELCOME75 card and creators page | `BTS Opus — snapshot (pass 2, before pricing)` · `gid://shopify/OnlineStoreTheme/167347749122` | `e289f09` (store data: `content/store-snapshots/2026-10-12-products-before-pricing.json`) |
 | 2026-10-12, after pass 1 / before pass 2 | `BTS Opus — snapshot 2026-10-12 (pass 1, before pass 2)` · `gid://shopify/OnlineStoreTheme/167328219394` | `eed0b31` |
@@ -49,7 +50,8 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - **Pricing & offers (2026-10-12, owner's Pricing & Offers spec):** real prices + SKUs on the 4 singles; **7 Shopify-native bundles** (Full / Day / Night Ritual, Clear & Protect Duo, Core Duo, SPF and Serum Stock-Up) with compare-at = singles total; collections singles/duos/rituals/stock-up; **WELCOME75** discount. Theme: EGP format ("EGP 1,349" / "1,349 ج.م"), bundle cards everywhere (home, Sets, collections, routines, bundle product pages with a packs stage), Day Ritual offer on every single product page + Stock-Up on serum/SPF, pickers add the matching bundle, bag upgrade duo → Day Ritual when it unlocks free delivery, quantity limits 5/3, free-delivery line in the announcement bar, **WELCOME75 sign-up card** (shared code revealed after sign-up)
 - **Creators page** `/pages/creators` ("Show us your weather"): phone-frame reels of the real bottles in sun / AC / dust / humidity, honest offer (routine; personal 10% code; commission or paid collabs agreed one-to-one; credited features with permission), how it works, content ideas, rules, application form, creator FAQ. EN + AR; footer link
 - **Photos (2026-10-15):** owner's approved images on the site: product galleries (front, in use, texture, angle, back, in hand), card hover, climate switch scenes, routine portraits on product pages, About/Climate story photos, creators reels, bundle images (Full / Night / Core). See DECISIONS 82–86 for the asset triage (what's used, what to stop, what to fix)
-- QA tooling: preview harness, Theme Check, 238 flow tests, axe, Lighthouse scripts (see `QA.md`)
+- **Redesign v3 (2026-10-16, deployed to staging):** flat, colour-true system; mint footer; floating pill nav; colour-block hero with shoppable panels; pack-colour add-to-bag buttons and buy bar; add-to-bag moment; set pages that explain contents, order and saving; product-specific FAQ; shop = products then sets; sets page with photo-tile builder; climate page as "A day between two suns"; benefit-first ingredients. See DECISIONS 87–102
+- QA tooling: preview harness, Theme Check, 272 flow tests, axe, Lighthouse scripts (see `QA.md`)
 
 ## Incomplete / outstanding
 - Real-store visual QA of the staging theme (sandbox can't reach the storefront)
