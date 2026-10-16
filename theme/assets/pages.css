@@ -62,7 +62,9 @@
 .ampm__step-text { display: grid; gap: 4px; align-content: start; }
 .ampm__name { font-weight: 700; text-decoration: none; }
 .ampm__name:hover { text-decoration: underline; }
-@media (min-width: 990px) { .ampm__grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 990px) { .ampm__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ampm__col, .ampm__head, .ampm__step-text { min-inline-size: 0; }
+.ampm__head .t-display-m { overflow-wrap: anywhere; }
 
 /* Glossary */
 .glossary__filter { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; margin-block-end: 24px; }

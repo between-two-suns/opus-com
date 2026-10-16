@@ -143,3 +143,4 @@ Each entry: decision · why · reversibility. Newest last.
 124. **Menus list the four steps by handle** (not "first four products"), so sets without studio photos never land in the mega menu or drawer.
 125. **Search results:** same order as the shop: the four steps in the grid, sets in their own rail below. Never mixed (mixed cards had different widths and picture heights).
 126. **Account pages:** this store uses Shopify's new customer accounts, so `/account/login` is Shopify-hosted and only shows our branded login card if the store switches to classic accounts. The branding for the hosted page is set in Settings → Customer accounts (logo, colours).
+127. **Offer cards size to their space:** the "Complete the routine" card goes three-across (picture · contents · price and button) only when the card itself is at least 620 px wide, so it works in full-width bands, product pages and the half-width morning/evening columns.

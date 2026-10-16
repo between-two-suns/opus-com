@@ -32,7 +32,7 @@
       assign eyebrow = 'bundle_offer.complete' | t
     endif
   -%}
-  <article class="offer {{ class }}" data-handle="{{ bp.handle }}" aria-labelledby="Offer-{{ bp.id }}-{{ class | handleize }}">
+  <div class="offer-wrap"><article class="offer {{ class }}" data-handle="{{ bp.handle }}" aria-labelledby="Offer-{{ bp.id }}-{{ class | handleize }}">
     <a class="offer__visual" href="{{ bp.url }}" tabindex="-1" aria-hidden="true">{%- render 'set-visual', product: bp, sizes: '(min-width: 990px) 220px, 120px' -%}</a>
     <div class="offer__body">
       <p class="offer__eyebrow">{{ eyebrow }}</p>
@@ -63,5 +63,5 @@
         </form>
       </product-form>
     </div>
-  </article>
+  </article></div>
 {%- endif -%}
