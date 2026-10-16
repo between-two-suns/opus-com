@@ -16,6 +16,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 ## Restore points (revert here if needed)
 | Date | Shopify theme (unpublished, untouched copy) | Git commit on `opus-build` |
 |---|---|---|
+| 2026-10-16, v3 rated 7 by owner, before loop 5 | `BTS Opus — snapshot 2026-10-16 (v3, rated 7, before loop 5)` · `gid://shopify/OnlineStoreTheme/167493992706` | `42678d6` |
 | 2026-10-16, before the v3 redesign loop | `BTS Opus — snapshot 2026-10-16 (before redesign loop)` · `gid://shopify/OnlineStoreTheme/167484195074` | `8ed2427` |
 | 2026-10-15, before photos | `BTS Opus — snapshot 2026-10-15 (before photos)` · `gid://shopify/OnlineStoreTheme/167479836930` | `ee84c34` (product media: `content/store-snapshots/2026-10-15-media-before-photos.json`) |
 | 2026-10-12, after pass 2 / before pricing, WELCOME75 card and creators page | `BTS Opus — snapshot (pass 2, before pricing)` · `gid://shopify/OnlineStoreTheme/167347749122` | `e289f09` (store data: `content/store-snapshots/2026-10-12-products-before-pricing.json`) |
@@ -51,6 +52,7 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - **Creators page** `/pages/creators` ("Show us your weather"): phone-frame reels of the real bottles in sun / AC / dust / humidity, honest offer (routine; personal 10% code; commission or paid collabs agreed one-to-one; credited features with permission), how it works, content ideas, rules, application form, creator FAQ. EN + AR; footer link
 - **Photos (2026-10-15):** owner's approved images on the site: product galleries (front, in use, texture, angle, back, in hand), card hover, climate switch scenes, routine portraits on product pages, About/Climate story photos, creators reels, bundle images (Full / Night / Core). See DECISIONS 82–86 for the asset triage (what's used, what to stop, what to fix)
 - **Redesign v3 (2026-10-16, deployed to staging):** flat, colour-true system; mint footer; floating pill nav; colour-block hero with shoppable panels; pack-colour add-to-bag buttons and buy bar; add-to-bag moment; set pages that explain contents, order and saving; product-specific FAQ; shop = products then sets; sets page with photo-tile builder; climate page as "A day between two suns"; benefit-first ingredients. See DECISIONS 87–102
+- **Loop 5 (2026-10-16):** owner review fixes (see DECISIONS 104–122): full-screen colour-band hero, set pictures without pack templates, ingredients benefit-first, FAQ hub + per-page FAQs, new contact, account and bag designs, mega menu fixed. Checked at 390 / 768 / 1024 / 1440 in EN and AR
 - QA tooling: preview harness, Theme Check, 272 flow tests, axe, Lighthouse scripts (see `QA.md`)
 
 ## Incomplete / outstanding

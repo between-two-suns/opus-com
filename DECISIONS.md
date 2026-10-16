@@ -118,3 +118,24 @@ Each entry: decision · why · reversibility. Newest last.
 101. **Page headers:** daylight, optional photo beside the title. About uses the terrace portrait and the serum texture (the white-background pack shot is gone). Ingredients uses the skin close-up. Scan page title: "Your bottle, explained."
 102. **Performance:** removed 3D tilt, magnetic buttons, sunlight cursor and time-of-day tone JavaScript (product page blocking time 2.1 s → 0 ms in the preview).
 103. **Routine strip photos:** product pages use the wider routine scenes (`bts-<handle>-routine-scene.jpg`: different light, the bottle in hand) instead of four near-identical face close-ups (owner: "look the same and template-like"); the close-ups stay as the fallback.
+
+### Loop 5 (2026-10-16, owner review: "around a 7, push to 9.8"; restore point theme `167493992706`, git `42678d6`)
+104. **Header:** the mega panel now sits outside the frosted pill (it was layering under the product photo); hover-then-click no longer closes it. Creators is linked in the mega panel, the mobile menu and the contact page (it was only in the footer).
+105. **Mobile menu:** Home link + logo link home; product tiles use the studio photos.
+106. **Footer:** overlaps the page above by its corner radius, so the rounded top always sits on content (no white corners over the editorial photo).
+107. **Hero v3.1:** full-screen, four colour bands (each band's colour sampled from its studio photo's background: #3aad78 / #67c3e5 / #ac8ede / #f79f73), the studio photo fading up into its band, headline across all four. Main button is "Shop the Full Ritual" without a price (owner). Phones: four narrow bands with the bottles, buttons below.
+108. **Set pictures:** a set shows its own photo from Files (`bts-<handle>.jpg`) when there is one; otherwise its products as colour bands from the studio shots. The pack-template renders are no longer used for sets. Set product pages use the same picture plus each product's studio shot as the gallery.
+109. **"Ships free"** is a green badge on set cards, set pages and offers (it was a footnote after the saving).
+110. **Set offer card** (product pages "Complete the routine" / "Stock up"): picture, what's inside with "(this one)", saving, ships-free badge, price + add.
+111. **Product gallery:** every slide keeps 4:5; on desktop the gallery narrows to the screen height instead of cropping slides to landscape; transparent PNG details are shown whole on the product tint.
+112. **Step tabs:** tapping another step reveals the next product in a circle growing from the tapped tab (cross-document view transition; plain navigation where unsupported).
+113. **Routine strip photos:** back to the face close-ups (owner prefers them; the scenes showed the product twice). Reverses 103.
+114. **Ingredients:** benefit-first chapters per product (the pack's benefit line as the headline, texture photo, "What does it": each key ingredient and its role); the A–Z list is a collapsed reference below.
+115. **FAQs everywhere:** each page has its own FAQ set; new Q&As (start with which set, do I need all four, free delivery from the threshold setting, returns linking the real refund policy, how to reach us, what INCI is, why water is first, air-con days). The FAQ page is a hub with search and topic filters and a contact card.
+116. **Contact page:** big title + photo, ways to reach us (email; WhatsApp and Instagram only when set in Theme settings; FAQ; creators), topic chips sent with the message.
+117. **Creators:** headline "Film the space between."; calm daylight, solid-tint cards, steps in a row, mint rules card.
+118. **Brand mark use:** a small )( leads every section eyebrow; on the Climate page the two arcs (peach and blue) sit beside the title and drift apart and back.
+119. **Log in / Create account:** two-column card (colour bands + what an account gives you), tabs between the two, newsletter opt-in on sign-up, password reset folded in.
+120. **Bag:** studio thumbnails (set picture for sets), "n of 4 steps", free-delivery bar turns green when reached, routine suggestions with the product's benefit and "Add · price".
+121. **Newsletter heading:** "Hear it first" (was "Get the forecast").
+122. **Arabic:** set pages and the buy bar use the translated set names.

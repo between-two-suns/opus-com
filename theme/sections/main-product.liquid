@@ -161,7 +161,17 @@
                 {%- if step > 0 -%}
                   <p class="step-tag pdp__step">{{ 'product.step' | t: number: step }}{% if step_label != blank %} · {{ step_label }}{% endif %}</p>
                 {%- endif -%}
-                <h1 class="pdp__title">{{ product.title | escape }}</h1>
+                {%- liquid
+                  assign pdp_title = product.title
+                  if bdef != blank
+                    assign set_key = 'bundles.names.' | append: product.handle
+                    assign set_name = set_key | t | replace: '&amp;', '&'
+                    unless set_name contains 'translation missing' or set_name == set_key
+                      assign pdp_title = set_name
+                    endunless
+                  endif
+                -%}
+                <h1 class="pdp__title">{{ pdp_title | escape }}</h1>
                 {%- if mf.hero_ingredients != blank -%}
                   <p class="pill pdp__hero-ing">{{ mf.hero_ingredients }}</p>
                 {%- endif -%}
@@ -392,7 +402,7 @@
         {%- endif -%}
       </span>
       <span class="sticky-atc__text">
-        <span class="sticky-atc__title">{{ product.title | escape }}</span>
+        <span class="sticky-atc__title">{{ pdp_title | default: product.title | escape }}</span>
         {%- render 'price', product: product, variant: variant, class: 't-small' -%}
       </span>
       <button type="submit" form="{{ form_id }}" class="btn btn--deep btn--small sticky-atc__btn" data-magnetic {% if coming_soon or variant.available == false %}disabled{% endif %}>
