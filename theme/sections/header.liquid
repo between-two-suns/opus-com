@@ -1,6 +1,10 @@
 {%- liquid
   assign menu = section.settings.menu
   assign mega_collection = section.settings.mega_collection | default: collections.all
+  comment
+    The four routine steps in order (never sets): by handle, so the order doesn't depend on the collection.
+  endcomment
+  assign mega_handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
 -%}
 <site-header class="site-header-wrap">
   <header class="site-header" data-header>
@@ -89,12 +93,12 @@
   {%- if section.settings.enable_mega -%}
     <div class="mega" id="MegaShop" hidden data-mega>
       <div class="container mega__inner">
-        {%- for product in mega_collection.products limit: 4 -%}
+        {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
           {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
           {%- assign step = step | strip -%}
           {%- assign cutout = product.metafields.bts.cutout.value -%}
           {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
-          {%- assign studio = images[studio_key] -%}{%- unless studio.width > 0 -%}{%- assign studio = nil -%}{%- endunless -%}
+          {%- assign studio = images[studio_key] -%}{%- if studio == blank -%}{%- assign studio = false -%}{%- endif -%}
           <a class="mega-card" href="{{ product.url }}" data-step="{{ step }}">
             <span class="mega-card__media">
               {%- if studio -%}
@@ -134,12 +138,12 @@
   </div>
   <div class="drawer__body">
     <div class="menu-drawer__products">
-      {%- for product in mega_collection.products limit: 4 -%}
+      {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
         {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
         {%- assign step = step | strip -%}
         {%- assign cutout = product.metafields.bts.cutout.value -%}
         {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
-        {%- assign studio = images[studio_key] -%}{%- unless studio.width > 0 -%}{%- assign studio = nil -%}{%- endunless -%}
+        {%- assign studio = images[studio_key] -%}{%- if studio == blank -%}{%- assign studio = false -%}{%- endif -%}
         <a class="menu-drawer__product" href="{{ product.url }}" data-step="{{ step }}">
           {%- if studio -%}
             {{ studio | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '', class: 'menu-drawer__photo' }}

@@ -36,14 +36,14 @@
             assign rest = benefit | remove_first: lead | remove_first: '.' | strip
             assign tk = 'bts-' | append: p.handle | append: '-texture.jpg'
             assign tex = images[tk]
-            unless tex.width > 0
-              assign tex = nil
-            endunless
+            if tex == blank
+              assign tex = false
+            endif
             assign sk = 'bts-' | append: p.handle | append: '-studio.jpg'
             assign studio = images[sk]
-            unless studio.width > 0
-              assign studio = nil
-            endunless
+            if studio == blank
+              assign studio = false
+            endif
             assign kis = p.metafields.bts.key_ingredients.value
             assign label = p.metafields.bts.step_label.value
           -%}

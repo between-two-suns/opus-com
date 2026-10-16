@@ -6,12 +6,12 @@
 {%- liquid
   assign img = section.settings.image | default: images['bts-editorial-walk.png']
   assign img_m = section.settings.image_mobile | default: images['bts-editorial-sea.jpg']
-  unless img.width > 0
-    assign img = nil
-  endunless
-  unless img_m.width > 0
-    assign img_m = nil
-  endunless
+  if img == blank
+    assign img = false
+  endif
+  if img_m == blank
+    assign img_m = false
+  endif
   assign eyebrow = section.settings.eyebrow
   if eyebrow == blank
     assign eyebrow = 'sections.editorial_band.eyebrow' | t | replace: '&amp;', '&'

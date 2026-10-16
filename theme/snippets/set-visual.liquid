@@ -11,9 +11,9 @@
   assign sv_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
   assign sv_key = 'bts-' | append: product.handle | append: '.jpg'
   assign sv_photo = images[sv_key]
-  unless sv_photo.width > 0
-    assign sv_photo = nil
-  endunless
+  if sv_photo == blank
+    assign sv_photo = false
+  endif
   assign sv_loading = loading | default: 'lazy'
   assign sv_sizes = sizes | default: '(min-width: 990px) 33vw, 90vw'
 -%}
@@ -25,7 +25,7 @@
       {%- assign si = st | plus: 0 -%}
       {%- assign comp = all_products[sv_handles[si]] -%}
       {%- assign ck = 'bts-' | append: sv_handles[si] | append: '-studio.jpg' -%}
-      {%- assign studio = images[ck] -%}{%- unless studio.width > 0 -%}{%- assign studio = nil -%}{%- endunless -%}
+      {%- assign studio = images[ck] -%}{%- if studio == blank -%}{%- assign studio = false -%}{%- endif -%}
       <span class="set-visual__band" data-step="{{ si }}">
         {%- if studio -%}
           {{ studio | image_url: width: 600 | image_tag: loading: sv_loading, widths: '300,450,600', sizes: '(min-width: 990px) 14vw, 40vw', alt: '' }}

@@ -51,9 +51,9 @@
           endfor
           assign studio_key = 'bts-' | append: comp.handle | append: '-studio.jpg'
           assign studio = images[studio_key]
-          unless studio.width > 0
-            assign studio = nil
-          endunless
+          if studio == blank
+            assign studio = false
+          endif
           if si == 4
             assign has_am = true
           else

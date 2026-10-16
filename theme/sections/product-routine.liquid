@@ -26,7 +26,7 @@
             {%- assign cutout = p.metafields.bts.cutout.value -%}
             {%- comment -%} The close-ups (owner prefers them: no product shown twice). {%- endcomment -%}
             {%- assign rk = 'bts-' | append: p.handle | append: '-routine.jpg' -%}
-            {%- assign routine_photo = images[rk] -%}{%- unless routine_photo.width > 0 -%}{%- assign routine_photo = nil -%}{%- endunless -%}
+            {%- assign routine_photo = images[rk] -%}{%- if routine_photo == blank -%}{%- assign routine_photo = false -%}{%- endif -%}
             {%- assign is_this = false -%}
             {%- if p.id == product.id -%}{%- assign is_this = true -%}{%- endif -%}
             <li class="routine-strip__step{% if is_this %} is-current{% endif %}" data-step="{{ s }}">

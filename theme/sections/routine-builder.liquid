@@ -83,7 +83,7 @@
                   {% unless v.available %}disabled{% endunless %}
                 >
                   {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
-                  {%- assign studio = images[studio_key] -%}{%- unless studio.width > 0 -%}{%- assign studio = nil -%}{%- endunless -%}
+                  {%- assign studio = images[studio_key] -%}{%- if studio == blank -%}{%- assign studio = false -%}{%- endif -%}
                   {%- if studio -%}<span class="builder__thumb" aria-hidden="true">{{ studio | image_url: width: 500 | image_tag: loading: 'lazy', widths: '200,300,400,500', sizes: '(min-width: 990px) 14vw, 44vw', alt: '' }}</span>{%- endif -%}
                   <span class="builder__check" aria-hidden="true"></span>
                   <span class="builder__choice-text">

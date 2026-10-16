@@ -40,13 +40,13 @@
       assign wk = 'bts-climate-' | append: cond | append: '-wide.jpg'
       assign tk = 'bts-climate-' | append: cond | append: '-tall.jpg'
       assign wide = images[wk]
-      unless wide.width > 0
-        assign wide = nil
-      endunless
+      if wide == blank
+        assign wide = false
+      endif
       assign tall = images[tk]
-      unless tall.width > 0
-        assign tall = nil
-      endunless
+      if tall == blank
+        assign tall = false
+      endif
       case cond
         when 'city'
           assign ic = 'dust'
@@ -91,7 +91,7 @@
               {%- assign si = st | plus: 0 -%}
               {%- assign p = all_products[step_handles[si]] -%}
               {%- assign sk = 'bts-' | append: p.handle | append: '-studio.jpg' -%}
-              {%- assign studio = images[sk] -%}{%- unless studio.width > 0 -%}{%- assign studio = nil -%}{%- endunless -%}
+              {%- assign studio = images[sk] -%}{%- if studio == blank -%}{%- assign studio = false -%}{%- endif -%}
               <li data-step="{{ si }}">
                 <a class="cst__step" href="{{ p.url }}">
                   <span class="cst__thumb">{%- if studio -%}{{ studio | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '56px', alt: '' }}{%- endif -%}</span>
@@ -126,7 +126,7 @@
         {%- for s in (1..4) -%}
           {%- assign p = all_products[step_handles[s]] -%}
           {%- assign sk = 'bts-' | append: p.handle | append: '-studio.jpg' -%}
-          {%- assign studio = images[sk] -%}{%- unless studio.width > 0 -%}{%- assign studio = nil -%}{%- endunless -%}
+          {%- assign studio = images[sk] -%}{%- if studio == blank -%}{%- assign studio = false -%}{%- endif -%}
           <li data-step="{{ s }}">
             <a href="{{ p.url }}">
               <span class="cst__end-media">{%- if studio -%}{{ studio | image_url: width: 500 | image_tag: loading: 'lazy', widths: '250,375,500', sizes: '(min-width: 990px) 12vw, 22vw', alt: '' }}{%- endif -%}</span>
