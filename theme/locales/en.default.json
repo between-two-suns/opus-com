@@ -301,8 +301,8 @@
       "see_all": "See all sets"
     },
     "builder": {
-      "eyebrow": "Build your routine",
-      "heading": "Your skin, your steps.",
+      "eyebrow": "Build your own",
+      "heading": "Or pick your own steps.",
       "text": "Tap the steps you want. They line up in the order you use them, and the total updates as you go.",
       "shelf": "Your routine shelf",
       "choose": "Choose your steps",
@@ -413,7 +413,9 @@
     "routine_card_title": "Not sure where to start?",
     "routine_card_text": "Answer one question about your day and we’ll build your routine.",
     "routine_card_cta": "Open the forecast",
-    "sort": "Sort"
+    "sort": "Sort",
+    "sets_heading": "Sets: the routine, for less.",
+    "sets_builder": "Build your own"
   },
   "cart": {
     "added": "Added to your bag",
@@ -673,9 +675,9 @@
       "text": "Four steps, colour-coded and in order. Tell the forecast what today looks like — or add the full morning or evening routine in one tap."
     },
     "ingredients": {
-      "eyebrow": "Ingredient glossary",
-      "heading": "Nothing hidden",
-      "text": "What each key ingredient is and which products contain it — plus every product’s full INCI list, exactly as printed on the pack."
+      "eyebrow": "Ingredients",
+      "heading": "What’s inside, and what it does.",
+      "text": "Start with what each formula is for. Then, if you want the detail, every ingredient, exactly as printed on the pack."
     },
     "climate": {
       "eyebrow": "Climate-adapted skincare",
@@ -699,13 +701,13 @@
     },
     "scan": {
       "eyebrow": "You scanned a Between Two Suns pack",
-      "heading": "Which one is in your hand?",
+      "heading": "Your bottle, explained.",
       "text": "Tap your product for how to use it, where it sits in your routine, and the full ingredient list."
     },
     "sets": {
       "eyebrow": "Sets & routines",
-      "heading": "Build it. Or pick a set.",
-      "text": "Choose the steps you need, or start from a routine that’s already put together."
+      "heading": "Pick a set. Or build your own.",
+      "text": "Fixed-price sets of the four steps, each saving against buying separately. Or choose only the steps you need."
     }
   },
   "stories": {
@@ -938,5 +940,21 @@
       "spf-stock-up": "Already on our SPF? Two tubes, so the morning step never runs out.",
       "serum-stock-up": "Already on the serum? Two bottles, so it never runs out."
     }
+  },
+  "climate_story": {
+    "eyebrow": "Climate-adapted skincare",
+    "title": "A day between two suns.",
+    "lede": "Egypt doesn’t do one kind of weather. Here is an ordinary day, hour by hour, and the steps that answer each part of it.",
+    "helps": "What answers it",
+    "chapters": {
+      "sun": "The first sun.",
+      "city": "The commute.",
+      "ac": "Eight hours of office air.",
+      "heat": "The afternoon heat.",
+      "humidity": "Humid evenings."
+    },
+    "end_eyebrow": "Then tomorrow",
+    "end_heading": "One routine for the whole day.",
+    "end_text": "Four light steps, morning and night. Sunscreen is the last step every morning."
   }
 }

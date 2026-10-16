@@ -3,7 +3,8 @@
     "hero": {
       "type": "page-hero",
       "settings": {
-        "preset": "sets"
+        "preset": "sets",
+        "compact": true
       }
     },
     "builder": {
@@ -51,7 +52,9 @@
         "bundle_4",
         "bundle_5"
       ],
-      "settings": {}
+      "settings": {
+        "hide_head": true
+      }
     },
     "faq": {
       "type": "faq",
@@ -82,8 +85,8 @@
   },
   "order": [
     "hero",
-    "builder",
     "bundles",
+    "builder",
     "faq"
   ]
 }

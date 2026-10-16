@@ -150,7 +150,8 @@
     "page_hero": {
       "compact": "Compact",
       "name": "Page hero",
-      "preset": "Preset"
+      "preset": "Preset",
+      "image": "Photo (optional)"
     },
     "product_routine": {
       "collection": "Collection",
@@ -201,7 +202,8 @@
       "steps_info": "Routine step numbers, comma-separated, e.g. 1,2,4",
       "set_name": "Name",
       "product": "Bundle product",
-      "show_all_link": "Show “See all sets” link"
+      "show_all_link": "Show “See all sets” link",
+      "hide_head": "Hide heading (when the page title already says it)"
     },
     "builder": {
       "name": "Build your routine"
@@ -239,6 +241,10 @@
     "bundle_inside": {
       "name": "Set: what's inside",
       "info": "Shows on set (bundle) pages only. Built from the set definition and the products' own data and prices."
+    },
+    "climate_story": {
+      "name": "Climate: a day story",
+      "info": "Five hours of an Egyptian day. Photos come from Files named bts-climate-[condition]-wide.jpg and -tall.jpg; replace a file keeping its name to change a scene."
     }
   },
   "settings_schema": {

@@ -3,7 +3,8 @@
     "hero": {
       "type": "page-hero",
       "settings": {
-        "preset": "about"
+        "preset": "about",
+        "image": "shopify://shop_images/bts-portrait-terrace-wide.jpg"
       }
     },
     "story": {
@@ -34,7 +35,7 @@
           "type": "row",
           "settings": {
             "preset": "transparent",
-            "image": "shopify://shop_images/bts-clarity-serum-back.png"
+            "image": "shopify://shop_images/bts-clarity-serum-texture.jpg"
           }
         }
       },
@@ -43,46 +44,6 @@
         "s2",
         "s3",
         "s4"
-      ],
-      "settings": {}
-    },
-    "facts": {
-      "type": "facts-strip",
-      "blocks": {
-        "f1": {
-          "type": "fact",
-          "settings": {
-            "preset": "made_in_egypt",
-            "icon": "globe"
-          }
-        },
-        "f2": {
-          "type": "fact",
-          "settings": {
-            "preset": "inci",
-            "icon": "flask"
-          }
-        },
-        "f3": {
-          "type": "fact",
-          "settings": {
-            "preset": "spf",
-            "icon": "sun"
-          }
-        },
-        "f4": {
-          "type": "fact",
-          "settings": {
-            "preset": "routine",
-            "icon": "check"
-          }
-        }
-      },
-      "block_order": [
-        "f1",
-        "f2",
-        "f3",
-        "f4"
       ],
       "settings": {}
     },
@@ -96,7 +57,6 @@
   "order": [
     "hero",
     "story",
-    "facts",
     "routine"
   ]
 }

@@ -945,3 +945,9 @@ html.has-open-dialog { overflow: hidden; }
   html.is-buying .site-header__end [data-open-dialog='SearchModal'] { display: inline-flex; }
   html.is-buying .site-header__end .header-lang { display: none; }
 }
+
+/* v3 product card: the studio photo is the card. */
+.card__media--studio { background: var(--sku); }
+.card__media--studio > img { inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.card:hover .card__media--studio > img { transform: scale(1.04); }
+.card__media--studio .card__step { z-index: 3; }

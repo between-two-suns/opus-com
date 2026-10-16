@@ -35,16 +35,27 @@
   assign concerns = product.metafields.bts.concerns.value | join: ' '
 -%}
 <article class="card" data-step="{{ step }}" data-concerns="{{ concerns | escape }}" aria-labelledby="CardTitle-{{ uid }}">
-  <div class="card__media grain{% unless cutout %} card__media--photo{% endunless %}">
+  {%- liquid
+    assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg'
+    assign studio = images[studio_key]
+    assign app_key = 'bts-' | append: product.handle | append: '-application.jpg'
+    assign app_photo = images[app_key]
+  -%}
+  <div class="card__media{% if studio %} card__media--studio{% elsif cutout %} grain{% else %} card__media--photo{% endif %}">
     {%- if step > 0 -%}
       <span class="card__step">
         <span class="step-num" aria-hidden="true">0{{ step }}</span>
       </span>
     {%- endif -%}
-    {%- if cutout -%}
+    {%- if studio -%}
+      {{ studio | image_url: width: 800 | image_tag: loading: img_loading, widths: '300,450,600,800', sizes: img_sizes, alt: product.title }}
+      {%- comment -%} Hover (fine pointers only): the product in use. {%- endcomment -%}
+      {%- if app_photo -%}
+        <span class="card__alt" aria-hidden="true">{{ app_photo | image_url: width: 800 | image_tag: loading: 'lazy', widths: '350,500,800', sizes: img_sizes, alt: '' }}</span>
+      {%- endif -%}
+    {%- elsif cutout -%}
       <span class="card__sun" aria-hidden="true"></span>
       {{ cutout | image_url: width: 600 | image_tag: loading: img_loading, widths: '200,300,400,600', sizes: img_sizes, alt: product.title }}
-      {%- comment -%} Hover (fine pointers only): the product in use, the second product image. {%- endcomment -%}
       {%- assign alt_media = product.media[1] -%}
       {%- if alt_media and alt_media.media_type == 'image' -%}
         <span class="card__alt" aria-hidden="true">{{ alt_media | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350,500,700', sizes: img_sizes, alt: '' }}</span>

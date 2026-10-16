@@ -1,0 +1,158 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  The climate page as one day, 08:00 → 20:00. Each hour is a real scene (Files: bts-climate-<condition>-wide.jpg /
+  -tall.jpg) that holds still while its card scrolls over it, naming the condition and the steps that answer it.
+  Why each step: the product's own pack line (bts.benefit), so nothing here goes beyond the label.
+  A small clock follows the day (IntersectionObserver; without JS every chapter still reads in order).
+{%- endcomment -%}
+{%- liquid
+  assign chapters = 'sun:0800:4+2|city:1000:1+3|ac:1300:3+2|heat:1600:1+4|humidity:2000:1+2' | split: '|'
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign set = section.settings.set | default: all_products['the-full-ritual']
+  assign root = routes.root_url
+  if root == '/'
+    assign root = ''
+  endif
+-%}
+<climate-story class="cst" data-active="0">
+  <header class="cst__intro">
+    <div class="container cst__intro-inner">
+      <p class="t-eyebrow">{{ 'climate_story.eyebrow' | t }}</p>
+      <h1 class="cst__title t-display">{{ 'climate_story.title' | t }}</h1>
+      <p class="t-lead cst__lede">{{ 'climate_story.lede' | t }}</p>
+    </div>
+  </header>
+  <ol class="cst__clock" role="list" aria-hidden="true">
+    {%- for raw in chapters -%}
+      {%- assign c = raw | split: ':' -%}
+      <li data-i="{{ forloop.index0 }}"><span class="cst__clock-dot"></span><span class="cst__clock-time">{{ c[1] | slice: 0, 2 }}:{{ c[1] | slice: 2, 2 }}</span></li>
+    {%- endfor -%}
+  </ol>
+
+  {%- for raw in chapters -%}
+    {%- liquid
+      assign c = raw | split: ':'
+      assign cond = c[0]
+      assign hh = c[1] | slice: 0, 2
+      assign mm = c[1] | slice: 2, 2
+      assign time = hh | append: ':' | append: mm
+      assign steps = c[2] | split: '+'
+      assign wk = 'bts-climate-' | append: cond | append: '-wide.jpg'
+      assign tk = 'bts-climate-' | append: cond | append: '-tall.jpg'
+      assign wide = images[wk]
+      assign tall = images[tk]
+      case cond
+        when 'city'
+          assign ic = 'dust'
+          assign line_key = 'climate.dust.line'
+        when 'humidity'
+          assign ic = 'drop'
+          assign line_key = 'climate.humidity.line'
+        when 'heat'
+          assign ic = 'thermo'
+          assign line_key = 'climate.heat.line'
+        else
+          assign ic = cond
+          assign line_key = 'climate.' | append: cond | append: '.line'
+      endcase
+      assign ck = 'sections.forecast.conditions.' | append: cond
+      assign hk = 'climate_story.chapters.' | append: cond
+    -%}
+    <section class="cst__ch" data-i="{{ forloop.index0 }}" aria-labelledby="CstH-{{ section.id }}-{{ forloop.index }}">
+      <div class="cst__media" aria-hidden="true">
+        {%- if wide or tall -%}
+          <picture>
+            {%- if tall -%}<source media="(max-width: 749px)" srcset="{{ tall | image_url: width: 750 }} 750w, {{ tall | image_url: width: 1100 }} 1100w" sizes="100vw">{%- endif -%}
+            {%- liquid
+              assign base = wide
+              unless wide
+                assign base = tall
+              endunless
+            -%}
+            {{ base | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '1000,1400,1800,2400', sizes: '100vw', alt: '' }}
+          </picture>
+        {%- endif -%}
+      </div>
+      <div class="container cst__card-wrap">
+        <div class="cst__card">
+          <p class="cst__time">{{ time }}</p>
+          <p class="cst__cond">{% render 'icon', name: ic, class: 'icon--sm' %}{{ ck | t }}</p>
+          <h2 class="cst__h" id="CstH-{{ section.id }}-{{ forloop.index }}">{{ hk | t }}</h2>
+          <p class="cst__line">{{ line_key | t }}</p>
+          <p class="cst__helps t-eyebrow">{{ 'climate_story.helps' | t }}</p>
+          <ul class="cst__steps" role="list">
+            {%- for st in steps -%}
+              {%- assign si = st | plus: 0 -%}
+              {%- assign p = all_products[step_handles[si]] -%}
+              {%- assign sk = 'bts-' | append: p.handle | append: '-studio.jpg' -%}
+              {%- assign studio = images[sk] -%}
+              <li data-step="{{ si }}">
+                <a class="cst__step" href="{{ p.url }}">
+                  <span class="cst__thumb">{%- if studio -%}{{ studio | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '56px', alt: '' }}{%- endif -%}</span>
+                  <span class="cst__step-text">
+                    <span class="cst__step-name">{{ p.title | escape }}</span>
+                    {%- if p.metafields.bts.benefit != blank -%}<span class="cst__step-why">{{ p.metafields.bts.benefit.value | escape }}</span>{%- endif -%}
+                  </span>
+                  {%- render 'price', product: p, class: 'cst__step-price' -%}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    </section>
+  {%- endfor -%}
+
+  <section class="cst__end" aria-labelledby="CstEnd-{{ section.id }}">
+    <div class="container cst__end-inner">
+      <div class="cst__end-copy">
+        <p class="t-eyebrow">{{ 'climate_story.end_eyebrow' | t }}</p>
+        <h2 class="t-display-m" id="CstEnd-{{ section.id }}">{{ 'climate_story.end_heading' | t }}</h2>
+        <p class="t-lead t-muted">{{ 'climate_story.end_text' | t }}</p>
+        <div class="cluster cst__end-ctas">
+          {%- if set -%}
+            <a class="btn" href="{{ set.url }}"><span>{{ 'sections.hero_panels.cta_primary' | t }}</span><span class="btn__sep" aria-hidden="true">·</span><span class="btn__price">{% render 'egp', cents: set.price %}</span></a>
+          {%- endif -%}
+          <a class="link-arrow" href="{{ root }}/pages/sets">{{ 'sections.hero_panels.cta_secondary' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+        </div>
+      </div>
+      <ol class="cst__end-steps" role="list">
+        {%- for s in (1..4) -%}
+          {%- assign p = all_products[step_handles[s]] -%}
+          {%- assign sk = 'bts-' | append: p.handle | append: '-studio.jpg' -%}
+          {%- assign studio = images[sk] -%}
+          <li data-step="{{ s }}">
+            <a href="{{ p.url }}">
+              <span class="cst__end-media">{%- if studio -%}{{ studio | image_url: width: 500 | image_tag: loading: 'lazy', widths: '250,375,500', sizes: '(min-width: 990px) 12vw, 22vw', alt: '' }}{%- endif -%}</span>
+              <span class="cst__end-num">0{{ s }}</span>
+              <span class="visually-hidden">{{ p.title | escape }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+  </section>
+</climate-story>
+
+<script type="module">
+  class ClimateStory extends HTMLElement {
+    connectedCallback() {
+      const chs = [...this.querySelectorAll('.cst__ch')];
+      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) this.dataset.active = e.target.dataset.i; }), { rootMargin: '-45% 0px -45% 0px' });
+      chs.forEach((c) => io.observe(c));
+      new IntersectionObserver(([e]) => this.classList.toggle('is-in', e.isIntersecting), { rootMargin: '-60% 0px -20% 0px' }).observe(chs[0]?.parentElement || this);
+    }
+  }
+  if (!customElements.get('climate-story')) customElements.define('climate-story', ClimateStory);
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.climate_story.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:sections.climate_story.info" },
+    { "type": "product", "id": "set", "label": "t:sections.hero_panels.set" }
+  ],
+  "presets": [{ "name": "t:sections.climate_story.name" }]
+}
+{% endschema %}

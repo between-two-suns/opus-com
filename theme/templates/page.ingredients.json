@@ -3,7 +3,8 @@
     "hero": {
       "type": "page-hero",
       "settings": {
-        "preset": "ingredients"
+        "preset": "ingredients",
+        "image": "shopify://shop_images/bts-editorial-skin.png"
       }
     },
     "glossary": {
@@ -35,10 +36,18 @@
         "show_contact": true,
         "schema": false
       }
+    },
+    "heroes": {
+      "type": "ingredient-heroes",
+      "settings": {
+        "eyebrow": "",
+        "heading": ""
+      }
     }
   },
   "order": [
     "hero",
+    "heroes",
     "glossary",
     "faq"
   ]

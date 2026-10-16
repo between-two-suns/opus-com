@@ -9,7 +9,6 @@
 -%}
 <section class="collection" aria-labelledby="CollectionTitle">
   <div class="page-hero page-hero--compact">
-    <div class="suns" aria-hidden="true"><span class="sun sun--warm page-hero__sun-a"></span><span class="sun sun--cool page-hero__sun-b"></span></div>
     <div class="container page-hero__inner">
       <p class="t-eyebrow">{{ 'collection.eyebrow' | t }}</p>
       <h1 class="t-display-l" id="CollectionTitle">{{ collection.title | escape }}</h1>
@@ -46,17 +45,33 @@
               {%- endif -%}
             {%- endfor -%}
           {%- endfor -%}
+        </ul>
+
+        {%- comment -%} Sets live in their own rail under the four products, never mixed into the grid. {%- endcomment -%}
+        {%- capture sets_html -%}
           {%- for product in collection.products -%}
             {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
             {%- assign step = step | strip | plus: 0 -%}
             {%- if step == 0 -%}
-              <li>{% render 'product-card', product: product, section_id: section.id, heading_tag: 'h2' %}</li>
+              {%- render 'bundle-card', product: product, heading_tag: 'h3' -%}
             {%- endif -%}
           {%- endfor -%}
-        </ul>
+        {%- endcapture -%}
+        {%- if sets_html contains 'class="bundle"' -%}
+          {{ 'bundles.css' | asset_url | stylesheet_tag }}
+          <section class="collection__sets" aria-labelledby="CollectionSets">
+            <div class="section-head">
+              <div class="section-head__text">
+                <p class="t-eyebrow">{{ 'sections.bundles.eyebrow' | t }}</p>
+                <h2 class="t-display-m" id="CollectionSets">{{ 'collection.sets_heading' | t }}</h2>
+              </div>
+              <a class="link-arrow" href="{{ root }}/pages/sets">{{ 'collection.sets_builder' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            </div>
+            <ul class="sets-rail" role="list">{{ sets_html }}</ul>
+          </section>
+        {%- endif -%}
 
         <aside class="collection__cta" aria-labelledby="CollectionCta">
-          <span class="collection__cta-suns" aria-hidden="true"><span class="sun sun--warm"></span><span class="sun sun--cool"></span></span>
           <div>
             <h2 class="t-heading" id="CollectionCta">{{ 'collection.routine_card_title' | t }}</h2>
             <p class="t-muted">{{ 'collection.routine_card_text' | t }}</p>

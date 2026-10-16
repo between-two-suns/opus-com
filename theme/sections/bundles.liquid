@@ -15,6 +15,7 @@
 -%}
 <section class="section bundles" id="sets" data-tone="lilac" aria-labelledby="BundlesTitle-{{ section.id }}">
   <div class="container">
+    {%- unless section.settings.hide_head -%}
     <div class="section-head">
       <div class="section-head__text">
         <p class="t-eyebrow">{{ 'sections.bundles.eyebrow' | t }}</p>
@@ -27,6 +28,9 @@
         {%- endif -%}
       </div>
     </div>
+    {%- else -%}
+      <h2 class="visually-hidden" id="BundlesTitle-{{ section.id }}">{{ heading | escape }}</h2>
+    {%- endunless -%}
 
     <ul class="bundles__grid" role="list" data-n="{{ section.blocks.size }}">
       {%- for block in section.blocks -%}
@@ -45,6 +49,7 @@
     { "type": "paragraph", "content": "t:sections.bundles.info" },
     { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" },
     { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
+    { "type": "checkbox", "id": "hide_head", "label": "t:sections.bundles.hide_head", "default": false },
     { "type": "checkbox", "id": "show_all_link", "label": "t:sections.bundles.show_all_link", "default": false }
   ],
   "blocks": [
