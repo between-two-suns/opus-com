@@ -53,10 +53,10 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - **Photos (2026-10-15):** owner's approved images on the site: product galleries (front, in use, texture, angle, back, in hand), card hover, climate switch scenes, routine portraits on product pages, About/Climate story photos, creators reels, bundle images (Full / Night / Core). See DECISIONS 82–86 for the asset triage (what's used, what to stop, what to fix)
 - **Redesign v3 (2026-10-16, deployed to staging):** flat, colour-true system; mint footer; floating pill nav; colour-block hero with shoppable panels; pack-colour add-to-bag buttons and buy bar; add-to-bag moment; set pages that explain contents, order and saving; product-specific FAQ; shop = products then sets; sets page with photo-tile builder; climate page as "A day between two suns"; benefit-first ingredients. See DECISIONS 87–102
 - **Loop 5 (2026-10-16):** owner review fixes (see DECISIONS 104–122): full-screen colour-band hero, set pictures without pack templates, ingredients benefit-first, FAQ hub + per-page FAQs, new contact, account and bag designs, mega menu fixed. Checked at 390 / 768 / 1024 / 1440 in EN and AR
+- **Real-store check (2026-10-16):** 22 routes × 390/1440 on the staging theme: no Liquid errors, missing translations, overflow or JS errors (after the fixes in DECISIONS 123–125)
 - QA tooling: preview harness, Theme Check, 272 flow tests, axe, Lighthouse scripts (see `QA.md`)
 
 ## Incomplete / outstanding
-- Real-store visual QA of the staging theme (sandbox can't reach the storefront)
 - Owner setup for the pricing spec (see checklist below): taxes, shipping rates, payments, COD limit, inventory counts
 - Photo fixes from the triage (A04/C03/C08 minarets, P05 ingredient name, P08 SPF 50 vs 50+); optional Day Ritual and Clear & Protect scene images; no video yet
 - Native Arabic review; legal/EDA review of web claims (PROMAT)
@@ -67,6 +67,7 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 ## Known issues
 - Shopify's existing transparent renders have wide transparent padding, so bottles render slightly smaller in cards than in the local preview.
 - iOS Safari not tested on device; hero falls back to JS on Safari < 26.
+- `/account/login` is Shopify-hosted (new customer accounts); the branded login card only shows with classic accounts.
 - `/pages/contact` existed before this build (template suffix `contact`): it now uses this theme's contact template.
 
 ## Current scores (honest, see rubric in brief)

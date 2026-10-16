@@ -139,3 +139,7 @@ Each entry: decision · why · reversibility. Newest last.
 120. **Bag:** studio thumbnails (set picture for sets), "n of 4 steps", free-delivery bar turns green when reached, routine suggestions with the product's benefit and "Add · price".
 121. **Newsletter heading:** "Hear it first" (was "Get the forecast").
 122. **Arabic:** set pages and the buy bar use the translated set names.
+123. **Missing photos on the real store:** Shopify returns a non-nil but blank object for a Files name that doesn't exist, and `image_url` on it is a Liquid error. Every `images['…']` lookup is now `if x == blank → false`; the local preview mimics this so it can't come back unnoticed.
+124. **Menus list the four steps by handle** (not "first four products"), so sets without studio photos never land in the mega menu or drawer.
+125. **Search results:** same order as the shop: the four steps in the grid, sets in their own rail below. Never mixed (mixed cards had different widths and picture heights).
+126. **Account pages:** this store uses Shopify's new customer accounts, so `/account/login` is Shopify-hosted and only shows our branded login card if the store switches to classic accounts. The branding for the hosted page is set in Settings → Customer accounts (logo, colours).

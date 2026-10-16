@@ -11,15 +11,41 @@
     </form>
 
     {%- if search.performed and search.results_count > 0 -%}
-      {%- assign product_results = search.results | where: 'object_type', 'product' -%}
-      {%- if product_results.size == 0 -%}{%- assign product_results = search.results -%}{%- endif -%}
-      <ul class="product-grid u-mt-l" role="list">
+      {%- comment -%} Same order as the shop: the steps in the grid, sets in their own rail, never mixed. {%- endcomment -%}
+      {%- capture steps_html -%}
         {%- for item in search.results -%}
           {%- if item.object_type == 'product' or item.variants -%}
-            <li>{% render 'product-card', product: item, section_id: section.id, heading_tag: 'h2' %}</li>
+            {%- capture step -%}{% render 'product-step', product: item %}{%- endcapture -%}
+            {%- assign step = step | strip | plus: 0 -%}
+            {%- if step > 0 -%}<li>{% render 'product-card', product: item, section_id: section.id, heading_tag: 'h2' %}</li>{%- endif -%}
           {%- endif -%}
         {%- endfor -%}
-      </ul>
+      {%- endcapture -%}
+      {%- capture sets_html -%}
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' or item.variants -%}
+            {%- capture step -%}{% render 'product-step', product: item %}{%- endcapture -%}
+            {%- assign step = step | strip | plus: 0 -%}
+            {%- if step == 0 -%}{%- render 'bundle-card', product: item, heading_tag: 'h3' -%}{%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- if steps_html contains '<li' -%}
+        <ul class="product-grid search-page__grid" role="list">{{ steps_html }}</ul>
+      {%- endif -%}
+      {%- if sets_html contains 'class="bundle"' -%}
+        {{ 'bundles.css' | asset_url | stylesheet_tag }}
+        <section class="collection__sets search-page__sets" aria-labelledby="SearchSets">
+          <div class="section-head">
+            <div class="section-head__text">
+              <p class="t-eyebrow">{{ 'sections.bundles.eyebrow' | t }}</p>
+              <h2 class="t-display-m" id="SearchSets">{{ 'collection.sets_heading' | t }}</h2>
+            </div>
+            <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'collection.sets_builder' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          </div>
+          <ul class="sets-rail" role="list">{{ sets_html }}</ul>
+        </section>
+      {%- endif -%}
       <ul class="search-page__links" role="list">
         {%- for item in search.results -%}
           {%- if item.object_type == 'page' or item.object_type == 'article' -%}

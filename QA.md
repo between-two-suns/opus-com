@@ -97,12 +97,17 @@ Expect Shopify TTFB and `content_for_header` scripts (analytics, Shop Pay) to co
 | 42 | WELCOME75 card on phones covered ~45% of the screen; after sign-up the footer form's autofocus scrolled to the footer | Shorter copy, one-row email + button, 11.5 px terms; footer autofocus only when the card is off |
 | 43 | Creators thank-you focus raced page scripts (1 of 8 runs) | Focus moved to `load` → 3 × 238/238 |
 | 44 | Deploy: a template batch sent alongside the section batch was rejected silently (new block types not yet known) | Re-upserted after the section job finished; procedure updated in STATUS |
+| 45 | Real store: "Liquid error: invalid url input" in set pictures, header menu and drawer (missing Files names are truthy but blank on Shopify) | `== blank` guards on every `images[...]` lookup; menus loop the four step handles; preview harness now reproduces the error |
+| 46 | Real store: "Translation missing: en.creators.offers…" (Shopify writes a capital T) | Checks match `ranslation missing` |
+| 47 | Real store: search mixed set cards into the product grid (uneven widths, picture heights) and the grid touched the search field | Steps grid + sets rail, spacing fixed |
+
+### Real-store check (2026-10-16, staging theme 167112540418, storefront password from the owner, never stored)
+`live.mjs`: 22 routes (home, shop, 4 product/set pages, sets, climate, ingredients, about, FAQ, contact, creators, scan, routines, cart, search, and 5 Arabic routes) at 390 and 1440 px. Checks: page is on the staging theme, no "Liquid error", no "Translation missing", no horizontal overflow, no broken eager images, no JS errors. Result: **clean**.
 
 ### Offers check (temporary settings 5/10/15 %, free delivery 1,500 EGP, then restored)
 Builder: 1 item → "Add 1 more to save 5%"; all 4 → "You're saving 15%", LE 1,912.50 with LE 2,250.00 struck. Full Routine set card: same prices + "Save 15%" pill. Drawer with 2 items: tier steps (2 items −5% current), "Add 1 more to save 10%", "LE 400.00 away from free delivery" with meter. EN + AR identical figures. With settings at 0 none of this renders (default).
 
 ## Not yet verified
-- Real Shopify rendering of staging theme `167112540418` (sandbox can't reach the storefront).
 - Arabic on the real store (language is unpublished; preview via Theme editor → language selector).
 - iOS Safari (no WebKit binary in sandbox; Chromium mobile emulation only). Scroll-driven CSS falls back to `hero.js` on Safari < 26.
 - Screen-reader pass with VoiceOver/TalkBack (axe + keyboard flows only so far).
