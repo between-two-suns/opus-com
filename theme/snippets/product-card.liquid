@@ -38,8 +38,14 @@
   {%- liquid
     assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg'
     assign studio = images[studio_key]
+    unless studio.width > 0
+      assign studio = nil
+    endunless
     assign app_key = 'bts-' | append: product.handle | append: '-application.jpg'
     assign app_photo = images[app_key]
+    unless app_photo.width > 0
+      assign app_photo = nil
+    endunless
   -%}
   <div class="card__media{% if studio %} card__media--studio{% elsif cutout %} grain{% else %} card__media--photo{% endif %}">
     {%- if step > 0 -%}

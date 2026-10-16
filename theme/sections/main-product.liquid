@@ -166,7 +166,7 @@
                   if bdef != blank
                     assign set_key = 'bundles.names.' | append: product.handle
                     assign set_name = set_key | t | replace: '&amp;', '&'
-                    unless set_name contains 'translation missing' or set_name == set_key
+                    unless set_name contains 'ranslation missing' or set_name == set_key
                       assign pdp_title = set_name
                     endunless
                   endif

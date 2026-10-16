@@ -10,6 +10,9 @@
     assign root = ''
   endif
   assign img = section.settings.image | default: images['bts-portrait-window-wide.jpg']
+  unless img.width > 0
+    assign img = nil
+  endunless
   assign topics = 'product,order,routine,creators,other' | split: ','
   assign wa = settings.whatsapp_number | remove: ' ' | remove: '+' | remove: '-'
 -%}

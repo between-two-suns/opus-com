@@ -35,7 +35,7 @@
         <p class="t-eyebrow">{{ 'bundle_inside.eyebrow' | t }}</p>
         <h2 class="t-display-m" id="BiTitle-{{ section.id }}">{{ 'bundle_inside.heading' | t: count: bundle_steps.size }}</h2>
       </div>
-      {%- unless who contains 'translation missing' -%}<p class="t-lead t-muted bi__who">{{ who }}</p>{%- endunless -%}
+      {%- unless who contains 'ranslation missing' -%}<p class="t-lead t-muted bi__who">{{ who }}</p>{%- endunless -%}
     </div>
 
     <ol class="bi__items" role="list" style="--n: {{ buniq.size | at_least: 2 }}">
@@ -51,6 +51,9 @@
           endfor
           assign studio_key = 'bts-' | append: comp.handle | append: '-studio.jpg'
           assign studio = images[studio_key]
+          unless studio.width > 0
+            assign studio = nil
+          endunless
           if si == 4
             assign has_am = true
           else

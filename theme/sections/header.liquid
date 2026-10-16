@@ -94,7 +94,7 @@
           {%- assign step = step | strip -%}
           {%- assign cutout = product.metafields.bts.cutout.value -%}
           {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
-          {%- assign studio = images[studio_key] -%}
+          {%- assign studio = images[studio_key] -%}{%- unless studio.width > 0 -%}{%- assign studio = nil -%}{%- endunless -%}
           <a class="mega-card" href="{{ product.url }}" data-step="{{ step }}">
             <span class="mega-card__media">
               {%- if studio -%}
@@ -139,7 +139,7 @@
         {%- assign step = step | strip -%}
         {%- assign cutout = product.metafields.bts.cutout.value -%}
         {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
-        {%- assign studio = images[studio_key] -%}
+        {%- assign studio = images[studio_key] -%}{%- unless studio.width > 0 -%}{%- assign studio = nil -%}{%- endunless -%}
         <a class="menu-drawer__product" href="{{ product.url }}" data-step="{{ step }}">
           {%- if studio -%}
             {{ studio | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '', class: 'menu-drawer__photo' }}

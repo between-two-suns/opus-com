@@ -80,7 +80,7 @@
             <span class="cr-card__num step-num" aria-hidden="true">0{{ forloop.index }}</span>
             <h3 class="cr-card__title">{{ tk | t }}</h3>
             <p class="t-small">{{ bk | t }}</p>
-            {%- unless note contains 'translation missing' or note == nk or note == blank -%}<p class="t-xs t-muted">{{ note }}</p>{%- endunless -%}
+            {%- unless note contains 'ranslation missing' or note == nk or note == blank -%}<p class="t-xs t-muted">{{ note }}</p>{%- endunless -%}
           </li>
         {%- endfor -%}
       </ul>

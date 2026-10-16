@@ -14,7 +14,7 @@
               {%- assign hs = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ',' -%}
               {%- for h in hs -%}
                 {%- assign k = 'bts-' | append: h | append: '-studio.jpg' -%}
-                <span class="set-visual__band" data-step="{{ forloop.index }}">{%- if images[k] -%}{{ images[k] | image_url: width: 500 | image_tag: loading: 'eager', widths: '250,500', sizes: '12vw', alt: '' }}{%- endif -%}</span>
+                <span class="set-visual__band" data-step="{{ forloop.index }}">{%- assign bimg = images[k] -%}{%- if bimg.width > 0 -%}{{ bimg | image_url: width: 500 | image_tag: loading: 'eager', widths: '250,500', sizes: '12vw', alt: '' }}{%- endif -%}</span>
               {%- endfor -%}
             </span>
             <span class="auth__brand-copy">

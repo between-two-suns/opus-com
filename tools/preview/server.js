@@ -56,6 +56,11 @@ class ImageDrop extends Drop {
   valueOf() { return this.src; }
   toString() { return this.src; }
 }
+class MissingImage extends Drop {
+  constructor(n) { super(); this.__missing = n; }
+  valueOf() { return ''; }
+  toString() { return ''; }
+}
 class ImageUrl extends Drop {
   constructor(image, width, height) { super(); this.image = image; this.width = width; this.height = height; }
   get url() { return `${this.image.src}?width=${this.width || ''}`; }
@@ -335,7 +340,7 @@ engine.registerFilter('t', function (key, ...args) {
   const vars = kv(args);
   let v = lookup(locales[currentLocale], key);
   if (v === undefined) v = lookup(locales.en, key);
-  if (v === undefined) { missing.add(`${currentLocale}:${key}`); return `translation missing: ${key}`; }
+  if (v === undefined) { missing.add(`${currentLocale}:${key}`); return `Translation missing: ${currentLocale}.${key}`; }
   if (typeof v === 'object' && vars.count !== undefined) {
     const n = Number(vars.count);
     v = (n === 0 && v.zero) || (n === 1 && v.one) || (n === 2 && v.two) || v.other || v.many || v.few || '';
@@ -362,6 +367,7 @@ engine.registerFilter('url_encode', (s) => encodeURIComponent(String(s ?? '')));
 engine.registerFilter('url_escape', (s) => encodeURI(String(s ?? '')));
 engine.registerFilter('image_url', function (img, ...args) {
   const o = kv(args);
+  if (img instanceof MissingImage) return 'Liquid error: invalid url input';
   if (!img) return '';
   if (img instanceof Metafield) img = img.value;
   if (img && img.preview_image) img = img.preview_image;
@@ -404,8 +410,10 @@ function globalsFor(locale, data, extra = {}) {
   const settings = {};
   for (const group of schema) for (const def of group.settings || []) if (def.id) settings[def.id] = resolveSetting(def, settingsData[def.id], data);
   data.prefix = locale === 'ar' ? '/ar' : '';
-  const images = {};
-  if (fs.existsSync(PHOTO_DIR)) for (const n of fs.readdirSync(PHOTO_DIR)) images[n] = new ImageDrop(photoObj(n));
+  // Like Shopify: images['missing.jpg'] is truthy but has no width, and image_url on it is a Liquid error.
+  const found = {};
+  if (fs.existsSync(PHOTO_DIR)) for (const n of fs.readdirSync(PHOTO_DIR)) found[n] = new ImageDrop(photoObj(n));
+  const images = new Proxy(found, { get: (t, k) => (typeof k === 'string' && !(k in t) && /\.(jpe?g|png|webp)$/i.test(k) ? new MissingImage(k) : t[k]) });
   return {
     settings,
     images,

@@ -71,15 +71,15 @@
           {%- for item in cart.items -%}
             {%- capture step -%}{% render 'product-step', product: item.product %}{%- endcapture -%}
             {%- assign cutout = item.product.metafields.bts.cutout.value -%}
-            {%- assign studio_k = 'bts-' | append: item.product.handle | append: '-studio.jpg' -%}
+            {%- assign studio_k = 'bts-' | append: item.product.handle | append: '-studio.jpg' -%}{%- assign line_studio = images[studio_k] -%}{%- unless line_studio.width > 0 -%}{%- assign line_studio = nil -%}{%- endunless -%}
             <li class="cart-line" data-step="{{ step | strip }}">
               {%- capture ldef -%}{% render 'bundle-def', handle: item.product.handle %}{%- endcapture -%}
               {%- assign ldef = ldef | strip -%}
-              <a href="{{ item.url }}" class="cart-line__media{% if images[studio_k] or ldef != blank %} cart-line__media--photo{% elsif cutout == blank %} cart-line__media--photo{% endif %}{% if ldef != blank %} cart-line__media--set{% endif %}" tabindex="-1" aria-hidden="true">
+              <a href="{{ item.url }}" class="cart-line__media{% if line_studio or ldef != blank %} cart-line__media--photo{% elsif cutout == blank %} cart-line__media--photo{% endif %}{% if ldef != blank %} cart-line__media--set{% endif %}" tabindex="-1" aria-hidden="true">
                 {%- if ldef != blank -%}
                   {%- render 'set-visual', product: item.product, sizes: '84px' -%}
-                {%- elsif images[studio_k] -%}
-                  {{ images[studio_k] | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120,240', sizes: '84px', alt: '' }}
+                {%- elsif line_studio -%}
+                  {{ line_studio | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120,240', sizes: '84px', alt: '' }}
                 {%- elsif cutout -%}
                   {{ cutout | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '84px', alt: '' }}
                 {%- elsif item.image -%}
@@ -149,10 +149,10 @@
                     {%- assign v = product.selected_or_first_available_variant -%}
                     {%- assign cutout = product.metafields.bts.cutout.value -%}
                     <li class="cart-upsell__item" data-step="{{ s }}">
-                      {%- assign uk = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
-                      <span class="cart-upsell__img{% if images[uk] %} cart-upsell__img--photo{% endif %}" aria-hidden="true">
-                        {%- if images[uk] -%}
-                          {{ images[uk] | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '64px', alt: '' }}
+                      {%- assign uk = 'bts-' | append: product.handle | append: '-studio.jpg' -%}{%- assign up_studio = images[uk] -%}{%- unless up_studio.width > 0 -%}{%- assign up_studio = nil -%}{%- endunless -%}
+                      <span class="cart-upsell__img{% if up_studio %} cart-upsell__img--photo{% endif %}" aria-hidden="true">
+                        {%- if up_studio -%}
+                          {{ up_studio | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '64px', alt: '' }}
                         {%- elsif cutout -%}
                           {{ cutout | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '52px', alt: '' }}
                         {%- elsif product.featured_media -%}

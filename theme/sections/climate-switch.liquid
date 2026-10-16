@@ -70,7 +70,13 @@
           assign wk = 'bts-climate-' | append: c | append: '-wide.jpg'
           assign tk = 'bts-climate-' | append: c | append: '-tall.jpg'
           assign wide = images[wk]
+          unless wide.width > 0
+            assign wide = nil
+          endunless
           assign tall = images[tk]
+          unless tall.width > 0
+            assign tall = nil
+          endunless
         -%}
         {%- if wide or tall -%}
           <picture class="cs__photo" data-fx="{{ fx }}">
@@ -145,7 +151,7 @@
             {%- if ps == s -%}
               {%- assign v = product.selected_or_first_available_variant -%}
               {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
-              {%- assign studio = images[studio_key] -%}
+              {%- assign studio = images[studio_key] -%}{%- unless studio.width > 0 -%}{%- assign studio = nil -%}{%- endunless -%}
               <li class="cs__key" data-step="{{ s }}" data-id="{{ v.id }}" data-price="{{ v.price }}"{% unless v.available %} data-unavailable{% endunless %} hidden>
                 <span class="cs__thumb" aria-hidden="true">
                   {%- if studio -%}{{ studio | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '64px', alt: '' }}{%- else -%}<span class="bundle__dot"></span>{%- endif -%}

@@ -57,6 +57,9 @@
             {%- liquid
               assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg'
               assign studio = images[studio_key]
+              unless studio.width > 0
+                assign studio = nil
+              endunless
               assign label = product.metafields.bts.step_label.value
             -%}
             <li class="hp__panel" data-step="{{ s }}" style="--i: {{ forloop.parentloop.index0 }}">

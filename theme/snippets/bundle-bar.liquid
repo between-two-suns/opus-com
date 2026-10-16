@@ -18,7 +18,7 @@
     assign v = bp.selected_or_first_available_variant
     assign name_key = 'bundles.names.' | append: bp.handle
     assign name = name_key | t | replace: '&amp;', '&'
-    if name contains 'translation missing'
+    if name contains 'ranslation missing'
       assign name = bp.title
     endif
     assign saving = 0

@@ -37,6 +37,9 @@
             {%- liquid
               assign tex_key = 'bts-' | append: product.handle | append: '-texture.jpg'
               assign tex = images[tex_key]
+              unless tex.width > 0
+                assign tex = nil
+              endunless
               assign benefit = product.metafields.bts.benefit.value | default: ''
               assign lead = benefit | split: '. ' | first | remove: '.'
               assign rest = benefit | remove_first: lead | remove_first: '.' | strip
