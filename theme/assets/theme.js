@@ -290,6 +290,17 @@ function closeMark(rect) {
   if (last) last.onfinish = () => mark.remove(); else mark.remove();
 }
 
+/* The add-to-bag moment: the button fills from the tap point, a check draws in, then it settles back. */
+function celebrate(button) {
+  if (!button || !button.classList.contains('btn')) return;
+  button.classList.remove('is-added');
+  void button.offsetWidth;
+  button.classList.add('is-added');
+  button.closest('.sticky-atc')?.classList.add('is-added');
+  clearTimeout(button._addedT);
+  button._addedT = setTimeout(() => { button.classList.remove('is-added'); button.closest('.sticky-atc')?.classList.remove('is-added'); }, 1700);
+}
+
 class ProductForm extends HTMLElement {
   connectedCallback() {
     this.form = this.querySelector('form');
@@ -311,6 +322,9 @@ class ProductForm extends HTMLElement {
     try {
       await Cart.add(items);
       announce(BTS.strings?.added || 'Added');
+      button.classList.remove('is-loading');
+      button.removeAttribute('aria-busy');
+      celebrate(button);
       this.dispatchEvent(new CustomEvent('cart:added', { bubbles: true, detail: { items } }));
       if (!fromDialog) {
         await flyToBag(this, button);

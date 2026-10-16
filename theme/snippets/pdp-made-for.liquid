@@ -1,0 +1,39 @@
+{%- comment -%} Product page: the conditions a step answers (same mapping as the forecast). Param: step {%- endcomment -%}
+{%- liquid
+  case step
+    when 1
+      assign made_for = 'city,humidity,heat'
+    when 2
+      assign made_for = 'sun,humidity,ac'
+    when 3
+      assign made_for = 'city,ac'
+    when 4
+      assign made_for = 'sun,heat'
+    else
+      assign made_for = ''
+  endcase
+  assign made_for = made_for | split: ','
+-%}
+{%- if made_for.size > 0 -%}
+  <p class="pdp__made-for">
+    <span class="pdp__made-label">{{ 'product.made_for' | t }}</span>
+    {%- for c in made_for -%}
+      {%- liquid
+        case c
+          when 'sun'
+            assign ic = 'sun'
+          when 'city'
+            assign ic = 'dust'
+          when 'humidity'
+            assign ic = 'drop'
+          when 'ac'
+            assign ic = 'ac'
+          else
+            assign ic = 'thermo'
+        endcase
+        assign ck = 'sections.forecast.conditions.' | append: c
+      -%}
+      <span class="pdp__made-chip">{% render 'icon', name: ic, class: 'icon--sm' %}{{ ck | t }}</span>
+    {%- endfor -%}
+  </p>
+{%- endif -%}

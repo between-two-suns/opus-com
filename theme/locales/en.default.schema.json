@@ -45,7 +45,9 @@
       "preset": "Preset",
       "question": "Question",
       "schema": "Schema",
-      "show_contact": "Show contact"
+      "show_contact": "Show contact",
+      "steps": "Show on steps (product pages)",
+      "steps_info": "Comma list: 1–4 for the steps, 0 for sets. Leave empty to show everywhere."
     },
     "footer": {
       "description": "Description",
@@ -233,6 +235,10 @@
       "image": "Photo (desktop)",
       "image_mobile": "Photo (mobile)",
       "link": "Link"
+    },
+    "bundle_inside": {
+      "name": "Set: what's inside",
+      "info": "Shows on set (bundle) pages only. Built from the set definition and the products' own data and prices."
     }
   },
   "settings_schema": {

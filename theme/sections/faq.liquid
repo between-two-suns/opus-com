@@ -7,6 +7,16 @@
   if heading == blank
     assign heading = 'faq.heading' | t | replace: '&amp;', '&'
   endif
+  comment
+    On product pages each Q&A can be limited to certain steps (block setting "steps", e.g. "4" or "0" for sets).
+  endcomment
+  assign ctx_step = ''
+  if product
+    capture ctx_step
+      render 'product-step', product: product
+    endcapture
+    assign ctx_step = ctx_step | strip
+  endif
   assign root = routes.root_url
   if root == '/'
     assign root = ''
@@ -37,6 +47,8 @@
               endif
             endif
           -%}
+          {%- assign only = block.settings.steps | remove: ' ' | split: ',' -%}
+          {%- if ctx_step != blank and block.settings.steps != blank -%}{%- unless only contains ctx_step -%}{%- assign q = '' -%}{%- endunless -%}{%- endif -%}
           {%- if q != blank and a != blank -%}
             {"@type":"Question","name":{{ q | strip_html | json }},"acceptedAnswer":{"@type":"Answer","text":{{ a | strip_html | json }}}},
           {%- endif -%}
@@ -57,6 +69,8 @@
             endif
           endif
         -%}
+        {%- assign only = block.settings.steps | remove: ' ' | split: ',' -%}
+        {%- if ctx_step != blank and block.settings.steps != blank -%}{%- unless only contains ctx_step -%}{%- assign q = '' -%}{%- endunless -%}{%- endif -%}
         {%- if q != blank and a != blank -%}
           <details class="accordion" {{ block.shopify_attributes }}>
             <summary><span>{{ q | escape }}</span><span class="accordion__icon" aria-hidden="true"></span></summary>
@@ -99,6 +113,9 @@
             { "value": "made", "label": "Where it's made" },
             { "value": "climate", "label": "What climate-adapted means" },
             { "value": "fragrance", "label": "Fragrance" },
+            { "value": "spf_last", "label": "SPF: where it goes" },
+            { "value": "set_full_size", "label": "Sets: full-size products" },
+            { "value": "set_saving", "label": "Sets: how the saving works" },
             { "value": "payment", "label": "Payment (only if configured)" },
             { "value": "cr_followers", "label": "Creators: follower count" },
             { "value": "cr_paid", "label": "Creators: is it paid" },
@@ -110,6 +127,7 @@
           ],
           "default": "order"
         },
+        { "type": "text", "id": "steps", "label": "t:sections.faq.steps", "info": "t:sections.faq.steps_info" },
         { "type": "text", "id": "question", "label": "t:sections.faq.question" },
         { "type": "richtext", "id": "answer", "label": "t:sections.faq.answer" }
       ]

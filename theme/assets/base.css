@@ -919,3 +919,29 @@ html.has-open-dialog { overflow: hidden; }
 
 /* v3: one calm daylight ground; sections no longer drift through time-of-day tints. */
 [data-tone] { --tone-c: var(--c-daylight); }
+
+/* v3 add-to-bag moment: a light bloom from the centre, a small lift, then the check. */
+.btn.is-added { animation: btn-pop 520ms cubic-bezier(.3, 1.4, .5, 1); }
+.btn.is-added::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .6) 0, rgba(255, 255, 255, 0) 60%);
+  animation: btn-bloom 700ms var(--ease-out) both;
+}
+@keyframes btn-pop { 0% { transform: scale(1); } 35% { transform: scale(1.05); } 100% { transform: scale(1); } }
+@keyframes btn-bloom { from { transform: scale(.2); opacity: 1; } to { transform: scale(2.4); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .btn.is-added, .btn.is-added::before { animation: none; } }
+
+/* v3 buy bar: the product's own colour. Sets keep the light bar with an ink button. */
+.pdp:not([data-step='0']) .sticky-atc { background: var(--sku); -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: 0 18px 40px -16px rgba(32, 35, 58, .5); }
+.pdp:not([data-step='0']) .sticky-atc .btn--deep { --btn-bg: var(--c-ink); --btn-bd: var(--c-ink); --btn-fg: #fff; --btn-veil: rgba(255, 255, 255, .14); }
+.pdp:not([data-step='0']) .sticky-atc__thumb { background: color-mix(in srgb, #fff 55%, transparent); }
+.pdp:not([data-step='0']) .sticky-atc .price { color: var(--c-ink); }
+.sticky-atc.is-added { animation: bar-lift 560ms cubic-bezier(.3, 1.3, .5, 1); }
+@keyframes bar-lift { 40% { translate: 0 -6px; } }
+@media (prefers-reduced-motion: reduce) { .sticky-atc.is-added { animation: none; } }
+/* Phones: while the buy bar is the bottom bar, the bag sits in the header. */
+@media (max-width: 989px) { html.is-buying #CartToggle { display: inline-flex; } }
+@media (max-width: 989px) {
+  html.is-buying .site-header__end [data-open-dialog='SearchModal'] { display: inline-flex; }
+  html.is-buying .site-header__end .header-lang { display: none; }
+}

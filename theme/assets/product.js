@@ -42,21 +42,23 @@ class StickyAtc extends HTMLElement {
     const target = document.getElementById(this.dataset.target);
     if (!target) return;
     this.hidden = false;
-    let pastTarget = false;
-    let footerVisible = false;
-    const update = () => {
-      const on = pastTarget && !footerVisible;
+    const set = (on) => {
       this.classList.toggle('is-visible', on);
       document.documentElement.classList.toggle('is-buying', on);
     };
-    // Visible whenever the main Add button isn't fully in view (above, below, or hidden behind the dock),
-    // so buying is always one tap away.
+    // Phones: the buy bar simply is the bottom bar on a product page (the dock never comes back mid-scroll),
+    // so there is nothing to flicker between. Bag access moves to the header while it's shown.
+    const phone = window.matchMedia('(max-width: 989px)');
+    if (phone.matches) { set(true); return; }
+    // Desktop: a floating bar once the main Add button has scrolled above the viewport, until the footer.
     const atc = target.querySelector('[data-atc]') || target;
-    const dock = window.matchMedia('(max-width: 989px)').matches ? 96 : 0;
+    let above = false;
+    let footerVisible = false;
+    const update = () => set(above && !footerVisible);
     new IntersectionObserver(([e]) => {
-      pastTarget = !e.isIntersecting;
+      above = !e.isIntersecting && e.boundingClientRect.top < 0;
       update();
-    }, { rootMargin: `0px 0px -${dock}px 0px`, threshold: 1 }).observe(atc);
+    }).observe(atc);
     const footer = document.querySelector('.site-footer');
     if (footer) new IntersectionObserver(([e]) => { footerVisible = e.isIntersecting; update(); }).observe(footer);
   }

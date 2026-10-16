@@ -651,6 +651,18 @@
       "cr_disclose": {
         "q": "Do I need to mark posts as an ad?",
         "a": "Yes. Mark gifted or paid posts the way your platform asks, for example with the paid-partnership label or #ad."
+      },
+      "spf_last": {
+        "q": "Where does sunscreen go in my routine?",
+        "a": "Last, every morning: after the moisturizer. The pack direction is to reapply every 2 hours."
+      },
+      "set_full_size": {
+        "q": "Are the products in a set full-size?",
+        "a": "Yes. A set holds the same full-size products sold on their own: cleanser 200 mL, serum 30 mL, moisturizer 50 g, sunscreen 50 g."
+      },
+      "set_saving": {
+        "q": "How is the saving worked out?",
+        "a": "Against buying the same products separately at today’s prices. The set price is the price you pay; it is shown before you add it to your bag."
       }
     }
   },
@@ -906,6 +918,25 @@
       "why_hint": "A few lines are plenty.",
       "consent": "I agree that Between Two Suns can contact me about this application.",
       "submit": "Send my application"
+    }
+  },
+  "bundle_inside": {
+    "eyebrow": "Inside the set",
+    "heading": "{{ count }} full-size products, one order to use them.",
+    "order_heading": "How to use it",
+    "morning": "Morning",
+    "night": "Night",
+    "spf_note": "Sunscreen is the last step every morning. Reapply every 2 hours.",
+    "saving_heading": "The saving, worked out",
+    "separately": "Bought separately",
+    "who": {
+      "the-full-ritual": "For starting from scratch: the complete morning and night routine in one box.",
+      "the-day-ritual": "For your mornings: cleanse, treat and protect, then out the door.",
+      "the-night-ritual": "For evenings: cleanse, treat, moisturise. Sunscreen waits for the morning.",
+      "clear-protect-duo": "For oil and sun: the serum, and the SPF that finishes every morning.",
+      "the-core-duo": "The two-step start: cleanse, then treat.",
+      "spf-stock-up": "Already on our SPF? Two tubes, so the morning step never runs out.",
+      "serum-stock-up": "Already on the serum? Two bottles, so it never runs out."
     }
   }
 }

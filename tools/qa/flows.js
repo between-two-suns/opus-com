@@ -98,6 +98,18 @@ for (const loc of ['', '/ar']) {
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
 
+    // Set pages explain themselves; FAQs follow the product
+    await page.goto(`${BASE}${loc}/products/the-full-ritual`, { waitUntil: 'networkidle' });
+    ok(`${tag} set page lists its 4 products`, (await page.$$eval('.bi__item', (l) => l.length)) === 4);
+    ok(`${tag} set page works out the saving`, /147/.test(await page.$eval('.bi__saved', (e) => e.textContent)));
+    ok(`${tag} set page has no empty FAQ rows`, (await page.$$eval('.faq summary', (l) => l.filter((x) => !x.textContent.trim()).length)) === 0);
+    ok(`${tag} set page has no routine strip`, (await page.$$('.routine-strip')).length === 0);
+    await page.goto(`${BASE}${loc}/products/clarity-serum`, { waitUntil: 'networkidle' });
+    const faqN = await page.$$eval('.faq summary', (l) => l.length);
+    ok(`${tag} serum FAQ skips SPF-only and set-only questions`, faqN === 4, `n=${faqN}`);
+    if (vp.isMobile) ok(`${tag} phone PDP shows the buy bar from the start`, await page.$eval('sticky-atc', (s) => s.classList.contains('is-visible')));
+    await page.goto(`${BASE}${loc}/`, { waitUntil: 'networkidle' });
+
     // Search modal + predictive
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.locator('[data-open-dialog="SearchModal"]:visible').first().click();
