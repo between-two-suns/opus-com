@@ -198,7 +198,8 @@
       "steps": "Steps in this set",
       "steps_info": "Routine step numbers, comma-separated, e.g. 1,2,4",
       "set_name": "Name",
-      "product": "Bundle product"
+      "product": "Bundle product",
+      "show_all_link": "Show “See all sets” link"
     },
     "builder": {
       "name": "Build your routine"
@@ -219,6 +220,19 @@
     "creator_apply": {
       "name": "Creator application",
       "info": "Applications arrive in the store’s contact email (Settings → Notifications → Staff notifications → Contact customer). Nothing is stored on the site."
+    },
+    "hero_panels": {
+      "name": "Hero: colour blocks",
+      "set": "Featured set (main button)"
+    },
+    "ingredient_heroes": {
+      "name": "Ingredient cards"
+    },
+    "editorial_band": {
+      "name": "Editorial photo band",
+      "image": "Photo (desktop)",
+      "image_mobile": "Photo (mobile)",
+      "link": "Link"
     }
   },
   "settings_schema": {

@@ -85,6 +85,26 @@
           </picture>
         {%- endif -%}
       {%- endfor -%}
+      {%- for c in conditions -%}
+        {%- liquid
+          case c
+            when 'city'
+              assign fx = 'dust'
+              assign ic = 'dust'
+            when 'humidity'
+              assign fx = c
+              assign ic = 'drop'
+            when 'heat'
+              assign fx = c
+              assign ic = 'thermo'
+            else
+              assign fx = c
+              assign ic = c
+          endcase
+          assign ck = 'sections.forecast.conditions.' | append: c
+        -%}
+        <span class="cs__badge" data-fx="{{ fx }}">{% render 'icon', name: ic, class: 'icon--sm' %}{{ ck | t }}</span>
+      {%- endfor -%}
       <span class="cs__scrim"></span>
       <span class="lab__fx lab__fx--light"></span>
       <span class="lab__fx lab__fx--haze"></span>
@@ -124,9 +144,16 @@
             {%- assign ps = ps | strip | plus: 0 -%}
             {%- if ps == s -%}
               {%- assign v = product.selected_or_first_available_variant -%}
+              {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
+              {%- assign studio = images[studio_key] -%}
               <li class="cs__key" data-step="{{ s }}" data-id="{{ v.id }}" data-price="{{ v.price }}"{% unless v.available %} data-unavailable{% endunless %} hidden>
-                <span class="bundle__dot" aria-hidden="true"></span>
-                <a href="{{ product.url }}">{{ product.title | escape }}</a>
+                <span class="cs__thumb" aria-hidden="true">
+                  {%- if studio -%}{{ studio | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '64px', alt: '' }}{%- else -%}<span class="bundle__dot"></span>{%- endif -%}
+                </span>
+                <span class="cs__key-text">
+                  <a href="{{ product.url }}">{{ product.title | escape }}</a>
+                  {%- render 'price', product: product, class: 't-small t-muted' -%}
+                </span>
               </li>
               {%- break -%}
             {%- endif -%}
@@ -135,7 +162,7 @@
       </ul>
       <product-form class="cs__form">
         <form method="post" action="{{ routes.cart_add_url }}">
-          <button type="submit" class="btn" data-magnetic data-cta>
+          <button type="submit" class="btn" data-cta>
             <span class="btn__label" data-cta-label></span>
             <span class="btn__sep" aria-hidden="true">·</span>
             <span class="btn__price" data-total></span>

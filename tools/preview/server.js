@@ -17,7 +17,8 @@ const IMG_DIRS = [path.join(ROOT, '_source/photos'), path.join(ROOT, '_source/pa
 const PHOTO_DIR = path.join(ROOT, '_source/photos');
 const PHOTO_SIZE = (n) => (/-(front|angle|back)\.png$/.test(n) ? [1600, 2400] : /-(application|in-hand)\.jpg$/.test(n) ? [2400, 3000]
   : /-texture\.jpg$/.test(n) ? [2000, 2500] : /-routine\.jpg$/.test(n) ? [2000, 2000] : /-wide\.jpg$/.test(n) ? (n.includes('climate') ? [3200, 1800] : [3000, 2000])
-  : /-tall\.jpg$/.test(n) ? [1600, 2000] : n === 'bts-lineup-sky.jpg' ? [1920, 1080] : [2400, 2400]);
+  : /-tall\.jpg$/.test(n) ? [1600, 2000] : /-(studio|routine-scene|application-2)\.jpg$|-detail(-open)?\.png$|editorial-sea/.test(n) ? [2048, 2048]
+  : n === 'bts-editorial-walk.png' ? [2048, 1536] : n === 'bts-editorial-skin.png' ? [1638, 2048] : n === 'bts-scene-home-city.jpg' ? [2560, 1440] : n === 'bts-lineup-sky.jpg' ? [1920, 1080] : [2400, 2400]);
 const hasPhoto = (n) => fs.existsSync(path.join(PHOTO_DIR, n));
 const photoObj = (n, alt = '') => { const [w, h] = PHOTO_SIZE(n); return { __image: n, width: w, height: h, alt }; };
 const PORT = Number(process.env.PORT || 4321);
@@ -83,7 +84,8 @@ function buildData(locale, cart) {
       sku: p.sku, inventory_management: null, options: ['Default Title'], option1: 'Default Title',
       url: `${prefix}/products/${p.handle}?variant=${p.variantId}`, featured_media: null,
     };
-    const order = ['front.png', 'application.jpg', 'texture.jpg', 'angle.png', 'back.png', 'in-hand.jpg'].map((k) => `bts-${p.handle}-${k}`).filter(hasPhoto);
+    // Same gallery order as the store (cleanser has no back shot: the old label print was detached).
+    const order = ['front.png', 'studio.jpg', 'application.jpg', 'texture.jpg', 'detail.png', 'detail-open.png', 'angle.png', p.handle === 'daily-reset-cleanser' ? '' : 'back.png', 'in-hand.jpg', 'application-2.jpg'].map((k) => `bts-${p.handle}-${k}`).filter(hasPhoto);
     const pics = order.length ? order.map((n) => new ImageDrop(photoObj(n, p.title))) : [new ImageDrop(p.photo)];
     if (order.length) p.metafields.bts.cutout = photoObj(order[0]);
     const photo = pics[0];

@@ -49,6 +49,28 @@ for f in \
   bts-portrait-window-tall.jpg \
   bts-portrait-terrace-wide.jpg \
   bts-lineup-sky.jpg \
+  bts-daily-reset-cleanser-studio.jpg \
+  bts-daily-reset-cleanser-detail.png \
+  bts-daily-reset-cleanser-application-2.jpg \
+  bts-daily-reset-cleanser-routine-scene.jpg \
+  bts-clarity-serum-studio.jpg \
+  bts-clarity-serum-detail.png \
+  bts-clarity-serum-application-2.jpg \
+  bts-clarity-serum-routine-scene.jpg \
+  bts-daily-barrier-moisturizing-cream-studio.jpg \
+  bts-daily-barrier-moisturizing-cream-detail.png \
+  bts-daily-barrier-moisturizing-cream-application-2.jpg \
+  bts-daily-barrier-moisturizing-cream-routine-scene.jpg \
+  bts-daily-defense-sunscreen-spf-50-studio.jpg \
+  bts-daily-defense-sunscreen-spf-50-detail.png \
+  bts-daily-defense-sunscreen-spf-50-application-2.jpg \
+  bts-daily-defense-sunscreen-spf-50-routine-scene.jpg \
+  bts-daily-barrier-moisturizing-cream-detail-open.png \
+  bts-daily-defense-sunscreen-spf-50-detail-open.png \
+  bts-editorial-sea.jpg \
+  bts-editorial-walk.png \
+  bts-editorial-skin.png \
+  bts-scene-home-city.jpg \
 ; do
   [ -s "_source/photos/$f" ] || curl -sSf -o "_source/photos/$f" "$BASE/$f?width=1400" || echo "missing $f"
 done

@@ -20,7 +20,12 @@
         <p class="t-eyebrow">{{ 'sections.bundles.eyebrow' | t }}</p>
         <h2 class="t-display-l" id="BundlesTitle-{{ section.id }}">{{ heading | escape }}</h2>
       </div>
-      <p class="t-lead t-muted bundles__text">{{ text | escape }}</p>
+      <div class="bundles__aside">
+        <p class="t-lead t-muted bundles__text">{{ text | escape }}</p>
+        {%- if section.settings.show_all_link -%}
+          <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'sections.bundles.see_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+        {%- endif -%}
+      </div>
     </div>
 
     <ul class="bundles__grid" role="list" data-n="{{ section.blocks.size }}">
@@ -39,7 +44,8 @@
   "settings": [
     { "type": "paragraph", "content": "t:sections.bundles.info" },
     { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" },
-    { "type": "textarea", "id": "text", "label": "t:general_schema.text" }
+    { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
+    { "type": "checkbox", "id": "show_all_link", "label": "t:sections.bundles.show_all_link", "default": false }
   ],
   "blocks": [
     {

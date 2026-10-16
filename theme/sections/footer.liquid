@@ -27,7 +27,7 @@
       <div class="footer__brand">
         <a href="{{ routes.root_url }}" aria-label="{{ 'header.home' | t: shop: shop.name }}">{% render 'logo', variant: 'wordmark' %}</a>
         <p class="t-lead">{{ tagline | escape }}</p>
-        <p class="t-small" style="color: rgba(255,255,255,.72)">{{ description | escape }}</p>
+        <p class="t-small footer__soft">{{ description | escape }}</p>
         {%- liquid
           assign has_social = false
           if settings.social_instagram != blank or settings.social_tiktok != blank or settings.social_facebook != blank or settings.social_youtube != blank
@@ -89,7 +89,7 @@
 
       <div class="footer__news">
         <h2 class="t-display-s">{{ news_heading | escape }}</h2>
-        <p class="t-small" style="color: rgba(255,255,255,.72)">{{ news_text | escape }}</p>
+        <p class="t-small footer__soft">{{ news_text | escape }}</p>
         {%- form 'customer', id: 'FooterNewsletter', class: 'footer__form' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
           {%- if form.posted_successfully? -%}
@@ -113,7 +113,7 @@
             {%- if form.errors -%}
               <p class="field__error" id="FooterNewsletterError">{% render 'icon', name: 'alert', class: 'icon--sm' %}{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
             {%- endif -%}
-            <p class="t-xs" style="color: rgba(255,255,255,.6)">{{ 'newsletter.consent' | t }}</p>
+            <p class="t-xs footer__soft">{{ 'newsletter.consent' | t }}</p>
           {%- endif -%}
         {%- endform -%}
       </div>

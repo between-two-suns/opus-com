@@ -1,0 +1,79 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Benefit-first ingredients: one card per product, led by what the pack says it does (bts.benefit),
+  then the hero ingredients (bts.hero_ingredients), on that product's texture photo. Links to the product
+  and to the full ingredient list. Copy comes from the product records, so it stays bilingual and on-claim.
+{%- endcomment -%}
+{%- liquid
+  assign eyebrow = section.settings.eyebrow
+  if eyebrow == blank
+    assign eyebrow = 'sections.ingredient_heroes.eyebrow' | t | replace: '&amp;', '&'
+  endif
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'sections.ingredient_heroes.heading' | t | replace: '&amp;', '&'
+  endif
+  assign source = section.settings.collection | default: collections.all
+  assign root = routes.root_url
+  if root == '/'
+    assign root = ''
+  endif
+-%}
+<section class="section ih" aria-labelledby="IhTitle-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{{ eyebrow | escape }}</p>
+        <h2 class="t-display-m" id="IhTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      </div>
+      <a class="link-arrow" href="{{ root }}/pages/ingredients">{{ 'sections.ingredient_heroes.link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+    </div>
+    <ul class="ih__rail" role="list">
+      {%- for s in (1..4) -%}
+        {%- for product in source.products limit: 12 -%}
+          {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
+          {%- assign step = step | strip | plus: 0 -%}
+          {%- if step == s -%}
+            {%- liquid
+              assign tex_key = 'bts-' | append: product.handle | append: '-texture.jpg'
+              assign tex = images[tex_key]
+              assign benefit = product.metafields.bts.benefit.value | default: ''
+              assign lead = benefit | split: '. ' | first | remove: '.'
+              assign rest = benefit | remove_first: lead | remove_first: '.' | strip
+              assign hero = product.metafields.bts.hero_ingredients.value
+            -%}
+            <li class="ih__card" data-step="{{ s }}">
+              <a class="ih__link" href="{{ product.url }}">
+                <span class="ih__media">
+                  {%- if tex -%}
+                    {{ tex | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 990px) 25vw, 78vw', alt: '', class: 'ih__img' }}
+                  {%- endif -%}
+                  {%- if hero != blank -%}<span class="ih__pill">{{ hero | escape }}</span>{%- endif -%}
+                </span>
+                <span class="ih__body">
+                  <span class="ih__lead">{{ lead | escape }}.</span>
+                  {%- if rest != blank -%}<span class="ih__rest">{{ rest | escape }}</span>{%- endif -%}
+                  <span class="ih__in"><span class="ih__dot" aria-hidden="true"></span>{{ product.title | escape }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</span>
+                </span>
+              </a>
+            </li>
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.ingredient_heroes.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
+    { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
+    { "type": "collection", "id": "collection", "label": "t:sections.hero.collection" }
+  ],
+  "presets": [{ "name": "t:sections.ingredient_heroes.name" }]
+}
+{% endschema %}

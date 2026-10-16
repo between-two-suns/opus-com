@@ -1,15 +1,7 @@
 {
   "sections": {
     "hero": {
-      "type": "hero-space-between",
-      "settings": {}
-    },
-    "ticker": {
-      "type": "forecast-ticker",
-      "settings": {}
-    },
-    "concerns": {
-      "type": "concern-finder",
+      "type": "hero-panels",
       "settings": {}
     },
     "climate": {
@@ -18,72 +10,51 @@
         "link": "/pages/climate"
       }
     },
-    "forecast": {
-      "type": "skin-forecast",
-      "settings": {}
-    },
-    "ingredients": {
-      "type": "ingredient-spotlight",
-      "settings": {
-        "limit": 6
-      }
-    },
-    "facts": {
-      "type": "facts-band",
-      "settings": {
-        "ingredients": 55
-      }
-    },
-    "journal": {
-      "type": "journal-teaser",
-      "settings": {}
-    },
     "bundles": {
       "type": "bundles",
       "blocks": {
         "bundle_1": {
           "type": "bundle",
           "settings": {
-            "product": "the-day-ritual"
+            "product": "the-full-ritual"
           }
         },
         "bundle_2": {
           "type": "bundle",
           "settings": {
-            "product": "the-full-ritual"
-          }
-        },
-        "bundle_3": {
-          "type": "bundle",
-          "settings": {
-            "product": "clear-protect-duo"
+            "product": "the-day-ritual"
           }
         }
       },
       "block_order": [
         "bundle_1",
-        "bundle_2",
-        "bundle_3"
+        "bundle_2"
       ],
-      "settings": {}
+      "settings": {
+        "show_all_link": true
+      }
     },
     "routine": {
       "type": "day-line",
       "settings": {
-        "show_bundle": true
+        "show_bundle": false
       }
+    },
+    "ingredient_heroes": {
+      "type": "ingredient-heroes",
+      "settings": {}
+    },
+    "editorial": {
+      "type": "editorial-band",
+      "settings": {}
     }
   },
   "order": [
     "hero",
-    "ticker",
     "routine",
-    "concerns",
     "bundles",
     "climate",
-    "forecast",
-    "ingredients",
-    "facts",
-    "journal"
+    "ingredient_heroes",
+    "editorial"
   ]
 }

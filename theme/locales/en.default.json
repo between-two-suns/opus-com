@@ -297,7 +297,8 @@
           "name": "Everyday Starter",
           "desc": "The two steps every day needs: cleanse and protect."
         }
-      }
+      },
+      "see_all": "See all sets"
     },
     "builder": {
       "eyebrow": "Build your routine",
@@ -322,6 +323,25 @@
       "ingredients": "ingredients, every one listed",
       "spf": "SPF, every morning",
       "egypt": "Made in Egypt, for the climate we live in"
+    },
+    "hero_panels": {
+      "eyebrow": "Climate-adapted skincare · Egypt",
+      "line_1": "Made for the",
+      "line_2": "space between.",
+      "subcopy": "Morning sun, office AC, city dust, humid nights. Four light steps made for Egyptian days.",
+      "cta_primary": "Shop the Full Ritual",
+      "cta_secondary": "Pick my steps"
+    },
+    "ingredient_heroes": {
+      "eyebrow": "What’s inside",
+      "heading": "Four jobs, four formulas.",
+      "link": "All ingredients, explained"
+    },
+    "editorial_band": {
+      "eyebrow": "The climate",
+      "heading": "From the first sun to the second.",
+      "text": "Heat, office AC, city dust, humid evenings. See how each step handles a real Egyptian day.",
+      "cta": "See the climate"
     }
   },
   "product": {

@@ -47,8 +47,8 @@ for (const loc of ['', '/ar']) {
     await page.waitForTimeout(600);
     ok(`${tag} sticky add-to-bag appears on scroll`, await page.$eval('sticky-atc', (s) => s.classList.contains('is-visible')));
 
-    // Forecast
-    await page.goto(`${BASE}${loc}/`, { waitUntil: 'networkidle' });
+    // Forecast (lives on the Routines page since the v3 home)
+    await page.goto(`${BASE}${loc}/pages/routines`, { waitUntil: 'networkidle' });
     await page.locator('#forecast').scrollIntoViewIfNeeded();
     await page.click('[data-time-btn="pm"]');
     const included = await page.$$eval('.forecast__step [data-include]', (b) => b.filter((x) => x.checked).length);
@@ -69,11 +69,19 @@ for (const loc of ['', '/ar']) {
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
 
+    // Home v3: hero panels are shoppable, the main CTA goes to the Full Ritual, the sets section adds a set
+    await page.goto(`${BASE}${loc}/`, { waitUntil: 'networkidle' });
+    const panels = await page.$$eval('.hp__panel a', (a) => a.map((x) => new URL(x.href).pathname));
+    ok(`${tag} hero has 4 shoppable panels in step order`, panels.length === 4 && panels[0].endsWith('/products/daily-reset-cleanser') && panels[3].endsWith('/products/daily-defense-sunscreen-spf-50'), panels.join(' '));
+    ok(`${tag} hero buy CTA goes to the Full Ritual`, (await page.$eval('.hp__buy', (a) => new URL(a.href).pathname)).endsWith('/products/the-full-ritual'));
+    ok(`${tag} hero h1 is the headline`, /space between|بين الشمسين/i.test(await page.$eval('h1', (h) => h.textContent)));
     const before = Number(await count(page));
-    await page.locator('.dayline__bundle button[type="submit"]').first().click();
-    await page.waitForTimeout(1000);
+    await page.locator('.bundles [data-bundle-add], .bundles button[type="submit"]').first().click();
+    await page.waitForFunction((n) => Number(document.querySelector('[data-cart-count]').textContent.trim() || 0) === n + 1, before, { timeout: 5000 }).catch(() => {});
     const after = Number(await count(page));
-    ok(`${tag} full-ritual bundle adds 1 bundle`, after - before === 1, `${before}→${after}`);
+    ok(`${tag} home set card adds 1 bundle`, after - before === 1, `${before}→${after}`);
+    await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
+    await page.waitForTimeout(300);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
 
@@ -133,7 +141,7 @@ for (const loc of ['', '/ar']) {
     const cs = page.locator('climate-switch');
     await cs.locator('.cs__opt[data-c="ac"]').click();
     ok(`${tag} climate switch marks AC pressed`, (await cs.locator('.cs__opt[data-c="ac"]').getAttribute('aria-pressed')) === 'true');
-    const keys = await cs.locator('.cs__bottle.is-key').evaluateAll((b) => b.map((x) => x.dataset.step).sort().join(','));
+    const keys = await cs.locator('.cs__key:not([hidden])').evaluateAll((b) => b.map((x) => x.dataset.step).sort().join(','));
     ok(`${tag} climate switch lifts AC steps (2,3)`, keys === '2,3', keys);
     const c0 = Number(await count(page));
     await cs.locator('[data-cta]').click();
