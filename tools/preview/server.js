@@ -533,7 +533,8 @@ async function sectionsPayload(names, locale, data, pathName) {
 
 /* ------------------------------------------------------------------ router */
 function route(pathname, data, query) {
-  if (pathname === '/') return { page_type: 'index', path: '/', page_title: 'Between Two Suns — Climate-adapted skincare' };
+  // ?view=x renders templates/index.x.json, like Shopify's alternate templates
+  if (pathname === '/') return { page_type: 'index', path: '/', page_title: 'Between Two Suns — Climate-adapted skincare', suffix: query?.get?.('view') || (query && query.view) || null };
   let m;
   if ((m = pathname.match(/^\/products\/([^/]+)$/))) {
     const product = data.byHandle[m[1]];

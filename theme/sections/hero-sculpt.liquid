@@ -1,0 +1,152 @@
+{%- comment -%}
+  Hero preview · "Two suns, two shadows" (shown only on /?view=hero while it is being reviewed; the live home hero is unchanged).
+  The headline stands on the floor like a sculpture between the two suns (the two arcs of the mark). Each sun throws the
+  letters' shadow across the floor: warm one way, cool the other. The light starts where the sun really is over Cairo,
+  the pointer moves it a little, and scrolling sets it on the left, where the next section's sun rises.
+  The shadows are copies of the real heading, so translations and edits just work. Reduced motion: one still, lit moment.
+{%- endcomment -%}
+{%- liquid
+  assign eyebrow = 'sections.hero_panels.eyebrow' | t | replace: '&amp;', '&'
+  assign line_1 = 'sections.hero_panels.line_1' | t | replace: '&amp;', '&'
+  assign line_2 = 'sections.hero_panels.line_2' | t | replace: '&amp;', '&'
+  assign subcopy = 'sections.hero_panels.subcopy' | t | replace: '&amp;', '&'
+  assign set = all_products['the-full-ritual']
+  assign build_url = routes.root_url | append: '/pages/sets' | replace: '//', '/'
+-%}
+<style>
+  .hs { --warm: 255 163 123; --cool: 137 195 200; --d: -1; --e: .35; --set: 0; --night: 0; position: relative; block-size: 190svh; }
+  .hs__stage { position: sticky; inset-block-start: 0; block-size: 100svh; overflow: hidden; isolation: isolate; --floor: 55%;
+    background:
+      radial-gradient(70% 45% at calc(50% + var(--d) * -55%) 76%, rgb(var(--warm) / calc(.26 - var(--set) * .1)), transparent 70%),
+      radial-gradient(70% 45% at calc(50% + var(--d) * 55%) 76%, rgb(var(--cool) / .22), transparent 70%),
+      linear-gradient(#f7f2ea 0 var(--floor), #eee4d6 calc(var(--floor) + .2%), #e7dbc9 100%); }
+  .hs__stage::after { content: ''; position: absolute; inset: 0; z-index: 9; pointer-events: none; opacity: .07; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .hs__horizon { position: absolute; inset-inline: 0; inset-block-start: var(--floor); block-size: 1px; background: rgb(32 35 58 / .07); }
+  .hs__sun { position: absolute; inset-block-start: 50%; block-size: 180vh; inline-size: auto; pointer-events: none; z-index: -1; translate: 0 calc(-50% + (1 - var(--e)) * 18vh + var(--set) * 70vh); }
+  .hs__sun--l { left: -62vh; } .hs__sun--r { right: -62vh; }
+  .hs__sun.is-warm { color: rgb(var(--warm)); filter: drop-shadow(0 0 18px rgb(var(--warm) / .8)) drop-shadow(0 0 70px rgb(var(--warm) / .45)); }
+  .hs__sun.is-cool { color: rgb(var(--cool)); filter: drop-shadow(0 0 18px rgb(var(--cool) / .8)) drop-shadow(0 0 70px rgb(var(--cool) / .45)); opacity: calc(1 - var(--set)); }
+  .hs__dawn { position: absolute; inset: 0; z-index: 8; pointer-events: none; background: linear-gradient(#1c1f36, #2e2a4a 60%, #4a3550); opacity: var(--night); mix-blend-mode: multiply; }
+  .hs__dusk { position: absolute; inset: 0; z-index: 7; pointer-events: none; background: linear-gradient(#ffd7bd, #f3b9a0); opacity: calc(var(--set) * .35); mix-blend-mode: multiply; }
+  .hs__eyebrow { position: absolute; inset-inline: 0; inset-block-start: calc(var(--header-h, 76px) + 5vh); text-align: center; justify-content: center; z-index: 3; opacity: calc(1 - var(--set) * 1.5); }
+  .hs__time { position: absolute; inset-inline: 0; inset-block-end: 2.6vh; text-align: center; font-size: 12px; font-weight: 600; letter-spacing: .04em; opacity: calc(.62 - var(--set)); z-index: 3; margin: 0; }
+  .hs__sculpt { position: absolute; left: 50%; inset-block-end: calc(100% - var(--floor)); translate: -50% 0; z-index: 2; }
+  .hs__type, .hs__sh > span, .hs__ao { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; text-align: center; white-space: nowrap;
+    font-size: clamp(64px, min(12.4vw, 21svh), 220px); line-height: .84; letter-spacing: -.004em; margin: 0; }
+  .hs__type { position: relative; z-index: 3; padding-block-end: .02em; color: transparent; -webkit-background-clip: text; background-clip: text;
+    background-image: linear-gradient(to top, rgb(8 10 24 / .35), transparent 22%), linear-gradient(calc(90deg + var(--d) * 90deg), #4a2f2c, #20233A 34%, #20233A 66%, #1d3a4a); }
+  .hs__type .l, .hs__sh .l, .hs__ao .l { display: block; }
+  .hs__sh { position: absolute; inset: 0; z-index: 1; mix-blend-mode: multiply; isolation: isolate; pointer-events: none; }
+  .hs__sh > span { position: absolute; inset: 0; padding-block-end: .02em; color: var(--tone); transform-origin: 50% 100%; transform: var(--tf); -webkit-mask: var(--band); mask: var(--band); }
+  .hs__sh .n { filter: blur(.6px); --band: linear-gradient(to top, #000 0, #000 8%, transparent 26%); }
+  .hs__sh .m { filter: blur(calc(2px + var(--len) * 4px)); --band: linear-gradient(to top, transparent 8%, rgb(0 0 0 / .8) 24%, rgb(0 0 0 / .55) 46%, transparent 70%); }
+  .hs__sh .f { filter: blur(calc(6px + var(--len) * 10px)); --band: linear-gradient(to top, transparent 40%, rgb(0 0 0 / .4) 62%, transparent 92%); }
+  .hs__sh--w { --tone: rgb(52 106 132 / .66); --len: calc(2.6 - var(--e) * 1.3 + var(--set) * 2);
+    --tf: perspective(1400px) rotateX(74deg) skewX(calc(var(--d) * -1 * (34deg + (1 - var(--e)) * 18deg + var(--set) * 8deg))) scaleY(calc(var(--len) * -1)); }
+  .hs__sh--c { --tone: rgb(214 112 72 / .58); --len: calc(2.1 - var(--e) * 1); opacity: calc(1 - var(--set));
+    --tf: perspective(1400px) rotateX(74deg) skewX(calc(var(--d) * (32deg + (1 - var(--e)) * 16deg))) scaleY(calc(var(--len) * -1)); }
+  .hs__ao { position: absolute; inset: 0; z-index: 2; padding-block-end: .02em; color: rgb(20 22 40 / .55); transform-origin: 50% 100%; transform: scaleY(.035); filter: blur(1.5px); pointer-events: none; }
+  .hs__sub { position: absolute; inset-inline: 0; inset-block-start: calc(var(--floor) + 15vh); text-align: center; z-index: 3; margin: 0 auto; max-inline-size: 46ch; padding-inline: 20px; color: var(--c-ink-soft, #4a4d63); opacity: calc(1 - var(--set) * 1.6); }
+  .hs__ctas { position: absolute; inset-inline: 0; inset-block-start: calc(var(--floor) + 25vh); display: flex; justify-content: center; align-items: center; gap: 22px; z-index: 3; opacity: calc(1 - var(--set) * 1.6); }
+  @media (max-width: 749px) {
+    .hs__stage { --floor: 52%; }
+    .hs__type, .hs__sh > span, .hs__ao { font-size: 20vw; white-space: normal; inline-size: 94vw; }
+    .hs__sun--l { left: -90vh; } .hs__sun--r { right: -90vh; }
+    .hs__sub { inset-block-start: calc(var(--floor) + 11vh); font-size: 15px; }
+    .hs__ctas { flex-direction: column; gap: 10px; inset-block-start: calc(var(--floor) + 21vh); }
+    .hs__time { display: none; }
+  }
+  :lang(ar) .hs__type, :lang(ar) .hs__sh > span, :lang(ar) .hs__ao { text-transform: none; line-height: 1.12; font-size: clamp(48px, min(9vw, 16svh), 150px); }
+  @media (max-width: 749px) { :lang(ar) .hs__type, :lang(ar) .hs__sh > span, :lang(ar) .hs__ao { font-size: 15vw; } }
+</style>
+<section class="hs" id="Hs-{{ section.id }}" aria-labelledby="HsTitle-{{ section.id }}">
+  <div class="hs__stage">
+    <div class="hs__horizon"></div>
+    <svg class="hs__sun hs__sun--l is-warm" viewBox="0 0 250 547" aria-hidden="true" focusable="false"><path fill="currentColor" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/></svg>
+    <svg class="hs__sun hs__sun--r is-cool" viewBox="250 0 251 547" aria-hidden="true" focusable="false"><path fill="currentColor" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>
+    <p class="t-eyebrow hs__eyebrow">{{ eyebrow | escape }}</p>
+    <div class="hs__sculpt">
+      <div class="hs__sh hs__sh--w" aria-hidden="true"><span class="f"></span><span class="m"></span><span class="n"></span></div>
+      <div class="hs__sh hs__sh--c" aria-hidden="true"><span class="f"></span><span class="m"></span><span class="n"></span></div>
+      <div class="hs__ao" aria-hidden="true"></div>
+      <h1 class="hs__type" id="HsTitle-{{ section.id }}"><span class="l">{{ line_1 | escape }}</span> <span class="l">{{ line_2 | escape }}</span></h1>
+    </div>
+    <p class="t-lead hs__sub">{{ subcopy | escape }}</p>
+    <div class="hs__ctas">
+      {%- if set -%}<a class="btn" href="{{ set.url }}">{{ 'sections.hero_panels.cta_primary' | t }}</a>{%- endif -%}
+      <a class="link-arrow" href="{{ build_url }}">{{ 'sections.hero_panels.cta_secondary' | t }}</a>
+    </div>
+    <p class="hs__time" data-time aria-hidden="true"></p>
+    <div class="hs__dusk" aria-hidden="true"></div>
+    <div class="hs__dawn" aria-hidden="true"></div>
+  </div>
+</section>
+<script>
+(() => {
+  const root = document.getElementById('Hs-{{ section.id }}'); if (!root) return;
+  const stage = root.querySelector('.hs__stage'), type = root.querySelector('.hs__type');
+  root.querySelectorAll('.hs__sh > span, .hs__ao').forEach((el) => { el.innerHTML = type.innerHTML; });
+  const rtl = document.documentElement.dir === 'rtl';
+  const sunL = root.querySelector('.hs__sun--l'), sunR = root.querySelector('.hs__sun--r');
+  function setSun(d, e) {
+    const dd = rtl ? -d : d; // in Arabic the street sun rises on the right
+    root.style.setProperty('--d', dd.toFixed(3)); root.style.setProperty('--e', Math.max(0, e).toFixed(3));
+    sunL.classList.toggle('is-warm', dd < 0); sunL.classList.toggle('is-cool', dd >= 0);
+    sunR.classList.toggle('is-warm', dd >= 0); sunR.classList.toggle('is-cool', dd < 0);
+  }
+  function cairoSun(now = new Date()) {
+  const lat = 30.04 * Math.PI / 180, lon = 31.24;
+  const start = Date.UTC(now.getUTCFullYear(), 0, 0), N = Math.floor((now - start) / 864e5);
+  const decl = 23.44 * Math.sin(2 * Math.PI * (284 + N) / 365) * Math.PI / 180;
+  const B = 2 * Math.PI * (N - 81) / 364, eot = 9.87 * Math.sin(2 * B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B);
+  const mins = now.getUTCHours() * 60 + now.getUTCMinutes() + lon * 4 + eot;
+  const H = (mins / 4 - 180) * Math.PI / 180;
+  const el = Math.asin(Math.sin(lat) * Math.sin(decl) + Math.cos(lat) * Math.cos(decl) * Math.cos(H)) * 180 / Math.PI;
+  return { d: Math.max(-1, Math.min(1, H / (Math.PI / 2))), el };
+}
+  const real = cairoSun();
+  const D = Math.sign(real.d || -1) * Math.max(.35, Math.abs(real.d)), E = Math.max(.12, Math.min(1, real.el / 75));
+  try {
+    const t = new Intl.DateTimeFormat(document.documentElement.lang || 'en', { timeZone: 'Africa/Cairo', hour: '2-digit', minute: '2-digit' }).format(new Date());
+    root.querySelector('[data-time]').textContent = (rtl ? 'القاهرة · ' : 'Cairo · ') + t;
+  } catch (e) {}
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v) => Math.max(0, Math.min(1, v)), lerp = (a, b, k) => a + (b - a) * k;
+  let N = [0, 0], T = [D, E], C = [D, E], raf = 0, ready = reduce;
+  function target() {
+    const s = reduce ? 0 : clamp(-root.getBoundingClientRect().top / (root.offsetHeight - innerHeight));
+    root.style.setProperty('--set', s.toFixed(3));
+    T = [lerp(D + N[0], -1, s), Math.max(.04, lerp(E + N[1], 0, s))];
+    if (!raf && ready) raf = requestAnimationFrame(ease);
+  }
+  function ease() {
+    C[0] += (T[0] - C[0]) * .1; C[1] += (T[1] - C[1]) * .1;
+    setSun(C[0], C[1]);
+    raf = Math.abs(T[0] - C[0]) + Math.abs(T[1] - C[1]) > .002 ? requestAnimationFrame(ease) : 0;
+  }
+  addEventListener('scroll', target, { passive: true });
+  if (!reduce) stage.addEventListener('pointermove', (ev) => {
+    const b = stage.getBoundingClientRect();
+    N = [((ev.clientX - b.left) / b.width * 2 - 1) * .45 * (rtl ? -1 : 1), (.5 - (ev.clientY - b.top) / b.height) * .3];
+    target();
+  });
+  if (reduce) { setSun(D, E); return; }
+  const t0 = performance.now(), dur = 1700;
+  (function rise(now) {
+    const p = Math.min(1, (now - t0) / dur), k = 1 - Math.pow(1 - p, 3);
+    setSun(D, -0.15 + (E + 0.15) * k);
+    root.style.setProperty('--night', (1 - Math.min(1, p * 1.6)).toFixed(3));
+    if (p < 1) requestAnimationFrame(rise); else { ready = true; C = [D, E]; target(); }
+  })(t0);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero preview: two suns",
+  "tag": "div",
+  "class": "section-hero",
+  "settings": []
+}
+{% endschema %}
