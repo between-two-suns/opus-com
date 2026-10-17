@@ -1,0 +1,177 @@
+{%- comment -%}
+  Hero preview · "Two suns" (only on /?view=hero while it is reviewed; the live home hero is unchanged).
+  Two pale, tactile spheres (the two suns, pre-rendered: assets/hero-sun-*.webp) frame the headline. Each is lit from the
+  space between them. The climate words change their surface (droplets, warmth, dry air, grit, haze). Scrolling, the suns
+  glide together and eclipse into their facing crescents, and the real )( mark takes over: the logo is the two suns.
+  The eclipse uses the mark's own circles (outer r 279 at (-57, 273), inner r 323.4 at (-173, 273), 547 units tall).
+  Reduced motion: the first screen, still; no pinning, no eclipse.
+{%- endcomment -%}
+{%- liquid
+  assign set = all_products['the-full-ritual']
+  assign shop_url = routes.collections_url | append: '/all'
+  if set
+    assign shop_url = set.url
+  endif
+  assign line_1 = 'sections.hero_panels.line_1' | t | replace: '&amp;', '&'
+  assign line_2 = 'sections.hero_panels.line_2' | t | replace: '&amp;', '&'
+  assign words = 'sun,dust,pollution,ac,humidity' | split: ','
+-%}
+<style>
+  .hs2 { --p: 0; position: relative; block-size: 230svh; margin-block-start: calc(-1 * var(--header-h)); }
+  .hs2__stage { position: sticky; inset-block-start: 0; block-size: 100svh; overflow: clip; isolation: isolate; }
+  .hs2__sun { position: absolute; left: 0; top: 0; inline-size: 50vw; aspect-ratio: 1; border-radius: 50%; will-change: transform; z-index: 1; }
+  .hs2__sun img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; border-radius: 50%; }
+  [dir='rtl'] .hs2__sun img { transform: scaleX(-1); }
+  .hs2__drops { transition: opacity 1.2s; opacity: var(--wet, 1); }
+  .hs2__glow { position: absolute; inset: -14%; border-radius: 50%; pointer-events: none; z-index: -1; transition: opacity 1.2s; opacity: var(--glow, 0); background: radial-gradient(closest-side, rgb(255 196 150 / .55), rgb(255 196 150 / .18) 60%, transparent 72%); }
+  .hs2__tone { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; mix-blend-mode: soft-light; transition: opacity 1.2s, background 1.2s; opacity: var(--hs2-to, 0); background: var(--hs2-tone, transparent); }
+  .hs2__dust { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; mix-blend-mode: multiply; transition: opacity 1.2s; opacity: var(--dust, 0);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .32 0 0 0 1.4 -.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .hs2__occ { position: absolute; border-radius: 50%; background: var(--hs2-bg, var(--c-daylight)); pointer-events: none; inline-size: 0; block-size: 0; }
+  .hs2__copy { position: absolute; z-index: 3; inset-inline: var(--gutter, 5vw); inset-block-start: calc(var(--header-h) + 36px + 5svh); opacity: calc(1 - var(--p) * 3.2); translate: 0 calc(var(--p) * -14svh); }
+  .hs2__title { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .84; letter-spacing: -.01em; margin: 16px 0 0; max-inline-size: 9ch; font-size: clamp(64px, min(11vw, 17svh), 220px); color: var(--c-ink); }
+  .hs2__title .w { display: inline-block; overflow: hidden; vertical-align: top; padding-block-end: .04em; margin-block-end: -.04em; }
+  .hs2__title .w > span { display: inline-block; }
+  .js .hs2__title .w > span { translate: 0 105%; animation: hs2-rise .9s cubic-bezier(.2,.75,.2,1) forwards; }
+  .hs2__title .w:nth-child(2) > span { animation-delay: .08s; } .hs2__title .w:nth-child(3) > span { animation-delay: .16s; } .hs2__title .w:nth-child(4) > span { animation-delay: .24s; }
+  @keyframes hs2-rise { to { translate: 0 0; } }
+  .js .hs2__fade { opacity: 0; animation: hs2-fade .8s .55s ease forwards; }
+  @keyframes hs2-fade { from { opacity: 0; translate: 0 10px; } to { opacity: 1; translate: 0 0; } }
+  .hs2__sub { margin: 20px 0 0; font-size: 13px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; line-height: 1.7; max-inline-size: 32ch; }
+  .hs2__cta { display: inline-flex; align-items: center; gap: 14px; margin-block-start: 24px; background: #9CCBAE; color: var(--c-ink); padding: 17px 30px; border-radius: 999px; text-decoration: none;
+    font-size: 14px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; transition: background .3s, gap .3s; }
+  .hs2__cta:hover { background: #8BC2A0; gap: 20px; }
+  [dir='rtl'] .hs2__cta svg { transform: scaleX(-1); }
+  .hs2__climate { position: absolute; z-index: 3; inset-inline: var(--gutter, 5vw); inset-block-end: calc(3.2svh + 36px); display: flex; flex-wrap: wrap; gap: 6px 22px; list-style: none; margin: 0; padding: 0; opacity: calc(1 - var(--p) * 3.2); }
+  .hs2__climate button { font: inherit; font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; background: none; border: 0; padding: 8px 0; color: color-mix(in srgb, var(--c-ink) 66%, transparent); cursor: pointer; position: relative; transition: color .4s; }
+  .hs2__climate button[aria-pressed='true'] { color: var(--c-ink); }
+  .hs2__climate button::after { content: ''; position: absolute; inset-inline: 0; inset-block-end: 2px; block-size: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .5s; }
+  .hs2__climate button[aria-pressed='true']::after { transform: scaleX(1); }
+  .hs2__note { flex-basis: 100%; margin: 0; font-size: 13px; color: color-mix(in srgb, var(--c-ink) 72%, transparent); min-block-size: 1.4em; }
+  :lang(ar) .hs2__title { text-transform: none; line-height: 1.12; letter-spacing: 0; font-size: clamp(56px, min(9vw, 13svh), 170px); max-inline-size: 7ch; }
+  :lang(ar) .hs2__sub, :lang(ar) .hs2__climate button, :lang(ar) .hs2__cta { letter-spacing: 0; }
+  .hs2__mark { position: absolute; z-index: 4; left: 50%; top: 46%; translate: -50% -50%; block-size: var(--mh, 18svh); inline-size: auto; opacity: 0; pointer-events: none; overflow: visible; }
+  .hs2__line { position: absolute; z-index: 4; inset-inline: 0; inset-block-start: calc(46% + var(--mh, 18svh) / 2 + 28px); text-align: center; margin: 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(22px, 3vw, 40px); opacity: 0; }
+  :lang(ar) .hs2__line { text-transform: none; }
+  @media (max-width: 749px) {
+    .hs2__title { font-size: 23vw; max-inline-size: 6ch; }
+    :lang(ar) .hs2__title { font-size: 17vw; }
+    .hs2__sub { font-size: 11px; max-inline-size: 34ch; }
+    .hs2__climate { gap: 4px 16px; inset-block-end: calc(var(--dock-h, 0px) + 2svh + 36px); } .hs2__climate button { font-size: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hs2 { block-size: auto; } .hs2__stage { position: relative; block-size: calc(100svh - 36px); }
+    .js .hs2__title .w > span { translate: 0 0; animation: none; } .js .hs2__fade { opacity: 1; animation: none; }
+  }
+</style>
+<section class="hs2" id="Hs2-{{ section.id }}" aria-labelledby="Hs2Title-{{ section.id }}">
+  <div class="hs2__stage">
+    {%- for k in (1..2) -%}
+      {%- if k == 1 -%}{%- assign c = 'blue' -%}{%- else -%}{%- assign c = 'green' -%}{%- endif -%}
+      <div class="hs2__sun" data-sun="{{ c }}" aria-hidden="true">
+        <span class="hs2__glow"></span>
+        <img src="{{ 'hero-sun-' | append: c | append: '.webp' | asset_url }}" alt="" width="1200" height="1200" fetchpriority="{% if k == 1 %}high{% else %}auto{% endif %}">
+        <img class="hs2__drops" src="{{ 'hero-drops-' | append: c | append: '.webp' | asset_url }}" alt="" width="1200" height="1200" loading="lazy">
+        <span class="hs2__dust"></span><span class="hs2__tone"></span><span class="hs2__occ"></span>
+      </div>
+    {%- endfor -%}
+    <div class="hs2__copy">
+      <p class="t-eyebrow hs2__fade">{{ 'sections.hero_panels.eyebrow' | t }}</p>
+      <h1 class="hs2__title" id="Hs2Title-{{ section.id }}">
+        <span class="w"><span>{{ 'sections.hero_suns.title_1' | t }}</span></span> <span class="w"><span>{{ 'sections.hero_suns.title_2' | t }}</span></span> <span class="w"><span>{{ 'sections.hero_suns.title_3' | t }}</span></span> <span class="w"><span>{{ 'sections.hero_suns.title_4' | t }}</span></span>
+      </h1>
+      <p class="hs2__sub hs2__fade">{{ 'sections.hero_suns.sub' | t }}</p>
+      <a class="hs2__cta hs2__fade" href="{{ shop_url }}">{{ 'sections.hero_suns.cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm' %}</a>
+    </div>
+    <ul class="hs2__climate" role="list" aria-label="{{ 'sections.hero_suns.climate_label' | t }}">
+      {%- for w in words -%}
+        {%- assign nk = 'sections.hero_suns.n_' | append: w -%}{%- assign wk = 'sections.hero_suns.w_' | append: w -%}
+        <li class="hs2__fade"><button type="button" data-c="{{ w }}" data-note="{{ nk | t | escape }}" aria-pressed="{% if w == 'humidity' %}true{% else %}false{% endif %}">{{ wk | t }}</button></li>
+      {%- endfor -%}
+      <li class="hs2__note hs2__fade" aria-live="polite" data-note-out>{{ 'sections.hero_suns.n_humidity' | t }}</li>
+    </ul>
+    <svg class="hs2__mark" data-mark viewBox="0 0 501 547" aria-hidden="true" focusable="false">
+      <defs>
+        <pattern id="Hs2TexL-{{ section.id }}" patternUnits="userSpaceOnUse" width="501" height="547"><image href="{{ 'hero-sun-green.webp' | asset_url }}" x="-336" y="-6" width="558" height="558"/></pattern>
+        <pattern id="Hs2TexR-{{ section.id }}" patternUnits="userSpaceOnUse" width="501" height="547"><image href="{{ 'hero-sun-blue.webp' | asset_url }}" x="279" y="-6" width="558" height="558"/></pattern>
+      </defs>
+      <path fill="url(#Hs2TexL-{{ section.id }})" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/>
+      <path fill="url(#Hs2TexR-{{ section.id }})" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/>
+    </svg>
+    <svg class="hs2__mark" data-ink viewBox="0 0 501 547" aria-hidden="true" focusable="false"><path fill="var(--c-ink, #20233A)" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/> <path fill="var(--c-ink, #20233A)" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>
+    <p class="hs2__line" data-line aria-hidden="true">{{ line_1 }} {{ line_2 }}</p>
+  </div>
+</section>
+<script>
+(() => {
+  const root = document.getElementById('Hs2-{{ section.id }}'); if (!root) return;
+  const stage = root.querySelector('.hs2__stage'), rtl = document.documentElement.dir === 'rtl';
+  const suns = { B: root.querySelector('[data-sun="blue"]'), G: root.querySelector('[data-sun="green"]') };
+  const mark = root.querySelector('[data-mark]'), ink = root.querySelector('[data-ink]'), line = root.querySelector('[data-line]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W, H, phone, geo;
+  function layout() {
+    W = stage.clientWidth; H = stage.clientHeight; phone = W < 750;
+    const mh = Math.min(H * .2, W * .28); root.style.setProperty('--mh', mh + 'px');
+    const dB = phone ? W * 1.15 : Math.max(W * .48, H * .95), dG = phone ? W * 1.05 : Math.max(W * .4, H * .82);
+    const u = mh / 547, mx = W / 2 - 250.5 * u, my = H * .46 - 273.5 * u, d1 = 558 * u;
+    const right = { x1: mx + 279 * u, y1: my - 6 * u, side: 1 }, left = { x1: mx - 336 * u, y1: my - 6 * u, side: -1 };
+    const B0 = { x0: W - dB * (phone ? .42 : .5), y0: phone ? -dB * .42 : -dB * .38 }, G0 = { x0: phone ? -dG * .58 : W * .3 - dG * .5, y0: H - dG * (phone ? .42 : .3) };
+    // Arabic mirrors where the suns start (the mark itself is never mirrored): blue top-left becomes the left crescent
+    if (rtl) { B0.x0 = W - B0.x0 - dB; G0.x0 = W - G0.x0 - dG; }
+    geo = { B: { d0: dB, d1, ...B0, ...(rtl ? left : right) }, G: { d0: dG, d1, ...G0, ...(rtl ? right : left) } };
+  }
+  const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  let px = 0, py = 0, cx = 0, cy = 0, P = 0; const T0 = performance.now();
+  function frame() {
+    cx += (px - cx) * .06; cy += (py - cy) * .06;
+    const p = reduce ? 0 : Math.max(0, Math.min(1, -root.getBoundingClientRect().top / (root.offsetHeight - H)));
+    P += (p - P) * .14; const t = ease(Math.min(1, P / .72));
+    const I = reduce ? 1 : 1 - Math.pow(1 - Math.min(1, (performance.now() - T0) / 1600), 4);
+    root.style.setProperty('--p', P.toFixed(4));
+    for (const k of ['B', 'G']) {
+      const g = geo[k], el = suns[k], d = g.d0 + (g.d1 - g.d0) * t, dir = (k === 'B') !== rtl ? 1 : -1;
+      const par = (1 - t) * dir * 18, out = (1 - I) * d * .35 * dir;
+      const x = g.x0 + (g.x1 - g.x0) * t + cx * par + out, y = g.y0 + (g.y1 - g.y0) * t + cy * par - out * .6;
+      el.style.width = d + 'px';
+      el.style.transform = `translate(${x}px, ${y}px) rotate(${(1 - t) * cx * 4 * dir + (1 - I) * 25 * dir}deg)`;
+      // the eclipse: a disc of the page colour slides in from the outer side, ending on the mark's inner curve
+      const oD = d * (323.4 / 279), off = d * (116 / 279) * (1 + (1 - t) * 3.2) * g.side, oc = el.querySelector('.hs2__occ');
+      oc.style.width = oc.style.height = oD + 'px'; oc.style.left = ((d - oD) / 2 + off) + 'px'; oc.style.top = (d - oD) / 2 + 'px';
+    }
+    const m = Math.max(0, Math.min(1, (P - .7) / .1));
+    mark.style.opacity = m; suns.B.style.opacity = suns.G.style.opacity = 1 - m * .999;
+    ink.style.opacity = Math.max(0, Math.min(1, (P - .8) / .1));
+    const l = Math.max(0, Math.min(1, (P - .76) / .1)); line.style.opacity = l; line.style.translate = `0 ${12 * (1 - l)}px`;
+    if (running) requestAnimationFrame(frame);
+  }
+  if (!reduce) addEventListener('pointermove', (e) => { px = e.clientX / innerWidth * 2 - 1; py = e.clientY / innerHeight * 2 - 1; }, { passive: true });
+  // climate: each word changes the suns' surface
+  const STATE = { sun: [1, 0, 0, 'rgb(255 236 222)', .4], dust: [0, 0, .55, 'rgb(190 160 120)', .35], pollution: [0, 0, .25, 'rgb(120 125 135)', .45], ac: [0, 0, 0, 'rgb(200 225 240)', .5], humidity: [0, 1, 0, 'transparent', 0] };
+  const btns = [...root.querySelectorAll('[data-c]')], note = root.querySelector('[data-note-out]');
+  let auto = !reduce, ci = btns.findIndex((b) => b.dataset.c === 'humidity');
+  function climate(c) {
+    const [glow, wet, dust, tone, to] = STATE[c];
+    for (const el of Object.values(suns)) { el.style.setProperty('--glow', glow); el.style.setProperty('--wet', wet); el.style.setProperty('--dust', dust); el.style.setProperty('--hs2-tone', tone); el.style.setProperty('--hs2-to', to); }
+    btns.forEach((b) => b.setAttribute('aria-pressed', b.dataset.c === c)); note.textContent = btns.find((b) => b.dataset.c === c).dataset.note;
+  }
+  btns.forEach((b, i) => b.addEventListener('click', () => { auto = false; ci = i; climate(b.dataset.c); }));
+  setInterval(() => { if (!auto || !running) return; ci = (ci + 1) % btns.length; climate(btns[ci].dataset.c); }, 3200);
+  // run only while on screen
+  let running = true;
+  new IntersectionObserver((es) => { const on = es[0].isIntersecting; if (on && !running) { running = true; requestAnimationFrame(frame); } else if (!on) running = false; }).observe(root);
+  // the eclipse discs must be exactly the page colour
+  root.style.setProperty('--hs2-bg', getComputedStyle(document.body).backgroundColor);
+  layout(); climate('humidity'); addEventListener('resize', layout);
+  requestAnimationFrame(frame);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero preview: two suns",
+  "tag": "div",
+  "class": "section-hero",
+  "settings": []
+}
+{% endschema %}

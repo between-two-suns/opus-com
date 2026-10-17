@@ -348,6 +348,25 @@
       "tilt": "Tilt to play",
       "view": "View",
       "lineup": "The four steps"
+    },
+    "hero_suns": {
+      "title_1": "Your",
+      "title_2": "skin",
+      "title_3": "lives",
+      "title_4": "between.",
+      "sub": "Climate-adapted skincare for life between environments.",
+      "cta": "Shop the routine",
+      "climate_label": "Today's climate",
+      "w_sun": "Sun",
+      "w_dust": "Dust",
+      "w_pollution": "Pollution",
+      "w_ac": "Dry AC",
+      "w_humidity": "Humidity",
+      "n_sun": "Sun: UV every day, not just at the beach.",
+      "n_dust": "Dust: city grit that sits on skin all day.",
+      "n_pollution": "Pollution: a film you wash off every evening.",
+      "n_ac": "Dry AC: office air that pulls moisture out.",
+      "n_humidity": "Humidity: oil and shine by the afternoon."
     }
   },
   "product": {
