@@ -1,6 +1,6 @@
 {
   "sections": {
-    "hero": { "type": "hero-suns", "settings": {} },
+    "hero": { "type": "hero-routine", "settings": {} },
     "routine": { "type": "day-line", "settings": { "show_bundle": false } }
   },
   "order": ["hero", "routine"]

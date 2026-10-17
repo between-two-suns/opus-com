@@ -367,6 +367,22 @@
       "n_pollution": "Pollution: a film you wash off every evening.",
       "n_ac": "Dry AC: office air that pulls moisture out.",
       "n_humidity": "Humidity: oil and shine by the afternoon."
+    },
+    "hero_routine": {
+      "before": "Your",
+      "am": "morning",
+      "pm": "evening",
+      "after": "routine.",
+      "lede_am": "First sun: cleanse, treat, moisturise, protect. Four light steps for the day ahead.",
+      "lede_pm": "Second sun: cleanse, treat, moisturise. The sunscreen can rest.",
+      "switch": "Routine",
+      "am_label": "AM",
+      "pm_label": "PM",
+      "cta_am": "Shop the morning routine",
+      "cta_pm": "Shop the evening routine",
+      "cta_all": "Shop products",
+      "made_for": "Made for",
+      "lineup": "The routine"
     }
   },
   "product": {
