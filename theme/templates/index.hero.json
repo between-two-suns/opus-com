@@ -1,6 +1,6 @@
 {
   "sections": {
-    "hero": { "type": "hero-arcs", "settings": {} },
+    "hero": { "type": "hero-handoff", "settings": {} },
     "routine": { "type": "day-line", "settings": { "show_bundle": false } }
   },
   "order": ["hero", "routine"]
