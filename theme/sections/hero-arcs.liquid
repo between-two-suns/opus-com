@@ -1,0 +1,153 @@
+{%- comment -%}
+  Hero preview · "Between" (only on /?view=hero while it is reviewed; the live home hero is unchanged).
+  The )( mark at monumental scale: each arc is a window onto a real texture of the products (the cleanser gel, the
+  serum drop), drifting slowly. They frame the headline; the four steps stand below. On load the arcs glide in from the
+  edges; scrolling, they part and hand over to the next section. One idea, playing on its own; nothing needs a tap.
+  Masks are the mark's own two paths (shape unchanged). Reduced motion: still, no pinning.
+{%- endcomment -%}
+{%- liquid
+  assign full = all_products['the-full-ritual']
+  assign all_url = routes.collections_url | append: '/all'
+  assign line_1 = 'sections.hero_panels.line_1' | t | replace: '&amp;', '&'
+  assign line_2 = 'sections.hero_panels.line_2' | t | replace: '&amp;', '&'
+  assign w1 = line_1 | split: ' '
+  assign w2 = line_2 | split: ' '
+  assign handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign hs = '1,.8,.86,.86' | split: ','
+  assign ars = '357/1100,366/1100,343/1100,339/1100' | split: ','
+  assign words = 'sun,dust,pollution,ac,humidity' | split: ','
+-%}
+<style>
+.ha-hero { --p: 0; position: relative; height: 175svh; margin-top: calc(-1 * var(--header-h)); color: var(--c-ink); }
+/* the stage sits under the 36px announcement bar, so the whole hero fits the first screen */
+.ha-stage { position: sticky; top: 36px; height: calc(100svh - 36px); min-height: 564px; overflow: hidden; isolation: isolate; display: flex; flex-direction: column;
+  padding: calc(var(--header-h) + 36px + 3svh) 0 calc(var(--dock-h, 0px) + 5svh); }
+.ha-stage::after { content: ''; position: absolute; inset: 0; z-index: 9; pointer-events: none; opacity: .05; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+/* the mark at monumental scale: each arc is a window onto a real texture of the products, slowly drifting */
+.ha-arc { position: absolute; top: 50%; height: 118svh; aspect-ratio: 250 / 547; translate: 0 -50%; z-index: 1; will-change: transform; }
+.ha-arc .ha-tex { position: absolute; inset: 0; overflow: hidden; -webkit-mask: var(--m) center / 100% 100% no-repeat; mask: var(--m) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 30px 40px rgb(30 40 50 / .12)); }
+.ha-arc .ha-tex::before { content: ''; position: absolute; inset: -12%; background: var(--img) var(--pos, 50% 50%) / cover no-repeat; animation: drift 22s ease-in-out infinite alternate; }
+.ha-arc--l { --m: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20250%20547%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M2.66924%200.000534727C13.8978%20-0.0776124%2039.3353%208.4295%2050.0693%2012.562C114.374%2037.317%20161.913%2086.5377%20189.447%20149.42C222.326%20223.262%20224.551%20307.181%20195.63%20382.669C169.731%20448.998%20122.891%20498.719%2057.8246%20527.266C50.9638%20530.162%2010.5353%20546.188%206.16675%20540.003C6.92711%20537.615%2015.4177%20533.15%2018.0182%20531.551C30.9838%20523.498%2043.1447%20514.212%2054.3322%20503.821C179.437%20386.891%20178.378%20158.888%2054.6155%2041.6992C44.6109%2032.2678%2033.7982%2023.7363%2022.3013%2016.2048C19.3235%2014.2527%200.603598%203.34994%200%202.08782C0.691623%200.563537%200.721794%200.963506%202.66924%200.000534727Z%27/%3E%3C/svg%3E"); --img: var(--tex-l); --pos: 40% 55%; left: var(--lx); }
+.ha-arc--r { --m: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%27250%200%20251%20547%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M485.418%20540.727C480.323%20539.813%20474.472%20538.204%20469.48%20536.683C404.162%20517.048%20349.518%20471.926%20317.896%20411.514C280.569%20341.252%20275.216%20259.053%20298.519%20183.413C318.991%20116.957%20361.294%2057.7036%20423.579%2024.8168C443.344%2014.348%20464.402%206.52641%20486.21%201.5537C488.907%200.960578%20499.257%20-1.65223%20500.343%201.60242C498.945%204.48993%20493.684%207.08592%20490.864%208.67457C476.842%2016.5752%20464.296%2025.8703%20452.206%2036.5702C432.023%2054.3842%20414.677%2075.1723%20400.767%2098.2165C355.36%20172.084%20341.72%20271.124%20362.152%20354.995C381.198%20433.175%20420.724%20493.087%20489.395%20535.312C491.257%20536.374%20493.389%20537.263%20494.398%20539.062L494.341%20540.198C492.035%20542.156%20488.17%20541.287%20485.418%20540.727Z%27/%3E%3C/svg%3E"); --img: var(--tex-r); --pos: 30% 60%; right: var(--lx); }
+.ha-arc--r .ha-tex::before { animation-delay: -11s; }
+@keyframes drift { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.14) translate(-3%, 4%); } }
+/* a soft rim of light where each arc faces the space between */
+.ha-arc .ha-rim { position: absolute; inset: 0; -webkit-mask: var(--m) center / 100% 100% no-repeat; mask: var(--m) center / 100% 100% no-repeat; mix-blend-mode: soft-light;
+  background: linear-gradient(90deg, rgb(0 0 0 / .25), transparent 40%, rgb(255 255 255 / .7)); }
+.ha-arc--r .ha-rim { background: linear-gradient(270deg, rgb(0 0 0 / .25), transparent 40%, rgb(255 255 255 / .7)); }
+.ha-copy { position: relative; z-index: 3; display: grid; justify-items: center; text-align: center; padding-inline: 6vw; opacity: calc(1 - var(--p) * 2.4); translate: 0 calc(var(--p) * -8svh); }
+.ha-copy .ha-mark { height: 30px; width: auto; }
+.ha-eyebrow { margin-top: 16px; font-size: 11px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; }
+.ha-title { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .84; letter-spacing: -.01em; margin-top: 12px; font-size: clamp(56px, min(8vw, 11svh), 160px); }
+.ha-title .ha-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .04em; margin-bottom: -.04em; }
+.ha-title .ha-w > span { display: inline-block; animation: rise 1s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(.35s + var(--i) * .07s); }
+@keyframes rise { from { translate: 0 105%; } }
+.ha-copy .ha-climate { margin-top: 26px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; list-style: none; padding: 0; font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: rgb(28 30 48 / .66); }
+.ha-climate li + li::before { content: '·'; margin-inline-end: 14px; }
+/* the line-up takes whatever height is left, so nothing ever overlaps */
+.ha-stage .ha-row { position: relative; z-index: 4; flex: 1 1 0; min-height: 0; container-type: size; margin: 3svh 0 0; padding: 0 0 22px; translate: 0 calc(var(--p) * -6svh); display: flex; flex-wrap: wrap; justify-content: center; align-content: center; align-items: flex-end; gap: clamp(8px, 1vw, 16px); list-style: none; }
+.ha-b { position: relative; height: calc(var(--h) * min(100cqh, var(--base))); aspect-ratio: var(--ar); --base: min(32svh, 300px); animation: up 1.2s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(.7s + var(--i) * .09s); }
+@keyframes up { from { opacity: 0; translate: 0 30px; } }
+.ha-b img { position: absolute; inset: 0; width: 100%; height: 100%; filter: drop-shadow(0 16px 20px rgb(20 20 40 / .22)); }
+.ha-b .ha-sh { position: absolute; left: -16%; right: -16%; bottom: -12px; height: 24px; border-radius: 50%; background: radial-gradient(closest-side, rgb(20 22 40 / .3), transparent); filter: blur(4px); }
+.ha-cta { position: relative; z-index: 5; margin-top: 3svh; display: flex; justify-content: center; gap: 10px; opacity: calc(1 - var(--p) * 2.4); }
+.ha-btn { display: inline-flex; align-items: center; gap: 12px; padding: 17px 30px; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.ha-btn--main { background: #8FC4A2; color: var(--c-ink); } .ha-btn--ghost { color: var(--c-ink); box-shadow: inset 0 0 0 1.5px rgb(28 30 48 / .6); }
+/* portrait tablets: fill the height */
+@media (min-width: 700px) and (max-aspect-ratio: 4/5) { .ha-title { font-size: 12.5vw; } .ha-stage { padding-top: calc(var(--header-h) + 36px + 6svh); padding-bottom: calc(var(--dock-h, 0px) + 5svh); } .ha-b { --base: 40vw; } }
+@media (max-width: 760px) {
+  .ha-title br.ha-d { display: none; }
+  .ha-stage { padding-top: calc(var(--header-h) + 36px + 1.5svh); padding-bottom: calc(var(--dock-h, 0px) + 2.6svh); }
+  .ha-arc { height: 100svh; } .ha-title { font-size: 17vw; max-width: 9ch; } .ha-copy .ha-mark { height: 26px; }
+  .ha-copy .ha-climate { margin-top: 16px; font-size: 9.5px; letter-spacing: .16em; gap: 4px 12px; } .ha-climate li + li::before { display: none; } .ha-b { --base: 50vw; }
+  .ha-cta { flex-direction: column; align-items: center; margin-top: 2svh; gap: 8px; } .ha-btn { padding: 15px 26px; }
+}
+/* small phones */
+@media (max-width: 760px) and (max-height: 720px) { .ha-copy .ha-climate { display: none; } .ha-title { font-size: 13.5vw; } .ha-btn--ghost { display: none; } }
+
+.ha-b a { position: absolute; inset: 0; z-index: 2; }
+.ha-b img { transition: translate .5s cubic-bezier(.2,.75,.2,1); }
+@media (hover: hover) { .ha-b:hover img, .ha-b:focus-within img { translate: 0 -8px; } }
+.ha-btn:focus-visible, .ha-b a:focus-visible { outline: 2px solid var(--c-ink); outline-offset: 3px; }
+[dir='rtl'] .ha-btn--main svg { transform: scaleX(-1); }
+:lang(ar) .ha-title { text-transform: none; line-height: 1.16; letter-spacing: 0; font-size: clamp(48px, min(6.6vw, 9svh), 130px); }
+/* Arabic keeps its two lines on phones: the second line is the longest word pair */
+@media (max-width: 760px) { :lang(ar) .ha-title { font-size: 12vw; max-width: none; } :lang(ar) .ha-title br.ha-d { display: inline; } }
+/* Arabic letters carry dots below the line: no clipping mask, a soft rise instead */
+:lang(ar) .ha-title .ha-w { overflow: visible; padding: 0; margin: 0; }
+:lang(ar) .ha-title .ha-w > span { animation-name: ha-fade; }
+@keyframes ha-fade { from { opacity: 0; translate: 0 .25em; } }
+:lang(ar) .ha-eyebrow, :lang(ar) .ha-climate, :lang(ar) .ha-btn { letter-spacing: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .ha-hero { height: auto; } .ha-stage { position: relative; height: calc(100svh - 36px); }
+  .ha-arc .ha-tex::before, .ha-title .ha-w > span, .ha-b { animation: none; }
+}
+</style>
+<section class="ha-hero" id="Ha-{{ section.id }}" aria-labelledby="HaTitle-{{ section.id }}" style="--tex-l: url('{{ 'texture-daily-reset-cleanser.webp' | asset_url }}'); --tex-r: url('{{ 'texture-clarity-serum.webp' | asset_url }}')">
+  <div class="ha-stage">
+    <div class="ha-arc ha-arc--l" aria-hidden="true"><div class="ha-tex"></div><div class="ha-rim"></div></div>
+    <div class="ha-arc ha-arc--r" aria-hidden="true"><div class="ha-tex"></div><div class="ha-rim"></div></div>
+    <div class="ha-copy">
+      <svg class="ha-mark" viewBox="0 0 501 547" aria-hidden="true" focusable="false"><path fill="currentColor" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/><path fill="currentColor" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>
+      <p class="ha-eyebrow">{{ 'sections.hero_panels.eyebrow' | t }}</p>
+      <h1 class="ha-title" id="HaTitle-{{ section.id }}">
+        {%- for w in w1 -%}<span class="ha-w"><span style="--i: {{ forloop.index0 }}">{{ w }}</span></span> {% endfor -%}
+        <br class="ha-d">
+        {%- for w in w2 -%}{% unless forloop.first %}{{ ' ' }}{% endunless %}<span class="ha-w"><span style="--i: {{ forloop.index0 | plus: w1.size }}">{{ w }}</span></span>{%- endfor -%}
+      </h1>
+      <ul class="ha-climate" role="list">
+        {%- for w in words -%}{%- assign wk = 'sections.hero_suns.w_' | append: w -%}<li>{{ wk | t }}</li>{%- endfor -%}
+      </ul>
+    </div>
+    <ul class="ha-row" role="list" aria-label="{{ 'sections.hero_routine.lineup' | t }}">
+      {%- for h in handles -%}
+        {%- assign p = all_products[h] -%}
+        {%- unless p.id -%}{%- continue -%}{%- endunless -%}
+        {%- assign img = 'cut-' | append: h | append: '.webp' | asset_url -%}
+        <li class="ha-b" style="--h: {{ hs[forloop.index0] }}; --ar: {{ ars[forloop.index0] }}; --i: {{ forloop.index0 }}">
+          <span class="ha-sh" aria-hidden="true"></span>
+          <img src="{{ img }}" alt="" width="350" height="1100" fetchpriority="high">
+          <a href="{{ p.url }}"><span class="visually-hidden">{{ p.title | escape }}</span></a>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <div class="ha-cta">
+      <a class="ha-btn ha-btn--main" href="{{ full.url | default: all_url }}">{{ 'sections.hero_suns.cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm' %}</a>
+      <a class="ha-btn ha-btn--ghost" href="{{ all_url }}">{{ 'sections.hero_routine.cta_all' | t }}</a>
+    </div>
+  </div>
+</section>
+<script>
+(() => {
+  const hero = document.getElementById('Ha-{{ section.id }}'); if (!hero) return;
+  const stage = hero.querySelector('.ha-stage'), L = hero.querySelector('.ha-arc--l'), R = hero.querySelector('.ha-arc--r');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let px = 0, cx = 0, P = 0, running = true; const T0 = performance.now();
+  function frame(now) {
+    const W = stage.clientWidth, H = stage.clientHeight, phone = W < 760;
+    const ah = phone ? H : H * 1.18, aw = ah * 250 / 547;
+    // the arcs' inner bulge reaches a fifth into the frame; they glide in on load and part on scroll
+    const p = reduce ? 0 : Math.max(0, Math.min(1, -hero.getBoundingClientRect().top / (hero.offsetHeight - H))); P += (p - P) * .12;
+    const I = reduce ? 1 : 1 - Math.pow(1 - Math.min(1, (now - T0) / 1500), 4);
+    cx += (px - cx) * .05;
+    const lx = W * .2 - aw * .888 - (1 - I) * aw * .9 - P * aw * .9;
+    hero.style.setProperty('--lx', lx + 'px'); hero.style.setProperty('--p', P.toFixed(4));
+    L.style.transform = R.style.transform = `translateX(${cx * 10}px)`;
+    if (running) requestAnimationFrame(frame);
+  }
+  if (!reduce) addEventListener('pointermove', (e) => { px = e.clientX / innerWidth * 2 - 1; }, { passive: true });
+  new IntersectionObserver((es) => { const on = es[0].isIntersecting; if (on && !running) { running = true; requestAnimationFrame(frame); } else if (!on) running = false; }).observe(hero);
+  requestAnimationFrame(frame);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero preview: between",
+  "tag": "div",
+  "class": "section-hero",
+  "settings": []
+}
+{% endschema %}
