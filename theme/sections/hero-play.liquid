@@ -1,0 +1,259 @@
+{%- comment -%}
+  Hero preview · "Between" (only on /?view=hero while it is reviewed; the live home hero is unchanged).
+  The two arcs of the mark stand at the screen edges and the four steps drop into the space between them.
+  Grab and fling them (they always right themselves, so the products end up standing), tap one for its name, price and
+  add-to-bag, tilt the phone to tip them. Scrolling away, the floor gives way and they fall into the next section.
+  Without JS or with reduced motion: the four bottles stand in a still row. Physics: Matter.js (MIT, assets/matter.min.js).
+{%- endcomment -%}
+{%- liquid
+  assign eyebrow = 'sections.hero_panels.eyebrow' | t | replace: '&amp;', '&'
+  assign line_1 = 'sections.hero_panels.line_1' | t | replace: '&amp;', '&'
+  assign line_2 = 'sections.hero_panels.line_2' | t | replace: '&amp;', '&'
+  assign subcopy = 'sections.hero_panels.subcopy' | t | replace: '&amp;', '&'
+  assign l2_first = line_2 | split: ' ' | first
+  assign l2_rest = line_2 | remove_first: l2_first | strip
+  assign set = all_products['the-full-ritual']
+  assign build_url = routes.root_url | append: '/pages/sets' | replace: '//', '/'
+  assign handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign tones = '125 185 147|137 195 200|215 166 218|255 163 123' | split: '|'
+  assign heights = '1,.8,.86,.86' | split: ','
+-%}
+<style>
+  .bp { --warm: 255 163 123; --cool: 137 195 200; position: relative; block-size: calc(100svh - var(--header-h, 76px) - 34px); min-block-size: 540px; overflow: hidden; --bulge: 10vw; container-type: size; isolation: isolate; touch-action: pan-y; color: var(--c-paper, #F5F0E8);
+    background: radial-gradient(60% 55% at 0% 52%, rgb(var(--warm) / .28), transparent 70%), radial-gradient(60% 55% at 100% 52%, rgb(var(--cool) / .26), transparent 70%), radial-gradient(90% 60% at 50% 110%, #2c3050, transparent 70%), #20233A; }
+  .bp::after { content: ''; position: absolute; inset: 0; z-index: 20; pointer-events: none; opacity: .09; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .bp__arc { position: absolute; inset-block: 0; block-size: 100%; inline-size: auto; z-index: 1; pointer-events: none; }
+  .bp__arc--l { left: calc(var(--bulge) - 40.6cqh); color: rgb(var(--warm)); filter: drop-shadow(0 0 22px rgb(var(--warm) / .7)) drop-shadow(0 0 80px rgb(var(--warm) / .4)); }
+  .bp__arc--r { right: calc(var(--bulge) - 40.6cqh); color: rgb(var(--cool)); filter: drop-shadow(0 0 22px rgb(var(--cool) / .7)) drop-shadow(0 0 80px rgb(var(--cool) / .4)); }
+  .bp__head { position: absolute; inset-inline: 0; inset-block-start: 4.5svh; z-index: 2; text-align: center; padding-inline: 6vw; pointer-events: none; }
+  .bp__eyebrow { justify-content: center; color: rgb(245 240 232 / .72); }
+  .bp__title { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .86; letter-spacing: -.004em; margin: 14px 0 0; font-size: clamp(56px, min(8.8vw, 12.5svh), 160px); color: inherit; }
+  .bp__title em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px #F5F0E8; }
+  .bp__lede { max-inline-size: 34ch; margin: 16px auto 0; color: rgb(245 240 232 / .74); }
+  .bp__lede { display: none; }
+  .bp__row { position: absolute; inset-inline: 0; inset-block-end: var(--bp-foot, 128px); z-index: 5; display: flex; justify-content: center; align-items: flex-end; gap: 2vw; margin: 0; padding: 0; list-style: none; }
+  .bp__item { block-size: calc(var(--h) * var(--base)); --base: min(40svh, 380px); }
+  .bp__item img { display: block; block-size: 100%; inline-size: auto; filter: drop-shadow(0 14px 18px rgb(0 0 0 / .35)); }
+  .bp.is-live .bp__row { inset: 0; display: block; }
+  .bp.is-live .bp__item { position: absolute; left: 0; top: 0; will-change: transform; touch-action: none; cursor: grab; user-select: none; -webkit-user-drag: none; }
+  .bp.is-live .bp__item:active { cursor: grabbing; }
+  .bp__item img { pointer-events: none; }
+  .bp__lit { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; -webkit-mask: var(--src) center / 100% 100% no-repeat; mask: var(--src) center / 100% 100% no-repeat;
+    background: linear-gradient(calc(90deg - var(--rot, 0rad)), rgb(var(--warm)) 0%, transparent 42%, transparent 58%, rgb(var(--cool)) 100%); }
+  .bp__sun { position: absolute; left: 0; top: 0; border-radius: 50%; z-index: 5; display: none; touch-action: none; cursor: grab; }
+  .bp.is-live .bp__sun { display: block; }
+  .bp__sun--w { background: radial-gradient(circle at 38% 34%, #fff1e6, rgb(var(--warm)) 62%); box-shadow: 0 0 40px 10px rgb(var(--warm) / .55); }
+  .bp__sun--c { background: radial-gradient(circle at 38% 34%, #f0fbfc, rgb(var(--cool)) 62%); box-shadow: 0 0 40px 10px rgb(var(--cool) / .55); }
+  .bp__pool { position: absolute; z-index: 4; left: 50%; translate: -50% 0; inset-block-end: calc(var(--bp-foot, 128px) - 26px); inline-size: min(70vw, 760px); block-size: 46px; border-radius: 50%; pointer-events: none; background: radial-gradient(closest-side, rgb(0 0 0 / .45), transparent); filter: blur(6px); }
+  .bp__pool::before, .bp__pool::after { content: ''; position: absolute; inset-block-start: -20px; inline-size: 60%; block-size: 90px; border-radius: 50%; filter: blur(24px); opacity: .35; }
+  .bp__pool::before { left: -6%; background: rgb(var(--warm)); } .bp__pool::after { right: -6%; background: rgb(var(--cool)); }
+  .bp__chip { position: absolute; z-index: 8; left: 0; top: 0; translate: -50% -100%; background: var(--c-paper, #F5F0E8); color: var(--c-ink, #20233A); border-radius: 18px; padding: 12px 14px; min-inline-size: 200px;
+    box-shadow: 0 20px 40px -12px rgb(0 0 0 / .5); opacity: 0; scale: .9; transition: opacity .2s, scale .25s cubic-bezier(.2,.9,.3,1.3); pointer-events: none; }
+  .bp__chip.is-on { opacity: 1; scale: 1; pointer-events: auto; }
+  .bp__chip strong { display: block; font-size: 15px; } .bp__chip small { display: block; font-size: 13px; opacity: .7; margin-block: 2px 8px; }
+  .bp__chip-row { display: flex; gap: 8px; align-items: center; }
+  .bp__chip .btn { min-block-size: 36px; padding: 8px 14px; font-size: 13px; background: rgb(var(--c)); color: var(--c-ink, #20233A); border: 0; }
+  .bp__chip a { font-size: 13px; font-weight: 600; color: inherit; }
+  .bp__foot { position: absolute; inset-inline: 0; inset-block-end: 0; z-index: 6; padding: 0 6vw calc(var(--dock-h, 0px) + max(18px, 2.4svh)); display: flex; flex-direction: column; align-items: center; gap: 12px; pointer-events: none; }
+  .bp__foot > * { pointer-events: auto; }
+  .bp__ctas { display: flex; gap: 18px; align-items: center; }
+  .bp__ctas .btn { background: var(--c-paper, #F5F0E8); color: var(--c-ink, #20233A); }
+  .bp__ctas .link-arrow { color: inherit; }
+  .bp__hint { margin: 0; font-size: 12px; letter-spacing: .04em; color: rgb(245 240 232 / .6); display: flex; gap: 8px; align-items: center; }
+  .bp:not(.is-live) .bp__hint { visibility: hidden; }
+  .bp__hint button { font: inherit; color: inherit; background: rgb(255 255 255 / .1); border: 1px solid rgb(255 255 255 / .2); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+  @media (max-width: 749px) {
+    .bp { --bp-foot: calc(176px + var(--dock-h, 0px)); --bulge: 7.5vw; block-size: calc(100svh - var(--header-h, 64px) - 30px); }
+    .bp__title { font-size: 17.5vw; margin-block-start: 10px; }
+    .bp__ctas { flex-direction: column; gap: 10px; }
+    .bp__item { --base: min(27cqh, 56vw); } .bp__row { gap: 6px; }
+  }
+  :lang(ar) .bp__title { text-transform: none; line-height: 1.1; font-size: clamp(44px, min(7.6vw, 11svh), 130px); }
+  @media (max-width: 749px) { :lang(ar) .bp__title { font-size: 13vw; } }
+</style>
+<section class="bp" id="Bp-{{ section.id }}" aria-labelledby="BpTitle-{{ section.id }}" data-matter="{{ 'matter.min.js' | asset_url }}">
+  <svg class="bp__arc bp__arc--l" viewBox="0 0 250 547" aria-hidden="true" focusable="false"><path fill="currentColor" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/></svg>
+  <svg class="bp__arc bp__arc--r" viewBox="250 0 251 547" aria-hidden="true" focusable="false"><path fill="currentColor" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>
+  <div class="bp__head">
+    <p class="t-eyebrow bp__eyebrow">{{ eyebrow | escape }}</p>
+    <h1 class="bp__title" id="BpTitle-{{ section.id }}">{{ line_1 | escape }} <em>{{ l2_first | escape }}</em> {{ l2_rest | escape }}</h1>
+    <p class="t-lead bp__lede">{{ subcopy | escape }}</p>
+  </div>
+  <div class="bp__pool" aria-hidden="true"></div>
+  <ul class="bp__row" role="list" aria-label="{{ 'sections.hero_play.lineup' | t }}">
+    {%- for h in handles -%}
+      {%- assign p = all_products[h] -%}
+      {%- unless p.id -%}{%- continue -%}{%- endunless -%}
+      {%- assign v = p.selected_or_first_available_variant -%}
+      {%- assign img = 'play-' | append: h | append: '.webp' | asset_url -%}
+      {%- capture price -%}{% render 'egp', cents: v.price %}{%- endcapture -%}
+      <li class="bp__item" style="--h: {{ heights[forloop.index0] }}; --src: url('{{ img }}')" data-name="{{ p.title | escape }}" data-line="{{ p.metafields.bts.step_label.value | default: '' | escape }} · {{ price | strip | escape }}" data-url="{{ p.url }}" data-variant="{{ v.id }}" data-tone="{{ tones[forloop.index0] }}" data-ar="{{ forloop.index0 }}">
+        <a href="{{ p.url }}" draggable="false" aria-label="{{ p.title | escape }}"><img src="{{ img }}" alt="" width="240" height="760" loading="eager" draggable="false"></a>
+        <span class="bp__lit" aria-hidden="true"></span>
+      </li>
+    {%- endfor -%}
+  </ul>
+  <span class="bp__sun bp__sun--w" aria-hidden="true"></span>
+  <span class="bp__sun bp__sun--c" aria-hidden="true"></span>
+  <div class="bp__chip">
+    <strong></strong><small></small>
+    <product-form class="bp__chip-row">
+      <form method="post" action="{{ routes.cart_add_url }}">
+        <input type="hidden" name="id" value="">
+        <input type="hidden" name="quantity" value="1">
+        <button class="btn" type="submit">{{ 'product.add_to_cart' | t }}</button>
+      </form>
+      <a href="#" data-view>{{ 'sections.hero_play.view' | t }}</a>
+    </product-form>
+  </div>
+  <div class="bp__foot">
+    <div class="bp__ctas">
+      {%- if set -%}<a class="btn" href="{{ set.url }}">{{ 'sections.hero_panels.cta_primary' | t }}</a>{%- endif -%}
+      <a class="link-arrow" href="{{ build_url }}">{{ 'sections.hero_panels.cta_secondary' | t }}</a>
+    </div>
+    <p class="bp__hint" data-hint>{{ 'sections.hero_play.hint' | t }}</p>
+  </div>
+</section>
+<script>
+(() => {
+  const root = document.getElementById('Bp-{{ section.id }}'); if (!root) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; // the still row is the reduced-motion version
+  const tiltLabel = {{ 'sections.hero_play.tilt' | t | json }};
+  const go = () => {
+    if (window.Matter) return start();
+    const s = document.createElement('script'); s.src = root.dataset.matter; s.onload = start; document.head.append(s);
+  };
+  // start when the hero is on screen
+  const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); go(); } }); io.observe(root);
+
+  function start() {
+    const { Engine, Bodies, Body, Composite, Constraint } = Matter;
+    const arcL = root.querySelector('.bp__arc--l'), arcR = root.querySelector('.bp__arc--r'), chip = root.querySelector('.bp__chip');
+    const hint = root.querySelector('[data-hint]'), rtl = document.documentElement.dir === 'rtl';
+    const engine = Engine.create({ gravity: { y: 1.1 } });
+    let W = root.clientWidth, H = root.clientHeight, drag = null, running = true, ceiling = null, open = false;
+    const rb = root.getBoundingClientRect(), foot = rb.bottom - root.querySelector('.bp__item').getBoundingClientRect().bottom;
+    // the arcs stand at the edges; only their inner bulge shows (each arc is close to a circle r 279 at (-57, 273) in its units)
+    const s = H / 547, L = arcL.getBoundingClientRect().left - rb.left; // the CSS already placed the arcs
+    const add = (b) => Composite.add(engine.world, b);
+    [1, -1].forEach((side) => {
+      const r = 279 * s, cx = side === 1 ? L - 57 * s : W - (L - 57 * s), cy = 273 * s;
+      for (let a = -75; a <= 75; a += 6) {
+        const t = a * Math.PI / 180;
+        add(Bodies.rectangle(cx + side * r * Math.cos(t) + side * 10, cy + r * Math.sin(t), 22, r * .12, { isStatic: true, angle: t * side }));
+      }
+    });
+    add(Bodies.rectangle(-30, H / 2, 60, H * 3, { isStatic: true }));
+    add(Bodies.rectangle(W + 30, H / 2, 60, H * 3, { isStatic: true }));
+    const floor = Bodies.rectangle(W / 2, H - foot + 30, W * 2, 60, { isStatic: true, friction: .6 }); add(floor);
+    // bodies from the still row, each dropping straight into its own slot
+    const els = [...root.querySelectorAll('.bp__item')];
+    const slots = els.map((el) => { const r = el.getBoundingClientRect(), b = root.getBoundingClientRect(); return { x: r.left - b.left + r.width / 2, w: r.width, h: r.height }; });
+    root.classList.add('is-live');
+    const items = els.map((el, i) => {
+      const { x, w, h } = slots[i];
+      el.style.width = w + 'px'; el.style.height = h + 'px';
+      const body = Bodies.rectangle(x, -h - i * 40, w * .92, h * .97, { chamfer: { radius: w * .2 }, restitution: .25, friction: .5, frictionAir: .012, density: .0018 });
+      if (W >= 750) Body.setAngle(body, (Math.random() - .5) * .16);
+      setTimeout(() => add(body), 250 + i * 200);
+      return { el, body, w, h, slot: x, kind: 'bottle' };
+    });
+    root.querySelectorAll('.bp__sun').forEach((el, j) => {
+      const d = W < 750 ? 52 : 74; el.style.width = el.style.height = d + 'px';
+      const body = Bodies.circle(W * (j ? .72 : .28), -d - j * 80, d / 2, { restitution: .75, friction: .05, frictionAir: .008, density: .001 });
+      setTimeout(() => add(body), 1800 + j * 260);
+      items.push({ el, body, w: d, h: d, slot: W * (j ? .72 : .28), kind: 'sun' });
+    });
+    const setCeiling = (on) => {
+      if (on && !ceiling) { ceiling = Bodies.rectangle(W / 2, -30, W * 2, 60, { isStatic: true }); add(ceiling); }
+      if (!on && ceiling) { Composite.remove(engine.world, ceiling); ceiling = null; }
+    };
+    setTimeout(() => setCeiling(true), 2400);
+
+    const place = (it) => {
+      const { x, y } = it.body.position;
+      it.el.style.transform = `translate(${x - it.w / 2}px, ${y - it.h / 2}px) rotate(${it.body.angle}rad)`;
+      it.el.style.setProperty('--rot', it.body.angle.toFixed(3) + 'rad');
+    };
+    function chipTo(it) {
+      chip.style.left = Math.max(110, Math.min(W - 110, it.body.position.x)) + 'px';
+      chip.style.top = Math.max(110, it.body.position.y - it.h / 2 - 12) + 'px';
+    }
+    let chipFor = null;
+    function showChip(it) {
+      const d = it.el.dataset;
+      chip.querySelector('strong').textContent = d.name; chip.querySelector('small').textContent = d.line;
+      chip.querySelector('[name="id"]').value = d.variant; chip.querySelector('[data-view]').href = d.url;
+      chip.style.setProperty('--c', d.tone); chipFor = it; chipTo(it); chip.classList.add('is-on');
+      Body.setVelocity(it.body, { x: 0, y: -6 }); Body.setAngularVelocity(it.body, (Math.random() - .5) * .2);
+    }
+    const hideChip = () => { chip.classList.remove('is-on'); chipFor = null; };
+    items.forEach((it) => it.el.addEventListener('pointerdown', (ev) => {
+      ev.preventDefault(); it.el.setPointerCapture(ev.pointerId); navigator.vibrate?.(6);
+      const b = root.getBoundingClientRect(), pt = { x: ev.clientX - b.left, y: ev.clientY - b.top };
+      const c = Constraint.create({ pointA: pt, bodyB: it.body, pointB: Matter.Vector.rotate({ x: pt.x - it.body.position.x, y: pt.y - it.body.position.y }, -it.body.angle), stiffness: .18, damping: .08, length: 0 });
+      add(c); drag = { it, c, x0: ev.clientX, y0: ev.clientY, t0: performance.now() }; hideChip();
+      const move = (e) => { c.pointA = { x: e.clientX - b.left, y: e.clientY - b.top }; };
+      const up = (e) => {
+        it.el.removeEventListener('pointermove', move); it.el.removeEventListener('pointerup', up); it.el.removeEventListener('pointercancel', up);
+        Composite.remove(engine.world, c);
+        const tap = Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 8 && performance.now() - drag.t0 < 300;
+        if (tap && it.kind === 'bottle') showChip(it);
+        if (tap && it.kind === 'sun') Body.setVelocity(it.body, { x: (Math.random() - .5) * 14, y: -18 });
+        drag = null; hint.style.opacity = 0;
+      };
+      it.el.addEventListener('pointermove', move); it.el.addEventListener('pointerup', up); it.el.addEventListener('pointercancel', up);
+    }));
+    // a tap on a bottle shows its card instead of following the link; the card's View link goes to the product
+    // (a keyboard Enter has detail 0 and still follows the link)
+    items.forEach((it) => it.el.querySelector('a')?.addEventListener('click', (e) => { if (e.detail > 0) e.preventDefault(); }));
+    root.addEventListener('pointerdown', (e) => { if (!e.target.closest('.bp__item, .bp__sun, .bp__chip')) hideChip(); });
+    function tick() {
+      if (!running) return;
+      for (const it of items) {
+        if (it.kind !== 'bottle' || (drag && drag.it === it)) continue;
+        const b = it.body, a = Math.atan2(Math.sin(b.angle), Math.cos(b.angle));
+        if (Math.hypot(b.velocity.x, b.velocity.y) < 6) Body.setAngularVelocity(b, b.angularVelocity * .9 - a * .012); // weebles: they always stand back up
+      }
+      Engine.update(engine, 1000 / 60);
+      items.forEach(place);
+      if (chipFor) chipTo(chipFor);
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    // pause off screen; scrolling away the floor gives way, and back at the top they all drop in again
+    new IntersectionObserver((es) => { const on = es[0].isIntersecting; if (on && !running) { running = true; requestAnimationFrame(tick); } else if (!on) running = false; }).observe(root);
+    addEventListener('scroll', () => {
+      const y = -root.getBoundingClientRect().top;
+      if (y > 30) hideChip();
+      if (!open && y > H * .22) { open = true; Composite.remove(engine.world, floor); }
+      if (open && y < 4) {
+        open = false; add(floor); setCeiling(false); setTimeout(() => setCeiling(true), 2200);
+        items.forEach((it, i) => { Body.setPosition(it.body, { x: it.slot, y: -it.h - i * 90 }); Body.setVelocity(it.body, { x: 0, y: 0 }); Body.setAngle(it.body, 0); Body.setAngularVelocity(it.body, 0); });
+      }
+    }, { passive: true });
+    // phones: tilt to tip them (iOS asks permission on the tap)
+    if (matchMedia('(pointer: coarse)').matches && 'DeviceOrientationEvent' in window) {
+      const btn = document.createElement('button'); btn.type = 'button'; btn.textContent = tiltLabel; hint.append(btn);
+      btn.addEventListener('click', async () => {
+        try { if (DeviceOrientationEvent.requestPermission && (await DeviceOrientationEvent.requestPermission()) !== 'granted') return; } catch (e) { return; }
+        addEventListener('deviceorientation', (e) => {
+          engine.gravity.x = Math.max(-1, Math.min(1, (e.gamma || 0) / 35));
+          engine.gravity.y = Math.max(.2, Math.min(1.2, (e.beta || 45) / 45));
+        });
+        btn.remove();
+      });
+    }
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero preview: between",
+  "tag": "div",
+  "class": "section-hero",
+  "settings": []
+}
+{% endschema %}

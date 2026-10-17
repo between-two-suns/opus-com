@@ -342,6 +342,12 @@
       "heading": "From the first sun to the second.",
       "text": "Heat, office AC, city dust, humid evenings. See how each step handles a real Egyptian day.",
       "cta": "See the climate"
+    },
+    "hero_play": {
+      "hint": "Grab one. Fling it.",
+      "tilt": "Tilt to play",
+      "view": "View",
+      "lineup": "The four steps"
     }
   },
   "product": {

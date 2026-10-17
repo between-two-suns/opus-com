@@ -1,6 +1,6 @@
 {
   "sections": {
-    "hero": { "type": "hero-sculpt", "settings": {} },
+    "hero": { "type": "hero-play", "settings": {} },
     "routine": { "type": "day-line", "settings": { "show_bundle": false } }
   },
   "order": ["hero", "routine"]
