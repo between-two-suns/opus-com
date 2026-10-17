@@ -156,4 +156,11 @@ Each entry: decision · why · reversibility. Newest last.
     - **Progress:** the chapter names sit in a row; two small arcs bracket the one you are in, and each name jumps to its chapter.
     - **Content:** four chapters from the existing climate story (the first sun, the commute, eight hours of office air, humid evenings), with the existing climate lines and two "What answers it" product chips each. Same condition-to-step mapping as the climate switch; the real `bts-climate-*` photos from Files; all copy already in EN and AR.
     - **Fallback:** reduced motion or no JS shows the chapters as a calm list of framed photos.
+135. **Hero preview option "Two suns" at `/?view=light`** (`sections/hero-light.liquid`; the hand-off at `/?view=hero` and the )( system at `/?view=system` stay as their own options). The hand-off, lit by the brand's name:
+    - **Light:** warm light comes in from the left, cool light from the right, and the wall between them stays clear.
+    - **Shadows:** every pack casts two hard shadows up the wall, each tinted by the other sun (the warm sun's shadow is blue, the cool sun's peach), the way two coloured lights really behave. Together they form a fan behind the line-up and across the headline. The shadows live in their own row behind the packs, mirrored exactly to the line-up's layout, so a shadow never falls on a pack, and they leave with their packs during the hand-off.
+    - **Sunrise entrance:** the first sun rises from the left (long shadows that shorten), then the second from the right.
+    - **Interaction:** after the entrance the suns follow the pointer on desktop, and every shadow swings. On touch screens they drift slowly on their own.
+    - **Hand-off:** unchanged from 133. The flying cleanser takes over only once its picture has loaded, without replaying the entrance.
+    - **Removed:** the blurred )( light patches were tried and dropped; they read as blobs.
 
