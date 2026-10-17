@@ -1,0 +1,225 @@
+{%- comment -%}
+  "A day between two suns" · the )( as the site's grammar (preview at /?view=hero while it is reviewed).
+  Frame: every photograph is seen through the space between the mark's two arcs (warm sun left, cool sun right).
+  Transition: scrolling in, the mark opens from a slit into the full picture; between chapters it closes back into
+  the mark and reopens on the next part of the day. Progress: two small arcs bracket the chapter you are in.
+  The arcs are the mark's own two paths, only moved and scaled, never redrawn or stretched; the mark is never mirrored.
+  Photos are Shopify Files by name (bts-climate-<condition>-wide.jpg / -tall.jpg), the same as the climate switch.
+  Reduced motion or no JS: the four chapters as a plain sequence of framed photos, nothing pinned.
+{%- endcomment -%}
+{%- liquid
+  assign chapters = 'sun,city,ac,humidity' | split: ','
+  assign keys = '4-2,1-3,3-2,1-2' | split: ','
+  assign step_handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign n = chapters.size
+-%}
+<style>
+.db { --bg: var(--c-daylight); position: relative; background: var(--bg); color: var(--c-ink); }
+.db-chapter { position: relative; }
+.db-photo picture { display: block; width: 100%; height: 100%; }
+.db-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.db-cap { color: #fff; }
+.db-cap__n { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: .08em; opacity: .85; }
+.db-cap__t { margin-top: 8px; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .86; font-size: clamp(44px, min(6.4vw, 10vh), 112px); letter-spacing: -.005em; }
+.db-cap__l { margin-top: 12px; font-size: clamp(15px, 1.25vw, 18px); line-height: 1.45; max-width: 34ch; opacity: .94; }
+.db-cap__k { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.db-cap__h { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; opacity: .85; margin-inline-end: 4px; }
+.db-chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px 9px 10px; border-radius: 999px; background: rgb(255 255 255 / .92); color: var(--c-ink); text-decoration: none; font-size: 13px; font-weight: 700; transition: transform .3s cubic-bezier(.2,.75,.2,1), background-color .3s; }
+.db-chip:hover { transform: translateY(-2px); background: #fff; }
+.db-chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--sku); }
+.db-chip b { font-family: var(--font-display); letter-spacing: .04em; }
+.db-chip:focus-visible, .db-prog button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.db-intro { text-align: center; }
+.db-intro__e { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
+.db-intro__e svg { height: 14px; width: auto; }
+.db-intro__t { margin-top: 12px; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .86; font-size: clamp(44px, min(6.6vw, 10vh), 120px); }
+:lang(ar) .db-cap__t, :lang(ar) .db-intro__t { text-transform: none; line-height: 1.2; letter-spacing: 0; font-size: clamp(34px, min(4.8vw, 7.4vh), 84px); }
+:lang(ar) .db-cap__h, :lang(ar) .db-intro__e, :lang(ar) .db-prog button { letter-spacing: 0; }
+
+/* still version (no JS / reduced motion): the chapters in sequence, each photo inside a calm frame */
+.db-still .db-chapter { padding: 0 var(--gutter) 28px; }
+.db-still .db-photo { aspect-ratio: 4 / 5; border-radius: var(--radius-l); overflow: hidden; }
+.db-still .db-cap { color: var(--c-ink); margin-top: 16px; }
+.db-still .db-chip { background: #fff; box-shadow: inset 0 0 0 1px var(--c-line); }
+.db-still .db-intro { padding: var(--section-y) var(--gutter) 28px; }
+.db-still .db-svg, .db-still .db-prog, .db-still .db-scrim { display: none; }
+@media (min-width: 750px) { .db-still .db-chapters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: var(--container); margin-inline: auto; } }
+
+/* live version: one pinned stage; the mark opens, closes and reopens as you scroll */
+.db-live { height: calc(var(--units) * 100vh + 100vh); height: calc(var(--units) * 100svh + 100svh); }
+.db-live .db-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; isolation: isolate; }
+.db-live .db-chapters { position: absolute; inset: 0; }
+.db-live .db-chapter { position: absolute; inset: 0; }
+/* the next picture fades in on top while the previous one stays solid beneath it, so the window is never empty */
+.db-live .db-photo { position: absolute; inset: 0; opacity: 0; will-change: transform; transition: opacity 0s linear .4s; }
+.db-live .db-chapter.is-on .db-photo { z-index: 1; opacity: 1; transition: opacity .35s ease; }
+.db-live .db-scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(to top, rgb(18 20 32 / .62), rgb(18 20 32 / .18) 42%, transparent 62%); opacity: var(--cap, 0); }
+.db-live .db-cap { position: absolute; z-index: 3; inset-inline-start: 4.5vw; bottom: calc(var(--dock-h, 0px) + clamp(84px, 13vh, 130px)); max-width: min(560px, 86vw); opacity: 0; transform: translateY(18px); visibility: hidden; transition: opacity .5s ease, transform .7s cubic-bezier(.2,.75,.2,1), visibility 0s linear .5s; pointer-events: none; }
+.db-live .db-chapter.is-cap .db-cap { opacity: 1; transform: none; visibility: visible; transition-delay: 0s; pointer-events: auto; }
+.db-live .db-svg { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; }
+.db-svg .db-cover { fill: var(--bg); }
+.db-svg .db-al { fill: var(--sun-warm); } .db-svg .db-ar { fill: var(--sun-cool); }
+.db-live .db-intro { position: absolute; z-index: 4; inset-inline: 0; top: calc(var(--header-h) + clamp(14px, 3.4vh, 40px)); padding-inline: 5vw; will-change: transform, opacity; }
+/* progress: the chapters in a row; two small arcs bracket the one you are in */
+.db-prog { position: absolute; z-index: 4; left: 50%; translate: -50% 0; bottom: calc(var(--dock-h, 0px) + clamp(22px, 4.4vh, 44px)); display: flex; align-items: center; gap: clamp(26px, 3vw, 44px); padding: 0 22px; opacity: var(--cap, 0); transition: opacity .3s; }
+.db-prog ol { display: contents; list-style: none; }
+.db-prog button { position: relative; border: 0; background: none; padding: 8px 2px; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; opacity: .62; transition: opacity .3s; cursor: pointer; }
+.db-prog button[aria-current='step'] { opacity: 1; }
+.db-prog .db-pa { position: absolute; top: 50%; left: 0; height: 22px; width: auto; translate: 0 -50%; transition: transform .6s cubic-bezier(.2,.75,.2,1); pointer-events: none; }
+.db-pa--l { fill: var(--sun-warm); } .db-pa--r { fill: var(--sun-cool); }
+@media (max-width: 749px) {
+  .db-prog { gap: 20px; padding: 0 16px; } .db-prog button { font-size: 10px; letter-spacing: .08em; } .db-prog .db-pa { height: 18px; }
+  .db-live .db-cap { inset-inline: var(--gutter); bottom: calc(var(--dock-h, 0px) + 74px); }
+  .db-cap__l { font-size: 14px; } .db-chip { font-size: 12px; padding: 8px 12px 8px 9px; }
+}
+</style>
+<section class="db db-still" id="Db-{{ section.id }}" aria-labelledby="DbTitle-{{ section.id }}" style="--units: 3.65">
+  <div class="db-stage">
+    <header class="db-intro">
+      <p class="db-intro__e"><svg viewBox="0 0 501 547" aria-hidden="true" focusable="false"><path fill="currentColor" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/><path fill="currentColor" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>{{ 'climate_story.eyebrow' | t }}</p>
+      <h2 class="db-intro__t" id="DbTitle-{{ section.id }}">{{ 'climate_story.title' | t }}</h2>
+    </header>
+    <ol class="db-chapters" role="list">
+      {%- for c in chapters -%}
+        {%- liquid
+          assign wk = 'bts-climate-' | append: c | append: '-wide.jpg'
+          assign tk = 'bts-climate-' | append: c | append: '-tall.jpg'
+          assign wide = images[wk]
+          if wide == blank
+            assign wide = false
+          endif
+          assign tall = images[tk]
+          if tall == blank
+            assign tall = false
+          endif
+          assign line_key = 'climate.' | append: c | append: '.line'
+          if c == 'city'
+            assign line_key = 'climate.dust.line'
+          endif
+          assign title_key = 'climate_story.chapters.' | append: c
+          assign ks = keys[forloop.index0] | split: '-'
+        -%}
+        <li class="db-chapter{% if forloop.first %} is-on{% endif %}" data-i="{{ forloop.index0 }}">
+          <div class="db-photo">
+            {%- if wide or tall -%}
+              <picture>
+                {%- if tall and wide -%}<source media="(max-aspect-ratio: 1/1)" srcset="{{ tall | image_url: width: 750 }} 750w, {{ tall | image_url: width: 1100 }} 1100w, {{ tall | image_url: width: 1400 }} 1400w" sizes="100vw">{%- endif -%}
+                {%- liquid
+                  assign base = wide
+                  unless wide
+                    assign base = tall
+                  endunless
+                -%}
+                {{ base | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '720,1100,1400,1800', sizes: '100vw', alt: '' }}
+              </picture>
+            {%- endif -%}
+          </div>
+          <div class="db-cap">
+            <p class="db-cap__n">0{{ forloop.index }} / 0{{ n }}</p>
+            <h3 class="db-cap__t">{{ title_key | t }}</h3>
+            <p class="db-cap__l">{{ line_key | t }}</p>
+            <p class="db-cap__k"><span class="db-cap__h">{{ 'climate_story.helps' | t }}</span>
+              {%- for k in ks -%}
+                {%- assign si = k | plus: 0 | minus: 1 -%}
+                {%- assign p = all_products[step_handles[si]] -%}
+                {%- if p.id -%}<a class="db-chip" data-step="{{ k }}" href="{{ p.url }}"><i aria-hidden="true"></i><b>0{{ k }}</b> {{ p.metafields.bts.step_label.value | default: p.title | escape }}</a>{%- endif -%}
+              {%- endfor -%}
+            </p>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+    <span class="db-scrim" aria-hidden="true"></span>
+    <svg class="db-svg" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+      <path class="db-cover" fill-rule="evenodd" d=""/>
+      <path class="db-al" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/>
+      <path class="db-ar" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/>
+    </svg>
+    <nav class="db-prog" aria-label="{{ 'climate_story.title' | t | escape }}">
+      <svg class="db-pa db-pa--l" viewBox="0 0 225 547" aria-hidden="true" focusable="false"><path d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/></svg>
+      <svg class="db-pa db-pa--r" viewBox="275 0 226 547" aria-hidden="true" focusable="false"><path d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>
+      <ol role="list">
+        {%- for c in chapters -%}{%- assign ck = 'sections.forecast.conditions.' | append: c -%}<li><button type="button" data-go="{{ forloop.index0 }}"{% if forloop.first %} aria-current="step"{% endif %}>{{ ck | t }}</button></li>{%- endfor -%}
+      </ol>
+    </nav>
+  </div>
+</section>
+<script>
+(() => {
+  const sec = document.getElementById('Db-{{ section.id }}'); if (!sec) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  sec.classList.replace('db-still', 'db-live');
+  const stage = sec.querySelector('.db-stage'), svg = sec.querySelector('.db-svg'), cover = svg.querySelector('.db-cover');
+  const AL = svg.querySelector('.db-al'), AR = svg.querySelector('.db-ar'), intro = sec.querySelector('.db-intro');
+  const chs = [...sec.querySelectorAll('.db-chapter')], photos = chs.map((c) => c.querySelector('.db-photo'));
+  const prog = sec.querySelector('.db-prog'), btns = [...prog.querySelectorAll('button')], pl = prog.querySelector('.db-pa--l'), pr = prog.querySelector('.db-pa--r');
+  // the outer edge of each arc (the side that faces the space between), straight from the mark's paths
+  const LO = [[2.66924, .000534727], [13.8978, -.0776124, 39.3353, 8.4295, 50.0693, 12.562], [114.374, 37.317, 161.913, 86.5377, 189.447, 149.42], [222.326, 223.262, 224.551, 307.181, 195.63, 382.669], [169.731, 448.998, 122.891, 498.719, 57.8246, 527.266], [50.9638, 530.162, 10.5353, 546.188, 6.16675, 540.003]];
+  const RO = [[485.418, 540.727], [480.323, 539.813, 474.472, 538.204, 469.48, 536.683], [404.162, 517.048, 349.518, 471.926, 317.896, 411.514], [280.569, 341.252, 275.216, 259.053, 298.519, 183.413], [318.991, 116.957, 361.294, 57.7036, 423.579, 24.8168], [443.344, 14.348, 464.402, 6.52641, 486.21, 1.5537], [488.907, .960578, 499.257, -1.65223, 500.343, 1.60242]];
+  const N = chs.length, A = .7, HOLD = .4, TR = .35, TAIL = .3, U = A + N * HOLD + (N - 1) * TR + TAIL;
+  sec.style.setProperty('--units', U);
+  const clamp = (v) => Math.max(0, Math.min(1, v)), io = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const lerp = (a, b, t) => a + (b - a) * t;
+  let W = 0, H = 0, queued = false, cur = -1, capOn = -1;
+  const edge = (pts, f) => pts.map((p, k) => (k === 0 ? 'M' : 'C') + p.map((v, j) => (j % 2 ? f[1](v) : f[0](v)).toFixed(1)).join(' ')).join('');
+  // where each chapter's hold sits on the timeline, in screens
+  const holdMid = (i) => A + i * (HOLD + TR) + HOLD / 2;
+  function state(u) {
+    if (u < A) return { i: 0, k: io(clamp(u / A)), intro: true };
+    let t = u - A;
+    for (let i = 0; i < N; i++) {
+      if (t < HOLD || i === N - 1) return { i, k: 1, intro: false };
+      t -= HOLD;
+      if (t < TR) { const h = t / TR; return h < .5 ? { i, k: io(1 - h * 2), intro: false } : { i: i + 1, k: io(h * 2 - 1), intro: false }; }
+      t -= TR;
+    }
+    return { i: N - 1, k: 1, intro: false };
+  }
+  function frame() {
+    queued = false;
+    const r = sec.getBoundingClientRect(), span = sec.offsetHeight - stage.offsetHeight;
+    const u = clamp(-r.top / span) * U, st = state(u);
+    if (stage.clientWidth !== W || stage.clientHeight !== H) { W = stage.clientWidth; H = stage.clientHeight; svg.setAttribute('viewBox', `0 0 ${W} ${H}`); }
+    // closed: the whole mark on screen; intro: smaller, under the title; open: the arcs grown past the edges
+    const sc = Math.min(H * .9 / 547, W * .86 / 501), si = st.intro ? sc * (W < 750 ? .78 : .6) : sc, so = Math.max(H * 1.3 / 547, W * 1.1 / 501);
+    const s = lerp(si, so, st.k), cx = W / 2, cy = st.intro ? lerp(H * (W < 750 ? .6 : .62), H / 2, st.k) : H / 2;
+    const d = lerp(0, cx + 40, Math.pow(st.k, 1.15));
+    const x0 = cx - 250.5 * s, y0 = cy - 273.5 * s, Y = (v) => y0 + v * s;
+    const win = edge(LO, [(v) => x0 + v * s - d, Y]) + 'L' + edge(RO, [(v) => x0 + v * s + d, Y]).slice(1) + 'Z';
+    cover.setAttribute('d', `M0 0H${W}V${H}H0Z` + win);
+    AL.setAttribute('transform', `matrix(${s} 0 0 ${s} ${x0 - d} ${y0})`); AR.setAttribute('transform', `matrix(${s} 0 0 ${s} ${x0 + d} ${y0})`);
+    if (st.i !== cur) { chs.forEach((c, j) => c.classList.toggle('is-on', j === st.i)); btns.forEach((b, j) => b.toggleAttribute('aria-current', j === st.i) || (j === st.i && b.setAttribute('aria-current', 'step'))); cur = st.i; place(); }
+    photos[st.i].style.transform = `scale(${(1 + .1 * (1 - st.k)).toFixed(4)})`;
+    const cap = st.k > .96 && !(st.intro && st.k < 1) ? st.i : -1;
+    if (cap !== capOn) { chs.forEach((c, j) => c.classList.toggle('is-cap', j === cap)); capOn = cap; }
+    sec.style.setProperty('--cap', clamp((st.k - .85) / .15).toFixed(3));
+    const ti = st.intro ? st.k : 1;
+    intro.style.opacity = clamp(1 - ti * 2.2); intro.style.transform = `translate3d(0, ${-ti * 60}px, 0)`;
+    intro.style.visibility = ti > .6 ? 'hidden' : '';
+  }
+  // the two small arcs move to bracket the chapter you are in
+  function place() {
+    const b = btns[Math.max(0, cur)], pr0 = prog.getBoundingClientRect(), br = b.getBoundingClientRect();
+    const lw = pl.getBoundingClientRect().width, rw = pr.getBoundingClientRect().width;
+    pl.style.transform = `translateX(${br.left - pr0.left - lw - 6}px)`; pr.style.transform = `translateX(${br.right - pr0.left + 6}px)`;
+  }
+  btns.forEach((b, i) => b.addEventListener('click', () => {
+    const top = sec.getBoundingClientRect().top + scrollY, span = sec.offsetHeight - stage.offsetHeight;
+    scrollTo({ top: top + span * holdMid(i) / U, behavior: 'smooth' });
+  }));
+  const ask = () => { if (!queued) { queued = true; requestAnimationFrame(frame); } };
+  addEventListener('scroll', ask, { passive: true }); addEventListener('resize', () => { W = 0; ask(); place(); });
+  if (document.fonts) document.fonts.ready.then(place);
+  // pictures load as the section comes near
+  new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { sec.querySelectorAll('.db-photo img').forEach((im) => { im.loading = 'eager'; }); o.disconnect(); } }, { rootMargin: '100% 0px' }).observe(sec);
+  ask(); place();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Day between two suns",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}

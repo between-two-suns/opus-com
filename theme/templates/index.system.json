@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "hero": { "type": "hero-handoff", "settings": {} },
+    "routine": { "type": "day-line", "settings": { "show_bundle": false } },
+    "day": { "type": "day-between", "settings": {} },
+    "bundles": { "type": "bundles", "settings": {} }
+  },
+  "order": ["hero", "routine", "day", "bundles"]
+}
