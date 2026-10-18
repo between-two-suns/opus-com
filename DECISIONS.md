@@ -183,4 +183,13 @@ Each entry: decision · why · reversibility. Newest last.
     - **Entrance:** spheres, then the headline, then the packs landing 01 to 04 with a soft settle.
     - **Desktop:** the line-up starts just under the headline, so the cleanser pump no longer covers the "A" of SPACE.
 140. **Four steps, short phone screens only** (`assets/home.css`): the pack is capped to the room under the heading, so it can no longer cover "Four steps. Every climate." in short in-app browsers. Verified: 390×664 / 375×667 / 390×740 now have a 15px gap. 390×844, 430×932, tablet and desktop measure exactly as before. No other change to the section.
+141. **Orbs smoothness pass (owner, from Safari and iPhone recordings: glitch on first mouse move, jank while scrolling, a blink at the hand-off).** Frame-by-frame analysis found single-frame blinks of the cleanser, a ~30px jump near the start and a two-frame gap at the hand-over. Fixes in `sections/hero-orbs.liquid`:
+    - **Hand-off engine rebuilt:** geometry (where the cleanser rests, where Four steps draws it, the scroll distance) is measured only when the layout changes (load, fonts, resize, size changes), never while scrolling. A scroll frame only writes transforms, and only when a value changed. Before, every frame rewrote the flying bottle's position and size, which made Safari rebuild its layer: the blinks.
+    - **Rest position measured from layout boxes** (the list item plus the picture's own box), so it is exact in Safari: 0px difference measured at desktop, phone and Arabic.
+    - **Hand-over overlaps:** Four steps' own cleanser appears the moment the section pins, and the identical flying one stays until 80px later, so there is never a frame with neither.
+    - **Tilt moved onto the flying layer's own transform,** so the picture and its shadow are never redrawn mid-flight.
+    - **Less movement:** no idle float on the spheres, no recurring sheen on the packs, no line-up drift with the pointer. Only the spheres drift slightly with the pointer, by up to 10–14px.
+    - **Cheaper drawing:** the spheres' light and the packs' bounce light use plain transparency instead of blend modes. The sphere no longer clips its turning surface. The dew glint layer is removed after it plays once.
+    - **Kept:** roll in, roll off, the hand-off itself and the 01–04 landing.
+    - **Verified on the real store:** frame analysis of desktop, phone and Arabic phone recordings finds no cleanser dropouts. An Arabic dropout seen once was traced to the recording tool's own screenshot (it disappears without it), and a real resize mid-entrance does not restart anything.
 

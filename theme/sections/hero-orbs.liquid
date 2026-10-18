@@ -32,17 +32,16 @@
   --fs: clamp(64px, min(10.6vw, 15.5vh), 196px); }
 /* the two suns peek in from the edges, a little offset so the frame feels alive */
 .ho-orbs { position: absolute; inset: 0; z-index: 0; pointer-events: none; --d: min(94vh, 62vw); --peek: min(21vw, 320px); }
-.ho-o { position: absolute; width: var(--d); aspect-ratio: 1; will-change: transform; animation: ho-float 9s ease-in-out 1.6s infinite alternate; }
+.ho-o { position: absolute; width: var(--d); aspect-ratio: 1; will-change: transform; }
 .ho-o--l { left: calc(var(--peek) - var(--d)); top: calc(44% - var(--d) / 2); --c: 171 208 182; --hx: 68%; }
-.ho-o--r { right: calc(var(--peek) - var(--d)); top: calc(60% - var(--d) / 2); --c: 171 193 233; --hx: 32%; animation-duration: 11s; animation-delay: 1.8s; }
-@keyframes ho-float { to { translate: 0 -12px; } }
+.ho-o--r { right: calc(var(--peek) - var(--d)); top: calc(60% - var(--d) / 2); --c: 171 193 233; --hx: 32%; }
 /* .ho-p: the sphere (pointer drift, roll-in); flat colour first, so the light already shapes it before the surface arrives */
-.ho-p { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; background: rgb(var(--c)); will-change: transform, translate; animation: ho-in-l 1.4s cubic-bezier(.2,.75,.2,1) .05s both; }
+.ho-p { position: absolute; inset: 0; background: radial-gradient(circle closest-side, rgb(var(--c)) 99.4%, rgb(var(--c) / 0) 100%); will-change: transform; animation: ho-in-l 1.4s cubic-bezier(.2,.75,.2,1) .05s both; }
 .ho-o--r .ho-p { animation-name: ho-in-r; animation-delay: .15s; }
 @keyframes ho-in-l { from { transform: translateX(-35%); opacity: 0; } 30% { opacity: 1; } }
 @keyframes ho-in-r { from { transform: translateX(35%); opacity: 0; } 30% { opacity: 1; } }
 /* .ho-spin: the surface turns (rolling in, rolling out); the light below never does */
-.ho-spin { position: absolute; inset: 0; animation: ho-roll-l 1.4s cubic-bezier(.2,.75,.2,1) .05s both; }
+.ho-spin { position: absolute; inset: 0; will-change: transform; animation: ho-roll-l 1.4s cubic-bezier(.2,.75,.2,1) .05s both; }
 .ho-o--r .ho-spin { animation-name: ho-roll-r; animation-delay: .15s; }
 @keyframes ho-roll-l { from { transform: rotate(-40deg); } }
 @keyframes ho-roll-r { from { transform: rotate(40deg); } }
@@ -50,8 +49,8 @@
 .js .ho-s:not(.is-in) { opacity: 0; }
 /* the light: brightest toward the space between, shading away from it */
 .ho-l { position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(circle at var(--hx) 34%, #fff 0%, #fff 16%, #eceef0 40%, #c7ccd2 74%, #aeb3ba 100%); mix-blend-mode: multiply; }
-.ho-l::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at var(--hx) 32%, rgb(255 255 255 / .34), rgb(255 255 255 / .1) 20%, transparent 42%); mix-blend-mode: screen; }
+  background: radial-gradient(circle at var(--hx) 34%, rgb(30 40 55 / 0) 0%, rgb(30 40 55 / 0) 17%, rgb(30 40 55 / .06) 40%, rgb(30 40 55 / .2) 74%, rgb(30 40 55 / .29) 100%); }
+.ho-l::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at var(--hx) 32%, rgb(255 255 255 / .34), rgb(255 255 255 / .1) 20%, transparent 42%); }
 /* the dew catches the light once, after the entrance */
 .ho-g { position: absolute; inset: 0; -webkit-mask: var(--dm) center / 100% 100% no-repeat; mask: var(--dm) center / 100% 100% no-repeat;
   background: linear-gradient(105deg, transparent 38%, rgb(255 255 255 / .95) 50%, transparent 62%) 130% 0 / 300% 100% no-repeat; animation: ho-glint 1.8s ease-in-out 1.7s both; }
@@ -59,7 +58,7 @@
 @keyframes ho-glint { from { background-position: 130% 0; } to { background-position: -30% 0; } }
 @media (max-width: 760px) { .ho-orbs { --d: 112vw; --peek: 31vw; } .ho-o--l { top: calc(27% - var(--d) / 2); } .ho-o--r { top: calc(74% - var(--d) / 2); } }
 @media (min-width: 700px) and (max-aspect-ratio: 4/5) { .ho-orbs { --d: 84vw; --peek: 20vw; } .ho-o--l { top: calc(30% - var(--d) / 2); } .ho-o--r { top: calc(74% - var(--d) / 2); } }
-.hh-copy { position: relative; z-index: 1; display: grid; justify-items: center; text-align: center; padding-inline: 5vw; will-change: transform; }
+.hh-copy { position: relative; z-index: 1; display: grid; justify-items: center; text-align: center; padding-inline: 5vw; }
 .hh-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
 .hh-eyebrow svg { height: 15px; width: auto; }
 .hh-title { margin-top: clamp(10px, 2vh, 22px); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .84; letter-spacing: -.01em; font-size: var(--fs); }
@@ -77,7 +76,7 @@
 /* each pack waits for its picture, so they never land half-loaded */
 .js .hh-row:not(.is-ready) img, .js .hh:not(.is-ready) .hh-fly img { animation-play-state: paused; }
 /* the suns' bounce light: sage on the edge facing the left sun, periwinkle on the edge facing the right one */
-.hh-rim { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; opacity: var(--f); transition: transform .5s cubic-bezier(.2,.75,.2,1);
+.hh-rim { position: absolute; inset: 0; pointer-events: none; opacity: calc(var(--f) * .55); transition: transform .5s cubic-bezier(.2,.75,.2,1);
   -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center bottom; mask-position: center bottom;
   background: linear-gradient(90deg, rgb(120 205 150 / .95) 0%, rgb(120 205 150 / 0) 24%, transparent 50%, rgb(130 160 245 / 0) 76%, rgb(130 160 245 / .95) 100%); animation: hh-up 1s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(.7s + var(--i) * .1s); }
 .js .hh-row:not(.is-ready) .hh-rim { animation-play-state: paused; }
@@ -86,12 +85,9 @@
   background: radial-gradient(closest-side, color-mix(in srgb, var(--sku) 55%, transparent), transparent); filter: blur(6px); opacity: calc(var(--f) * .9); animation: hh-pool .8s ease both; animation-delay: calc(.9s + var(--i) * .1s); }
 @keyframes hh-pool { from { opacity: 0; } }
 .js .hh-row:not(.is-ready) .hh-b::before { animation-play-state: paused; }
-.hh-sheen { position: absolute; inset: 0 0 26px; pointer-events: none; -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center bottom; mask-position: center bottom;
-  background: linear-gradient(105deg, transparent 42%, rgb(255 255 255 / .55) 50%, transparent 58%) 160% 0 / 300% 100% no-repeat; animation: hh-sheen 9s ease-in-out infinite; animation-delay: calc(2.2s + var(--i) * .35s); }
-@keyframes hh-sheen { 0% { background-position: 160% 0; } 14%, 100% { background-position: -60% 0; } }
 .hh-lab { position: absolute; bottom: 0; opacity: var(--f); white-space: nowrap; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgb(28 30 48 / .72); }
 .hh-lab b { font-family: var(--font-display); font-size: 13px; letter-spacing: .04em; margin-inline-end: 6px; color: var(--c-ink); }
-.hh-foot { position: relative; z-index: 3; margin-top: clamp(16px, 3vh, 32px); display: flex; gap: 10px; justify-content: center; will-change: transform, opacity; }
+.hh-foot { position: relative; z-index: 3; margin-top: clamp(16px, 3vh, 32px); display: flex; gap: 10px; justify-content: center; }
 .hh-sub { display: none; }
 /* desktop: a poster grid — caption bottom left, the line-up in front of the headline, actions bottom right */
 @media (min-width: 990px) and (min-aspect-ratio: 1/1) {
@@ -111,21 +107,20 @@
 /* the flying bottle: drawn exactly where the section below will draw it, carried there by one transform */
 .hh-fly { position: fixed; z-index: 40; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; pointer-events: none; will-change: transform; visibility: hidden; }
 /* hidden, not removed, until it takes over: its entrance then runs in step with the line-up's */
-.hh-fly img { display: block; width: 100%; height: 100%; filter: drop-shadow(0 26px 26px rgba(32, 35, 58, .18)); animation: hh-up 1s cubic-bezier(.2,.75,.2,1) .7s both; transition: translate .5s cubic-bezier(.2,.75,.2,1); rotate: var(--r, 0deg); }
+.hh-fly img { display: block; width: 100%; height: 100%; filter: drop-shadow(0 26px 26px rgba(32, 35, 58, .18)); animation: hh-up 1s cubic-bezier(.2,.75,.2,1) .7s both; transition: translate .5s cubic-bezier(.2,.75,.2,1); }
 .hh-fly.is-lift img { translate: 0 calc(-8px / var(--s, 1)); }
 .hh-fly .hh-rim { -webkit-mask-position: center; mask-position: center; }
 .hh-fly.is-lift .hh-rim { translate: 0 calc(-8px / var(--s, 1)); }
-.hh-fly .hh-sheen { inset: 0; -webkit-mask-position: center; mask-position: center; animation-delay: 2.2s; opacity: var(--glint, 1); }
 .hh.is-live .hh-fly { visibility: visible; }
 .hh.is-live .hh-b--first img { visibility: hidden; }
-.hh.is-live .hh-b--first .hh-sheen, .hh.is-live .hh-b--first .hh-rim { display: none; }
+.hh.is-live .hh-b--first .hh-rim { display: none; }
 @media (max-width: 760px) {
   .hh-stage { --fs: min(15.4vw, 8.4svh); padding-top: calc(var(--hdr, var(--header-h)) + clamp(14px, 2.6vh, 26px)); }
   .hh-title br.hh-d { display: none; } .hh-title { max-width: 9ch; }
   .hh-eyebrow { font-size: 10px; letter-spacing: .2em; }
   /* never wider than the screen: the four packs together are about 1.12 × their height */
   .hh-stage .hh-row { gap: 6px; margin-top: auto; padding-top: clamp(12px, 2.4vh, 22px); max-height: calc((100vw - 52px) / 1.12 + 24px); }
-  .hh-lab { display: none; } .hh-b { padding-bottom: 12px; height: calc(var(--h) * (100% - 12px) + 12px); } .hh-sheen { bottom: 12px; }
+  .hh-lab { display: none; } .hh-b { padding-bottom: 12px; height: calc(var(--h) * (100% - 12px) + 12px); }
   .hh-btn { padding: 14px 18px; font-size: 12px; letter-spacing: .1em; gap: 8px; }
 }
 @media (min-width: 700px) and (max-aspect-ratio: 4/5) { .hh-stage { --fs: 12.6vw; } }
@@ -136,7 +131,7 @@
 @media (max-width: 760px) { :lang(ar) .hh-title { font-size: 12vw; max-width: none; } :lang(ar) .hh-title br.hh-d { display: inline; } }
 :lang(ar) .hh-eyebrow, :lang(ar) .hh-lab, :lang(ar) .hh-btn { letter-spacing: 0; }
 @media (prefers-reduced-motion: reduce) {
-  .hh-title .hh-w > span, .hh-b img, .hh-b::before, .hh-sheen, .hh-rim, .ho-o, .ho-p, .ho-spin, .ho-g { animation: none; }
+  .hh-title .hh-w > span, .hh-b img, .hh-b::before, .hh-rim, .ho-o, .ho-p, .ho-spin, .ho-g { animation: none; }
   .ho-g { display: none; }
 }
 </style>
@@ -173,7 +168,6 @@
         {%- assign st = forloop.index -%}
         <li class="hh-b{% if forloop.first %} hh-b--first{% endif %}" data-step="{{ st }}" style="--h: {{ hs[forloop.index0] }}; --i: {{ forloop.index0 }}">
           <a href="{{ p.url }}"><img src="{{ img }}" alt="" width="357" height="1100" fetchpriority="high"><span class="hh-rim" aria-hidden="true" style="-webkit-mask-image: url('{{ img }}'); mask-image: url('{{ img }}')"></span><span class="visually-hidden">{{ p.title | escape }}</span></a>
-          <span class="hh-sheen" aria-hidden="true" style="-webkit-mask-image: url('{{ img }}'); mask-image: url('{{ img }}')"></span>
           <span class="hh-lab" aria-hidden="true"><b>0{{ st }}</b>{{ p.metafields.bts.step_label.value | default: p.title | escape }}</span>
         </li>
       {%- endfor -%}
@@ -184,7 +178,6 @@
     <div class="hh-fly" aria-hidden="true">
       <img src="{{ fly_src }}" alt="" width="{{ first_cut.width }}" height="{{ first_cut.height }}" fetchpriority="high">
       <span class="hh-rim" style="--i: 0; -webkit-mask-image: url('{{ fly_src }}'); mask-image: url('{{ fly_src }}')"></span>
-      <span class="hh-sheen" style="-webkit-mask-image: url('{{ fly_src }}'); mask-image: url('{{ fly_src }}')"></span>
     </div>
   {%- endif -%}
 </section>
@@ -206,78 +199,88 @@
   whenLoaded([...row.querySelectorAll('img'), ...(flyImg ? [flyImg] : [])], () => { row.classList.add('is-ready'); root.classList.add('is-ready'); });
   // the section below comes later in the page: start once the whole page is parsed
   const init = () => {
-  const hero = document.getElementById('Hh-{{ section.id }}'); if (!hero) return;
-  const stage = hero.querySelector('.hh-stage'), fly = hero.querySelector('.hh-fly');
+  const hero = root, fly = hero.querySelector('.hh-fly');
   const firstLi = hero.querySelector('.hh-b--first'), slot = firstLi && firstLi.querySelector('img');
   const others = [...hero.querySelectorAll('.hh-b:not(.hh-b--first)')];
   const orbL = hero.querySelector('.ho-o--l'), orbR = hero.querySelector('.ho-o--r'), spinL = orbL.querySelector('.ho-spin'), spinR = orbR.querySelector('.ho-spin');
-  const padL = orbL.querySelector('.ho-p'), padR = orbR.querySelector('.ho-p'), rowEl = hero.querySelector('.hh-row');
+  const fades = [row, hero.querySelector('.hh-foot'), hero.querySelector('.hh-sub'), fly].filter(Boolean);
   const dl = document.querySelector('.dayline'), track = dl && dl.querySelector('.dayline__track'), dstage = dl && dl.querySelector('.dayline__stage');
   const anchor = dl && dl.querySelector('.dayline__step[data-index="0"] .dayline__bottle'), dimg = anchor && anchor.querySelector('img');
-  const sky = dl && dl.querySelector('.dayline__sky[data-step="1"]');
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !fly || !slot || !dimg || !sky || getComputedStyle(dstage).position !== 'sticky') return;
-  // where the bottle is inside the cutout picture (transparent margins), as fractions of its width and height
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !fly || !slot || !dimg || getComputedStyle(dstage).position !== 'sticky') return;
+  // where the bottle is inside the flying picture (transparent margins), as fractions of its width and height
   const V = [.2514, .0462, .6921, .9495];
-  const rtl = document.documentElement.dir === 'rtl', sign = rtl ? -1 : 1;
+  const sign = document.documentElement.dir === 'rtl' ? -1 : 1;
   const clamp = (v) => Math.max(0, Math.min(1, v));
   const io = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
   const fimg = fly.querySelector('img');
-  dimg.loading = 'eager';
+  dimg.loading = 'eager'; if (dimg.decode) dimg.decode().catch(() => {});
   hero.classList.add('is-live');
   // the hero ends exactly at the fold, whatever the height of the announcement bar above it
   const fit = () => { hero.style.setProperty('--ann', Math.max(0, hero.getBoundingClientRect().top + scrollY) + 'px'); };
-  fit(); addEventListener('resize', fit);
-  let queued = false, handed = null;
-  function frame() {
-    queued = false;
-    // one number: 0 at rest, 1 when the section below has risen and pinned (one screen of scrolling)
-    const tt = track.getBoundingClientRect().top, y = scrollY;
-    const P = clamp(y / Math.max(1, y + tt)), docked = tt <= .5;
-    // measure the link box, not the picture: the picture has its own entrance and hover transforms
-    const L = slot.parentElement.getBoundingClientRect(), ar = anchor.getBoundingClientRect(), sr = dstage.getBoundingClientRect();
-    // the section below's bottle box when its stage is pinned, and the picture inside it (object-fit: contain)
+  fit();
+  // Geometry is measured only when the layout changes, never while scrolling: each scroll frame then only
+  // writes transforms (no layout, no style rewrites), which keeps it smooth in Safari too.
+  let G = null, need = true, last = {};
+  const put = (el, k, v) => { const id = k + (el.dataset.k || (el.dataset.k = Math.random().toString(36).slice(2))); if (last[id] !== v) { last[id] = v; if (k[0] === '-') el.style.setProperty(k, v); else el.style[k] = v; } };
+  function measure() {
+    const y = scrollY, D = track.getBoundingClientRect().top + y;
+    if (y > D - 1) return;                                           // the section below is pinned: its bottle may be moving; measure later
+    // the line-up's cleanser at rest: its list item (never moved) plus the picture's own layout box (ignores its entrance motion)
+    const li = firstLi.getBoundingClientRect(), Lx = li.left + slot.offsetLeft, Ly = li.top + y + slot.offsetTop, Lh = slot.offsetHeight;
+    const ar = anchor.getBoundingClientRect(), sr = dstage.getBoundingClientRect();
     const bw = ar.width, bh = ar.height, ia = (fimg.naturalWidth || 2) / (fimg.naturalHeight || 3);
     const fw = bw / bh > ia ? bh * ia : bw, fh = bw / bh > ia ? bh : bw / ia;
     const fx = ar.left - sr.left + (bw - fw) / 2, fy = ar.top - sr.top + (bh - fh) / 2;
-    // it leaves from where it stood at rest (the page scrolls on beneath it), so its path is one clean glide
-    const s0 = L.height / (fh * (V[3] - V[1])), Lt = L.top + Math.min(y, y + tt);
-    const tx0 = L.left - fx - s0 * fw * V[0], ty0 = Lt - fy - s0 * fh * V[1];
-    const e = io(clamp((P - .02) / .96)), s = s0 + (1 - s0) * e;
-    fly.style.cssText = `left:${fx}px;top:${fy}px;width:${fw}px;height:${fh}px;transform:translate(${tx0 * (1 - e)}px,${ty0 * (1 - e)}px) scale(${s});--s:${s};--r:${(-sign * 7 * Math.sin(Math.PI * e)).toFixed(2)}deg;--glint:${clamp(1 - P * 12)};visibility:${docked ? 'hidden' : 'visible'}`;
-    if (docked !== handed) { handed = docked; dimg.style.opacity = docked ? '' : '0'; }
-    hero.style.setProperty('--f', clamp(1 - P * 5).toFixed(3));
+    const s0 = Lh / (fh * (V[3] - V[1]));
+    G = { D, s0, tx0: Lx - fx - s0 * fw * V[0], ty0: Ly - fy - s0 * fh * V[1], W: innerWidth, r: orbL.offsetWidth / 2, cx: fw / 2, cy: fh / 2 };
+    fly.style.left = fx + 'px'; fly.style.top = fy + 'px'; fly.style.width = fw + 'px'; fly.style.height = fh + 'px'; fly.style.setProperty('--s', s0.toFixed(4));
+    need = false; last = {};
+  }
+  let queued = false;
+  function frame() {
+    queued = false;
+    if (need) measure(); if (!G) return;
+    const y = scrollY, P = clamp(y / G.D), e = io(clamp((P - .02) / .96)), sc = G.s0 + (1 - G.s0) * e;
+    // one transform on one layer: glide, grow and a slight tilt about the bottle's centre (the picture itself is never redrawn)
+    const tilt = -sign * 7 * Math.sin(Math.PI * e);
+    put(fly, 'transform', `translate3d(${(G.tx0 * (1 - e)).toFixed(2)}px, ${(G.ty0 * (1 - e)).toFixed(2)}px, 0) scale(${sc.toFixed(4)})` + (Math.abs(tilt) > .01 ? ` translate(${G.cx.toFixed(1)}px, ${G.cy.toFixed(1)}px) rotate(${tilt.toFixed(2)}deg) translate(${(-G.cx).toFixed(1)}px, ${(-G.cy).toFixed(1)}px)` : ''));
+    // the hand-over: the section's own cleanser appears the moment it pins; the flying one (identical, same place)
+    // stays a little longer, so there is never a frame with neither
+    put(dimg, 'opacity', y >= G.D - .5 ? '' : '0');
+    put(fly, 'visibility', y > G.D + 80 ? 'hidden' : 'visible');
+    const f = clamp(1 - P * 5).toFixed(3); fades.forEach((el) => put(el, '--f', f));
     // the suns roll off: each turns by the distance it travels (angle = distance / radius)
-    const o = io(clamp(P / .7)) * innerWidth * .75, turn = o / (orbL.offsetWidth / 2) * 180 / Math.PI;
-    orbL.style.transform = o ? `translate3d(${-o}px, 0, 0)` : ''; orbR.style.transform = o ? `translate3d(${o}px, 0, 0)` : '';
-    spinL.style.rotate = turn ? `${-turn.toFixed(2)}deg` : ''; spinR.style.rotate = turn ? `${turn.toFixed(2)}deg` : '';
-    const W = innerWidth;
+    const o = io(clamp(P / .7)) * G.W * .75, turn = o / G.r * 180 / Math.PI;
+    put(orbL, 'transform', o ? `translate3d(${(-o).toFixed(1)}px, 0, 0)` : ''); put(orbR, 'transform', o ? `translate3d(${o.toFixed(1)}px, 0, 0)` : '');
+    put(spinL, 'rotate', turn ? `${(-turn).toFixed(2)}deg` : ''); put(spinR, 'rotate', turn ? `${turn.toFixed(2)}deg` : '');
     others.forEach((li, k) => {
       // the one nearest the edge leaves first, so they never cross
       const q = io(clamp((P - .06 * (others.length - 1 - k)) / .55));
-      li.style.transform = q ? `translate3d(${sign * q * W * .8}px, ${q * 30}px, 0) rotate(${sign * q * 12}deg)` : '';
+      put(li, 'transform', q ? `translate3d(${(sign * q * G.W * .8).toFixed(1)}px, ${(q * 30).toFixed(1)}px, 0) rotate(${(sign * q * 12).toFixed(2)}deg)` : '');
     });
   }
   const ask = () => { if (!queued) { queued = true; requestAnimationFrame(frame); } };
-  addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask);
-  // re-measure whenever the layout settles (web font swap, pictures arriving)
-  if (window.ResizeObserver) { const ro = new ResizeObserver(ask); ro.observe(stage); ro.observe(hero.querySelector('.hh-copy')); ro.observe(slot); }
-  if (document.fonts) document.fonts.ready.then(ask);
-  addEventListener('load', ask);
-  fimg.addEventListener('load', ask); slot.addEventListener('load', ask);
-  // depth on desktop: the suns drift with the pointer, the line-up a touch the other way
+  const remeasure = () => { need = true; ask(); };
+  addEventListener('scroll', ask, { passive: true });
+  addEventListener('resize', () => { fit(); remeasure(); });
+  if (window.ResizeObserver) { const ro = new ResizeObserver(remeasure); ro.observe(hero.querySelector('.hh-copy')); ro.observe(row); ro.observe(anchor); }
+  if (document.fonts) document.fonts.ready.then(remeasure);
+  addEventListener('load', remeasure); fimg.addEventListener('load', remeasure); slot.addEventListener('load', remeasure);
+  // depth on desktop: the suns drift a little with the pointer (nothing else moves)
   if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const padL = orbL.querySelector('.ho-p'), padR = orbR.querySelector('.ho-p');
     let tx = 0, ty = 0, cx = 0, cy = 0, run = false;
     const drift = () => {
-      cx += (tx - cx) * .06; cy += (ty - cy) * .06;
-      padL.style.translate = `${(cx * 16).toFixed(2)}px ${(cy * 10).toFixed(2)}px`; padR.style.translate = `${(cx * 22).toFixed(2)}px ${(cy * 14).toFixed(2)}px`;
-      rowEl.style.translate = `${(-cx * 6).toFixed(2)}px 0`;
-      frame();
+      cx += (tx - cx) * .05; cy += (ty - cy) * .05;
+      padL.style.translate = `${(cx * 10).toFixed(2)}px ${(cy * 7).toFixed(2)}px`; padR.style.translate = `${(cx * 14).toFixed(2)}px ${(cy * 9).toFixed(2)}px`;
       if (Math.abs(tx - cx) + Math.abs(ty - cy) > .002) requestAnimationFrame(drift); else run = false;
     };
-    addEventListener('pointermove', (e) => { tx = e.clientX / innerWidth * 2 - 1; ty = e.clientY / innerHeight * 2 - 1; if (!run && hero.getBoundingClientRect().bottom > 0) { run = true; requestAnimationFrame(drift); } }, { passive: true });
+    addEventListener('pointermove', (e) => { tx = e.clientX / innerWidth * 2 - 1; ty = e.clientY / innerHeight * 2 - 1; if (!run && scrollY < innerHeight) { run = true; requestAnimationFrame(drift); } }, { passive: true });
   }
   firstLi.querySelector('a').addEventListener('pointerenter', () => fly.classList.add('is-lift'));
   firstLi.querySelector('a').addEventListener('pointerleave', () => fly.classList.remove('is-lift'));
+  // the dew glint plays once; then its layer is removed so nothing extra turns with the suns
+  hero.querySelectorAll('.ho-g').forEach((g) => g.addEventListener('animationend', () => { g.style.display = 'none'; }, { once: true }));
   ask();
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
