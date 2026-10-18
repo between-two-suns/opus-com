@@ -62,9 +62,10 @@
 .hh-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
 .hh-eyebrow svg { height: 15px; width: auto; }
 .hh-title { margin-top: clamp(10px, 2vh, 22px); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .84; letter-spacing: -.01em; font-size: var(--fs); }
-.hh-title .hh-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .05em; margin-bottom: -.05em; }
+/* the word mask reaches past the letters' foot (at this line height the line box ends above the baseline), so round letters keep their curves */
+.hh-title .hh-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .16em; margin-bottom: -.16em; }
 .hh-title .hh-w > span { display: inline-block; animation: hh-rise 1s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(.2s + var(--i) * .06s); }
-@keyframes hh-rise { from { transform: translateY(105%); } }
+@keyframes hh-rise { from { transform: translateY(130%); } }
 /* the line-up stands in front of the last line of the headline and takes the height that is left */
 .hh-stage .hh-row { position: relative; z-index: 2; flex: 1 1 0; min-height: 0; width: 100%; margin: clamp(14px, 3vh, 34px) 0 0; padding: 0; list-style: none;
   display: flex; justify-content: center; align-items: flex-end; gap: clamp(10px, 1.6vw, 28px); }

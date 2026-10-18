@@ -238,3 +238,19 @@ Each entry: decision · why · reversibility. Newest last.
       - Checked at 375×560, 390×664 (iPhone Safari with toolbars), 390×844, 430×932 and 768×1024, with zero text/pack overlaps.
     - Also fixed: in Arabic the white switch pill sat on the wrong side; it now follows the selected option.
     - QA: theme-check 0, flows 280/280, axe 0. Deployed to staging only (MD5 `b8072c829db275cc7d59d0c60d71d8b4`). Live index.json is still `c828067…`.
+
+145. **Owner's final comments on the heroes:** routine headline cut at the bottom and too tight; the floor line showing through the transparent button on web; and "why are the S and the C cut" on the home hero.
+    - **Cause of the cut letters (not the font, not intended):**
+      - BTS Display's line box at line-height 0.84 ends 0.088em *above* the baseline (ascent 1.155em, descent 0.139em).
+      - The overflow-hidden word masks used for the headline animations therefore sheared the foot off every letter. Flat letters hide it; round ones (S, C, O, G, D) showed a flat cut.
+      - Home: the word mask now reaches 0.16em past the line (cancelled with a negative margin, so the layout is unchanged), and the rise starts at 130% so nothing peeks before the entrance.
+      - Routines: the rolling word's window reaches 0.08em past the foot only. Room above was not needed, and extending it made the moving word overlap the line above mid-roll.
+    - **Routine headline spacing:**
+      - line-height 0.84 → 0.96. At 0.84, a line's caps touched the baseline of the line above.
+      - Size trimmed (`min(8vw, 13.6svh)`, max 160px) to keep the block the same height.
+      - The "Sun · Dust…" line now hides on laptop screens under 880px tall, so it never crowds the buttons.
+    - **Headline wrap jump (found while checking):** at 1512×860 and 1024×768, "YOUR EVENING" wrapped differently from "YOUR MORNING", so the switch moved everything below by about 100px.
+      - The rolling word's box is now always the wider word's width: both words share one grid cell, so the JS width-fitting and its width animation are gone.
+      - Verified the same line count AM/PM at 12 sizes × EN/AR.
+    - **Ghost button:** "Shop products" gets a 72% white fill (the same family as the switch), so the wall/floor edge no longer passes visibly through it.
+    - QA: theme-check 0, flows 280/280, axe 0. Staging MD5s: hero-orbs `5a615c6c…`, hero-routine `aa4bf13f…`. Live index.json is still `c828067…`.
