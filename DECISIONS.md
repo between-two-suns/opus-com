@@ -329,3 +329,10 @@ Each entry: decision · why · reversibility. Newest last.
       - The Liquid passes `--len` from the label. The per-letter factors were measured from the rendered words, with a margin.
       - Fits in 48/48 checks (4 products × 6 sizes × EN/AR), on phones too.
     - QA: theme-check 0, flows 280/280, axe 0. Staging MD5s: product.css `00dd470d…`, main-product.liquid `aab12e89…`. Live unchanged.
+
+153. **Owner (video, Safari laptop): after 152 the product page "is too long"; make the bottles smaller so everything appears on screen.**
+    - The owner's Safari shows about 1440×700 of page (tabs, bookmarks bar and Dock). 152's frame was at least 1:1.08 (720px tall), so the stage ran below the fold.
+    - The desktop frame keeps the full column width, and its height is now what is left on screen under the header, tabs and slide dots: `min(125cqw, max(400px, 100svh - 250px))`. On short screens the stage, pack and callouts scale down with it; the word stays sized from the width.
+    - Photo slides are no longer cropped: they sit whole (`object-fit: contain`) on the product tint. Set/bundle slides keep their own full-bleed treatment.
+    - Verified at 1440×700, 1440×800, 1280×650, 1680×950 and 1024×700, and on the real store at 1440×700: the stage and its dots are fully on screen, Add to bag is visible on load, and words fit.
+    - Staging product.css MD5 `6a084acf…`; live unchanged.
