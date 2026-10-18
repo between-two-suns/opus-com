@@ -1,0 +1,89 @@
+# Render a matte, powdery sphere with dew drops (the two suns). numpy only.
+import numpy as np, sys
+from PIL import Image, ImageFilter
+rng = np.random.default_rng(int(sys.argv[3]) if len(sys.argv) > 3 else 7)
+N = 1800
+side = sys.argv[1]            # 'l' (lit from the right) or 'r' (lit from the left)
+out = sys.argv[2]
+base = np.array([0.66, 0.81, 0.71]) if side == 'l' else np.array([0.66, 0.75, 0.92])
+yy, xx = np.mgrid[0:N, 0:N].astype(np.float32)
+x = (xx + .5) / N * 2 - 1; y = (yy + .5) / N * 2 - 1
+r2 = x * x + y * y; inside = r2 < 1
+z = np.sqrt(np.clip(1 - r2, 0, 1))
+
+_fy = np.fft.fftfreq(N)[:, None]; _fx = np.fft.rfftfreq(N)[None, :]
+def blur(a, s):
+    g = np.exp(-2 * (np.pi ** 2) * (s ** 2) * (_fx ** 2 + _fy ** 2))
+    return np.fft.irfft2(np.fft.rfft2(a) * g, s=a.shape).astype(np.float32)
+
+# height field: powdery stone (several octaves) + tiny pits
+h = np.zeros((N, N), np.float32)
+for s, a in [(1.4, .22), (3.2, .40), (9, .55), (30, .6), (90, .5)]:
+    n = blur(rng.standard_normal((N, N)).astype(np.float32), s)
+    h += a * n / (n.std() + 1e-6)
+pits = np.zeros((N, N), np.float32)
+idx = rng.integers(0, N, size=(700, 2))
+pits[idx[:, 0], idx[:, 1]] = 1
+pits = blur(pits, 1.6); pits /= pits.max()
+h = h * .016 - pits * .12
+gy, gx = np.gradient(h)
+k = 1.0
+nx, ny, nz = x - gx * k * N / 60, y - gy * k * N / 60, z + 0
+nl = np.sqrt(nx * nx + ny * ny + nz * nz) + 1e-6
+nx, ny, nz = nx / nl, ny / nl, nz / nl
+L = np.array([0.62 if side == 'l' else -0.62, -0.34, 0.71]); L /= np.linalg.norm(L)
+diff = np.clip(nx * L[0] + ny * L[1] + nz * L[2], 0, 1)
+wrap = np.clip((nx * L[0] + ny * L[1] + nz * L[2] + .35) / 1.35, 0, 1)
+H = (L + np.array([0, 0, 1])); H /= np.linalg.norm(H)
+spec = np.clip(nx * H[0] + ny * H[1] + nz * H[2], 0, 1) ** 18 * .10
+shade = .66 + .28 * wrap + .12 * diff
+rim = np.clip(1 - z, 0, 1) ** 3 * .06                # soft edge falloff
+col = base[None, None, :] * shade[..., None] + spec[..., None] - rim[..., None] * base[None, None, :] * .5
+col = col * .96 + .04 * np.array([1, .98, .95])        # a little warm air
+# dew drops
+drops = []
+for i in range(150):
+    rr = rng.uniform(0, .97) ** .5; th = rng.uniform(0, 2 * np.pi)
+    cx, cy = rr * np.cos(th), rr * np.sin(th)
+    size = (rng.pareto(2.2) + 1) * 6.5
+    size = min(size, 44)
+    drops.append((cx, cy, size))
+drops.sort(key=lambda d: d[2])
+shadow = np.zeros((N, N), np.float32)
+for cx, cy, sz in drops:
+    zz = np.sqrt(max(1e-4, 1 - cx * cx - cy * cy))
+    px, py = (cx + 1) / 2 * N, (cy + 1) / 2 * N
+    # foreshortened along the radial direction near the rim
+    rad = np.array([cx, cy]); rl = np.linalg.norm(rad) + 1e-6; rad /= rl
+    a, b = sz, sz * max(.35, zz)                         # tangent / radial semi-axes
+    R = int(a + 6); x0, x1, y0, y1 = int(px - R), int(px + R), int(py - R), int(py + R)
+    if x0 < 0 or y0 < 0 or x1 >= N or y1 >= N: continue
+    sx = xx[y0:y1, x0:x1] - px; sy = yy[y0:y1, x0:x1] - py
+    u = sx * -rad[1] + sy * rad[0]; v = sx * rad[0] + sy * rad[1]
+    d2 = (u / a) ** 2 + (v / b) ** 2
+    m = np.clip((1 - d2) * a * .9, 0, 1)
+    if m.max() <= 0: continue
+    # shadow of the drop, offset away from the light
+    ox, oy = -L[0] * sz * .35, -L[1] * sz * .35
+    d2s = ((u - (ox * -rad[1] + oy * rad[0])) / a) ** 2 + ((v - (ox * rad[0] + oy * rad[1])) / b) ** 2
+    shadow[y0:y1, x0:x1] = np.maximum(shadow[y0:y1, x0:x1], np.clip(1 - d2s, 0, 1) * .55)
+    dz = np.sqrt(np.clip(1 - d2, 0, 1))
+    # drop normal (dome), lit by the same light: dark rim on the lit side, bright caustic opposite, specular dot
+    dnx, dny = (u * -rad[1] + v * rad[0]) / a, (u * rad[1] * 0 + v * rad[1] + u * -rad[0] * 0) / a
+    dnx = sx / a; dny = sy / a
+    lit = np.clip(dnx * L[0] + dny * L[1], -1, 1)
+    body = .86 + .10 * dz
+    caustic = np.clip(-lit, 0, 1) ** 2 * dz * .38
+    edge = np.clip(1 - dz, 0, 1) ** 2.2 * .30
+    hx, hy = px + L[0] * sz * .38, py + L[1] * sz * .38
+    hl = np.exp(-(((xx[y0:y1, x0:x1] - hx) ** 2 + (yy[y0:y1, x0:x1] - hy) ** 2) / (2 * (sz * .16 + .6) ** 2))) * .95
+    reg = col[y0:y1, x0:x1]
+    nd = reg * (body - edge)[..., None] + caustic[..., None] * .9 + hl[..., None]
+    col[y0:y1, x0:x1] = reg * (1 - m[..., None]) + nd * m[..., None]
+shadow = blur(shadow, 2.2)
+col = col * (1 - shadow[..., None] * .22)
+col = np.clip(col, 0, 1)
+alpha = np.clip((1 - np.sqrt(r2)) * N / 2 * 1.2, 0, 1)
+img = np.dstack([col, alpha]) * 255
+Image.fromarray(img.astype(np.uint8), 'RGBA').save(out, 'WEBP', quality=86, method=6)
+print(out)

@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "hero": { "type": "hero-sky", "settings": {} },
+    "routine": { "type": "day-line", "settings": { "show_bundle": false } }
+  },
+  "order": ["hero", "routine"]
+}

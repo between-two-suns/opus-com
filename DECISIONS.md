@@ -163,4 +163,15 @@ Each entry: decision · why · reversibility. Newest last.
     - **Interaction:** after the entrance the suns follow the pointer on desktop, and every shadow swings. On touch screens they drift slowly on their own.
     - **Hand-off:** unchanged from 133. The flying cleanser takes over only once its picture has loaded, without replaying the entrance.
     - **Removed:** the blurred )( light patches were tried and dropped; they read as blobs.
+136. **Two-suns light (135) judged by the owner:** "OK, not great"; you couldn't tell there were two suns. Our read: sun is contrast, and light simulated on flat studio packshots has a ceiling. Two new hero options were made from that feedback.
+137. **Hero option "Orbs" at `/?view=orbs`** (`sections/hero-orbs.liquid`), from the owner's own references. It is the clean hand-off (133) with the two suns as tactile spheres peeking in from the edges, which slide out of the screen as the hand-off happens.
+    - **Spheres:** sage on the left, periwinkle on the right; matte, powdery stone texture with dew drops; each lit from the space between. Rendered once in numpy (`scratchpad/sph/render.py`) to `assets/hero-orb-{green,blue}-{900,1500}.webp`.
+    - **Motion:** a slow float; on scroll they slide out to their own sides (never mirrored).
+    - **Layout:** phones and portrait tablets place them diagonally (top-left, bottom-right) like the references.
+138. **Hero option "Sun" at `/?view=sun`** (`sections/hero-sky.liquid`), built from the brand's line-up photo in real sun (`bts-lineup-sky.jpg`, 1920×1080 from Files).
+    - **Relabel:** the photo showed old labels (the old logotype, "100% Hydration", "Fresh Finish") and the old serum shape. The current studio cut-outs (current labels, real logo, current serum bottle) were put back in at the same positions. Each was relit per column and per channel from the photo's own pack colours, so whites only take the light. The old packs were erased only where their pixels differ from the rebuilt sky or stone, with grain, so no boxes show.
+    - **Files:** the result is saved locally as `_source/photos/bts-lineup-sky-relabelled.jpg` (that folder is git-ignored; the hero uses `assets/hero-sky-*.webp`), plus a tall phone crop with the sky extended upward.
+    - **Depth:** the headline sits in the sky, and a second layer of just the packs sits on top, so the packs stand in front of the type. On desktop the headline lives in the open sky beside the tall cleanser and its last line tucks behind the caps. Scrolling, the words lag and sink behind the packs. The photo and packs never move apart, because the packs are part of the photo.
+    - **Phones:** the buttons sit under the headline in the sky, so nothing covers the packs. Short phones use a two-line headline.
+    - **Hand-off:** none in this option; the hero simply hands over to "Four steps".
 

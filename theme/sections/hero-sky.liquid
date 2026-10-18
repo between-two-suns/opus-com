@@ -1,0 +1,119 @@
+{%- comment -%}
+  Hero preview · "Sun" (only on /?view=sun while it is reviewed; the other hero options stay as they are).
+  The line-up in real Egyptian sun (the brand's own photo, with the current packs and labels put back in and relit
+  to the photo's light). The headline sits in the sky behind the packs: the photo, then the words, then the packs
+  again on top (a separate layer cut from the same picture), so the four steps stand in front of the type.
+  Scrolling, the words lag behind the photo and sink behind the packs. Phones use a tall crop with more sky.
+{%- endcomment -%}
+{%- liquid
+  assign full = all_products['the-full-ritual']
+  assign all_url = routes.collections_url | append: '/all'
+  assign line_1 = 'sections.hero_panels.line_1' | t | replace: '&amp;', '&'
+  assign line_2 = 'sections.hero_panels.line_2' | t | replace: '&amp;', '&'
+  assign w1 = line_1 | split: ' '
+  assign w2 = line_2 | split: ' '
+-%}
+<style>
+.hy { position: relative; height: calc(100vh - var(--ann, 36px)); height: calc(100svh - var(--ann, 36px)); min-height: 540px; margin-top: calc(-1 * var(--header-h)); overflow: hidden; isolation: isolate; background: #3f87d8; color: #fff; }
+.hy-plane { position: absolute; inset: 0; will-change: transform; }
+.hy-plane img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
+.hy-bg img { animation: hy-sun 2.4s cubic-bezier(.2,.75,.2,1) both; }
+@keyframes hy-sun { from { scale: 1.07; filter: brightness(1.12) saturate(.85); } }
+.hy-packs { z-index: 2; pointer-events: none; }
+.hy-packs img { animation: hy-up 1.4s cubic-bezier(.2,.75,.2,1) .35s both; }
+@keyframes hy-up { from { opacity: 0; translate: 0 22px; } }
+.hy-copy { position: absolute; z-index: 1; inset-inline: 0; top: calc(var(--header-h) + clamp(14px, 3.4vh, 40px)); display: grid; justify-items: center; text-align: center; padding-inline: 4vw; will-change: transform; }
+.hy-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; text-shadow: 0 1px 12px rgb(20 50 110 / .35); }
+.hy-eyebrow svg { height: 15px; width: auto; }
+.hy-title { margin-top: clamp(8px, 1.6vh, 18px); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .84; letter-spacing: -.005em;
+  font-size: clamp(64px, min(11.8vw, 21vh), 230px); text-shadow: 0 2px 40px rgb(20 60 120 / .18); }
+.hy-title .hy-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .05em; margin-bottom: -.05em; }
+.hy-title .hy-w > span { display: inline-block; animation: hy-rise 1s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(.25s + var(--i) * .06s); }
+@keyframes hy-rise { from { transform: translateY(105%); } }
+.hy-foot { position: absolute; z-index: 3; inset-inline: 0; bottom: calc(var(--dock-h, 0px) + clamp(18px, 4vh, 40px)); display: flex; justify-content: center; gap: 10px; }
+/* desktop: the headline lives in the open sky to the right of the tall cleanser; only its last line tucks behind the caps */
+@media (min-width: 761px) and (min-aspect-ratio: 1/1) {
+  .hy-copy { inset-inline: 40% 3.5vw; justify-items: start; text-align: start; }
+  .hy-title { font-size: clamp(56px, min(7.4vw, 13.6vh), 150px); }
+  [dir='rtl'] .hy-copy { inset-inline: 3.5vw 40%; inset-inline: auto; left: 40%; right: 3.5vw; }
+  html:lang(ar) .hy-title { font-size: clamp(40px, min(5vw, 9.4vh), 100px); }
+}
+.hy-btn { display: inline-flex; align-items: center; gap: 12px; padding: 17px 30px; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; transition: transform .3s cubic-bezier(.2,.75,.2,1); }
+.hy-btn--main { background: #8FC4A2; color: var(--c-ink); box-shadow: 0 12px 30px -14px rgb(20 40 60 / .5); }
+.hy-btn--ghost { background: rgb(255 255 255 / .9); color: var(--c-ink); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.hy-btn:hover { transform: translateY(-2px); }
+.hy-btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+[dir='rtl'] .hy-btn--main svg { transform: scaleX(-1); }
+@media (max-width: 760px), (max-aspect-ratio: 1/1) {
+  .hy-title { font-size: min(16vw, 9.6svh); max-width: 9ch; } .hy-title br.hy-d { display: none; }
+  /* phones: the buttons sit under the headline, in the sky, so nothing covers the packs */
+  .hy-foot { position: relative; inset: auto; bottom: auto; margin-top: clamp(14px, 2.4vh, 22px); }
+  .hy-copy .hy-foot { display: flex; }
+  .hy-btn { padding: 14px 18px; font-size: 12px; letter-spacing: .1em; gap: 8px; }
+}
+@media (min-width: 700px) and (max-aspect-ratio: 1/1) { .hy-title { font-size: 12.5vw; max-width: none; } .hy-title br.hy-d { display: inline; } }
+:lang(ar) .hy-title { text-transform: none; line-height: 1.18; letter-spacing: 0; font-size: clamp(48px, min(8vw, 14vh), 150px); }
+:lang(ar) .hy-title .hy-w { overflow: visible; padding: 0; margin: 0; }
+:lang(ar) .hy-title .hy-w > span { animation-name: hy-fade; }
+@keyframes hy-fade { from { opacity: 0; transform: translateY(.25em); } }
+@media (max-width: 760px), (max-aspect-ratio: 1/1) { :lang(ar) .hy-title { font-size: 12vw; max-width: none; } :lang(ar) .hy-title br.hy-d { display: inline; } }
+:lang(ar) .hy-eyebrow, :lang(ar) .hy-btn { letter-spacing: 0; }
+.hy-foot--m { display: none; }
+/* short phones: two lines, so the headline and buttons stay clear of the packs */
+@media (max-width: 760px) and (max-height: 740px) { .hy-title { font-size: 12.4vw; max-width: none; } .hy-title br.hy-d { display: inline; } }
+@media (max-width: 760px), (max-aspect-ratio: 1/1) { .hy-foot--m { display: flex; } .hy-foot--d { display: none; } }
+@media (prefers-reduced-motion: reduce) { .hy-bg img, .hy-packs img, .hy-title .hy-w > span { animation: none; } }
+</style>
+<section class="hy" id="Hy-{{ section.id }}" aria-labelledby="HyTitle-{{ section.id }}">
+  <picture class="hy-plane hy-bg">
+    <source media="(max-aspect-ratio: 1/1)" srcset="{{ 'hero-sky-tall.webp' | asset_url }}" width="1000" height="2174">
+    <img src="{{ 'hero-sky-wide.webp' | asset_url }}" alt="{{ 'sections.hero_routine.lineup' | t | escape }}" width="1920" height="1080" fetchpriority="high">
+  </picture>
+  <div class="hy-copy">
+    <p class="hy-eyebrow"><svg viewBox="0 0 501 547" aria-hidden="true" focusable="false"><path fill="currentColor" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/><path fill="currentColor" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>{{ 'sections.hero_panels.eyebrow' | t }}</p>
+    <h1 class="hy-title" id="HyTitle-{{ section.id }}">
+      {%- for w in w1 -%}{% unless forloop.first %}{{ ' ' }}{% endunless %}<span class="hy-w"><span style="--i: {{ forloop.index0 }}">{{ w }}</span></span>{%- endfor -%}
+      <br class="hy-d">{{ ' ' }}
+      {%- for w in w2 -%}{% unless forloop.first %}{{ ' ' }}{% endunless %}<span class="hy-w"><span style="--i: {{ forloop.index0 | plus: w1.size }}">{{ w }}</span></span>{%- endfor -%}
+    </h1>
+    <div class="hy-foot hy-foot--m">
+      <a class="hy-btn hy-btn--main" href="{{ full.url | default: all_url }}">{{ 'sections.hero_suns.cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm' %}</a>
+      <a class="hy-btn hy-btn--ghost" href="{{ all_url }}">{{ 'sections.hero_routine.cta_all' | t }}</a>
+    </div>
+  </div>
+  <picture class="hy-plane hy-packs" aria-hidden="true">
+    <source media="(max-aspect-ratio: 1/1)" srcset="{{ 'hero-sky-tall-packs.webp' | asset_url }}" width="1000" height="2174">
+    <img src="{{ 'hero-sky-wide-packs.webp' | asset_url }}" alt="" width="1920" height="1080" fetchpriority="high">
+  </picture>
+  <div class="hy-foot hy-foot--d">
+    <a class="hy-btn hy-btn--main" href="{{ full.url | default: all_url }}">{{ 'sections.hero_suns.cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm' %}</a>
+    <a class="hy-btn hy-btn--ghost" href="{{ all_url }}">{{ 'sections.hero_routine.cta_all' | t }}</a>
+  </div>
+</section>
+<script>
+(() => {
+  const hero = document.getElementById('Hy-{{ section.id }}'); if (!hero) return;
+  // the hero ends exactly at the fold, whatever the height of the announcement bar above it
+  const fit = () => { hero.style.setProperty('--ann', Math.max(0, hero.getBoundingClientRect().top + scrollY) + 'px'); };
+  fit(); addEventListener('resize', fit);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // the photo and the packs move with the page (the packs are part of the photo); the words lag, sinking behind the packs
+  const copy = hero.querySelector('.hy-copy');
+  let queued = false;
+  const frame = () => {
+    queued = false;
+    const y = Math.max(0, Math.min(hero.offsetHeight, -hero.getBoundingClientRect().top));
+    copy.style.transform = y ? `translate3d(0, ${y * .42}px, 0)` : '';
+  };
+  addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(frame); } }, { passive: true });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero preview: sun",
+  "tag": "div",
+  "class": "section-hero",
+  "settings": []
+}
+{% endschema %}
