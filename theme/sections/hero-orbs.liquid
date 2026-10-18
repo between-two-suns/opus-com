@@ -75,11 +75,6 @@
 @keyframes hh-up { from { opacity: 0; transform: translateY(44px); } 62% { opacity: 1; transform: translateY(-5px); } }
 /* each pack waits for its picture, so they never land half-loaded */
 .js .hh-row:not(.is-ready) img, .js .hh:not(.is-ready) .hh-fly img { animation-play-state: paused; }
-/* the suns' bounce light: sage on the edge facing the left sun, periwinkle on the edge facing the right one */
-.hh-rim { position: absolute; inset: 0; pointer-events: none; opacity: calc(var(--f) * .55); transition: transform .5s cubic-bezier(.2,.75,.2,1);
-  -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center bottom; mask-position: center bottom;
-  background: linear-gradient(90deg, rgb(120 205 150 / .95) 0%, rgb(120 205 150 / 0) 24%, transparent 50%, rgb(130 160 245 / 0) 76%, rgb(130 160 245 / .95) 100%); animation: hh-up 1s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(.7s + var(--i) * .1s); }
-.js .hh-row:not(.is-ready) .hh-rim { animation-play-state: paused; }
 /* a soft pool of each pack's own colour on the floor */
 .hh-b::before { content: ''; position: absolute; z-index: -1; left: -30%; right: -30%; bottom: 10px; height: 34px; border-radius: 50%;
   background: radial-gradient(closest-side, color-mix(in srgb, var(--sku) 55%, transparent), transparent); filter: blur(6px); opacity: calc(var(--f) * .9); animation: hh-pool .8s ease both; animation-delay: calc(.9s + var(--i) * .1s); }
@@ -102,18 +97,17 @@
 .hh-btn:hover { transform: translateY(-2px); }
 .hh-btn:focus-visible, .hh-b a:focus-visible { outline: 2px solid var(--c-ink); outline-offset: 3px; }
 [dir='rtl'] .hh-btn--main svg { transform: scaleX(-1); }
-@media (hover: hover) { .hh-b a:hover img, .hh-b a:focus-visible img, .hh-b a:hover .hh-rim, .hh-b a:focus-visible .hh-rim { transform: translateY(-8px); } }
+@media (hover: hover) { .hh-b a:hover img, .hh-b a:focus-visible img { transform: translateY(-8px); } }
 .hh-b a { position: relative; }
 /* the flying bottle: drawn exactly where the section below will draw it, carried there by one transform */
 .hh-fly { position: fixed; z-index: 40; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; pointer-events: none; will-change: transform; visibility: hidden; }
 /* hidden, not removed, until it takes over: its entrance then runs in step with the line-up's */
 .hh-fly img { display: block; width: 100%; height: 100%; filter: drop-shadow(0 26px 26px rgba(32, 35, 58, .18)); animation: hh-up 1s cubic-bezier(.2,.75,.2,1) .7s both; transition: translate .5s cubic-bezier(.2,.75,.2,1); }
 .hh-fly.is-lift img { translate: 0 calc(-8px / var(--s, 1)); }
-.hh-fly .hh-rim { -webkit-mask-position: center; mask-position: center; }
-.hh-fly.is-lift .hh-rim { translate: 0 calc(-8px / var(--s, 1)); }
 .hh.is-live .hh-fly { visibility: visible; }
+/* during the hand-over the section's own cleanser sits right under this one: only it casts the shadow, so it never doubles */
+.hh-fly.is-docked img { filter: none; }
 .hh.is-live .hh-b--first img { visibility: hidden; }
-.hh.is-live .hh-b--first .hh-rim { display: none; }
 @media (max-width: 760px) {
   .hh-stage { --fs: min(15.4vw, 8.4svh); padding-top: calc(var(--hdr, var(--header-h)) + clamp(14px, 2.6vh, 26px)); }
   .hh-title br.hh-d { display: none; } .hh-title { max-width: 9ch; }
@@ -131,7 +125,7 @@
 @media (max-width: 760px) { :lang(ar) .hh-title { font-size: 12vw; max-width: none; } :lang(ar) .hh-title br.hh-d { display: inline; } }
 :lang(ar) .hh-eyebrow, :lang(ar) .hh-lab, :lang(ar) .hh-btn { letter-spacing: 0; }
 @media (prefers-reduced-motion: reduce) {
-  .hh-title .hh-w > span, .hh-b img, .hh-b::before, .hh-rim, .ho-o, .ho-p, .ho-spin, .ho-g { animation: none; }
+  .hh-title .hh-w > span, .hh-b img, .hh-b::before, .ho-o, .ho-p, .ho-spin, .ho-g { animation: none; }
   .ho-g { display: none; }
 }
 </style>
@@ -167,7 +161,7 @@
         {%- assign img = 'cut-' | append: h | append: '.webp' | asset_url -%}
         {%- assign st = forloop.index -%}
         <li class="hh-b{% if forloop.first %} hh-b--first{% endif %}" data-step="{{ st }}" style="--h: {{ hs[forloop.index0] }}; --i: {{ forloop.index0 }}">
-          <a href="{{ p.url }}"><img src="{{ img }}" alt="" width="357" height="1100" fetchpriority="high"><span class="hh-rim" aria-hidden="true" style="-webkit-mask-image: url('{{ img }}'); mask-image: url('{{ img }}')"></span><span class="visually-hidden">{{ p.title | escape }}</span></a>
+          <a href="{{ p.url }}"><img src="{{ img }}" alt="" width="357" height="1100" fetchpriority="high"><span class="visually-hidden">{{ p.title | escape }}</span></a>
           <span class="hh-lab" aria-hidden="true"><b>0{{ st }}</b>{{ p.metafields.bts.step_label.value | default: p.title | escape }}</span>
         </li>
       {%- endfor -%}
@@ -177,7 +171,7 @@
     {%- assign fly_src = first_cut | image_url: width: 900 -%}
     <div class="hh-fly" aria-hidden="true">
       <img src="{{ fly_src }}" alt="" width="{{ first_cut.width }}" height="{{ first_cut.height }}" fetchpriority="high">
-      <span class="hh-rim" style="--i: 0; -webkit-mask-image: url('{{ fly_src }}'); mask-image: url('{{ fly_src }}')"></span>
+      
     </div>
   {%- endif -%}
 </section>
@@ -234,9 +228,9 @@
     const s0 = Lh / (fh * (V[3] - V[1]));
     G = { D, s0, tx0: Lx - fx - s0 * fw * V[0], ty0: Ly - fy - s0 * fh * V[1], W: innerWidth, r: orbL.offsetWidth / 2, cx: fw / 2, cy: fh / 2 };
     fly.style.left = fx + 'px'; fly.style.top = fy + 'px'; fly.style.width = fw + 'px'; fly.style.height = fh + 'px'; fly.style.setProperty('--s', s0.toFixed(4));
-    need = false; last = {};
+    need = false; last = {}; wasDocked = null;
   }
-  let queued = false;
+  let queued = false, wasDocked = null, dockTok = 0;
   function frame() {
     queued = false;
     if (need) measure(); if (!G) return;
@@ -244,10 +238,15 @@
     // one transform on one layer: glide, grow and a slight tilt about the bottle's centre (the picture itself is never redrawn)
     const tilt = -sign * 7 * Math.sin(Math.PI * e);
     put(fly, 'transform', `translate3d(${(G.tx0 * (1 - e)).toFixed(2)}px, ${(G.ty0 * (1 - e)).toFixed(2)}px, 0) scale(${sc.toFixed(4)})` + (Math.abs(tilt) > .01 ? ` translate(${G.cx.toFixed(1)}px, ${G.cy.toFixed(1)}px) rotate(${tilt.toFixed(2)}deg) translate(${(-G.cx).toFixed(1)}px, ${(-G.cy).toFixed(1)}px)` : ''));
-    // the hand-over: the section's own cleanser appears the moment it pins; the flying one (identical, same place)
-    // stays a little longer, so there is never a frame with neither
-    put(dimg, 'opacity', y >= G.D - .5 ? '' : '0');
-    put(fly, 'visibility', y > G.D + 80 ? 'hidden' : 'visible');
+    // the hand-over: the section's own cleanser appears the moment it pins and takes over from the flying one
+    // (two frames of overlap, nothing more: just enough that no frame is ever left without a cleanser)
+    const docked = y >= G.D - .5;
+    if (docked !== wasDocked) {
+      wasDocked = docked; dimg.style.opacity = docked ? '' : '0'; fly.classList.toggle('is-docked', docked);
+      const tok = ++dockTok;
+      if (docked) requestAnimationFrame(() => requestAnimationFrame(() => { if (tok === dockTok) fly.style.visibility = 'hidden'; }));
+      else fly.style.visibility = '';
+    }
     const f = clamp(1 - P * 5).toFixed(3); fades.forEach((el) => put(el, '--f', f));
     // the suns roll off: each turns by the distance it travels (angle = distance / radius)
     const o = io(clamp(P / .7)) * G.W * .75, turn = o / G.r * 180 / Math.PI;

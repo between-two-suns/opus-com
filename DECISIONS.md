@@ -192,4 +192,8 @@ Each entry: decision · why · reversibility. Newest last.
     - **Cheaper drawing:** the spheres' light and the packs' bounce light use plain transparency instead of blend modes. The sphere no longer clips its turning surface. The dew glint layer is removed after it plays once.
     - **Kept:** roll in, roll off, the hand-off itself and the 01–04 landing.
     - **Verified on the real store:** frame analysis of desktop, phone and Arabic phone recordings finds no cleanser dropouts. An Arabic dropout seen once was traced to the recording tool's own screenshot (it disappears without it), and a real resize mid-entrance does not restart anything.
+142. **Owner: the colour reflection on the packs looked weird and glitchy, and the hand-off made a strange shadow.**
+    - **Bounce light removed completely** (139/141): the packs show their true colours.
+    - **The shadow was doubling:** during the hand-over overlap (141) both cleansers drew a drop shadow, and Four steps snaps back to step 01 when scrolling stops nearby, so the overlap could sit there at rest. Now the overlap lasts two frames only (just enough that no frame is empty), the flying copy casts no shadow while it does, and then it is removed. Only the section's own bottle and its single shadow remain.
+    - **Verified:** a pixel comparison at rest shows the overlap identical to the section alone. On the real store, the flying copy is hidden at rest in Four steps and frame analysis of desktop, phone and Arabic phone recordings finds no dropouts.
 
