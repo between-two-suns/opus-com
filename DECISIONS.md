@@ -374,3 +374,42 @@ Each entry: decision · why · reversibility. Newest last.
     - Also fixed: the sticky time pill (08:00…20:00) covered the "Then tomorrow" eyebrow. It now fades away once the closing section reaches the upper 60% of the screen.
     - Verified locally and on the real store (390px EN and AR): pill opacity 0 at the close, 2 columns, white numerals. Flows 288/288.
     - Staging MD5s: climate-story `a127f5c7…`, pages.css `f0a098e2…`. Live unchanged.
+
+158. **Owner: the add to bag interaction is old-school, basic and glitchy; it needs to be world-class, something that feels good and makes people want to do it again.**
+    - **Was:**
+      - The button showed a spinner for the whole request.
+      - Only then did a shrinking copy of the pack fly in a straight-ish line.
+      - Then the full bag drawer slammed open over the page every time.
+      - The drawer's HTML swap ran mid-animation and caused the visible skips.
+    - **Now: one continuous moment (theme.js `ProductForm`, base.css "v4 add to bag")**, used everywhere a product-form exists (PDP, sticky bar, cards, Four steps, forecast, builder, Climate cards):
+      1. **Press:**
+         - The button answers instantly, with a soft fill opening from the exact tap point. There is no spinner.
+         - Double taps are ignored (`_busy`).
+         - The request runs in parallel with the motion.
+      2. **Throw:**
+         - The pack itself lifts off its photo (scale 1.07) and is thrown into the bag on a real arc: x and y run on separate layers and easings, with a slight spin, shrinking as it travels. 560–860 ms, scaled by distance.
+         - When the photo is less than half on screen (phone, scrolled to the buy box), the pack pops out of the tapped button instead.
+         - The bag's re-render is held until the landing (`Cart.holdRender`), so nothing re-lays out mid-flight.
+      3. **Catch:**
+         - The bag icon squashes and stretches.
+         - A ring in the pack's own colour opens.
+         - The brand's two arcs close around it.
+         - The count rolls from the old number to the new (`Cart.holdCount` delays the number until the pack lands).
+      4. **Confirmation card**, in place of the full drawer:
+         - "✓ Added to your bag" (the tick draws) and the product name and photo.
+         - The bag's **routine progress**: the step that just lit up fills in with a glint.
+         - The **free-delivery bar** fills from where it was to where it is.
+         - **"Complete your routine"**: the next missing step, addable from the card (it flies again and the card updates in place).
+         - **View bag (n)** and **Check out**.
+         - Phones: it slides up above the bottom bar, and you can swipe it down. Desktop: it drops from the bag.
+         - It closes after 6 s; hover or focus pauses that, and Escape closes it.
+         - Every figure is cloned from the freshly rendered bag, so nothing is invented and there is no urgency or pressure.
+         - It is a polite region (not modal) with the existing live announcement. Errors shake the button and show the message.
+    - **Reduced motion:** no throw, ring, roll or slide; the card simply appears.
+    - **Smoothness, measured on the real store** by sampling the flying pack's centre every frame:
+      - Before: per-frame jumps up to 159 px.
+      - After: speed ramps up and eases off with no sudden jumps (max 67 px/frame at the throw's peak speed on desktop, 74 px/frame on phone). No leftover elements.
+    - **Tests:**
+      - Flows: the "add opens drawer" steps now open the bag through the card's View bag. +7 checks: card shown, product named, routine progress, bag stays closed until asked, View bag opens it, card hides. 308/308.
+      - axe on the card in EN/AR at 390 and 1440: 0 (after wrapping the copied suggestion in a list).
+    - Staging MD5s: theme.js `aa7a1d9a…`, base.css `d98d6ac2…`, theme.liquid `92ecd84d…`. Live unchanged.

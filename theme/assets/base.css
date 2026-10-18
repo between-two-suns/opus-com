@@ -1085,3 +1085,97 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 .cart-drawer .cart-upsell > .cart-lines { margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
 .cart-drawer .drawer__body { --gutter: clamp(16px, 4.2vw, 56px); }
 @media (min-width: 750px) { .cart-drawer .drawer__body { --gutter: 56px; } }
+
+/* ==========================================================================
+   v4 add to bag (theme.js): press → throw → catch → the confirmation card
+   ========================================================================== */
+/* the button answers under the finger: a soft fill opens from the tap point while the bag updates (no spinner) */
+.btn.is-adding { position: relative; overflow: hidden; }
+.btn.is-adding::before {
+  content: ''; position: absolute; z-index: 0; inset-block-start: var(--py, 50%); inset-inline-start: var(--px, 50%); inline-size: 12px; block-size: 12px; border-radius: 50%;
+  background: rgba(255, 255, 255, .28); translate: -50% -50%; pointer-events: none; animation: btn-fill 900ms cubic-bezier(.2, .7, .3, 1) forwards;
+}
+[dir='rtl'] .btn.is-adding::before { inset-inline-start: auto; left: var(--px, 50%); }
+.btn--secondary.is-adding::before, .btn--sku.is-adding::before { background: rgba(32, 35, 58, .12); }
+@keyframes btn-fill { to { inline-size: 520px; block-size: 520px; opacity: .7; } }
+.btn.is-adding { transform: scale(.985); transition: transform 160ms var(--ease-out); }
+/* "✓ Added" rolls up into place */
+.btn.is-added::after { animation: added-roll 420ms cubic-bezier(.2, 1.2, .4, 1) both; }
+@keyframes added-roll { from { opacity: 0; transform: translateY(70%); } to { opacity: 1; transform: none; } }
+.btn.is-added::before { inset-block-start: var(--py, 50%); inset-inline-start: var(--px, 50%); inset-block-end: auto; inset-inline-end: auto; inline-size: 40px; block-size: 40px; border-radius: 50%; translate: -50% -50%; }
+
+/* the throw */
+.fly { position: fixed; z-index: 120; inset: auto; pointer-events: none; will-change: transform; filter: none; }
+.fly__in { inline-size: 100%; block-size: 100%; will-change: transform, opacity; filter: drop-shadow(0 18px 20px rgba(32, 35, 58, .28)); }
+.fly__in img { inline-size: 100%; block-size: 100%; object-fit: contain; border-radius: 14px; }
+/* when the photo is off screen the pack rises out of the button: it starts small and pops to size */
+.fly__in--pop { animation: fly-pop 260ms cubic-bezier(.2, 1.4, .4, 1) both; }
+@keyframes fly-pop { from { scale: .2; opacity: 0; } }
+/* the catch */
+.bag-ring { position: fixed; z-index: 119; inline-size: 40px; block-size: 40px; border-radius: 50%; border: 2px solid var(--ring, var(--c-ink)); box-shadow: 0 0 0 6px color-mix(in srgb, var(--ring, var(--c-ink)) 25%, transparent); pointer-events: none; translate: none; }
+.cart-count .roll { display: block; block-size: 19px; overflow: hidden; }
+.cart-count .roll > span { display: block; block-size: 19px; animation: count-roll 480ms cubic-bezier(.3, 1.25, .5, 1) both; }
+@keyframes count-roll { from { transform: translateY(0); } to { transform: translateY(-19px); } }
+
+/* the confirmation card: above the dock on phones, under the bag on desktop */
+.added { position: fixed; z-index: 110; inset-inline: 10px; inset-block-end: calc(var(--dock-h, 0px) + 10px); display: flex; justify-content: center; pointer-events: none; }
+.added[hidden] { display: none; }
+.added__card { pointer-events: auto; inline-size: min(100%, 420px); display: grid; gap: 12px; padding: 14px; border-radius: 26px; background: #fff; color: var(--c-ink);
+  box-shadow: 0 0 0 1px rgba(32, 35, 58, .06), 0 30px 60px -22px rgba(32, 35, 58, .45); transition: transform 200ms var(--ease-out); }
+.added.is-in .added__card { animation: added-up 560ms cubic-bezier(.2, 1.25, .35, 1) both; }
+.added.is-out .added__card { animation: added-down 300ms cubic-bezier(.5, 0, .75, 0) both; }
+@keyframes added-up { from { transform: translateY(calc(100% + 30px)); } to { transform: none; } }
+@keyframes added-down { to { transform: translateY(calc(100% + 30px)); opacity: .4; } }
+@media (min-width: 990px) {
+  .added { inset-block-end: auto; inset-block-start: 92px; inset-inline: auto; inset-inline-end: max(var(--gutter), calc((100vw - 1240px) / 2)); justify-content: flex-end; }
+  .added__card { inline-size: 380px; transform-origin: top right; }
+  [dir='rtl'] .added__card { transform-origin: top left; }
+  @keyframes added-up { from { transform: translateY(-14px) scale(.94); opacity: 0; } to { transform: none; opacity: 1; } }
+  @keyframes added-down { to { transform: translateY(-10px) scale(.96); opacity: 0; } }
+}
+.added__head { display: grid; grid-template-columns: 52px minmax(0, 1fr) 36px; gap: 12px; align-items: center; }
+.added__thumb { position: relative; inline-size: 52px; block-size: 52px; border-radius: 16px; overflow: hidden; background: color-mix(in srgb, var(--sku, var(--c-paper)) 32%, #fff); }
+.added__thumb img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.added.is-in .added__thumb img { animation: thumb-in 520ms 120ms cubic-bezier(.2, 1.3, .4, 1) both; }
+@keyframes thumb-in { from { transform: scale(.4) rotate(-12deg); opacity: 0; } }
+.added__titles { min-inline-size: 0; display: grid; gap: 2px; }
+.added__eyebrow { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--c-success, #1d7a4a); }
+:lang(ar) .added__eyebrow { letter-spacing: 0; text-transform: none; font-size: 13px; }
+.added__eyebrow svg { inline-size: 16px; block-size: 16px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.added.is-in .added__eyebrow svg path { animation: tick 420ms 260ms var(--ease-out) both; }
+@keyframes tick { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.added__name { margin: 0; font-weight: 700; font-size: 15px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.added__close { inline-size: 36px; block-size: 36px; border: 0; border-radius: 50%; background: var(--c-paper, #f4efe7); color: var(--c-ink); display: grid; place-items: center; cursor: pointer; }
+.added__close svg { inline-size: 16px; block-size: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.added__routine:empty, .added__ship:empty, .added__next:empty { display: none; }
+.added__routine .cart-routine__label { margin-block-end: 6px; font-size: 13px; }
+/* the step this add lit up fills in, with a glint */
+.added .cart-progress span { position: relative; overflow: hidden; }
+.added .cart-progress span.is-new { animation: seg-in 700ms 280ms cubic-bezier(.2, .9, .3, 1) both; transform-origin: 0 50%; }
+[dir='rtl'] .added .cart-progress span.is-new { transform-origin: 100% 50%; }
+.added .cart-progress span.is-new::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .9), transparent); translate: -100% 0; animation: glint 900ms 760ms ease-out both; }
+@keyframes seg-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes glint { to { translate: 100% 0; } }
+.added .incentive { margin: 0; padding: 10px 12px; border-radius: 14px; background: var(--c-paper, #f4efe7); }
+.added .incentive__meter span { transition: inline-size 900ms 220ms cubic-bezier(.2, .8, .3, 1); }
+.added .incentive.is-new .incentive__msg { animation: unlock 700ms 400ms cubic-bezier(.2, 1.4, .4, 1) both; }
+@keyframes unlock { from { transform: scale(.9); opacity: 0; } }
+.added__next { display: grid; gap: 8px; }
+.added__next-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.added__next-label { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--c-muted); }
+:lang(ar) .added__next-label { letter-spacing: 0; text-transform: none; font-size: 13px; }
+.added .cart-upsell__item { flex: none; grid-template-columns: 48px minmax(0, 1fr) auto; grid-template-rows: none; padding: 8px 10px; border-radius: 16px; }
+.added .cart-upsell__item .cart-upsell__img { grid-row: auto; inline-size: 48px; block-size: 48px; border-radius: 12px; overflow: hidden; }
+.added .cart-upsell__item .cart-upsell__img--photo img { inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.added .cart-upsell__item product-form { grid-column: auto; }
+.added .cart-upsell__item .btn { --btn-bg: var(--sku); --btn-bd: var(--sku); --btn-fg: var(--c-ink); }
+.added .cart-upsell__why { display: none; }
+.added .cart-upsell__name { font-size: 14px; }
+.added__ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.added__ctas form { display: contents; }
+.added__ctas .btn { inline-size: 100%; justify-content: center; }
+@media (prefers-reduced-motion: reduce) {
+  .btn.is-adding::before, .btn.is-added::after, .cart-count .roll > span, .added.is-in .added__card, .added.is-out .added__card,
+  .added.is-in .added__thumb img, .added.is-in .added__eyebrow svg path, .added .cart-progress span.is-new, .added .cart-progress span.is-new::after, .added .incentive.is-new .incentive__msg { animation: none; }
+  .added .incentive__meter span { transition: none; }
+}

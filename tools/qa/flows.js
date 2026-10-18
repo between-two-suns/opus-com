@@ -6,6 +6,13 @@ const results = [];
 const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'} ${name}${extra ? ' — ' + extra : ''}`);
 const browser = await chromium.launch();
 const count = (page) => page.$eval('[data-cart-count]', (e) => e.textContent.trim());
+// After an add the bag no longer opens by itself: a confirmation card appears and its View bag opens the full bag.
+const openBag = async (page, timeout = 5000) => {
+  await page.waitForSelector('.added:not([hidden]) [data-added-bag]', { timeout }).catch(() => {});
+  if (await page.$eval('#CartDrawer', (d) => d.open).catch(() => false)) return;
+  await page.locator('.added:not([hidden]) [data-added-bag]').click({ timeout }).catch(() => {});
+  await page.waitForSelector('#CartDrawer[open]', { timeout }).catch(() => {});
+};
 
 for (const loc of ['', '/ar']) {
   for (const vp of [{ width: 390, height: 844, isMobile: true, hasTouch: true }, { width: 1440, height: 900 }]) {
@@ -20,8 +27,14 @@ for (const loc of ['', '/ar']) {
     // PDP add to bag
     await page.goto(`${BASE}${loc}/products/clarity-serum`, { waitUntil: 'networkidle' });
     await page.click('.pdp__atc');
-    await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
-    ok(`${tag} PDP add opens drawer`, await page.$eval('#CartDrawer', (d) => d.open));
+    await page.waitForSelector('.added:not([hidden])', { timeout: 5000 }).catch(() => {});
+    ok(`${tag} PDP add shows the added card`, await page.$eval('.added', (c) => !c.hidden).catch(() => false));
+    ok(`${tag} added card names the product`, /clarity|كلاريتي/i.test(await page.$eval('.added__name', (e) => e.textContent).catch(() => '')));
+    ok(`${tag} added card shows routine progress`, (await page.$$('.added .cart-progress span.is-on')).length === 1);
+    ok(`${tag} bag stays closed until asked`, !(await page.$eval('#CartDrawer', (d) => d.open)));
+    await openBag(page);
+    ok(`${tag} View bag opens drawer`, await page.$eval('#CartDrawer', (d) => d.open));
+    ok(`${tag} added card hides when the bag opens`, await page.$eval('.added', (c) => c.hidden));
     const lines = await page.$$eval('#CartDrawer .cart-line', (l) => l.length);
     ok(`${tag} drawer shows 1 line`, lines === 1, `lines=${lines}`);
     ok(`${tag} header count updated`, (await count(page)) === '1', `count=${await count(page)}`);
@@ -70,7 +83,7 @@ for (const loc of ['', '/ar']) {
     ok(`${tag} forecast says which bundle it matched`, await page.locator('#forecast [data-bundle-match]').isVisible());
     const forecastLines0 = Number(await count(page)) ? (await page.evaluate(() => fetch('/cart.js').then((r) => r.json()))).items.length : 0;
     await page.click('[data-forecast-cta]');
-    await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
+    await openBag(page, 4000);
     const afterForecast = await page.$$eval('#CartDrawer .cart-line', (l) => l.length);
     ok(`${tag} forecast adds its routine as one bundle`, afterForecast === forecastLines0 + 1, `lines ${forecastLines0}→${afterForecast}`);
     await page.keyboard.press('Escape');
@@ -87,7 +100,7 @@ for (const loc of ['', '/ar']) {
     await page.waitForFunction((n) => Number(document.querySelector('[data-cart-count]').textContent.trim() || 0) === n + 1, before, { timeout: 5000 }).catch(() => {});
     const after = Number(await count(page));
     ok(`${tag} home set card adds 1 bundle`, after - before === 1, `${before}→${after}`);
-    await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
+    await openBag(page, 4000);
     await page.waitForTimeout(300);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
@@ -164,7 +177,7 @@ for (const loc of ['', '/ar']) {
     ok(`${tag} climate switch lifts AC steps (2,3)`, keys === '2,3', keys);
     const c0 = Number(await count(page));
     await cs.locator('[data-cta]').click();
-    await page.waitForSelector('#CartDrawer[open]', { timeout: 5000 }).catch(() => {});
+    await openBag(page, 5000);
     ok(`${tag} climate switch adds its 2 steps`, Number(await count(page)) - c0 === 2, `${c0}→${await count(page)}`);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
@@ -173,7 +186,7 @@ for (const loc of ['', '/ar']) {
     ok(`${tag} climate switch notes the matching duo`, await cs.locator('[data-bundle-match]').isVisible());
     const c1 = Number(await count(page));
     await cs.locator('[data-cta]').click();
-    await page.waitForSelector('#CartDrawer[open]', { timeout: 5000 }).catch(() => {});
+    await openBag(page, 5000);
     ok(`${tag} climate switch (sun) adds 1 duo`, Number(await count(page)) - c1 === 1, `${c1}→${await count(page)}`);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
@@ -207,7 +220,7 @@ for (const loc of ['', '/ar']) {
     ok(`${tag} builder button fits its panel`, await rb.locator('[data-cta]').evaluate((b) => b.getBoundingClientRect().right <= b.closest('.builder__summary').getBoundingClientRect().right + 1));
     const b0 = Number(await count(page));
     await rb.locator('[data-cta]').click();
-    await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
+    await openBag(page, 4000);
     ok(`${tag} builder adds the matching bundle`, Number(await count(page)) - b0 === 1, `${b0}→${await count(page)}`);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
@@ -216,7 +229,7 @@ for (const loc of ['', '/ar']) {
     const duo = page.locator('.bundle[data-count="2"]').first();
     const b1 = Number(await count(page));
     await duo.locator('button[type="submit"]').click();
-    await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
+    await openBag(page, 4000);
     ok(`${tag} duo set adds 1 bundle`, Number(await count(page)) - b1 === 1, `${b1}→${await count(page)}`);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
@@ -238,7 +251,7 @@ for (const loc of ['', '/ar']) {
     await page.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
     await page.goto(`${BASE}${loc}/products/clear-protect-duo`, { waitUntil: 'networkidle' });
     await page.click('.pdp__atc');
-    await page.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
+    await openBag(page, 4000);
     ok(`${tag} bag offers the Day Ritual upgrade`, await page.locator('#CartDrawer .cart-upgrade').isVisible());
     await page.locator('#CartDrawer [data-upgrade-line]').click();
     await page.waitForFunction(() => !document.querySelector('#CartDrawer .cart-upgrade'), null, { timeout: 5000 }).catch(() => {});

@@ -162,6 +162,7 @@ const Cart = {
   },
   render(sections) {
     if (!sections) return;
+    if (Cart.holdRender) { const wait = Cart.holdRender; Cart.holdRender = null; return wait.then(() => Cart.render(sections)); }
     const html = sections['cart-drawer'];
     if (html) {
       const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -181,6 +182,8 @@ const Cart = {
     }
   },
   updateCount(count) {
+    // while a pack is flying the number waits, and rolls over when it lands (rollCount)
+    if (Cart.holdCount) { Cart.pendingCount = count; return; }
     $$('[data-cart-count]').forEach((el) => {
       el.dataset.count = count;
       el.textContent = count > 0 ? count : '';
@@ -192,7 +195,7 @@ const Cart = {
   },
   async add(items) {
     const data = await Cart.request(BTS.routes.cartAdd + '.js', { items });
-    Cart.render(data.sections);
+    await Cart.render(data.sections);
     // Spec limits: 5 per single, 3 per bundle. Trim any line the add pushed over, and say why.
     for (const it of data.items || []) {
       const max = it.product_type === 'Bundle' ? 3 : 5;
@@ -231,54 +234,110 @@ function formToItems(form) {
 }
 
 
-/* ---------- Add to bag: the bottle flies into the bag, and the brand mark closes around it ---------- */
+/* ---------- Add to bag: one continuous moment ----------
+   Tap → the button answers at once (press + a fill from the tap point, no spinner) and the request goes out in
+   parallel. The pack itself lifts off its photo and is thrown into the bag on a real arc; the bag catches it
+   (squash, ring in the pack colour, the brand's two arcs close around it) and the count rolls to the new number.
+   Then a small card confirms it in place of the full bag: the routine step that just lit up, the free-delivery
+   bar filling from where it was, the next step one tap away, and View bag / Check out. Nothing here is a timer,
+   a stock claim or any other pressure; the card says only what is true of this bag. */
 const isShown = (el) => !!el && (el.checkVisibility ? el.checkVisibility() : el.getClientRects().length > 0);
 function visibleBag() {
   return $$('[data-bag-target], #CartToggle').find(isShown) || document.getElementById('CartToggle');
 }
-const inView = (el) => { const r = el?.getBoundingClientRect(); return !!r && r.width > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth; };
+const inView = (el) => { const r = el?.getBoundingClientRect(); return !!r && r.width > 8 && r.height > 8 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth; };
+const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 function sourceImage(form, button) {
-  const scope = (button?.closest('sticky-atc') ? null : form.closest('.dayline__step, .card, .bundle, .cart-upsell__item, routine-builder, .cs'));
+  const sticky = !!button?.closest('sticky-atc');
+  const scope = sticky ? null : form.closest('.dayline__step, .card, .bundle, .cart-upsell__item, routine-builder, .cs, .added');
   const candidates = [
-    scope?.querySelector('.dayline__bottle img, .card__media img, .bundle__packs img, .builder__slot.is-in img, .cs__bottle.is-key img'),
+    scope?.querySelector('.dayline__bottle img, .card__media img, .bundle__packs img, .builder__slot.is-in img, .cs__bottle.is-key img, .cart-upsell__img img'),
+    // on a product page the big pack on the stage is the one that flies, whichever button was tapped
+    $('.gallery__slide--studio .gallery__cutout'),
     $('.sticky-atc.is-visible .sticky-atc__thumb img'),
-    $('.gallery__slide--studio img, .gallery__cutout, .pdp__gallery img'),
+    $('.pdp__gallery img'),
   ];
-  return candidates.find((el) => el && inView(el));
+  return candidates.find((el) => el && inView(el) && (el.currentSrc || el.src));
 }
-function flyToBag(form, button) {
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const img = sourceImage(form, button);
-  const bag = visibleBag();
-  if (reduce || !img || !bag) return Promise.resolve();
-  const a = img.getBoundingClientRect();
+// how much of an element is on screen (0–1)
+function shownShare(el) {
+  const r = el.getBoundingClientRect();
+  const w = Math.max(0, Math.min(r.right, innerWidth) - Math.max(r.left, 0));
+  const h = Math.max(0, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0));
+  return r.width && r.height ? (w * h) / (r.width * r.height) : 0;
+}
+// the pack picture to throw and where it leaves from: its photo when that is mostly in view, otherwise it rises out of the button
+function launch(form, button) {
+  const img = sourceImage(form, button) || $('.gallery__slide--studio .gallery__cutout, .pdp__gallery img');
+  if (!img || !(img.currentSrc || img.src)) return null;
+  if (shownShare(img) >= 0.5) return { src: img.currentSrc || img.src, rect: img.getBoundingClientRect(), ratio: img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 0 };
+  const b = button.getBoundingClientRect();
+  const ir = img.getBoundingClientRect();
+  const ratio = ir.width && ir.height ? ir.width / ir.height : 0.6;
+  const h = Math.min(120, Math.max(72, b.height * 2));
+  return { src: img.currentSrc || img.src, rect: { left: b.left + b.width / 2 - (h * ratio) / 2, top: b.top + b.height / 2 - h / 2, width: h * ratio, height: h }, fromButton: true };
+}
+
+/* The throw: x glides, y rises then falls (separate easings on nested layers make a true arc). */
+function flyToBag(src, bag) {
+  const a = src.rect;
   const b = bag.getBoundingClientRect();
-  if (!a.width || !a.height) return Promise.resolve();
-  const h = Math.min(a.height, 260);
+  const h = Math.min(a.height, 220);
   const w = (a.width / a.height) * h;
-  const sx = a.left + a.width / 2 - w / 2;
-  const sy = a.top + a.height / 2 - h / 2;
-  const tx = b.left + b.width / 2 - w / 2;
-  const ty = b.top + b.height / 2 - h / 2;
-  const fly = document.createElement('div');
-  fly.className = 'fly';
-  fly.setAttribute('aria-hidden', 'true');
-  fly.style.cssText = `width:${w}px;height:${h}px`;
-  fly.innerHTML = `<img src="${img.currentSrc || img.src}" alt="">`;
-  document.body.appendChild(fly);
-  const mx = (sx + tx) / 2;
-  const my = Math.min(sy, ty) - 90;
-  const anim = fly.animate([
-    { transform: `translate(${sx}px, ${sy}px) scale(1) rotate(0deg)`, opacity: 1 },
-    { transform: `translate(${mx}px, ${my}px) scale(.55) rotate(-12deg)`, opacity: 1, offset: 0.5 },
-    { transform: `translate(${tx}px, ${ty}px) scale(.12) rotate(0deg)`, opacity: 0.4 },
-  ], { duration: 680, easing: 'cubic-bezier(.55, 0, .3, 1)', fill: 'forwards' });
+  const sx = a.left + a.width / 2, sy = a.top + a.height / 2;
+  const tx = b.left + b.width / 2, ty = b.top + b.height / 2;
+  const dx = tx - sx, dy = ty - sy;
+  const dist = Math.hypot(dx, dy);
+  const lift = 150;
+  const dur = Math.round(Math.min(860, Math.max(560, 420 + dist * 0.35)));
+  const arc = Math.min(160, 70 + Math.abs(dx) * 0.12);
+  const end = Math.max(0.1, 30 / h);
+  const outer = document.createElement('div');
+  outer.className = 'fly';
+  outer.setAttribute('aria-hidden', 'true');
+  outer.style.cssText = `left:${sx - w / 2}px;top:${sy - h / 2}px;width:${w}px;height:${h}px`;
+  outer.innerHTML = `<div class="fly__in${src.fromButton ? ' fly__in--pop' : ''}"><img src="${src.src}" alt=""></div>`;
+  document.body.appendChild(outer);
+  const inner = outer.firstElementChild;
+  const total = lift + dur;
+  const k = lift / total;
+  const peakY = Math.min(0, dy) - arc;
+  const spin = dx > 0 ? 14 : -14;
+  outer.animate([{ transform: 'translateX(0)' }, { transform: `translateX(${dx}px)` }],
+    { duration: dur, delay: lift, easing: 'cubic-bezier(.4, 0, .6, 1)', fill: 'both' });
+  const anim = inner.animate([
+    { transform: 'translateY(0) scale(1) rotate(0deg)', opacity: 1, easing: 'cubic-bezier(.3, .6, .5, 1)' },
+    { transform: `translateY(-10px) scale(1.07) rotate(${-spin * 0.25}deg)`, opacity: 1, offset: k, easing: 'cubic-bezier(.42, .12, .32, 1)' },
+    { transform: `translateY(${peakY}px) scale(${(1 + end) / 2}) rotate(${spin * 0.5}deg)`, opacity: 1, offset: k + (1 - k) * 0.42, easing: 'cubic-bezier(.55, 0, .85, .35)' },
+    { transform: `translateY(${dy * 0.96}px) scale(${end * 1.15}) rotate(${spin}deg)`, opacity: 1, offset: 0.93 },
+    { transform: `translateY(${dy}px) scale(${end}) rotate(${spin}deg)`, opacity: 0 },
+  ], { duration: total, fill: 'forwards' });
   return new Promise((resolve) => {
-    const done = () => { fly.remove(); closeMark(b); resolve(); };
+    let settled = false;
+    const done = () => { if (settled) return; settled = true; outer.remove(); resolve(); };
     anim.onfinish = done;
     anim.oncancel = done;
-    setTimeout(resolve, 760);
+    setTimeout(done, total + 120);
   });
+}
+
+/* The catch: the bag gives a little, a ring in the pack colour opens, the two arcs close around it. */
+function catchInBag(bag, tint) {
+  if (!bag) return;
+  const icon = bag.querySelector('svg') || bag;
+  icon.animate?.([
+    { transform: 'scale(1, 1)' }, { transform: 'scale(1.18, .82) translateY(2px)', offset: 0.22 },
+    { transform: 'scale(.92, 1.1) translateY(-2px)', offset: 0.5 }, { transform: 'scale(1.03, .98)', offset: 0.75 }, { transform: 'scale(1, 1)' },
+  ], { duration: 560, easing: 'ease-out' });
+  const r = bag.getBoundingClientRect();
+  const ring = document.createElement('span');
+  ring.className = 'bag-ring';
+  ring.setAttribute('aria-hidden', 'true');
+  ring.style.cssText = `left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;${tint ? `--ring:${tint}` : ''}`;
+  document.body.appendChild(ring);
+  ring.animate([{ transform: 'translate(-50%, -50%) scale(.4)', opacity: 0.9 }, { transform: 'translate(-50%, -50%) scale(2.6)', opacity: 0 }],
+    { duration: 700, easing: 'cubic-bezier(.2, .7, .3, 1)' }).onfinish = () => ring.remove();
+  closeMark(r);
 }
 function closeMark(rect) {
   const tpl = document.getElementById('BtsMark');
@@ -296,15 +355,161 @@ function closeMark(rect) {
   if (last) last.onfinish = () => mark.remove(); else mark.remove();
 }
 
-/* The add-to-bag moment: the button fills from the tap point, a check draws in, then it settles back. */
+/* The count rolls to its new number (old slides up and out, new slides in). */
+function rollCount(count) {
+  $$('[data-cart-count]').forEach((el) => {
+    const from = Number(el.dataset.count || 0);
+    el.dataset.count = count;
+    if (reduceMotion() || from === count || !isShown(el.closest('a, button') || el)) { el.textContent = count > 0 ? count : ''; return; }
+    el.innerHTML = `<span class="roll"><span>${from || ''}</span><span>${count || ''}</span></span>`;
+    el.classList.remove('is-bump'); void el.offsetWidth; el.classList.add('is-bump');
+    setTimeout(() => { if (el.dataset.count == String(count)) el.textContent = count > 0 ? count : ''; }, 560);
+  });
+}
+
+/* The button's own moment: a fill from the tap point while the bag updates, then "✓ Added". */
+function pressFrom(button, event) {
+  const r = button.getBoundingClientRect();
+  const x = event?.clientX ? event.clientX - r.left : r.width / 2;
+  const y = event?.clientY ? event.clientY - r.top : r.height / 2;
+  button.style.setProperty('--px', `${x}px`);
+  button.style.setProperty('--py', `${y}px`);
+  button.classList.remove('is-added');
+  button.classList.add('is-adding');
+}
 function celebrate(button) {
-  if (!button || !button.classList.contains('btn')) return;
+  if (!button) return;
+  button.classList.remove('is-adding');
+  if (!button.classList.contains('btn')) return;
   button.classList.remove('is-added');
   void button.offsetWidth;
   button.classList.add('is-added');
   button.closest('.sticky-atc')?.classList.add('is-added');
   clearTimeout(button._addedT);
-  button._addedT = setTimeout(() => { button.classList.remove('is-added'); button.closest('.sticky-atc')?.classList.remove('is-added'); }, 1700);
+  button._addedT = setTimeout(() => { button.classList.remove('is-added'); button.closest('.sticky-atc')?.classList.remove('is-added'); }, 1800);
+}
+
+/* The confirmation card. It is rebuilt from the freshly rendered bag, so every figure on it is the bag's own. */
+const AddedCard = {
+  el: null, timer: 0,
+  build() {
+    if (this.el) return this.el;
+    const s = BTS.strings || {};
+    const el = document.createElement('div');
+    el.className = 'added';
+    el.setAttribute('role', 'region');
+    el.setAttribute('aria-label', s.added || 'Added to your bag');
+    el.hidden = true;
+    el.innerHTML = `
+      <div class="added__card">
+        <div class="added__head">
+          <span class="added__thumb" data-thumb></span>
+          <div class="added__titles">
+            <p class="added__eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.2 4.2L19 7" pathLength="1"/></svg><span>${s.added || 'Added to your bag'}</span></p>
+            <p class="added__name" data-name></p>
+          </div>
+          <button type="button" class="added__close" data-added-close aria-label="${s.close || 'Close'}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        </div>
+        <div class="added__routine" data-routine></div>
+        <div class="added__ship" data-ship></div>
+        <div class="added__next" data-next></div>
+        <div class="added__ctas">
+          <button type="button" class="btn btn--secondary btn--small" data-added-bag></button>
+          <form action="${BTS.routes.cart}" method="post"><button type="submit" name="checkout" class="btn btn--small">${s.checkout || 'Check out'}</button></form>
+        </div>
+      </div>`;
+    document.body.appendChild(el);
+    el.addEventListener('click', (e) => {
+      if (e.target.closest('[data-added-close]')) this.hide();
+      if (e.target.closest('[data-added-bag]')) { this.hide(true); openDialog('CartDrawer', visibleBag()); }
+    });
+    el.addEventListener('pointerenter', () => this.pause());
+    el.addEventListener('pointerleave', () => this.arm());
+    el.addEventListener('focusin', () => this.pause());
+    el.addEventListener('focusout', (e) => { if (!el.contains(e.relatedTarget)) this.arm(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !el.hidden) this.hide(); });
+    // swipe down to dismiss (phones)
+    let y0 = null;
+    el.addEventListener('touchstart', (e) => { y0 = e.touches[0].clientY; }, { passive: true });
+    el.addEventListener('touchmove', (e) => { if (y0 == null) return; const d = e.touches[0].clientY - y0; if (d > 0) el.firstElementChild.style.transform = `translateY(${d}px)`; }, { passive: true });
+    el.addEventListener('touchend', (e) => { const d = (e.changedTouches[0]?.clientY || 0) - (y0 ?? 0); el.firstElementChild.style.transform = ''; y0 = null; if (d > 60) this.hide(); });
+    this.el = el;
+    return el;
+  },
+  show({ name, thumb, tint, before }) {
+    const el = this.build();
+    const root = $('#CartDrawer [data-cart-root]');
+    if (!root) return;
+    const s = BTS.strings || {};
+    el.querySelector('[data-name]').textContent = name || '';
+    const th = el.querySelector('[data-thumb]');
+    th.style.setProperty('--sku', tint || 'var(--c-paper)');
+    th.innerHTML = thumb ? `<img src="${thumb}" alt="">` : '';
+    // routine: the bag's own four steps; the one this add lit up fills in
+    const routine = root.querySelector('.cart-routine');
+    const rSlot = el.querySelector('[data-routine]');
+    rSlot.replaceChildren(...(routine ? [routine.cloneNode(true)] : []));
+    rSlot.querySelectorAll('.cart-progress span.is-on').forEach((sp) => { if (!before.steps.includes(sp.dataset.step)) sp.classList.add('is-new'); });
+    // free delivery: the bar fills from where it was
+    const ship = root.querySelector('.incentive--ship');
+    const sSlot = el.querySelector('[data-ship]');
+    sSlot.replaceChildren(...(ship ? [ship.cloneNode(true)] : []));
+    const bar = sSlot.querySelector('.incentive__meter span');
+    if (bar) {
+      const to = bar.style.getPropertyValue('--v');
+      bar.style.setProperty('--v', before.ship || '0%');
+      if (ship.classList.contains('is-done') && before.shipDone === false) sSlot.firstElementChild.classList.add('is-new');
+      requestAnimationFrame(() => requestAnimationFrame(() => bar.style.setProperty('--v', to)));
+    }
+    // the next step of the routine, one tap away (the bag's own first suggestion)
+    const next = root.querySelector('.cart-upsell__item');
+    const nSlot = el.querySelector('[data-next]');
+    nSlot.replaceChildren();
+    if (next) {
+      const label = document.createElement('p');
+      label.className = 'added__next-label';
+      label.textContent = s.completeRoutine || '';
+      const list = document.createElement('ul');
+      list.className = 'added__next-list';
+      list.setAttribute('role', 'list');
+      list.append(next.cloneNode(true));
+      nSlot.append(label, list);
+    }
+    const count = Number(root.dataset.count || 0);
+    el.querySelector('[data-added-bag]').textContent = `${s.viewCart || 'View bag'} (${count})`;
+    if (el.hidden) {
+      el.hidden = false;
+      el.classList.remove('is-out');
+      void el.offsetWidth;
+      el.classList.add('is-in');
+    } else {
+      el.firstElementChild.animate?.([{ transform: 'scale(1)' }, { transform: 'scale(1.015)' }, { transform: 'scale(1)' }], { duration: 360, easing: 'ease-out' });
+    }
+    this.arm();
+  },
+  arm() { clearTimeout(this.timer); this.timer = setTimeout(() => this.hide(), 6000); },
+  pause() { clearTimeout(this.timer); },
+  hide(instant) {
+    const el = this.el;
+    if (!el || el.hidden) return;
+    clearTimeout(this.timer);
+    if (instant || reduceMotion()) { el.hidden = true; el.classList.remove('is-in', 'is-out'); return; }
+    el.classList.remove('is-in');
+    el.classList.add('is-out');
+    setTimeout(() => { if (el.classList.contains('is-out')) { el.hidden = true; el.classList.remove('is-out'); } }, 320);
+  },
+};
+document.addEventListener('dialog:open', (e) => { if (e.target.id === 'CartDrawer') AddedCard.hide(true); });
+
+/* What the bag looked like just before this add (so the card can show what changed). */
+function bagBefore() {
+  const root = $('#CartDrawer [data-cart-root]');
+  return {
+    steps: [...(root?.querySelectorAll('.cart-progress span.is-on') || [])].map((sp) => sp.dataset.step),
+    ship: root?.querySelector('.incentive--ship .incentive__meter span')?.style.getPropertyValue('--v') || '0%',
+    shipDone: !!root?.querySelector('.incentive--ship.is-done'),
+    count: Number(root?.dataset.count || $('[data-cart-count]')?.dataset.count || 0),
+  };
 }
 
 class ProductForm extends HTMLElement {
@@ -316,37 +521,63 @@ class ProductForm extends HTMLElement {
   async onSubmit(event) {
     event.preventDefault();
     const button = event.submitter || this.form.querySelector('[type="submit"]');
-    if (!button || button.disabled || button.classList.contains('is-loading')) return;
+    if (!button || button.disabled || this._busy) return;
     const items = this.itemsOverride ? this.itemsOverride() : formToItems(this.form);
     if (!items.length) return;
-    // Decide now, while attached: adds from inside a dialog (the bag's routine cards) never fly or reopen it.
+    // Adds from inside the full bag (its routine cards) stay in the bag: no flight, no card.
     const fromDialog = !!this.closest('dialog');
     const error = this.querySelector('[data-form-error]');
     if (error) { error.hidden = true; error.textContent = ''; }
-    button.classList.add('is-loading');
+    this._busy = true;
     button.setAttribute('aria-busy', 'true');
+    pressFrom(button, Cart.lastPointer);
+    const before = bagBefore();
+    const src = fromDialog ? null : launch(this, button);
+    const bag = fromDialog ? null : visibleBag();
+    const tint = getComputedStyle(this.closest('[data-step]') || this).getPropertyValue('--sku').trim();
+    const thumb = src ? src.src : '';
+    const name = this.closest('[data-product-title]')?.dataset.productTitle || '';
+    // the throw starts with the tap; the request runs alongside it
+    Cart.holdCount = !fromDialog;
+    const flight = src && bag && !reduceMotion() ? flyToBag(src, bag) : Promise.resolve();
+    // the bag's contents refresh after the landing, so nothing re-lays out the page mid-flight
+    Cart.holdRender = flight;
     try {
-      await Cart.add(items);
-      announce(BTS.strings?.added || 'Added');
-      button.classList.remove('is-loading');
-      button.removeAttribute('aria-busy');
+      const data = await Cart.add(items);
+      await flight;
+      if (!fromDialog) catchInBag(bag, tint);
+      Cart.holdCount = false;
+      rollCount(Cart.pendingCount ?? before.count);
+      Cart.pendingCount = null;
       celebrate(button);
+      announce(BTS.strings?.added || 'Added');
       this.dispatchEvent(new CustomEvent('cart:added', { bubbles: true, detail: { items } }));
       if (!fromDialog) {
-        await flyToBag(this, button);
-        if (!$('dialog[open]')) openDialog('CartDrawer', visibleBag());
+        const want = Number(items[0]?.id);
+        const line = (data?.items || []).find((it) => Number(it.variant_id ?? it.id) === want) || data?.items?.[0];
+        AddedCard.show({ name: line?.product_title || name, thumb: thumb || line?.image, tint, before });
       }
     } catch (err) {
+      await flight;
+      Cart.holdRender = null;
+      Cart.holdCount = false;
+      if (Cart.pendingCount != null) { rollCount(Cart.pendingCount); Cart.pendingCount = null; }
+      button.classList.remove('is-adding');
+      button.animate?.([{ transform: 'translateX(0)' }, { transform: 'translateX(-6px)' }, { transform: 'translateX(5px)' }, { transform: 'translateX(-3px)' }, { transform: 'translateX(0)' }], { duration: 360 });
       const msg = err.message || BTS.strings?.error;
       if (error) { error.textContent = msg; error.hidden = false; } else { toast(msg); }
       announce(msg);
     } finally {
-      button.classList.remove('is-loading');
+      Cart.holdRender = null;
+      this._busy = false;
       button.removeAttribute('aria-busy');
     }
   }
 }
 customElements.define('product-form', ProductForm);
+// where the last tap landed, so the button's fill starts under the finger
+document.addEventListener('pointerdown', (e) => { Cart.lastPointer = { clientX: e.clientX, clientY: e.clientY }; }, true);
+document.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') Cart.lastPointer = null; }, true);
 
 /* Cart drawer + cart page line controls (delegated so re-renders keep working) */
 const changeLine = debounce(async (line, qty, root) => {
@@ -521,10 +752,7 @@ if ('onpageswap' in window) {
   window.addEventListener('pageshow', clear);
 }
 
-// A bump on the bag icon (the button's own moment is celebrate(), above).
-document.addEventListener('cart:added', () => {
-  $$('[data-cart-count]').forEach((el) => { el.classList.remove('is-bump'); void el.offsetWidth; el.classList.add('is-bump'); });
-});
+
 
 /* Step-to-step reveal on product pages (cross-document view transitions; no-op where unsupported). */
 document.addEventListener('click', (e) => {

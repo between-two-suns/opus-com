@@ -118,6 +118,10 @@
         moneyFormat: {{ shop.money_format | json }},
         strings: {
           added: {{ 'cart.added' | t | replace: '&amp;', '&' | json }},
+          viewCart: {{ 'cart.view_cart' | t | replace: '&amp;', '&' | json }},
+          checkout: {{ 'cart.checkout' | t | replace: '&amp;', '&' | json }},
+          completeRoutine: {{ 'cart.complete_routine' | t | replace: '&amp;', '&' | json }},
+          close: {{ 'general.close' | t | replace: '&amp;', '&' | json }},
           error: {{ 'cart.error' | t | replace: '&amp;', '&' | json }},
           addToCart: {{ 'product.add_to_cart' | t | replace: '&amp;', '&' | json }},
           adding: {{ 'product.adding' | t | replace: '&amp;', '&' | json }},
