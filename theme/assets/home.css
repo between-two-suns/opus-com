@@ -380,6 +380,8 @@
     .js .dayline .dayline__actions .link-arrow { display: none; }
     .js .dayline .dayline__info { inset-inline-end: calc(var(--gutter) + 178px); }
     .js .dayline .dayline__benefit { display: none; }
+    /* short phone screens (in-app browsers): the pack is never taller than the room under the heading, so it can't cover it; taller phones are unchanged */
+    .js .dayline .dayline__bottle { block-size: min(42svh, 400px, calc(100svh - max(206px, 25svh) - var(--dock-h, 0px) - var(--header-h) - clamp(16px, 3svh, 36px) - 110px)); }
   }
   @media (min-width: 990px) {
     .js .dayline .dayline__track { block-size: 420svh; }

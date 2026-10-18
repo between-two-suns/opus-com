@@ -57,6 +57,7 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - **)( system preview (2026-10-17, staging only at `/?view=system`):** the hand-off hero, "Four steps", then "A day between two suns": photos framed by the mark, the mark as the transition between chapters and as the progress marker. See DECISIONS 134
 - **Two suns hero preview (2026-10-17, staging only at `/?view=light`):** the hand-off lit by two suns, with two coloured shadows per pack that follow the pointer, a sunrise entrance, then the same hand-off. See DECISIONS 135
 - **Hero options (2026-10-18, staging only):** `/?view=orbs` (hand-off framed by two tactile spheres that slide out on scroll) and `/?view=sun` (the real-sun line-up photo with current labels put back in; headline in the sky behind the packs). See DECISIONS 136–138
+- **Orbs chosen and polished (2026-10-18, staging only at `/?view=orbs`; first version at `/?view=orbsa`):** header-height fix, smoother load, rolling spheres with fixed light, dew glint, bounce light on the packs, pointer depth, ordered landing; short-phone spacing fix in Four steps. See DECISIONS 139–140
 - **Real-store check (2026-10-16):** 22 routes × 390/1440 and 16 routes × 390/768/1024/1440 on the staging theme: no Liquid errors, missing translations, overflow or JS errors (after the fixes in DECISIONS 123–125)
 - QA tooling: preview harness, Theme Check, 272 flow tests, axe, Lighthouse scripts (see `QA.md`)
 

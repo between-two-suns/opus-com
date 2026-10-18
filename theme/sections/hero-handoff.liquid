@@ -19,7 +19,7 @@
   assign first_cut = first.metafields.bts.cutout.value
 -%}
 <style>
-.hh { --f: 1; position: relative; height: calc(100vh - var(--ann, 36px)); height: calc(100svh - var(--ann, 36px)); min-height: 524px; margin-top: calc(-1 * var(--header-h)); color: var(--c-ink); background: var(--c-daylight); }
+.hh { --f: 1; position: relative; height: calc(100vh - var(--ann, 36px)); height: calc(100svh - var(--ann, 36px)); min-height: 524px; margin-top: calc(-1 * var(--hdr, var(--header-h))); color: var(--c-ink); background: var(--c-daylight); }
 .hh-stage { position: relative; height: 100%; overflow: hidden; display: flex; flex-direction: column; align-items: center;
   padding: calc(var(--header-h) + clamp(18px, 4vh, 44px)) 0 calc(var(--dock-h, 0px) + clamp(16px, 3.4vh, 36px));
   --fs: clamp(64px, min(10.6vw, 15.5vh), 196px); }
@@ -126,6 +126,10 @@
     </div>
   {%- endif -%}
 </section>
+<script>
+// the hero tucks under the header by the header's real height (a fixed guess was covering the bar above it)
+(() => { const r = document.getElementById('Hh-{{ section.id }}'), hw = document.querySelector('.site-header-wrap'); if (!r || !hw) return; const f = () => r.style.setProperty('--hdr', hw.offsetHeight + 'px'); f(); if (window.ResizeObserver) new ResizeObserver(f).observe(hw); })();
+</script>
 <script>
 (() => {
   // the section below comes later in the page: start once the whole page is parsed

@@ -14,7 +14,7 @@
   assign w2 = line_2 | split: ' '
 -%}
 <style>
-.hy { position: relative; height: calc(100vh - var(--ann, 36px)); height: calc(100svh - var(--ann, 36px)); min-height: 540px; margin-top: calc(-1 * var(--header-h)); overflow: hidden; isolation: isolate; background: #3f87d8; color: #fff; }
+.hy { position: relative; height: calc(100vh - var(--ann, 36px)); height: calc(100svh - var(--ann, 36px)); min-height: 540px; margin-top: calc(-1 * var(--hdr, var(--header-h))); overflow: hidden; isolation: isolate; background: #3f87d8; color: #fff; }
 .hy-plane { position: absolute; inset: 0; will-change: transform; }
 .hy-plane img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
 .hy-bg img { animation: hy-sun 2.4s cubic-bezier(.2,.75,.2,1) both; }
@@ -90,6 +90,10 @@
     <a class="hy-btn hy-btn--ghost" href="{{ all_url }}">{{ 'sections.hero_routine.cta_all' | t }}</a>
   </div>
 </section>
+<script>
+// the hero tucks under the header by the header's real height (a fixed guess was covering the bar above it)
+(() => { const r = document.getElementById('Hy-{{ section.id }}'), hw = document.querySelector('.site-header-wrap'); if (!r || !hw) return; const f = () => r.style.setProperty('--hdr', hw.offsetHeight + 'px'); f(); if (window.ResizeObserver) new ResizeObserver(f).observe(hw); })();
+</script>
 <script>
 (() => {
   const hero = document.getElementById('Hy-{{ section.id }}'); if (!hero) return;
