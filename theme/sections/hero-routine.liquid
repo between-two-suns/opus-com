@@ -3,7 +3,7 @@
   Switching relights the room (the evening light is a second layer that fades in), the headline turns from morning to evening and the
   sunscreen steps out to the side while the other three glide over to stay centred (the evening routine is three steps). Every move is
   transform or opacity only, so nothing re-lays out mid-switch. Packs carry the same soft shadow and colour pool as the home hero.
-  On phones copy, packs and buttons stack and the packs size to the space left. After dark in Cairo it opens on the evening.
+  On phones copy, packs and buttons stack and the packs size to the space left. It always opens on the morning routine.
 {%- endcomment -%}
 {%- liquid
   assign full = all_products['the-full-ritual']
@@ -121,12 +121,9 @@
 @keyframes hr-in { from { opacity: 0; translate: 0 24px; } }
 .js .hr-copy > * { animation: hr-in .9s cubic-bezier(.2,.75,.2,1) both; }
 .js .hr-copy > :nth-child(2) { animation-delay: .06s; } .js .hr-copy > :nth-child(3) { animation-delay: .12s; } .js .hr-copy > :nth-child(4) { animation-delay: .18s; } .js .hr-copy > :nth-child(5) { animation-delay: .24s; }
-/* each bottle is a link to its product; its name shows on hover */
+/* each bottle is a link to its product; it lifts a little on hover */
 .hr-g a { position: absolute; inset: 0; z-index: 5; }
-.hr-tag { position: absolute; z-index: 6; left: 50%; bottom: calc(100% + 10px); translate: -50% 6px; white-space: nowrap; font-size: 12px; font-weight: 700; letter-spacing: .04em; background: #fff; color: var(--c-ink);
-  padding: 7px 12px; border-radius: 999px; box-shadow: 0 8px 20px -10px rgb(28 30 48 / .4); opacity: 0; pointer-events: none; transition: opacity .25s, translate .3s; }
-.hr-tag span { font-weight: 500; opacity: .7; margin-inline-start: 6px; }
-@media (hover: hover) { .hr-bottle:hover img, .hr-bottle:focus-within img { translate: 0 -8px; } .hr-bottle:hover .hr-tag, .hr-bottle:focus-within .hr-tag { opacity: 1; translate: -50% 0; } }
+@media (hover: hover) { .hr-bottle:hover img, .hr-bottle:focus-within img { translate: 0 -8px; } }
 .hr-switch button:focus-visible, .hr-btn:focus-visible, .hr-g a:focus-visible { outline: 2px solid var(--c-ink); outline-offset: 3px; }
 :lang(ar) .hr-title { text-transform: none; line-height: 1.15; font-size: clamp(56px, min(7.6vw, 12svh), 150px); }
 :lang(ar) .hr-eyebrow, :lang(ar) .hr-switch button, :lang(ar) .hr-btn, :lang(ar) .hr-climate { letter-spacing: 0; }
@@ -159,7 +156,6 @@
       <li class="hr-bottle{% if forloop.last %} hr-bottle--spf{% endif %}" style="--h: {{ hs[forloop.index0] }}; --ar: {{ ars[forloop.index0] }}; --sku: {{ skus[forloop.index0] }}; --i: {{ forloop.index0 }}">
         <span class="hr-g">
           <img src="{{ img }}" alt="" width="350" height="1100" fetchpriority="high">
-          <span class="hr-tag" aria-hidden="true">{{ p.title | escape }}<span>{{ price | strip }}</span></span>
           <a href="{{ p.url }}"><span class="visually-hidden">{{ p.title | escape }}, {{ price | strip }}</span></a>
         </span>
       </li>
@@ -193,9 +189,8 @@
   hero.querySelector('.hr-switch').addEventListener('keydown', (e) => {
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) { e.preventDefault(); set(hero.dataset.mode === 'am' ? 'pm' : 'am', true); }
   });
-  // after dark in Cairo the page opens on the evening routine
-  let h = 12; try { h = +new Intl.DateTimeFormat('en-GB', { timeZone: 'Africa/Cairo', hour: 'numeric', hourCycle: 'h23' }).format(new Date()); } catch (e) {}
-  const start = new URLSearchParams(location.search).get('mode') || (h >= 17 || h < 5 ? 'pm' : 'am');
+  // always opens on the morning routine (?mode=pm can link straight to the evening)
+  const start = new URLSearchParams(location.search).get('mode') === 'pm' ? 'pm' : 'am';
   hero.classList.add('is-instant'); set(start); requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.remove('is-instant')));
   // on phones the packs size to the space left, so the floor line is placed under them (measured on layout changes only)
   const row = hero.querySelector('.hr-lineup'), stacked = matchMedia('(max-width: 760px), (max-aspect-ratio: 4/5)');

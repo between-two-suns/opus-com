@@ -51,6 +51,8 @@ for (const loc of ['', '/ar']) {
     await page.goto(`${BASE}${loc}/pages/routines`, { waitUntil: 'networkidle' });
     // Routines page opens on the first sun / second sun switch: PM swaps the main CTA to the Night Ritual
     ok(`${tag} routines hero has one h1`, (await page.$$('h1')).length === 1);
+    ok(`${tag} routines hero opens on the morning routine`, (await page.$eval('.hr-hero', (h) => h.dataset.mode)) === 'am');
+    ok(`${tag} routines hero has no hover name tags`, (await page.$$('.hr-tag')).length === 0);
     await page.click('.hr-switch [data-mode="pm"]');
     ok(`${tag} routines hero PM CTA goes to the Night Ritual`, (await page.$eval('.hr-btn--main', (a) => new URL(a.href).pathname)).endsWith('/products/the-night-ritual'));
     await page.click('.hr-switch [data-mode="am"]');

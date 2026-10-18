@@ -336,3 +336,10 @@ Each entry: decision · why · reversibility. Newest last.
     - Photo slides are no longer cropped: they sit whole (`object-fit: contain`) on the product tint. Set/bundle slides keep their own full-bleed treatment.
     - Verified at 1440×700, 1440×800, 1280×650, 1680×950 and 1024×700, and on the real store at 1440×700: the stage and its dots are fully on screen, Add to bag is visible on load, and words fit.
     - Staging product.css MD5 `6a084acf…`; live unchanged.
+
+154. **Owner: the Routines page opens on PM; the hover label over the bottles looks out of place.**
+    - The hero opened on the evening routine after 17:00 Cairo time (owner's evening). It now **always opens on AM**; `?mode=pm` can still link straight to the evening.
+    - The white name + price pill shown when hovering a bottle (`.hr-tag`) is removed. Bottles stay links with the small hover lift, and each link keeps its visually hidden "name, price" label for screen readers.
+    - Flows: +2 checks (opens on AM, no hover tags), run in Cairo time at 23:00; 288/288.
+    - Verified on the real store at 23:00 Cairo, EN and AR: mode am, no tags. axe 0.
+    - Staging MD5 `99f51146…`; live unchanged.
