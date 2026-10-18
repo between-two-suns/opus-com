@@ -1,10 +1,8 @@
 {
   "sections": {
     "hero": {
-      "type": "page-hero",
-      "settings": {
-        "preset": "routines"
-      }
+      "type": "hero-routine",
+      "settings": {}
     },
     "forecast": {
       "type": "skin-forecast",

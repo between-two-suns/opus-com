@@ -26,7 +26,7 @@
 @property --shk { syntax: '<color>'; inherits: true; initial-value: rgb(58 112 136 / .7); }
 @property --shf { syntax: '<color>'; inherits: true; initial-value: rgb(214 116 78 / .55); }
 @property --am { syntax: '<number>'; inherits: true; initial-value: 1; }
-.hr-hero { position: relative; height: calc(100svh - 36px); min-height: 600px; margin-top: calc(-1 * var(--header-h)); overflow: hidden; isolation: isolate; color: var(--c-ink);
+.hr-hero { position: relative; height: calc(100svh - 36px); min-height: 600px; margin-top: calc(-1 * var(--hdr, var(--header-h))); overflow: hidden; isolation: isolate; color: var(--c-ink);
   --floor: 66%;
   transition: --d 1.8s cubic-bezier(.65,0,.25,1), --e 1.8s cubic-bezier(.65,0,.25,1), --key 1.6s, --fill 1.6s, --shk 1.6s, --shf 1.6s, --am 1.6s cubic-bezier(.65,0,.25,1); }
 .hr-hero[data-mode='pm'] { --d: .8; --e: .22; --key: rgb(156 182 232); --fill: rgb(222 172 214); --shk: rgb(104 84 132 / .62); --shf: rgb(84 120 168 / .45); --am: 0; }
@@ -40,7 +40,7 @@
 .hr-hero::after { content: ''; position: absolute; inset: 0; z-index: 9; pointer-events: none; opacity: .06; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
-.hr-copy { position: absolute; z-index: 4; inset-inline-start: 6vw; top: calc(var(--header-h) + 7svh); width: min(560px, 40vw); }
+.hr-copy { position: absolute; z-index: 4; inset-inline-start: 6vw; top: calc(var(--hdr, var(--header-h)) + 7svh); width: min(560px, 40vw); }
 .hr-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
 .hr-title { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .84; letter-spacing: -.01em; margin-top: 18px; font-size: clamp(64px, min(8.6vw, 15svh), 170px); }
 .hr-title .hr-swap { display: inline-grid; overflow: hidden; vertical-align: top; height: .86em; transition: width 1s cubic-bezier(.7,0,.2,1); }
@@ -105,7 +105,7 @@
 .hr-base .hr-ctas { display: none; }
 @media (max-width: 760px), (max-aspect-ratio: 4/5) {
   .hr-hero { --floor: 63%; min-height: 0; }
-  .hr-copy { inset-inline: 0; top: calc(var(--header-h) + 3svh); width: auto; text-align: center; }
+  .hr-copy { inset-inline: 0; top: calc(var(--hdr, var(--header-h)) + 3svh); width: auto; text-align: center; }
   .hr-title { font-size: 15.4vw; margin-top: 12px; }
   .hr-lede { display: none; }
   .hr-switch { margin-top: 18px; } .hr-switch button { min-width: 104px; padding: 11px 16px; font-size: 12px; }
@@ -191,6 +191,9 @@
 <script>
 (() => {
   const hero = document.getElementById('Hr-{{ section.id }}'); if (!hero) return;
+  const hw = document.querySelector('.site-header-wrap');
+  const hdr = () => hero.style.setProperty('--hdr', hw.offsetHeight + 'px');
+  if (hw) { hdr(); if (window.ResizeObserver) new ResizeObserver(hdr).observe(hw); }
   const btns = [...hero.querySelectorAll('.hr-switch [role=radio]')], swap = hero.querySelector('.hr-swap');
   // the swapped word's box takes the width of the word showing
   const fit = (mode) => { swap.style.width = swap.querySelector('.hr-' + mode).getBoundingClientRect().width + 'px'; };
@@ -214,7 +217,7 @@
 
 {% schema %}
 {
-  "name": "Hero preview: first sun",
+  "name": "Routine hero: two suns",
   "tag": "div",
   "class": "section-hero",
   "settings": []

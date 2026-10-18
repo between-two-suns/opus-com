@@ -49,6 +49,11 @@ for (const loc of ['', '/ar']) {
 
     // Forecast (lives on the Routines page since the v3 home)
     await page.goto(`${BASE}${loc}/pages/routines`, { waitUntil: 'networkidle' });
+    // Routines page opens on the first sun / second sun switch: PM swaps the main CTA to the Night Ritual
+    ok(`${tag} routines hero has one h1`, (await page.$$('h1')).length === 1);
+    await page.click('.hr-switch [data-mode="pm"]');
+    ok(`${tag} routines hero PM CTA goes to the Night Ritual`, (await page.$eval('.hr-btn--main', (a) => new URL(a.href).pathname)).endsWith('/products/the-night-ritual'));
+    await page.click('.hr-switch [data-mode="am"]');
     await page.locator('#forecast').scrollIntoViewIfNeeded();
     await page.click('[data-time-btn="pm"]');
     const included = await page.$$eval('.forecast__step [data-include]', (b) => b.filter((x) => x.checked).length);
@@ -69,12 +74,12 @@ for (const loc of ['', '/ar']) {
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
 
-    // Home v3: hero panels are shoppable, the main CTA goes to the Full Ritual, the sets section adds a set
+    // Home: the orbs hero line-up is shoppable in step order, the main CTA goes to the Full Ritual, the sets section adds a set
     await page.goto(`${BASE}${loc}/`, { waitUntil: 'networkidle' });
-    const panels = await page.$$eval('.hp__panel a', (a) => a.map((x) => new URL(x.href).pathname));
-    ok(`${tag} hero has 4 shoppable panels in step order`, panels.length === 4 && panels[0].endsWith('/products/daily-reset-cleanser') && panels[3].endsWith('/products/daily-defense-sunscreen-spf-50'), panels.join(' '));
-    ok(`${tag} hero buy CTA goes to the Full Ritual`, (await page.$eval('.hp__buy', (a) => new URL(a.href).pathname)).endsWith('/products/the-full-ritual'));
-    ok(`${tag} hero h1 is the headline`, /space between|بين الشمسين/i.test(await page.$eval('h1', (h) => h.textContent)));
+    const panels = await page.$$eval('.hh-row .hh-b a', (a) => a.map((x) => new URL(x.href).pathname));
+    ok(`${tag} hero has 4 shoppable packs in step order`, panels.length === 4 && panels[0].endsWith('/products/daily-reset-cleanser') && panels[3].endsWith('/products/daily-defense-sunscreen-spf-50'), panels.join(' '));
+    ok(`${tag} hero buy CTA goes to the Full Ritual`, (await page.$eval('.hh-btn--main', (a) => new URL(a.href).pathname)).endsWith('/products/the-full-ritual'));
+    ok(`${tag} hero h1 is the headline`, (await page.$$('h1')).length === 1 && (await page.$eval('h1', (h) => h.textContent.trim().length)) > 0);
     const before = Number(await count(page));
     await page.locator('.bundles [data-bundle-add], .bundles button[type="submit"]').first().click();
     await page.waitForFunction((n) => Number(document.querySelector('[data-cart-count]').textContent.trim() || 0) === n + 1, before, { timeout: 5000 }).catch(() => {});

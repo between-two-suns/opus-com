@@ -197,3 +197,19 @@ Each entry: decision · why · reversibility. Newest last.
     - **The shadow was doubling:** during the hand-over overlap (141) both cleansers drew a drop shadow, and Four steps snaps back to step 01 when scrolling stops nearby, so the overlap could sit there at rest. Now the overlap lasts two frames only (just enough that no frame is empty), the flying copy casts no shadow while it does, and then it is removed. Only the section's own bottle and its single shadow remain.
     - **Verified:** a pixel comparison at rest shows the overlap identical to the section alone. On the real store, the flying copy is hidden at rest in Four steps and frame analysis of desktop, phone and Arabic phone recordings finds no dropouts.
 
+
+143. **Owner: "this is good for now, let's ship it", and ship the routine module too without disturbing much.** Shipped to the **staging theme only** (167112540418). Nothing is published.
+    - **Restore point first:** `snapshot 2026-10-18 before orbs ship` · `gid://shopify/OnlineStoreTheme/167562281218`.
+    - **Home:** the `hero` section in `templates/index.json` now uses `hero-orbs` in place of `hero-panels`. Nothing else changed: Four steps follows straight after, then sets, climate, ingredients, editorial and FAQ, as before. `hero-panels` stays in the theme.
+    - **Routine module (`hero-routine`, the first sun / second sun switch):** this is the opening section of `/pages/routines`, replacing only the plain `page-hero` title block. The forecast, AM/PM detail and FAQ below it are unchanged. Reasons:
+      - the "Find Your Routine" menu item already points to this page;
+      - the module is a routine chooser, so it belongs where people pick a routine rather than as a second hero on the home page;
+      - no other page or section moves.
+    - The routine module now measures the real header height (`--hdr`), like the other heroes, so the announcement bar is never cut.
+    - Editor names: "Hero: two suns", "Routine hero: two suns".
+    - QA:
+      - theme-check 0;
+      - flows 280/280 (home checks rewritten for the orbs line-up; new Routines checks: one h1, and PM switches the CTA to the Night Ritual);
+      - axe 0 on home + Routines in EN/AR at 390 and 1440;
+      - the real store renders both pages with no JS errors.
+    - Live theme (Horizon, MAIN) `templates/index.json` MD5 is `c828067cbc7ea00ac09f4927419385ce`; this is the baseline to compare against. (The `181103f…` noted in earlier sessions was the staging home template, not live.)

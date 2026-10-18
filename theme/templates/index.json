@@ -1,7 +1,7 @@
 {
   "sections": {
     "hero": {
-      "type": "hero-panels",
+      "type": "hero-orbs",
       "settings": {}
     },
     "climate": {
