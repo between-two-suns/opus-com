@@ -297,3 +297,12 @@ Each entry: decision · why · reversibility. Newest last.
       - Arabic is added to the store but **unpublished** (`shopLocales`: ar published=false), so Shopify reports one language and the switch correctly hides. `/ar` works only in theme preview.
       - Publishing Arabic is a store-level change that also affects the live theme, so it waits for the owner's decision.
     - QA: theme-check 0, flows 280/280, axe 0. Staging MD5s: base.css `8db07aa6…`, header.liquid `d649fb5b…`. Live unchanged.
+
+150. **Owner chose "Publish Arabic now"** (explicit approval, 2026-10-18).
+    - `shopLocaleUpdate(locale: "ar", published: true)` attached to the primary market web presence (`MarketWebPresence/56519622914`). The store now serves `/ar/` alongside `/`.
+    - Store-level change: it applies to every theme, the live Horizon theme included. The store is still password-protected, so the public sees nothing yet.
+    - Staging check at 1440 and 390 on `/pages/routines`:
+      - the header, drawer and footer switches render ("العربية" in English, "English" in Arabic);
+      - switching goes to `/ar/pages/routines` and back to `/pages/routines`.
+    - Noticed: the store menu titles (Shop, Sets, Find Your Routine, The Climate, About) show in English on `/ar`, because they are store data with no Arabic translation yet.
+    - To undo: Settings → Languages → Arabic → Unpublish (or `shopLocaleUpdate published: false`).

@@ -9,7 +9,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 |---|---|
 | **Staging preview URL** | https://qfj1gi-c9.myshopify.com/?preview_theme_id=167112540418 (store password required; or Online Store → Themes → "BTS Opus — staging" → Preview) |
 | Theme | `BTS Opus — staging` · `gid://shopify/OnlineStoreTheme/167112540418` · UNPUBLISHED |
-| Live theme | Horizon (MAIN): **untouched** · `templates/index.json` MD5 `c828067cbc7ea00ac09f4927419385ce` (2026-10-18) |
+| Live theme | Horizon (MAIN): **untouched** (store-level: Arabic published 2026-10-18 with owner approval) · `templates/index.json` MD5 `c828067cbc7ea00ac09f4927419385ce` (2026-10-18) |
 | Repo / branch | `between-two-suns/opus-com` · `opus-build` |
 | Last commit | see `git log -1 origin/opus-build` (pushed; GitHub access restored) |
 
