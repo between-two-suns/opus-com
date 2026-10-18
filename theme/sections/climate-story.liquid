@@ -160,7 +160,7 @@
           {%- assign studio = images[sk] -%}{%- if studio == blank -%}{%- assign studio = false -%}{%- endif -%}
           <li data-step="{{ s }}">
             <a href="{{ p.url }}">
-              <span class="cst__end-media">{%- if studio -%}{{ studio | image_url: width: 500 | image_tag: loading: 'lazy', widths: '250,375,500', sizes: '(min-width: 990px) 12vw, 22vw', alt: '' }}{%- endif -%}</span>
+              <span class="cst__end-media">{%- if studio -%}{{ studio | image_url: width: 500 | image_tag: loading: 'lazy', widths: '250,375,500', sizes: '(min-width: 990px) 12vw, 46vw', alt: '' }}{%- endif -%}</span>
               <span class="cst__end-num">0{{ s }}</span>
               <span class="visually-hidden">{{ p.title | escape }}</span>
             </a>
@@ -178,6 +178,9 @@
       const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) this.dataset.active = e.target.dataset.i; }), { rootMargin: '-45% 0px -45% 0px' });
       chs.forEach((c) => io.observe(c));
       new IntersectionObserver(([e]) => this.classList.toggle('is-in', e.isIntersecting), { rootMargin: '-60% 0px -20% 0px' }).observe(chs[0]?.parentElement || this);
+      // the clock leaves once the day is over, so it never sits on the closing section
+      const end = this.querySelector('.cst__end');
+      if (end) new IntersectionObserver(([e]) => this.classList.toggle('is-done', e.boundingClientRect.top < innerHeight * .6), { threshold: [0, .1, .25, .5, 1] }).observe(end);
     }
   }
   if (!customElements.get('climate-story')) customElements.define('climate-story', ClimateStory);

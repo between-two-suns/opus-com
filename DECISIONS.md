@@ -367,3 +367,10 @@ Each entry: decision · why · reversibility. Newest last.
     - The home eyebrow stays on one line on 360px phones (`letter-spacing .12em` under 380px).
     - QA: theme-check 0, flows 288/288. Real-store text scan: the only Egypt mentions left are the factual ones.
     - Staging MD5s: en `172bf840…`, ar `8c61afa3…`, hero-orbs `8e0c23ef…`. Live unchanged.
+
+157. **Owner: on the Climate page's closing section the step numbers are dark and the products are four per row on phones, unlike the rest of the site.**
+    - Step numbers on the closing tiles are now white with the soft shadow (same as the v3.1 product cards).
+    - Tiles are **two per row on phones**, four on desktop.
+    - Also fixed: the sticky time pill (08:00…20:00) covered the "Then tomorrow" eyebrow. It now fades away once the closing section reaches the upper 60% of the screen.
+    - Verified locally and on the real store (390px EN and AR): pill opacity 0 at the close, 2 columns, white numerals. Flows 288/288.
+    - Staging MD5s: climate-story `a127f5c7…`, pages.css `f0a098e2…`. Live unchanged.
