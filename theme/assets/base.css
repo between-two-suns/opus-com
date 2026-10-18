@@ -881,7 +881,7 @@ html.has-open-dialog { overflow: hidden; }
 
 /* Header: a floating pill on desktop. Mobile keeps the full-width bar (with the bottom dock). */
 @media (min-width: 990px) {
-  .site-header-wrap { padding-block-start: 12px; margin-block-end: -12px; pointer-events: none; }
+  .site-header-wrap { pointer-events: none; }
   .site-header {
     pointer-events: auto; max-inline-size: min(1240px, calc(100% - 2 * var(--gutter))); margin-inline: auto;
     border-radius: 999px; border: 1px solid var(--c-line);
@@ -955,7 +955,9 @@ html.has-open-dialog { overflow: hidden; }
 /* v3.1 header: the section wrapper is what sticks (Shopify wraps every section), and the mega panel sits
    outside the frosted pill so no browser can layer it under page content. */
 .shopify-section:has(> .site-header-wrap) { position: sticky; inset-block-start: 0; z-index: 60; }
-.site-header-wrap { position: relative; isolation: isolate; }
+/* <site-header> is a custom element, so it would be inline by default: Safari then measures it as one text line and
+   positions the mega panel against a collapsed box. It must be a block. */
+.site-header-wrap { display: block; position: relative; isolation: isolate; }
 .site-header-wrap > .mega { z-index: 2; }
 @media (min-width: 990px) {
   .site-header-wrap > .mega { pointer-events: auto; inset-inline: 0; inset-block-start: calc(100% + 10px); max-inline-size: min(1240px, calc(100% - 2 * var(--gutter))); margin-inline: auto; box-shadow: 0 30px 60px -30px rgba(32, 35, 58, .35); }

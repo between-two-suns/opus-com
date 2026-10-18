@@ -129,7 +129,8 @@
 {%- comment -%} Mobile menu {%- endcomment -%}
 <dialog class="drawer drawer--start" id="MenuDrawer" aria-labelledby="MenuDrawerTitle">
   <div class="drawer__head">
-    <h2 class="visually-hidden" id="MenuDrawerTitle">{{ 'header.menu' | t }}</h2>
+    {%- comment -%} Opening the menu focuses its (hidden) title, not the logo link, so no focus ring is drawn on the logo {%- endcomment -%}
+    <h2 class="visually-hidden" id="MenuDrawerTitle" tabindex="-1" autofocus>{{ 'header.menu' | t }}</h2>
     <a class="menu-drawer__logo" href="{{ routes.root_url }}" aria-label="{{ 'header.home' | t: shop: shop.name }}">{%- render 'logo', variant: 'wordmark' -%}</a>
     <button type="button" class="header-icon" data-close-dialog>
       {% render 'icon', name: 'close', class: 'icon--lg' %}

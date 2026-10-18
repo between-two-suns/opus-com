@@ -282,3 +282,18 @@ Each entry: decision · why · reversibility. Newest last.
     - Nothing else in the section changed; its Add buttons already use the pack colours.
     - Verified on the real store: computed colours match the four brand hexes.
     - QA: theme-check 0, flows 280/280, axe 0. Staging `home.css` MD5 `5e648b46…`; live unchanged.
+
+149. **Owner: the Shop dropdown doesn't work on web (Safari); where is the language selector; why does the logo have a blue box in the phone menu?**
+    - **Dropdown:**
+      - `<site-header class="site-header-wrap">` is a custom element and had no `display`, so it was inline.
+      - The mega panel is absolutely positioned against it. Safari builds an inline element's containing block from a collapsed box, so the panel was misplaced or invisible. This is the same root cause as 147's orb cut.
+      - Now `display: block`. Its desktop `padding-block-start: 12px` / `margin-block-end: -12px` never took effect while it was inline; activating them would have moved the pill 12px, so they are removed to keep the approved look.
+      - Chromium pixel diff of the header, scrolled header and open mega at 1440/1024/390: identical. The header section measures 62/65px as before.
+    - **Blue box on the logo:**
+      - `showModal()` focuses the first focusable element, the logo link, and Safari draws its focus ring.
+      - The drawer's visually hidden title now has `tabindex="-1" autofocus`, so focus starts there: screen readers announce "Menu", nothing visible is ringed, and Tab goes to the logo next.
+    - **Language selector:**
+      - The theme renders it only when `localization.available_languages.size > 1`.
+      - Arabic is added to the store but **unpublished** (`shopLocales`: ar published=false), so Shopify reports one language and the switch correctly hides. `/ar` works only in theme preview.
+      - Publishing Arabic is a store-level change that also affects the live theme, so it waits for the owner's decision.
+    - QA: theme-check 0, flows 280/280, axe 0. Staging MD5s: base.css `8db07aa6…`, header.liquid `d649fb5b…`. Live unchanged.
