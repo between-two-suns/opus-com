@@ -112,13 +112,15 @@
 @media (max-width: 760px) {
   .hh-stage { --fs: min(14vw, 7.6svh); padding-top: calc(var(--hdr, var(--header-h)) + clamp(14px, 2.6vh, 26px)); }
   .hh-title br.hh-d { display: none; } .hh-title { max-width: 9ch; }
-  .hh-eyebrow { font-size: 10px; letter-spacing: .2em; }
+  .hh-eyebrow { font-size: 10px; letter-spacing: .2em; white-space: nowrap; }
   /* never wider than the screen: the four packs together are about 1.12 × their height */
   .hh-stage .hh-row { gap: 6px; margin-top: auto; padding-top: clamp(12px, 2.4vh, 22px); max-height: calc((100vw - 52px) / 1.12 + 24px); }
   .hh-lab { display: none; } .hh-b { padding-bottom: 12px; height: calc(var(--h) * (100% - 12px) + 12px); }
   .hh-btn { padding: 14px 18px; font-size: 12px; letter-spacing: .1em; gap: 8px; }
 }
 @media (min-width: 700px) and (max-aspect-ratio: 4/5) { .hh-stage { --fs: 11.4vw; } }
+/* small phones: the eyebrow stays on one line */
+@media (max-width: 379px) { .hh-eyebrow { letter-spacing: .12em; gap: 8px; } }
 :lang(ar) .hh-title { text-transform: none; line-height: 1.18; letter-spacing: 0; font-size: calc(var(--fs) * .795); }
 :lang(ar) .hh-title .hh-w { overflow: visible; padding: 0; margin: 0; }
 :lang(ar) .hh-title .hh-w > span { animation-name: hh-fade; }

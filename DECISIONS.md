@@ -356,3 +356,14 @@ Each entry: decision · why · reversibility. Newest last.
     - Effect: at 1440×700 the opening ends at 559px, so the first scene starts on screen.
     - QA: theme-check 0, flows 288/288, axe 0. Verified on the real store in EN, AR and phone: the row link jumps to its chapter, no errors.
     - Staging MD5s: climate-story `825756d3…`, pages.css `002df5eb…`, en `341d6868…`, ar `1d5cd32e…`. Live unchanged.
+
+156. **Owner: replace Egypt with "our region / our climate"; don't be too Egypt-specific.** Climate and marketing lines, EN and AR:
+    - Home/Routines eyebrow: "Climate-adapted skincare · For our region" / "· لمنطقتنا".
+    - Home subcopy: "…Four light steps made for our climate" / "صُنعت لمناخنا".
+    - Editorial band: "a real day in our climate" / "يوم حقيقي في مناخنا".
+    - Creators intro: "our region's real weather" / "طقس منطقتنا".
+    - Climate lede: "Our region doesn't do one kind of weather…" / "الجو في منطقتنا…".
+    - **Kept as facts (owner can ask to change):** "Made in Egypt" (footer, announcement, facts, password page, About story), the FAQ "where is it made" answer, the creators eligibility note "based in Egypt for now", and the product legal metafields (manufacturer + EDA notification).
+    - The home eyebrow stays on one line on 360px phones (`letter-spacing .12em` under 380px).
+    - QA: theme-check 0, flows 288/288. Real-store text scan: the only Egypt mentions left are the factual ones.
+    - Staging MD5s: en `172bf840…`, ar `8c61afa3…`, hero-orbs `8e0c23ef…`. Live unchanged.

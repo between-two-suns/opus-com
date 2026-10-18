@@ -325,10 +325,10 @@
       "egypt": "Made in Egypt, for the climate we live in"
     },
     "hero_panels": {
-      "eyebrow": "Climate-adapted skincare · Egypt",
+      "eyebrow": "Climate-adapted skincare · For our region",
       "line_1": "Made for the",
       "line_2": "space between.",
-      "subcopy": "Morning sun, office AC, city dust, humid nights. Four light steps made for Egyptian days.",
+      "subcopy": "Morning sun, office AC, city dust, humid nights. Four light steps made for our climate.",
       "cta_primary": "Shop the Full Ritual",
       "cta_secondary": "Pick my steps"
     },
@@ -340,7 +340,7 @@
     "editorial_band": {
       "eyebrow": "The climate",
       "heading": "From the first sun to the second.",
-      "text": "Heat, office AC, city dust, humid evenings. See how each step handles a real Egyptian day.",
+      "text": "Heat, office AC, city dust, humid evenings. See how each step handles a real day in our climate.",
       "cta": "See the climate"
     },
     "hero_play": {
@@ -923,7 +923,7 @@
   "creators": {
     "eyebrow": "Creators",
     "heading": "Film the space between.",
-    "text": "Sun at noon, AC by two, dust on the commute. If you make honest, good-looking content about real skin in real Egyptian weather, let’s make things together.",
+    "text": "Sun at noon, AC by two, dust on the commute. If you make honest, good-looking content about real skin in our region’s real weather, let’s make things together.",
     "cta": "Apply to join",
     "how_link": "How it works",
     "reel_captions": {
@@ -1070,7 +1070,7 @@
   "climate_story": {
     "eyebrow": "Climate-adapted skincare",
     "title": "A day between two suns.",
-    "lede": "Egypt doesn’t do one kind of weather. Here is an ordinary day, hour by hour, and the steps that answer each part of it.",
+    "lede": "Our region doesn’t do one kind of weather. Here is an ordinary day, hour by hour, and the steps that answer each part of it.",
     "helps": "What answers it",
     "chapters": {
       "sun": "The first sun.",
