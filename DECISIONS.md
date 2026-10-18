@@ -254,3 +254,13 @@ Each entry: decision · why · reversibility. Newest last.
       - Verified the same line count AM/PM at 12 sizes × EN/AR.
     - **Ghost button:** "Shop products" gets a 72% white fill (the same family as the switch), so the wall/floor edge no longer passes visibly through it.
     - QA: theme-check 0, flows 280/280, axe 0. Staging MD5s: hero-orbs `5a615c6c…`, hero-routine `aa4bf13f…`. Live index.json is still `c828067…`.
+
+146. **Owner: the home hero headline is still too close together.** It now uses the same spacing as the Routines headline.
+    - line-height 0.84 → 0.96. Size trimmed so the packs keep their room:
+      - desktop `clamp(58px, min(9.6vw, 14vh), 178px)`;
+      - phone `min(14vw, 7.6svh)`;
+      - portrait tablet `11.4vw`;
+      - Arabic keeps its previous size (`--fs × .795`).
+    - The headline block grows by only about 6px, and the line-up shrinks by about 2% on desktop and is unchanged on phones.
+    - Hand-off re-checked at 1440×780, 1440×900, 390×664 and 390×844: the flying cleanser still lands centred and level with the Four steps bottle.
+    - QA: theme-check 0, flows 280/280, axe 0. Staging MD5 `678cf043…`; live unchanged.

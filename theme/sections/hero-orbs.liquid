@@ -29,7 +29,7 @@
 .hh { --f: 1; position: relative; height: calc(100vh - var(--ann, 36px)); height: calc(100svh - var(--ann, 36px)); min-height: 524px; margin-top: calc(-1 * var(--hdr, var(--header-h))); color: var(--c-ink); background: var(--c-daylight); }
 .hh-stage { position: relative; height: 100%; overflow: hidden; display: flex; flex-direction: column; align-items: center;
   padding: calc(var(--hdr, var(--header-h)) + clamp(18px, 4vh, 44px)) 0 calc(var(--dock-h, 0px) + clamp(16px, 3.4vh, 36px));
-  --fs: clamp(64px, min(10.6vw, 15.5vh), 196px); }
+  --fs: clamp(58px, min(9.6vw, 14vh), 178px); }
 /* the two suns peek in from the edges, a little offset so the frame feels alive */
 .ho-orbs { position: absolute; inset: 0; z-index: 0; pointer-events: none; --d: min(94vh, 62vw); --peek: min(21vw, 320px); }
 .ho-o { position: absolute; width: var(--d); aspect-ratio: 1; will-change: transform; }
@@ -61,8 +61,8 @@
 .hh-copy { position: relative; z-index: 1; display: grid; justify-items: center; text-align: center; padding-inline: 5vw; }
 .hh-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
 .hh-eyebrow svg { height: 15px; width: auto; }
-.hh-title { margin-top: clamp(10px, 2vh, 22px); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .84; letter-spacing: -.01em; font-size: var(--fs); }
-/* the word mask reaches past the letters' foot (at this line height the line box ends above the baseline), so round letters keep their curves */
+.hh-title { margin-top: clamp(10px, 2vh, 22px); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; letter-spacing: -.01em; font-size: var(--fs); }
+/* the word mask reaches past the letters' foot (the display font's line box ends above the baseline), so round letters keep their curves */
 .hh-title .hh-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .16em; margin-bottom: -.16em; }
 .hh-title .hh-w > span { display: inline-block; animation: hh-rise 1s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(.2s + var(--i) * .06s); }
 @keyframes hh-rise { from { transform: translateY(130%); } }
@@ -110,7 +110,7 @@
 .hh-fly.is-docked img { filter: none; }
 .hh.is-live .hh-b--first img { visibility: hidden; }
 @media (max-width: 760px) {
-  .hh-stage { --fs: min(15.4vw, 8.4svh); padding-top: calc(var(--hdr, var(--header-h)) + clamp(14px, 2.6vh, 26px)); }
+  .hh-stage { --fs: min(14vw, 7.6svh); padding-top: calc(var(--hdr, var(--header-h)) + clamp(14px, 2.6vh, 26px)); }
   .hh-title br.hh-d { display: none; } .hh-title { max-width: 9ch; }
   .hh-eyebrow { font-size: 10px; letter-spacing: .2em; }
   /* never wider than the screen: the four packs together are about 1.12 × their height */
@@ -118,8 +118,8 @@
   .hh-lab { display: none; } .hh-b { padding-bottom: 12px; height: calc(var(--h) * (100% - 12px) + 12px); }
   .hh-btn { padding: 14px 18px; font-size: 12px; letter-spacing: .1em; gap: 8px; }
 }
-@media (min-width: 700px) and (max-aspect-ratio: 4/5) { .hh-stage { --fs: 12.6vw; } }
-:lang(ar) .hh-title { text-transform: none; line-height: 1.18; letter-spacing: 0; font-size: calc(var(--fs) * .72); }
+@media (min-width: 700px) and (max-aspect-ratio: 4/5) { .hh-stage { --fs: 11.4vw; } }
+:lang(ar) .hh-title { text-transform: none; line-height: 1.18; letter-spacing: 0; font-size: calc(var(--fs) * .795); }
 :lang(ar) .hh-title .hh-w { overflow: visible; padding: 0; margin: 0; }
 :lang(ar) .hh-title .hh-w > span { animation-name: hh-fade; }
 @keyframes hh-fade { from { opacity: 0; transform: translateY(.25em); } }
