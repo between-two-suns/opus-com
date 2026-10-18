@@ -275,3 +275,10 @@ Each entry: decision · why · reversibility. Newest last.
     - Chromium values are identical (62px desktop, 65px phone), so there is no change there. Verified on the real store that the hero top meets the announcement bar.
     - No WebKit engine is available in this environment, so the Safari result itself still needs the owner's eye.
     - Staging only; live unchanged.
+
+148. **Owner: the active step dots (01–04) in Four steps are not our colours.**
+    - They used `--sku-deep`, each pack colour darkened with ink so white numerals would pass contrast. That made them forest green, dark teal, aubergine and rust.
+    - The current dot now wears the exact pack colour (`--sku`: #7DB993, #89C3C8, #D7A6DA, #FFA37B) with ink numerals, the same rule as the v3.1 Add to bag buttons. Contrast is 6.8–7.9:1, AAA.
+    - Nothing else in the section changed; its Add buttons already use the pack colours.
+    - Verified on the real store: computed colours match the four brand hexes.
+    - QA: theme-check 0, flows 280/280, axe 0. Staging `home.css` MD5 `5e648b46…`; live unchanged.

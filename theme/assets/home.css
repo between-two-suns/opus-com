@@ -373,7 +373,8 @@
   .js .dayline .dayline__benefit { font-size: 14px; }
   .js .dayline .dayline__nav { display: flex; gap: 6px; position: absolute; z-index: 3; inset-inline-end: var(--gutter); inset-block-start: calc(var(--header-h) + clamp(16px, 3svh, 36px)); }
   .dayline__dot { display: grid; place-items: center; inline-size: 44px; block-size: 44px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--c-ink) 18%, transparent); background: color-mix(in srgb, #fff 60%, transparent); font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--c-ink); transition: background-color var(--dur), border-color var(--dur), transform var(--dur) var(--ease-out), color var(--dur); }
-  .dayline__dot[aria-current='step'] { background: var(--sku-deep, var(--c-ink)); border-color: var(--sku-deep, var(--c-ink)); color: #fff; transform: scale(1.06); }
+  /* the current step wears its pack's exact colour; ink numerals read 6.8–7.9:1 on all four */
+  .dayline__dot[aria-current='step'] { background: var(--sku, var(--c-ink)); border-color: var(--sku, var(--c-ink)); color: var(--c-ink); transform: scale(1.06); }
   @media (max-width: 749px) {
     .js .dayline .dayline__nav { inset-block-start: auto; inset-block-end: calc(max(18px, 2.6svh) + var(--dock-h, 0px) + 6px); }
     .js .dayline .dayline__dot { inline-size: 40px; block-size: 40px; font-size: 13px; }
