@@ -92,7 +92,7 @@
 </section>
 <script>
 // the hero tucks under the header by the header's real height (a fixed guess was covering the bar above it)
-(() => { const r = document.getElementById('Hy-{{ section.id }}'), hw = document.querySelector('.site-header-wrap'); if (!r || !hw) return; const f = () => r.style.setProperty('--hdr', hw.offsetHeight + 'px'); f(); if (window.ResizeObserver) new ResizeObserver(f).observe(hw); })();
+(() => { const r = document.getElementById('Hy-{{ section.id }}'), hw = document.querySelector('.site-header-wrap')?.closest('.shopify-section'); if (!r || !hw) return; const f = () => r.style.setProperty('--hdr', hw.offsetHeight + 'px'); f(); if (window.ResizeObserver) new ResizeObserver(f).observe(hw); })();
 </script>
 <script>
 (() => {

@@ -179,8 +179,9 @@
 <script>
 (() => {
   const root = document.getElementById('Hh-{{ section.id }}'); if (!root) return;
-  // the hero tucks under the header by the header's real height (a fixed guess was covering the bar above it)
-  const hw = document.querySelector('.site-header-wrap');
+  // the hero tucks under the header by the header's real height (a fixed guess was covering the bar above it). It measures the
+  // header's section box: <site-header> itself is inline, and Safari reports an inline element's height as its text line only
+  const hw = document.querySelector('.site-header-wrap')?.closest('.shopify-section');
   const hdr = () => { if (hw) root.style.setProperty('--hdr', hw.offsetHeight + 'px'); };
   hdr(); if (hw && window.ResizeObserver) new ResizeObserver(hdr).observe(hw);
   // the suns' surfaces fade in over their flat colour when they arrive

@@ -178,7 +178,8 @@
 <script>
 (() => {
   const hero = document.getElementById('Hr-{{ section.id }}'); if (!hero) return;
-  const hw = document.querySelector('.site-header-wrap');
+  // tuck under the header by its section box (<site-header> is inline, and Safari measures an inline element by its text line only)
+  const hw = document.querySelector('.site-header-wrap')?.closest('.shopify-section');
   const hdr = () => hero.style.setProperty('--hdr', hw.offsetHeight + 'px');
   if (hw) { hdr(); if (window.ResizeObserver) new ResizeObserver(hdr).observe(hw); }
   const btns = [...hero.querySelectorAll('.hr-switch [role=radio]')];

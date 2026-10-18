@@ -264,3 +264,14 @@ Each entry: decision · why · reversibility. Newest last.
     - The headline block grows by only about 6px, and the line-up shrinks by about 2% on desktop and is unchanged on phones.
     - Hand-off re-checked at 1440×780, 1440×900, 390×664 and 390×844: the flying cleanser still lands centred and level with the Four steps bottle.
     - QA: theme-check 0, flows 280/280, axe 0. Staging MD5 `678cf043…`; live unchanged.
+
+147. **Owner (Safari on Mac): the green orb looks cut flat at the top.**
+    - **Cause:**
+      - The header is the custom element `<site-header class="site-header-wrap">`, which computes to `display: inline`.
+      - The heroes measured its `offsetHeight` to tuck under it. Chrome reports the full 62px for an inline element that wraps blocks, but Safari reports only its text line.
+      - So in Safari the hero barely tucked under the header: a strip of page showed behind the menu, and the hero's top edge, where the orb is clipped, sat at the bottom of the menu bar.
+    - **Fix:** every hero (orbs, routine, and the preview heroes handoff/light/orbs-a/sky) now measures the header's `.shopify-section` wrapper, a normal block that all browsers measure the same.
+      - The header's own display was not changed: making it a block would activate its 12px top padding and move the pill.
+    - Chromium values are identical (62px desktop, 65px phone), so there is no change there. Verified on the real store that the hero top meets the announcement bar.
+    - No WebKit engine is available in this environment, so the Safari result itself still needs the owner's eye.
+    - Staging only; live unchanged.
