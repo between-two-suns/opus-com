@@ -97,7 +97,7 @@
                 assign tex = textures[tex_index]
               -%}
               {%- if tex != blank -%}<span class="gallery__texture" aria-hidden="true" style="--tex: url('{{ tex | asset_url }}')"></span>{%- endif -%}
-              {%- if step_label != blank -%}<span class="gallery__word" aria-hidden="true">{{ step_label | escape }}</span>{%- endif -%}
+              {%- if step_label != blank -%}<span class="gallery__word" aria-hidden="true" style="--len: {{ step_label | size }}">{{ step_label | escape }}</span>{%- endif -%}
               {%- if mf.benefit != blank -%}
                 {%- assign callouts = mf.benefit | split: '.' -%}
                 <ul class="callouts" role="list" aria-hidden="true">

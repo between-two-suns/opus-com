@@ -270,3 +270,18 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
 .gallery__slide--studio-photo[data-step='3'] { --sku: var(--c-step-3); }
 .gallery__slide--studio-photo[data-step='4'] { --sku: var(--c-step-4); }
 .gallery__slide--set .set-visual__band img { block-size: 74%; inset-block-end: 0; }
+
+/* v4 stage: the gallery fills its column on desktop. The frame is 4:5 where the screen is tall enough and squares off
+   on shorter screens to 1:1.08 (never wider, so the photos keep the whole pack). The step word is sized to the frame,
+   from its letter count, so it always fits inside it. */
+.pdp__gallery { container-type: inline-size; }
+.gallery__word { font-size: min(clamp(88px, 27vw, 230px), calc(86cqw / (var(--len, 7) * .43))); }
+:lang(ar) .gallery__word { font-size: min(clamp(72px, 22vw, 190px), calc(86cqw / (var(--len, 7) * .72))); }
+@media (min-width: 990px) {
+  .pdp__grid { grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); }
+  .pdp__gallery { inline-size: 100%; justify-self: stretch; }
+  .gallery__slide { aspect-ratio: auto; block-size: clamp(108cqw, calc(100svh - 160px), 125cqw); }
+  .gallery__slide > img { object-position: 50% 12%; }
+  .gallery__word { font-size: min(210px, calc(86cqw / (var(--len, 7) * .43))); }
+  :lang(ar) .gallery__word { font-size: min(170px, calc(86cqw / (var(--len, 7) * .72))); }
+}

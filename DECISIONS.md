@@ -315,3 +315,17 @@ Each entry: decision · why · reversibility. Newest last.
     - About → من نحن
     - The live store's own menus (`main-menu`, `footer`) were not touched.
     - Verified on staging `/ar` at 1440 and 390: header nav and phone drawer are fully Arabic. The only Latin text left is the product term "SPF 50+" and the brand name, both intended.
+
+152. **Owner: product page images look weird on web; they need to be wider, and the words are cut.**
+    - **Cause:**
+      - The v3.1 desktop rule sized the gallery from the screen height (4:5 at `100svh - header - 120px`). On a 1440×800 laptop that gave a 483px frame centred in a 720px column.
+      - The step word was sized from the screen width (11.5vw), so it overflowed that narrow frame ("CLARIT", "BARRIE", "DEFENS").
+    - **Fix (desktop ≥990):**
+      - The gallery fills its column (`1.12fr | 1fr`) and lines up with the page edge.
+      - The frame is 4:5 when the screen is tall enough and becomes no wider than 1:1.08 on shorter screens: `clamp(108cqw, 100svh - 160px, 125cqw)`. At 1440×800 the frame is 667×721, up from 483×604.
+      - Photos are anchored at 50% 12%, so the in-hand shots keep the whole pack (pump and dropper included). Checked every slide of the cleanser and serum.
+    - **Step word:**
+      - Sized from the frame through a container query and its letter count: `86cqw / (len × .43)` for the display font, `× .72` for Arabic.
+      - The Liquid passes `--len` from the label. The per-letter factors were measured from the rendered words, with a margin.
+      - Fits in 48/48 checks (4 products × 6 sizes × EN/AR), on phones too.
+    - QA: theme-check 0, flows 280/280, axe 0. Staging MD5s: product.css `00dd470d…`, main-product.liquid `aab12e89…`. Live unchanged.
