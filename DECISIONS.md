@@ -213,3 +213,28 @@ Each entry: decision · why · reversibility. Newest last.
       - axe 0 on home + Routines in EN/AR at 390 and 1440;
       - the real store renders both pages with no JS errors.
     - Live theme (Horizon, MAIN) `templates/index.json` MD5 is `c828067cbc7ea00ac09f4927419385ce`; this is the baseline to compare against. (The `181103f…` noted in earlier sessions was the staging home template, not live.)
+
+144. **Owner, on the Routines hero: glitchy, terrible shadows, the SPF's exit and return looked amateur, and on phones text sat on the packs.** Fixes, keeping the concept:
+    - **Shadows:**
+      - The long cast shadows (masked, blurred, skewed copies of each pack), the coloured light and shade overlays, the bounce light and the contact/AO ellipses are all gone.
+      - Each pack now has exactly the home hero's treatment: one soft drop shadow plus a faint pool of its own colour.
+      - No blend modes are left; the grain overlay uses normal blending.
+    - **Glitchiness:**
+      - The old switch animated registered custom properties driving full-screen gradients, masks and blur filters, which forced a repaint every frame.
+      - Now the evening light is a second room layer that only fades in (opacity).
+      - The switch pill and the sun-mark arcs move with plain transitions.
+      - Every pack moves by `translate` only, and the layout never changes mid-switch (verified: no offset changes across the transition).
+    - **SPF:**
+      - Before, it collapsed its width, which re-laid out the line-up every frame.
+      - Now, going to PM, it slides out sideways (0.9s) and fades (0.4s), while the other three glide half a slot over to stay centred.
+      - Going back to AM, the three glide back and the SPF slides in behind them, fading in from 0.25s.
+      - Everything moves the same direction on one curve. RTL is mirrored.
+      - Frame sampling at 1440/390, EN/AR: no direction reversals, and it returns to its exact pixel position.
+      - In PM it is `visibility: hidden`, so its link leaves the tab order.
+    - **Phones:**
+      - Copy, packs and buttons now stack (flex column), and the packs size to the space left (a size container), so text can never sit on them.
+      - The eyebrow, climate words and "Shop products" button are hidden on phones to give the packs room. The headline scales with screen height.
+      - The floor line is measured under the packs.
+      - Checked at 375×560, 390×664 (iPhone Safari with toolbars), 390×844, 430×932 and 768×1024, with zero text/pack overlaps.
+    - Also fixed: in Arabic the white switch pill sat on the wrong side; it now follows the selected option.
+    - QA: theme-check 0, flows 280/280, axe 0. Deployed to staging only (MD5 `b8072c829db275cc7d59d0c60d71d8b4`). Live index.json is still `c828067…`.
