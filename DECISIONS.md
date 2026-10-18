@@ -343,3 +343,16 @@ Each entry: decision · why · reversibility. Newest last.
     - Flows: +2 checks (opens on AM, no hover tags), run in Cairo time at 23:00; 288/288.
     - Verified on the real store at 23:00 Cairo, EN and AR: mode am, no tags. axe 0.
     - Staging MD5 `99f51146…`; live unchanged.
+
+155. **Owner: the Climate page opening is "terrible": too big, icons used badly, text too close together, doesn't fit the site.**
+    - **Removed:** the 176px title with line-height 0.86 and the two large animated mark arcs after it (plus their CSS and keyframes).
+    - **New opening:**
+      - The `)(` eyebrow comes from the shared eyebrow style (one mark, as on the home hero).
+      - The title is at site scale: `clamp(48px, 7.2vw, 112px)`, line-height 0.96, balanced.
+      - The lede follows.
+      - A **"The day at a glance"** timetable: 08:00 Sun, 10:00 City & dust, 13:00 Air-con, 16:00 Heat, 20:00 Humidity. Each row shows time, condition icon and name, and the chapter title, and links to its chapter (sections now have ids).
+      - Desktop is two columns; on phones the rows stay on one line.
+    - New locale key `climate_story.agenda` (EN "The day at a glance", AR "اليوم في لمحة").
+    - Effect: at 1440×700 the opening ends at 559px, so the first scene starts on screen.
+    - QA: theme-check 0, flows 288/288, axe 0. Verified on the real store in EN, AR and phone: the row link jumps to its chapter, no errors.
+    - Staging MD5s: climate-story `825756d3…`, pages.css `002df5eb…`, en `341d6868…`, ar `1d5cd32e…`. Live unchanged.

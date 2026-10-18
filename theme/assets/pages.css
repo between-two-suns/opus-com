@@ -236,11 +236,23 @@
 
 /* ---------- Climate: a day between two suns ---------- */
 .cst { display: block; position: relative; }
-.cst__intro { position: relative; padding-block: clamp(40px, 8vw, 120px) clamp(28px, 5vw, 64px); }
-.cst__intro-inner { display: grid; gap: 16px; justify-items: start; }
-.cst__title { font-size: clamp(56px, 13vw, 176px); line-height: .86; max-inline-size: 12ch; }
-:lang(ar) .cst__title { font-size: clamp(46px, 10vw, 128px); line-height: 1.15; }
-.cst__lede { max-inline-size: 46ch; }
+.cst__intro { position: relative; padding-block: clamp(28px, 5vw, 72px) clamp(36px, 5vw, 72px); }
+.cst__intro-inner { display: grid; gap: clamp(28px, 4vw, 56px); align-items: end; }
+.cst__intro-copy { display: grid; gap: 16px; justify-items: start; }
+.cst__title { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(48px, 7.2vw, 112px); line-height: .96; letter-spacing: -.01em; max-inline-size: 11ch; text-wrap: balance; }
+:lang(ar) .cst__title { text-transform: none; font-size: clamp(40px, 5.6vw, 84px); line-height: 1.2; letter-spacing: 0; }
+.cst__lede { max-inline-size: 44ch; }
+/* the day at a glance: each hour is a link to its chapter */
+.cst__agenda { display: grid; gap: 12px; }
+.cst__agenda-list { display: grid; border-block-start: 1px solid var(--c-line); }
+.cst__agenda-row { display: grid; grid-template-columns: 64px minmax(0, 150px) 1fr; align-items: center; gap: 12px; padding-block: 13px; border-block-end: 1px solid var(--c-line); text-decoration: none; color: var(--c-ink); transition: background-color var(--dur), padding var(--dur) var(--ease-out); }
+.cst__agenda-row:hover { padding-inline-start: 6px; }
+.cst__agenda-time { font-family: var(--font-display); font-weight: 700; font-size: 20px; font-variant-numeric: tabular-nums; }
+.cst__agenda-cond { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-muted); }
+:lang(ar) .cst__agenda-cond { letter-spacing: 0; text-transform: none; font-size: 14px; }
+.cst__agenda-h { font-weight: 600; font-size: 15px; }
+@media (min-width: 990px) { .cst__intro-inner { grid-template-columns: 1.15fr 1fr; } }
+@media (max-width: 599px) { .cst__agenda-row { grid-template-columns: 50px 112px 1fr; gap: 8px; padding-block: 11px; } .cst__agenda-time { font-size: 17px; } .cst__agenda-cond { font-size: 10.5px; letter-spacing: .08em; gap: 6px; } .cst__agenda-h { font-size: 13.5px; } }
 /* The clock follows the day: a slim pill pinned under the header while the chapters scroll. */
 .cst__clock {
   position: sticky; inset-block-start: calc(var(--header-h) + 18px); z-index: 6; margin: 24px auto 0; inline-size: max-content; max-inline-size: calc(100% - 2 * var(--gutter));
@@ -376,32 +388,8 @@
 .ct__way[data-step='4'] .ct__way-icon { background: var(--c-step-4-tint); }
 @media (min-width: 990px) { .ct__title { font-size: min(7.6vw, 124px); white-space: nowrap; } }
 
-/* v3.1 climate: the brand mark sits beside the title. Its two arcs (two suns) drift apart and settle back,
-   like a day passing; they part fully as you scroll into the story. */
-.cst__mark { display: inline-block; vertical-align: baseline; inline-size: .62em; margin-inline-start: .08em; color: var(--c-step-4); }
-.cst__mark svg { inline-size: 100%; block-size: auto; overflow: visible; }
-.cst__arc { transform-box: fill-box; transform-origin: center; }
-.cst__arc--a { color: var(--c-step-4); }
-.cst__arc--b { color: var(--c-step-2); fill: var(--c-step-2); }
-@media (prefers-reduced-motion: no-preference) {
-  .cst__arc--a { animation: cst-sway-a 6s var(--ease-in-out) infinite alternate; }
-  .cst__arc--b { animation: cst-sway-b 6s var(--ease-in-out) infinite alternate; }
-}
-@keyframes cst-sway-a { from { translate: 0 0; } to { translate: -22% 4%; } }
-@keyframes cst-sway-b { from { translate: 0 0; } to { translate: 22% -4%; } }
 .mega__creators { display: flex; gap: 12px; align-items: center; margin-block-start: 8px; padding: 12px; border-radius: 16px; background: var(--c-step-4-tint); text-decoration: none; line-height: 1.3; }
 .mega__creators-mark { flex: none; inline-size: 30px; block-size: 32px; background: var(--c-ink); -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
-
-/* v3.1 climate: the brand mark beside the title, its two arcs (two suns) drifting apart and back like a day. */
-.cst__mark { display: inline-block; vertical-align: baseline; inline-size: .62em; margin-inline-start: .06em; }
-.cst__mark svg { inline-size: 100%; block-size: auto; overflow: visible; }
-.cst__arc { transform-box: fill-box; transform-origin: center; }
-@media (prefers-reduced-motion: no-preference) {
-  .cst__arc--a { animation: cst-sway-a 5s var(--ease-in-out) infinite alternate; }
-  .cst__arc--b { animation: cst-sway-b 5s var(--ease-in-out) infinite alternate; }
-}
-@keyframes cst-sway-a { from { translate: 0 0; } to { translate: -24% 5%; } }
-@keyframes cst-sway-b { from { translate: 0 0; } to { translate: 24% -5%; } }
 
 /* ---------- Log in / Create account ---------- */
 .account .container--narrow:has(.auth) { max-inline-size: 1120px; }
