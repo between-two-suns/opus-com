@@ -306,3 +306,12 @@ Each entry: decision · why · reversibility. Newest last.
       - switching goes to `/ar/pages/routines` and back to `/pages/routines`.
     - Noticed: the store menu titles (Shop, Sets, Find Your Routine, The Climate, About) show in English on `/ar`, because they are store data with no Arabic translation yet.
     - To undo: Settings → Languages → Arabic → Unpublish (or `shopLocaleUpdate published: false`).
+
+151. **Arabic menu titles.** Registered `ar` translations for the five items of the staging-only menu `bts-staging-primary` via `translationsRegister` (resource type Link), using the theme's existing Arabic wording:
+    - Shop → تسوّق
+    - Sets → المجموعات
+    - Find Your Routine → اكتشف روتينك
+    - The Climate → المناخ
+    - About → من نحن
+    - The live store's own menus (`main-menu`, `footer`) were not touched.
+    - Verified on staging `/ar` at 1440 and 390: header nav and phone drawer are fully Arabic. The only Latin text left is the product term "SPF 50+" and the brand name, both intended.
