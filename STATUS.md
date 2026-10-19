@@ -33,7 +33,7 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 
 ## Shipped to staging 2026-10-19
 - **Bag redesign** (DECISIONS 160): the bag page has a routine board (missing steps, one-tap add), refined lines, a sticky summary with free delivery, "You save", a tucked-away note, Check out with the total, assurances, and a pinned checkout on phones. The drawer gets the same lines and button, plus "View full bag".
-- **Checkout branding** (DECISIONS 161): the brand logo, ivory/white/ink colours and Figtree are set on the **unpublished** checkout profile "My Store configuration". The live checkout is unchanged until the owner publishes it.
+- **Checkout branding** (DECISIONS 161): the brand logo, ivory/white/ink colours and Figtree are **live on the checkout** (owner approved on 2026-10-19). The same settings are also on the draft profile "My Store configuration".
 
 ## Complete
 - Research + strategy: `RESEARCH.md`, `UX_STRATEGY.md`

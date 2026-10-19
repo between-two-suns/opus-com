@@ -472,7 +472,8 @@ Each entry: decision · why · reversibility. Newest last.
       - **Fonts:** Figtree for body (400/700) and headings (700/800), the site's UI font and in Shopify's library. Antonio and Alexandria aren't in the library, and custom font files are Plus only.
     - **Files uploaded to Shopify Files:** `bts-checkout-logo.png` (`MediaImage/47162252263682`), `bts-checkout-favicon.png` (`…/47162252296450`), and Antonio 500/700 woff2 instanced from the theme's own font (`GenericFile/47162252329218`, `…/47162252427522`). The favicon and Antonio are kept ready in case the store moves to Plus.
     - **Preview:** a simulation applies these settings to the real checkout in a headless browser only (`cosim.mjs` in the session scratchpad). Shopify has no outside-admin preview for a draft profile.
-    - **Publishing is the owner's call.** Either publish the draft in Settings → Checkout, or approve applying the same settings to the live profile.
+    - **Live, 2026-10-19, with owner approval** ("Apply it live now"): the same settings were written to the live profile `…/30073946370`. Before that, its branding was empty (Shopify defaults), so restoring it means clearing these fields.
+      - Verified on the real checkout at 1440 and 390, EN and AR (RTL): ivory page, centred wordmark, ink checkbox, radios and selected borders, a white summary on desktop, and Figtree loaded at 400/700/800.
     - **Owner decisions flagged, not changed:**
       - the store name is still "My Store" (checkout tab, emails);
       - "Email me with news and offers" is pre-ticked, which is against our no-dark-patterns rule;
