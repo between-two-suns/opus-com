@@ -104,7 +104,7 @@
         motion: {{ settings.signature_motion | json }},
         {%- comment -%} Fixed-price bundles (spec) so pickers can offer the bundle when a selection matches one. {%- endcomment -%}
         bundles: [
-          {%- assign bh = 'the-day-ritual,the-full-ritual,clear-protect-duo,the-night-ritual,the-core-duo' | split: ',' -%}
+          {%- assign bh = 'the-full-ritual,the-clear-protect-trio,clear-protect-duo,the-night-ritual,the-core-duo' | split: ',' -%}
           {%- for h in bh -%}
             {%- assign bp = all_products[h] -%}
             {%- if bp.id -%}

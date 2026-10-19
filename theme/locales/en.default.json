@@ -756,7 +756,7 @@
       },
       "start_where": {
         "q": "Which set should I start with?",
-        "a": "Starting from nothing: The Full Ritual, all four steps for morning and night. Mostly mornings: The Day Ritual. Oil and sun: the Clear & Protect Duo. Or pick single steps on the Sets page."
+        "a": "Starting from nothing: The Full Ritual, all four steps for morning and night. Want to start smaller: the Clear & Protect Trio, then add Barrier. Oil and sun: the Clear & Protect Duo. Or pick single steps on the Sets page."
       },
       "all_four": {
         "q": "Do I need all four steps?",
@@ -886,7 +886,7 @@
   },
   "bundles": {
     "names": {
-      "the-day-ritual": "The Day Ritual",
+      "the-clear-protect-trio": "The Clear & Protect Trio",
       "the-full-ritual": "The Full Ritual",
       "clear-protect-duo": "Clear & Protect Duo",
       "the-night-ritual": "The Night Ritual",
@@ -895,7 +895,7 @@
       "serum-stock-up": "Serum Stock-Up"
     },
     "desc": {
-      "the-day-ritual": "Cleanse, clarity, defense: the morning three.",
+      "the-clear-protect-trio": "Cleanse, clarity, defense. Add Barrier to complete your routine.",
       "the-full-ritual": "All four steps, in order.",
       "clear-protect-duo": "Clarity Serum plus daily SPF.",
       "the-night-ritual": "Cleanse, clarity, barrier. SPF waits for the morning.",
@@ -1067,7 +1067,7 @@
     "separately": "Bought separately",
     "who": {
       "the-full-ritual": "For starting from scratch: the complete morning and night routine in one box.",
-      "the-day-ritual": "For your mornings: cleanse, treat and protect, then out the door.",
+      "the-clear-protect-trio": "For starting with three: cleanse, treat and protect. Add Barrier when you’re ready for the full routine.",
       "the-night-ritual": "For evenings: cleanse, treat, moisturise. Sunscreen waits for the morning.",
       "clear-protect-duo": "For oil and sun: the serum, and the SPF that finishes every morning.",
       "the-core-duo": "The two-step start: cleanse, then treat.",

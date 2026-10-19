@@ -121,7 +121,7 @@ export const ARTICLES = [
 
 // The seven fixed-price bundles, as created in Shopify (productBundleCreate, 2026-10-12).
 export const BUNDLES = [
-  { id: 10408389181698, variantId: 50722896281858, handle: 'the-day-ritual', title: 'The Day Ritual', price: 134900, compare: 139700, sku: 'BTS-SET-DAY', tags: ['bundle', 'rituals'] },
+  { id: 10408389181698, variantId: 50722896281858, handle: 'the-clear-protect-trio', title: 'The Clear & Protect Trio', price: 134900, compare: 139700, sku: 'BTS-SET-DAY', tags: ['bundle', 'rituals'] },
   { id: 10408389083394, variantId: 50722896019714, handle: 'the-full-ritual', title: 'The Full Ritual', price: 169900, compare: 184600, sku: 'BTS-SET-FULL', tags: ['bundle', 'rituals'] },
   { id: 10408389247234, variantId: 50722896347394, handle: 'clear-protect-duo', title: 'Clear & Protect Duo', price: 94900, compare: 99800, sku: 'BTS-SET-CLEAR', tags: ['bundle', 'duos'] },
   { id: 10408389214466, variantId: 50722896314626, handle: 'the-night-ritual', title: 'The Night Ritual', price: 129900, compare: 134700, sku: 'BTS-SET-NIGHT', tags: ['bundle', 'rituals'] },

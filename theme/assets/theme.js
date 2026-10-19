@@ -17,7 +17,7 @@ export function formatMoney(cents) {
 }
 BTS.formatMoney = formatMoney;
 // A selection of routine steps that is exactly one of the fixed-price bundles → that bundle (or null).
-// One line for a matched bundle: "Your picks make The Day Ritual · Save EGP 48 vs buying separately".
+// One line for a matched bundle: "Your picks make The Night Ritual · Save EGP 48 vs buying separately".
 BTS.bundleNote = (b) => {
   if (!b) return '';
   const st = BTS.strings || {};
@@ -676,7 +676,7 @@ document.addEventListener('change', (event) => {
   changeLine(Number(input.dataset.lineQty), qty, input.closest('[data-cart-root]'));
 });
 
-// Bag: upgrade a duo to The Day Ritual (remove the duo line, add the ritual) in one tap.
+// Bag: upgrade a duo to The Clear & Protect Trio (remove the duo line, add the trio) in one tap.
 document.addEventListener('click', async (event) => {
   const btn = event.target.closest('[data-upgrade-line]');
   if (!btn) return;

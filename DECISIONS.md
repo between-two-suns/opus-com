@@ -479,3 +479,13 @@ Each entry: decision · why · reversibility. Newest last.
       - "Email me with news and offers" is pre-ticked, which is against our no-dark-patterns rule;
       - phone is optional although couriers need it;
       - PayPal is the only payment method shown.
+
+162. **Owner: "The Day Ritual" (cleanser + serum + SPF) says the moisturizer isn't for the day, which contradicts the Routines page (AM = all four steps).** Owner approved the commercial fix:
+    - **The Full Ritual is the BTS Pick.** It's shown first on the home page and the Sets page (`bundle-def`: `1,2,3,4|bts_pick|featured-1`). It's offered on **every** single-product page instead of the Day Ritual; it holds every step, so the Barrier page no longer needs an exception. Stock-ups stay on their own product pages.
+    - **The Day Ritual is renamed "The Clear & Protect Trio"** (AR: ثلاثي الصفاء والحماية). Same products, same EGP 1,349 (compare 1,397). It makes a ladder: Clear & Protect Duo → Trio → The Full Ritual.
+      - Store: product title and handle changed to `the-clear-protect-trio`, with an automatic redirect from `/products/the-day-ritual`. The SKU `BTS-SET-DAY` was left alone because fulfilment may use it.
+      - Copy has no time of day. The card reads "Cleanse, clarity, defense. Add Barrier to complete your routine." The set page reads "For starting with three… Add Barrier when you're ready for the full routine."
+      - FAQ: "Want to start smaller: the Clear & Protect Trio, then add Barrier."
+      - The bag's duo upgrade now offers the trio under its new name.
+    - The `best_value` badge is no longer used. The Night Ritual is unchanged (SPF waits for the morning, which is correct).
+    - QA: theme-check 0, flows 308/308. The flows bag-count helper now reads `data-count`, because the visible digits hold old and new numbers mid-roll ("46"). Staging MD5s match. Live theme index unchanged.

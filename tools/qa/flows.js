@@ -5,7 +5,7 @@ const BASE = process.env.BASE || 'http://localhost:4321';
 const results = [];
 const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'} ${name}${extra ? ' — ' + extra : ''}`);
 const browser = await chromium.launch();
-const count = (page) => page.$eval('[data-cart-count]', (e) => e.textContent.trim());
+const count = (page) => page.$eval('[data-cart-count]', (e) => (e.dataset.count ?? e.textContent).trim());
 // After an add the bag no longer opens by itself: a confirmation card appears and its View bag opens the full bag.
 const openBag = async (page, timeout = 5000) => {
   await page.waitForSelector('.added:not([hidden]) [data-added-bag]', { timeout }).catch(() => {});
@@ -236,27 +236,27 @@ for (const loc of ['', '/ar']) {
 
     // Prices: whole pounds, comma thousands, EGP before (EN) / ج.م after (AR)
     const setPrice = (await page.locator('.bundle .bundle__now').first().textContent()).trim();
-    ok(`${tag} bundle price in EGP format`, loc ? /^1,349 ج\.م$/.test(setPrice) : /^EGP 1,349$/.test(setPrice), setPrice);
+    ok(`${tag} bundle price in EGP format`, loc ? /^1,699 ج\.م$/.test(setPrice) : /^EGP 1,699$/.test(setPrice), setPrice);
 
     // Quantity limit: a bundle stops at 3
     await page.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
-    await page.goto(`${BASE}${loc}/products/the-day-ritual`, { waitUntil: 'networkidle' });
+    await page.goto(`${BASE}${loc}/products/the-clear-protect-trio`, { waitUntil: 'networkidle' });
     for (let i = 0; i < 4; i++) {
       await page.evaluate(() => window.BTS.Cart.add([{ id: window.BTS.bundles.find((b) => String(b.steps) === '1,2,4').id, quantity: 1 }]));
     }
     await page.waitForTimeout(500);
     ok(`${tag} bundle quantity capped at 3`, (await count(page)) === '3', `count=${await count(page)}`);
 
-    // Upgrade: Clear & Protect Duo in the bag → offer The Day Ritual, swap on click
+    // Upgrade: Clear & Protect Duo in the bag → offer the Clear & Protect Trio, swap on click
     await page.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
     await page.goto(`${BASE}${loc}/products/clear-protect-duo`, { waitUntil: 'networkidle' });
     await page.click('.pdp__atc');
     await openBag(page, 4000);
-    ok(`${tag} bag offers the Day Ritual upgrade`, await page.locator('#CartDrawer .cart-upgrade').isVisible());
+    ok(`${tag} bag offers the Trio upgrade`, await page.locator('#CartDrawer .cart-upgrade').isVisible());
     await page.locator('#CartDrawer [data-upgrade-line]').click();
     await page.waitForFunction(() => !document.querySelector('#CartDrawer .cart-upgrade'), null, { timeout: 5000 }).catch(() => {});
     const upLines = await page.$$eval('#CartDrawer .cart-line', (l) => l.map((x) => x.textContent));
-    ok(`${tag} upgrade swaps duo for Day Ritual`, upLines.length === 1 && (await count(page)) === '1', `lines=${upLines.length} count=${await count(page)}`);
+    ok(`${tag} upgrade swaps duo for the Trio`, upLines.length === 1 && (await count(page)) === '1', `lines=${upLines.length} count=${await count(page)}`);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
     await page.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));

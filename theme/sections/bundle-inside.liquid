@@ -136,7 +136,7 @@
     </div>
 
     {%- comment -%} Other sets, so a visitor comparing never hits a dead end. {%- endcomment -%}
-    {%- assign others = 'the-full-ritual,the-day-ritual,the-night-ritual,clear-protect-duo,the-core-duo' | split: ',' -%}
+    {%- assign others = 'the-full-ritual,the-clear-protect-trio,the-night-ritual,clear-protect-duo,the-core-duo' | split: ',' -%}
     {{ 'bundles.css' | asset_url | stylesheet_tag }}
     <div class="bi__others">
       <div class="section-head">
