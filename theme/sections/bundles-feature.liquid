@@ -1,0 +1,168 @@
+{{ 'bundles-feature.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Sets, one hero and one companion: the pick (The Full Ritual) leads with its photo and the four steps;
+  the companion (The Clear & Protect Trio) shows its three packs and an empty dashed slot for the step it leaves out,
+  the same language as the bag's routine board. Prices and compare-at come from the Shopify bundle products.
+{%- endcomment -%}
+{%- liquid
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'sections.bundles.heading' | t | replace: '&amp;', '&'
+  endif
+  assign text = section.settings.text
+  if text == blank
+    assign text = 'sections.bundles_feature.text' | t | replace: '&amp;', '&'
+  endif
+  assign hero = section.settings.hero | default: all_products['the-full-ritual']
+  assign mate = section.settings.mate | default: all_products['the-clear-protect-trio']
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
+-%}
+<section class="section setsx" id="sets" data-tone="lilac" aria-labelledby="SetsxTitle-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{{ 'sections.bundles.eyebrow' | t }}</p>
+        <h2 class="t-display-l" id="SetsxTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      </div>
+      <div class="setsx__aside">
+        <p class="t-lead t-muted">{{ text | escape }}</p>
+        <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'sections.bundles.see_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+      </div>
+    </div>
+
+    <ul class="setsx__grid" role="list">
+      {%- for set in (1..2) -%}
+        {%- liquid
+          if forloop.first
+            assign p = hero
+            assign kind = 'hero'
+          else
+            assign p = mate
+            assign kind = 'mate'
+          endif
+          unless p.id
+            continue
+          endunless
+          capture def
+            render 'bundle-def', handle: p.handle
+          endcapture
+          assign def = def | strip | split: '|'
+          assign steps = def[0] | split: ','
+          assign badge = def[1]
+          assign v = p.selected_or_first_available_variant
+          assign name_key = 'bundles.names.' | append: p.handle
+          assign name = name_key | t | replace: '&amp;', '&'
+          if name contains 'ranslation missing' or name == name_key
+            assign name = p.title
+          endif
+          assign desc_key = 'bundles.desc.' | append: p.handle
+          assign desc = desc_key | t | replace: '&amp;', '&'
+          if desc contains 'ranslation missing' or desc == desc_key
+            assign desc = ''
+          endif
+          assign saving = 0
+          if v.compare_at_price > v.price
+            assign saving = v.compare_at_price | minus: v.price
+          endif
+          assign ships_free = false
+          if threshold > 0 and v.price >= threshold
+            assign ships_free = true
+          endif
+          assign first = steps.first | plus: 0
+          assign last = steps.last | plus: 0
+        -%}
+        <li class="bundle setsx-card setsx-card--{{ kind }}" data-count="{{ steps.size }}" data-handle="{{ p.handle }}" style="--a: var(--c-step-{{ first }}); --b: var(--c-step-{{ last }});">
+          {%- if kind == 'hero' -%}
+            <a class="bundle__stage setsx-card__media" href="{{ p.url }}" tabindex="-1" aria-hidden="true" data-cursor="{{ 'general.view' | t }}">
+              {%- if badge != blank -%}
+                {%- assign badge_key = 'bundles.badges.' | append: badge -%}
+                <span class="setsx-card__badge">{{ badge_key | t }}</span>
+              {%- endif -%}
+              {%- render 'set-visual', product: p, sizes: '(min-width: 990px) 60vw, 92vw' -%}
+            </a>
+          {%- else -%}
+            <a class="setsx-card__stage" href="{{ p.url }}" tabindex="-1" aria-hidden="true" data-cursor="{{ 'general.view' | t }}">
+              <ul class="setsx-packs" role="list">
+                {%- for n in (1..4) -%}
+                  {%- assign ns = n | append: '' -%}
+                  {%- assign cut = 'cut-' | append: step_handles[n] | append: '.webp' | asset_url -%}
+                  {%- if steps contains ns -%}
+                    <li class="setsx-pack" data-step="{{ n }}"><img src="{{ cut }}" alt="" width="350" height="1100" loading="lazy"></li>
+                  {%- else -%}
+                    {%- assign missing = all_products[step_handles[n]] -%}
+                    <li class="setsx-pack is-missing" data-missing="{{ n }}" style="--sku: var(--c-step-{{ n }});">
+                      <img src="{{ cut }}" alt="" width="350" height="1100" loading="lazy">
+                      <span class="setsx-pack__add">+ {{ missing.metafields.bts.step_label.value | default: missing.title | escape }}</span>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </a>
+          {%- endif -%}
+
+          <div class="setsx-card__body">
+            <div class="setsx-card__info">
+              <p class="setsx-card__count t-xs">{%- if kind == 'hero' -%}{{ 'sections.bundles.count' | t: count: steps.size }}{%- else -%}{{ 'sections.bundles_feature.start_three' | t }}{%- endif -%}</p>
+              <h3 class="setsx-card__name"><a href="{{ p.url }}">{{ name | escape }}</a></h3>
+              {%- if kind == 'hero' -%}
+                <ol class="setsx-steps" role="list">
+                  {%- for st in steps -%}
+                    {%- assign s = st | plus: 0 -%}
+                    {%- assign comp = all_products[step_handles[s]] -%}
+                    <li style="--sku: var(--c-step-{{ s }});"><span class="setsx-steps__n">0{{ s }}</span>{{ comp.metafields.bts.step_label.value | default: comp.title | escape }}</li>
+                  {%- endfor -%}
+                </ol>
+              {%- elsif desc != blank -%}
+                <p class="setsx-card__desc t-small t-muted">{{ desc | escape }}</p>
+              {%- endif -%}
+            </div>
+
+            <div class="setsx-card__buy">
+              <p class="setsx-price">
+                <span class="setsx-price__now">{% render 'egp', cents: v.price %}</span>
+                {%- if saving > 0 -%}
+                  <s class="setsx-price__was"><span class="visually-hidden">{{ 'sections.bundles.was' | t }} </span>{% render 'egp', cents: v.compare_at_price %}</s>
+                {%- endif -%}
+              </p>
+              {%- if saving > 0 or ships_free -%}
+                <p class="setsx-perks t-small">
+                  {%- if saving > 0 -%}
+                    {%- capture amt -%}{% render 'egp', cents: saving %}{%- endcapture -%}
+                    <span class="setsx-perks__save">{{ 'sections.bundles_feature.save' | t: amount: amt }}</span>
+                  {%- endif -%}
+                  {%- if ships_free -%}
+                    <span class="setsx-perks__ship">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</span>
+                  {%- endif -%}
+                </p>
+              {%- endif -%}
+              <product-form>
+                <form method="post" action="{{ routes.cart_add_url }}">
+                  <input type="hidden" name="id" value="{{ v.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" class="btn btn--full{% if kind == 'mate' %} btn--secondary{% endif %}"{% unless v.available %} disabled{% endunless %}>
+                    <span class="btn__label">{% if v.available %}{{ 'sections.bundles.cta' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif %}<span class="visually-hidden">: {{ name | escape }}</span></span>
+                  </button>
+                  <p class="t-xs t-muted" data-form-error hidden></p>
+                </form>
+              </product-form>
+            </div>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.bundles_feature.name",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" },
+    { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
+    { "type": "product", "id": "hero", "label": "t:sections.bundles_feature.hero" },
+    { "type": "product", "id": "mate", "label": "t:sections.bundles_feature.mate" }
+  ],
+  "presets": [{ "name": "t:sections.bundles_feature.name" }]
+}
+{% endschema %}

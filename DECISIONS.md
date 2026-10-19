@@ -491,3 +491,13 @@ Each entry: decision · why · reversibility. Newest last.
     - Found while checking on the real store: on every set page, the studio slides' screen-reader labels contained "Liquid error (snippets/pdp-bundle line 27): wrong number of arguments". Cause: `forloop.index | plus: 1, count: count` inside `t:` passed `count:` to `plus`. Fix: compute `slide_n` first. This bug predates today's change.
     - Real-store checks were slowed by Shopify rate limits after many test runs: 429 errors and the "Just a moment…" bot check on `/cart/add.js`. They were not site errors.
     - QA: theme-check 0, flows 308/308. The flows bag-count helper now reads `data-count`, because the visible digits hold old and new numbers mid-roll ("46"). Staging MD5s match. Live theme index unchanged.
+
+163. **Owner: the home page's routines section is "ok but not great", with ordinary cards. Owner approved a demo before any change.** The demo is on staging at `/?view=sets` (`templates/index.sets.json`, otherwise identical to the home page). The staging home page is unchanged.
+    - New section `bundles-feature` with its own stylesheet, `assets/bundles-feature.css`. It holds one hero and one companion.
+      - **The Full Ritual (BTS Pick):** about two-thirds of the width on desktop. It shows its own photo, then numbered step pills in each product's colour (01 Reset · 02 Clarity · 03 Barrier · 04 Defense) instead of the repeated product list. One price line reads "EGP 1,699 ~~1,846~~ · Save EGP 147 · Ships free", with the main button.
+      - **The Clear & Protect Trio, "Start with three":** studio cut-outs of its three packs with nothing cropped, and a dashed, greyscale slot labelled "+ Barrier" for the step it leaves out (the bag routine board's language). It has a secondary button.
+      - **Phone:** the cards stack instead of a sideways carousel. Steps sit in an even four-column row; the trio card is about 410 px tall.
+      - **Intro copy:** "Your whole routine in one box. Sets cost less than buying each step on its own." (EN/AR).
+      - No scroll motion (owner didn't ask for it).
+    - Cards keep the `.bundle` class, so add-to-bag throws the right bottles: from the photo for the Full Ritual, and from each cut-out for the trio.
+    - Checked locally and on the real store (desktop EN, phone EN/AR): correct names and prices, no Liquid or JS errors, no sideways page scroll. theme-check 0.

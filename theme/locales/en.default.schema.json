@@ -251,6 +251,11 @@
     "ingredient_benefits": {
       "name": "Ingredients: benefits",
       "info": "One chapter per product, from its benefit line and key ingredients."
+    },
+    "bundles_feature": {
+      "name": "Sets: pick and companion",
+      "hero": "The pick (large card)",
+      "mate": "The companion (smaller card)"
     }
   },
   "settings_schema": {

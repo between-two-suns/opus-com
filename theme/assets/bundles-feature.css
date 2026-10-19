@@ -1,0 +1,77 @@
+/* Sets on the home page: one hero (the pick) and one companion. Cards are white on the page, like the bag's summary. */
+.setsx__aside { display: grid; gap: 14px; justify-items: start; max-inline-size: 440px; }
+.setsx__aside .t-lead { margin: 0; }
+.setsx__grid { display: grid; gap: clamp(14px, 1.6vw, 24px); grid-template-columns: minmax(0, 1fr); list-style: none; margin: 0; padding: 0; }
+
+.setsx-card { display: flex; flex-direction: column; position: relative; isolation: isolate; overflow: hidden; border-radius: var(--radius-l); background: var(--c-paper); box-shadow: 0 1px 0 var(--c-line), 0 30px 60px -48px rgba(32, 35, 58, .45); transition: transform var(--dur-slow) var(--ease-out), box-shadow var(--dur-slow) var(--ease-out); }
+.setsx-card:hover { transform: translateY(-3px); box-shadow: 0 1px 0 var(--c-line), 0 40px 70px -46px rgba(32, 35, 58, .5); }
+
+/* Hero: the set's own photo, edge to edge */
+.setsx-card__media { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; background: color-mix(in srgb, var(--a) 22%, #fff); }
+.setsx-card__media img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; transition: scale 900ms var(--ease-out); }
+.setsx-card:hover .setsx-card__media img { scale: 1.03; }
+.setsx-card__badge { position: absolute; z-index: 2; inset-block-start: 16px; inset-inline-start: 16px; padding: 7px 14px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+
+/* Companion: the packs it holds, and a dashed slot for the step it leaves out */
+.setsx-card__stage { position: relative; display: flex; align-items: flex-end; justify-content: center; padding: 28px 18px 22px; background: linear-gradient(180deg, color-mix(in srgb, var(--c-step-2) 16%, #fff), color-mix(in srgb, var(--c-step-4) 10%, #fff)); text-decoration: none; }
+.setsx-packs { display: flex; align-items: flex-end; justify-content: center; gap: clamp(8px, 1.4vw, 16px); block-size: clamp(170px, 18vw, 230px); inline-size: 100%; margin: 0; padding: 0; list-style: none; }
+.setsx-pack { position: relative; display: flex; align-items: flex-end; justify-content: center; block-size: 100%; transition: transform var(--dur-slow) var(--ease-out); }
+.setsx-pack[data-step='2'], .setsx-pack[data-missing='2'] { block-size: 74%; }
+.setsx-pack[data-step='3'], .setsx-pack[data-step='4'], .setsx-pack[data-missing='3'], .setsx-pack[data-missing='4'] { block-size: 83%; }
+.setsx-pack img { block-size: 100%; inline-size: auto; filter: drop-shadow(0 12px 12px rgba(32, 35, 58, .12)); }
+.setsx-card:hover .setsx-pack:not(.is-missing) { transform: translateY(-4px); }
+.setsx-pack.is-missing { padding: 8px 6px 34px; border-radius: 16px; border: 1.5px dashed color-mix(in srgb, var(--sku) 70%, var(--c-ink)); background: color-mix(in srgb, var(--sku) 12%, transparent); }
+.setsx-pack.is-missing img { filter: grayscale(1); opacity: .28; }
+.setsx-pack__add { position: absolute; z-index: 2; inset-block-end: 8px; inset-inline: 0; margin-inline: auto; inline-size: max-content; padding: 4px 10px; border-radius: 99px; background: #fff; color: var(--c-ink); font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: 0 4px 12px -6px rgba(32, 35, 58, .35); }
+
+/* Body */
+.setsx-card__body { display: grid; gap: 18px; padding: 20px 22px 22px; flex: 1; align-content: space-between; }
+.setsx-card__info { display: grid; gap: 8px; align-content: start; }
+.setsx-card__count { margin: 0; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.setsx-card__name { margin: 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(30px, 2.8vw, 44px); line-height: .95; }
+.setsx-card--mate .setsx-card__name { font-size: clamp(26px, 2.2vw, 34px); }
+.setsx-card__name a { color: inherit; text-decoration: none; }
+.setsx-card__desc { margin: 0; max-inline-size: 36ch; }
+
+.setsx-steps { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; }
+.setsx-steps li { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px 6px 7px; border-radius: 99px; background: color-mix(in srgb, var(--sku) 22%, #fff); font-size: 13px; font-weight: 650; }
+.setsx-steps__n { display: grid; place-items: center; min-inline-size: 26px; block-size: 22px; padding-inline: 4px; border-radius: 99px; background: var(--sku); font-family: var(--font-display); font-weight: 700; font-size: 13px; line-height: 1; font-variant-numeric: tabular-nums; }
+
+.setsx-card__buy { display: grid; gap: 10px; align-content: end; }
+.setsx-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 0; }
+.setsx-price__now { font-size: 22px; font-weight: 750; font-variant-numeric: tabular-nums; }
+.setsx-price__was { color: var(--c-muted); font-size: 14px; }
+.setsx-perks { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 0; font-weight: 650; }
+.setsx-perks__save { color: var(--c-success); }
+.setsx-perks__ship { display: inline-flex; align-items: center; gap: 6px; color: var(--c-muted); }
+
+/* Phone: the four steps as an even row; the companion stays short (packs, then name, price and button) */
+@media (max-width: 599px) {
+  .setsx-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .setsx-steps li { flex-direction: column; justify-content: center; gap: 4px; padding: 7px 2px 8px; border-radius: 14px; font-size: 12px; text-align: center; }
+  .setsx-card--mate .setsx-card__stage { padding: 20px 12px 16px; }
+  .setsx-card--mate .setsx-packs { block-size: 150px; gap: 10px; }
+  .setsx-card--mate .setsx-pack__add { font-size: 11px; padding: 3px 8px; }
+  .setsx-card--mate .setsx-card__body { gap: 14px; padding: 16px 20px 20px; }
+  .setsx-card--mate .setsx-card__desc { display: none; }
+}
+
+/* Tablet: hero full width, companion a row beside its packs */
+@media (min-width: 600px) and (max-width: 989px) {
+  .setsx-card--mate { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+/* Desktop: hero two-thirds, companion one-third; the hero's text and buying sit side by side */
+@media (min-width: 990px) {
+  .setsx__grid { grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr); }
+  .setsx-card--hero .setsx-card__media { aspect-ratio: 16 / 9; }
+  .setsx-card--hero .setsx-card__body { grid-template-columns: minmax(0, 1fr) minmax(240px, 300px); align-items: end; padding: 24px 28px 28px; gap: 24px 32px; }
+  .setsx-card--mate .setsx-card__stage { flex: 1; min-block-size: 0; align-items: center; }
+  .setsx-card--mate .setsx-card__body { flex: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .setsx-card, .setsx-card__media img, .setsx-pack { transition: none; }
+  .setsx-card:hover, .setsx-card:hover .setsx-pack:not(.is-missing) { transform: none; }
+  .setsx-card:hover .setsx-card__media img { scale: none; }
+}
