@@ -257,6 +257,20 @@ for (const loc of ['', '/ar']) {
     await page.waitForFunction(() => !document.querySelector('#CartDrawer .cart-upgrade'), null, { timeout: 5000 }).catch(() => {});
     const upLines = await page.$$eval('#CartDrawer .cart-line', (l) => l.map((x) => x.textContent));
     ok(`${tag} upgrade swaps duo for the Trio`, upLines.length === 1 && (await count(page)) === '1', `lines=${upLines.length} count=${await count(page)}`);
+
+    // A three-step set in the bag: switching to The Full Ritual beats adding the missing step alone
+    await page.keyboard.press('Escape');
+    await page.evaluate(async () => { await fetch('/cart/clear.js', { method: 'POST' }); await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: [{ id: BTS.bundles.find((x) => String(x.steps) === '1,2,3').id, quantity: 1 }] }) }); });
+    await page.reload({ waitUntil: 'networkidle' });
+    await page.evaluate(() => BTS.openDialog('CartDrawer'));
+    await page.waitForTimeout(500);
+    const swapText = await page.locator('#CartDrawer .cart-upsell__item--swap').textContent().catch(() => '');
+    ok(`${tag} bag offers the Full Ritual switch for the Night Ritual`, /400/.test(swapText) && /499/.test(swapText), swapText.replace(/\s+/g, ' ').trim());
+    ok(`${tag} no separate SPF suggestion beside the switch`, (await page.locator('#CartDrawer .cart-upsell__item[data-step="4"]:not(.cart-upsell__item--swap)').count()) === 0);
+    await page.locator('#CartDrawer .cart-upsell__item--swap [data-upgrade-line]').click();
+    await page.waitForFunction(() => !document.querySelector('#CartDrawer .cart-upsell__item--swap'), null, { timeout: 5000 }).catch(() => {});
+    const swHandles = await page.evaluate(() => fetch('/cart.js').then((r) => r.json()).then((c) => c.items.map((i) => i.handle).join(',')));
+    ok(`${tag} switch leaves just The Full Ritual`, swHandles === 'the-full-ritual', swHandles);
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
     await page.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));

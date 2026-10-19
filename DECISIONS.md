@@ -501,3 +501,16 @@ Each entry: decision · why · reversibility. Newest last.
       - No scroll motion (owner didn't ask for it).
     - Cards keep the `.bundle` class, so add-to-bag throws the right bottles: from the photo for the Full Ritual, and from each cut-out for the trio.
     - Checked locally and on the real store (desktop EN, phone EN/AR): correct names and prices, no Liquid or JS errors, no sideways page scroll. theme-check 0.
+
+164. **Owner review of the demo: the trio card's "+ Barrier" slot is a fake button, and the Night Ritual fits the story better.** Owner asked for real feedback.
+    - **The "+ Barrier" slot was a false affordance.** It looked tappable but only opened the trio page. Worse, "add Barrier to complete your routine" steered people to trio + Barrier (EGP 1,349 + 449 = 1,798), which is EGP 99 more than The Full Ritual (1,699). That breaks the no-dark-patterns rule.
+    - **Demo companion is now The Night Ritual** ("For your evenings · 3 steps", "Cleanse, clarity, barrier. SPF waits for the morning.") on a dusk-lilac stage, with no ghost slot. The Full Ritual reads "Morning and night · 4 steps". This mirrors the Routines page (AM = Full, PM = Night). Caution given to the owner: the trio, the only cheaper set with SPF, leaves the home page but stays on Sets and as the duo upgrade.
+    - **Honest trio copy (EN/AR):**
+      - card: "Cleanse, clarity, defense. Three steps to start with.";
+      - set page: "…Want all four? The Full Ritual costs less than adding Barrier later.";
+      - FAQ: dropped "then add Barrier".
+    - **Bag fix (approved):** with exactly one three-step set in the bag and its missing step not in the bag, the bag offers "Switch to The Full Ritual: add {step} for {Full − set} instead of {single}" in place of the plain single. Examples: trio → Barrier EGP 350 instead of 449; Night → Defense EGP 400 instead of 499.
+      - It's shown only when cheaper than the single and when The Full Ritual isn't already in the bag.
+      - New snippets `ritual-swap` (logic) and `ritual-swap-item` (drawer row; the added-to-bag card picks it up as the next suggestion). On the bag page, the missing tile's button becomes "+ EGP 350 · Switch to The Full Ritual".
+      - The upgrade click handler now reloads the bag page. `has_ritual` counts the trio kind too.
+    - QA: flows 320/320 (new: Night Ritual switch offer, no duplicate SPF suggestion, switch leaves only The Full Ritual); local EN/AR checks of trio, night, trio+Barrier and duo cases; axe 0 (section and drawer, 390/1440, EN/AR); theme-check 0. Staging MD5s match. Live unchanged.

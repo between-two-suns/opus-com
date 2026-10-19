@@ -23,7 +23,7 @@
       for b in bsteps
         assign in_cart_steps = in_cart_steps | append: '|' | append: b
       endfor
-      if bdef contains '|ritual'
+      if bdef contains '|ritual' or bdef contains '|trio'
         assign has_ritual = true
       endif
       if item.product.handle == 'the-core-duo' or item.product.handle == 'clear-protect-duo'
@@ -95,10 +95,18 @@
           {%- endif -%}
         {%- endif -%}
 
-        {%- if settings.cart_routine_upsell -%}
+        {%- comment -%} A three-step set in the bag: switching to The Full Ritual beats adding its missing step alone, so offer that instead. {%- endcomment -%}
+        {%- capture swap -%}{% render 'ritual-swap' %}{%- endcapture -%}
+        {%- assign swap = swap | strip | split: '|' -%}
+        {%- assign swap_step = 0 -%}
+        {%- if swap.size == 5 -%}{%- assign swap_step = swap[2] | plus: 0 -%}{%- endif -%}
+        {%- if settings.cart_routine_upsell or swap_step > 0 -%}
           {%- capture upsell_items -%}
+            {%- if swap_step > 0 -%}{%- render 'ritual-swap-item', swap: swap -%}{%- endif -%}
             {%- for s in (1..4) -%}
+              {%- unless settings.cart_routine_upsell -%}{%- break -%}{%- endunless -%}
               {%- assign needle = '|' | append: s -%}
+              {%- if s == swap_step -%}{%- continue -%}{%- endif -%}
               {%- unless in_cart_steps contains needle -%}
                 {%- for product in upsell_source.products limit: 12 -%}
                   {%- capture ps -%}{% render 'product-step', product: product %}{%- endcapture -%}

@@ -1,0 +1,59 @@
+{%- comment -%}
+  The honest upgrade for a three-step set in the bag: switching to The Full Ritual costs less than adding the
+  missing step on its own. Outputs "line_key|full_variant_id|missing_step|extra_cents|single_cents", or nothing
+  when there is no single set to switch, the step is already in the bag, or the switch would not be the cheaper way.
+  Usage: {% capture swap %}{% render 'ritual-swap' %}{% endcapture %}
+{%- endcomment -%}
+{%- liquid
+  assign rs_full = all_products['the-full-ritual']
+  assign rs_fv = rs_full.selected_or_first_available_variant
+  assign rs_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign rs_in = ''
+  assign rs_line = nil
+  assign rs_sets = 0
+  assign rs_has_full = false
+  for item in cart.items
+    if item.product.handle == 'the-full-ritual'
+      assign rs_has_full = true
+    endif
+    capture rs_s
+      render 'product-step', product: item.product
+    endcapture
+    assign rs_in = rs_in | append: '|' | append: rs_s | strip
+    capture rs_def
+      render 'bundle-def', handle: item.product.handle
+    endcapture
+    assign rs_def = rs_def | strip
+    if rs_def != blank
+      assign rs_steps = rs_def | split: '|' | first | split: ','
+      for x in rs_steps
+        assign rs_in = rs_in | append: '|' | append: x
+      endfor
+      assign rs_uniq = rs_steps | uniq
+      if rs_uniq.size == 3 and rs_steps.size == 3
+        assign rs_sets = rs_sets | plus: 1
+        assign rs_line = item
+      endif
+    endif
+  endfor
+  assign rs_ok = false
+  if rs_full.id and rs_fv.available and rs_has_full == false and rs_line and rs_sets == 1 and rs_line.quantity == 1
+    assign rs_ok = true
+  endif
+-%}
+{%- if rs_ok -%}
+  {%- capture rs_def -%}{% render 'bundle-def', handle: rs_line.product.handle %}{%- endcapture -%}
+  {%- assign rs_steps = rs_def | strip | split: '|' | first | split: ',' -%}
+  {%- for n in (1..4) -%}
+    {%- assign ns = n | append: '' -%}
+    {%- unless rs_steps contains ns -%}
+      {%- assign needle = '|' | append: n -%}
+      {%- unless rs_in contains needle -%}
+        {%- assign rs_single = all_products[rs_handles[n]].selected_or_first_available_variant -%}
+        {%- assign rs_extra = rs_fv.price | minus: rs_line.final_line_price -%}
+        {%- if rs_extra > 0 and rs_extra < rs_single.price -%}{{ rs_line.key }}|{{ rs_fv.id }}|{{ n }}|{{ rs_extra }}|{{ rs_single.price }}{%- endif -%}
+      {%- endunless -%}
+      {%- break -%}
+    {%- endunless -%}
+  {%- endfor -%}
+{%- endif -%}

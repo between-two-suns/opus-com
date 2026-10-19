@@ -22,6 +22,15 @@
       endfor
     endif
   endfor
+  capture rb_swap
+    render 'ritual-swap'
+  endcapture
+  assign rb_swap = rb_swap | strip | split: '|'
+  assign rb_full_name = 'bundles.names.the-full-ritual' | t | replace: '&amp;', '&'
+  assign rb_swap_step = 0
+  if rb_swap.size == 5
+    assign rb_swap_step = rb_swap[2] | plus: 0
+  endif
   assign rb_count = 0
   for n in (1..4)
     assign needle = '|' | append: n
@@ -55,6 +64,13 @@
         <p class="routine-board__name"><a href="{{ p.url }}">{{ p.metafields.bts.step_label.value | default: p.title | escape }}</a></p>
         {%- if on -%}
           <p class="routine-board__state">{{ 'cart.in_bag' | t }}</p>
+        {%- elsif n == rb_swap_step -%}
+          {%- comment -%} Switching the three-step set to The Full Ritual costs less than this step on its own {%- endcomment -%}
+          {%- capture rb_extra -%}{% render 'egp', cents: rb_swap[3] %}{%- endcapture -%}
+          <div class="routine-board__add">
+            <button type="button" class="btn btn--sku btn--small" data-upgrade-line="{{ rb_swap[0] }}" data-upgrade-to="{{ rb_swap[1] }}" aria-label="{{ 'cart.swap_title' | t: bundle: rb_full_name }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}<span class="btn__label">{{ rb_extra }}</span></button>
+          </div>
+          <p class="routine-board__state">{{ 'cart.swap_title' | t: bundle: rb_full_name }}</p>
         {%- elsif v.available -%}
           {%- unless v.price == 0 and settings.zero_price_coming_soon -%}
             <product-form class="routine-board__add">

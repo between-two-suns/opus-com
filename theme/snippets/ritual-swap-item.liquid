@@ -1,0 +1,32 @@
+{%- comment -%}
+  The bag's switch-to-The-Full-Ritual offer, laid out like a routine suggestion (so the added-to-bag card can show it too).
+  Params: swap (array from 'ritual-swap': line key, full ritual variant id, missing step, extra cents, single cents)
+{%- endcomment -%}
+{%- liquid
+  assign rsi_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign rsi_n = swap[2] | plus: 0
+  assign rsi_p = all_products[rsi_handles[rsi_n]]
+  assign rsi_full = 'bundles.names.the-full-ritual' | t | replace: '&amp;', '&'
+  assign rsi_step = rsi_p.metafields.bts.step_label.value | default: rsi_p.title
+  assign rsi_extra = swap[3] | plus: 0
+  assign rsi_single = swap[4] | plus: 0
+  assign rsi_key = 'bts-' | append: rsi_p.handle | append: '-studio.jpg'
+  assign rsi_img = images[rsi_key]
+  if rsi_img == blank
+    assign rsi_img = rsi_p.featured_media
+  endif
+-%}
+{%- capture rsi_extra_money -%}{% render 'egp', cents: rsi_extra %}{%- endcapture -%}
+{%- capture rsi_single_money -%}{% render 'egp', cents: rsi_single %}{%- endcapture -%}
+<li class="cart-upsell__item cart-upsell__item--swap" data-step="{{ rsi_n }}" style="--sku: var(--c-step-{{ rsi_n }});">
+  <span class="cart-upsell__img cart-upsell__img--photo" aria-hidden="true">
+    {%- if rsi_img -%}{{ rsi_img | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '64px', alt: '' }}{%- endif -%}
+  </span>
+  <span>
+    <span class="step-tag">{{ 'cart.swap_title' | t: bundle: rsi_full }}</span><br>
+    <span class="cart-upsell__name">{{ 'cart.swap_text' | t: product: rsi_step, amount: rsi_extra_money, single: rsi_single_money }}</span>
+  </span>
+  <button type="button" class="btn btn--sku btn--small" data-upgrade-line="{{ swap[0] }}" data-upgrade-to="{{ swap[1] }}">
+    <span class="btn__label">{{ 'cart.swap_cta' | t: amount: rsi_extra_money }}</span>
+  </button>
+</li>

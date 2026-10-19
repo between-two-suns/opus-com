@@ -12,17 +12,14 @@
 .setsx-card:hover .setsx-card__media img { scale: 1.03; }
 .setsx-card__badge { position: absolute; z-index: 2; inset-block-start: 16px; inset-inline-start: 16px; padding: 7px 14px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
 
-/* Companion: the packs it holds, and a dashed slot for the step it leaves out */
-.setsx-card__stage { position: relative; display: flex; align-items: flex-end; justify-content: center; padding: 28px 18px 22px; background: linear-gradient(180deg, color-mix(in srgb, var(--c-step-2) 16%, #fff), color-mix(in srgb, var(--c-step-4) 10%, #fff)); text-decoration: none; }
-.setsx-packs { display: flex; align-items: flex-end; justify-content: center; gap: clamp(8px, 1.4vw, 16px); block-size: clamp(170px, 18vw, 230px); inline-size: 100%; margin: 0; padding: 0; list-style: none; }
+/* Companion: the evening set, its packs on a dusk-lilac stage */
+.setsx-card__stage { position: relative; display: flex; align-items: flex-end; justify-content: center; padding: 30px 18px 24px; overflow: hidden; background: radial-gradient(70% 60% at 50% 62%, rgba(255, 255, 255, .7), transparent 72%), linear-gradient(180deg, color-mix(in srgb, var(--c-step-3) 30%, #fff) 0%, color-mix(in srgb, var(--c-step-3) 14%, color-mix(in srgb, var(--c-ink) 6%, #fff)) 100%); text-decoration: none; }
+.setsx-packs { display: flex; align-items: flex-end; justify-content: center; gap: clamp(10px, 1.6vw, 20px); block-size: clamp(190px, 20vw, 260px); inline-size: 100%; margin: 0; padding: 0; list-style: none; }
 .setsx-pack { position: relative; display: flex; align-items: flex-end; justify-content: center; block-size: 100%; transition: transform var(--dur-slow) var(--ease-out); }
-.setsx-pack[data-step='2'], .setsx-pack[data-missing='2'] { block-size: 74%; }
-.setsx-pack[data-step='3'], .setsx-pack[data-step='4'], .setsx-pack[data-missing='3'], .setsx-pack[data-missing='4'] { block-size: 83%; }
+.setsx-pack[data-step='2'] { block-size: 74%; }
+.setsx-pack[data-step='3'], .setsx-pack[data-step='4'] { block-size: 83%; }
 .setsx-pack img { block-size: 100%; inline-size: auto; filter: drop-shadow(0 12px 12px rgba(32, 35, 58, .12)); }
-.setsx-card:hover .setsx-pack:not(.is-missing) { transform: translateY(-4px); }
-.setsx-pack.is-missing { padding: 8px 6px 34px; border-radius: 16px; border: 1.5px dashed color-mix(in srgb, var(--sku) 70%, var(--c-ink)); background: color-mix(in srgb, var(--sku) 12%, transparent); }
-.setsx-pack.is-missing img { filter: grayscale(1); opacity: .28; }
-.setsx-pack__add { position: absolute; z-index: 2; inset-block-end: 8px; inset-inline: 0; margin-inline: auto; inline-size: max-content; padding: 4px 10px; border-radius: 99px; background: #fff; color: var(--c-ink); font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: 0 4px 12px -6px rgba(32, 35, 58, .35); }
+.setsx-card:hover .setsx-pack { transform: translateY(-4px); }
 
 /* Body */
 .setsx-card__body { display: grid; gap: 18px; padding: 20px 22px 22px; flex: 1; align-content: space-between; }
@@ -50,10 +47,8 @@
   .setsx-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
   .setsx-steps li { flex-direction: column; justify-content: center; gap: 4px; padding: 7px 2px 8px; border-radius: 14px; font-size: 12px; text-align: center; }
   .setsx-card--mate .setsx-card__stage { padding: 20px 12px 16px; }
-  .setsx-card--mate .setsx-packs { block-size: 150px; gap: 10px; }
-  .setsx-card--mate .setsx-pack__add { font-size: 11px; padding: 3px 8px; }
+  .setsx-card--mate .setsx-packs { block-size: 170px; gap: 14px; }
   .setsx-card--mate .setsx-card__body { gap: 14px; padding: 16px 20px 20px; }
-  .setsx-card--mate .setsx-card__desc { display: none; }
 }
 
 /* Tablet: hero full width, companion a row beside its packs */
@@ -72,6 +67,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .setsx-card, .setsx-card__media img, .setsx-pack { transition: none; }
-  .setsx-card:hover, .setsx-card:hover .setsx-pack:not(.is-missing) { transform: none; }
+  .setsx-card:hover, .setsx-card:hover .setsx-pack { transform: none; }
   .setsx-card:hover .setsx-card__media img { scale: none; }
 }

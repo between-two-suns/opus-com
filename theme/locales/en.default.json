@@ -386,8 +386,9 @@
     },
     "bundles_feature": {
       "text": "Your whole routine in one box. Sets cost less than buying each step on its own.",
-      "start_three": "Start with three",
-      "save": "Save {{ amount }}"
+      "save": "Save {{ amount }}",
+      "hero_eyebrow": "Morning and night",
+      "mate_eyebrow": "For your evenings"
     }
   },
   "product": {
@@ -509,7 +510,10 @@
     "add_note": "Add a note to your order",
     "note_placeholder": "Delivery instructions, a gift message…",
     "secure": "Secure checkout",
-    "view_full": "View full bag"
+    "view_full": "View full bag",
+    "swap_title": "Switch to {{ bundle }}",
+    "swap_text": "Add {{ product }} for {{ amount }} instead of {{ single }}",
+    "swap_cta": "Switch for {{ amount }}"
   },
   "pages": {
     "contact": {
@@ -761,7 +765,7 @@
       },
       "start_where": {
         "q": "Which set should I start with?",
-        "a": "Starting from nothing: The Full Ritual, all four steps for morning and night. Want to start smaller: the Clear & Protect Trio, then add Barrier. Oil and sun: the Clear & Protect Duo. Or pick single steps on the Sets page."
+        "a": "Starting from nothing: The Full Ritual, all four steps for morning and night. Want to start smaller: the Clear & Protect Trio. Oil and sun: the Clear & Protect Duo. Or pick single steps on the Sets page."
       },
       "all_four": {
         "q": "Do I need all four steps?",
@@ -900,7 +904,7 @@
       "serum-stock-up": "Serum Stock-Up"
     },
     "desc": {
-      "the-clear-protect-trio": "Cleanse, clarity, defense. Add Barrier to complete your routine.",
+      "the-clear-protect-trio": "Cleanse, clarity, defense. Three steps to start with.",
       "the-full-ritual": "All four steps, in order.",
       "clear-protect-duo": "Clarity Serum plus daily SPF.",
       "the-night-ritual": "Cleanse, clarity, barrier. SPF waits for the morning.",
@@ -1072,7 +1076,7 @@
     "separately": "Bought separately",
     "who": {
       "the-full-ritual": "For starting from scratch: the complete morning and night routine in one box.",
-      "the-clear-protect-trio": "For starting with three: cleanse, treat and protect. Add Barrier when you’re ready for the full routine.",
+      "the-clear-protect-trio": "For starting with three: cleanse, treat and protect. Want all four? The Full Ritual costs less than adding Barrier later.",
       "the-night-ritual": "For evenings: cleanse, treat, moisturise. Sunscreen waits for the morning.",
       "clear-protect-duo": "For oil and sun: the serum, and the SPF that finishes every morning.",
       "the-core-duo": "The two-step start: cleanse, then treat.",

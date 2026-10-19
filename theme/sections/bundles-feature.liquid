@@ -1,8 +1,8 @@
 {{ 'bundles-feature.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  Sets, one hero and one companion: the pick (The Full Ritual) leads with its photo and the four steps;
-  the companion (The Clear & Protect Trio) shows its three packs and an empty dashed slot for the step it leaves out,
-  the same language as the bag's routine board. Prices and compare-at come from the Shopify bundle products.
+  Sets, one hero and one companion, told as one day: the pick (The Full Ritual, morning and night) leads with its
+  photo and the four steps; the companion (The Night Ritual, evenings: sunscreen waits for the morning) shows its
+  three packs on an evening stage. Prices and compare-at come from the Shopify bundle products.
 {%- endcomment -%}
 {%- liquid
   assign heading = section.settings.heading
@@ -14,7 +14,7 @@
     assign text = 'sections.bundles_feature.text' | t | replace: '&amp;', '&'
   endif
   assign hero = section.settings.hero | default: all_products['the-full-ritual']
-  assign mate = section.settings.mate | default: all_products['the-clear-protect-trio']
+  assign mate = section.settings.mate | default: all_products['the-night-ritual']
   assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
   assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
 -%}
@@ -84,18 +84,10 @@
           {%- else -%}
             <a class="setsx-card__stage" href="{{ p.url }}" tabindex="-1" aria-hidden="true" data-cursor="{{ 'general.view' | t }}">
               <ul class="setsx-packs" role="list">
-                {%- for n in (1..4) -%}
-                  {%- assign ns = n | append: '' -%}
+                {%- for st in steps -%}
+                  {%- assign n = st | plus: 0 -%}
                   {%- assign cut = 'cut-' | append: step_handles[n] | append: '.webp' | asset_url -%}
-                  {%- if steps contains ns -%}
-                    <li class="setsx-pack" data-step="{{ n }}"><img src="{{ cut }}" alt="" width="350" height="1100" loading="lazy"></li>
-                  {%- else -%}
-                    {%- assign missing = all_products[step_handles[n]] -%}
-                    <li class="setsx-pack is-missing" data-missing="{{ n }}" style="--sku: var(--c-step-{{ n }});">
-                      <img src="{{ cut }}" alt="" width="350" height="1100" loading="lazy">
-                      <span class="setsx-pack__add">+ {{ missing.metafields.bts.step_label.value | default: missing.title | escape }}</span>
-                    </li>
-                  {%- endif -%}
+                  <li class="setsx-pack" data-step="{{ n }}"><img src="{{ cut }}" alt="" width="350" height="1100" loading="lazy"></li>
                 {%- endfor -%}
               </ul>
             </a>
@@ -103,7 +95,7 @@
 
           <div class="setsx-card__body">
             <div class="setsx-card__info">
-              <p class="setsx-card__count t-xs">{%- if kind == 'hero' -%}{{ 'sections.bundles.count' | t: count: steps.size }}{%- else -%}{{ 'sections.bundles_feature.start_three' | t }}{%- endif -%}</p>
+              <p class="setsx-card__count t-xs">{%- if kind == 'hero' -%}{{ 'sections.bundles_feature.hero_eyebrow' | t }}{%- else -%}{{ 'sections.bundles_feature.mate_eyebrow' | t }}{%- endif %} · {{ 'sections.bundles.count' | t: count: steps.size }}</p>
               <h3 class="setsx-card__name"><a href="{{ p.url }}">{{ name | escape }}</a></h3>
               {%- if kind == 'hero' -%}
                 <ol class="setsx-steps" role="list">

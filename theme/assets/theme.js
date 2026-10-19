@@ -676,7 +676,7 @@ document.addEventListener('change', (event) => {
   changeLine(Number(input.dataset.lineQty), qty, input.closest('[data-cart-root]'));
 });
 
-// Bag: upgrade a duo to The Clear & Protect Trio (remove the duo line, add the trio) in one tap.
+// Bag: upgrade a set in one tap (a duo to The Clear & Protect Trio, a three-step set to The Full Ritual): remove the line, add the bigger set.
 document.addEventListener('click', async (event) => {
   const btn = event.target.closest('[data-upgrade-line]');
   if (!btn) return;
@@ -688,6 +688,7 @@ document.addEventListener('click', async (event) => {
     await fetch(BTS.routes.cartChange + '.js', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: btn.dataset.upgradeLine, quantity: 0 }) });
     await Cart.add([{ id: Number(btn.dataset.upgradeTo), quantity: 1 }]);
     announce(BTS.strings?.added || 'Added');
+    if (document.body.classList.contains('template-cart')) window.location.reload();
   } catch (err) {
     toast(err.message);
   } finally {
