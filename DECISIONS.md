@@ -488,4 +488,6 @@ Each entry: decision · why · reversibility. Newest last.
       - FAQ: "Want to start smaller: the Clear & Protect Trio, then add Barrier."
       - The bag's duo upgrade now offers the trio under its new name.
     - The `best_value` badge is no longer used. The Night Ritual is unchanged (SPF waits for the morning, which is correct).
+    - Found while checking on the real store: on every set page, the studio slides' screen-reader labels contained "Liquid error (snippets/pdp-bundle line 27): wrong number of arguments". Cause: `forloop.index | plus: 1, count: count` inside `t:` passed `count:` to `plus`. Fix: compute `slide_n` first. This bug predates today's change.
+    - Real-store checks were slowed by Shopify rate limits after many test runs: 429 errors and the "Just a moment…" bot check on `/cart/add.js`. They were not site errors.
     - QA: theme-check 0, flows 308/308. The flows bag-count helper now reads `data-count`, because the visible digits hold old and new numbers mid-roll ("46"). Staging MD5s match. Live theme index unchanged.
