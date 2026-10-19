@@ -514,3 +514,6 @@ Each entry: decision · why · reversibility. Newest last.
       - New snippets `ritual-swap` (logic) and `ritual-swap-item` (drawer row; the added-to-bag card picks it up as the next suggestion). On the bag page, the missing tile's button becomes "+ EGP 350 · Switch to The Full Ritual".
       - The upgrade click handler now reloads the bag page. `has_ritual` counts the trio kind too.
     - QA: flows 320/320 (new: Night Ritual switch offer, no duplicate SPF suggestion, switch leaves only The Full Ritual); local EN/AR checks of trio, night, trio+Barrier and duo cases; axe 0 (section and drawer, 390/1440, EN/AR); theme-check 0. Staging MD5s match. Live unchanged.
+
+165. **Owner approved the new sets section ("good for now"): it's now on the staging home page.** `templates/index.json` → `bundles` uses `bundles-feature` (The Full Ritual + The Night Ritual). The old `bundles` section still powers the Sets page. The flows home check now targets `.setsx`; flows 320/320.
+    - `templates/index.sets.json` was removed from the repo. On staging it remains (the tool blocks `themeFilesDelete`); it's identical to the home page and can be deleted in Shopify admin.

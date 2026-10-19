@@ -96,7 +96,7 @@ for (const loc of ['', '/ar']) {
     ok(`${tag} hero buy CTA goes to the Full Ritual`, (await page.$eval('.hh-btn--main', (a) => new URL(a.href).pathname)).endsWith('/products/the-full-ritual'));
     ok(`${tag} hero h1 is the headline`, (await page.$$('h1')).length === 1 && (await page.$eval('h1', (h) => h.textContent.trim().length)) > 0);
     const before = Number(await count(page));
-    await page.locator('.bundles [data-bundle-add], .bundles button[type="submit"]').first().click();
+    await page.locator('.setsx button[type="submit"], .bundles button[type="submit"]').first().click();
     await page.waitForFunction((n) => Number(document.querySelector('[data-cart-count]').textContent.trim() || 0) === n + 1, before, { timeout: 5000 }).catch(() => {});
     const after = Number(await count(page));
     ok(`${tag} home set card adds 1 bundle`, after - before === 1, `${before}→${after}`);

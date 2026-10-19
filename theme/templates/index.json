@@ -11,28 +11,8 @@
       }
     },
     "bundles": {
-      "type": "bundles",
-      "blocks": {
-        "bundle_1": {
-          "type": "bundle",
-          "settings": {
-            "product": "the-full-ritual"
-          }
-        },
-        "bundle_2": {
-          "type": "bundle",
-          "settings": {
-            "product": "the-clear-protect-trio"
-          }
-        }
-      },
-      "block_order": [
-        "bundle_1",
-        "bundle_2"
-      ],
-      "settings": {
-        "show_all_link": true
-      }
+      "type": "bundles-feature",
+      "settings": {}
     },
     "routine": {
       "type": "day-line",
