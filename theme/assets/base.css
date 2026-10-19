@@ -1179,3 +1179,16 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
   .added.is-in .added__thumb img, .added.is-in .added__eyebrow svg path, .added .cart-progress span.is-new, .added .cart-progress span.is-new::after, .added .incentive.is-new .incentive__msg { animation: none; }
   .added .incentive__meter span { transition: none; }
 }
+
+/* routine adds: the card's picture is the routine's packs side by side; complete routine glows */
+.added__thumb.is-stack { inline-size: calc(26px + var(--n, 1) * 12px); background: linear-gradient(135deg, color-mix(in srgb, var(--c-step-1) 26%, #fff), color-mix(in srgb, var(--c-step-4) 26%, #fff)); }
+.added__head:has(.is-stack) { grid-template-columns: auto minmax(0, 1fr) 36px; }
+.added__thumb.is-stack img { inset: 8% auto 6%; inline-size: 34%; block-size: 86%; object-fit: contain; inset-inline-start: calc(8% + var(--i) * (84% - 34%) / max(var(--n) - 1, 1)); }
+.added.is-in .added__thumb.is-stack img { animation: thumb-in 520ms cubic-bezier(.2, 1.3, .4, 1) both; animation-delay: calc(120ms + var(--i) * 70ms); }
+.added .cart-progress span.is-new { animation-delay: calc(280ms + var(--k, 0) * 120ms); }
+.added .cart-progress span.is-new::after { animation-delay: calc(760ms + var(--k, 0) * 120ms); }
+.added.is-complete .cart-progress { position: relative; }
+.added.is-complete .cart-progress::after { content: ''; position: absolute; inset: -3px; border-radius: 999px; box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-step-2) 60%, transparent); animation: routine-glow 1100ms 900ms ease-out both; pointer-events: none; }
+@keyframes routine-glow { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-step-2) 55%, transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
+.added.is-complete .added__eyebrow { color: var(--c-ink); }
+@media (prefers-reduced-motion: reduce) { .added.is-in .added__thumb.is-stack img, .added.is-complete .cart-progress::after { animation: none; } }

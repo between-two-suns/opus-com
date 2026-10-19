@@ -494,7 +494,9 @@
     "ship_label": "التقدّم نحو التوصيل المجاني",
     "added_short": "أُضيف",
     "routine_count": "{{ count }} من 4 خطوات",
-    "add_short": "أضف"
+    "add_short": "أضف",
+    "routine_complete": "روتينك اكتمل",
+    "added_steps": "{{ count }} خطوات من روتينك"
   },
   "pages": {
     "contact": {

@@ -322,7 +322,7 @@ function flyToBag(src, bag) {
 }
 
 /* The catch: the bag gives a little, a ring in the pack colour opens, the two arcs close around it. */
-function catchInBag(bag, tint) {
+function catchInBag(bag, tint, mark = true) {
   if (!bag) return;
   const icon = bag.querySelector('svg') || bag;
   icon.animate?.([
@@ -337,7 +337,54 @@ function catchInBag(bag, tint) {
   document.body.appendChild(ring);
   ring.animate([{ transform: 'translate(-50%, -50%) scale(.4)', opacity: 0.9 }, { transform: 'translate(-50%, -50%) scale(2.6)', opacity: 0 }],
     { duration: 700, easing: 'cubic-bezier(.2, .7, .3, 1)' }).onfinish = () => ring.remove();
-  closeMark(r);
+  if (mark) closeMark(r);
+}
+
+/* A routine is several bottles: each one is thrown in turn, from wherever it is on the page
+   (its own row or slot, the set's photo, or out of the button), and the bag catches each in its colour. */
+const packFor = (step) => (BTS.packs || []).find((p) => String(p.step) === String(step));
+function stepsFor(items) {
+  const out = [];
+  for (const it of items) {
+    const id = Number(it.id);
+    const bundle = (BTS.bundles || []).find((x) => Number(x.id) === id);
+    if (bundle) out.push(...String(bundle.steps).split(/[^0-9]+/).filter(Boolean));
+    else { const p = (BTS.packs || []).find((x) => Number(x.variant) === id); if (p) out.push(String(p.step)); }
+  }
+  return [...new Set(out)].sort();
+}
+function routineSources(form, button, steps) {
+  const scope = form.closest('skin-forecast, routine-builder, .forecast, .builder, .bundle, .pdp, section') || document.body;
+  const photo = [...scope.querySelectorAll('.bundle__stage img, .gallery__slide img, .pdp__gallery img')].find((el) => shownShare(el) >= 0.5);
+  const n = steps.length;
+  return steps.map((step, i) => {
+    const pack = packFor(step);
+    const own = scope.querySelector(`[data-slot="${step}"] img, .forecast__step[data-step="${step}"] img, li[data-step="${step}"] img`);
+    const src = pack?.img || own?.currentSrc || own?.src;
+    if (!src) return null;
+    const tint = `var(--c-step-${step})`;
+    if (own && shownShare(own) >= 0.5) return { src, rect: own.getBoundingClientRect(), tint };
+    if (photo) {
+      const r = photo.getBoundingClientRect();
+      const h = Math.min(220, r.height * 0.55), w = h * 0.36;
+      const cx = r.left + (r.width * (i + 0.5)) / n;
+      return { src, rect: { left: cx - w / 2, top: r.top + r.height * 0.3, width: w, height: h }, tint };
+    }
+    const b = button.getBoundingClientRect();
+    const h = Math.min(110, Math.max(72, b.height * 2)), w = h * 0.36;
+    const cx = b.left + (b.width * (i + 0.5)) / n;
+    return { src, rect: { left: cx - w / 2, top: b.top + b.height / 2 - h / 2, width: w, height: h }, tint, fromButton: true };
+  }).filter(Boolean);
+}
+function throwRoutine(sources, bag) {
+  // every bottle leaves from somewhere you can see
+  sources.forEach((src) => {
+    const r = src.rect, top = Math.min(Math.max(r.top, 8), innerHeight - r.height - 8);
+    src.rect = { left: r.left, top, width: r.width, height: r.height };
+  });
+  return Promise.all(sources.map((src, i) => new Promise((r) => setTimeout(r, i * 110))
+    .then(() => flyToBag(src, bag))
+    .then(() => { if (i < sources.length - 1) catchInBag(bag, src.tint, false); })));
 }
 function closeMark(rect) {
   const tpl = document.getElementById('BtsMark');
@@ -436,7 +483,7 @@ const AddedCard = {
     this.el = el;
     return el;
   },
-  show({ name, thumb, tint, before }) {
+  show({ name, thumb, tint, before, packs }) {
     const el = this.build();
     const root = $('#CartDrawer [data-cart-root]');
     if (!root) return;
@@ -444,12 +491,21 @@ const AddedCard = {
     el.querySelector('[data-name]').textContent = name || '';
     const th = el.querySelector('[data-thumb]');
     th.style.setProperty('--sku', tint || 'var(--c-paper)');
-    th.innerHTML = thumb ? `<img src="${thumb}" alt="">` : '';
+    th.classList.toggle('is-stack', !!packs?.length);
+    th.style.setProperty('--n', packs?.length || 1);
+    th.innerHTML = packs?.length
+      ? packs.map((p, i) => `<img src="${p.src}" alt="" style="--i:${i};--c:${p.tint}">`).join('')
+      : (thumb ? `<img src="${thumb}" alt="">` : '');
     // routine: the bag's own four steps; the one this add lit up fills in
     const routine = root.querySelector('.cart-routine');
     const rSlot = el.querySelector('[data-routine]');
     rSlot.replaceChildren(...(routine ? [routine.cloneNode(true)] : []));
-    rSlot.querySelectorAll('.cart-progress span.is-on').forEach((sp) => { if (!before.steps.includes(sp.dataset.step)) sp.classList.add('is-new'); });
+    let k = 0;
+    rSlot.querySelectorAll('.cart-progress span.is-on').forEach((sp) => { if (!before.steps.includes(sp.dataset.step)) { sp.classList.add('is-new'); sp.style.setProperty('--k', k++); } });
+    // the whole routine is in the bag for the first time: say so, and let the bar glow across
+    const complete = rSlot.querySelectorAll('.cart-progress span.is-on').length === 4 && before.steps.length < 4;
+    el.classList.toggle('is-complete', complete);
+    el.querySelector('.added__eyebrow span').textContent = complete ? (s.routineComplete || s.added) : (s.added || 'Added to your bag');
     // free delivery: the bar fills from where it was
     const ship = root.querySelector('.incentive--ship');
     const sSlot = el.querySelector('[data-ship]');
@@ -532,20 +588,23 @@ class ProductForm extends HTMLElement {
     button.setAttribute('aria-busy', 'true');
     pressFrom(button, Cart.lastPointer);
     const before = bagBefore();
-    const src = fromDialog ? null : launch(this, button);
+    const steps = stepsFor(items);
+    const routine = steps.length > 1;
+    const packs = !fromDialog && routine ? routineSources(this, button, steps) : [];
+    const src = fromDialog || routine ? null : launch(this, button);
     const bag = fromDialog ? null : visibleBag();
     const tint = getComputedStyle(this.closest('[data-step]') || this).getPropertyValue('--sku').trim();
     const thumb = src ? src.src : '';
     const name = this.closest('[data-product-title]')?.dataset.productTitle || '';
     // the throw starts with the tap; the request runs alongside it
     Cart.holdCount = !fromDialog;
-    const flight = src && bag && !reduceMotion() ? flyToBag(src, bag) : Promise.resolve();
+    const flight = !bag || reduceMotion() ? Promise.resolve() : packs.length ? throwRoutine(packs, bag) : src ? flyToBag(src, bag) : Promise.resolve();
     // the bag's contents refresh after the landing, so nothing re-lays out the page mid-flight
     Cart.holdRender = flight;
     try {
       const data = await Cart.add(items);
       await flight;
-      if (!fromDialog) catchInBag(bag, tint);
+      if (!fromDialog) catchInBag(bag, packs.length ? packs[packs.length - 1].tint : tint);
       Cart.holdCount = false;
       rollCount(Cart.pendingCount ?? before.count);
       Cart.pendingCount = null;
@@ -555,7 +614,11 @@ class ProductForm extends HTMLElement {
       if (!fromDialog) {
         const want = Number(items[0]?.id);
         const line = (data?.items || []).find((it) => Number(it.variant_id ?? it.id) === want) || data?.items?.[0];
-        AddedCard.show({ name: line?.product_title || name, thumb: thumb || line?.image, tint, before });
+        const bundle = (BTS.bundles || []).find((x) => Number(x.id) === want);
+        // sets use the theme's own (translated) set names; a routine picked step by step is "3 steps of your routine"
+        const label = bundle ? bundle.name : routine ? (BTS.strings?.addedSteps || '').replace('__N__', steps.length) : '';
+        const stack = routine ? steps.map((st) => ({ src: packFor(st)?.img, tint: `var(--c-step-${st})` })).filter((p) => p.src) : null;
+        AddedCard.show({ name: label || line?.product_title || name, thumb: thumb || line?.image, tint, before, packs: stack });
       }
     } catch (err) {
       await flight;

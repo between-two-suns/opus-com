@@ -494,7 +494,9 @@
     "ship_label": "Progress to free delivery",
     "added_short": "Added",
     "routine_count": "{{ count }} of 4 steps",
-    "add_short": "Add"
+    "add_short": "Add",
+    "routine_complete": "Your routine is complete",
+    "added_steps": "{{ count }} steps of your routine"
   },
   "pages": {
     "contact": {

@@ -115,12 +115,22 @@
             {%- endif -%}
           {%- endfor -%}
         ],
+        {%- comment -%} The four packs (step, variant, cutout) so a routine add can throw each of its bottles into the bag. {%- endcomment -%}
+        packs: [
+          {%- assign ph = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ',' -%}
+          {%- for h in ph -%}
+            {%- assign pp = all_products[h] -%}
+            {%- if pp.id -%}{ step: {{ forloop.index }}, variant: {{ pp.selected_or_first_available_variant.id }}, img: {{ 'cut-' | append: h | append: '.webp' | asset_url | json }} },{%- endif -%}
+          {%- endfor -%}
+        ],
         moneyFormat: {{ shop.money_format | json }},
         strings: {
           added: {{ 'cart.added' | t | replace: '&amp;', '&' | json }},
           viewCart: {{ 'cart.view_cart' | t | replace: '&amp;', '&' | json }},
           checkout: {{ 'cart.checkout' | t | replace: '&amp;', '&' | json }},
           completeRoutine: {{ 'cart.complete_routine' | t | replace: '&amp;', '&' | json }},
+          routineComplete: {{ 'cart.routine_complete' | t | replace: '&amp;', '&' | json }},
+          addedSteps: {{ 'cart.added_steps' | t: count: '__N__' | replace: '&amp;', '&' | json }},
           close: {{ 'general.close' | t | replace: '&amp;', '&' | json }},
           error: {{ 'cart.error' | t | replace: '&amp;', '&' | json }},
           addToCart: {{ 'product.add_to_cart' | t | replace: '&amp;', '&' | json }},

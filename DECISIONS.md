@@ -413,3 +413,22 @@ Each entry: decision · why · reversibility. Newest last.
       - Flows: the "add opens drawer" steps now open the bag through the card's View bag. +7 checks: card shown, product named, routine progress, bag stays closed until asked, View bag opens it, card hides. 308/308.
       - axe on the card in EN/AR at 390 and 1440: 0 (after wrapping the copied suggestion in a list).
     - Staging MD5s: theme.js `aa7a1d9a…`, base.css `d98d6ac2…`, theme.liquid `92ecd84d…`. Live unchanged.
+
+159. **Owner: add to bag is OK now, but with routines it doesn't work well.**
+    - **Was:**
+      - Adding a set or a routine (set pages, home set cards, Sets page, Routines forecast, routine builder) either threw nothing at all, or threw the small sticky-bar thumbnail.
+      - The card treated the routine as one product.
+    - **Now (theme.js):**
+      - `stepsFor(items)` reads which steps an add contains: bundles from `BTS.bundles`; single packs from the new `BTS.packs` (step, variant, cutout), exposed in theme.liquid.
+      - When there are 2 or more steps, `routineSources()` finds each bottle's launch point, in this order:
+        1. its own row or slot (forecast step row, builder slot), if at least half on screen;
+        2. otherwise a slice of the set's photo, so the packs lift out of the picture side by side;
+        3. otherwise out of the button.
+        Launch points are clamped on screen.
+      - `throwRoutine()` throws them 110 ms apart. The bag catches each one in its step colour; the mark closes and the count rolls once, at the last.
+      - **Card:**
+        - The picture is the routine's packs side by side, popping in one after another.
+        - A set uses the theme's own translated set name (`BTS.bundles[].name`, so Arabic reads الروتين الكامل). A routine picked step by step reads "3 steps of your routine" (new key `cart.added_steps`).
+        - The routine bar fills segment by segment. When the bag holds all four steps for the first time, the eyebrow reads **"Your routine is complete"** / "روتينك اكتمل" (new key `cart.routine_complete`) and the bar glows once.
+    - Verified on the real store, 390 and 1440: set page, Routines forecast, home set card, Sets page card and builder each throw 3–4 bottles, show the card, light the right steps, and count 1 line. Arabic checked. Flows 308/308, theme-check 0.
+    - Staging MD5s: theme.js `94c70b02…`, base.css `a49a4dee…`, theme.liquid `e878d627…`, en `e991bacb…`, ar `bb087610…`. Live unchanged.
