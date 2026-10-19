@@ -611,6 +611,8 @@ class ProductForm extends HTMLElement {
       celebrate(button);
       announce(BTS.strings?.added || 'Added');
       this.dispatchEvent(new CustomEvent('cart:added', { bubbles: true, detail: { items } }));
+      // on the bag page itself the page simply refreshes to show the new line and the lit step
+      if (!fromDialog && document.body.classList.contains('template-cart')) { setTimeout(() => window.location.reload(), 350); return; }
       if (!fromDialog) {
         const want = Number(items[0]?.id);
         const line = (data?.items || []).find((it) => Number(it.variant_id ?? it.id) === want) || data?.items?.[0];

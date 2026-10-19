@@ -496,7 +496,15 @@
     "routine_count": "{{ count }} من 4 خطوات",
     "add_short": "أضف",
     "routine_complete": "روتينك اكتمل",
-    "added_steps": "{{ count }} خطوات من روتينك"
+    "added_steps": "{{ count }} خطوات من روتينك",
+    "routine_missing": "اضغط على الخطوة الناقصة لإضافتها. كل خطوة لها دور مختلف.",
+    "in_bag": "في سلتك",
+    "summary": "ملخص الطلب",
+    "you_save": "وفّرت",
+    "add_note": "أضف ملاحظة لطلبك",
+    "note_placeholder": "تعليمات التوصيل، رسالة هدية…",
+    "secure": "دفع آمن",
+    "view_full": "عرض السلة كاملة"
   },
   "pages": {
     "contact": {

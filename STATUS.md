@@ -1,6 +1,6 @@
 # STATUS — Between Two Suns (Opus build)
 
-_Updated: 2026-10-18_
+_Updated: 2026-10-19_
 
 ## Current build state
 Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, with store content (metafields, metaobjects, pages, Arabic translations) wired up. QA on the local preview is green. Real-storefront visual verification is still outstanding: the build sandbox cannot reach `*.myshopify.com`.
@@ -30,6 +30,9 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - Home hero is now **Orbs** (`hero-orbs`), followed by Four steps. Earlier heroes are still available at `?view=hero|light|sun|system|orbsa`.
 - `/pages/routines` opens with the **first sun / second sun** routine module (`hero-routine`); everything below it is unchanged.
 - Publishing live is the owner's step in Shopify admin.
+
+## Shipped to staging 2026-10-19
+- **Bag redesign** (DECISIONS 160): the bag page has a routine board (missing steps, one-tap add), refined lines, a sticky summary with free delivery, "You save", a tucked-away note, Check out with the total, assurances, and a pinned checkout on phones. The drawer gets the same lines and button, plus "View full bag".
 
 ## Complete
 - Research + strategy: `RESEARCH.md`, `UX_STRATEGY.md`

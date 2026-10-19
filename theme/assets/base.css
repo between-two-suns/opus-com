@@ -1192,3 +1192,51 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 @keyframes routine-glow { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-step-2) 55%, transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
 .added.is-complete .added__eyebrow { color: var(--c-ink); }
 @media (prefers-reduced-motion: reduce) { .added.is-in .added__thumb.is-stack img, .added.is-complete .cart-progress::after { animation: none; } }
+
+/* ==========================================================================
+   v4 bag (drawer + page): lines, quantity pill, remove, checkout
+   ========================================================================== */
+.cart-line { grid-template-columns: 88px minmax(0, 1fr); gap: 14px; padding-block: 16px; }
+.cart-line__media { aspect-ratio: 1; border-radius: 18px; box-shadow: inset 0 0 0 1px rgba(32, 35, 58, .05); }
+.cart-line__top { align-items: flex-start; }
+.cart-line__titles { display: grid; gap: 3px; min-inline-size: 0; }
+.cart-line__step { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-muted); }
+:lang(ar) .cart-line__step { letter-spacing: 0; text-transform: none; font-size: 12px; }
+.cart-line__step--set { gap: 3px; } .cart-line__step--set .cart-line__dot:last-of-type { margin-inline-end: 4px; }
+.cart-line__dot { inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--sku, var(--c-ink)); flex: none; }
+.cart-line__title { font-size: 15.5px; font-weight: 700; line-height: 1.25; color: var(--c-ink); }
+.cart-line__title:hover { text-decoration: underline; text-underline-offset: 3px; }
+.cart-line__meta { margin: 0; font-size: 13px; color: var(--c-muted); }
+.cart-line__prices { display: grid; justify-items: end; gap: 2px; }
+.cart-line__was { font-size: 12.5px; color: var(--c-muted); }
+.cart-line__deal { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: 12.5px; font-weight: 600; color: var(--c-success, #1d7a4a); }
+.cart-line__controls { margin-block-start: 8px; }
+/* the quantity pill wears the product's colour */
+.qty--pill { block-size: 40px; padding: 3px; gap: 2px; border: 0; border-radius: 999px; background: color-mix(in srgb, var(--sku, var(--c-ink)) 16%, #fff); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sku, var(--c-ink)) 26%, transparent); }
+.qty--pill button { inline-size: 34px; block-size: 34px; border-radius: 50%; color: var(--c-ink); transition: background-color var(--dur-fast), transform var(--dur-fast) var(--ease-out); }
+.qty--pill button:hover { background: #fff; }
+.qty--pill button:active { transform: scale(.88); }
+.qty--pill input { inline-size: 28px; font-size: 15px; font-weight: 750; }
+/* remove: a quiet round button, the word appears on hover (desktop) */
+.cart-line__remove { display: inline-flex; align-items: center; gap: 6px; min-block-size: 40px; padding: 0 12px 0 10px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--c-muted); text-decoration: none; transition: background-color var(--dur-fast), color var(--dur-fast); }
+.cart-line__remove:hover { background: rgba(32, 35, 58, .06); color: var(--c-ink); }
+@media (hover: none) { .cart-line__remove { padding-inline: 10px; } .cart-line__remove-label { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
+
+/* checkout: the total sits inside the button; a light sweeps across on hover */
+.btn--checkout { inline-size: 100%; min-block-size: 60px; padding: 0 8px 0 24px; justify-content: space-between; font-size: 16px; font-weight: 700; letter-spacing: .01em; }
+.btn--checkout__label { display: inline-flex; align-items: center; gap: 10px; }
+.btn--checkout__total { display: inline-flex; align-items: center; block-size: 44px; padding: 0 18px; border-radius: 999px; background: rgba(255, 255, 255, .12); font-variant-numeric: tabular-nums; }
+.btn--checkout::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .22) 50%, transparent 70%); translate: -100% 0; pointer-events: none; }
+.btn--checkout:hover::after { animation: checkout-sweep 900ms var(--ease-out); }
+@keyframes checkout-sweep { to { translate: 100% 0; } }
+@media (prefers-reduced-motion: reduce) { .btn--checkout:hover::after { animation: none; } }
+.drawer__foot .btn--checkout { min-block-size: 58px; }
+.cart-drawer__full { display: flex; align-items: center; justify-content: center; gap: 8px; min-block-size: 44px; font-size: 14px; font-weight: 650; color: var(--c-ink); text-decoration: none; }
+.cart-drawer__full:hover { text-decoration: underline; text-underline-offset: 3px; }
+/* "complete your routine" add buttons: the product's own colour with a plus */
+.cart-upsell__item .btn { --btn-bg: var(--sku); --btn-bd: var(--sku); --btn-fg: var(--c-ink); --glow: 0; min-block-size: 40px; padding: 0 16px; font-weight: 700; }
+.cart-upsell__item .btn:hover { --btn-bg: var(--c-ink); --btn-bd: var(--c-ink); --btn-fg: #fff; }
+.btn--sku.btn--small { min-block-size: 40px; padding: 0 14px; gap: 6px; }
+
+/* the bag's title takes focus when the bag opens (so the close button isn't ringed); it is not a control, so no ring */
+.drawer__title:focus { outline: none; }

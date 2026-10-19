@@ -35,7 +35,8 @@
 <dialog class="drawer cart-drawer" id="CartDrawer" aria-labelledby="CartDrawerTitle">
   <div class="cart-drawer__root" data-cart-root data-count="{{ cart.item_count }}" style="display:flex;flex-direction:column;block-size:100%;">
     <div class="drawer__head">
-      <h2 class="drawer__title" id="CartDrawerTitle">
+      {%- comment -%} Opening the bag focuses its title, not the close button, so no focus ring is drawn on open {%- endcomment -%}
+      <h2 class="drawer__title" id="CartDrawerTitle" tabindex="-1" autofocus>
         {{ 'cart.title' | t }}
         {%- if cart.item_count > 0 %} <span class="t-muted">({{ cart.item_count }})</span>{% endif -%}
       </h2>
@@ -69,50 +70,7 @@
 
         <ul class="cart-lines" role="list">
           {%- for item in cart.items -%}
-            {%- capture step -%}{% render 'product-step', product: item.product %}{%- endcapture -%}
-            {%- assign cutout = item.product.metafields.bts.cutout.value -%}
-            {%- assign studio_k = 'bts-' | append: item.product.handle | append: '-studio.jpg' -%}{%- assign line_studio = images[studio_k] -%}{%- if line_studio == blank -%}{%- assign line_studio = false -%}{%- endif -%}
-            <li class="cart-line" data-step="{{ step | strip }}">
-              {%- capture ldef -%}{% render 'bundle-def', handle: item.product.handle %}{%- endcapture -%}
-              {%- assign ldef = ldef | strip -%}
-              <a href="{{ item.url }}" class="cart-line__media{% if line_studio or ldef != blank %} cart-line__media--photo{% elsif cutout == blank %} cart-line__media--photo{% endif %}{% if ldef != blank %} cart-line__media--set{% endif %}" tabindex="-1" aria-hidden="true">
-                {%- if ldef != blank -%}
-                  {%- render 'set-visual', product: item.product, sizes: '84px' -%}
-                {%- elsif line_studio -%}
-                  {{ line_studio | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120,240', sizes: '84px', alt: '' }}
-                {%- elsif cutout -%}
-                  {{ cutout | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '84px', alt: '' }}
-                {%- elsif item.image -%}
-                  {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '84px', alt: '' }}
-                {%- endif -%}
-              </a>
-              <div class="cart-line__info">
-                <div class="cart-line__top">
-                  <a class="cart-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
-                  <span class="cart-line__price">{% render 'egp', cents: item.final_line_price %}</span>
-                </div>
-                {%- unless item.product.has_only_default_variant -%}
-                  <p class="t-xs t-muted">{{ item.variant.title | escape }}</p>
-                {%- endunless -%}
-                {%- if item.product.metafields.bts.size != blank -%}
-                  <p class="t-xs t-muted u-ltr">{{ item.product.metafields.bts.size }}</p>
-                {%- endif -%}
-                {%- for discount in item.line_level_discount_allocations -%}
-                  <p class="t-xs" style="color:var(--c-success)">{{ discount.discount_application.title | escape }} (−{% render 'egp', cents: discount.amount %})</p>
-                {%- endfor -%}
-                <div class="cart-line__controls">
-                  <quantity-input class="qty qty--small">
-                    <button type="button" data-step="-1" aria-label="{{ 'cart.decrease' | t: product: item.product.title  }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
-                    <label class="visually-hidden" for="DrawerQty-{{ forloop.index }}">{{ 'cart.quantity_for' | t: product: item.product.title  }}</label>
-                    <input id="DrawerQty-{{ forloop.index }}" type="number" inputmode="numeric" min="0" max="{% if ldef != blank %}3{% else %}5{% endif %}" value="{{ item.quantity }}" data-line-qty="{{ forloop.index }}">
-                    <button type="button" data-step="1" aria-label="{{ 'cart.increase' | t: product: item.product.title  }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
-                  </quantity-input>
-                  <a class="cart-line__remove" href="{{ item.url_to_remove }}" data-line-remove="{{ forloop.index }}">
-                    {{ 'cart.remove' | t }}<span class="visually-hidden"> {{ item.product.title | escape }}</span>
-                  </a>
-                </div>
-              </div>
-            </li>
+            {%- render 'cart-line', item: item, index: forloop.index, prefix: 'Drawer' -%}
           {%- endfor -%}
         </ul>
 
@@ -211,11 +169,11 @@
           {%- if settings.show_cod -%}
             <p class="cart-note-line">{% render 'icon', name: 'cash', class: 'icon--sm' %} {{ 'cart.cod_available' | t }}</p>
           {%- endif -%}
-          <button type="submit" name="checkout" class="btn btn--full u-mt-s">
-            {% render 'icon', name: 'lock', class: 'icon--sm' %}
-            {{ 'cart.checkout' | t }}
+          <button type="submit" name="checkout" class="btn btn--checkout u-mt-s">
+            <span class="btn--checkout__label">{% render 'icon', name: 'lock', class: 'icon--sm' %}{{ 'cart.checkout' | t }}</span>
+            <span class="btn--checkout__total">{% render 'egp', cents: cart.total_price %}</span>
           </button>
-          <a class="btn btn--secondary btn--full btn--small" href="{{ routes.cart_url }}">{{ 'cart.view_cart' | t }}</a>
+          <a class="cart-drawer__full" href="{{ routes.cart_url }}">{{ 'cart.view_full' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
           {%- render 'payment-icons', class: 'u-mt-s' -%}
         </form>
       </div>

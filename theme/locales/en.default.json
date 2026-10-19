@@ -496,7 +496,15 @@
     "routine_count": "{{ count }} of 4 steps",
     "add_short": "Add",
     "routine_complete": "Your routine is complete",
-    "added_steps": "{{ count }} steps of your routine"
+    "added_steps": "{{ count }} steps of your routine",
+    "routine_missing": "Tap a missing step to add it. Each one does a different job.",
+    "in_bag": "In your bag",
+    "summary": "Order summary",
+    "you_save": "You save",
+    "add_note": "Add a note to your order",
+    "note_placeholder": "Delivery instructions, a gift message…",
+    "secure": "Secure checkout",
+    "view_full": "View full bag"
   },
   "pages": {
     "contact": {

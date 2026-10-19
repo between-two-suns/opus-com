@@ -1,64 +1,91 @@
 {{ 'pages.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  The bag page. Left: the routine board (the four steps, what is missing one tap away) and the bag's lines.
+  Right: a sticky summary (free delivery, savings, subtotal, a tucked-away order note, checkout with the total).
+  Phones: the same, with the checkout pinned above the bottom bar. Quantity changes reload the page (theme.js).
+{%- endcomment -%}
 <section class="section section--tight cart-page" aria-labelledby="CartTitle">
   <div class="container">
-    <h1 class="t-display-m" id="CartTitle">{{ 'cart.title' | t }}</h1>
+    <header class="cart-page__head">
+      <h1 class="cart-page__title" id="CartTitle">{{ 'cart.title' | t }}{% if cart.item_count > 0 %} <span class="cart-page__n">({{ cart.item_count }})</span>{% endif %}</h1>
+      <a class="link-arrow cart-page__continue" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+    </header>
     {%- if cart.item_count == 0 -%}
-      <div class="cart-empty">
-        <p class="t-lead">{{ 'cart.empty_title' | t }}</p>
-        <p class="t-muted">{{ 'cart.empty_text' | t }}</p>
-        <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.shop_routine' | t }}</a>
+      <div class="cart-page__empty">
+        {%- render 'cart-routine-board' -%}
+        <div class="cart-empty">
+          <p class="t-lead">{{ 'cart.empty_title' | t }}</p>
+          <p class="t-muted">{{ 'cart.empty_text' | t }}</p>
+          <a class="btn" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'cart.shop_routine' | t }}</a>
+        </div>
       </div>
     {%- else -%}
-      <form action="{{ routes.cart_url }}" method="post" class="cart-page__grid" data-cart-root data-count="{{ cart.item_count }}">
-        {%- render 'cart-incentives' -%}
-        <ul class="cart-lines" role="list">
-          {%- for item in cart.items -%}
-            {%- capture step -%}{% render 'product-step', product: item.product %}{%- endcapture -%}
-            {%- assign cutout = item.product.metafields.bts.cutout.value -%}
-            <li class="cart-line" data-step="{{ step | strip }}">
-              <a href="{{ item.url }}" class="cart-line__media{% unless cutout %} cart-line__media--photo{% endunless %}" tabindex="-1" aria-hidden="true">
-                {%- if cutout -%}{{ cutout | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120,240', sizes: '96px', alt: '' }}{%- elsif item.image -%}{{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120,240', sizes: '96px', alt: '' }}{%- endif -%}
-              </a>
-              <div class="cart-line__info">
-                <div class="cart-line__top">
-                  <a class="cart-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
-                  <span class="cart-line__price">{% render 'egp', cents: item.final_line_price %}</span>
-                </div>
-                {%- unless item.product.has_only_default_variant -%}<p class="t-xs t-muted">{{ item.variant.title | escape }}</p>{%- endunless -%}
-                <div class="cart-line__controls">
-                  <quantity-input class="qty qty--small">
-                    <button type="button" data-step="-1" aria-label="{{ 'cart.decrease' | t: product: item.product.title  }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
-                    <label class="visually-hidden" for="CartQty-{{ forloop.index }}">{{ 'cart.quantity_for' | t: product: item.product.title  }}</label>
-                    <input id="CartQty-{{ forloop.index }}" type="number" inputmode="numeric" name="updates[]" min="0" value="{{ item.quantity }}" data-line-qty="{{ forloop.index }}">
-                    <button type="button" data-step="1" aria-label="{{ 'cart.increase' | t: product: item.product.title  }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
-                  </quantity-input>
-                  <a class="cart-line__remove" href="{{ item.url_to_remove }}">{{ 'cart.remove' | t }}<span class="visually-hidden"> {{ item.product.title | escape }}</span></a>
-                </div>
-              </div>
-            </li>
-          {%- endfor -%}
-        </ul>
-        <div class="cart-page__summary">
-          <div class="field">
-            <label for="CartNote">{{ 'cart.note' | t }}</label>
-            <textarea id="CartNote" name="note" rows="3">{{ cart.note }}</textarea>
-          </div>
+      <form id="CartForm" action="{{ routes.cart_url }}" method="post" hidden></form>
+      <div class="cart-page__grid" data-cart-root data-count="{{ cart.item_count }}">
+        <div class="cart-page__main">
+          {%- render 'cart-routine-board' -%}
+          <ul class="cart-lines cart-page__lines" role="list">
+            {%- for item in cart.items -%}
+              {%- render 'cart-line', item: item, index: forloop.index, prefix: 'Cart', form: 'CartForm' -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+        <aside class="cart-page__summary" aria-label="{{ 'cart.summary' | t }}">
+          {%- render 'cart-incentives' -%}
           <div class="cart-totals">
-            <div class="cart-totals__row">
-              <span class="t-subheading">{{ 'cart.subtotal' | t }}</span>
+            {%- assign cp_saved = cart.original_total_price | minus: cart.total_price -%}
+            {%- for item in cart.items -%}
+              {%- if item.variant.compare_at_price > item.variant.price -%}
+                {%- assign cp_diff = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity -%}
+                {%- assign cp_saved = cp_saved | plus: cp_diff -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <div class="cart-totals__row cart-totals__row--deal"><span>{{ discount.title | escape }}</span><span>−{% render 'egp', cents: discount.total_allocated_amount %}</span></div>
+            {%- endfor -%}
+            {%- if cp_saved > 0 -%}
+              <div class="cart-totals__row cart-totals__row--deal"><span>{{ 'cart.you_save' | t }}</span><span>{% render 'egp', cents: cp_saved %}</span></div>
+            {%- endif -%}
+            <div class="cart-totals__row cart-totals__row--total">
+              <span>{{ 'cart.subtotal' | t }}</span>
               <span class="cart-totals__subtotal">{% render 'egp', cents: cart.total_price %}</span>
             </div>
             <p class="cart-note-line">{% if cart.taxes_included %}{{ 'cart.taxes_included' | t }}{% else %}{{ 'cart.taxes_excluded' | t }}{% endif %} {% if settings.shipping_note != blank %}{{ settings.shipping_note | escape }}{% else %}{{ 'cart.shipping_at_checkout' | t }}{% endif %}</p>
-            <noscript><button type="submit" name="update" class="btn btn--secondary btn--full">{{ 'cart.update' | t }}</button></noscript>
-            <button type="submit" name="checkout" class="btn btn--full">{% render 'icon', name: 'lock', class: 'icon--sm' %} {{ 'cart.checkout' | t }}</button>
-            <a class="link-arrow" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-            {%- render 'payment-icons' -%}
           </div>
-        </div>
-      </form>
+          <details class="cart-note"{% if cart.note != blank %} open{% endif %}>
+            <summary>{% render 'icon', name: 'chat', class: 'icon--sm' %}<span>{{ 'cart.add_note' | t }}</span>{% render 'icon', name: 'plus', class: 'icon--sm cart-note__plus' %}</summary>
+            <label class="visually-hidden" for="CartNote">{{ 'cart.note' | t }}</label>
+            <textarea id="CartNote" name="note" form="CartForm" rows="3" placeholder="{{ 'cart.note_placeholder' | t }}">{{ cart.note }}</textarea>
+          </details>
+          <noscript><button type="submit" name="update" form="CartForm" class="btn btn--secondary btn--full">{{ 'cart.update' | t }}</button></noscript>
+          <button type="submit" name="checkout" form="CartForm" class="btn btn--checkout">
+            <span class="btn--checkout__label">{% render 'icon', name: 'lock', class: 'icon--sm' %}{{ 'cart.checkout' | t }}</span>
+            <span class="btn--checkout__total">{% render 'egp', cents: cart.total_price %}</span>
+          </button>
+          <ul class="cart-assure" role="list">
+            {%- if settings.show_cod -%}<li>{% render 'icon', name: 'cash', class: 'icon--sm' %}{{ 'cart.cod_available' | t }}</li>{%- endif -%}
+            <li>{% render 'icon', name: 'lock', class: 'icon--sm' %}{{ 'cart.secure' | t }}</li>
+            {%- if settings.returns_note != blank -%}<li>{% render 'icon', name: 'refresh', class: 'icon--sm' %}{{ settings.returns_note | escape }}</li>{%- endif -%}
+          </ul>
+          {%- render 'payment-icons' -%}
+        </aside>
+      </div>
+      {%- comment -%} Phones: total and checkout stay in reach {%- endcomment -%}
+      <div class="cart-page__bar" aria-hidden="true">
+        <div><span class="cart-page__bar-label">{{ 'cart.subtotal' | t }}</span><span class="cart-page__bar-total">{% render 'egp', cents: cart.total_price %}</span></div>
+        <button type="submit" name="checkout" form="CartForm" class="btn btn--checkout btn--checkout-bar" tabindex="-1">{% render 'icon', name: 'lock', class: 'icon--sm' %}{{ 'cart.checkout' | t }}</button>
+      </div>
     {%- endif -%}
   </div>
 </section>
+<script>
+  // the pinned checkout steps aside while the summary's own checkout button is on screen
+  (() => {
+    const bar = document.querySelector('.cart-page__bar'), own = document.querySelector('.cart-page__summary .btn--checkout');
+    if (!bar || !own || !window.IntersectionObserver) return;
+    new IntersectionObserver(([e]) => bar.classList.toggle('is-away', e.isIntersecting), { rootMargin: '0px 0px -60px 0px' }).observe(own);
+  })();
+</script>
 
 {% schema %}
 { "name": "t:sections.main_cart.name", "settings": [] }

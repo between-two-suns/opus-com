@@ -1,0 +1,72 @@
+{%- comment -%}
+  The bag page's routine board: the four steps as tiles. Steps in the bag light up in their colour;
+  a missing step can be added in one tap. Built from the bag itself (singles and the steps inside sets).
+{%- endcomment -%}
+{%- liquid
+  assign rb_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign rb_in = ''
+  for item in cart.items
+    capture s
+      render 'product-step', product: item.product
+    endcapture
+    assign s = s | strip
+    assign rb_in = rb_in | append: '|' | append: s
+    capture d
+      render 'bundle-def', handle: item.product.handle
+    endcapture
+    assign d = d | strip
+    if d != blank
+      assign ds = d | split: '|' | first | split: ','
+      for x in ds
+        assign rb_in = rb_in | append: '|' | append: x
+      endfor
+    endif
+  endfor
+  assign rb_count = 0
+  for n in (1..4)
+    assign needle = '|' | append: n
+    if rb_in contains needle
+      assign rb_count = rb_count | plus: 1
+    endif
+  endfor
+-%}
+<section class="routine-board{% if rb_count == 4 %} is-complete{% endif %}" aria-labelledby="RoutineBoardTitle">
+  <div class="routine-board__head">
+    <div>
+      <h2 class="routine-board__title" id="RoutineBoardTitle">{{ 'cart.routine_progress' | t }}</h2>
+      <p class="routine-board__sub">{%- if rb_count == 4 -%}{{ 'cart.routine_complete' | t }}{%- else -%}{{ 'cart.routine_missing' | t }}{%- endif -%}</p>
+    </div>
+    <p class="routine-board__count"><span>{{ rb_count }}</span>/4</p>
+  </div>
+  <ol class="routine-board__steps" role="list">
+    {%- for n in (1..4) -%}
+      {%- assign needle = '|' | append: n -%}
+      {%- assign p = all_products[rb_handles[n]] -%}
+      {%- unless p.id -%}{%- continue -%}{%- endunless -%}
+      {%- assign v = p.selected_or_first_available_variant -%}
+      {%- assign sk = 'bts-' | append: p.handle | append: '-studio.jpg' -%}{%- assign st = images[sk] -%}{%- if st == blank -%}{%- assign st = false -%}{%- endif -%}
+      {%- assign on = false -%}{%- if rb_in contains needle -%}{%- assign on = true -%}{%- endif -%}
+      <li class="routine-board__step{% if on %} is-on{% endif %}" data-step="{{ n }}">
+        <a class="routine-board__media" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+          {%- if st -%}{{ st | image_url: width: 360 | image_tag: loading: 'lazy', widths: '180,360', sizes: '(min-width: 990px) 160px, 25vw', alt: '' }}{%- endif -%}
+          <span class="routine-board__num">0{{ n }}</span>
+          {%- if on -%}<span class="routine-board__tick">{% render 'icon', name: 'check', class: 'icon--sm' %}</span>{%- endif -%}
+        </a>
+        <p class="routine-board__name"><a href="{{ p.url }}">{{ p.metafields.bts.step_label.value | default: p.title | escape }}</a></p>
+        {%- if on -%}
+          <p class="routine-board__state">{{ 'cart.in_bag' | t }}</p>
+        {%- elsif v.available -%}
+          {%- unless v.price == 0 and settings.zero_price_coming_soon -%}
+            <product-form class="routine-board__add">
+              <form method="post" action="{{ routes.cart_add_url }}">
+                <input type="hidden" name="id" value="{{ v.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="btn btn--sku btn--small" aria-label="{{ 'cart.add_item' | t: product: p.title }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}<span class="btn__label">{% render 'egp', cents: v.price %}</span></button>
+              </form>
+            </product-form>
+          {%- endunless -%}
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ol>
+</section>

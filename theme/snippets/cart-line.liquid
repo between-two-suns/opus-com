@@ -1,0 +1,66 @@
+{%- comment -%}
+  One line of the bag, shared by the bag drawer and the bag page.
+  Params: item, index (forloop.index), prefix ('Drawer' | 'Cart'), form (form id the quantity belongs to, page only)
+{%- endcomment -%}
+{%- liquid
+  capture cl_step
+    render 'product-step', product: item.product
+  endcapture
+  assign cl_step = cl_step | strip | plus: 0
+  capture cl_def
+    render 'bundle-def', handle: item.product.handle
+  endcapture
+  assign cl_def = cl_def | strip
+  assign cl_cutout = item.product.metafields.bts.cutout.value
+  assign cl_key = 'bts-' | append: item.product.handle | append: '-studio.jpg'
+  assign cl_studio = images[cl_key]
+  if cl_studio == blank
+    assign cl_studio = false
+  endif
+-%}
+<li class="cart-line{% if cl_def != blank %} cart-line--set{% endif %}" data-step="{{ cl_step }}">
+  <a href="{{ item.url }}" class="cart-line__media{% if cl_studio or cl_def != blank or cl_cutout == blank %} cart-line__media--photo{% endif %}{% if cl_def != blank %} cart-line__media--set{% endif %}" tabindex="-1" aria-hidden="true">
+    {%- if cl_def != blank -%}
+      {%- render 'set-visual', product: item.product, sizes: '96px' -%}
+    {%- elsif cl_studio -%}
+      {{ cl_studio | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120,240', sizes: '96px', alt: '' }}
+    {%- elsif cl_cutout -%}
+      {{ cl_cutout | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '96px', alt: '' }}
+    {%- elsif item.image -%}
+      {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '96px', alt: '' }}
+    {%- endif -%}
+  </a>
+  <div class="cart-line__info">
+    <div class="cart-line__top">
+      <div class="cart-line__titles">
+        {%- if cl_step > 0 -%}
+          <p class="cart-line__step"><span class="cart-line__dot" aria-hidden="true"></span>{{ 'product.step' | t: number: cl_step }}{% if item.product.metafields.bts.step_label != blank %} · {{ item.product.metafields.bts.step_label.value }}{% endif %}</p>
+        {%- elsif cl_def != blank -%}
+          {%- assign cl_steps = cl_def | split: '|' | first | split: ',' -%}
+          <p class="cart-line__step cart-line__step--set">{%- for s in cl_steps -%}<span class="cart-line__dot" style="--sku: var(--c-step-{{ s }})" aria-hidden="true"></span>{%- endfor -%}{{ 'sections.bundles.count' | t: count: cl_steps.size }}</p>
+        {%- endif -%}
+        <a class="cart-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+        {%- unless item.product.has_only_default_variant -%}<p class="cart-line__meta">{{ item.variant.title | escape }}</p>{%- endunless -%}
+        {%- if item.product.metafields.bts.size != blank -%}<p class="cart-line__meta u-ltr">{{ item.product.metafields.bts.size }}</p>{%- endif -%}
+      </div>
+      <div class="cart-line__prices">
+        <span class="cart-line__price">{% render 'egp', cents: item.final_line_price %}</span>
+        {%- if item.original_line_price > item.final_line_price -%}<s class="cart-line__was">{% render 'egp', cents: item.original_line_price %}</s>{%- endif -%}
+      </div>
+    </div>
+    {%- for discount in item.line_level_discount_allocations -%}
+      <p class="cart-line__deal">{% render 'icon', name: 'check', class: 'icon--sm' %}{{ discount.discount_application.title | escape }} (−{% render 'egp', cents: discount.amount %})</p>
+    {%- endfor -%}
+    <div class="cart-line__controls">
+      <quantity-input class="qty qty--pill">
+        <button type="button" data-step="-1" aria-label="{{ 'cart.decrease' | t: product: item.product.title }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
+        <label class="visually-hidden" for="{{ prefix }}Qty-{{ index }}">{{ 'cart.quantity_for' | t: product: item.product.title }}</label>
+        <input id="{{ prefix }}Qty-{{ index }}" type="number" inputmode="numeric" min="0" max="{% if cl_def != blank %}3{% else %}5{% endif %}" value="{{ item.quantity }}" data-line-qty="{{ index }}"{% if form != blank %} name="updates[]" form="{{ form }}"{% endif %}>
+        <button type="button" data-step="1" aria-label="{{ 'cart.increase' | t: product: item.product.title }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
+      </quantity-input>
+      <a class="cart-line__remove" href="{{ item.url_to_remove }}" data-line-remove="{{ index }}" aria-label="{{ 'cart.remove' | t }} {{ item.product.title | escape }}">
+        {% render 'icon', name: 'close', class: 'icon--sm' %}<span class="cart-line__remove-label">{{ 'cart.remove' | t }}</span>
+      </a>
+    </div>
+  </div>
+</li>

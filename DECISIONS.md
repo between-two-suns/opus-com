@@ -432,3 +432,20 @@ Each entry: decision · why · reversibility. Newest last.
         - The routine bar fills segment by segment. When the bag holds all four steps for the first time, the eyebrow reads **"Your routine is complete"** / "روتينك اكتمل" (new key `cart.routine_complete`) and the bar glows once.
     - Verified on the real store, 390 and 1440: set page, Routines forecast, home set card, Sets page card and builder each throw 3–4 bottles, show the card, light the right steps, and count 1 line. Arabic checked. Flows 308/308, theme-check 0.
     - Staging MD5s: theme.js `94c70b02…`, base.css `a49a4dee…`, theme.liquid `e878d627…`, en `e991bacb…`, ar `bb087610…`. Live unchanged.
+
+160. **Owner: the bag and the bag page are OK but not amazing. The buttons aren't award-level, and the bag page is "just the price and order note". Keep the routine and free-delivery progress.**
+    - **One line design for drawer and page** (`snippets/cart-line.liquid`):
+      - the studio photo (or set visual), the step label with its colour dot (or the set's step dots and count), title, size, price with the original struck through if discounted, and line discounts;
+      - quantity is a pill tinted with the product colour; remove is a quiet "× Remove".
+    - **Bag page rebuilt** (`sections/main-cart.liquid`):
+      - display title "Your bag (n)" and Continue shopping;
+      - **routine board** (`snippets/cart-routine-board.liquid`): the four steps as photo tiles. Steps in the bag are lit with a tick and "In your bag". Missing steps are dashed and greyscale, with a one-tap "+ price" button in the product colour. The head shows "Your routine", what's missing, and a big N/4. On phones it's 2×2. Adding from the page reloads the bag.
+      - lines on a white card;
+      - a sticky summary with free delivery (and deals when set), "You save" (only when there is a real compare-at or discount), subtotal, the tax/shipping line, the note tucked behind "Add a note to your order", **Check out** with the total in a pill, then assurances: COD only if `show_cod`, secure checkout, returns only if `returns_note` is set, and the store's real payment icons;
+      - phones: a pinned bar with total and Check out, which hides while the summary's own Check out is on screen;
+      - empty bag: the routine board plus a link to sets.
+    - **Drawer:** same lines, the same Check out button with its total, a "View full bag →" link, and no focus ring on the title when it opens.
+    - New EN/AR keys: `cart.routine_missing`, `in_bag`, `summary`, `you_save`, `add_note`, `note_placeholder`, `secure`, `view_full`.
+    - Fix found on the real store: a list reset (`ul[role=list]`) zeroed the lines card padding, so photos and prices touched its edges. The selector is now `.cart-page .cart-page__lines`.
+    - Verified on the real store at 390 and 1440, EN and AR: adding the missing step from the board took the bag from 2/4 to 3/4 with the right total; the pinned bar hides and returns; no errors. Flows 308/308, theme-check 0, axe 0.
+    - Staging MD5s: cart-line `a7d137c8…`, cart-routine-board `972fbf68…`, main-cart `a95b49b7…`, cart-drawer `13916869…`, base.css `c2c4a835…`, pages.css `f85cd332…`, theme.js `aae10aa9…`, en `8623eaf1…`, ar `02afff8f…`. Live unchanged.
