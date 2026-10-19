@@ -517,3 +517,5 @@ Each entry: decision · why · reversibility. Newest last.
 
 165. **Owner approved the new sets section ("good for now"): it's now on the staging home page.** `templates/index.json` → `bundles` uses `bundles-feature` (The Full Ritual + The Night Ritual). The old `bundles` section still powers the Sets page. The flows home check now targets `.setsx`; flows 320/320.
     - `templates/index.sets.json` was removed from the repo. On staging it remains (the tool blocks `themeFilesDelete`); it's identical to the home page and can be deleted in Shopify admin.
+
+166. **Owner: use the walking photo on phones too; photos get optimised after the design pass.** The editorial band no longer defaults its phone image to `bts-editorial-sea.jpg`. Phones use the walking photo, cropped around her (`object-position: 31% 18%` in the square phone frame, card below). An optional phone photo can still be set in the editor. Desktop is unchanged. Noted for the photo pass: the walking photo is 1448 px wide, soft on large retina screens.

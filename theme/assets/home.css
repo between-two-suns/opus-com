@@ -562,6 +562,7 @@ climate-switch.is-entered .cs__line:not([hidden]) { animation: cs-in 420ms var(-
 @media (max-width: 749px) {
   .eb { min-block-size: 0; }
   .eb__media { position: relative; aspect-ratio: 1; }
+  .eb__img { object-position: 31% 18%; }
   .eb__inner { margin-block-start: -64px; padding-block: 0 var(--section-y); }
 }
 

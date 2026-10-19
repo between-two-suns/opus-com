@@ -1,11 +1,11 @@
 {{ 'home.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
   Full-bleed editorial photo with one line and one link (default: to the Climate page).
-  Photos default to the brand's editorial shots in Files; either can be replaced in the editor.
+  The photo defaults to the brand's walking shot in Files, on phones too (cropped around her); an optional phone photo can be set in the editor.
 {%- endcomment -%}
 {%- liquid
   assign img = section.settings.image | default: images['bts-editorial-walk.png']
-  assign img_m = section.settings.image_mobile | default: images['bts-editorial-sea.jpg']
+  assign img_m = section.settings.image_mobile
   if img == blank
     assign img = false
   endif
