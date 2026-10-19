@@ -449,3 +449,32 @@ Each entry: decision · why · reversibility. Newest last.
     - Fix found on the real store: a list reset (`ul[role=list]`) zeroed the lines card padding, so photos and prices touched its edges. The selector is now `.cart-page .cart-page__lines`.
     - Verified on the real store at 390 and 1440, EN and AR: adding the missing step from the board took the bag from 2/4 to 3/4 with the right total; the pinned bar hides and returns; no errors. Flows 308/308, theme-check 0, axe 0.
     - Staging MD5s: cart-line `a7d137c8…`, cart-routine-board `972fbf68…`, main-cart `a95b49b7…`, cart-drawer `13916869…`, base.css `c2c4a835…`, pages.css `f85cd332…`, theme.js `aae10aa9…`, en `8623eaf1…`, ar `02afff8f…`. Live unchanged.
+
+161. **Owner: the checkout looks terrible; make it match the site within Shopify's limits.**
+    - **What Basic allows.** The store is on Basic. `checkoutBrandingUpsert` works here with Shopify's "public access" level, which matches the admin checkout editor. Each field was tested one at a time on the unpublished profile.
+      - **Accepted:**
+        - global `accent`, `brand` (buttons) and `critical`;
+        - `scheme1.base.background` (main area) and `scheme2.base.background` (order summary);
+        - Shopify-library fonts for body and headings;
+        - header `alignment`, `position` and `logo`;
+        - `control.color` (transparent fields);
+        - an order-summary background image.
+      - **Refused (Plus only):**
+        - text and border colours, button colour schemes and header colour schemes;
+        - corner radius and button shape;
+        - heading case and size;
+        - custom font files and the favicon;
+        - section cards, shadows and dividers.
+      - Background images for the header and main area were removed by Shopify on 2026-02-05.
+    - **Applied to the unpublished profile "My Store configuration"** (`gid://shopify/CheckoutProfile/29932257538`). The live profile (`…/30073946370`) is untouched.
+      - **Logo:** the exact brand wordmark (`bts-wordmark.svg` rendered in ink, not redrawn) at 84 px, centred, full-width header.
+      - **Colours:** main area ivory `#F5F1EA`, order summary white (like the bag page's white summary on ivory), links and checkboxes ink `#20233A`, buttons ink, errors `#B42318` (the site's error red).
+      - **Fonts:** Figtree for body (400/700) and headings (700/800), the site's UI font and in Shopify's library. Antonio and Alexandria aren't in the library, and custom font files are Plus only.
+    - **Files uploaded to Shopify Files:** `bts-checkout-logo.png` (`MediaImage/47162252263682`), `bts-checkout-favicon.png` (`…/47162252296450`), and Antonio 500/700 woff2 instanced from the theme's own font (`GenericFile/47162252329218`, `…/47162252427522`). The favicon and Antonio are kept ready in case the store moves to Plus.
+    - **Preview:** a simulation applies these settings to the real checkout in a headless browser only (`cosim.mjs` in the session scratchpad). Shopify has no outside-admin preview for a draft profile.
+    - **Publishing is the owner's call.** Either publish the draft in Settings → Checkout, or approve applying the same settings to the live profile.
+    - **Owner decisions flagged, not changed:**
+      - the store name is still "My Store" (checkout tab, emails);
+      - "Email me with news and offers" is pre-ticked, which is against our no-dark-patterns rule;
+      - phone is optional although couriers need it;
+      - PayPal is the only payment method shown.
