@@ -282,6 +282,10 @@
       "name": "Day sky (scroll)",
       "from": "Clock starts (hour)",
       "to": "Clock ends (hour)"
+    },
+    "skin_check": {
+      "name": "Skin check",
+      "info": "Suggests products from the answers. Keep it unlinked until ICI approves the matching rules (DECISIONS 171)."
     }
   },
   "settings_schema": {
@@ -362,7 +366,7 @@
       "name": "Product claims",
       "intro": "Claims such as non-comedogenic, fragrance-free, dermatologically tested, hypoallergenic, cruelty-free, vegan, halal or clinically proven are hidden on product pages until a report is on file.",
       "documented": "Documented claims",
-      "documented_info": "One claim per line, written exactly as on the product (EN and AR lines both), only once its report or certificate is on file. Example: Non-comedogenic"
+      "documented_info": "One claim per line, written exactly as on the product (EN and AR lines both), only once its report is on file. Put the product handle first to limit it to that product, e.g. daily-barrier-moisturizing-cream: Non-comedogenic"
     }
   }
 }

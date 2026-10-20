@@ -1,8 +1,9 @@
 {%- comment -%}
   Claims that need a report on file (non-comedogenic, fragrance-free, dermatologically tested, hypoallergenic,
   cruelty-free, halal, clinically proven) are held back until the owner lists them under Theme settings →
-  Product claims → Documented claims. Outputs "hold" for a held claim, nothing otherwise.
-  Params: claim (text, EN or AR)
+  Product claims → Documented claims, as "product-handle: Claim" (one product) or "Claim" (every product).
+  Outputs "hold" for a held claim, nothing otherwise.
+  Params: claim (text, EN or AR), handle (the product's handle)
 {%- endcomment -%}
 {%- liquid
   assign cg = claim | downcase
@@ -16,9 +17,11 @@
   endfor
   if cg_held
     assign cg_ok = settings.documented_claims | downcase | newline_to_br | split: '<br />'
+    assign cg_scoped = handle | append: ':' | append: cg | remove: ' '
     for d in cg_ok
       assign dd = d | strip
-      if dd != blank and dd == cg
+      assign ds = dd | remove: ' '
+      if dd != blank and dd == cg or ds == cg_scoped
         assign cg_held = false
         break
       endif

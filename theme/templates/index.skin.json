@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "skin_check": { "type": "skin-check", "settings": {} }
+  },
+  "order": ["skin_check"]
+}

@@ -43,7 +43,7 @@
   endcapture
   assign remote_over_m = remote_over_m | strip
   # Presets that wait on verified information (manufacturer or reports) show only once the block has its own answer.
-  assign pending_presets = 'fragrance,sensitive,shelf_life,authenticity,pregnancy' | split: ','
+  assign pending_presets = 'fragrance,shelf_life,authenticity' | split: ','
   assign hub = section.settings.hub
   assign used_cats = ''
 -%}
@@ -240,10 +240,10 @@
             { "value": "delivery_time", "label": "Delivery time (from settings)" },
             { "value": "delivery_cost", "label": "Delivery cost (from settings)" },
             { "value": "cod", "label": "Cash on delivery (if turned on)" },
-            { "value": "sensitive", "label": "Sensitive skin (needs answer)" },
+            { "value": "sensitive", "label": "Sensitive skin" },
             { "value": "shelf_life", "label": "Shelf life / PAO (needs answer)" },
             { "value": "authenticity", "label": "Authenticity (needs answer)" },
-            { "value": "pregnancy", "label": "Pregnancy (needs answer)" },
+            { "value": "pregnancy", "label": "Pregnancy" },
             { "value": "returns", "label": "Returns (links the refund policy)" },
             { "value": "contact_reply", "label": "How to reach us" },
             { "value": "inci_what", "label": "What INCI means" },

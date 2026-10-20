@@ -1,0 +1,180 @@
+{{ 'skin-check.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  The skin check: five questions (skin type, reactivity, breakouts, concerns, how many steps), then products picked
+  from their full ingredient lists. Individual products come first; a set is offered only when it holds exactly the
+  products picked, and The Full Ritual only when all four suit and a full routine was asked for. Highly reactive or
+  irritated skin gets guidance, not a routine. Matching rules: DECISIONS 171 (owner + ICI answers), pending ICI sign-off.
+  Without JS the section shows a short note and a link to the shop.
+{%- endcomment -%}
+{%- liquid
+  assign handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign when_keys = ',both,both,both,am' | split: ','
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'skin_check.title' | t | replace: '&amp;', '&'
+  endif
+-%}
+<section class="section skc" aria-labelledby="SkcTitle-{{ section.id }}">
+  <skin-check class="container skc__inner" data-state="intro">
+    <script type="application/json" data-skc-data>
+      {
+        "products": {
+          {%- for n in (1..4) -%}
+            {%- assign p = all_products[handles[n]] -%}
+            {%- assign v = p.selected_or_first_available_variant -%}
+            {%- assign cut = 'cut-' | append: handles[n] | append: '.webp' | asset_url -%}
+            "{{ n }}": { "id": {{ v.id | default: 0 }}, "price": {{ v.price | default: 0 }}, "available": {{ v.available | default: false | json }}, "title": {{ p.title | json }}, "label": {{ p.metafields.bts.step_label.value | default: p.title | json }}, "url": {{ p.url | json }}, "img": {{ cut | json }}, "when": {{ when_keys[n] | json }} }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        },
+        "strings": {
+          "progress": {{ 'skin_check.progress' | t: n: '__N__', total: '__T__' | json }},
+          "when_am": {{ 'skin_check.when_am' | t | json }},
+          "when_both": {{ 'skin_check.when_both' | t | json }},
+          "total": {{ 'skin_check.total' | t | json }},
+          "add_items": {{ 'skin_check.add_items' | t: count: '__N__' | json }},
+          "add_one": {{ 'skin_check.add_one' | t | json }},
+          "add_set": {{ 'skin_check.add_set' | t: set: '__S__' | json }},
+          "add_separately": {{ 'skin_check.add_separately' | t | json }},
+          "set_text": {{ 'skin_check.set_text' | t: set: '__S__', price: '__P__', singles: '__Q__' | json }},
+          "nothing": {{ 'skin_check.nothing' | t | json }},
+          "step": {{ 'product.step' | t: number: '__N__' | json }},
+          "reasons": {
+            {%- assign rk = 'cleanser_oil,cleanser_daily,serum_oil,serum_tone,serum_hydra,cream_daily,cream_barrier,cream_hydra,cream_oil,spf_daily' | split: ',' -%}
+            {%- for k in rk -%}{%- assign kk = 'skin_check.reasons.' | append: k -%}{{ k | json }}: {{ kk | t | json }}{% unless forloop.last %},{% endunless %}{%- endfor -%}
+          },
+          "notes": {
+            {%- assign nk = 'tight,with_moisturiser,not_replace,not_acne,richer,spf_tone,patch' | split: ',' -%}
+            {%- for k in nk -%}{%- assign kk = 'skin_check.notes.' | append: k -%}{{ k | json }}: {{ kk | t | json }}{% unless forloop.last %},{% endunless %}{%- endfor -%}
+          }
+        }
+      }
+    </script>
+
+    <div class="skc__card">
+      {%- comment -%} Intro {%- endcomment -%}
+      <div class="skc__screen skc__intro" data-screen="intro">
+        <p class="t-eyebrow">{{ 'skin_check.eyebrow' | t }}</p>
+        <h2 class="t-display-m" id="SkcTitle-{{ section.id }}">{{ heading | escape }}</h2>
+        <p class="t-lead t-muted">{{ 'skin_check.intro' | t }}</p>
+        <noscript><p class="t-small">{{ 'skin_check.no_js' | t }} <a href="{{ routes.all_products_collection_url }}">{{ 'skin_check.browse' | t }}</a></p></noscript>
+        <button type="button" class="btn skc__start" data-skc-start>{{ 'skin_check.start' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+        <p class="t-xs t-muted skc__disclaimer">{{ 'skin_check.disclaimer' | t }}</p>
+      </div>
+
+      {%- comment -%} Questions: one per screen. Single-choice screens move on after a tap; keyboard users use Next. {%- endcomment -%}
+      <form class="skc__form" data-skc-form hidden>
+        <div class="skc__bar">
+          <button type="button" class="skc__back" data-skc-back>{% render 'icon', name: 'arrow', class: 'icon--sm' %}<span>{{ 'skin_check.back' | t }}</span></button>
+          <p class="skc__progress t-xs" aria-live="polite" data-skc-progress></p>
+          <span class="skc__meter" aria-hidden="true"><span data-skc-meter></span></span>
+        </div>
+
+        {%- liquid
+          assign qs = 'type,react,acne,concerns,steps' | split: ','
+        -%}
+        {%- for q in qs -%}
+          {%- liquid
+            case q
+              when 'type'
+                assign opts = 'oily,combination,normal,dry,very_dry' | split: ','
+              when 'react'
+                assign opts = 'no,some,high' | split: ','
+              when 'acne'
+                assign opts = 'no,yes' | split: ','
+              when 'concerns'
+                assign opts = 'oil,tone,marks,dehydration,barrier,spf' | split: ','
+              else
+                assign opts = 'essentials,full' | split: ','
+            endcase
+            assign qk = 'skin_check.q.' | append: q
+            assign multi = false
+            if q == 'concerns'
+              assign multi = true
+            endif
+          -%}
+          <fieldset class="skc__screen skc__q" data-screen="{{ q }}" data-index="{{ forloop.index }}" hidden>
+            <legend class="t-display-s skc__legend">{{ qk | t }}</legend>
+            {%- if multi -%}<p class="t-small t-muted skc__hint">{{ 'skin_check.choose_any' | t }}</p>{%- endif -%}
+            <div class="skc__opts">
+              {%- for o in opts -%}
+                {%- assign ok = 'skin_check.a.' | append: q | append: '_' | append: o -%}
+                {%- assign okd = ok | append: '_d' -%}
+                {%- assign d = okd | t -%}
+                <label class="skc__opt">
+                  <input type="{% if multi %}checkbox{% else %}radio{% endif %}" name="{{ q }}" value="{{ o }}">
+                  <span class="skc__opt-box" aria-hidden="true">{% render 'icon', name: 'check', class: 'icon--sm' %}</span>
+                  <span class="skc__opt-text">
+                    <span class="skc__opt-label">{{ ok | t }}</span>
+                    {%- unless d contains 'ranslation missing' or d == okd -%}<span class="skc__opt-sub t-xs">{{ d }}</span>{%- endunless -%}
+                  </span>
+                </label>
+              {%- endfor -%}
+            </div>
+            <button type="button" class="btn skc__next" data-skc-next{% unless multi %} disabled{% endunless %}>
+              {%- if forloop.last -%}{{ 'skin_check.see' | t }}{%- else -%}{{ 'skin_check.next' | t }}{%- endif -%}
+              {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}
+            </button>
+          </fieldset>
+        {%- endfor -%}
+      </form>
+
+      {%- comment -%} Results {%- endcomment -%}
+      <div class="skc__screen skc__result" data-screen="result" hidden tabindex="-1">
+        <p class="t-eyebrow">{{ 'skin_check.eyebrow' | t }}</p>
+        <h2 class="t-display-s skc__result-title">{{ 'skin_check.result_title' | t }}</h2>
+        <ul class="skc__profile cluster" role="list" data-skc-profile></ul>
+
+        <ul class="skc__list" role="list" data-skc-list></ul>
+        <div class="skc__also" data-skc-also-wrap hidden>
+          <h3 class="skc__subhead t-xs">{{ 'skin_check.also' | t }}</h3>
+          <ul class="skc__list skc__list--also" role="list" data-skc-also></ul>
+        </div>
+
+        <div class="skc__set" data-skc-set hidden>
+          <p class="skc__set-title">{{ 'skin_check.set_title' | t }}</p>
+          <p class="t-small" data-skc-set-text></p>
+        </div>
+
+        <product-form class="skc__buy">
+          <form method="post" action="{{ routes.cart_add_url }}" novalidate>
+            <p class="skc__total"><span class="t-muted">{{ 'skin_check.total' | t }}</span> <strong data-skc-total></strong></p>
+            <div class="skc__actions">
+              <button type="submit" class="btn" data-skc-add></button>
+              <button type="submit" class="btn btn--secondary" data-skc-add-singles hidden></button>
+            </div>
+            <p class="t-xs t-muted" data-form-error hidden></p>
+          </form>
+        </product-form>
+
+        <div class="skc__links">
+          <button type="button" class="link-arrow" data-skc-change>{{ 'skin_check.change' | t }}</button>
+          <button type="button" class="link-arrow" data-skc-restart>{{ 'skin_check.restart' | t }}</button>
+        </div>
+        <p class="t-xs t-muted skc__disclaimer">{{ 'skin_check.disclaimer' | t }}</p>
+      </div>
+
+      {%- comment -%} Guidance instead of a routine (highly reactive or irritated skin) {%- endcomment -%}
+      <div class="skc__screen skc__guide" data-screen="guidance" hidden tabindex="-1">
+        <span class="skc__guide-ico" aria-hidden="true">{% render 'icon', name: 'info' %}</span>
+        <h2 class="t-display-s">{{ 'skin_check.guidance_title' | t }}</h2>
+        <p class="t-body-l">{{ 'skin_check.guidance_text' | t }}</p>
+        <div class="skc__links">
+          <button type="button" class="link-arrow" data-skc-change>{{ 'skin_check.change' | t }}</button>
+          <a class="link-arrow" href="{{ routes.all_products_collection_url }}">{{ 'skin_check.browse' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+        </div>
+      </div>
+    </div>
+  </skin-check>
+</section>
+<script src="{{ 'skin-check.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.skin_check.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:sections.skin_check.info" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" }
+  ],
+  "presets": [{ "name": "t:sections.skin_check.name" }]
+}
+{% endschema %}

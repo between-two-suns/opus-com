@@ -573,3 +573,29 @@ Each entry: decision · why · reversibility. Newest last.
       - Guidance screens for very dry and highly reactive skin.
       - Eight questions for ICI.
       - No quiz code has been written yet; it gets built hidden once ICI answers.
+
+171. **Owner + ICI answers (20 Oct): match skin-check products from the full ingredient lists, not only the label's skin types. Keep claims to approved wording, publish no percentages that aren't on the packs, never call products irritation-free or pregnancy-safe. Proceed, subject to final ICI approval.** Owner also agreed to drop the morning-to-night concept: the home page stays as approved, and `/?view=day` stays an unlinked demo.
+    - **Skin check built, switched off.** It's only on the hidden staging page `/?view=skin` (`templates/index.skin.json`) and isn't linked anywhere.
+      - Code: `sections/skin-check.liquid`, `assets/skin-check.js`, `assets/skin-check.css`; strings under `skin_check.*` in EN/AR.
+      - Five questions, one per screen: skin type, reactivity, breakouts, concerns (any), and essentials vs full routine. A tap moves on; keyboard users press Next.
+      - Results: products in routine order, each with ingredient reasons, notes and when to use it. Suggested products are ticked; optional ones sit unticked under "Also worth considering".
+      - **Rules** (`match()` in `skin-check.js`, the ICI doc's table):
+        - highly reactive or irritated → guidance only, no products;
+        - mildly sensitive → cleanser and serum optional, every product with a patch-test note, no set;
+        - very dry → no cleanser; cream with "may need a richer moisturiser as well"; serum by concern with "doesn't replace a moisturiser";
+        - mildly dry → cleanser optional ("only if it doesn't leave your skin feeling tight"); serum by concern ("best used with a moisturiser");
+        - acne-prone → cleanser, cream, SPF, plus serum for oil or marks ("not a treatment for active acne");
+        - oily, combination, normal → per the owner's table;
+        - SPF 50+ for everyone (except the guidance case), with an uneven-tone note.
+      - **Essentials** keeps SPF plus the two products answering the most concerns.
+      - **Sets** are offered only when the ticked products are exactly a set's contents, and never for sensitive skin. Example: oily + shine + full → The Full Ritual (EGP 1,699 instead of 1,846); unticking one product drops the set offer.
+      - Adding to the bag uses the theme's product-form (pack flight and added card).
+      - QA: `match()` unit-checked against every row of the owner's table; browser flows EN/AR at 390 and 1440 (Full Ritual, untick, mildly dry, add to bag, guidance); axe 0 on intro, question and result screens.
+    - **FAQ now answered** (EN/AR, from the owner's guidance):
+      - sensitive skin: ingredients commonly used for hydration and barrier support, no guarantee, patch test on the inner arm for 24 hours;
+      - pregnancy: not described as pregnancy-safe; consult a healthcare professional, especially before starting the Clarity Serum.
+      - Still hidden: shelf life/PAO, authenticity (the pack QR is for discovery, not authentication), and fragrance.
+    - **Claims switch is now per product:** a documented line `daily-barrier-moisturizing-cream: Non-comedogenic` restores that badge on the cream only, so it can't spread to the cleanser (the owner said not to extend claims). The cream's Non-comedogenic and Fragrance-free badges stay held until their evidence is verified.
+    - **Percentages:** checked; none are published anywhere on the site.
+    - **ICI document updated:** https://claude.ai/code/artifact/d55cc5d0-99dd-4f02-8ee1-b92d8d7e54e5 now shows the built matching table, the reason lines and 8 remaining items. The Barrier Cream's EDA number from its artwork (COSMTOL26129668) is recorded there; it isn't displayed until all four are verified.
+    - Staging MD5s match (11 files). Live unchanged. theme-check 0, flows 320/320.

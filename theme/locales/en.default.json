@@ -813,7 +813,8 @@
         "a": "Yes. Cash on delivery is available at no extra charge. Please have the exact amount ready for the courier."
       },
       "sensitive": {
-        "q": "Are the products suitable for sensitive skin?"
+        "q": "Are the products suitable for sensitive skin?",
+        "a": "Some of our formulas include ingredients commonly used for hydration and barrier support, such as ceramides, panthenol, glycerin and centella asiatica. Sensitivity varies from person to person, so we can't promise every product will suit all sensitive skin. Introduce one product at a time and patch test first: apply a little to a small area, such as the inner arm, and wait at least 24 hours."
       },
       "shelf_life": {
         "q": "How long do the products last once opened?"
@@ -822,7 +823,8 @@
         "q": "How do I know my product is genuine?"
       },
       "pregnancy": {
-        "q": "Can I use the products during pregnancy or breastfeeding?"
+        "q": "Can I use the products during pregnancy or breastfeeding?",
+        "a": "We don't describe any of our products as pregnancy-safe. Please consult your doctor or a healthcare professional before using them during pregnancy or breastfeeding, especially before starting the Clarity Serum."
       }
     },
     "eyebrow": "Good to know",
@@ -1141,5 +1143,92 @@
     "eyebrow": "Reviews",
     "heading": "What people say",
     "count": "Based on {{ count }} reviews"
+  },
+  "skin_check": {
+    "eyebrow": "Skin check",
+    "title": "Find your steps in 30 seconds",
+    "intro": "Five quick questions. We suggest products from their ingredients, never a set you don't need.",
+    "no_js": "The skin check needs JavaScript.",
+    "start": "Start",
+    "next": "Next",
+    "back": "Back",
+    "see": "See my suggestions",
+    "progress": "{{ n }} of {{ total }}",
+    "choose_any": "Choose any, or none.",
+    "q": {
+      "type": "How does your skin feel by midday, with nothing on it?",
+      "react": "How does your skin react to new products?",
+      "acne": "Do you get breakouts?",
+      "concerns": "What would you like help with?",
+      "steps": "How many steps do you want?"
+    },
+    "a": {
+      "type_oily": "Shiny all over",
+      "type_oily_d": "Oily",
+      "type_combination": "Shiny on the forehead, nose and chin",
+      "type_combination_d": "Combination",
+      "type_normal": "Comfortable, neither shiny nor tight",
+      "type_normal_d": "Normal",
+      "type_dry": "A little tight or dull",
+      "type_dry_d": "Mildly dry",
+      "type_very_dry": "Very tight, rough or flaky",
+      "type_very_dry_d": "Very dry",
+      "react_no": "Rarely reacts",
+      "react_some": "Sometimes stings, itches or turns red",
+      "react_some_d": "Mildly sensitive",
+      "react_high": "Often reacts, or is irritated or broken right now",
+      "react_high_d": "Reactive right now",
+      "acne_no": "Rarely",
+      "acne_yes": "Often",
+      "acne_yes_d": "Acne-prone",
+      "concerns_oil": "Excess oil and shine",
+      "concerns_tone": "Uneven tone",
+      "concerns_marks": "Dark spots and post-blemish marks",
+      "concerns_dehydration": "Dehydration",
+      "concerns_dehydration_d": "Tight or dull, even if oily",
+      "concerns_barrier": "Barrier support",
+      "concerns_spf": "Daily sun protection",
+      "steps_essentials": "Just the essentials",
+      "steps_full": "A full morning and night routine"
+    },
+    "result_title": "Your suggestions",
+    "also": "Also worth considering",
+    "when_am": "Morning",
+    "when_both": "Morning and night",
+    "total": "Total",
+    "add_items": "Add {{ count }} to bag",
+    "add_one": "Add to bag",
+    "add_set": "Add {{ set }}",
+    "add_separately": "Add them separately",
+    "set_title": "Same products as a set",
+    "set_text": "{{ set }} holds exactly these products: {{ price }} instead of {{ singles }}.",
+    "nothing": "Choose at least one",
+    "reasons": {
+      "cleanser_oil": "Zinc PCA with glycerin and panthenol: a daily cleanse for excess oil.",
+      "cleanser_daily": "Glycerin, panthenol and aloe vera alongside the cleansers, for everyday cleansing.",
+      "serum_oil": "Niacinamide is relevant to excess oil.",
+      "serum_tone": "Niacinamide and tranexamic acid are relevant to uneven tone and the look of dark spots.",
+      "serum_hydra": "Glycerin, sodium hyaluronate and panthenol for hydration.",
+      "cream_daily": "Ceramides, squalane and glycerin for everyday moisture.",
+      "cream_barrier": "Ceramides NP, AP and EOP with cholesterol and squalane for barrier support.",
+      "cream_hydra": "Glycerin, sodium hyaluronate and sodium PCA for hydration.",
+      "cream_oil": "Zinc PCA and niacinamide in a lightweight cream.",
+      "spf_daily": "SPF 50+ as the last step every morning."
+    },
+    "notes": {
+      "tight": "Only if it doesn't leave your skin feeling tight.",
+      "with_moisturiser": "Best used with a moisturiser.",
+      "not_replace": "Adds hydration, but doesn't replace a moisturiser.",
+      "not_acne": "Not a treatment for active acne.",
+      "richer": "Very dry skin may need a richer moisturiser as well.",
+      "spf_tone": "Daily sun protection is an important part of any routine for uneven tone.",
+      "patch": "Introduce it slowly and patch test first."
+    },
+    "guidance_title": "Let's go gently",
+    "guidance_text": "Your skin sounds irritated right now, so we won't suggest a routine. Please speak to a dermatologist or pharmacist first, and come back once your skin has settled.",
+    "browse": "Browse the products",
+    "restart": "Start again",
+    "change": "Change answers",
+    "disclaimer": "Suggestions are based on our ingredients, not a diagnosis, and can't guarantee how your skin will react. Patch test anything new. Not a medical treatment."
   }
 }

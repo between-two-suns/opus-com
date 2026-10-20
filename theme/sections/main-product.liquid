@@ -280,7 +280,7 @@
             {%- when 'claims' -%}
               {%- capture claim_pills -%}
                 {%- for b in mf.badges.value -%}
-                  {%- capture gated -%}{% render 'claim-gate', claim: b %}{%- endcapture -%}
+                  {%- capture gated -%}{% render 'claim-gate', claim: b, handle: product.handle %}{%- endcapture -%}
                   {%- if gated == blank -%}
                     <li class="pill pill--sku">{% render 'icon', name: 'check', class: 'icon--sm' %}{{ b | escape }}</li>
                   {%- endif -%}
