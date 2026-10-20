@@ -1260,10 +1260,14 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 .product-reviews .jm-button--primary { background: var(--c-ink) !important; border-color: var(--c-ink) !important; color: #fff !important; }
 .product-reviews .jm-review-widget .jm-no-reviews-state { box-sizing: border-box; inline-size: 100%; max-inline-size: none; margin-inline: 0; padding: clamp(20px, 4vw, 40px); border-radius: var(--radius-l); background: var(--c-paper); }
 .product-reviews .jdgm-widget, .product-reviews .jm-review-widget { max-inline-size: 100%; overflow-wrap: anywhere; }
+/* Belt and braces for Safari: whatever order Judge.me's own styles load in, its centred boxes never outgrow the column,
+   and nothing inside the widget can widen the page */
+.product-reviews .jdgm-widget { overflow-x: hidden; overflow-x: clip; }
+.product-reviews .jdgm-widget .jm-center { box-sizing: border-box !important; max-inline-size: 100% !important; margin-inline: 0 !important; }
 .product-reviews .jm-no-reviews-state__text { color: var(--c-muted); font-size: 16px; }
 /* With no reviews yet, Judge.me still renders its (empty) filter row and list: drop both so the card sits under our heading */
 .product-reviews .jm-review-widget:has(.jm-no-reviews-state) .jm-review-widget__header > .jm-cluster,
-.product-reviews .jm-review-widget:has(.jm-no-reviews-state) .jm-review-widget__body { display: none; }
+.product-reviews .jm-review-widget:has(.jm-no-reviews-state) .jm-review-widget__body { display: none !important; }
 /* Our section already spaces the block: drop the widget's own outer spacing (it set 48px above and below) */
 .product-reviews .jdgm-widget .jm-review-widget { padding-block: 0 !important; margin-block: 0 !important; }
 .product-reviews .jm-review-widget:has(.jm-no-reviews-state) .jm-no-reviews-state { margin-block-start: 0 !important; }
