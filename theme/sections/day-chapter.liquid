@@ -1,0 +1,93 @@
+{{ 'day.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  One chapter of the day: a full-bleed photo with its hour, one line and the set for that part of the day.
+  Morning is light (the first sun); night is ink (the second sun). Copy falls back to the bilingual strings for the
+  chosen time; the photo comes from the editor or, failing that, from Files by name.
+{%- endcomment -%}
+{%- liquid
+  assign mood = section.settings.mood | default: 'morning'
+  assign img = section.settings.image
+  if img == blank and section.settings.image_name != blank
+    assign img = images[section.settings.image_name]
+  endif
+  if img == blank
+    assign img = false
+  elsif img.width == blank
+    assign img = false
+  endif
+  assign img_alt = img.alt | default: ''
+  if mood == 'night'
+    assign d_eyebrow = 'sections.forecast.pm' | t
+    assign d_part = 'sections.hero_routine.pm' | t
+    assign d_text = 'sections.hero_routine.lede_pm' | t
+    assign d_cta = 'sections.hero_routine.cta_pm' | t
+    assign d_handle = 'the-night-ritual'
+    assign d_time = '21:00'
+    assign ic = 'moon'
+  else
+    assign d_eyebrow = 'sections.forecast.am' | t
+    assign d_part = 'sections.hero_routine.am' | t
+    assign d_text = 'sections.hero_routine.lede_am' | t
+    assign d_cta = 'sections.hero_routine.cta_am' | t
+    assign d_handle = 'the-full-ritual'
+    assign d_time = '07:00'
+    assign ic = 'sun'
+  endif
+  assign d_before = 'sections.hero_routine.before' | t
+  assign d_after = 'sections.hero_routine.after' | t
+  assign d_heading = d_before | append: ' ' | append: d_part | append: ' ' | append: d_after | strip
+  assign eyebrow = section.settings.eyebrow | default: d_eyebrow | replace: '&amp;', '&'
+  assign heading = section.settings.heading | default: d_heading | replace: '&amp;', '&'
+  assign text = section.settings.text | default: d_text | replace: '&amp;', '&'
+  assign cta = section.settings.cta | default: d_cta | replace: '&amp;', '&'
+  assign time = section.settings.time | default: d_time
+  assign p = section.settings.product | default: all_products[d_handle]
+  assign v = p.selected_or_first_available_variant
+  assign name_key = 'bundles.names.' | append: p.handle
+  assign name = name_key | t | replace: '&amp;', '&'
+  if name contains 'ranslation missing' or name == name_key
+    assign name = p.title
+  endif
+-%}
+<section class="dc dc--{{ mood }}" data-hour="{{ time | escape }}" aria-labelledby="DcTitle-{{ section.id }}">
+  {%- if img -%}
+    <div class="dc__media">
+      {{ img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600,900,1200,1600,2000,2400', sizes: '100vw', alt: img_alt, class: 'dc__img' }}
+    </div>
+  {%- endif -%}
+  <div class="container dc__inner">
+    <div class="dc__card">
+      <p class="dc__time t-xs"><span class="dc__ico">{% render 'icon', name: ic, class: 'icon--sm' %}</span><span class="u-ltr">{{ time | escape }}</span><span aria-hidden="true">·</span>{{ eyebrow | escape }}</p>
+      <h2 class="t-display-m" id="DcTitle-{{ section.id }}">{{ heading | escape }}</h2>
+      <p class="t-body-l dc__text">{{ text | escape }}</p>
+      {%- if p.id -%}
+        <div class="dc__buy">
+          <a class="btn{% if mood == 'night' %} btn--light{% endif %}" href="{{ p.url }}">{{ cta | escape }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <p class="dc__set t-small"><span>{{ name | escape }}</span> · <span class="dc__price">{% render 'egp', cents: v.price %}</span></p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.day_chapter.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
+    { "type": "select", "id": "mood", "label": "t:sections.day_chapter.mood", "default": "morning", "options": [
+      { "value": "morning", "label": "t:sections.day_chapter.morning" },
+      { "value": "night", "label": "t:sections.day_chapter.night" }
+    ] },
+    { "type": "image_picker", "id": "image", "label": "t:sections.day_chapter.image" },
+    { "type": "text", "id": "image_name", "label": "t:sections.day_chapter.image_name" },
+    { "type": "text", "id": "time", "label": "t:sections.day_chapter.time", "placeholder": "07:00" },
+    { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
+    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
+    { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
+    { "type": "text", "id": "cta", "label": "t:sections.day_chapter.cta" },
+    { "type": "product", "id": "product", "label": "t:sections.day_chapter.product" }
+  ],
+  "presets": [{ "name": "t:sections.day_chapter.name" }]
+}
+{% endschema %}

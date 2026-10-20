@@ -214,7 +214,9 @@
       "name": "Routine day (pinned)"
     },
     "climate_switch": {
-      "name": "Climate switch"
+      "name": "Climate switch",
+      "photo_prefix": "Photo file prefix",
+      "photo_prefix_info": "Scenes load from Files by name: prefix + condition + -wide.jpg / -tall.jpg. Leave empty for bts-climate-."
     },
     "facts_band": {
       "name": "Facts band",
@@ -255,7 +257,31 @@
     "bundles_feature": {
       "name": "Sets: pick and companion",
       "hero": "The pick (large card)",
-      "mate": "The companion (smaller card)"
+      "mate": "The companion (smaller card)",
+      "mate_image": "Companion photo",
+      "mate_image_info": "Optional. Replaces the companion's pack cut-outs."
+    },
+    "product_reviews": {
+      "name": "Product reviews"
+    },
+    "reviews_home": {
+      "name": "Reviews carousel"
+    },
+    "day_chapter": {
+      "name": "Day chapter",
+      "mood": "Time of day",
+      "morning": "Morning",
+      "night": "Night",
+      "image": "Photo",
+      "image_name": "Photo from Files (file name)",
+      "time": "Hour shown",
+      "cta": "Button label",
+      "product": "Set to link"
+    },
+    "day_sky": {
+      "name": "Day sky (scroll)",
+      "from": "Clock starts (hour)",
+      "to": "Clock ends (hour)"
     }
   },
   "settings_schema": {

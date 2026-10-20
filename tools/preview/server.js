@@ -15,7 +15,7 @@ const THEME = path.join(ROOT, 'theme');
 const IMG_DIRS = [path.join(ROOT, '_source/photos'), path.join(ROOT, '_source/packshots'), path.join(THEME, 'assets')];
 // Store photos (Shopify Files) mirrored by preview/fetch-photos.sh. Sizes are the originals' (Shopify reports these).
 const PHOTO_DIR = path.join(ROOT, '_source/photos');
-const PHOTO_SIZE = (n) => (/-(front|angle|back)\.png$/.test(n) ? [1600, 2400] : /-(application|in-hand)\.jpg$/.test(n) ? [2400, 3000]
+const PHOTO_SIZE = (n) => (/^bts-demo-(morning|night)\.jpg$/.test(n) ? [3840, 2160] : n === 'bts-demo-night-ritual.jpg' ? [3000, 2250] : n.startsWith('bts-climate2-') ? [2400, 2400] : /-(front|angle|back)\.png$/.test(n) ? [1600, 2400] : /-(application|in-hand)\.jpg$/.test(n) ? [2400, 3000]
   : /-texture\.jpg$/.test(n) ? [2000, 2500] : /-routine\.jpg$/.test(n) ? [2000, 2000] : /-wide\.jpg$/.test(n) ? (n.includes('climate') ? [3200, 1800] : [3000, 2000])
   : /-tall\.jpg$/.test(n) ? [1600, 2000] : /-(studio|routine-scene|application-2)\.jpg$|-detail(-open)?\.png$|editorial-sea/.test(n) ? [2048, 2048]
   : n === 'bts-editorial-walk.png' ? [2048, 1536] : n === 'bts-editorial-skin.png' ? [1638, 2048] : n === 'bts-scene-home-city.jpg' ? [2560, 1440] : n === 'bts-lineup-sky.jpg' ? [1920, 1080] : [2400, 2400]);

@@ -37,6 +37,10 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - **Sets** (DECISIONS 162): The Full Ritual is the BTS Pick and is offered on every product page. The Day Ritual is now **The Clear & Protect Trio** (`/products/the-clear-protect-trio`; the old URL redirects).
 - **Home sets section** (DECISIONS 163–165): The Full Ritual (morning and night) beside The Night Ritual (evenings). The bag offers the honest switch to The Full Ritual when a three-step set is in it.
 
+## Shipped to staging 2026-10-20
+- Judge.me reviews: product and set pages (badge hidden at 0, widget empty state in brand), home carousel appears only once real reviews exist (DECISIONS 167). Owner: enable gifted-review disclosure and Arabic in Judge.me.
+- Morning-to-night demo at `/?view=day` for owner review; home unchanged (DECISIONS 168). Vanity photos need label-correct versions before any live use.
+
 ## Complete
 - Research + strategy: `RESEARCH.md`, `UX_STRATEGY.md`
 - Design system (`base.css`), exact brand vectors, subset fonts (EN ≈ 33 KB, AR +31 KB)

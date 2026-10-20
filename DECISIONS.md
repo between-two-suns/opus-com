@@ -519,3 +519,28 @@ Each entry: decision · why · reversibility. Newest last.
     - `templates/index.sets.json` was removed from the repo. On staging it remains (the tool blocks `themeFilesDelete`); it's identical to the home page and can be deleted in Shopify admin.
 
 166. **Owner: use the walking photo on phones too; photos get optimised after the design pass.** The editorial band no longer defaults its phone image to `bts-editorial-sea.jpg`. Phones use the walking photo, cropped around her (`object-position: 31% 18%` in the square phone frame, card below). An optional phone photo can still be set in the editor. Desktop is unchanged. Noted for the photo pass: the walking photo is 1448 px wide, soft on large retina screens.
+
+167. **Owner: Judge.me is installed; integrate it on product pages, set pages and the home page where it fits. No placeholder or invented reviews; gifted reviews disclosed.** Built from Judge.me's own documented markup, so the theme never shows a star or a number Judge.me didn't supply.
+    - **Core app embed** is on in `config/settings_data.json` (block `judgeme_core`). Shopify adds its comment header on save, so that file's staging checksum differs from local; the block is confirmed present.
+    - **Badge** (`snippets/jdgm-badge.liquid`): under the product title in `main-product`, from the `judgeme.badge` metafield. It's hidden at zero reviews, so no "0 reviews" and no empty stars.
+    - **Review widget** (`sections/product-reviews.liquid`, product template, after the routine): our eyebrow and heading ("Reviews · What people say"), then Judge.me's widget. Set pages use the product template too, so they get it as well. With no reviews it shows "Be the first to write a review" and Judge.me's write-a-review form.
+    - **Home carousel** (`sections/reviews-home.liquid`, after Sets): renders nothing unless the shop has reviews (`judgeme.all_reviews_count` > 0) and Judge.me's featured carousel exists. It's invisible now and appears on its own once real reviews are in.
+    - **Brand styling** (`assets/base.css`): the installed widget is Judge.me v3 (`jm-*` classes). Its own "Customer Reviews" title is hidden (our heading replaces it), buttons are ink pills, the empty state is a quiet white card, the primary colour is ink, and type is ours. The legacy (`jdgm-*`) classes are covered too.
+    - **Owner, in Judge.me settings:** turn on the incentivised/gifted review disclosure for tester reviews, and add Arabic.
+    - Verified on staging: script loads, badge hidden at 0, widget shows the empty state, home carousel absent. Live theme unchanged.
+
+168. **Owner: "we can try the morning to night concept as well but let's see it in a demo / testing page before changing."** The demo is on staging at `/?view=day` (`templates/index.day.json`). The staging home page is unchanged.
+    - **Order:** hero (unchanged) → the four steps (unchanged) → **Morning chapter** → climate switch (new scenes) → ingredients → Sets (Night Ritual card with its own photo) → reviews (hidden until real ones) → FAQ → **Night chapter** → footer.
+      - The morning chapter sits after the steps, not straight after the hero, because the hero's cleanser flies into the steps section directly below it. A photo in between showed a second bottle crossing it.
+    - **New section `day-chapter`** (`assets/day.css`): a full-bleed photo with its hour, and a card holding a line and the set for that part of the day.
+      - Morning: light card. "07:00 · Morning / Your morning routine. / First sun: cleanse, treat, moisturise, protect… / Shop the morning routine → The Full Ritual · EGP 1,699".
+      - Night: ink card. "21:00 · Evening / Your evening routine. / Second sun: cleanse, treat, moisturise. The sunscreen can rest. / Shop the evening routine → The Night Ritual · EGP 1,299".
+      - All copy reuses existing EN/AR strings (forecast am/pm, hero_routine), so there is no new marketing copy. Every field can be overridden in the editor.
+      - Phone: the photo is cropped 4:5 around the bottles, with the card below.
+    - **New section `day-sky`**: as you scroll, the page ground drifts dawn → day → aqua → sand → lilac. On screens of 1200 px and wider, a small clock at the inline end shows each chapter's own hour (`data-hour`) as it reaches mid-screen, and turns lilac at night. It's decorative (aria-hidden); without JS the page keeps its usual ground.
+    - **Climate switch** gains a photo-prefix setting (default `bts-climate-`; the demo uses `bts-climate2-`, the new people scenes). **Sets section** gains an optional companion photo (the demo uses the Night Ritual terrace shot). Neither changes the live home page by default.
+    - **Photo caveats:**
+      - The morning and night vanity photos have garbled small label text (e.g. "Gurecreen SPF DO+"), most visible in the phone crop. They're fine for judging the concept but can't go live as they are; regenerate them from the real packshots or composite the real cut-outs.
+      - Both include an olive branch. That's a plant, not the palette, but it's flagged against the no-olive brief.
+    - **Found, not changed:** `sections/story.liquid` (About page) passes `alt: … | default: ''` inside `image_tag`. That ends the filter early, so its `class` (`story__img`, cutout variant) never reaches the image. The page is approved as it looks now, so a fix will be shown before it's applied.
+    - QA: theme-check 0, flows 320/320, axe 0 (EN/AR, 390/1440), no Liquid or JS errors. Staging MD5s match (9 files). Live index unchanged.

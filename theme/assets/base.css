@@ -1240,3 +1240,22 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 
 /* the bag's title takes focus when the bag opens (so the close button isn't ringed); it is not a control, so no ring */
 .drawer__title:focus { outline: none; }
+
+/* Judge.me in the brand: its own widgets, our type, ink stars, our buttons. A badge with no reviews is never shown. */
+.reviews-badge { margin-block-start: 8px; }
+.reviews-badge:has(.jdgm-prev-badge[data-number-of-reviews='0']), .reviews-badge:has(> .jdgm-widget[style*='display: none']), .reviews-badge:not(:has(.jdgm-widget)) { display: none; }
+.jdgm-widget, .jdgm-widget * { font-family: var(--font-sans) !important; }
+.jdgm-star, .jdgm-star.jdgm--on, .jdgm-star.jdgm--half, .jdgm-star.jdgm--off { color: var(--c-ink) !important; }
+.jdgm-prev-badge__text { color: var(--c-muted); font-size: 14px; }
+.product-reviews .jdgm-rev-widg { padding: 0 !important; border: 0 !important; }
+.product-reviews .jdgm-rev-widg__title { display: none; }
+.product-reviews .jdgm-write-rev-link, .product-reviews .jdgm-ask-question-btn { display: inline-flex !important; align-items: center; min-height: 48px; padding: 0 22px !important; border-radius: 999px !important; background: var(--c-ink) !important; color: #fff !important; border: 0 !important; font-weight: 650 !important; text-decoration: none !important; }
+.product-reviews .jdgm-rev { border-color: var(--c-line) !important; }
+.reviews-home .jdgm-carousel-wrapper { margin: 0; }
+/* Judge.me widget v3 (jm-*): our heading replaces its title; ink pill buttons; the empty state as a quiet card */
+:root { --jdgm-primary-color: var(--c-ink) !important; }
+.product-reviews .jm-review-widget-minimal-header__title { display: none; }
+.product-reviews .jm-button { min-block-size: 48px; padding: 0 24px !important; border-radius: 999px !important; font-weight: 650 !important; }
+.product-reviews .jm-button--primary { background: var(--c-ink) !important; border-color: var(--c-ink) !important; color: #fff !important; }
+.product-reviews .jm-no-reviews-state { inline-size: 100%; max-inline-size: none; padding: clamp(24px, 4vw, 40px); border-radius: var(--radius-l); background: var(--c-paper); }
+.product-reviews .jm-no-reviews-state__text { color: var(--c-muted); font-size: 16px; }

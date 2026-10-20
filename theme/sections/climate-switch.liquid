@@ -15,6 +15,7 @@
   endif
   assign source = section.settings.collection | default: collections.all
   assign conditions = 'sun,city,humidity,ac,heat' | split: ','
+  assign prefix = section.settings.photo_prefix | default: 'bts-climate-'
 -%}
 <section class="section cs" data-tone="aqua" aria-labelledby="CsTitle-{{ section.id }}">
   <climate-switch
@@ -56,7 +57,7 @@
 
     <div class="cs__stage lab__stage grain" aria-hidden="true">
       {%- comment -%}
-        One real scene per condition (Shopify Files, by name: bts-climate-<condition>-wide.jpg / -tall.jpg; replace a file
+        One real scene per condition (Shopify Files, by name: <prefix><condition>-wide.jpg / -tall.jpg, prefix bts-climate- by default; replace a file
         in Content → Files keeping its name to change it). Tall on desktop (portrait stage), wide on phones.
       {%- endcomment -%}
       {%- for c in conditions -%}
@@ -67,8 +68,8 @@
             else
               assign fx = c
           endcase
-          assign wk = 'bts-climate-' | append: c | append: '-wide.jpg'
-          assign tk = 'bts-climate-' | append: c | append: '-tall.jpg'
+          assign wk = prefix | append: c | append: '-wide.jpg'
+          assign tk = prefix | append: c | append: '-tall.jpg'
           assign wide = images[wk]
           if wide == blank
             assign wide = false
@@ -193,7 +194,8 @@
     { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
     { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
     { "type": "url", "id": "link", "label": "t:sections.climate.link_label" },
-    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" }
+    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" },
+    { "type": "text", "id": "photo_prefix", "label": "t:sections.climate_switch.photo_prefix", "info": "t:sections.climate_switch.photo_prefix_info", "placeholder": "bts-climate-" }
   ],
   "presets": [{ "name": "t:sections.climate_switch.name" }]
 }

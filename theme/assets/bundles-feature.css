@@ -21,6 +21,10 @@
 .setsx-pack img { block-size: 100%; inline-size: auto; filter: drop-shadow(0 12px 12px rgba(32, 35, 58, .12)); }
 .setsx-card:hover .setsx-pack { transform: translateY(-4px); }
 
+/* Companion with its own photo: fills the stage, the set kept in frame */
+.setsx-card__media--mate { aspect-ratio: 4 / 3; }
+.setsx-card__media--mate img { object-position: 50% 70%; }
+
 /* Body */
 .setsx-card__body { display: grid; gap: 18px; padding: 20px 22px 22px; flex: 1; align-content: space-between; }
 .setsx-card__info { display: grid; gap: 8px; align-content: start; }
@@ -62,6 +66,7 @@
   .setsx-card--hero .setsx-card__media { aspect-ratio: 16 / 9; }
   .setsx-card--hero .setsx-card__body { grid-template-columns: minmax(0, 1fr) minmax(240px, 300px); align-items: end; padding: 24px 28px 28px; gap: 24px 32px; }
   .setsx-card--mate .setsx-card__stage { flex: 1; min-block-size: 0; align-items: center; }
+  .setsx-card--mate .setsx-card__media--mate { flex: 1; aspect-ratio: auto; min-block-size: 260px; }
   .setsx-card--mate .setsx-card__body { flex: none; }
 }
 

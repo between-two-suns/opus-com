@@ -1,0 +1,49 @@
+/* One day on the home page (demo): chapters with their hour, and a ground that drifts from dawn to dusk. */
+.dc { position: relative; display: grid; min-block-size: min(88svh, 860px); isolation: isolate; overflow: hidden; }
+.dc__media { position: absolute; inset: 0; z-index: -1; }
+.dc__img, .dc__media img { inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 50% 60%; }
+.dc__inner { display: grid; align-items: end; padding-block: var(--gutter); }
+.dc__card { display: grid; gap: 14px; justify-items: start; max-inline-size: 420px; padding: clamp(22px, 3vw, 36px); border-radius: var(--radius-l); background: color-mix(in srgb, var(--c-paper) 90%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.dc__card h2, .dc__text { margin: 0; }
+.dc__card h2 { font-size: clamp(32px, 3.2vw, 48px); line-height: 1; }
+.dc__text { max-inline-size: 34ch; font-size: 17px; }
+.dc__time { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.dc__ico { display: grid; place-items: center; inline-size: 28px; block-size: 28px; border-radius: 99px; background: var(--c-step-4); color: var(--c-ink); }
+.dc__buy { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-block-start: 4px; }
+.dc__set { margin: 0; color: var(--c-muted); }
+.dc__price { font-weight: 700; color: var(--c-ink); font-variant-numeric: tabular-nums; }
+
+/* Night: ink, the moon in lilac, the photo darkened at the reading edge */
+.dc--night { background: var(--c-ink); color: #fff; }
+.dc--night .dc__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(20, 22, 38, .72) 0%, rgba(20, 22, 38, 0) 55%); }
+.dc--night .dc__card { background: color-mix(in srgb, var(--c-ink) 62%, transparent); color: #fff; }
+.dc--night .dc__ico { background: var(--c-step-3); }
+.dc--night .dc__set { color: color-mix(in srgb, #fff 72%, transparent); }
+.dc--night .dc__price { color: #fff; }
+
+/* Phone: the photo first, cropped around the bottles; the words underneath on the page's own ground */
+@media (max-width: 749px) {
+  .dc { min-block-size: 0; }
+  .dc__media { position: relative; aspect-ratio: 4 / 5; }
+  .dc__img { object-position: 50% 62%; }
+  .dc--night .dc__media::after { background: linear-gradient(to top, var(--c-ink) 0%, rgba(32, 35, 58, 0) 34%); }
+  .dc__inner { margin-block-start: -56px; padding-block: 0 calc(var(--section-y) * .7); }
+  .dc__card { padding: 22px 20px; }
+}
+
+/* The day clock: a small rail at the inline end, desktop only */
+.dsky { display: none; }
+@media (min-width: 1200px) {
+  .has-day-sky .dsky {
+    position: fixed; z-index: 5; inset-inline-end: 8px; inset-block-start: 50%; translate: 0 -50%;
+    display: grid; justify-items: center; gap: 10px; pointer-events: none; color: var(--c-ink);
+    transition: color 400ms var(--ease-out);
+  }
+  .dsky__rail { position: relative; inline-size: 2px; block-size: 140px; border-radius: 2px; background: color-mix(in srgb, currentColor 18%, transparent); }
+  .dsky__dot { position: absolute; inset-inline-start: 50%; inset-block-start: calc(var(--t, 0) * 100%); inline-size: 12px; block-size: 12px; margin: -6px; border-radius: 99px; background: var(--c-step-4); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-step-4) 28%, transparent); transition: background 400ms var(--ease-out), box-shadow 400ms var(--ease-out); }
+  .dsky__time { font-size: 11px; font-weight: 700; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+  .dsky[data-night] { color: #fff; }
+  .dsky[data-night] .dsky__dot { background: var(--c-step-3); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-step-3) 30%, transparent); }
+}
+.has-day-sky body { transition: background-color 200ms linear; }
+@media (prefers-reduced-motion: reduce) { .has-day-sky body { transition: none; } }

@@ -2,7 +2,7 @@
 {%- comment -%}
   Sets, one hero and one companion, told as one day: the pick (The Full Ritual, morning and night) leads with its
   photo and the four steps; the companion (The Night Ritual, evenings: sunscreen waits for the morning) shows its
-  three packs on an evening stage. Prices and compare-at come from the Shopify bundle products.
+  three packs on an evening stage (or its photo, when one is set). Prices and compare-at come from the Shopify bundle products.
 {%- endcomment -%}
 {%- liquid
   assign heading = section.settings.heading
@@ -81,6 +81,10 @@
               {%- endif -%}
               {%- render 'set-visual', product: p, sizes: '(min-width: 990px) 60vw, 92vw' -%}
             </a>
+          {%- elsif section.settings.mate_image != blank -%}
+            <a class="setsx-card__media setsx-card__media--mate" href="{{ p.url }}" tabindex="-1" aria-hidden="true" data-cursor="{{ 'general.view' | t }}">
+              {{ section.settings.mate_image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '480,720,960,1200,1600', sizes: '(min-width: 990px) 34vw, 92vw', alt: '' }}
+            </a>
           {%- else -%}
             <a class="setsx-card__stage" href="{{ p.url }}" tabindex="-1" aria-hidden="true" data-cursor="{{ 'general.view' | t }}">
               <ul class="setsx-packs" role="list">
@@ -153,7 +157,8 @@
     { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" },
     { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
     { "type": "product", "id": "hero", "label": "t:sections.bundles_feature.hero" },
-    { "type": "product", "id": "mate", "label": "t:sections.bundles_feature.mate" }
+    { "type": "product", "id": "mate", "label": "t:sections.bundles_feature.mate" },
+    { "type": "image_picker", "id": "mate_image", "label": "t:sections.bundles_feature.mate_image", "info": "t:sections.bundles_feature.mate_image_info" }
   ],
   "presets": [{ "name": "t:sections.bundles_feature.name" }]
 }

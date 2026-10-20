@@ -1,0 +1,112 @@
+{
+  "sections": {
+    "sky": {
+      "type": "day-sky",
+      "settings": {}
+    },
+    "hero": {
+      "type": "hero-orbs",
+      "settings": {}
+    },
+    "morning": {
+      "type": "day-chapter",
+      "settings": {
+        "mood": "morning",
+        "image": "shopify://shop_images/bts-demo-morning.jpg"
+      }
+    },
+    "routine": {
+      "type": "day-line",
+      "settings": {
+        "show_bundle": false
+      }
+    },
+    "climate": {
+      "type": "climate-switch",
+      "settings": {
+        "link": "/pages/climate",
+        "photo_prefix": "bts-climate2-"
+      }
+    },
+    "ingredient_heroes": {
+      "type": "ingredient-heroes",
+      "settings": {}
+    },
+    "bundles": {
+      "type": "bundles-feature",
+      "settings": {
+        "mate_image": "shopify://shop_images/bts-demo-night-ritual.jpg"
+      }
+    },
+    "reviews": {
+      "type": "reviews-home",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "qa",
+          "settings": {
+            "preset": "start_where"
+          }
+        },
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "all_four"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "order"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "preset": "delivery_free"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "preset": "made"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "compact": true,
+        "show_contact": true,
+        "schema": false
+      }
+    },
+    "night": {
+      "type": "day-chapter",
+      "settings": {
+        "mood": "night",
+        "image": "shopify://shop_images/bts-demo-night.jpg"
+      }
+    }
+  },
+  "order": [
+    "sky",
+    "hero",
+    "routine",
+    "morning",
+    "climate",
+    "ingredient_heroes",
+    "bundles",
+    "reviews",
+    "faq",
+    "night"
+  ]
+}
