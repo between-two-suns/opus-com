@@ -97,8 +97,13 @@
       if pre == 'delivery_free' and thr == 0
         assign q = ''
       endif
-      if pre == 'returns' and shop.refund_policy
-        assign a = a | append: ' <a href="' | append: shop.refund_policy.url | append: '">' | append: shop.refund_policy.title | append: '</a>'
+      if pre == 'returns' and a != blank and block.settings.answer == blank
+        if shop.refund_policy
+          assign a = a | append: ' <a href="' | append: shop.refund_policy.url | append: '">' | append: shop.refund_policy.title | append: '</a>.'
+        else
+          assign ret_t = 'faq.items.returns.link' | t
+          assign a = a | append: ' <a href="' | append: root | append: '/pages/returns">' | append: ret_t | append: '</a>.'
+        endif
       endif
       assign only = block.settings.steps | remove: ' ' | split: ','
       if ctx_step != blank and block.settings.steps != blank

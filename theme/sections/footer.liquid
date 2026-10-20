@@ -120,7 +120,7 @@
     </div>
 
     <div class="footer__bottom">
-      <p>&copy; {{ 'now' | date: '%Y' }} {{ 'footer.copyright' | t }} · {{ 'footer.made_in' | t }}</p>
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ 'footer.copyright' | t }} · {{ 'footer.made_in' | t }}<br><span class="footer__entity">{{ 'footer.entity' | t }}</span></p>
       <nav aria-label="{{ 'footer.legal' | t }}">
         <ul class="footer__legal" role="list">
           {%- for policy in shop.policies -%}

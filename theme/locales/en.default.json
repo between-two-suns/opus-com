@@ -35,7 +35,7 @@
   "announcement": {
     "default_1": "Climate-adapted skincare",
     "default_2": "Made in Egypt",
-    "free_delivery": "Free standard delivery on eligible orders of {{ amount }}+"
+    "free_delivery": "Free standard delivery on orders {{ amount }}+"
   },
   "header": {
     "menu": "Menu",
@@ -102,6 +102,7 @@
     },
     "copyright": "Between Two Suns",
     "made_in": "Made in Egypt",
+    "entity": "Nuu Group for Cosmetics · 53 Capital Mall, behind the Courthouse, 2nd Floor, Fifth Settlement, Cairo, Egypt",
     "legal": "Legal"
   },
   "newsletter": {
@@ -529,6 +530,7 @@
       "way_email": "Email us",
       "way_wa": "Chat with us",
       "way_ig": "Send a DM",
+      "way_hours": "Sunday to Thursday, 9:00–18:00 Egypt time",
       "way_faq": "Quick answers",
       "way_faq_sub": "Routine, products, sets and delivery",
       "way_creators": "Creators",
@@ -777,7 +779,8 @@
       },
       "returns": {
         "q": "Can I return a product?",
-        "a": "What can be returned, and how, is set out in our refund policy:"
+        "a": "Unopened products can be returned within 14 days of delivery, and damaged, defective or wrong items are replaced or refunded at no extra shipping cost. The details are in our",
+        "link": "returns policy"
       },
       "contact_reply": {
         "q": "How do I reach you?",

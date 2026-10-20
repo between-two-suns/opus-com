@@ -31,7 +31,7 @@
       {%- if section.settings.email != blank -%}
         <li><a class="ct__way" href="mailto:{{ section.settings.email }}" data-step="1">
           <span class="ct__way-icon">{% render 'icon', name: 'mail' %}</span>
-          <span class="ct__way-text"><span class="ct__way-title">{{ 'pages.contact.way_email' | t }}</span><span class="ct__way-sub">{{ section.settings.email }}</span></span>
+          <span class="ct__way-text"><span class="ct__way-title">{{ 'pages.contact.way_email' | t }}</span><span class="ct__way-sub">{{ section.settings.email }}</span><span class="ct__way-sub">{{ 'pages.contact.way_hours' | t }}</span></span>
           {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}
         </a></li>
       {%- endif -%}

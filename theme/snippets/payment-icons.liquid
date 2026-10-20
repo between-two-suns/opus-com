@@ -1,7 +1,18 @@
 {%- comment -%} Only payment types actually enabled in Shopify Payments / checkout settings. Never faked. {%- endcomment -%}
-{%- if settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+{%- comment -%} Theme settings → Commerce → "Hide these payment icons" drops methods that are on in Shopify but not yet tested. {%- endcomment -%}
+{%- liquid
+  assign pi_hide = settings.payment_icons_hide | downcase | remove: ' ' | split: ','
+  assign pi_types = ''
+  for type in shop.enabled_payment_types
+    unless pi_hide contains type
+      assign pi_types = pi_types | append: type | append: ','
+    endunless
+  endfor
+  assign pi_types = pi_types | split: ','
+-%}
+{%- if settings.show_payment_icons and pi_types.size > 0 -%}
   <ul class="payment-icons {{ class }}" role="list" aria-label="{{ 'general.payment_methods' | t }}">
-    {%- for type in shop.enabled_payment_types -%}
+    {%- for type in pi_types -%}
       <li>{{ type | payment_type_svg_tag }}</li>
     {%- endfor -%}
   </ul>

@@ -9,6 +9,7 @@
     "color_daylight": "#F5F1EA",
     "zero_price_coming_soon": true,
     "show_payment_icons": true,
+    "payment_icons_hide": "paypal",
     "show_cod": false,
     "show_dynamic_checkout": false,
     "cart_routine_upsell": true,

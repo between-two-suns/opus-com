@@ -102,6 +102,12 @@
         "default": true
       },
       {
+        "type": "text",
+        "id": "payment_icons_hide",
+        "label": "t:settings_schema.commerce.payment_icons_hide",
+        "info": "t:settings_schema.commerce.payment_icons_hide_info"
+      },
+      {
         "type": "checkbox",
         "id": "show_cod",
         "label": "t:settings_schema.commerce.cod",

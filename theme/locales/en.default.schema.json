@@ -316,6 +316,8 @@
       "name": "Name",
       "payment_icons": "Payment icons",
       "payment_icons_info": "Shows only the payment methods actually enabled in Shopify.",
+      "payment_icons_hide": "Hide these payment icons",
+      "payment_icons_hide_info": "Comma-separated, e.g. paypal. For methods switched on in Shopify but not yet tested or offered.",
       "returns_note": "Returns note",
       "routine_collection": "Routine collection",
       "routine_collection_info": "Used for “Complete your routine” in the cart. Defaults to all products.",

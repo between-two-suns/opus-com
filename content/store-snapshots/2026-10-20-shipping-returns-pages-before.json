@@ -1,0 +1,14 @@
+{
+  "note": "Shipping and Returns page bodies before the owner's policy answers were applied (2026-10-20).",
+  "gid://shopify/Page/161633992962": {
+    "handle": "shipping",
+    "body_en": "<p><strong>To be confirmed before launch.</strong> Delivery areas, carriers, timings and fees will be published here once fulfilment is configured. Shipping cost is always shown at checkout before you pay.</p>",
+    "body_ar": "<p><strong>سيتم التأكيد قبل الإطلاق.</strong> سننشر هنا مناطق التوصيل وشركات الشحن والمواعيد والرسوم فور إعداد خدمات التوصيل. تظهر تكلفة الشحن دائماً عند إتمام الطلب قبل الدفع.</p>"
+  },
+  "gid://shopify/Page/161634025730": {
+    "handle": "returns",
+    "body_en": "<p><strong>To be confirmed before launch.</strong> Our returns and refunds policy will be published here and in the store policies.</p>",
+    "body_ar": "<p><strong>سيتم التأكيد قبل الإطلاق.</strong> سننشر سياسة الاسترجاع والاسترداد هنا وفي سياسات المتجر.</p>"
+  },
+  "privacy_policy_contact_line_before": "Should you have any questions about our privacy practices or this Privacy Policy, or if you would like to exercise any of the rights available to you, please call  or email us at hello@betweentwosuns.co or contact us at New Cairo City, C, Cairo, 00000, Egypt."
+}
