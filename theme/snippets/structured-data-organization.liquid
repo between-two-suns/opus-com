@@ -14,12 +14,13 @@
       assign same_as = same_as | append: settings.social_youtube | append: '|'
     endif
     assign same_as = same_as | split: '|'
+    assign search_target = request.origin | append: routes.search_url | append: '?q={search_term_string}'
   -%}
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": {{ shop.name | json }},
+      "name": {{ 'Between Two Suns' | json }},
       "url": {{ request.origin | append: routes.root_url | json }},
       "logo": {{ 'bts-icon.svg' | asset_url | prepend: 'https:' | json }}
       {%- if same_as.size > 0 -%},
@@ -31,11 +32,11 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": {{ shop.name | json }},
+      "name": {{ 'Between Two Suns' | json }},
       "url": {{ request.origin | append: routes.root_url | json }},
       "potentialAction": {
         "@type": "SearchAction",
-        "target": {{ request.origin | append: routes.search_url | append: '?q={search_term_string}' | json }},
+        "target": {{ search_target | json }},
         "query-input": "required name=search_term_string"
       }
     }

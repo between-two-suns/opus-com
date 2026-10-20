@@ -161,7 +161,7 @@ for (const loc of ['', '/ar']) {
     // Language switch round trip
     if (vp.width > 1000) {
       await page.goto(`${BASE}${loc}/products/clarity-serum`, { waitUntil: 'networkidle' });
-      await page.click('#HeaderLang button');
+      await page.click('.header-lang [data-lang-link]');
       await page.waitForLoadState('networkidle');
       const dir = await page.evaluate(() => document.documentElement.dir);
       const path = new URL(page.url()).pathname;

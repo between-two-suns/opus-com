@@ -1,23 +1,47 @@
 {%- comment -%}
-  One-tap EN ⇄ AR switch using Shopify's localization form (works without JS).
-  Renders only when the store has more than one published language.
+  One-tap EN ⇄ AR switch: a plain link to the same page in the other language (/ar/… ⇄ /…). A link, not Shopify's
+  localization form, because the form drops the language on preview share links (it redirects to the English page).
+  A click also carries the current query string (?variant=, ?view=…). Renders only with more than one published language.
 {%- endcomment -%}
 {%- if localization.available_languages.size > 1 -%}
-  {%- form 'localization', id: form_id, class: 'lang-form' -%}
-    <input type="hidden" name="return_to" value="{{ request.path }}">
-    {%- for language in localization.available_languages -%}
-      {%- unless language.iso_code == localization.language.iso_code -%}
-        <button
-          type="submit"
-          name="language_code"
-          value="{{ language.iso_code }}"
-          class="{{ class | default: 'header-icon lang-link' }}"
-          lang="{{ language.iso_code }}"
-          aria-label="{{ 'general.language.switch_to' | t: language: language.endonym_name }}"
-        >
-          <span class="{% if language.iso_code == 'ar' %}lang-link__ar{% endif %}">{{ language.endonym_name | capitalize }}</span>
-        </button>
-      {%- endunless -%}
-    {%- endfor -%}
-  {%- endform -%}
+  {%- liquid
+    assign ls_root = routes.root_url
+    assign ls_rest = request.path
+    if ls_root != '/'
+      assign ls_rest = ls_rest | remove_first: ls_root
+    endif
+    if ls_rest == blank
+      assign ls_rest = '/'
+    endif
+  -%}
+  {%- for language in localization.available_languages -%}
+    {%- unless language.iso_code == localization.language.iso_code -%}
+      {%- liquid
+        assign ls_target = language.root_url
+        if ls_target == '/'
+          assign ls_href = ls_rest
+        elsif ls_rest == '/'
+          assign ls_href = ls_target
+        else
+          assign ls_href = ls_target | append: ls_rest
+        endif
+      -%}
+      <a
+        href="{{ ls_href }}"
+        hreflang="{{ language.iso_code }}"
+        lang="{{ language.iso_code }}"
+        class="{{ class | default: 'header-icon lang-link' }}"
+        aria-label="{{ 'general.language.switch_to' | t: language: language.endonym_name }}"
+        data-lang-link
+      >
+        <span class="{% if language.iso_code == 'ar' %}lang-link__ar{% endif %}">{{ language.endonym_name | capitalize }}</span>
+      </a>
+    {%- endunless -%}
+  {%- endfor -%}
+  <script>
+    if (!window.__btsLangLink) window.__btsLangLink = document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[data-lang-link]');
+      if (a && location.search && a.href.indexOf('?') === -1) a.href += location.search;
+    }, true) || 1;
+  </script>
 {%- endif -%}

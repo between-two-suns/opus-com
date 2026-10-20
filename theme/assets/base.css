@@ -649,7 +649,7 @@ html.has-open-dialog { overflow: hidden; }
 .predictive__links a { display: flex; min-block-size: 44px; align-items: center; font-weight: 600; }
 .predictive__empty { color: var(--c-muted); }
 .lang-form { display: inline-flex; }
-.chip.lang-link, .lang-form .chip { gap: 8px; }
+.chip.lang-link, .lang-form .chip, .chip[data-lang-link] { gap: 8px; }
 
 /* FAQ (used on PDPs and content pages, so it lives in base) */
 .faq__inner { display: grid; gap: 28px; }

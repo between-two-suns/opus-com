@@ -1,6 +1,6 @@
 # STATUS — Between Two Suns (Opus build)
 
-_Updated: 2026-10-19_
+_Updated: 2026-10-20_
 
 ## Current build state
 Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, with store content (metafields, metaobjects, pages, Arabic translations) wired up. QA on the local preview is green. Real-storefront visual verification is still outstanding: the build sandbox cannot reach `*.myshopify.com`.
@@ -41,6 +41,7 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - Judge.me reviews: product and set pages (badge hidden at 0, widget empty state in brand), home carousel appears only once real reviews exist (DECISIONS 167). Owner: enable gifted-review disclosure and Arabic in Judge.me.
 - Delivery fees, remote fees and estimates are theme settings feeding the FAQ; COD answer appears only when COD is switched on; ICI-pending FAQs are hidden until answered; unverified claim badges are held (DECISIONS 169). Owner: set Shopify shipping rates to match.
 - Skin check live on staging at `/pages/skin-check`, in the menu and linked from sets and product pages (DECISIONS 172); ICI sign-off still needed before public launch; sensitive-skin and pregnancy FAQs answered; claims switch per product (DECISIONS 171). Morning-to-night concept dropped by owner (demo stays unlinked).
+- Language switch is a direct link to `/ar/…` (works on preview share links, DECISIONS 176). Repo and staging match file for file.
 - Morning-to-night demo at `/?view=day` for owner review; home unchanged (DECISIONS 168). Vanity photos need label-correct versions before any live use.
 
 ## Complete
