@@ -1,13 +1,14 @@
 /*
-  Skin check. Answers → products, from the four formulations (owner + ICI answers, DECISIONS 171):
-  - each product is 'core' (suggested, ticked) or 'optional' (shown under "Also worth considering", not ticked);
+  Skin check. Answers → products, from the four formulations (owner + ICI answers, DECISIONS 171, 173):
+  - each product is 'core' (suggested, ticked) or 'optional' (shown under "Also worth considering", not ticked),
+    and lists the customer's concerns it answers (shown as chips beside its pack benefit line);
   - highly reactive or irritated skin gets guidance and no products;
-  - a set is offered only when the ticked products are exactly a set's contents (never a bigger set), and never for
-    sensitive skin; The Full Ritual therefore only appears when all four suit and a full routine was asked for.
-  Answers stay in the page; nothing is stored or sent.
+  - a set is offered only when the ticked products are exactly a set's contents, and never for sensitive skin;
+  - a three-product result offers the missing step when it suits and The Full Ritual then costs less than that step
+    alone (the bag's honest switch, same rule). Answers stay in the page; nothing is stored or sent.
 */
-const ORDER = ['type', 'react', 'acne', 'concerns', 'steps'];
-const TREAT = ['oil', 'tone', 'marks', 'dehydration', 'barrier'];
+const ORDER = ['type', 'react', 'acne', 'concerns'];
+const TREAT = ['oil', 'tone', 'marks', 'dehydration'];
 
 export function match(a) {
   if (a.react === 'high') return { guidance: true, picks: {} };
@@ -15,40 +16,40 @@ export function match(a) {
   const t = a.type;
   const veryDry = t === 'very_dry';
   const dry = t === 'dry';
-  const treating = TREAT.some((c) => C.has(c) && c !== 'barrier');
+  const treating = TREAT.some((c) => C.has(c));
   const picks = {};
-  const put = (step, level, reason, concern = false) => {
-    const p = (picks[step] ||= { level, reasons: [], notes: [], concern: false });
+  const put = (step, level, reason, ...cids) => {
+    const p = (picks[step] ||= { level, reasons: [], notes: [], concerns: [] });
     if (level === 'core') p.level = 'core';
     if (reason && !p.reasons.includes(reason)) p.reasons.push(reason);
-    if (concern) p.concern = true;
+    cids.filter((c) => C.has(c) && !p.concerns.includes(c)).forEach((c) => p.concerns.push(c));
   };
   const note = (step, n) => { if (picks[step] && !picks[step].notes.includes(n)) picks[step].notes.push(n); };
 
   // 01 Cleanser: oily, combination, normal and acne-prone; an option for mildly dry; never very dry
   if (!veryDry) {
-    if (a.acne === 'yes' || t === 'oily') put(1, 'core', 'cleanser_oil', C.has('oil'));
-    else if (t === 'combination') put(1, C.has('oil') || !treating ? 'core' : 'optional', 'cleanser_oil', C.has('oil'));
+    if (a.acne === 'yes' || t === 'oily') put(1, 'core', 'cleanser_oil', 'oil');
+    else if (t === 'combination') put(1, C.has('oil') || !treating ? 'core' : 'optional', 'cleanser_oil', 'oil');
     else if (t === 'normal') put(1, treating ? 'optional' : 'core', 'cleanser_daily');
     else if (dry) { put(1, 'optional', 'cleanser_daily'); note(1, 'tight'); }
   }
   // 02 Clarity Serum: by concern, for every skin type
-  if (C.has('oil')) put(2, 'core', 'serum_oil', true);
-  if (C.has('tone') || C.has('marks')) put(2, 'core', 'serum_tone', true);
-  if (C.has('dehydration')) put(2, 'core', 'serum_hydra', true);
+  if (C.has('oil')) put(2, 'core', 'serum_oil', 'oil');
+  if (C.has('tone') || C.has('marks')) put(2, 'core', 'serum_tone', 'tone', 'marks');
+  if (C.has('dehydration')) put(2, 'core', 'serum_hydra', 'dehydration');
   if (picks[2]) {
     if (dry) note(2, 'with_moisturiser');
     if (veryDry) note(2, 'not_replace');
     if (a.acne === 'yes') note(2, 'not_acne');
   }
   // 03 Barrier Cream: the everyday moisturiser for every type (a lighter layer for very dry skin)
-  if (C.has('barrier')) put(3, 'core', 'cream_barrier', true);
-  if (C.has('dehydration')) put(3, 'core', 'cream_hydra', true);
-  if (C.has('oil') && (t === 'oily' || t === 'combination' || a.acne === 'yes')) put(3, 'core', 'cream_oil', true);
+  if (C.has('barrier')) put(3, 'core', 'cream_barrier', 'barrier');
+  if (C.has('dehydration')) put(3, 'core', 'cream_hydra', 'dehydration');
+  if (C.has('oil') && (t === 'oily' || t === 'combination' || a.acne === 'yes')) put(3, 'core', 'cream_oil', 'oil');
   if (!picks[3]) put(3, 'core', 'cream_daily');
   if (veryDry) note(3, 'richer');
-  // 04 SPF 50+: every morning, for everyone
-  put(4, 'core', 'spf_daily', C.has('spf'));
+  // 04 SPF 50+: every morning, for everyone; part of any routine for uneven tone and marks
+  put(4, 'core', 'spf_daily', 'spf', 'tone', 'marks');
   if (C.has('tone') || C.has('marks')) note(4, 'spf_tone');
 
   // Mildly sensitive: cautious, individual suggestions with a patch test; the cleanser and serum are not ticked
@@ -56,19 +57,19 @@ export function match(a) {
     [1, 2].forEach((s) => { if (picks[s]) picks[s].level = 'optional'; });
     Object.keys(picks).forEach((s) => note(s, 'patch'));
   }
-  // Just the essentials: SPF plus the two products that answer the most concerns (the cream when none do);
-  // the rest becomes optional
-  if (a.steps === 'essentials') {
-    const keep = new Set([4]);
-    Object.entries(picks)
-      .filter(([s, p]) => Number(s) !== 4 && p.level === 'core' && p.concern)
-      .sort(([sa, pa], [sb, pb]) => pb.reasons.length - pa.reasons.length || sa - sb)
-      .slice(0, 2)
-      .forEach(([s]) => keep.add(Number(s)));
-    if (keep.size === 1 && picks[3]) keep.add(3);
-    Object.entries(picks).forEach(([s, p]) => { if (p.level === 'core' && !keep.has(Number(s))) p.level = 'optional'; });
+  // Three suggested products: the fourth may complete the routine as The Full Ritual, if it suits (never the
+  // cleanser for very dry skin, never for sensitive skin). The serum suits every type (ICI); offered on its pack benefit.
+  const sets = a.react === 'no';
+  let complete = null;
+  const core = [1, 2, 3, 4].filter((s) => picks[s]?.level === 'core');
+  if (sets && core.length === 3) {
+    const m = [1, 2, 3, 4].find((s) => !core.includes(s));
+    if (!(m === 1 && veryDry)) {
+      picks[m] ||= { level: 'optional', reasons: [], notes: [], concerns: [] };
+      complete = m;
+    }
   }
-  return { guidance: false, picks, sets: a.react === 'no' };
+  return { guidance: false, picks, sets, complete };
 }
 
 class SkinCheck extends (typeof HTMLElement !== "undefined" ? HTMLElement : class {}) {
@@ -102,6 +103,18 @@ class SkinCheck extends (typeof HTMLElement !== "undefined" ? HTMLElement : clas
     this.also = this.querySelector('[data-skc-also]');
     this.list.addEventListener('change', () => this.updateBuy());
     this.also.addEventListener('change', () => this.updateBuy());
+    // "Complete your routine": tick the fourth step and move it up into the routine, in step order
+    this.querySelector('[data-skc-complete-btn]').addEventListener('click', () => {
+      const li = this.also.querySelector(`.skc__item[data-step="${this.complete}"]`);
+      if (!li) return;
+      li.querySelector('input').checked = true;
+      li.hidden = false;
+      const after = [...this.list.children].find((x) => Number(x.dataset.step) > this.complete);
+      this.list.insertBefore(li, after || null);
+      this.syncAlso();
+      this.updateBuy();
+      li.querySelector('input').focus({ preventScroll: true });
+    });
     this.buyForm = this.querySelector('product-form');
     this.addBtn = this.querySelector('[data-skc-add]');
     this.addSingles = this.querySelector('[data-skc-add-singles]');
@@ -132,12 +145,13 @@ class SkinCheck extends (typeof HTMLElement !== "undefined" ? HTMLElement : clas
   }
   answers() {
     const one = (n) => this.form.querySelector(`input[name="${n}"]:checked`)?.value;
-    return { type: one('type'), react: one('react'), acne: one('acne'), concerns: [...this.form.querySelectorAll('input[name="concerns"]:checked')].map((x) => x.value), steps: one('steps') };
+    return { type: one('type'), react: one('react'), acne: one('acne'), concerns: [...this.form.querySelectorAll('input[name="concerns"]:checked')].map((x) => x.value) };
   }
   result() {
     const a = this.answers();
     const r = match(a);
     this.sets = r.sets;
+    this.complete = r.complete;
     // the answers as chips: skin type, and reactivity / breakouts when they apply
     const prof = this.querySelector('[data-skc-profile]');
     prof.innerHTML = '';
@@ -153,7 +167,7 @@ class SkinCheck extends (typeof HTMLElement !== "undefined" ? HTMLElement : clas
       if (!p || !this.data.products[step]?.id) return;
       (p.level === 'core' ? this.list : this.also).append(this.row(step, p));
     });
-    this.querySelector('[data-skc-also-wrap]').hidden = !this.also.children.length;
+    this.syncAlso();
     this.show('result');
     this.updateBuy();
     this.querySelector('[data-screen="result"]').focus({ preventScroll: true });
@@ -166,6 +180,8 @@ class SkinCheck extends (typeof HTMLElement !== "undefined" ? HTMLElement : clas
     li.dataset.step = step;
     li.style.setProperty('--sku', `var(--c-step-${step})`);
     const id = `skc-${step}-${this.id || 'x'}`;
+    const chips = p.concerns.length ? `<ul class="skc__for" role="list" aria-label="${this.s.for_label}">${p.concerns.map((c) => `<li>${this.s.chips[c] || c}</li>`).join('')}</ul>` : '';
+    const benefit = d.benefit ? `<p class="skc__benefit">${d.benefit}</p>` : '';
     const reasons = p.reasons.map((k) => `<p class="skc__why">${this.s.reasons[k] || ''}</p>`).join('');
     const notes = p.notes.map((k) => `<p class="skc__note t-xs">${this.s.notes[k] || ''}</p>`).join('');
     const when = d.when === 'am' ? this.s.when_am : this.s.when_both;
@@ -181,8 +197,11 @@ class SkinCheck extends (typeof HTMLElement !== "undefined" ? HTMLElement : clas
           <span class="skc__meta t-xs">${when} · ${fmt(d.price)}</span>
         </span>
       </label>
-      <div class="skc__detail">${reasons}${notes}<a class="skc__more t-xs" href="${d.url}">${d.title} →</a></div>`;
+      <div class="skc__detail">${chips}${benefit}${reasons}${notes}<a class="skc__more t-xs" href="${d.url}">${d.title} →</a></div>`;
     return li;
+  }
+  syncAlso() {
+    this.querySelector('[data-skc-also-wrap]').hidden = !this.also.children.length;
   }
   chosen() {
     return [...this.querySelectorAll('.skc__item input:checked')].map((x) => Number(x.value)).sort();
@@ -212,6 +231,28 @@ class SkinCheck extends (typeof HTMLElement !== "undefined" ? HTMLElement : clas
     this.addSingles.hidden = !set;
     this.addSingles.querySelector('.btn__label') || (this.addSingles.innerHTML = '<span class="btn__label"></span>');
     this.addSingles.querySelector('.btn__label').textContent = this.s.add_separately;
+    // the honest switch: only while the fourth step is unticked and The Full Ritual costs less than adding it alone
+    const box = this.querySelector('[data-skc-complete]');
+    const m = this.complete;
+    const full = this.setFor([1, 2, 3, 4]);
+    const others = [1, 2, 3, 4].filter((x) => x !== m);
+    const ready = m && full && others.every((x) => steps.includes(x)) && !steps.includes(m);
+    const single = m ? this.data.products[m]?.price || 0 : 0;
+    const extra = ready ? full.price - others.reduce((t, x) => t + (this.data.products[x]?.price || 0), 0) : 0;
+    box.hidden = !(ready && extra > 0 && extra < single);
+    if (!box.hidden) {
+      const d = this.data.products[m];
+      this.querySelector('[data-skc-complete-text]').textContent = this.s.complete_text.replace('__P__', d.title).replace('__S__', full.name).replace('__X__', fmt(extra)).replace('__Q__', fmt(single));
+      this.querySelector('[data-skc-complete-benefit]').textContent = d.benefit || '';
+      this.querySelector('[data-skc-complete-name]').textContent = d.title;
+      const img = this.querySelector('[data-skc-complete-img]');
+      img.src = d.img;
+      this.querySelector('[data-skc-complete] .skc__thumb').style.setProperty('--sku', `var(--c-step-${m})`);
+      this.querySelector('[data-skc-complete-btn] .btn__label').textContent = this.s.complete_cta.replace('__P__', d.title);
+    }
+    // while the offer shows, the fourth step lives in it, not twice on the page
+    this.also.querySelectorAll('.skc__item').forEach((li) => { li.hidden = !box.hidden && Number(li.dataset.step) === m; });
+    this.querySelector('[data-skc-also-wrap]').hidden = ![...this.also.children].some((li) => !li.hidden);
   }
   items() {
     const steps = this.chosen();

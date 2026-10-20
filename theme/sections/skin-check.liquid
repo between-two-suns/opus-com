@@ -1,9 +1,10 @@
 {{ 'skin-check.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  The skin check: five questions (skin type, reactivity, breakouts, concerns, how many steps), then products picked
-  from their full ingredient lists. Individual products come first; a set is offered only when it holds exactly the
-  products picked, and The Full Ritual only when all four suit and a full routine was asked for. Highly reactive or
-  irritated skin gets guidance, not a routine. Matching rules: DECISIONS 171 (owner + ICI answers), pending ICI sign-off.
+  The skin check: four questions (skin type, reactivity, breakouts, concerns), then the routine picked from the full
+  ingredient lists, each step with the concerns it answers, its pack benefit line and the ingredients behind it.
+  A set is offered only when it holds exactly the ticked products; a three-step result can be completed as The Full
+  Ritual when that costs less than the missing step alone. Highly reactive or irritated skin gets guidance, not a
+  routine. Matching rules: DECISIONS 171, 173 (owner + ICI answers), pending ICI sign-off.
   Without JS the section shows a short note and a link to the shop.
 {%- endcomment -%}
 {%- liquid
@@ -23,7 +24,7 @@
             {%- assign p = all_products[handles[n]] -%}
             {%- assign v = p.selected_or_first_available_variant -%}
             {%- assign cut = 'cut-' | append: handles[n] | append: '.webp' | asset_url -%}
-            "{{ n }}": { "id": {{ v.id | default: 0 }}, "price": {{ v.price | default: 0 }}, "available": {{ v.available | default: false | json }}, "title": {{ p.title | json }}, "label": {{ p.metafields.bts.step_label.value | default: p.title | json }}, "url": {{ p.url | json }}, "img": {{ cut | json }}, "when": {{ when_keys[n] | json }} }{% unless forloop.last %},{% endunless %}
+            "{{ n }}": { "id": {{ v.id | default: 0 }}, "price": {{ v.price | default: 0 }}, "available": {{ v.available | default: false | json }}, "title": {{ p.title | json }}, "benefit": {{ p.metafields.bts.benefit | strip_html | json }}, "label": {{ p.metafields.bts.step_label.value | default: p.title | json }}, "url": {{ p.url | json }}, "img": {{ cut | json }}, "when": {{ when_keys[n] | json }} }{% unless forloop.last %},{% endunless %}
           {%- endfor -%}
         },
         "strings": {
@@ -37,6 +38,13 @@
           "add_separately": {{ 'skin_check.add_separately' | t | json }},
           "set_text": {{ 'skin_check.set_text' | t: set: '__S__', price: '__P__', singles: '__Q__' | json }},
           "nothing": {{ 'skin_check.nothing' | t | json }},
+          "for_label": {{ 'skin_check.for_label' | t | json }},
+          "complete_text": {{ 'skin_check.complete_text' | t: product: '__P__', set: '__S__', extra: '__X__', single: '__Q__' | json }},
+          "complete_cta": {{ 'skin_check.complete_cta' | t: product: '__P__' | json }},
+          "chips": {
+            {%- assign ck = 'oil,tone,marks,dehydration,barrier,spf' | split: ',' -%}
+            {%- for k in ck -%}{%- assign kk = 'skin_check.chips.' | append: k -%}{{ k | json }}: {{ kk | t | json }}{% unless forloop.last %},{% endunless %}{%- endfor -%}
+          },
           "step": {{ 'product.step' | t: number: '__N__' | json }},
           "reasons": {
             {%- assign rk = 'cleanser_oil,cleanser_daily,serum_oil,serum_tone,serum_hydra,cream_daily,cream_barrier,cream_hydra,cream_oil,spf_daily' | split: ',' -%}
@@ -70,7 +78,7 @@
         </div>
 
         {%- liquid
-          assign qs = 'type,react,acne,concerns,steps' | split: ','
+          assign qs = 'type,react,acne,concerns' | split: ','
         -%}
         {%- for q in qs -%}
           {%- liquid
@@ -81,10 +89,8 @@
                 assign opts = 'no,some,high' | split: ','
               when 'acne'
                 assign opts = 'no,yes' | split: ','
-              when 'concerns'
-                assign opts = 'oil,tone,marks,dehydration,barrier,spf' | split: ','
               else
-                assign opts = 'essentials,full' | split: ','
+                assign opts = 'oil,tone,marks,dehydration,barrier,spf' | split: ','
             endcase
             assign qk = 'skin_check.q.' | append: q
             assign multi = false
@@ -123,8 +129,18 @@
         <p class="t-eyebrow">{{ 'skin_check.eyebrow' | t }}</p>
         <h2 class="t-display-s skc__result-title">{{ 'skin_check.result_title' | t }}</h2>
         <ul class="skc__profile cluster" role="list" data-skc-profile></ul>
+        <p class="t-small t-muted skc__result-text">{{ 'skin_check.result_text' | t }}</p>
 
         <ul class="skc__list" role="list" data-skc-list></ul>
+        <div class="skc__complete" data-skc-complete hidden>
+          <p class="skc__complete-title">{{ 'skin_check.complete_title' | t }}</p>
+          <div class="skc__complete-row">
+            <span class="skc__thumb" aria-hidden="true"><img data-skc-complete-img alt="" width="120" height="380" loading="lazy"></span>
+            <p class="skc__complete-benefit"><span class="skc__name" data-skc-complete-name></span><span data-skc-complete-benefit></span></p>
+          </div>
+          <p class="t-small" data-skc-complete-text></p>
+          <button type="button" class="btn btn--secondary btn--small" data-skc-complete-btn><span class="btn__label"></span></button>
+        </div>
         <div class="skc__also" data-skc-also-wrap hidden>
           <h3 class="skc__subhead t-xs">{{ 'skin_check.also' | t }}</h3>
           <ul class="skc__list skc__list--also" role="list" data-skc-also></ul>

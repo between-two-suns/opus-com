@@ -608,3 +608,18 @@ Each entry: decision · why · reversibility. Newest last.
     - `templates/index.skin.json` (the earlier hidden `/?view=skin` preview) was removed from the repo. It stays on staging, since the tool can't delete theme files; it can be deleted in the code editor.
     - Verified on the real staging store: the menu item and the three page links resolve to `/pages/skin-check`; the full check runs (combination + uneven tone + essentials → Serum + SPF, offered as Clear & Protect Duo, EGP 949 instead of 998); no JS errors. theme-check 0, flows 320/320. Staging MD5s match. Live unchanged.
     - Still pending: ICI sign-off on the matching table before the public launch (DECISIONS 171).
+
+173. **Owner: "Doesn't this test push people to purchase less? And why are we not explaining what they do for the skin concerns?"** Both were fair. I measured every answer combination through the rules before changing anything.
+    - **Measured** (skin rarely reacts, 640 answer sets): with "full routine" chosen, the average suggestion was EGP 1,564 and 52% got all four. With "just the essentials", it was EGP 1,341 and nobody got all four. 46% of full-routine results were three products with no offer to complete them.
+      - All four by skin type: oily 94%, combination 72%, normal 47%, mildly dry 47%, very dry 0%.
+      - The owner's own caution (sensitive, very dry, irritated) accounts for part of the gap and stays.
+      - The rest was mine: the essentials question, and no honest complete-it offer.
+    - **Changes:**
+      - The essentials-or-full-routine question was removed; the check is now 4 questions. Every suitable product is suggested; customers untick what they don't want.
+      - "Complete your routine": when three products are suggested and the fourth suits (never the cleanser for very dry skin, never for sensitive skin), the fourth is offered with its picture, its pack benefit line and the real price. Example: "Add Clarity Serum and all four come as The Full Ritual: EGP 352 more, instead of EGP 499 on its own." One tap ticks it, and the button becomes "Add The Full Ritual". It's the same honest rule as the bag's switch, and the offer card replaces the duplicate "also worth considering" row.
+      - Result: offered in 28% of non-sensitive results, average +EGP 268. The average suggestion becomes EGP 1,564, rising to 1,638 if every offer is taken.
+    - **What each product does:** each step now shows the customer's concerns it helps with (chips, EN/AR: Excess oil · Uneven tone · Dark spots & marks · Dehydration · Barrier · Sun protection). Below them comes the approved pack benefit line from the product's own `bts.benefit` field (e.g. "Controls oil. Evens skin tone. Hydrates."; ICI said label wording stays the main benefit copy), then the ingredient reason and notes.
+      - New intro: "Four quick questions. Then your routine, step by step: what each product does for your skin, and the ingredients behind it."
+      - The old "never a set you don't need" line was dropped.
+    - The ICI document was updated (four questions, result layout, complete-it rule).
+    - QA: `match()` re-checked against the owner's table, plus browser flows EN/AR: normal daily care → offer serum +EGP 352; mildly dry + dehydration → offer cleanser +EGP 252; very dry → no cleanser offer; oily + acne + marks → The Full Ritual. Axe 0 (EN/AR, 390/1440), theme-check 0, flows 320/320. Staging MD5s match (5 files). Live unchanged.

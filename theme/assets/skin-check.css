@@ -39,6 +39,7 @@
 .skc__profile { gap: 6px; margin: 0; padding: 0; list-style: none; }
 .skc__profile:empty { display: none; }
 .skc__list { display: grid; gap: 10px; inline-size: 100%; margin: 4px 0 0; padding: 0; list-style: none; }
+.skc__item[hidden] { display: none; }
 .skc__item { display: grid; gap: 8px; padding: 12px; border-radius: 20px; background: color-mix(in srgb, var(--sku) 14%, #fff); }
 .skc__pick { position: relative; display: grid; grid-template-columns: 26px 56px 1fr; align-items: center; gap: 12px; cursor: pointer; }
 .skc__pick input { position: absolute; opacity: 0; inline-size: 1px; block-size: 1px; }
@@ -71,6 +72,22 @@
 .skc__actions .btn { flex: 1 1 220px; }
 .skc__links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
 .skc__links button.link-arrow { border: 0; border-block-end: 2px solid currentColor; background: none; padding: 0 0 4px; font: inherit; font-weight: 650; color: var(--c-ink); cursor: pointer; }
+
+/* What each step does: the customer's concerns it answers, the pack's benefit line, then the ingredients */
+.skc__result-text { margin: -4px 0 0; }
+.skc__for { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 4px; padding: 0; list-style: none; }
+.skc__for li { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 8px; border-radius: 99px; background: #fff; font-size: 12.5px; font-weight: 700; }
+.skc__for li::before { content: ''; inline-size: 10px; block-size: 6px; border: solid var(--c-ink); border-width: 0 0 2px 2px; transform: translateY(-2px) rotate(-45deg); }
+.skc__benefit { margin: 0; font-size: 15px; font-weight: 700; }
+.skc__why { color: color-mix(in srgb, var(--c-ink) 78%, transparent); }
+.skc__complete { display: grid; gap: 6px; justify-items: start; inline-size: 100%; padding: 16px 18px; border-radius: 18px; background: color-mix(in srgb, var(--c-step-2) 16%, #fff); border: 2px dashed color-mix(in srgb, var(--c-step-2) 70%, var(--c-ink) 10%); }
+.skc__complete[hidden] { display: none; }
+.skc__complete p { margin: 0; }
+.skc__complete-title { font-weight: 800; }
+.skc__complete-row { display: grid; grid-template-columns: 56px 1fr; align-items: center; gap: 12px; }
+.skc__complete-benefit { display: grid; gap: 2px; margin: 0; font-size: 15px; font-weight: 600; }
+.skc__complete .skc__thumb { background: color-mix(in srgb, var(--sku, var(--c-step-2)) 30%, #fff); }
+.skc__complete .btn { margin-block-start: 6px; }
 
 /* Guidance */
 .skc__guide-ico { display: grid; place-items: center; inline-size: 48px; block-size: 48px; border-radius: 99px; background: color-mix(in srgb, var(--c-step-3) 40%, #fff); }

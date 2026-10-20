@@ -1147,7 +1147,7 @@
   "skin_check": {
     "eyebrow": "Skin check",
     "title": "Find your steps in 30 seconds",
-    "intro": "Five quick questions. We suggest products from their ingredients, never a set you don't need.",
+    "intro": "Four quick questions. Then your routine, step by step: what each product does for your skin, and the ingredients behind it.",
     "no_js": "The skin check needs JavaScript.",
     "start": "Start",
     "next": "Next",
@@ -1159,8 +1159,7 @@
       "type": "How does your skin feel by midday, with nothing on it?",
       "react": "How does your skin react to new products?",
       "acne": "Do you get breakouts?",
-      "concerns": "What would you like help with?",
-      "steps": "How many steps do you want?"
+      "concerns": "What would you like help with?"
     },
     "a": {
       "type_oily": "Shiny all over",
@@ -1187,11 +1186,9 @@
       "concerns_dehydration": "Dehydration",
       "concerns_dehydration_d": "Tight or dull, even if oily",
       "concerns_barrier": "Barrier support",
-      "concerns_spf": "Daily sun protection",
-      "steps_essentials": "Just the essentials",
-      "steps_full": "A full morning and night routine"
+      "concerns_spf": "Daily sun protection"
     },
-    "result_title": "Your suggestions",
+    "result_title": "Your routine",
     "also": "Also worth considering",
     "when_am": "Morning",
     "when_both": "Morning and night",
@@ -1231,6 +1228,19 @@
     "change": "Change answers",
     "disclaimer": "Suggestions are based on our ingredients, not a diagnosis, and can't guarantee how your skin will react. Patch test anything new. Not a medical treatment.",
     "cta_sets": "Not sure which? Take the 30-second skin check",
-    "cta_product": "Not sure it suits your skin? Take the 30-second skin check"
+    "cta_product": "Not sure it suits your skin? Take the 30-second skin check",
+    "result_text": "In the order you use them. Each step shows what it does for your skin and why.",
+    "for_label": "Helps with",
+    "chips": {
+      "oil": "Excess oil",
+      "tone": "Uneven tone",
+      "marks": "Dark spots & marks",
+      "dehydration": "Dehydration",
+      "barrier": "Barrier",
+      "spf": "Sun protection"
+    },
+    "complete_title": "Complete your routine",
+    "complete_text": "Add {{ product }} and all four come as {{ set }}: {{ extra }} more, instead of {{ single }} on its own.",
+    "complete_cta": "Add {{ product }} to my routine"
   }
 }
