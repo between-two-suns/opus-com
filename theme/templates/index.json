@@ -74,12 +74,17 @@
         "show_contact": true,
         "schema": false
       }
+    },
+    "reviews": {
+      "type": "reviews-home",
+      "settings": {}
     }
   },
   "order": [
     "hero",
     "routine",
     "bundles",
+    "reviews",
     "climate",
     "ingredient_heroes",
     "editorial",

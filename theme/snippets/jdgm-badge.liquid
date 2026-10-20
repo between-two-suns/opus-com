@@ -1,0 +1,12 @@
+{%- comment -%}
+  Judge.me star rating badge (Judge.me's own markup; the app embed loads its script). Shown only when the product has
+  real reviews: the zero-review state is hidden in CSS, never faked.
+  Params: product
+{%- endcomment -%}
+<div class="reviews-badge">
+  <!-- Start of Judge.me code -->
+  <div class='jdgm-widget jdgm-preview-badge' data-id='{{ product.id }}'>
+    {{ product.metafields.judgeme.badge }}
+  </div>
+  <!-- End of Judge.me code -->
+</div>

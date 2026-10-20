@@ -1,0 +1,39 @@
+{%- comment -%}
+  Reviews on the home page: Judge.me's featured carousel. Renders nothing at all until the store has real reviews
+  (shop.metafields.judgeme.all_reviews_count > 0) and featured ones exist; no placeholder, invented count or rating.
+{%- endcomment -%}
+{%- liquid
+  assign jm = shop.metafields.judgeme
+  assign jm_count = jm.all_reviews_count | plus: 0
+-%}
+{%- if jm_count > 0 and jm.featured_carousel != blank -%}
+<section class="section reviews-home" aria-labelledby="ReviewsHomeTitle-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{{ 'reviews.eyebrow' | t }}</p>
+        <h2 class="t-display-l" id="ReviewsHomeTitle-{{ section.id }}">{{ 'reviews.heading' | t }}</h2>
+      </div>
+    </div>
+    <!-- Start of Judge.me code -->
+    <div class='jdgm-carousel-wrapper'>
+      <div class='jdgm-carousel-title-and-link'>
+        <span class='jdgm-all-reviews-rating-wrapper' href='javascript:void(0)'>
+          <span style='display:block' data-score='{{ jm.all_reviews_rating }}' class='jdgm-all-reviews-rating' aria-label='{{ jm.all_reviews_rating }} stars' tabindex='0' role='img'></span>
+          <span style='display: block' class='jdgm-carousel-number-of-reviews' data-number-of-reviews='{{ jm.all_reviews_count }}'>{{ 'reviews.count' | t: count: jm_count }}</span>
+        </span>
+      </div>
+      {{ jm.featured_carousel }}
+    </div>
+    <!-- End of Judge.me code -->
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.reviews_home.name",
+  "settings": [],
+  "presets": [{ "name": "t:sections.reviews_home.name" }]
+}
+{% endschema %}

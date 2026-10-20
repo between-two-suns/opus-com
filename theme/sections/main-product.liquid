@@ -172,6 +172,7 @@
                   endif
                 -%}
                 <h1 class="pdp__title">{{ pdp_title | escape }}</h1>
+                {%- render 'jdgm-badge', product: product -%}
                 {%- if mf.hero_ingredients != blank -%}
                   <p class="pill pdp__hero-ing">{{ mf.hero_ingredients }}</p>
                 {%- endif -%}

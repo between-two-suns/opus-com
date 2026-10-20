@@ -1107,5 +1107,10 @@
     "complete": "Complete the routine",
     "stock": "Stock up",
     "this_one": "(this one)"
+  },
+  "reviews": {
+    "eyebrow": "Reviews",
+    "heading": "What people say",
+    "count": "Based on {{ count }} reviews"
   }
 }

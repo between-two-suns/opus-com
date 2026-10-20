@@ -178,12 +178,17 @@
     "inside": {
       "type": "bundle-inside",
       "settings": {}
+    },
+    "reviews": {
+      "type": "product-reviews",
+      "settings": {}
     }
   },
   "order": [
     "main",
     "inside",
     "routine",
+    "reviews",
     "faq"
   ]
 }
