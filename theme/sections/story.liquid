@@ -33,7 +33,8 @@
                 assign img_class = 'story__img story__img--cutout'
               endif
             -%}
-            {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '(min-width: 990px) 45vw, 92vw', alt: block.settings.image.alt | default: '', class: img_class }}
+            {%- assign img_alt = block.settings.image.alt | default: '' -%}
+            {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '(min-width: 990px) 45vw, 92vw', alt: img_alt, class: img_class }}
           {%- else -%}
             {%- liquid
               assign visual = block.settings.visual | default: 'auto'
