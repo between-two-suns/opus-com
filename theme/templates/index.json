@@ -7,12 +7,15 @@
     "climate": {
       "type": "climate-switch",
       "settings": {
-        "link": "/pages/climate"
+        "link": "/pages/climate",
+        "photo_prefix": "bts-climate2-"
       }
     },
     "bundles": {
       "type": "bundles-feature",
-      "settings": {}
+      "settings": {
+        "mate_image": "shopify://shop_images/bts-demo-night-ritual.jpg"
+      }
     },
     "routine": {
       "type": "day-line",

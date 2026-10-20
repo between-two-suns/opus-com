@@ -623,3 +623,9 @@ Each entry: decision · why · reversibility. Newest last.
       - The old "never a set you don't need" line was dropped.
     - The ICI document was updated (four questions, result layout, complete-it rule).
     - QA: `match()` re-checked against the owner's table, plus browser flows EN/AR: normal daily care → offer serum +EGP 352; mildly dry + dehydration → offer cleanser +EGP 252; very dry → no cleanser offer; oily + acne + marks → The Full Ritual. Axe 0 (EN/AR, 390/1440), theme-check 0, flows 320/320. Staging MD5s match (5 files). Live unchanged.
+
+174. **Owner: "Why didn't you change the photos of the Night Ritual and stuff on the home page?"** My miss. The owner had agreed to the recommendation that included this swap, and I left it waiting for a separate yes. Now applied to the staging home page (`templates/index.json`):
+    - **Sets section:** The Night Ritual card shows the Night Ritual terrace photo (`mate_image` = `bts-demo-night-ritual.jpg`, from the Drive shoot; labels checked correct) instead of the three pack cut-outs.
+    - **Climate switch:** the new people scenes (`photo_prefix` = `bts-climate2-`): sun (hijab, rooftop), city & dust (street walk), humidity (seafront), air-con (office window), heat. The old bottle-only scenes are kept in Files under their original names, so switching back is one setting.
+    - Still not used: the morning and night bathroom shots (garbled small label text), until label-correct versions exist.
+    - Staging was checked unchanged since my last deploy before overwriting (MD5 279b6730…). New MD5 f8efec5f… matches. Verified on the real staging store at 390 and 1440 px: correct files load for all five climate conditions; no JS errors. Live unchanged.
