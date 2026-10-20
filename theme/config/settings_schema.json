@@ -156,6 +156,17 @@
     ]
   },
   {
+    "name": "t:settings_schema.skin_check.name",
+    "settings": [
+      {
+        "type": "page",
+        "id": "skin_check_page",
+        "label": "t:settings_schema.skin_check.page",
+        "info": "t:settings_schema.skin_check.page_info"
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.offers.name",
     "settings": [
       {

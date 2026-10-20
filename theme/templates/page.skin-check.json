@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "skin_check": { "type": "skin-check", "settings": {} },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": { "type": "qa", "settings": { "preset": "skin_type" } },
+        "q1": { "type": "qa", "settings": { "preset": "sensitive" } },
+        "q2": { "type": "qa", "settings": { "preset": "all_four" } },
+        "q3": { "type": "qa", "settings": { "preset": "start_where" } },
+        "q4": { "type": "qa", "settings": { "preset": "pregnancy" } }
+      },
+      "block_order": ["q0", "q1", "q2", "q3", "q4"],
+      "settings": { "compact": true, "show_contact": true, "schema": false }
+    }
+  },
+  "order": ["skin_check", "faq"]
+}

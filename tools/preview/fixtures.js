@@ -89,6 +89,7 @@ export const PAGES = {
   scan: { en: 'Scan your pack', ar: 'امسح عبوتك' },
   shipping: { en: 'Shipping', ar: 'الشحن' },
   returns: { en: 'Returns', ar: 'الاسترجاع' },
+  'skin-check': { en: 'Skin check', ar: 'فحص البشرة' },
 };
 
 export const PAGE_BODY = {

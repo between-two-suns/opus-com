@@ -28,6 +28,7 @@
       <div class="setsx__aside">
         <p class="t-lead t-muted">{{ text | escape }}</p>
         <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'sections.bundles.see_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+        {%- render 'skin-check-link', key: 'skin_check.cta_sets' -%}
       </div>
     </div>
 

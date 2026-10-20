@@ -1229,6 +1229,8 @@
     "browse": "Browse the products",
     "restart": "Start again",
     "change": "Change answers",
-    "disclaimer": "Suggestions are based on our ingredients, not a diagnosis, and can't guarantee how your skin will react. Patch test anything new. Not a medical treatment."
+    "disclaimer": "Suggestions are based on our ingredients, not a diagnosis, and can't guarantee how your skin will react. Patch test anything new. Not a medical treatment.",
+    "cta_sets": "Not sure which? Take the 30-second skin check",
+    "cta_product": "Not sure it suits your skin? Take the 30-second skin check"
   }
 }

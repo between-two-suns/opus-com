@@ -30,7 +30,8 @@
     "remote_fee": 150,
     "remote_fee_over": 50,
     "delivery_days_main": "1–3",
-    "delivery_days_other": "3–5"
+    "delivery_days_other": "3–5",
+    "skin_check_page": "skin-check"
   },
   "presets": {
     "Default": {

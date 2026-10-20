@@ -274,6 +274,7 @@
                     <li>{% render 'icon', name: 'refresh', class: 'icon--sm' %}<span>{{ settings.returns_note | escape }}</span></li>
                   {%- endif -%}
                 </ul>
+                {%- render 'skin-check-link', key: 'skin_check.cta_product', class: 'pdp__skc' -%}
                 {%- render 'payment-icons', class: 'pdp__payments' -%}
               </div>
 

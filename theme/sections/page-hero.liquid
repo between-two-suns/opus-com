@@ -29,6 +29,7 @@
       {%- if eyebrow != blank -%}<p class="t-eyebrow">{{ eyebrow | escape }}</p>{%- endif -%}
       <h1 class="t-display-l">{{ heading | escape }}</h1>
       {%- if text != blank -%}<p class="t-lead page-hero__text">{{ text | escape }}</p>{%- endif -%}
+      {%- if preset == 'sets' or preset == 'routines' -%}{%- render 'skin-check-link', key: 'skin_check.cta_sets' -%}{%- endif -%}
     </div>
     {%- if img -%}
       <div class="page-hero__media">

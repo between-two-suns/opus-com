@@ -11,7 +11,7 @@
     "header": {
       "type": "header",
       "settings": {
-        "menu": "main-menu",
+        "menu": "bts-staging-primary",
         "enable_mega": true
       }
     }

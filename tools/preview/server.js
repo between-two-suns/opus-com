@@ -300,6 +300,7 @@ function resolveSetting(def, value, data) {
     case 'collection': return data.collections[value] || null;
     case 'product': return data.byHandle[value] || null;
     case 'blog': return value === 'journal' ? data.journal : null;
+    case 'page': return PAGES[value] ? { handle: value, url: (data.prefix || '') + '/pages/' + value, title: PAGES[value].en } : null;
     case 'link_list': return null; // store has no custom menus; theme uses bilingual fallbacks
     case 'product_list': return (value || []).map((h) => data.byHandle[h]).filter(Boolean);
     case 'url': return value.startsWith('/') && data.prefix ? data.prefix + value : value;

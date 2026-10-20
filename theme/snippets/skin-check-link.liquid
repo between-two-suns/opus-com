@@ -1,0 +1,12 @@
+{%- comment -%}
+  A quiet link to the skin check, shown only when Theme settings → Skin check has its page set.
+  Params: key (locale key for the text), class (optional)
+{%- endcomment -%}
+{%- assign sk = settings.skin_check_page -%}
+{%- if sk != blank and sk.url != blank -%}
+  <a class="skc-link{% if class %} {{ class }}{% endif %}" href="{{ sk.url }}">
+    <span class="skc-link__ico" aria-hidden="true">{% render 'icon', name: 'drop', class: 'icon--sm' %}</span>
+    <span>{{ key | t }}</span>
+    {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}
+  </a>
+{%- endif -%}

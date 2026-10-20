@@ -1259,3 +1259,19 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 .product-reviews .jm-button--primary { background: var(--c-ink) !important; border-color: var(--c-ink) !important; color: #fff !important; }
 .product-reviews .jm-no-reviews-state { inline-size: 100%; max-inline-size: none; padding: clamp(24px, 4vw, 40px); border-radius: var(--radius-l); background: var(--c-paper); }
 .product-reviews .jm-no-reviews-state__text { color: var(--c-muted); font-size: 16px; }
+
+/* Link to the skin check (sets, product pages): a quiet pill, not a second buy button */
+.skc-link { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border-radius: 99px; background: color-mix(in srgb, var(--c-step-2) 22%, #fff); color: var(--c-ink); font-size: 14px; font-weight: 650; text-decoration: none; transition: background var(--dur) var(--ease-out); }
+.skc-link:hover { background: color-mix(in srgb, var(--c-step-2) 36%, #fff); }
+.skc-link__ico { display: grid; place-items: center; inline-size: 28px; block-size: 28px; border-radius: 99px; background: var(--c-step-2); }
+.pdp__skc { margin-block-start: 4px; }
+
+/* Six header links: labels never wrap and sit a little tighter; below 1280px the menu button takes over (same drawer as phones) */
+.site-nav__link { white-space: nowrap; }
+@media (min-width: 990px) and (max-width: 1279px) {
+  .site-header .site-nav { display: none; }
+  .site-header .header-only-mobile { display: inline-flex !important; }
+}
+@media (min-width: 1200px) {
+  .site-header .site-nav__link { font-size: 14px; padding: 0 10px; }
+}
