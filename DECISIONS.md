@@ -629,3 +629,8 @@ Each entry: decision · why · reversibility. Newest last.
     - **Climate switch:** the new people scenes (`photo_prefix` = `bts-climate2-`): sun (hijab, rooftop), city & dust (street walk), humidity (seafront), air-con (office window), heat. The old bottle-only scenes are kept in Files under their original names, so switching back is one setting.
     - Still not used: the morning and night bathroom shots (garbled small label text), until label-correct versions exist.
     - Staging was checked unchanged since my last deploy before overwriting (MD5 279b6730…). New MD5 f8efec5f… matches. Verified on the real staging store at 390 and 1440 px: correct files load for all five climate conditions; no JS errors. Live unchanged.
+
+175. **Owner: "The review on the PDP on the phone is too wide, looks weird."** Confirmed on the staging store at 390 px.
+    - **Too wide:** the "Be the first to write a review" card measured 405 px in a 357 px column, so the whole product page scrolled sideways (document 422 px wide). Judge.me's scoped rule `.jm-center[data-v-…] { box-sizing: content-box }` loads after our CSS with equal weight, so our 100% width plus padding overflowed. Our rules now carry one more class (`.product-reviews .jm-review-widget .jm-no-reviews-state`) and use border-box.
+    - **Empty gaps:** with no reviews yet, Judge.me also renders an empty filter row, an empty list and 48 px of its own spacing above and below. In the no-reviews state those are hidden and the widget's outer spacing dropped (our section already spaces it).
+    - **Result:** the card is the column's width (357 px), sits 28 px under our heading, and the page is 390 px wide again. Staging MD5 matches; live unchanged.

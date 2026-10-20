@@ -1252,13 +1252,21 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 .product-reviews .jdgm-write-rev-link, .product-reviews .jdgm-ask-question-btn { display: inline-flex !important; align-items: center; min-height: 48px; padding: 0 22px !important; border-radius: 999px !important; background: var(--c-ink) !important; color: #fff !important; border: 0 !important; font-weight: 650 !important; text-decoration: none !important; }
 .product-reviews .jdgm-rev { border-color: var(--c-line) !important; }
 .reviews-home .jdgm-carousel-wrapper { margin: 0; }
-/* Judge.me widget v3 (jm-*): our heading replaces its title; ink pill buttons; the empty state as a quiet card */
+/* Judge.me widget v3 (jm-*): our heading replaces its title; ink pill buttons; the empty state as a quiet card.
+   Its scoped rules (.jm-center[data-v-…]) load after ours with equal weight, so ours carry one more class. */
 :root { --jdgm-primary-color: var(--c-ink) !important; }
 .product-reviews .jm-review-widget-minimal-header__title { display: none; }
 .product-reviews .jm-button { min-block-size: 48px; padding: 0 24px !important; border-radius: 999px !important; font-weight: 650 !important; }
 .product-reviews .jm-button--primary { background: var(--c-ink) !important; border-color: var(--c-ink) !important; color: #fff !important; }
-.product-reviews .jm-no-reviews-state { inline-size: 100%; max-inline-size: none; padding: clamp(24px, 4vw, 40px); border-radius: var(--radius-l); background: var(--c-paper); }
+.product-reviews .jm-review-widget .jm-no-reviews-state { box-sizing: border-box; inline-size: 100%; max-inline-size: none; margin-inline: 0; padding: clamp(20px, 4vw, 40px); border-radius: var(--radius-l); background: var(--c-paper); }
+.product-reviews .jdgm-widget, .product-reviews .jm-review-widget { max-inline-size: 100%; overflow-wrap: anywhere; }
 .product-reviews .jm-no-reviews-state__text { color: var(--c-muted); font-size: 16px; }
+/* With no reviews yet, Judge.me still renders its (empty) filter row and list: drop both so the card sits under our heading */
+.product-reviews .jm-review-widget:has(.jm-no-reviews-state) .jm-review-widget__header > .jm-cluster,
+.product-reviews .jm-review-widget:has(.jm-no-reviews-state) .jm-review-widget__body { display: none; }
+/* Our section already spaces the block: drop the widget's own outer spacing (it set 48px above and below) */
+.product-reviews .jdgm-widget .jm-review-widget { padding-block: 0 !important; margin-block: 0 !important; }
+.product-reviews .jm-review-widget:has(.jm-no-reviews-state) .jm-no-reviews-state { margin-block-start: 0 !important; }
 
 /* Link to the skin check (sets, product pages): a quiet pill, not a second buy button */
 .skc-link { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border-radius: 99px; background: color-mix(in srgb, var(--c-step-2) 22%, #fff); color: var(--c-ink); font-size: 14px; font-weight: 650; text-decoration: none; transition: background var(--dur) var(--ease-out); }
