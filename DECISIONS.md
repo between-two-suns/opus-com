@@ -559,3 +559,17 @@ Each entry: decision · why · reversibility. Newest last.
       - SPF 50+ is the product's name and stays.
     - **Deploy note:** Shopify silently rejected `sections/faq.liquid` (job "done", no user error, old file kept) while its select-option labels were 51–52 characters. Labels of 42 or fewer are accepted. Labels were shortened, and the staging MD5 now matches. Always confirm the checksum after an upsert.
     - QA: theme-check 0, flows 320/320; FAQ checked EN/AR (COD and the ICI-pending presets hidden); claims checked on all three product pages. Staging MD5s match except `settings_data.json` (Shopify's header; values confirmed). Live unchanged.
+
+170. **Owner: draft the shipping and returns policies (EN/AR) for legal review, and the skin-check questions and matching logic for ICI approval. Nothing goes public until approved.** Both are shareable review documents, not site content:
+    - **Shipping & Returns policies (draft for legal review):** https://claude.ai/code/artifact/0e9c6bc9-9328-4234-a4dc-76016c41bcdc
+      - English and Arabic, from the owner's provisional values. Every undecided value is in [brackets].
+      - Closes with 14 open items: 10 for the owner, 4 for the lawyer.
+      - Nothing was entered in Shopify Policies.
+    - **Skin check: questions and matching logic (for ICI approval):** https://claude.ai/code/artifact/d55cc5d0-99dd-4f02-8ee1-b92d8d7e54e5
+      - Five questions: skin type, reactivity, breakouts, concerns (multi-select), and how many steps.
+      - A first-match-wins matching table, where the most cautious row wins.
+      - Concern → product reasons that are ingredient-based and never "treats acne/pigmentation".
+      - A set is offered only when the person asked for a full routine and all four products suit them; "same products, less money" set matches are shown honestly.
+      - Guidance screens for very dry and highly reactive skin.
+      - Eight questions for ICI.
+      - No quiz code has been written yet; it gets built hidden once ICI answers.
