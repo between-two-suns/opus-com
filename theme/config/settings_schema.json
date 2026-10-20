@@ -141,6 +141,21 @@
     ]
   },
   {
+    "name": "t:settings_schema.claims.name",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:settings_schema.claims.intro"
+      },
+      {
+        "type": "textarea",
+        "id": "documented_claims",
+        "label": "t:settings_schema.claims.documented",
+        "info": "t:settings_schema.claims.documented_info"
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.offers.name",
     "settings": [
       {
@@ -188,6 +203,30 @@
         "id": "delivery_fee",
         "label": "t:settings_schema.offers.delivery_fee",
         "info": "t:settings_schema.offers.delivery_fee_info"
+      },
+      {
+        "type": "number",
+        "id": "remote_fee",
+        "label": "t:settings_schema.offers.remote_fee",
+        "info": "t:settings_schema.offers.remote_fee_info"
+      },
+      {
+        "type": "number",
+        "id": "remote_fee_over",
+        "label": "t:settings_schema.offers.remote_fee_over",
+        "info": "t:settings_schema.offers.remote_fee_over_info"
+      },
+      {
+        "type": "text",
+        "id": "delivery_days_main",
+        "label": "t:settings_schema.offers.delivery_days_main",
+        "info": "t:settings_schema.offers.delivery_days_info"
+      },
+      {
+        "type": "text",
+        "id": "delivery_days_other",
+        "label": "t:settings_schema.offers.delivery_days_other",
+        "info": "t:settings_schema.offers.delivery_days_info"
       },
       {
         "type": "header",

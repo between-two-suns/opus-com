@@ -278,15 +278,18 @@
               </div>
 
             {%- when 'claims' -%}
-              {%- assign badges = mf.badges.value -%}
-              {%- if badges.size > 0 -%}
+              {%- capture claim_pills -%}
+                {%- for b in mf.badges.value -%}
+                  {%- capture gated -%}{% render 'claim-gate', claim: b %}{%- endcapture -%}
+                  {%- if gated == blank -%}
+                    <li class="pill pill--sku">{% render 'icon', name: 'check', class: 'icon--sm' %}{{ b | escape }}</li>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endcapture -%}
+              {%- if claim_pills != blank -%}
                 <div class="pdp__claims" {{ block.shopify_attributes }}>
                   <p class="visually-hidden">{{ 'product.claims' | t }}</p>
-                  <ul class="cluster" role="list">
-                    {%- for b in badges -%}
-                      <li class="pill pill--sku">{% render 'icon', name: 'check', class: 'icon--sm' %}{{ b | escape }}</li>
-                    {%- endfor -%}
-                  </ul>
+                  <ul class="cluster" role="list">{{ claim_pills }}</ul>
                 </div>
               {%- endif -%}
 

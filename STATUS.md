@@ -39,6 +39,7 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 
 ## Shipped to staging 2026-10-20
 - Judge.me reviews: product and set pages (badge hidden at 0, widget empty state in brand), home carousel appears only once real reviews exist (DECISIONS 167). Owner: enable gifted-review disclosure and Arabic in Judge.me.
+- Delivery fees, remote fees and estimates are theme settings feeding the FAQ; COD answer appears only when COD is switched on; ICI-pending FAQs are hidden until answered; unverified claim badges are held (DECISIONS 169). Owner: set Shopify shipping rates to match.
 - Morning-to-night demo at `/?view=day` for owner review; home unchanged (DECISIONS 168). Vanity photos need label-correct versions before any live use.
 
 ## Complete

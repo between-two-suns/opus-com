@@ -544,3 +544,18 @@ Each entry: decision · why · reversibility. Newest last.
       - Both include an olive branch. That's a plant, not the palette, but it's flagged against the no-olive brief.
     - **Found, not changed:** `sections/story.liquid` (About page) passes `alt: … | default: ''` inside `image_tag`. That ends the filter early, so its `class` (`story__img`, cutout variant) never reaches the image. The page is approved as it looks now, so a fix will be shown before it's applied.
     - QA: theme-check 0, flows 320/320, axe 0 (EN/AR, 390/1440), no Liquid or JS errors. Staging MD5s match (9 files). Live index unchanged.
+
+169. **Owner: shipping zones, fees, thresholds and delivery estimates must be adjustable without redesign; payment methods show only once live and tested; no unverified regulated claims.**
+    - **New theme settings** (Theme settings → Offers): remote-area fee (EGP 150), remote-area fee at or above the threshold (EGP 50), and delivery estimates for Cairo & Giza (1–3) and other governorates (3–5). These sit beside the existing free threshold (1,200) and standard fee (100). All values are provisional and only describe the store: the owner must set the Shopify shipping rates to the same numbers (live shipping isn't touched from here).
+    - **FAQ presets built from those settings:**
+      - "How much is delivery?" (standard fee, free threshold "after discounts", remote fee and remote fee above the threshold, and "the exact cost for your address is shown at checkout");
+      - "How long does delivery take?" (both estimates, Sunday–Thursday business days, "estimates, not guarantees"). Tracking isn't promised, because it's only intended so far.
+      - On the FAQ page, "How much is delivery?" replaces "Is delivery free?"; the home and product FAQs keep the short one.
+    - **Payment:** a "Can I pay cash on delivery?" preset renders only when `show_cod` is on. It stays off until COD has been test-ordered. Payment icons already come only from methods Shopify reports as enabled; Paymob/cards appear once activated there.
+    - **Waiting on ICI or reports:** presets for sensitive skin, shelf life/PAO, authenticity/batch and pregnancy have their questions written (EN/AR) but render only once the block has its own answer typed in. "Fragrance" moves into the same group: its old answer said the cream is "labelled fragrance-free", which is a claim the owner now wants documented first.
+    - **Product claims gate** (`snippets/claim-gate.liquid`, Theme settings → Product claims): badges for non-comedogenic, fragrance-free, dermatologically tested, hypoallergenic, cruelty-free, vegan, halal or clinical claims (EN or AR wording) are held back on product pages. A claim shows again once its exact wording is listed under "Documented claims".
+      - Currently held: Non-comedogenic (cleanser, moisturiser) and Fragrance-free (moisturiser).
+      - These are printed on the packs, so ICI likely has the support; listing them restores them.
+      - SPF 50+ is the product's name and stays.
+    - **Deploy note:** Shopify silently rejected `sections/faq.liquid` (job "done", no user error, old file kept) while its select-option labels were 51–52 characters. Labels of 42 or fewer are accepted. Labels were shortened, and the staging MD5 now matches. Always confirm the checksum after an upsert.
+    - QA: theme-check 0, flows 320/320; FAQ checked EN/AR (COD and the ICI-pending presets hidden); claims checked on all three product pages. Staging MD5s match except `settings_data.json` (Shopify's header; values confirmed). Live unchanged.

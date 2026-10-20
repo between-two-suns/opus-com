@@ -26,6 +26,24 @@
     render 'egp', cents: thr
   endcapture
   assign thr_m = thr_m | strip
+  # Delivery figures come from Theme settings → Offers, so a change there updates every answer (they must match the Shopify rates).
+  assign fee_c = settings.delivery_fee | default: 0 | times: 100
+  capture fee_m
+    render 'egp', cents: fee_c
+  endcapture
+  assign fee_m = fee_m | strip
+  assign remote_c = settings.remote_fee | default: 0 | times: 100
+  capture remote_m
+    render 'egp', cents: remote_c
+  endcapture
+  assign remote_m = remote_m | strip
+  assign remote_over_c = settings.remote_fee_over | default: 0 | times: 100
+  capture remote_over_m
+    render 'egp', cents: remote_over_c
+  endcapture
+  assign remote_over_m = remote_over_m | strip
+  # Presets that wait on verified information (manufacturer or reports) show only once the block has its own answer.
+  assign pending_presets = 'fragrance,sensitive,shelf_life,authenticity,pregnancy' | split: ','
   assign hub = section.settings.hub
   assign used_cats = ''
 -%}
@@ -43,8 +61,38 @@
           assign q = qk | t | replace: '&amp;', '&'
         endif
         if a == blank
-          assign a = ak | t: amount: thr_m | replace: '&amp;', '&'
+          if pending_presets contains pre
+            assign a = ''
+          elsif pre == 'delivery_time'
+            if settings.delivery_days_main != blank and settings.delivery_days_other != blank
+              assign a = ak | t: main: settings.delivery_days_main, other: settings.delivery_days_other | replace: '&amp;', '&'
+            endif
+          elsif pre == 'delivery_cost'
+            if fee_c > 0
+              assign a = 'faq.items.delivery_cost.a' | t: fee: fee_m, amount: thr_m | replace: '&amp;', '&'
+              if thr == 0
+                assign a = 'faq.items.delivery_cost.a_flat' | t: fee: fee_m | replace: '&amp;', '&'
+              endif
+              if remote_c > 0
+                if thr == 0
+                  assign a_r = 'faq.items.delivery_cost.remote_flat' | t: remote: remote_m
+                elsif remote_over_c > 0
+                  assign a_r = 'faq.items.delivery_cost.remote' | t: remote: remote_m, remote_over: remote_over_m, amount: thr_m
+                else
+                  assign a_r = 'faq.items.delivery_cost.remote_free' | t: remote: remote_m, amount: thr_m
+                endif
+                assign a = a | append: ' ' | append: a_r
+              endif
+              assign a_c = 'faq.items.delivery_cost.checkout' | t
+              assign a = a | append: ' ' | append: a_c | replace: '&amp;', '&'
+            endif
+          else
+            assign a = ak | t: amount: thr_m | replace: '&amp;', '&'
+          endif
         endif
+      endif
+      if pre == 'cod' and settings.show_cod == false
+        assign q = ''
       endif
       if pre == 'delivery_free' and thr == 0
         assign q = ''
@@ -63,7 +111,7 @@
           assign cat = 'routine'
         when 'set_full_size', 'set_saving'
           assign cat = 'sets'
-        when 'delivery_free', 'payment', 'returns', 'contact_reply'
+        when 'delivery_free', 'delivery_time', 'delivery_cost', 'cod', 'payment', 'returns', 'contact_reply'
           assign cat = 'orders'
         when 'custom'
           assign cat = 'other'
@@ -181,7 +229,7 @@
             { "value": "skin_type", "label": "Skin types" },
             { "value": "made", "label": "Where it's made" },
             { "value": "climate", "label": "What climate-adapted means" },
-            { "value": "fragrance", "label": "Fragrance" },
+            { "value": "fragrance", "label": "Fragrance (needs answer)" },
             { "value": "spf_last", "label": "SPF: where it goes" },
             { "value": "set_full_size", "label": "Sets: full-size products" },
             { "value": "set_saving", "label": "Sets: how the saving works" },
@@ -189,6 +237,13 @@
             { "value": "start_where", "label": "Which set to start with" },
             { "value": "all_four", "label": "Do I need all four steps" },
             { "value": "delivery_free", "label": "Free delivery (uses the threshold setting)" },
+            { "value": "delivery_time", "label": "Delivery time (from settings)" },
+            { "value": "delivery_cost", "label": "Delivery cost (from settings)" },
+            { "value": "cod", "label": "Cash on delivery (if turned on)" },
+            { "value": "sensitive", "label": "Sensitive skin (needs answer)" },
+            { "value": "shelf_life", "label": "Shelf life / PAO (needs answer)" },
+            { "value": "authenticity", "label": "Authenticity (needs answer)" },
+            { "value": "pregnancy", "label": "Pregnancy (needs answer)" },
             { "value": "returns", "label": "Returns (links the refund policy)" },
             { "value": "contact_reply", "label": "How to reach us" },
             { "value": "inci_what", "label": "What INCI means" },

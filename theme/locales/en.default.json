@@ -794,6 +794,35 @@
       "ac_steps": {
         "q": "What should I use for long days in air-con?",
         "a": "Our pick for air-con days is Daily Barrier Moisturizing Cream with Clarity Serum. The Climate page shows the steps we pair with each condition."
+      },
+      "delivery_time": {
+        "q": "How long does delivery take?",
+        "a": "Cairo and Giza: {{ main }} business days. Other governorates: {{ other }} business days. Business days are Sunday to Thursday, excluding public holidays. These are estimates, not guarantees."
+      },
+      "delivery_cost": {
+        "q": "How much is delivery?",
+        "a": "Standard delivery is {{ fee }}, and free on orders of {{ amount }} or more (after discounts).",
+        "a_flat": "Standard delivery is {{ fee }}.",
+        "remote": "Remote areas pay {{ remote }}, or {{ remote_over }} on orders of {{ amount }} or more.",
+        "remote_free": "Remote areas pay {{ remote }}; on orders of {{ amount }} or more, delivery is free everywhere.",
+        "remote_flat": "Remote areas pay {{ remote }}.",
+        "checkout": "The exact cost for your address is shown at checkout before you pay."
+      },
+      "cod": {
+        "q": "Can I pay cash on delivery?",
+        "a": "Yes. Cash on delivery is available at no extra charge. Please have the exact amount ready for the courier."
+      },
+      "sensitive": {
+        "q": "Are the products suitable for sensitive skin?"
+      },
+      "shelf_life": {
+        "q": "How long do the products last once opened?"
+      },
+      "authenticity": {
+        "q": "How do I know my product is genuine?"
+      },
+      "pregnancy": {
+        "q": "Can I use the products during pregnancy or breastfeeding?"
       }
     },
     "eyebrow": "Good to know",

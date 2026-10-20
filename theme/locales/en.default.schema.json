@@ -349,7 +349,20 @@
       "welcome_info": "Shown once per visitor. After sign-up it reveals the code below. The code, amount and minimum must match a real discount in Shopify → Discounts.",
       "welcome_code": "Discount code",
       "welcome_amount": "Amount off (EGP)",
-      "welcome_min": "Minimum subtotal (EGP)"
+      "welcome_min": "Minimum subtotal (EGP)",
+      "remote_fee": "Remote-area delivery fee below the threshold (EGP)",
+      "remote_fee_info": "Must match your Shopify shipping rate for remote areas. Shown in the delivery FAQ. Empty hides remote-area wording.",
+      "remote_fee_over": "Remote-area fee at or above the threshold (EGP)",
+      "remote_fee_over_info": "What remote areas pay once the order reaches the free-delivery threshold (0 = free everywhere). Must match Shopify.",
+      "delivery_days_main": "Delivery estimate, Cairo & Giza (business days)",
+      "delivery_days_other": "Delivery estimate, other governorates (business days)",
+      "delivery_days_info": "A range such as 1–3. Shown in the delivery FAQ. Empty hides the delivery-time answer."
+    },
+    "claims": {
+      "name": "Product claims",
+      "intro": "Claims such as non-comedogenic, fragrance-free, dermatologically tested, hypoallergenic, cruelty-free, vegan, halal or clinically proven are hidden on product pages until a report is on file.",
+      "documented": "Documented claims",
+      "documented_info": "One claim per line, written exactly as on the product (EN and AR lines both), only once its report or certificate is on file. Example: Non-comedogenic"
     }
   }
 }

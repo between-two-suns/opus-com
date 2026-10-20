@@ -109,7 +109,7 @@
         "q16": {
           "type": "qa",
           "settings": {
-            "preset": "delivery_free"
+            "preset": "delivery_cost"
           }
         },
         "q17": {
@@ -129,6 +129,42 @@
           "settings": {
             "preset": "contact_reply"
           }
+        },
+        "qa_delivery_time": {
+          "type": "qa",
+          "settings": {
+            "preset": "delivery_time"
+          }
+        },
+        "qa_cod": {
+          "type": "qa",
+          "settings": {
+            "preset": "cod"
+          }
+        },
+        "qa_sensitive": {
+          "type": "qa",
+          "settings": {
+            "preset": "sensitive"
+          }
+        },
+        "qa_shelf_life": {
+          "type": "qa",
+          "settings": {
+            "preset": "shelf_life"
+          }
+        },
+        "qa_authenticity": {
+          "type": "qa",
+          "settings": {
+            "preset": "authenticity"
+          }
+        },
+        "qa_pregnancy": {
+          "type": "qa",
+          "settings": {
+            "preset": "pregnancy"
+          }
         }
       },
       "block_order": [
@@ -139,6 +175,7 @@
         "q4",
         "q5",
         "q6",
+        "qa_sensitive",
         "q7",
         "q8",
         "q9",
@@ -146,9 +183,14 @@
         "q11",
         "q12",
         "q13",
+        "qa_shelf_life",
+        "qa_authenticity",
+        "qa_pregnancy",
         "q14",
         "q15",
         "q16",
+        "qa_delivery_time",
+        "qa_cod",
         "q17",
         "q18",
         "q19"
