@@ -540,7 +540,10 @@ function route(pathname, data, query) {
   if ((m = pathname.match(/^\/products\/([^/]+)$/))) {
     const product = data.byHandle[m[1]];
     if (!product) return null;
-    return { page_type: 'product', path: pathname, page_title: product.title, page_description: product.metafields.bts.benefit?.value, objects: { product } };
+    // ?view=x renders templates/product.x.json when it exists (alternate templates, as on Shopify)
+    const pv = query?.get?.('view') || (query && query.view) || null;
+    const psuffix = pv && exists(path.join(THEME, 'templates', `product.${pv}.json`)) ? pv : null;
+    return { page_type: 'product', suffix: psuffix, path: pathname, page_title: product.title, page_description: product.metafields.bts.benefit?.value, objects: { product } };
   }
   if ((m = pathname.match(/^\/collections\/([^/]+)$/))) {
     const collection = data.collections[m[1]];

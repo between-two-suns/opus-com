@@ -1,0 +1,12 @@
+{%- comment -%}
+  Product page demo (v2): which key ingredient explains each of the pack's benefit phrases, in label order.
+  A number is the index in bts.key_ingredients; "f" is a feel/texture phrase with no ingredient behind it.
+  After "|", key ingredients shown as extra cards of their own (e.g. the sunscreen's UV filters).
+  Index-based, so it works for the Arabic translations too. Param: handle
+{%- endcomment -%}
+{%- case handle -%}
+  {%- when 'daily-reset-cleanser' -%}0,1,f|
+  {%- when 'clarity-serum' -%}0,1,2|
+  {%- when 'daily-barrier-moisturizing-cream' -%}0,1,f|
+  {%- when 'daily-defense-sunscreen-spf-50' -%}f,f,f|0
+{%- endcase -%}

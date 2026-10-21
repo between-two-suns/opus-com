@@ -1,0 +1,134 @@
+{%- comment -%}
+  Product page demo (v2): how to use, as numbered steps from the pack directions (bts.how_to_use, one step per
+  sentence) with the application photos, then "Works best with": the honest routine partners (the next step, and
+  SPF every morning), each with its benefit line, price and its own Add button. Single products only.
+{%- endcomment -%}
+{%- liquid
+  capture step
+    render 'product-step', product: product
+  endcapture
+  assign step = step | strip | plus: 0
+  assign mf = product.metafields.bts
+  assign sentences = mf.how_to_use.value | split: '.'
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign photo_a = false
+  assign photo_b = false
+  for m in product.media
+    assign src = m.preview_image.src
+    if src contains '-application-2' or src contains '-in-use'
+      if photo_b == false
+        assign photo_b = m.preview_image
+      endif
+    elsif src contains '-application'
+      if photo_a == false
+        assign photo_a = m.preview_image
+      endif
+    endif
+  endfor
+  if photo_b == false
+    for m in product.media
+      if m.preview_image.src contains '-in-hand'
+        assign photo_b = m.preview_image
+        break
+      endif
+    endfor
+  endif
+  case step
+    when 1
+      assign pair_steps = '2,4'
+      assign pair_keys = 'pdp2.pair_next,pdp2.pair_spf'
+    when 2
+      assign pair_steps = '3,4'
+      assign pair_keys = 'pdp2.pair_next,pdp2.pair_spf'
+    when 3
+      assign pair_steps = '2,4'
+      assign pair_keys = 'pdp2.pair_before,pdp2.pair_spf'
+    when 4
+      assign pair_steps = '3,2'
+      assign pair_keys = 'pdp2.pair_before,pdp2.pair_heading'
+    else
+      assign pair_steps = ''
+      assign pair_keys = ''
+  endcase
+  assign pair_steps = pair_steps | split: ','
+  assign pair_keys = pair_keys | split: ','
+-%}
+{%- if step > 0 -%}
+<section class="section v2-how" data-step="{{ step }}" aria-labelledby="V2How-{{ section.id }}">
+  <div class="container">
+    {%- if mf.how_to_use != blank -%}
+      <div class="section-head">
+        <div class="section-head__text">
+          <p class="t-eyebrow">{{ 'pdp2.how_eyebrow' | t }}</p>
+          <h2 class="t-display-m" id="V2How-{{ section.id }}">{{ 'pdp2.how_heading' | t }}</h2>
+        </div>
+        {%- if mf.when_to_use != blank -%}<p class="pill v2-how__when">{% render 'icon', name: 'sun', class: 'icon--sm' %}{{ mf.when_to_use }}</p>{%- endif -%}
+      </div>
+      <ol class="v2-how__steps" role="list" tabindex="0" aria-labelledby="V2How-{{ section.id }}">
+        {%- assign n = 0 -%}
+        {%- for s in sentences -%}
+          {%- assign s = s | strip -%}
+          {%- if s == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign n = n | plus: 1 -%}
+          {%- if n > 4 -%}{%- break -%}{%- endif -%}
+          <li class="v2-how__step">
+            <div class="v2-how__media">
+              {%- if n == 1 and photo_a -%}
+                {{ photo_a | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400,600,800', sizes: '(min-width: 990px) 28vw, 80vw', alt: '' }}
+              {%- elsif n == 2 and photo_b -%}
+                {{ photo_b | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400,600,800', sizes: '(min-width: 990px) 28vw, 80vw', alt: '' }}
+              {%- else -%}
+                {%- assign next_i = step | plus: 1 -%}
+                {%- if step == 4 -%}{%- assign next_i = 4 -%}{%- endif -%}
+                <span class="v2-how__pack" data-step="{{ next_i }}"><img src="{{ 'cut-' | append: step_handles[next_i] | append: '.webp' | asset_url }}" alt="" width="120" height="378" loading="lazy"></span>
+              {%- endif -%}
+              <span class="v2-how__n" aria-hidden="true">{{ n }}</span>
+            </div>
+            <p class="v2-how__text">{{ s }}.</p>
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+
+    {%- if pair_steps.size > 0 -%}
+      <div class="v2-pair" aria-labelledby="V2Pair-{{ section.id }}">
+        <p class="t-eyebrow" id="V2Pair-{{ section.id }}">{{ 'pdp2.pair_eyebrow' | t }}</p>
+        <ul class="v2-pair__list" role="list">
+          {%- for ps in pair_steps -%}
+            {%- assign pi = ps | plus: 0 -%}
+            {%- assign pp = all_products[step_handles[pi]] -%}
+            {%- if pp == blank or pp.id == nil -%}{%- continue -%}{%- endif -%}
+            {%- assign pv = pp.selected_or_first_available_variant -%}
+            {%- assign key = pair_keys[forloop.index0] -%}
+            <li class="v2-pair__card" data-step="{{ pi }}">
+              <a class="v2-pair__visual" href="{{ pp.url }}?view=v2" tabindex="-1" aria-hidden="true"><img src="{{ 'cut-' | append: pp.handle | append: '.webp' | asset_url }}" alt="" width="80" height="252" loading="lazy"></a>
+              <div class="v2-pair__body">
+                <p class="v2-pair__why">{{ key | t }}</p>
+                <h3 class="v2-pair__name"><a href="{{ pp.url }}?view=v2">{{ pp.title | escape }}</a></h3>
+                {%- if pp.metafields.bts.benefit != blank -%}<p class="v2-pair__benefit">{{ pp.metafields.bts.benefit }}</p>{%- endif -%}
+              </div>
+              <product-form class="v2-pair__buy" data-product-title="{{ pp.title | escape }}">
+                <form method="post" action="{{ routes.cart_add_url }}">
+                  <input type="hidden" name="id" value="{{ pv.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <span class="v2-pair__price">{% render 'egp', cents: pv.price %}</span>
+                  <button type="submit" class="btn btn--secondary btn--small v2-pair__add"{% unless pv.available %} disabled{% endunless %}>
+                    {%- render 'icon', name: 'plus', class: 'icon--sm' -%}<span class="btn__label">{{ 'pdp2.add' | t }}<span class="visually-hidden">: {{ pp.title | escape }}</span></span>
+                  </button>
+                  <p class="t-xs t-muted" data-form-error hidden></p>
+                </form>
+              </product-form>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "How to use (demo v2)"
+}
+{% endschema %}

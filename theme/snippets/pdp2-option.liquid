@@ -1,0 +1,83 @@
+{%- comment -%}
+  Product page demo (v2): one "how to buy" card in the buy box. Selecting it puts its variant in the form, so
+  Add to bag adds exactly what the card says, at its real price. Renders nothing if the set doesn't exist.
+  Params: handle (product or set handle), checked (bool), here (the product being viewed), index, compact (bool)
+{%- endcomment -%}
+{%- assign op = all_products[handle] -%}
+{%- if op != blank and op.id -%}
+  {%- liquid
+    assign ov = op.selected_or_first_available_variant
+    assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+    capture odef
+      render 'bundle-def', handle: op.handle
+    endcapture
+    assign odef = odef | strip
+    assign is_set = false
+    if odef != blank
+      assign is_set = true
+      assign parts = odef | split: '|'
+      assign osteps = parts[0] | split: ','
+      assign obadge = parts[1]
+      assign okind = parts[3]
+      assign name_key = 'bundles.names.' | append: op.handle
+      assign oname = name_key | t | replace: '&amp;', '&'
+      if oname contains 'ranslation missing'
+        assign oname = op.title
+      endif
+      if okind == 'stock'
+        assign osub = 'pdp2.stock_sub' | t: count: osteps.size, name: here.title
+      elsif osteps.size == 4
+        assign osub = 'pdp2.set_sub_all' | t
+      else
+        assign osub = 'pdp2.set_sub_n' | t: count: osteps.size
+      endif
+    else
+      assign osteps = ''
+      assign oname = op.title
+      assign obadge = ''
+      if op.metafields.bts.size != blank
+        assign osub = 'pdp2.single_sub' | t: size: op.metafields.bts.size.value
+      else
+        assign osub = 'pdp2.single_sub_plain' | t
+      endif
+    endif
+    assign saving = 0
+    if ov.compare_at_price > ov.price
+      assign saving = ov.compare_at_price | minus: ov.price
+    endif
+    assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
+    capture oprice
+      render 'egp', cents: ov.price
+    endcapture
+  -%}
+  <label class="v2-opt{% if compact %} v2-opt--compact{% endif %}{% if obadge == 'bts_pick' %} v2-opt--pick{% endif %}">
+    <input class="v2-opt__input" type="radio" name="v2-option" value="{{ ov.id }}"
+      data-price="{{ ov.price }}" data-compare="{{ ov.compare_at_price | default: 0 }}" data-name="{{ oname | escape }}"
+      data-price-label="{{ oprice | strip | escape }}"{% if checked %} checked{% endif %}{% unless ov.available %} disabled{% endunless %}>
+    <span class="v2-opt__dot" aria-hidden="true"></span>
+    <span class="v2-opt__packs" aria-hidden="true">
+      {%- if is_set -%}
+        {%- for st in osteps -%}
+          {%- assign si = st | plus: 0 -%}
+          <img src="{{ 'cut-' | append: step_handles[si] | append: '.webp' | asset_url }}" alt="" width="40" height="126" loading="lazy" data-step="{{ si }}">
+        {%- endfor -%}
+      {%- else -%}
+        <img src="{{ 'cut-' | append: op.handle | append: '.webp' | asset_url }}" alt="" width="40" height="126" loading="lazy">
+      {%- endif -%}
+    </span>
+    <span class="v2-opt__text">
+      <span class="v2-opt__name">{{ oname | escape }}{% if obadge == 'bts_pick' %} <span class="v2-opt__badge">{{ 'bundles.badges.bts_pick' | t }}</span>{% endif %}</span>
+      <span class="v2-opt__sub">{{ osub }}</span>
+      {%- if saving > 0 or threshold > 0 and ov.price >= threshold -%}
+        <span class="v2-opt__perks">
+          {%- if saving > 0 -%}{%- capture amt -%}{% render 'egp', cents: saving %}{%- endcapture -%}<span class="v2-opt__save">{{ 'pdp2.save' | t: amount: amt }}</span>{%- endif -%}
+          {%- if threshold > 0 and ov.price >= threshold -%}<span class="v2-opt__ship">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</span>{%- endif -%}
+        </span>
+      {%- endif -%}
+    </span>
+    <span class="v2-opt__price">
+      <span class="v2-opt__now">{{ oprice }}</span>
+      {%- if saving > 0 -%}<s class="v2-opt__was"><span class="visually-hidden">{{ 'sections.bundles.was' | t }} </span>{% render 'egp', cents: ov.compare_at_price %}</s>{%- endif -%}
+    </span>
+  </label>
+{%- endif -%}

@@ -1,0 +1,349 @@
+{{ 'product.css' | asset_url | stylesheet_tag }}
+{{ 'pdp-v2.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Product page demo (v2, /products/…?view=v2). Same stage, callouts and gallery as the live product page; the info
+  column leads with the pack's benefit line, the concerns it helps with and the price, then "choose how to buy"
+  (this product or a set that holds it, real prices, this product pre-selected), Add to bag with the chosen price,
+  and honest reassurance (delivery estimate, free-delivery distance, returns, COD only when switched on).
+  Benefits, how to use and pairings follow as their own sections (pdp-benefits, pdp-howto).
+{%- endcomment -%}
+{%- liquid
+  capture step
+    render 'product-step', product: product
+  endcapture
+  assign step = step | strip | plus: 0
+  assign mf = product.metafields.bts
+  assign step_label = mf.step_label.value
+  assign inci_hint = 'product.inci_hint' | t | replace: '&amp;', '&'
+  assign variant = product.selected_or_first_available_variant
+  assign coming_soon = false
+  if variant.price == 0 and settings.zero_price_coming_soon
+    assign coming_soon = true
+  endif
+  assign cutout = mf.cutout.value
+  assign media_count = product.media.size
+  assign skip_media = 0
+  if cutout
+    assign skip_media = 1
+    assign media_count = media_count | at_least: 1
+  endif
+  assign description = mf.description.value | default: product.description
+  assign form_id = 'ProductForm-' | append: section.id
+  capture bdef
+    render 'bundle-def', handle: product.handle
+  endcapture
+  assign bdef = bdef | strip
+  if bdef != blank
+    assign set_steps = bdef | split: '|' | first | split: ',' | uniq
+    assign media_count = set_steps.size | plus: 1
+  endif
+  assign pdp_title = product.title
+  assign benefit = mf.benefit.value
+  if bdef != blank
+    assign set_key = 'bundles.names.' | append: product.handle
+    assign set_name = set_key | t | replace: '&amp;', '&'
+    unless set_name contains 'ranslation missing' or set_name == set_key
+      assign pdp_title = set_name
+    endunless
+    assign desc_key = 'bundles.desc.' | append: product.handle
+    assign set_desc = desc_key | t | replace: '&amp;', '&'
+    unless set_desc contains 'ranslation missing' or set_desc == desc_key
+      assign benefit = set_desc
+    endunless
+  endif
+  comment
+    How to buy: this product, then the sets that hold it (the one that completes the most natural routine first,
+    The Full Ritual last); a stock-up as a compact extra row where one exists.
+  endcomment
+  case step
+    when 1
+      assign opt_handles = 'the-core-duo,the-full-ritual'
+      assign stock_handle = ''
+    when 2
+      assign opt_handles = 'clear-protect-duo,the-full-ritual'
+      assign stock_handle = 'serum-stock-up'
+    when 3
+      assign opt_handles = 'the-night-ritual,the-full-ritual'
+      assign stock_handle = ''
+    when 4
+      assign opt_handles = 'clear-protect-duo,the-full-ritual'
+      assign stock_handle = 'spf-stock-up'
+    else
+      assign opt_handles = ''
+      assign stock_handle = ''
+  endcase
+  assign opt_handles = opt_handles | split: ','
+  assign show_options = false
+  if step > 0 and bdef == blank and coming_soon == false and opt_handles.size > 0
+    assign show_options = true
+  endif
+  assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
+  capture price_label
+    render 'egp', cents: variant.price
+  endcapture
+  assign price_label = price_label | strip
+-%}
+{%- assign qty_max = 5 -%}
+{%- if bdef != blank -%}{%- assign qty_max = 3 -%}{{ 'bundles.css' | asset_url | stylesheet_tag }}{%- endif -%}
+
+<div class="pdp pdp--v2" data-step="{{ step }}" data-tone="sku" data-product-title="{{ pdp_title | escape }}">
+  <div class="container">
+    {%- assign tab_source = settings.routine_collection | default: collections.all -%}
+    {%- if step > 0 -%}
+      <nav class="pdp-tabs" aria-label="{{ 'product.routine_tabs' | t }}">
+        <ol class="pdp-tabs__list" role="list">
+          {%- for s in (1..4) -%}
+            {%- for p in tab_source.products limit: 12 -%}
+              {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+              {%- assign ps = ps | strip | plus: 0 -%}
+              {%- if ps == s -%}
+                <li class="pdp-tabs__item" data-step="{{ s }}">
+                  <a class="pdp-tabs__link" href="{{ p.url }}?view=v2"{% if p.id == product.id %} aria-current="page"{% endif %}>
+                    <span class="pdp-tabs__num">0{{ s }}</span>
+                    <span class="pdp-tabs__name">{{ p.metafields.bts.step_label.value | default: p.title | escape }}</span>
+                  </a>
+                </li>
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </ol>
+      </nav>
+    {%- endif -%}
+
+    <div class="pdp__grid">
+      {%- comment -%} Gallery: identical to the live page (studio stage + callouts), plus thumbnails on desktop. {%- endcomment -%}
+      <media-gallery class="pdp__gallery" aria-label="{{ 'product.gallery' | t }}" role="region">
+        <div class="gallery__track" data-track tabindex="0">
+          {%- assign slide = 0 -%}
+          {%- if cutout -%}
+            {%- assign slide = slide | plus: 1 -%}
+            <div class="gallery__slide gallery__slide--studio" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
+              {%- liquid
+                assign textures = 'texture-foam.svg,texture-drops.svg,texture-cream.svg,texture-sand.svg' | split: ','
+                assign tex_index = step | minus: 1
+                assign tex = textures[tex_index]
+              -%}
+              {%- if tex != blank -%}<span class="gallery__texture" aria-hidden="true" style="--tex: url('{{ tex | asset_url }}')"></span>{%- endif -%}
+              {%- if step_label != blank -%}<span class="gallery__word" aria-hidden="true" style="--len: {{ step_label | size }}">{{ step_label | escape }}</span>{%- endif -%}
+              {%- if mf.benefit != blank -%}
+                {%- assign callouts = mf.benefit | split: '.' -%}
+                <ul class="callouts" role="list" aria-hidden="true">
+                  {%- assign shown = 0 -%}
+                  {%- for c in callouts -%}
+                    {%- assign c = c | strip -%}
+                    {%- if c != blank and shown < 3 -%}
+                      <li class="callouts__item" style="--k: {{ shown }}"><span class="callouts__text">{{ c }}</span><span class="callouts__line"></span></li>
+                      {%- assign shown = shown | plus: 1 -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+              {{ cutout | image_url: width: 900 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '300,450,600,750,900', sizes: '(min-width: 990px) 46vw, 92vw', alt: product.title, class: 'gallery__cutout' }}
+            </div>
+          {%- endif -%}
+          {%- if bdef != blank -%}{%- render 'pdp-bundle', part: 'gallery', handle: product.handle, count: media_count -%}{%- else -%}
+          {%- for media in product.media offset: skip_media -%}
+            {%- assign slide = slide | plus: 1 -%}
+            <div class="gallery__slide{% if media.preview_image.src contains '.png' %} gallery__slide--png{% endif %}" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
+              {%- case media.media_type -%}
+                {%- when 'image' -%}
+                  {{ media | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200,1400', sizes: '(min-width: 990px) 46vw, 92vw', alt: media.alt | default: product.title }}
+                {%- when 'video' -%}
+                  {{ media | video_tag: controls: true, muted: true, playsinline: true, preload: 'none', image_size: '1200x' }}
+                {%- when 'external_video' -%}
+                  {{ media | external_video_tag: loading: 'lazy' }}
+                {%- else -%}
+                  {{ media | media_tag }}
+              {%- endcase -%}
+            </div>
+          {%- endfor -%}
+          {%- endif -%}
+        </div>
+        {%- if media_count > 1 -%}
+          <div class="gallery__nav">
+            <button type="button" class="gallery__arrow" data-prev aria-label="{{ 'accessibility.previous_slide' | t }}">{% render 'icon', name: 'chevron-left', class: 'icon--flip' %}</button>
+            <div class="gallery__dots" role="group" aria-label="{{ 'product.gallery' | t }}">
+              {%- for i in (1..media_count) -%}
+                <button type="button" class="gallery__dot" data-dot="{{ forloop.index0 }}" aria-label="{{ 'accessibility.slide_n' | t: index: i, count: media_count }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
+              {%- endfor -%}
+            </div>
+            <button type="button" class="gallery__arrow" data-next aria-label="{{ 'accessibility.next_slide' | t }}">{% render 'icon', name: 'chevron-right', class: 'icon--flip' %}</button>
+          </div>
+          {%- if bdef == blank -%}
+            <div class="v2-thumbs" aria-hidden="true">
+              {%- assign t = 0 -%}
+              {%- if cutout -%}
+                <button type="button" class="v2-thumb v2-thumb--studio" data-thumb="0" tabindex="-1">{{ cutout | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '64px', alt: '' }}</button>
+                {%- assign t = 1 -%}
+              {%- endif -%}
+              {%- for media in product.media offset: skip_media -%}
+                <button type="button" class="v2-thumb{% if media.preview_image.src contains '.png' %} v2-thumb--png{% endif %}" data-thumb="{{ t }}" tabindex="-1">{{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '64px', alt: '' }}</button>
+                {%- assign t = t | plus: 1 -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      </media-gallery>
+
+      <div class="pdp__info">
+        <div class="pdp__head v2-head">
+          {%- if step > 0 -%}
+            <p class="step-tag pdp__step">{{ 'product.step' | t: number: step }}{% if step_label != blank %} · {{ step_label }}{% endif %}</p>
+          {%- endif -%}
+          <h1 class="pdp__title v2-title">{{ pdp_title | escape }}</h1>
+          {%- render 'jdgm-badge', product: product -%}
+          {%- if benefit != blank -%}<p class="v2-benefit">{{ benefit }}</p>{%- endif -%}
+          {%- assign cs = mf.concerns.value -%}
+          {%- if cs.size > 0 and bdef == blank -%}
+            <div class="v2-for">
+              <span class="v2-for__label">{{ 'pdp2.helps_with' | t }}</span>
+              <ul class="v2-for__list" role="list">
+                {%- for c in cs -%}
+                  {%- assign ck = 'concerns.' | append: c -%}
+                  <li>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ ck | t }}</li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="pdp__buy v2-buy" id="PdpBuy-{{ section.id }}" data-v2-buy data-threshold="{{ threshold }}" data-cart-total="{{ cart.total_price }}" data-price="{{ variant.price }}">
+          <div class="v2-buy__top">
+            {%- render 'price', product: product, variant: variant, class: 'pdp__price' -%}
+            {%- if bdef == blank and mf.size != blank -%}
+              <p class="v2-buy__facts"><span class="u-ltr">{{ mf.size }}</span>{% if mf.when_to_use != blank %} · {{ mf.when_to_use }}{% endif %}</p>
+            {%- endif -%}
+            {%- render 'pdp-bundle', part: 'info', handle: product.handle, variant: variant -%}
+          </div>
+
+          {%- if show_options -%}
+            <fieldset class="v2-opts" data-v2-options>
+              <legend class="v2-opts__legend">{{ 'pdp2.options' | t }}</legend>
+              {%- render 'pdp2-option', handle: product.handle, checked: true, here: product -%}
+              {%- for h in opt_handles -%}
+                {%- render 'pdp2-option', handle: h, checked: false, here: product -%}
+              {%- endfor -%}
+              {%- if stock_handle != blank -%}
+                {%- render 'pdp2-option', handle: stock_handle, checked: false, here: product, compact: true -%}
+              {%- endif -%}
+            </fieldset>
+          {%- endif -%}
+
+          <product-form class="pdp__form" data-section="{{ section.id }}">
+            {%- form 'product', product, id: form_id, novalidate: 'novalidate' -%}
+              <input type="hidden" name="id" value="{{ variant.id }}" data-variant-id>
+              <div class="pdp__actions">
+                <quantity-input class="qty">
+                  <button type="button" data-step="-1" aria-label="{{ 'product.decrease' | t }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
+                  <label class="visually-hidden" for="Qty-{{ section.id }}">{{ 'product.quantity' | t }}</label>
+                  <input id="Qty-{{ section.id }}" type="number" name="quantity" value="1" min="1" max="{{ qty_max }}" inputmode="numeric">
+                  <button type="button" data-step="1" aria-label="{{ 'product.increase' | t }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
+                </quantity-input>
+                <button type="submit" name="add" class="btn btn--deep pdp__atc" data-atc {% if coming_soon or variant.available == false %}disabled{% endif %}>
+                  <span class="btn__label" data-atc-label data-v2-atc-label>
+                    {%- if coming_soon -%}
+                      {{ 'product.coming_soon' | t }}
+                    {%- elsif variant.available == false -%}
+                      {{ 'product.sold_out' | t }}
+                    {%- else -%}
+                      {{ 'pdp2.add_price' | t: price: price_label }}
+                    {%- endif -%}
+                  </span>
+                </button>
+              </div>
+              <p class="field__error" data-form-error role="alert" hidden></p>
+              {%- if settings.show_dynamic_checkout and coming_soon == false -%}
+                <div class="pdp__dynamic">{{ form | payment_button }}</div>
+              {%- endif -%}
+            {%- endform -%}
+          </product-form>
+
+          <ul class="v2-assure" role="list">
+            {%- if threshold > 0 and coming_soon == false -%}
+              {%- liquid
+                assign after = cart.total_price | plus: variant.price
+                assign left = threshold | minus: after
+                capture left_label
+                  render 'egp', cents: left
+                endcapture
+              -%}
+              <li class="v2-assure__ship{% if left <= 0 %} is-done{% endif %}" data-v2-ship data-left-tpl="{{ 'pdp2.free_left' | t: amount: '__A__' | escape }}" data-done="{{ 'pdp2.free_done' | t | escape }}">
+                {% render 'icon', name: 'truck', class: 'icon--sm' %}
+                <span class="v2-assure__text">
+                  <span data-v2-ship-text>{%- if left <= 0 -%}{{ 'pdp2.free_done' | t }}{%- else -%}{{ 'pdp2.free_left' | t: amount: left_label }}{%- endif -%}</span>
+                  {%- assign pct = after | times: 100 | divided_by: threshold | at_most: 100 -%}
+                  <span class="v2-meter" aria-hidden="true"><span data-v2-meter style="--v: {{ pct }}%"></span></span>
+                </span>
+              </li>
+            {%- endif -%}
+            {%- if settings.delivery_days_main != blank and settings.delivery_days_other != blank -%}
+              <li>{% render 'icon', name: 'globe', class: 'icon--sm' %}<span>{{ 'pdp2.delivery' | t: main: settings.delivery_days_main, other: settings.delivery_days_other }}</span></li>
+            {%- endif -%}
+            <li>{% render 'icon', name: 'refresh', class: 'icon--sm' %}<span>{{ 'pdp2.returns' | t }} <a href="{{ routes.root_url | append: '/pages/returns' | replace: '//', '/' }}">{{ 'pdp2.returns_link' | t }}</a></span></li>
+            {%- if settings.show_cod -%}
+              <li>{% render 'icon', name: 'cash', class: 'icon--sm' %}<span>{{ 'product.cod' | t }}</span></li>
+            {%- endif -%}
+          </ul>
+          {%- render 'skin-check-link', key: 'skin_check.cta_product', class: 'pdp__skc' -%}
+          {%- render 'payment-icons', class: 'pdp__payments' -%}
+        </div>
+
+        {%- comment -%} Reference details stay one tap away. {%- endcomment -%}
+        <div class="v2-details">
+          {%- if mf.inci != blank -%}
+            <details class="accordion">
+              <summary><span>{{ 'product.sections.inci' | t }}<span class="accordion__hint">{{ 'product.sections.inci_hint' | t }}</span></span><span class="accordion__icon" aria-hidden="true"></span></summary>
+              <div class="accordion__content">
+                {%- assign glossary_url = routes.root_url | append: '/pages/ingredients' | replace: '//', '/' -%}
+                {%- render 'inci-links', inci: mf.inci.value, base: glossary_url -%}
+                <p class="t-xs t-muted pdp__inci-hint">{{ inci_hint }}</p>
+              </div>
+            </details>
+          {%- endif -%}
+          {%- if mf.caution != blank or mf.legal != blank -%}
+            <details class="accordion">
+              <summary><span>{{ 'product.sections.caution' | t }}<span class="accordion__hint">{{ 'product.sections.caution_hint' | t }}</span></span><span class="accordion__icon" aria-hidden="true"></span></summary>
+              <div class="accordion__content">
+                {%- if mf.caution != blank -%}<p>{{ mf.caution }}</p>{%- endif -%}
+                {%- if mf.legal != blank -%}<p class="t-small t-muted" lang="en" dir="ltr">{{ mf.legal }}</p>{%- endif -%}
+              </div>
+            </details>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <sticky-atc class="sticky-atc" data-target="PdpBuy-{{ section.id }}" hidden>
+    <div class="sticky-atc__inner">
+      <span class="sticky-atc__thumb" aria-hidden="true">
+        {%- if cutout -%}
+          {{ cutout | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '44px', alt: '' }}
+        {%- elsif product.featured_media -%}
+          {{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '44px', alt: '' }}
+        {%- endif -%}
+      </span>
+      <span class="sticky-atc__text">
+        <span class="sticky-atc__title" data-v2-sticky-name>{{ pdp_title | escape }}</span>
+        <span class="price t-small"><span class="price__current" data-v2-sticky-price>{%- if coming_soon -%}{{ 'product.price_coming_soon' | t }}{%- else -%}{{ price_label }}{%- endif -%}</span></span>
+      </span>
+      <button type="submit" form="{{ form_id }}" class="btn btn--deep btn--small sticky-atc__btn" data-magnetic {% if coming_soon or variant.available == false %}disabled{% endif %}>
+        <span class="btn__label">{%- if coming_soon -%}{{ 'product.coming_soon' | t }}{%- elsif variant.available == false -%}{{ 'product.sold_out' | t }}{%- else -%}{{ 'product.add_to_cart' | t }}{%- endif -%}</span>
+        {%- unless coming_soon or variant.available == false -%}{% render 'icon', name: 'cart' %}{%- endunless -%}
+      </button>
+    </div>
+  </sticky-atc>
+</div>
+
+{%- render 'structured-data-product', product: product, description: description -%}
+<script src="{{ 'product.js' | asset_url }}" type="module" defer></script>
+<script src="{{ 'pdp-v2.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "Product page (demo v2)",
+  "tag": "section",
+  "class": "section-main-product"
+}
+{% endschema %}

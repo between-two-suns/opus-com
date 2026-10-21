@@ -1,0 +1,97 @@
+{%- comment -%}
+  Product page demo (v2): "What it does for your skin". Each of the pack's benefit phrases (label wording, as
+  approved) with the key ingredient behind it and that ingredient's glossary line; feel phrases sit with the
+  texture. Photo: the product's texture shot. Mapping: snippets/pdp2-benefit-map. Single products only.
+{%- endcomment -%}
+{%- liquid
+  capture step
+    render 'product-step', product: product
+  endcapture
+  assign step = step | strip | plus: 0
+  assign mf = product.metafields.bts
+  capture map
+    render 'pdp2-benefit-map', handle: product.handle
+  endcapture
+  assign map = map | strip
+  assign map_parts = map | split: '|'
+  assign idx = map_parts[0] | split: ','
+  assign extra = map_parts[1] | split: ','
+  assign kis = mf.key_ingredients.value
+  assign phrases = mf.benefit.value | split: '.'
+  assign tex_key = 'bts-' | append: product.handle | append: '-texture.jpg'
+  assign photo = images[tex_key]
+  if photo == blank
+    assign photo = false
+    for m in product.media
+      if m.preview_image.src contains '-texture'
+        assign photo = m.preview_image
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- if step > 0 and mf.benefit != blank -%}
+<section class="section v2-ben" data-step="{{ step }}" aria-labelledby="V2Ben-{{ section.id }}">
+  <div class="container v2-ben__grid">
+    {%- if photo -%}
+      <div class="v2-ben__media">
+        {{ photo | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '(min-width: 990px) 44vw, 100vw', alt: '' }}
+        {%- if mf.texture != blank -%}
+          <p class="v2-ben__tex"><span class="t-eyebrow">{{ 'product.texture' | t }}</span><span>{{ mf.texture }}</span></p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="v2-ben__body">
+      <p class="t-eyebrow">{{ 'pdp2.benefits_eyebrow' | t }}</p>
+      <h2 class="t-display-m" id="V2Ben-{{ section.id }}">{{ 'pdp2.benefits_heading' | t }}</h2>
+      <ol class="v2-ben__list" role="list">
+        {%- assign n = 0 -%}
+        {%- for ph in phrases -%}
+          {%- assign ph = ph | strip -%}
+          {%- if ph == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign map_i = idx[n] | default: 'f' -%}
+          {%- assign n = n | plus: 1 -%}
+          <li class="v2-ben__item">
+            <span class="v2-ben__num" aria-hidden="true">0{{ n }}</span>
+            <div class="v2-ben__text">
+              <h3 class="v2-ben__title">{{ ph }}</h3>
+              {%- if map_i != 'f' -%}
+                {%- assign ki_i = map_i | plus: 0 -%}
+                {%- assign ki = kis[ki_i] -%}
+                {%- if ki -%}
+                  <p class="v2-ben__ing"><span class="v2-ben__chip">{{ ki.name.value | escape }}</span></p>
+                  <p class="v2-ben__role">{{ ki.role.value | escape }}</p>
+                {%- endif -%}
+              {%- else -%}
+                <p class="v2-ben__ing"><span class="v2-ben__chip v2-ben__chip--feel">{{ 'pdp2.feel' | t }}</span></p>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endfor -%}
+        {%- for e in extra -%}
+          {%- if e == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign ki_i = e | plus: 0 -%}
+          {%- assign ki = kis[ki_i] -%}
+          {%- if ki -%}
+            {%- assign n = n | plus: 1 -%}
+            <li class="v2-ben__item">
+              <span class="v2-ben__num" aria-hidden="true">0{{ n }}</span>
+              <div class="v2-ben__text">
+                <h3 class="v2-ben__title">{{ ki.name.value | escape }}</h3>
+                <p class="v2-ben__role">{{ ki.role.value | escape }}</p>
+              </div>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ol>
+      {%- render 'pdp-made-for', step: step -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Benefits (demo v2)"
+}
+{% endschema %}
