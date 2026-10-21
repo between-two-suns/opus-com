@@ -482,7 +482,7 @@ html.has-open-dialog { overflow: hidden; }
 .accordion > summary::-webkit-details-marker { display: none; }
 .accordion > summary .accordion__hint { display: block; font-size: 13px; font-weight: 500; color: var(--c-muted); margin-block-start: 2px; }
 .accordion__icon { position: relative; inline-size: 28px; block-size: 28px; flex: none; border-radius: 50%; border: 1.5px solid var(--c-line-strong); }
-.accordion__icon::before, .accordion__icon::after { content: ''; position: absolute; inset-block-start: 50%; inset-inline-start: 50%; inline-size: 12px; block-size: 1.5px; background: currentColor; translate: -50% -50%; transition: rotate var(--dur) var(--ease-out); }
+.accordion__icon::before, .accordion__icon::after { content: ''; position: absolute; inset-block-start: 50%; left: 50%; inline-size: 12px; block-size: 1.5px; background: currentColor; translate: -50% -50%; transition: rotate var(--dur) var(--ease-out); }
 .accordion__icon::after { rotate: 90deg; }
 .accordion[open] .accordion__icon::after { rotate: 0deg; }
 .accordion__content { padding-block: 0 24px; }
@@ -777,7 +777,7 @@ html.has-open-dialog { overflow: hidden; }
   [dir='rtl'] .cart-drawer.drawer[open] { transform: translateY(0); }
   @starting-style { [dir='rtl'] .cart-drawer.drawer[open] { transform: translateY(100%); } }
   .cart-drawer .drawer__head { position: relative; padding-block-start: 18px; }
-  .cart-drawer .drawer__head::before { content: ''; position: absolute; inset-block-start: 8px; inset-inline-start: 50%; translate: -50% 0; inline-size: 40px; block-size: 4px; border-radius: 4px; background: color-mix(in srgb, var(--c-ink) 20%, transparent); }
+  .cart-drawer .drawer__head::before { content: ''; position: absolute; inset-block-start: 8px; left: 50%; translate: -50% 0; inline-size: 40px; block-size: 4px; border-radius: 4px; background: color-mix(in srgb, var(--c-ink) 20%, transparent); }
 }
 
 /* ---------- "Next in your routine" (bag): swipeable cards ---------- */
@@ -1103,6 +1103,7 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 .btn.is-added::after { animation: added-roll 420ms cubic-bezier(.2, 1.2, .4, 1) both; }
 @keyframes added-roll { from { opacity: 0; transform: translateY(70%); } to { opacity: 1; transform: none; } }
 .btn.is-added::before { inset-block-start: var(--py, 50%); inset-inline-start: var(--px, 50%); inset-block-end: auto; inset-inline-end: auto; inline-size: 40px; block-size: 40px; border-radius: 50%; translate: -50% -50%; }
+[dir='rtl'] .btn.is-added::before { inset-inline-start: auto; left: var(--px, 50%); }
 
 /* the throw */
 .fly { position: fixed; z-index: 120; inset: auto; pointer-events: none; will-change: transform; filter: none; }
