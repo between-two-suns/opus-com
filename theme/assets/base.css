@@ -1288,3 +1288,11 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 @media (min-width: 1200px) {
   .site-header .site-nav__link { font-size: 14px; padding: 0 10px; }
 }
+
+/* Home: neighbouring sections share one gap. Each .section pads top and bottom, so two in a row stacked to a double gap
+   (sets → climate → ingredients) while sections next to the full-bleed photo band had a single one. An empty section
+   in between (the reviews carousel before it has reviews) is skipped over. */
+.template-index .shopify-section:has(> .section) + .shopify-section > .section,
+.template-index .shopify-section:has(> .section) + .shopify-section:not(:has(> *)) + .shopify-section > .section { padding-block-start: 0; }
+/* On phones the photo band ends with its own section gap, so the FAQ after it drops its top one. */
+@media (max-width: 749px) { .template-index .shopify-section:has(> .eb) + .shopify-section > .section { padding-block-start: 0; } }
