@@ -174,7 +174,33 @@
   .v2-pair__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* The set offers now live in the buy box, so the routine strip below doesn't repeat them */
-.template-product--v2 .routine-strip__offers { display: none; }
 /* Reviews and FAQ share a background: one gap between them, not two */
 .template-product--v2 .shopify-section:has(> .product-reviews) + .shopify-section > .faq { padding-block-start: 0; }
+
+/* Who it's for (round 2): the concerns, in the skin check's words */
+.v2-who { display: grid; gap: 8px; margin-block-start: 4px; }
+.v2-who__label { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-muted); }
+:lang(ar) .v2-who__label { letter-spacing: 0; text-transform: none; font-size: 13px; }
+.v2-who__list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.v2-who__list li { display: inline-flex; align-items: center; gap: 6px; min-block-size: 34px; padding: 4px 13px 4px 10px; border-radius: 99px; background: color-mix(in srgb, var(--sku) 18%, #fff); font-size: 14px; font-weight: 650; }
+.v2-who__list .icon { inline-size: 14px; block-size: 14px; color: var(--sku-deep); }
+@media (max-width: 749px) {
+  .v2-who__list li { min-block-size: 30px; padding: 3px 10px 3px 8px; font-size: 13px; gap: 5px; }
+}
+
+/* Payment design preview (pre-launch only) */
+.v2-pay { display: grid; gap: 8px; padding-block-start: 12px; border-block-start: 1px solid var(--c-line); }
+.v2-pay__list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.v2-pay__list li { display: flex; }
+.v2-pay__icon { inline-size: 38px; block-size: 24px; border-radius: 4px; box-shadow: 0 0 0 1px var(--c-line); }
+.v2-pay__chip { align-items: center; gap: 5px; min-block-size: 24px; padding: 0 9px; border-radius: 5px; background: #fff; box-shadow: inset 0 0 0 1px var(--c-line); font-size: 12px; font-weight: 700; }
+.v2-pay__chip .icon { inline-size: 14px; block-size: 14px; color: var(--c-success); }
+.v2-pay__note { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 12.5px; color: var(--c-muted); }
+.v2-pay__note .icon { inline-size: 13px; block-size: 13px; }
+
+/* Ingredient cards: name + what it is, the pack benefit it sits behind, why it's used, glossary link */
+.v2-ben__what { display: inline-block; margin-inline-start: 6px; font-size: 13px; font-weight: 650; color: var(--c-muted); letter-spacing: 0; vertical-align: 3px; }
+.v2-ben__chip .icon { inline-size: 13px; block-size: 13px; margin-inline-end: 5px; color: var(--sku-deep); }
+.v2-ben__more { justify-self: start; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 650; color: var(--c-ink); text-underline-offset: 3px; }
+/* Arabic names have deep descenders: a little air above the ingredient tag */
+:lang(ar) .pdp--v2 .pdp__hero-ing { margin-block-start: 6px; }

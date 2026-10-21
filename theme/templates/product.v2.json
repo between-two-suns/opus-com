@@ -2,7 +2,9 @@
   "sections": {
     "main": {
       "type": "main-product-v2",
-      "settings": {}
+      "settings": {
+        "preview_payments": true
+      }
     },
     "inside": {
       "type": "bundle-inside",

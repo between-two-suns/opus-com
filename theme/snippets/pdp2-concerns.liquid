@@ -1,0 +1,33 @@
+{%- comment -%}
+  Product page demo (v2): "Who it's for", the concerns each step answers, in the skin check's own words
+  (skin_check.chips.*) and following its matching rules (assets/skin-check.js), so the page and the check agree.
+  Param: step. Renders the chips list, or nothing for steps without a mapping.
+{%- endcomment -%}
+{%- liquid
+  case step
+    when 1
+      assign keys = 'oil,cleanse'
+    when 2
+      assign keys = 'tone,marks,oil,dehydration'
+    when 3
+      assign keys = 'barrier,dehydration,oil'
+    when 4
+      assign keys = 'spf'
+    else
+      assign keys = ''
+  endcase
+  assign keys = keys | split: ','
+-%}
+{%- if keys.size > 0 -%}
+  <ul class="v2-who__list" role="list">
+    {%- for k in keys -%}
+      {%- if k == 'cleanse' -%}
+        {%- assign label = 'pdp2.chip_cleanse' | t -%}
+      {%- else -%}
+        {%- assign ck = 'skin_check.chips.' | append: k -%}
+        {%- assign label = ck | t -%}
+      {%- endif -%}
+      <li>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ label }}</li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

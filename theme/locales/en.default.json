@@ -1275,6 +1275,54 @@
     "add": "Add",
     "added": "Added",
     "details": "The details",
-    "per_step": "Step {{ n }}"
+    "per_step": "Step {{ n }}",
+    "who": "Who it’s for",
+    "chip_cleanse": "Daily cleansing",
+    "inside_eyebrow": "Key ingredients",
+    "inside_heading": "What’s inside, and why",
+    "glossary": "More about {{ name }}",
+    "questions": "Questions about this product?",
+    "questions_link": "Ask us",
+    "cod": "Cash on delivery",
+    "wallets": "Mobile wallets",
+    "paymob": "Card payments secured by Paymob",
+    "ing": {
+      "niacinamide": {
+        "what": "Vitamin B3",
+        "why": "One of the most researched ingredients in skincare. It’s widely used to help balance oil and shine and to support a more even-looking skin tone, and it fits easily into morning and evening routines."
+      },
+      "tranexamic-acid": {
+        "what": "Amino-acid derivative",
+        "why": "A go-to cosmetic ingredient for the look of dark spots, post-acne marks and uneven tone. It’s often paired with niacinamide, as it is here."
+      },
+      "sodium-hyaluronate": {
+        "what": "Water-binding humectant",
+        "why": "Hyaluronic acid draws in water and holds it in the top layers of the skin, so skin feels hydrated without a heavy layer. Useful in air-conditioned rooms and dry heat."
+      },
+      "zinc-pca": {
+        "what": "Zinc + PCA",
+        "why": "Zinc paired with PCA, a natural part of the skin’s own moisturising factor. A classic in formulas for oily and combination skin, used to help keep shine in check while skin stays comfortable."
+      },
+      "panthenol": {
+        "what": "Pro-vitamin B5",
+        "why": "A humectant that helps skin hold on to water. A familiar comfort ingredient that helps skin feel soft rather than stripped."
+      },
+      "centella-asiatica": {
+        "what": "Plant extract",
+        "why": "Centella asiatica, also called gotu kola or cica, has a long history in skincare and is widely used in comforting, soothing formulas."
+      },
+      "ceramides": {
+        "what": "Skin’s own lipids",
+        "why": "Ceramides are lipids your skin already makes. They form a large part of its outer barrier, the layer that keeps water in, and skincare adds them back to support it."
+      },
+      "uv-filters": {
+        "what": "Sunscreen filters",
+        "why": "UVB rays are the main cause of sunburn; UVA rays reach deeper and contribute to dark spots and visible ageing. That’s why sunscreen matters every day, even when it’s cloudy."
+      },
+      "bisabolol": {
+        "what": "From chamomile",
+        "why": "A component of chamomile, used in comforting formulas for skin that spends the day in sun and heat."
+      }
+    }
   }
 }

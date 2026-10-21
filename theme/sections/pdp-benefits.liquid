@@ -1,7 +1,8 @@
 {%- comment -%}
-  Product page demo (v2): "What it does for your skin". Each of the pack's benefit phrases (label wording, as
-  approved) with the key ingredient behind it and that ingredient's glossary line; feel phrases sit with the
-  texture. Photo: the product's texture shot. Mapping: snippets/pdp2-benefit-map. Single products only.
+  Product page demo (v2): "What's inside, and why". One card per key ingredient: what it is, why it's used in
+  skincare (general ingredient knowledge, pdp2.ing.<handle>), the pack benefit it sits behind as a small tag (the
+  label phrase, mapped in snippets/pdp2-benefit-map), and a link to its glossary entry. Photo: the texture shot.
+  Single products only.
 {%- endcomment -%}
 {%- liquid
   capture step
@@ -12,12 +13,10 @@
   capture map
     render 'pdp2-benefit-map', handle: product.handle
   endcapture
-  assign map = map | strip
-  assign map_parts = map | split: '|'
-  assign idx = map_parts[0] | split: ','
-  assign extra = map_parts[1] | split: ','
+  assign idx = map | strip | split: '|' | first | split: ','
   assign kis = mf.key_ingredients.value
   assign phrases = mf.benefit.value | split: '.'
+  assign glossary_url = routes.root_url | append: '/pages/ingredients' | replace: '//', '/'
   assign tex_key = 'bts-' | append: product.handle | append: '-texture.jpg'
   assign photo = images[tex_key]
   if photo == blank
@@ -30,7 +29,7 @@
     endfor
   endif
 -%}
-{%- if step > 0 and mf.benefit != blank -%}
+{%- if step > 0 and kis.size > 0 -%}
 <section class="section v2-ben" data-step="{{ step }}" aria-labelledby="V2Ben-{{ section.id }}">
   <div class="container v2-ben__grid">
     {%- if photo -%}
@@ -42,49 +41,52 @@
       </div>
     {%- endif -%}
     <div class="v2-ben__body">
-      <p class="t-eyebrow">{{ 'pdp2.benefits_eyebrow' | t }}</p>
-      <h2 class="t-display-m" id="V2Ben-{{ section.id }}">{{ 'pdp2.benefits_heading' | t }}</h2>
+      <p class="t-eyebrow">{{ 'pdp2.inside_eyebrow' | t }}</p>
+      <h2 class="t-display-m" id="V2Ben-{{ section.id }}">{{ 'pdp2.inside_heading' | t }}</h2>
       <ol class="v2-ben__list" role="list">
-        {%- assign n = 0 -%}
-        {%- for ph in phrases -%}
-          {%- assign ph = ph | strip -%}
-          {%- if ph == blank -%}{%- continue -%}{%- endif -%}
-          {%- assign map_i = idx[n] | default: 'f' -%}
-          {%- assign n = n | plus: 1 -%}
+        {%- for ki in kis -%}
+          {%- liquid
+            assign i = forloop.index0
+            assign i_s = i | append: ''
+            assign h = ki.system.handle | default: ki.handle
+            assign what_key = 'pdp2.ing.' | append: h | append: '.what'
+            assign why_key = 'pdp2.ing.' | append: h | append: '.why'
+            assign what = what_key | t
+            assign why = why_key | t
+            if what contains 'ranslation missing'
+              assign what = ''
+            endif
+            if why contains 'ranslation missing'
+              assign why = ki.role.value
+            endif
+            comment
+              The label phrase this ingredient sits behind (if any): the phrase whose map entry is this index.
+            endcomment
+            assign tag = ''
+            assign n = 0
+            for ph in phrases
+              assign ph_s = ph | strip
+              if ph_s == blank
+                continue
+              endif
+              if idx[n] == i_s
+                assign tag = ph_s
+              endif
+              assign n = n | plus: 1
+            endfor
+            assign anchor = ki.inci.value | split: ',' | first | strip | handleize
+          -%}
           <li class="v2-ben__item">
-            <span class="v2-ben__num" aria-hidden="true">0{{ n }}</span>
+            <span class="v2-ben__num" aria-hidden="true">0{{ forloop.index }}</span>
             <div class="v2-ben__text">
-              <h3 class="v2-ben__title">{{ ph }}</h3>
-              {%- if map_i != 'f' -%}
-                {%- assign ki_i = map_i | plus: 0 -%}
-                {%- assign ki = kis[ki_i] -%}
-                {%- if ki -%}
-                  <p class="v2-ben__ing"><span class="v2-ben__chip">{{ ki.name.value | escape }}</span></p>
-                  <p class="v2-ben__role">{{ ki.role.value | escape }}</p>
-                {%- endif -%}
-              {%- else -%}
-                <p class="v2-ben__ing"><span class="v2-ben__chip v2-ben__chip--feel">{{ 'pdp2.feel' | t }}</span></p>
-              {%- endif -%}
+              <h3 class="v2-ben__title">{{ ki.name.value | escape }}{% if what != blank %} <span class="v2-ben__what">{{ what }}</span>{% endif %}</h3>
+              {%- if tag != blank -%}<p class="v2-ben__ing"><span class="v2-ben__chip">{% render 'icon', name: 'check', class: 'icon--sm' %}{{ tag }}</span></p>{%- endif -%}
+              <p class="v2-ben__role">{{ why }}</p>
+              <a class="v2-ben__more" href="{{ glossary_url }}#inci-{{ anchor }}">{{ 'pdp2.glossary' | t: name: ki.name.value }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
             </div>
           </li>
         {%- endfor -%}
-        {%- for e in extra -%}
-          {%- if e == blank -%}{%- continue -%}{%- endif -%}
-          {%- assign ki_i = e | plus: 0 -%}
-          {%- assign ki = kis[ki_i] -%}
-          {%- if ki -%}
-            {%- assign n = n | plus: 1 -%}
-            <li class="v2-ben__item">
-              <span class="v2-ben__num" aria-hidden="true">0{{ n }}</span>
-              <div class="v2-ben__text">
-                <h3 class="v2-ben__title">{{ ki.name.value | escape }}</h3>
-                <p class="v2-ben__role">{{ ki.role.value | escape }}</p>
-              </div>
-            </li>
-          {%- endif -%}
-        {%- endfor -%}
       </ol>
-      {%- render 'pdp-made-for', step: step -%}
     </div>
   </div>
 </section>
