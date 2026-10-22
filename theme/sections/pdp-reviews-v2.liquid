@@ -1,0 +1,51 @@
+{%- comment -%}
+  Product page demo (v2): reviews. With real reviews (Judge.me's rating count on the product), the full Judge.me
+  widget as on the live page. With none yet, one slim line that opens the same widget, so "write the first review"
+  still works without an empty section taking a whole screen. Nothing is placeholder or seeded.
+{%- endcomment -%}
+{%- assign rc = product.metafields.reviews.rating_count.value | default: 0 | plus: 0 -%}
+{%- capture jdgm -%}
+  <!-- Start of Judge.me code -->
+  {%- assign has_legacy = false -%}
+  {%- if product.metafields.judgeme.widget.size > 20 -%}{%- assign has_legacy = true -%}{%- endif -%}
+  <div id='judgeme_product_reviews' class='jdgm-widget jdgm-review-widget' data-product-title='{{ product.title | escape }}' data-id='{{ product.id }}' data-product-id='{{ product.id }}' data-widget='review' data-auto-install='false' data-shop-reviews-count='{{ shop.metafields.judgeme.shop_reviews_count | default: 0 | escape }}' data-entry-point='review_widget.js' data-entry-key='review-widget/main.js'>
+    {%- if has_legacy -%}<div class='jdgm-legacy-widget-content' style='display: none;'>{{ product.metafields.judgeme.widget }}</div>{%- endif -%}
+  </div>
+  {%- if product.metafields.judgeme.review_widget_data -%}
+    <script>jdgm.data ||= {}; jdgm.data.reviewWidget ||= {}; jdgm.data.reviewWidget[{{ product.id }}] = {{ product.metafields.judgeme.review_widget_data }}</script>
+  {%- endif -%}
+  <!-- End of Judge.me code -->
+{%- endcapture -%}
+
+{%- if rc > 0 -%}
+  <section class="section product-reviews" id="reviews" aria-labelledby="ReviewsTitle-{{ section.id }}">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__text">
+          <p class="t-eyebrow">{{ 'reviews.eyebrow' | t }}</p>
+          <h2 class="t-display-m" id="ReviewsTitle-{{ section.id }}">{{ 'reviews.heading' | t }}</h2>
+        </div>
+      </div>
+      {{ jdgm }}
+    </div>
+  </section>
+{%- else -%}
+  <section class="product-reviews v2-rev" id="reviews" aria-label="{{ 'reviews.heading' | t }}">
+    <div class="container">
+      <details class="v2-rev__box">
+        <summary class="v2-rev__line">
+          <span class="v2-rev__none">{{ 'pdp2.no_reviews' | t }}</span>
+          <span class="v2-rev__cta">{{ 'pdp2.write_first' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</span>
+        </summary>
+        <div class="v2-rev__widget">{{ jdgm }}</div>
+      </details>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Reviews (demo v2)",
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

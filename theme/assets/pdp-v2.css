@@ -76,8 +76,13 @@
 .v2-opt--compact .v2-opt__packs img { block-size: 34px; }
 .v2-opt--compact .v2-opt__name { font-size: 14px; }
 @media (max-width: 420px) {
-  .v2-opt { grid-template-columns: 20px minmax(0, 1fr) auto; padding-inline: 12px; }
-  .v2-opt__packs { display: none; }
+  /* small packs stay on phones: they tell the sets apart at a glance */
+  .v2-opt { gap: 8px 10px; padding-inline: 12px; }
+  .v2-opt__packs, .v2-opt--compact .v2-opt__packs { block-size: 32px; }
+  .v2-opt__packs img, .v2-opt--compact .v2-opt__packs img { block-size: 32px; }
+  .v2-opt__packs img[data-step='2'] { block-size: 24px; }
+  .v2-opt__packs img[data-step='3'], .v2-opt__packs img[data-step='4'] { block-size: 28px; }
+  .v2-opt__packs img + img { margin-inline-start: -7px; }
 }
 
 /* Reassurance */
@@ -104,7 +109,8 @@
   .pdp--v2 .pdp__gallery:has(.v2-thumbs) .gallery__nav { display: contents; }
   .pdp--v2 .pdp__gallery:has(.v2-thumbs) .gallery__nav [data-prev] { grid-column: 1; grid-row: 2; align-self: center; }
   .pdp--v2 .pdp__gallery:has(.v2-thumbs) .gallery__nav [data-next] { grid-column: 3; grid-row: 2; align-self: center; }
-  .v2-thumbs { grid-column: 2; grid-row: 2; display: flex; justify-content: safe center; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 4px; }
+  /* seven thumbnails in view; the row scrolls to keep the current one visible */
+  .v2-thumbs { grid-column: 2; grid-row: 2; justify-self: center; inline-size: 100%; max-inline-size: calc(7 * 50px + 6 * 6px + 8px); display: flex; justify-content: flex-start; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 4px; scroll-behavior: smooth; }
   .v2-thumbs::-webkit-scrollbar { display: none; }
   .v2-thumb { flex: none; inline-size: 50px; block-size: 50px; padding: 0; border: 0; border-radius: 14px; overflow: hidden; background: var(--sku-tint, var(--c-paper)); box-shadow: inset 0 0 0 1px var(--c-line); opacity: .7; transition: opacity var(--dur), box-shadow var(--dur); cursor: pointer; }
   .v2-thumb img { inline-size: 100%; block-size: 100%; object-fit: cover; }
@@ -204,3 +210,36 @@
 .v2-ben__more { justify-self: start; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 650; color: var(--c-ink); text-underline-offset: 3px; }
 /* Arabic names have deep descenders: a little air above the ingredient tag */
 :lang(ar) .pdp--v2 .pdp__hero-ing { margin-block-start: 6px; }
+
+/* Round 3 ------------------------------------------------------------------ */
+/* The main Add to bag is the strongest button on the page: solid night ink, the product colour on hover */
+.pdp--v2 .v2-actions { grid-template-columns: 1fr; }
+.pdp--v2 .v2-atc { inline-size: 100%; background: var(--c-ink); color: #fff; border-color: var(--c-ink); }
+.pdp--v2 .v2-atc:hover:not(:disabled) { background: var(--sku-deep); border-color: var(--sku-deep); }
+/* Delivery estimate rides under the free-delivery bar; "Ask us" is a quiet link */
+.v2-assure__sub { font-size: 13.5px; font-weight: 500; color: var(--c-muted); }
+.v2-assure__ship.is-done .v2-assure__sub { color: var(--c-muted); }
+.v2-ask { margin: -4px 0 0; font-size: 13.5px; color: var(--c-muted); }
+.v2-ask a { color: var(--c-ink); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+/* The stock-up is already in the buy box; the routine strip keeps only The Full Ritual card */
+.template-product--v2 .routine-strip__offers .offer-wrap:has(.offer[data-handle$='-stock-up']) { display: none; }
+/* Shorter texture photo on phones, so the ingredient cards start sooner */
+@media (max-width: 749px) {
+  .v2-ben__media { aspect-ratio: 16 / 9; }
+}
+/* Reviews: one slim line until the first real review; it opens Judge.me's own widget */
+.v2-rev { padding-block: clamp(24px, 3vw, 40px) clamp(28px, 4vw, 48px); }
+.v2-rev__box { border-radius: 22px; background: var(--c-paper); box-shadow: 0 1px 0 var(--c-line); }
+.v2-rev__line { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; padding: 18px 20px; list-style: none; cursor: pointer; font-weight: 650; }
+.v2-rev__line::-webkit-details-marker { display: none; }
+.v2-rev__line:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; border-radius: 22px; }
+.v2-rev__none { color: var(--c-muted); }
+.v2-rev__cta { display: inline-flex; align-items: center; gap: 6px; color: var(--c-ink); text-decoration: underline; text-underline-offset: 3px; }
+.v2-rev__box[open] .v2-rev__cta { display: none; }
+.v2-rev__widget { padding: 0 20px 20px; }
+/* Looping gallery: a quick fade while it jumps back to the first photo */
+.pdp--v2 .gallery__track { transition: opacity 160ms var(--ease-out); }
+.pdp--v2 .gallery__track.is-wrapping { opacity: 0; }
+/* "BTS Pick" sits on the card's top edge, so it never pushes the name onto two lines */
+.v2-opt--pick { margin-block-start: 6px; }
+.v2-opt--pick .v2-opt__badge { position: absolute; inset-block-start: -9px; inset-inline-end: 14px; margin: 0; vertical-align: baseline; }

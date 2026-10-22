@@ -83,8 +83,7 @@
   endcapture
   assign price_label = price_label | strip
 -%}
-{%- assign qty_max = 5 -%}
-{%- if bdef != blank -%}{%- assign qty_max = 3 -%}{{ 'bundles.css' | asset_url | stylesheet_tag }}{%- endif -%}
+{%- if bdef != blank -%}{{ 'bundles.css' | asset_url | stylesheet_tag }}{%- endif -%}
 
 <div class="pdp pdp--v2" data-step="{{ step }}" data-tone="sku" data-product-title="{{ pdp_title | escape }}">
   <div class="container">
@@ -235,14 +234,10 @@
           <product-form class="pdp__form" data-section="{{ section.id }}">
             {%- form 'product', product, id: form_id, novalidate: 'novalidate' -%}
               <input type="hidden" name="id" value="{{ variant.id }}" data-variant-id>
-              <div class="pdp__actions">
-                <quantity-input class="qty">
-                  <button type="button" data-step="-1" aria-label="{{ 'product.decrease' | t }}">{% render 'icon', name: 'minus', class: 'icon--sm' %}</button>
-                  <label class="visually-hidden" for="Qty-{{ section.id }}">{{ 'product.quantity' | t }}</label>
-                  <input id="Qty-{{ section.id }}" type="number" name="quantity" value="1" min="1" max="{{ qty_max }}" inputmode="numeric">
-                  <button type="button" data-step="1" aria-label="{{ 'product.increase' | t }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
-                </quantity-input>
-                <button type="submit" name="add" class="btn btn--deep pdp__atc" data-atc {% if coming_soon or variant.available == false %}disabled{% endif %}>
+              {%- comment -%} No quantity stepper: more than one comes as a stock-up or a set, so the button gets the full width. {%- endcomment -%}
+              <input type="hidden" name="quantity" value="1">
+              <div class="pdp__actions v2-actions">
+                <button type="submit" name="add" class="btn pdp__atc v2-atc" data-atc {% if coming_soon or variant.available == false %}disabled{% endif %}>
                   <span class="btn__label" data-atc-label data-v2-atc-label>
                     {%- if coming_soon -%}
                       {{ 'product.coming_soon' | t }}
@@ -261,6 +256,17 @@
             {%- endform -%}
           </product-form>
 
+          {%- liquid
+            assign delivery_line = ''
+            if settings.delivery_days_main != blank and settings.delivery_days_other != blank
+              comment
+                Word joiners around the dash keep a range like "3–5" on one line.
+              endcomment
+              assign d_main = settings.delivery_days_main | replace: '–', '⁠–⁠' | replace: '-', '⁠–⁠'
+              assign d_other = settings.delivery_days_other | replace: '–', '⁠–⁠' | replace: '-', '⁠–⁠'
+              assign delivery_line = 'pdp2.delivery' | t: main: d_main, other: d_other
+            endif
+          -%}
           <ul class="v2-assure" role="list">
             {%- if threshold > 0 and coming_soon == false -%}
               {%- liquid
@@ -276,18 +282,18 @@
                   <span data-v2-ship-text>{%- if left <= 0 -%}{{ 'pdp2.free_done' | t }}{%- else -%}{{ 'pdp2.free_left' | t: amount: left_label }}{%- endif -%}</span>
                   {%- assign pct = after | times: 100 | divided_by: threshold | at_most: 100 -%}
                   <span class="v2-meter" aria-hidden="true"><span data-v2-meter style="--v: {{ pct }}%"></span></span>
+                  {%- if delivery_line != blank -%}<span class="v2-assure__sub">{{ delivery_line }}</span>{%- endif -%}
                 </span>
               </li>
-            {%- endif -%}
-            {%- if settings.delivery_days_main != blank and settings.delivery_days_other != blank -%}
-              <li>{% render 'icon', name: 'globe', class: 'icon--sm' %}<span>{{ 'pdp2.delivery' | t: main: settings.delivery_days_main, other: settings.delivery_days_other }}</span></li>
+            {%- elsif delivery_line != blank -%}
+              <li>{% render 'icon', name: 'truck', class: 'icon--sm' %}<span>{{ delivery_line }}</span></li>
             {%- endif -%}
             <li>{% render 'icon', name: 'refresh', class: 'icon--sm' %}<span>{{ 'pdp2.returns' | t }} <a href="{{ routes.root_url | append: '/pages/returns' | replace: '//', '/' }}">{{ 'pdp2.returns_link' | t }}</a></span></li>
             {%- if settings.show_cod or section.settings.preview_payments -%}
               <li>{% render 'icon', name: 'cash', class: 'icon--sm' %}<span>{{ 'product.cod' | t }}</span></li>
             {%- endif -%}
-            <li>{% render 'icon', name: 'mail', class: 'icon--sm' %}<span>{{ 'pdp2.questions' | t }} <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{{ 'pdp2.questions_link' | t }}</a></span></li>
           </ul>
+          <p class="v2-ask">{{ 'pdp2.questions' | t }} <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{{ 'pdp2.questions_link' | t }}</a></p>
           {%- render 'skin-check-link', key: 'skin_check.cta_product', class: 'pdp__skc' -%}
           {%- if section.settings.preview_payments -%}
             {%- comment -%} Design preview only (owner, pre-launch): how the planned methods will look. Off at launch; real icons come from payment-icons once each method is live and tested. {%- endcomment -%}

@@ -23,7 +23,7 @@
       "settings": {}
     },
     "reviews": {
-      "type": "product-reviews",
+      "type": "pdp-reviews-v2",
       "settings": {}
     },
     "faq": {
