@@ -5,6 +5,8 @@
 /* Routine tabs: one slim row so the stage and the price share the first screen on phones */
 .pdp--v2 .pdp-tabs { margin-block: 0 10px; }
 @media (max-width: 989px) {
+  /* the active tab already says "02 Clarity", so the step line above the name goes on phones */
+  .pdp--v2 .v2-head .pdp__step { display: none; }
   .pdp--v2 .pdp-tabs__link { padding-block: 6px 9px; min-block-size: 40px; grid-auto-flow: column; justify-content: start; align-items: baseline; gap: 6px; }
   .pdp--v2 .pdp-tabs__num { font-size: 13px; }
   .pdp--v2 .pdp-tabs__name { font-size: 10px; }
@@ -241,20 +243,20 @@
 /* "BTS Pick" sits on the card's top edge, so it never pushes the name onto two lines */
 .v2-opt--pick { margin-block-start: 6px; }
 .v2-opt--pick .v2-opt__badge { position: absolute; inset-block-start: -9px; inset-inline-end: 14px; margin: 0; vertical-align: baseline; }
-/* Desktop stage height follows the free space under the header (set by pdp-v2.js), capped at the 4:5 shape */
+/* Desktop: the 01–04 steps stay pinned under the header while the buy section is on screen, the gallery pins under
+   them, and the stage height (set by pdp-v2.js) has two values: one for the top of the page and one once pinned. It
+   eases between them once, rather than following the scroll pixel by pixel. Capped at the 4:5 shape. */
 @media (min-width: 990px) {
+  .pdp--v2 .pdp-tabs--top { position: sticky; inset-block-start: calc(var(--header-h) - 16px); z-index: 3; margin-block: -8px 0; padding-block: 8px 10px; background-color: var(--tone, var(--c-daylight)); transition: background-color 1100ms var(--ease-out); }
+  .pdp--v2 .pdp__gallery { inset-block-start: calc(var(--header-h) - 16px + var(--v2-tabs-h, 72px)); }
   .pdp--v2 .pdp__gallery .gallery__slide { block-size: min(125cqw, var(--v2-stage-h, max(400px, calc(100svh - 250px)))); }
+  .pdp--v2 .pdp__gallery.is-fitted .gallery__slide { transition: block-size 420ms cubic-bezier(.22, .8, .24, 1); }
+}
+@media (min-width: 990px) and (prefers-reduced-motion: reduce) {
+  .pdp--v2 .pdp__gallery.is-fitted .gallery__slide { transition: none; }
 }
 
 /* Round 4 ------------------------------------------------------------------ */
-/* Routine tabs: above the stage on desktop, under the buy box on phones (the stage and price come first) */
-.pdp--v2 .pdp-tabs--bottom { display: none; }
-@media (max-width: 989px) {
-  .pdp--v2 .pdp-tabs--top { display: none; }
-  .pdp--v2 .pdp-tabs--bottom { display: block; margin-block: 6px 0; }
-  .pdp--v2 .pdp-tabs--bottom .pdp-tabs__list { gap: 6px; }
-}
-
 /* Bottom bar: the saving sits beside the price on one line, smaller (ink, not green: the bar takes the step colour and
    green fails contrast on it). On a phone the small pack photo steps aside while a saving shows, so both fit; the
    saving gives way first if space still runs out. */

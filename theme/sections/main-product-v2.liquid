@@ -126,10 +126,9 @@
 <div class="pdp pdp--v2" data-step="{{ step }}" data-tone="sku" data-product-title="{{ pdp_title | escape }}">
   <div class="container">
     {%- assign tab_source = settings.routine_collection | default: collections.all -%}
-    {%- comment -%} Routine tabs: above the stage on desktop; on phones they move under the buy box (for browsing, not buying). {%- endcomment -%}
-    {%- capture tabs_html -%}
+    {%- comment -%} Routine tabs: at the top on phones and desktop; on desktop they stay pinned under the header through the buy section. {%- endcomment -%}
     {%- if step > 0 -%}
-      <nav class="pdp-tabs __TABS__" aria-label="{{ 'product.routine_tabs' | t }}">
+      <nav class="pdp-tabs pdp-tabs--top" aria-label="{{ 'product.routine_tabs' | t }}">
         <ol class="pdp-tabs__list" role="list">
           {%- for s in (1..4) -%}
             {%- for p in tab_source.products limit: 12 -%}
@@ -149,8 +148,6 @@
         </ol>
       </nav>
     {%- endif -%}
-    {%- endcapture -%}
-    {{ tabs_html | replace: '__TABS__', 'pdp-tabs--top' }}
 
     <div class="pdp__grid">
       {%- comment -%} Gallery: identical to the live page (studio stage + callouts), plus thumbnails on desktop. {%- endcomment -%}
@@ -370,7 +367,6 @@
           {%- endif -%}
         </div>
 
-        {{ tabs_html | replace: '__TABS__', 'pdp-tabs--bottom' }}
         {%- comment -%} Reference details stay one tap away. {%- endcomment -%}
         <div class="v2-details">
           {%- if mf.inci != blank -%}

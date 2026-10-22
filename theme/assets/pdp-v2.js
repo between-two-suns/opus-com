@@ -143,27 +143,44 @@ function initGallery(gallery) {
   fitStage(gallery);
 }
 
-/* Desktop: the photo fills the screen under the header. At the top of the page the announcement bar and the routine
-   tabs sit above it; once they scroll away and the gallery is pinned, it grows into the freed space, so there is never
-   a gap under it. Height = window − where the stage sits (never above its pinned position) − its nav row − margin. */
+/* Desktop: the photo fills the screen under the header. The 01–04 steps stay pinned under the header (CSS), and the
+   gallery pins under them, so the only thing that moves above it is the announcement bar. The stage gets one height for
+   the top of the page and one once pinned, and CSS eases between them once; it never follows the scroll pixel by pixel
+   (that re-cropped portrait photos on every frame). Height = window − where the stage sits − its nav row − margin. */
 function fitStage(gallery) {
   const desk = matchMedia('(min-width: 990px)');
+  const root = gallery.closest('.pdp--v2');
+  const tabs = root?.querySelector('.pdp-tabs--top');
+  const grid = gallery.parentElement;
   const nav = gallery.querySelector('.v2-thumbs') || gallery.querySelector('.gallery__nav');
-  let raf = 0;
+  let raf = 0, last = '';
+  const measure = () => {
+    if (tabs) root.style.setProperty('--v2-tabs-h', `${tabs.offsetHeight}px`);
+  };
   const fit = () => {
     raf = 0;
-    if (!desk.matches) { gallery.style.removeProperty('--v2-stage-h'); return; }
-    const pinned = parseFloat(getComputedStyle(gallery).top) || 0;
-    const top = Math.max(gallery.getBoundingClientRect().top, pinned);
+    if (!desk.matches) { gallery.style.removeProperty('--v2-stage-h'); last = ''; if (tabs) tabs.style.transform = ''; return; }
+    const pinnedTop = parseFloat(getComputedStyle(gallery).top) || 0;
+    const restTop = grid.getBoundingClientRect().top + scrollY; // where the stage sits at the top of the page
+    const pinned = scrollY + pinnedTop >= restTop - 1;
+    const top = pinned ? pinnedTop : restTop;
     const navH = nav ? nav.getBoundingClientRect().height + 12 : 0;
-    const h = Math.round(Math.max(400, window.innerHeight - top - navH - 20));
-    gallery.style.setProperty('--v2-stage-h', `${h}px`);
+    const h = `${Math.round(Math.max(400, window.innerHeight - top - navH - 20))}px`;
+    if (h !== last) { gallery.style.setProperty('--v2-stage-h', h); last = h; }
+    // at the end of the buy section the gallery scrolls away; the pinned steps leave with it, not after it
+    if (tabs) {
+      const lift = Math.min(0, Math.round(gallery.getBoundingClientRect().top - pinnedTop));
+      tabs.style.transform = lift ? `translateY(${lift}px)` : '';
+    }
   };
   const queue = () => { if (!raf) raf = requestAnimationFrame(fit); };
   addEventListener('scroll', queue, { passive: true });
-  addEventListener('resize', queue);
-  desk.addEventListener?.('change', queue);
+  addEventListener('resize', () => { measure(); queue(); });
+  desk.addEventListener?.('change', () => { measure(); queue(); });
+  measure();
   fit();
+  // ease only later changes, not the first size on load
+  requestAnimationFrame(() => requestAnimationFrame(() => gallery.classList.add('is-fitted')));
 }
 
 document.querySelectorAll('[data-v2-buy]').forEach(initBuy);
