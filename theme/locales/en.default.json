@@ -1334,5 +1334,48 @@
     },
     "adds": "Adds {{ items }} for {{ amount }} more",
     "routine_tabs_more": "The other steps"
+  },
+  "set2": {
+    "outcome": {
+      "the-full-ritual": "Removes oil, evens skin tone, strengthens the skin barrier and protects from UVA and UVB. The whole routine, morning and night.",
+      "the-clear-protect-trio": "Removes oil, evens skin tone and protects from UVA and UVB. Three steps to start with.",
+      "the-night-ritual": "Removes oil, evens skin tone and strengthens the skin barrier. Your evening routine; sunscreen waits for the morning.",
+      "clear-protect-duo": "Evens skin tone and controls oil, then protects from UVA and UVB every morning.",
+      "the-core-duo": "Removes oil, then evens skin tone and hydrates. The first two steps.",
+      "spf-stock-up": "Invisible, lightweight UVA and UVB protection. Two tubes, so the morning step never runs out.",
+      "serum-stock-up": "Controls oil, evens skin tone, hydrates. Two bottles, so it never runs out."
+    },
+    "word": {
+      "the-full-ritual": "Ritual",
+      "the-clear-protect-trio": "Trio",
+      "the-night-ritual": "Night",
+      "clear-protect-duo": "Duo",
+      "the-core-duo": "Core",
+      "spf-stock-up": "×2",
+      "serum-stock-up": "×2"
+    },
+    "facts": "{{ count }} full-size products · {{ when }}",
+    "when_ampm": "Morning + night",
+    "when_am": "Morning",
+    "stage_go": "Go to {{ name }} in this set",
+    "full_size": "Every product is the same full size sold on its own.",
+    "view": "View product",
+    "day_eyebrow": "Your day",
+    "day_heading": "Your day with {{ name }}",
+    "day_toggle": "Time of day",
+    "not_in_set": "Not in this set",
+    "see_spf": "See the SPF 50+",
+    "ing_eyebrow": "Key ingredients",
+    "ing_heading": "{{ count }} key ingredients, one routine",
+    "ing_in": "In",
+    "ing_all": "See every ingredient",
+    "cmp_eyebrow": "Compare sets",
+    "cmp_heading": "Which set is right for you?",
+    "cmp_set": "Set",
+    "cmp_price": "Price",
+    "cmp_here": "You're here",
+    "cmp_view": "View",
+    "yes": "Included",
+    "no": "Not included"
   }
 }

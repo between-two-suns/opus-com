@@ -1,22 +1,41 @@
 {%- comment -%}
   Product page demo (v2): "Who it's for", the concerns each step answers, in the skin check's own words
   (skin_check.chips.*) and following its matching rules (assets/skin-check.js), so the page and the check agree.
-  Param: step. Renders the chips list, or nothing for steps without a mapping.
+  Params: step, or steps (a set's steps, e.g. "1,2,3,4": every concern its products answer, once each, without
+  "daily cleansing", which isn't a concern). Renders the chips list, or nothing for steps without a mapping.
 {%- endcomment -%}
 {%- liquid
-  case step
-    when 1
-      assign keys = 'oil,cleanse'
-    when 2
-      assign keys = 'tone,marks,oil,dehydration'
-    when 3
-      assign keys = 'barrier,dehydration,oil'
-    when 4
-      assign keys = 'spf'
-    else
-      assign keys = ''
-  endcase
-  assign keys = keys | split: ','
+  if steps != blank
+    assign set_steps = steps | split: ','
+    assign keys = ''
+    for st in set_steps
+      case st
+        when '1'
+          assign keys = keys | append: ',oil'
+        when '2'
+          assign keys = keys | append: ',tone,marks,oil,dehydration'
+        when '3'
+          assign keys = keys | append: ',barrier,dehydration,oil'
+        when '4'
+          assign keys = keys | append: ',spf'
+      endcase
+    endfor
+    assign keys = keys | remove_first: ',' | split: ',' | uniq
+  else
+    case step
+      when 1
+        assign keys = 'oil,cleanse'
+      when 2
+        assign keys = 'tone,marks,oil,dehydration'
+      when 3
+        assign keys = 'barrier,dehydration,oil'
+      when 4
+        assign keys = 'spf'
+      else
+        assign keys = ''
+    endcase
+    assign keys = keys | split: ','
+  endif
 -%}
 {%- if keys.size > 0 -%}
   <ul class="v2-who__list" role="list">

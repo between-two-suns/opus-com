@@ -33,9 +33,20 @@
     render 'bundle-def', handle: product.handle
   endcapture
   assign bdef = bdef | strip
+  assign set_v2 = false
   if bdef != blank
     assign set_steps = bdef | split: '|' | first | split: ',' | uniq
     assign media_count = set_steps.size | plus: 1
+    comment
+      Set page demo (?view=set2, DECISIONS 189): what the set does, who it's for and a fact line in the head; the
+      packs side by side as the first photo; the buy box keeps the saving line but not a second list of products.
+    endcomment
+    if section.settings.set_v2
+      assign set_v2 = true
+      assign set_units = bdef | split: '|' | first | split: ','
+      assign set_steps_csv = bdef | split: '|' | first
+      assign media_count = media_count | plus: 1
+    endif
   endif
   comment
     Single products: six strong slides instead of nine, in a set order (snippets/pdp2-gallery-order).
@@ -180,7 +191,8 @@
               {{ cutout | image_url: width: 900 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '300,450,600,750,900', sizes: '(min-width: 990px) 46vw, 92vw', alt: product.title, class: 'gallery__cutout' }}
             </div>
           {%- endif -%}
-          {%- if bdef != blank -%}{%- render 'pdp-bundle', part: 'gallery', handle: product.handle, count: media_count -%}{%- else -%}
+          {%- if set_v2 -%}{%- render 'set2-stage', product: product, units: set_units, count: media_count -%}{%- endif -%}
+          {%- if bdef != blank -%}{%- render 'pdp-bundle', part: 'gallery', handle: product.handle, count: media_count, offset: set_v2 -%}{%- else -%}
           {%- if gal_list.size > 0 -%}{%- assign order_list = gal_list -%}{%- else -%}{%- assign order_list = gal_all -%}{%- endif -%}
           {%- for pos in order_list -%}
           {%- for media in product.media -%}
@@ -241,7 +253,30 @@
           <h1 class="pdp__title v2-title">{{ pdp_title | escape }}</h1>
           {%- render 'jdgm-badge', product: product -%}
           {%- comment -%} Single products: the photo's callouts carry the pack benefit, so the head names the key ingredients and who it's for. Sets: their one-line description. {%- endcomment -%}
-          {%- if bdef != blank -%}
+          {%- if set_v2 -%}
+            {%- liquid
+              assign out_key = 'set2.outcome.' | append: product.handle
+              assign outcome = out_key | t
+              if outcome contains 'ranslation missing'
+                assign outcome = benefit
+              endif
+              assign set_when = 'set2.when_am' | t
+              for st in set_steps
+                if st != '4'
+                  assign set_when = 'set2.when_ampm' | t
+                endif
+              endfor
+            -%}
+            <p class="v2-set-outcome">{{ outcome }}</p>
+            <p class="v2-set-facts">{{ 'set2.facts' | t: count: set_units.size, when: set_when }}</p>
+            {%- capture who -%}{% render 'pdp2-concerns', steps: set_steps_csv %}{%- endcapture -%}
+            {%- if who != blank -%}
+              <div class="v2-who">
+                <p class="v2-who__label">{{ 'pdp2.who' | t }}</p>
+                {{ who }}
+              </div>
+            {%- endif -%}
+          {%- elsif bdef != blank -%}
             {%- if benefit != blank -%}<p class="v2-benefit">{{ benefit }}</p>{%- endif -%}
           {%- elsif mf.hero_ingredients != blank -%}
             <p class="pill pdp__hero-ing">{{ mf.hero_ingredients }}</p>
@@ -264,7 +299,7 @@
               <p class="v2-buy__facts"><span class="u-ltr">{{ mf.size }}</span>{% if mf.when_to_use != blank %} · {{ mf.when_to_use }}{% endif %}</p>
             {%- endif -%}
             {%- comment -%} On a set page with options, the cards carry the saving and contents, so the summary isn't repeated. {%- endcomment -%}
-            {%- unless set_upgrade -%}{%- render 'pdp-bundle', part: 'info', handle: product.handle, variant: variant -%}{%- endunless -%}
+            {%- unless set_upgrade -%}{%- render 'pdp-bundle', part: 'info', handle: product.handle, variant: variant, list: set_v2 -%}{%- endunless -%}
           </div>
 
           {%- if show_options -%}
@@ -424,6 +459,7 @@
   "tag": "section",
   "class": "section-main-product",
   "settings": [
+    { "type": "checkbox", "id": "set_v2", "label": "Set page design (demo)", "info": "Sets only: outcome line, who it's for, packs-together first photo, no repeated product list in the buy box.", "default": false },
     { "type": "checkbox", "id": "preview_payments", "label": "Preview payment badges (design only)", "info": "Shows COD, Apple Pay, cards, wallets and Paymob for design review. Turn off before launch: only methods that are live and tested may be shown.", "default": false }
   ]
 }

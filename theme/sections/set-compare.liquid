@@ -1,0 +1,104 @@
+{%- comment -%}
+  Set page demo (?view=set2): "Which set is right for you?" The five routine sets side by side: which of the four
+  steps each holds, price, saving and free delivery, with the set being viewed marked. Replaces the "Other sets"
+  cards, which repeated the same facts one card at a time. Prices and savings are live (compare-at = the singles
+  added up). Renders nothing on single products.
+{%- endcomment -%}
+{%- liquid
+  capture bdef
+    render 'bundle-def', handle: product.handle
+  endcapture
+  assign bdef = bdef | strip
+-%}
+{%- if bdef != blank -%}
+{%- liquid
+  assign rows = 'the-full-ritual,the-clear-protect-trio,the-night-ritual,clear-protect-duo,the-core-duo' | split: ','
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
+-%}
+<section class="section s2-cmp" aria-labelledby="S2Cmp-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{{ 'set2.cmp_eyebrow' | t }}</p>
+        <h2 class="t-display-m" id="S2Cmp-{{ section.id }}">{{ 'set2.cmp_heading' | t }}</h2>
+      </div>
+      <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'sections.bundles.see_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+    </div>
+    <div class="s2-cmp__wrap">
+      <table class="s2-cmp__table" aria-labelledby="S2Cmp-{{ section.id }}">
+        <thead>
+          <tr>
+            <th scope="col" class="s2-cmp__set">{{ 'set2.cmp_set' | t }}</th>
+            {%- for i in (1..4) -%}
+              {%- assign comp = all_products[step_handles[i]] -%}
+              <th scope="col" class="s2-cmp__step" data-step="{{ i }}"><span class="s2-cmp__num">0{{ i }}</span><span class="s2-cmp__label">{{ comp.metafields.bts.step_label.value | default: comp.title | escape }}</span></th>
+            {%- endfor -%}
+            <th scope="col" class="s2-cmp__price">{{ 'set2.cmp_price' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for h in rows -%}
+            {%- liquid
+              assign sp = all_products[h]
+              unless sp.id
+                continue
+              endunless
+              capture d
+                render 'bundle-def', handle: h
+              endcapture
+              assign ds = d | strip | split: '|' | first | split: ','
+              assign nk = 'bundles.names.' | append: h
+              assign nm = nk | t | replace: '&amp;', '&'
+              if nm contains 'ranslation missing'
+                assign nm = sp.title
+              endif
+              assign sv = sp.selected_or_first_available_variant
+              assign here = false
+              if h == product.handle
+                assign here = true
+              endif
+            -%}
+            <tr class="s2-cmp__row{% if here %} is-here{% endif %}">
+              <th scope="row" class="s2-cmp__set">
+                {%- if here -%}
+                  <span class="s2-cmp__name">{{ nm | escape }}</span><span class="s2-cmp__here">{{ 'set2.cmp_here' | t }}</span>
+                {%- else -%}
+                  <a class="s2-cmp__name" href="{{ sp.url }}">{{ nm | escape }}</a>
+                {%- endif -%}
+              </th>
+              {%- for i in (1..4) -%}
+                {%- assign is = i | append: '' -%}
+                <td class="s2-cmp__step" data-step="{{ i }}">
+                  {%- if ds contains is -%}
+                    <span class="s2-cmp__yes" aria-hidden="true"></span><span class="visually-hidden">{{ 'set2.yes' | t }}</span>
+                  {%- else -%}
+                    <span class="s2-cmp__no" aria-hidden="true"></span><span class="visually-hidden">{{ 'set2.no' | t }}</span>
+                  {%- endif -%}
+                </td>
+              {%- endfor -%}
+              <td class="s2-cmp__price">
+                <span class="s2-cmp__now">{% render 'egp', cents: sv.price %}</span>
+                {%- if sv.compare_at_price > sv.price -%}
+                  {%- assign sav = sv.compare_at_price | minus: sv.price -%}
+                  {%- capture sav_m -%}{% render 'egp', cents: sav %}{%- endcapture -%}
+                  <span class="s2-cmp__save">{{ 'pdp2.save' | t: amount: sav_m }}</span>
+                {%- endif -%}
+                {%- if threshold > 0 and sv.price >= threshold -%}<span class="s2-cmp__ship">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</span>{%- endif -%}
+              </td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+    {%- render 'skin-check-link', key: 'skin_check.cta_sets', class: 's2-cmp__quiz' -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Compare sets (demo)",
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

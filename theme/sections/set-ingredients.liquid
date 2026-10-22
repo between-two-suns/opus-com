@@ -1,0 +1,95 @@
+{%- comment -%}
+  Set page demo (?view=set2): "N key ingredients, one routine". Every key ingredient across the set's products,
+  once each: its name, what it is (pdp2.ing.<handle>.what, the same lines as the product pages), coloured dots for
+  the steps it's in, and a link to its glossary entry. Built from each product's bts.key_ingredients, so it can't
+  drift from the packs. Renders nothing on single products.
+{%- endcomment -%}
+{%- liquid
+  capture bdef
+    render 'bundle-def', handle: product.handle
+  endcapture
+  assign bdef = bdef | strip
+-%}
+{%- if bdef != blank -%}
+{%- liquid
+  assign buniq = bdef | split: '|' | first | split: ',' | uniq
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign glossary_url = routes.root_url | append: '/pages/ingredients' | replace: '//', '/'
+  assign handles = ''
+  for st in buniq
+    assign si = st | plus: 0
+    assign comp = all_products[step_handles[si]]
+    for ki in comp.metafields.bts.key_ingredients.value
+      assign h = ki.system.handle | default: ki.handle
+      assign hk = ',' | append: h | append: ','
+      assign hs = ',' | append: handles | append: ','
+      unless hs contains hk
+        assign handles = handles | append: ',' | append: h
+      endunless
+    endfor
+  endfor
+  assign handles = handles | remove_first: ',' | split: ','
+-%}
+{%- if handles.size > 0 -%}
+<section class="section s2-ing" aria-labelledby="S2Ing-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{{ 'set2.ing_eyebrow' | t }}</p>
+        <h2 class="t-display-m" id="S2Ing-{{ section.id }}">{{ 'set2.ing_heading' | t: count: handles.size }}</h2>
+      </div>
+      <a class="link-arrow" href="{{ glossary_url }}">{{ 'set2.ing_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+    </div>
+    <ul class="s2-ing__list" role="list">
+      {%- for h in handles -%}
+        {%- liquid
+          assign found = false
+          assign in_steps = ''
+          for st in buniq
+            assign si = st | plus: 0
+            assign comp = all_products[step_handles[si]]
+            for ki in comp.metafields.bts.key_ingredients.value
+              assign kh = ki.system.handle | default: ki.handle
+              if kh == h
+                if found == false
+                  assign found = ki
+                endif
+                assign in_steps = in_steps | append: ',' | append: st
+              endif
+            endfor
+          endfor
+          assign in_steps = in_steps | remove_first: ',' | split: ','
+          assign what_key = 'pdp2.ing.' | append: h | append: '.what'
+          assign what = what_key | t
+          if what contains 'ranslation missing'
+            assign what = ''
+          endif
+          assign anchor = found.inci.value | split: ',' | first | strip | handleize
+        -%}
+        <li class="s2-ing__item">
+          <a class="s2-ing__link" href="{{ glossary_url }}#inci-{{ anchor }}">
+            <span class="s2-ing__name">{{ found.name.value | escape }}</span>
+            {%- if what != blank -%}<span class="s2-ing__what">{{ what }}</span>{%- endif -%}
+            <span class="s2-ing__in">
+              <span class="visually-hidden">{{ 'set2.ing_in' | t }}:</span>
+              {%- for st in in_steps -%}
+                {%- assign si = st | plus: 0 -%}
+                {%- assign comp = all_products[step_handles[si]] -%}
+                <span class="s2-ing__dot" data-step="{{ st }}" title="{{ comp.title | escape }}"><span class="visually-hidden">{{ comp.title | escape }}{% unless forloop.last %}, {% endunless %}</span></span>
+              {%- endfor -%}
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+{%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Set ingredients (demo)",
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

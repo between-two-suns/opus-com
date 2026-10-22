@@ -1,0 +1,128 @@
+{%- comment -%}
+  Set page demo (?view=set2): "Your day with <set>". A Morning / Night switch over the set's steps in order, each
+  with its application photo, its number and name, and the first sentence of its pack directions (bts.how_to_use,
+  translated on the store). Sunscreen is morning only; when a set has none, the morning ends with an honest
+  "not in this set" tile pointing to the SPF. Stock-ups (one product twice) skip this: their product page has
+  the directions. Renders nothing on single products.
+{%- endcomment -%}
+{%- liquid
+  capture bdef
+    render 'bundle-def', handle: product.handle
+  endcapture
+  assign bdef = bdef | strip
+  assign parts = bdef | split: '|'
+-%}
+{%- if bdef != blank and parts[3] != 'stock' -%}
+{%- liquid
+  assign buniq = parts[0] | split: ',' | uniq
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign has_spf = false
+  if buniq contains '4'
+    assign has_spf = true
+  endif
+  assign start = 'am'
+  unless has_spf
+    assign start = 'pm'
+  endunless
+  assign name_key = 'bundles.names.' | append: product.handle
+  assign set_name = name_key | t | replace: '&amp;', '&'
+  if set_name contains 'ranslation missing'
+    assign set_name = product.title
+  endif
+  assign spf = all_products[step_handles[4]]
+-%}
+<section class="section s2-day" data-s2-day data-mode="{{ start }}" aria-labelledby="S2Day-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{{ 'set2.day_eyebrow' | t }}</p>
+        <h2 class="t-display-m" id="S2Day-{{ section.id }}">{{ 'set2.day_heading' | t: name: set_name }}</h2>
+      </div>
+      <div class="s2-day__toggle" role="tablist" aria-label="{{ 'set2.day_toggle' | t }}">
+        {%- for mode in (1..2) -%}
+          {%- if mode == 1 -%}{%- assign m = 'am' -%}{%- else -%}{%- assign m = 'pm' -%}{%- endif -%}
+          <button type="button" role="tab" class="s2-day__tab" id="S2DayTab-{{ section.id }}-{{ m }}" aria-controls="S2DayPanel-{{ section.id }}-{{ m }}" aria-selected="{% if m == start %}true{% else %}false{% endif %}"{% unless m == start %} tabindex="-1"{% endunless %} data-mode="{{ m }}">
+            {%- if m == 'am' -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}{{ 'bundle_inside.morning' | t }}{%- else -%}{% render 'icon', name: 'moon', class: 'icon--sm' %}{{ 'bundle_inside.night' | t }}{%- endif -%}
+          </button>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- for mode in (1..2) -%}
+      {%- if mode == 1 -%}{%- assign m = 'am' -%}{%- else -%}{%- assign m = 'pm' -%}{%- endif -%}
+      <div class="s2-day__panel" role="tabpanel" id="S2DayPanel-{{ section.id }}-{{ m }}" aria-labelledby="S2DayTab-{{ section.id }}-{{ m }}" data-panel="{{ m }}"{% unless m == start %} hidden{% endunless %}>
+        <ol class="s2-day__steps" role="list">
+          {%- assign n = 0 -%}
+          {%- for st in buniq -%}
+            {%- if m == 'pm' and st == '4' -%}{%- continue -%}{%- endif -%}
+            {%- liquid
+              assign n = n | plus: 1
+              assign si = st | plus: 0
+              assign comp = all_products[step_handles[si]]
+              assign photo = false
+              for md in comp.media
+                assign src = md.preview_image.src
+                if src contains '-application'
+                  unless src contains '-application-2'
+                    assign photo = md.preview_image
+                    break
+                  endunless
+                endif
+              endfor
+              if photo == false
+                for md in comp.media
+                  if md.preview_image.src contains '-application'
+                    assign photo = md.preview_image
+                    break
+                  endif
+                endfor
+              endif
+              if photo == false
+                assign photo = comp.featured_media.preview_image
+              endif
+              assign how = comp.metafields.bts.how_to_use.value | split: '.' | first | strip
+            -%}
+            <li class="s2-day__step" data-step="{{ si }}" style="--k: {{ n }}">
+              <a class="s2-day__link" href="{{ comp.url }}">
+                <span class="s2-day__media">
+                  {%- if photo -%}{{ photo | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,450,600,700', sizes: '(min-width: 990px) 22vw, 62vw', alt: '' }}{%- endif -%}
+                  <span class="s2-day__n" aria-hidden="true">{{ n }}</span>
+                </span>
+                <span class="s2-day__body">
+                  <span class="step-tag">{{ 'product.step' | t: number: si }}{% if comp.metafields.bts.step_label != blank %} · {{ comp.metafields.bts.step_label.value | escape }}{% endif %}</span>
+                  <span class="s2-day__name">{{ comp.title | escape }}</span>
+                  {%- if how != blank -%}<span class="s2-day__how">{{ how }}.</span>{%- endif -%}
+                </span>
+              </a>
+            </li>
+          {%- endfor -%}
+          {%- if m == 'am' and has_spf == false and spf.id -%}
+            <li class="s2-day__step s2-day__step--ghost" data-step="4">
+              <a class="s2-day__link" href="{{ spf.url }}">
+                <span class="s2-day__media s2-day__media--ghost">
+                  <img src="{{ 'cut-' | append: spf.handle | append: '.webp' | asset_url }}" alt="" width="357" height="1100" loading="lazy">
+                </span>
+                <span class="s2-day__body">
+                  <span class="step-tag">{{ 'set2.not_in_set' | t }}</span>
+                  <span class="s2-day__name">{{ spf.title | escape }}</span>
+                  <span class="s2-day__how">{{ 'bundle_inside.spf_note' | t }}</span>
+                  <span class="s2-inside__view">{{ 'set2.see_spf' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</span>
+                </span>
+              </a>
+            </li>
+          {%- endif -%}
+        </ol>
+        {%- if m == 'am' and has_spf -%}<p class="s2-day__note">{% render 'icon', name: 'sun', class: 'icon--sm' %}{{ 'bundle_inside.spf_note' | t }}</p>{%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+<script src="{{ 'set2.js' | asset_url }}" type="module" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Your day (demo)",
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

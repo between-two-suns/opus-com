@@ -2,7 +2,8 @@
   Bundle parts of the product page (Pricing & Offers spec).
   part 'stage': the component packs fanned out when the bundle has no photos (placeholder for any other product).
   part 'info': saving vs buying separately (+ ships free when it reaches the threshold) and what's inside.
-  Params: part, handle, variant (info)
+  Params: part, handle, variant (info), list (info: true hides the product list, when the page lists them elsewhere),
+  offset (gallery: true when a slide comes before these, for the "n of N" labels)
 {%- endcomment -%}
 {%- liquid
   capture bdef
@@ -15,7 +16,9 @@
 {%- if bdef == blank -%}
 {%- comment -%} not a set: nothing {%- endcomment -%}
 {%- elsif part == 'gallery' -%}
-<div class="gallery__slide gallery__slide--set" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: 1, count: count }}" data-slide>
+{%- if offset -%}{%- assign g0 = 1 -%}{%- else -%}{%- assign g0 = 0 -%}{%- endif -%}
+{%- assign g1 = g0 | plus: 1 -%}
+<div class="gallery__slide gallery__slide--set" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: g1, count: count }}" data-slide>
   {%- render 'set-visual', product: product, loading: 'eager', sizes: '(min-width: 990px) 46vw, 92vw' -%}
 </div>
 {%- assign buniq = bundle_steps | uniq -%}
@@ -24,7 +27,7 @@
   {%- assign comp = all_products[step_handles[si]] -%}
   {%- assign ck = 'bts-' | append: comp.handle | append: '-studio.jpg' -%}
   {%- assign studio = images[ck] -%}{%- if studio == blank -%}{%- assign studio = comp.featured_media -%}{%- endif -%}
-  {%- assign slide_n = forloop.index | plus: 1 -%}
+  {%- assign slide_n = forloop.index | plus: 1 | plus: g0 -%}
   <div class="gallery__slide gallery__slide--studio-photo" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide_n, count: count }}" data-slide data-step="{{ si }}">
     {%- if studio -%}{{ studio | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1400', sizes: '(min-width: 990px) 46vw, 92vw', alt: comp.title }}{%- endif -%}
   </div>
@@ -37,6 +40,7 @@
   <p class="bundle__save t-small">{{ 'bundles.save_vs' | t: amount: bsave_m }}</p>
   {%- if bthr > 0 and variant.price >= bthr -%}<p class="ship-badge ship-badge--lg">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</p>{%- endif -%}
 {%- endif -%}
+{%- unless list -%}
 <ul class="bundle__items pdp__bundle-items" role="list">
     {%- assign buniq = bundle_steps | uniq -%}
     {%- for st in buniq -%}
@@ -46,4 +50,5 @@
       <li data-step="{{ st }}"><span class="bundle__dot" aria-hidden="true"></span>{% if q > 1 %}{{ q }} × {% endif %}<a href="{{ comp.url }}">{{ comp.title | escape }}</a></li>
     {%- endfor -%}
 </ul>
+{%- endunless -%}
 {%- endif -%}
