@@ -1325,6 +1325,14 @@
       }
     },
     "no_reviews": "No reviews yet",
-    "write_first": "Write the first review"
+    "write_first": "Write the first review",
+    "short": {
+      "1": "Cleanser",
+      "2": "Serum",
+      "3": "Cream",
+      "4": "SPF 50+"
+    },
+    "adds": "Adds {{ items }} for {{ amount }} more",
+    "routine_tabs_more": "The other steps"
   }
 }

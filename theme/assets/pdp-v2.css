@@ -5,8 +5,6 @@
 /* Routine tabs: one slim row so the stage and the price share the first screen on phones */
 .pdp--v2 .pdp-tabs { margin-block: 0 10px; }
 @media (max-width: 989px) {
-  /* the active tab already says "02 Clarity", so the step line above the name goes on phones */
-  .pdp--v2 .v2-head .pdp__step { display: none; }
   .pdp--v2 .pdp-tabs__link { padding-block: 6px 9px; min-block-size: 40px; grid-auto-flow: column; justify-content: start; align-items: baseline; gap: 6px; }
   .pdp--v2 .pdp-tabs__num { font-size: 13px; }
   .pdp--v2 .pdp-tabs__name { font-size: 10px; }
@@ -247,3 +245,26 @@
 @media (min-width: 990px) {
   .pdp--v2 .pdp__gallery .gallery__slide { block-size: min(125cqw, var(--v2-stage-h, max(400px, calc(100svh - 250px)))); }
 }
+
+/* Round 4 ------------------------------------------------------------------ */
+/* Routine tabs: above the stage on desktop, under the buy box on phones (the stage and price come first) */
+.pdp--v2 .pdp-tabs--bottom { display: none; }
+@media (max-width: 989px) {
+  .pdp--v2 .pdp-tabs--top { display: none; }
+  .pdp--v2 .pdp-tabs--bottom { display: block; margin-block: 6px 0; }
+  .pdp--v2 .pdp-tabs--bottom .pdp-tabs__list { gap: 6px; }
+}
+
+/* Bottom bar: the saving sits beside the price on one line, smaller (ink, not green: the bar takes the step colour and
+   green fails contrast on it). On a phone the small pack photo steps aside while a saving shows, so both fit; the
+   saving gives way first if space still runs out. */
+.pdp--v2 .sticky-atc .price { display: flex; flex-wrap: nowrap; align-items: baseline; gap: 8px; white-space: nowrap; min-inline-size: 0; }
+@media (max-width: 420px) {
+  .pdp--v2 .sticky-atc:has(.v2-sticky-save:not(:empty)) .sticky-atc__inner { grid-template-columns: 1fr auto; padding-inline-start: 8px; }
+  .pdp--v2 .sticky-atc:has(.v2-sticky-save:not(:empty)) .sticky-atc__thumb { display: none; }
+  .pdp--v2 .sticky-atc:has(.v2-sticky-save:not(:empty)) .sticky-atc__btn { padding-inline: 16px; }
+  .pdp--v2 .sticky-atc .price { gap: 6px; }
+}
+.pdp--v2 .sticky-atc [data-v2-sticky-price] { flex: none; }
+.pdp--v2 .v2-sticky-save { font-size: 12px; font-weight: 650; color: var(--c-ink); overflow: hidden; text-overflow: ellipsis; min-inline-size: 0; }
+.pdp--v2 .v2-sticky-save:empty { display: none; }

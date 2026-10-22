@@ -1,7 +1,8 @@
 {%- comment -%}
   Product page demo (v2): one "how to buy" card in the buy box. Selecting it puts its variant in the form, so
   Add to bag adds exactly what the card says, at its real price. Renders nothing if the set doesn't exist.
-  Params: handle (product or set handle), checked (bool), here (the product being viewed), index, compact (bool)
+  Params: handle (product or set handle), checked (bool), here (the product being viewed), compact (bool),
+  from_steps + from_price (on a set page: the set being viewed, so an upgrade reads "Adds SPF 50+ for EGP 400 more")
 {%- endcomment -%}
 {%- assign op = all_products[handle] -%}
 {%- if op != blank and op.id -%}
@@ -24,12 +25,49 @@
       if oname contains 'ranslation missing'
         assign oname = op.title
       endif
+      comment
+        Name what's inside ("Serum + SPF 50+"), not a count; a stock-up says "2 × Clarity Serum"; an upgrade from the
+        set being viewed says what it adds and for how much more.
+      endcomment
+      assign names = ''
+      assign uniq_steps = osteps | uniq
+      for st in uniq_steps
+        assign sk = 'pdp2.short.' | append: st
+        assign sn = sk | t
+        if names == ''
+          assign names = sn
+        else
+          assign names = names | append: ' + ' | append: sn
+        endif
+      endfor
       if okind == 'stock'
-        assign osub = 'pdp2.stock_sub' | t: count: osteps.size, name: here.title
-      elsif osteps.size == 4
-        assign osub = 'pdp2.set_sub_all' | t
+        assign stock_i = osteps[0] | plus: 0
+        assign stock_name = all_products[step_handles[stock_i]].title | default: here.title
+        assign osub = 'pdp2.stock_sub' | t: count: osteps.size, name: stock_name
       else
-        assign osub = 'pdp2.set_sub_n' | t: count: osteps.size
+        assign osub = names
+      endif
+      if from_steps != blank
+        assign from_list = from_steps | split: ','
+        assign adds = ''
+        for st in uniq_steps
+          unless from_list contains st
+            assign sk = 'pdp2.short.' | append: st
+            assign sn = sk | t
+            if adds == ''
+              assign adds = sn
+            else
+              assign adds = adds | append: ' + ' | append: sn
+            endif
+          endunless
+        endfor
+        assign more = ov.price | minus: from_price
+        if adds != blank and more > 0
+          capture more_label
+            render 'egp', cents: more
+          endcapture
+          assign osub = 'pdp2.adds' | t: items: adds, amount: more_label
+        endif
       endif
     else
       assign osteps = ''
@@ -49,11 +87,18 @@
     capture oprice
       render 'egp', cents: ov.price
     endcapture
+    assign save_label = ''
+    if saving > 0
+      capture save_amt
+        render 'egp', cents: saving
+      endcapture
+      assign save_label = 'pdp2.save' | t: amount: save_amt
+    endif
   -%}
   <label class="v2-opt{% if compact %} v2-opt--compact{% endif %}{% if obadge == 'bts_pick' %} v2-opt--pick{% endif %}">
     <input class="v2-opt__input" type="radio" name="v2-option" value="{{ ov.id }}"
       data-price="{{ ov.price }}" data-compare="{{ ov.compare_at_price | default: 0 }}" data-name="{{ oname | escape }}"
-      data-price-label="{{ oprice | strip | escape }}"{% if checked %} checked{% endif %}{% unless ov.available %} disabled{% endunless %}>
+      data-price-label="{{ oprice | strip | escape }}" data-save-label="{{ save_label | strip | escape }}"{% if checked %} checked{% endif %}{% unless ov.available %} disabled{% endunless %}>
     <span class="v2-opt__dot" aria-hidden="true"></span>
     <span class="v2-opt__packs" aria-hidden="true">
       {%- if is_set -%}

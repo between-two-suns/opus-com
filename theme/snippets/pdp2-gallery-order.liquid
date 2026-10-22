@@ -1,0 +1,54 @@
+{%- comment -%}
+  Product page demo (v2): the gallery order for a single product, as comma-separated media positions. After the
+  stage: texture, applying, in hand, in use, back of pack (matched by file name or alt text). Near-identical pack
+  angles (own colour, closure, three-quarter, open pump) are left out. Outputs nothing if no photo matches, so the
+  section falls back to every photo. Params: product, skip (media to skip at the start: the front packshot shown on
+  the stage)
+{%- endcomment -%}
+{%- liquid
+  assign gal = ','
+  assign cats = 'texture,apply,hand,use,back' | split: ','
+  for cat in cats
+    for m in product.media offset: skip
+      assign src = m.preview_image.src | downcase
+      assign alt = m.alt | downcase
+      assign hit = false
+      assign is2 = false
+      if src contains '-application-2' or alt contains 'in use'
+        assign is2 = true
+      endif
+      case cat
+        when 'texture'
+          if src contains '-texture' or alt contains 'texture'
+            assign hit = true
+          endif
+        when 'apply'
+          if is2 == false
+            if src contains '-application' or alt contains 'being applied'
+              assign hit = true
+            endif
+          endif
+        when 'hand'
+          if src contains '-in-hand' or alt contains 'in hand'
+            assign hit = true
+          endif
+        when 'use'
+          if is2 or src contains '-in-use'
+            assign hit = true
+          endif
+        when 'back'
+          if src contains '-back' or alt contains 'back of pack'
+            assign hit = true
+          endif
+      endcase
+      assign mark = m.position | append: ','
+      assign mark = ',' | append: mark
+      if hit
+        unless gal contains mark
+          assign gal = gal | append: m.position | append: ','
+        endunless
+      endif
+    endfor
+  endfor
+  echo gal | remove_first: ','
+-%}

@@ -37,6 +37,31 @@
     assign set_steps = bdef | split: '|' | first | split: ',' | uniq
     assign media_count = set_steps.size | plus: 1
   endif
+  comment
+    Single products: six strong slides instead of nine, in a set order (snippets/pdp2-gallery-order).
+  endcomment
+  assign gal_list = ''
+  if bdef == blank
+    capture gal_out
+      render 'pdp2-gallery-order', product: product, skip: skip_media
+    endcapture
+    assign gal_list = gal_out | strip | split: ','
+  endif
+  assign gal_all = ''
+  if gal_list.size == 0
+    capture gal_all
+      for m in product.media offset: skip_media
+        echo m.position | append: ','
+      endfor
+    endcapture
+    assign gal_all = gal_all | split: ','
+  endif
+  if bdef == blank and gal_list.size > 0
+    assign media_count = gal_list.size
+    if cutout
+      assign media_count = media_count | plus: 1
+    endif
+  endif
   assign pdp_title = product.title
   assign benefit = mf.benefit.value
   if bdef != blank
@@ -77,6 +102,19 @@
   if step > 0 and bdef == blank and coming_soon == false and opt_handles.size > 0
     assign show_options = true
   endif
+  comment
+    Set pages (any set but The Full Ritual): this set, or The Full Ritual with exactly what it adds and for how much more.
+    A stock-up isn't a subset of the Ritual (two of one step), so there the Ritual card just names its contents.
+  endcomment
+  assign set_upgrade = false
+  assign set_steps_s = ''
+  if bdef != blank and product.handle != 'the-full-ritual' and coming_soon == false and all_products['the-full-ritual'].id
+    assign set_upgrade = true
+    assign bparts = bdef | split: '|'
+    unless bparts[3] == 'stock'
+      assign set_steps_s = bparts[0]
+    endunless
+  endif
   assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
   capture price_label
     render 'egp', cents: variant.price
@@ -88,8 +126,10 @@
 <div class="pdp pdp--v2" data-step="{{ step }}" data-tone="sku" data-product-title="{{ pdp_title | escape }}">
   <div class="container">
     {%- assign tab_source = settings.routine_collection | default: collections.all -%}
+    {%- comment -%} Routine tabs: above the stage on desktop; on phones they move under the buy box (for browsing, not buying). {%- endcomment -%}
+    {%- capture tabs_html -%}
     {%- if step > 0 -%}
-      <nav class="pdp-tabs" aria-label="{{ 'product.routine_tabs' | t }}">
+      <nav class="pdp-tabs __TABS__" aria-label="{{ 'product.routine_tabs' | t }}">
         <ol class="pdp-tabs__list" role="list">
           {%- for s in (1..4) -%}
             {%- for p in tab_source.products limit: 12 -%}
@@ -109,6 +149,8 @@
         </ol>
       </nav>
     {%- endif -%}
+    {%- endcapture -%}
+    {{ tabs_html | replace: '__TABS__', 'pdp-tabs--top' }}
 
     <div class="pdp__grid">
       {%- comment -%} Gallery: identical to the live page (studio stage + callouts), plus thumbnails on desktop. {%- endcomment -%}
@@ -142,7 +184,11 @@
             </div>
           {%- endif -%}
           {%- if bdef != blank -%}{%- render 'pdp-bundle', part: 'gallery', handle: product.handle, count: media_count -%}{%- else -%}
-          {%- for media in product.media offset: skip_media -%}
+          {%- if gal_list.size > 0 -%}{%- assign order_list = gal_list -%}{%- else -%}{%- assign order_list = gal_all -%}{%- endif -%}
+          {%- for pos in order_list -%}
+          {%- for media in product.media -%}
+            {%- assign pos_s = media.position | append: '' -%}
+            {%- if pos_s != pos -%}{%- continue -%}{%- endif -%}
             {%- assign slide = slide | plus: 1 -%}
             <div class="gallery__slide{% if media.preview_image.src contains '.png' %} gallery__slide--png{% endif %}" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
               {%- case media.media_type -%}
@@ -156,6 +202,7 @@
                   {{ media | media_tag }}
               {%- endcase -%}
             </div>
+          {%- endfor -%}
           {%- endfor -%}
           {%- endif -%}
         </div>
@@ -176,9 +223,13 @@
                 <button type="button" class="v2-thumb v2-thumb--studio" data-thumb="0" tabindex="-1">{{ cutout | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '64px', alt: '' }}</button>
                 {%- assign t = 1 -%}
               {%- endif -%}
-              {%- for media in product.media offset: skip_media -%}
+              {%- for pos in order_list -%}
+              {%- for media in product.media -%}
+                {%- assign pos_s = media.position | append: '' -%}
+                {%- if pos_s != pos -%}{%- continue -%}{%- endif -%}
                 <button type="button" class="v2-thumb{% if media.preview_image.src contains '.png' %} v2-thumb--png{% endif %}" data-thumb="{{ t }}" tabindex="-1">{{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '64px', alt: '' }}</button>
                 {%- assign t = t | plus: 1 -%}
+              {%- endfor -%}
               {%- endfor -%}
             </div>
           {%- endif -%}
@@ -215,7 +266,8 @@
             {%- if bdef == blank and mf.size != blank -%}
               <p class="v2-buy__facts"><span class="u-ltr">{{ mf.size }}</span>{% if mf.when_to_use != blank %} · {{ mf.when_to_use }}{% endif %}</p>
             {%- endif -%}
-            {%- render 'pdp-bundle', part: 'info', handle: product.handle, variant: variant -%}
+            {%- comment -%} On a set page with options, the cards carry the saving and contents, so the summary isn't repeated. {%- endcomment -%}
+            {%- unless set_upgrade -%}{%- render 'pdp-bundle', part: 'info', handle: product.handle, variant: variant -%}{%- endunless -%}
           </div>
 
           {%- if show_options -%}
@@ -228,6 +280,12 @@
               {%- if stock_handle != blank -%}
                 {%- render 'pdp2-option', handle: stock_handle, checked: false, here: product, compact: true -%}
               {%- endif -%}
+            </fieldset>
+          {%- elsif set_upgrade -%}
+            <fieldset class="v2-opts" data-v2-options>
+              <legend class="v2-opts__legend">{{ 'pdp2.options' | t }}</legend>
+              {%- render 'pdp2-option', handle: product.handle, checked: true, here: product -%}
+              {%- render 'pdp2-option', handle: 'the-full-ritual', checked: false, here: product, from_steps: set_steps_s, from_price: variant.price -%}
             </fieldset>
           {%- endif -%}
 
@@ -312,6 +370,7 @@
           {%- endif -%}
         </div>
 
+        {{ tabs_html | replace: '__TABS__', 'pdp-tabs--bottom' }}
         {%- comment -%} Reference details stay one tap away. {%- endcomment -%}
         <div class="v2-details">
           {%- if mf.inci != blank -%}
@@ -349,7 +408,7 @@
       </span>
       <span class="sticky-atc__text">
         <span class="sticky-atc__title" data-v2-sticky-name>{{ pdp_title | escape }}</span>
-        <span class="price t-small"><span class="price__current" data-v2-sticky-price>{%- if coming_soon -%}{{ 'product.price_coming_soon' | t }}{%- else -%}{{ price_label }}{%- endif -%}</span></span>
+        <span class="price t-small"><span class="price__current" data-v2-sticky-price>{%- if coming_soon -%}{{ 'product.price_coming_soon' | t }}{%- else -%}{{ price_label }}{%- endif -%}</span><span class="v2-sticky-save" data-v2-sticky-save></span></span>
       </span>
       <button type="submit" form="{{ form_id }}" class="btn btn--deep btn--small sticky-atc__btn" data-magnetic {% if coming_soon or variant.available == false %}disabled{% endif %}>
         <span class="btn__label">{%- if coming_soon -%}{{ 'product.coming_soon' | t }}{%- elsif variant.available == false -%}{{ 'product.sold_out' | t }}{%- else -%}{{ 'product.add_to_cart' | t }}{%- endif -%}</span>

@@ -17,6 +17,7 @@ function initBuy(box) {
   const options = [...box.querySelectorAll('.v2-opt__input')];
   const stickyName = document.querySelector('[data-v2-sticky-name]');
   const stickyPrice = document.querySelector('[data-v2-sticky-price]');
+  const stickySave = document.querySelector('[data-v2-sticky-save]');
   const ship = box.querySelector('[data-v2-ship]');
   const threshold = Number(box.dataset.threshold || 0);
   let cartTotal = Number(box.dataset.cartTotal || 0);
@@ -43,8 +44,10 @@ function initBuy(box) {
     if (opt) {
       idInput.value = opt.value;
       if (label && firstPrice) label.textContent = labelTpl.replace(firstPrice, opt.dataset.priceLabel);
+      // the bottom bar names the choice, with its saving beside the price: "EGP 1,699  Save EGP 147"
       if (stickyName) stickyName.textContent = opt.dataset.name;
       if (stickyPrice) stickyPrice.textContent = opt.dataset.priceLabel;
+      if (stickySave) stickySave.textContent = opt.dataset.saveLabel || '';
     }
     updateShip();
   }
