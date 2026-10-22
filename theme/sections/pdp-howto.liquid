@@ -101,10 +101,10 @@
             {%- assign pv = pp.selected_or_first_available_variant -%}
             {%- assign key = pair_keys[forloop.index0] -%}
             <li class="v2-pair__card" data-step="{{ pi }}">
-              <a class="v2-pair__visual" href="{{ pp.url }}?view=v2" tabindex="-1" aria-hidden="true"><img src="{{ 'cut-' | append: pp.handle | append: '.webp' | asset_url }}" alt="" width="80" height="252" loading="lazy"></a>
+              <a class="v2-pair__visual" href="{{ pp.url }}" tabindex="-1" aria-hidden="true"><img src="{{ 'cut-' | append: pp.handle | append: '.webp' | asset_url }}" alt="" width="80" height="252" loading="lazy"></a>
               <div class="v2-pair__body">
                 <p class="v2-pair__why">{{ key | t }}</p>
-                <h3 class="v2-pair__name"><a href="{{ pp.url }}?view=v2">{{ pp.title | escape }}</a></h3>
+                <h3 class="v2-pair__name"><a href="{{ pp.url }}">{{ pp.title | escape }}</a></h3>
                 {%- if pp.metafields.bts.benefit != blank -%}<p class="v2-pair__benefit">{{ pp.metafields.bts.benefit }}</p>{%- endif -%}
               </div>
               <product-form class="v2-pair__buy" data-product-title="{{ pp.title | escape }}">
@@ -129,6 +129,6 @@
 
 {% schema %}
 {
-  "name": "How to use (demo v2)"
+  "name": "How to use"
 }
 {% endschema %}

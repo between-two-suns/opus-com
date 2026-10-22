@@ -181,7 +181,7 @@
 }
 
 /* Reviews and FAQ share a background: one gap between them, not two */
-.template-product--v2 .shopify-section:has(> .product-reviews) + .shopify-section > .faq { padding-block-start: 0; }
+.template-product:has(.pdp--v2) .shopify-section:has(> .product-reviews) + .shopify-section > .faq { padding-block-start: 0; }
 
 /* Who it's for (round 2): the concerns, in the skin check's words */
 .v2-who { display: grid; gap: 8px; margin-block-start: 4px; }
@@ -222,7 +222,7 @@
 .v2-ask { margin: -4px 0 0; font-size: 13.5px; color: var(--c-muted); }
 .v2-ask a { color: var(--c-ink); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
 /* The stock-up is already in the buy box; the routine strip keeps only The Full Ritual card */
-.template-product--v2 .routine-strip__offers .offer-wrap:has(.offer[data-handle$='-stock-up']) { display: none; }
+.template-product:has(.pdp--v2) .routine-strip__offers .offer-wrap:has(.offer[data-handle$='-stock-up']) { display: none; }
 /* Shorter texture photo on phones, so the ingredient cards start sooner */
 @media (max-width: 749px) {
   .v2-ben__media { aspect-ratio: 16 / 9; }

@@ -1,7 +1,7 @@
 {{ 'product.css' | asset_url | stylesheet_tag }}
 {{ 'pdp-v2.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  Product page demo (v2, /products/…?view=v2). Same stage, callouts and gallery as the live product page; the info
+  Product page (the v2 design, live on every product and set since DECISIONS 187). Same stage, callouts and gallery as the first product page; the info
   column leads with the pack's benefit line, the concerns it helps with and the price, then "choose how to buy"
   (this product or a set that holds it, real prices, this product pre-selected), Add to bag with the chosen price,
   and honest reassurance (delivery estimate, free-delivery distance, returns, COD only when switched on).
@@ -136,7 +136,7 @@
               {%- assign ps = ps | strip | plus: 0 -%}
               {%- if ps == s -%}
                 <li class="pdp-tabs__item" data-step="{{ s }}">
-                  <a class="pdp-tabs__link" href="{{ p.url }}?view=v2"{% if p.id == product.id %} aria-current="page"{% endif %}>
+                  <a class="pdp-tabs__link" href="{{ p.url }}"{% if p.id == product.id %} aria-current="page"{% endif %}>
                     <span class="pdp-tabs__num">0{{ s }}</span>
                     <span class="pdp-tabs__name">{{ p.metafields.bts.step_label.value | default: p.title | escape }}</span>
                   </a>
@@ -420,7 +420,7 @@
 
 {% schema %}
 {
-  "name": "Product page (demo v2)",
+  "name": "Product page",
   "tag": "section",
   "class": "section-main-product",
   "settings": [

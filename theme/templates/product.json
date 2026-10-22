@@ -1,88 +1,29 @@
 {
   "sections": {
     "main": {
-      "type": "main-product",
-      "blocks": {
-        "title": {
-          "type": "title",
-          "settings": {}
-        },
-        "benefit": {
-          "type": "benefit",
-          "settings": {}
-        },
-        "facts": {
-          "type": "facts",
-          "settings": {}
-        },
-        "buy": {
-          "type": "buy",
-          "settings": {}
-        },
-        "claims": {
-          "type": "claims",
-          "settings": {}
-        },
-        "texture": {
-          "type": "texture",
-          "settings": {}
-        },
-        "acc-what": {
-          "type": "accordion",
-          "settings": {
-            "content": "what",
-            "open": true
-          }
-        },
-        "acc-ing": {
-          "type": "accordion",
-          "settings": {
-            "content": "ingredients"
-          }
-        },
-        "acc-how": {
-          "type": "accordion",
-          "settings": {
-            "content": "how"
-          }
-        },
-        "acc-who": {
-          "type": "accordion",
-          "settings": {
-            "content": "who"
-          }
-        },
-        "acc-inci": {
-          "type": "accordion",
-          "settings": {
-            "content": "inci"
-          }
-        },
-        "acc-caution": {
-          "type": "accordion",
-          "settings": {
-            "content": "caution"
-          }
-        }
-      },
-      "block_order": [
-        "title",
-        "benefit",
-        "buy",
-        "facts",
-        "claims",
-        "texture",
-        "acc-what",
-        "acc-ing",
-        "acc-how",
-        "acc-who",
-        "acc-inci",
-        "acc-caution"
-      ],
+      "type": "main-product-v2",
+      "settings": {
+        "preview_payments": false
+      }
+    },
+    "inside": {
+      "type": "bundle-inside",
+      "settings": {}
+    },
+    "benefits": {
+      "type": "pdp-benefits",
+      "settings": {}
+    },
+    "howto": {
+      "type": "pdp-howto",
       "settings": {}
     },
     "routine": {
       "type": "product-routine",
+      "settings": {}
+    },
+    "reviews": {
+      "type": "pdp-reviews-v2",
       "settings": {}
     },
     "faq": {
@@ -91,69 +32,79 @@
         "q1": {
           "type": "qa",
           "settings": {
-            "preset": "order"
+            "preset": "sensitive"
           }
         },
         "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "pregnancy"
+          }
+        },
+        "q3": {
           "type": "qa",
           "settings": {
             "preset": "am_pm",
             "steps": "1,2,3,0"
           }
         },
-        "q3": {
-          "type": "qa",
-          "settings": {
-            "preset": "spf_last",
-            "steps": "4"
-          }
-        },
         "q4": {
-          "type": "qa",
-          "settings": {
-            "preset": "reapply",
-            "steps": "4,0"
-          }
-        },
-        "q5": {
-          "type": "qa",
-          "settings": {
-            "preset": "set_full_size",
-            "steps": "0"
-          }
-        },
-        "q6": {
-          "type": "qa",
-          "settings": {
-            "preset": "set_saving",
-            "steps": "0"
-          }
-        },
-        "q7": {
           "type": "qa",
           "settings": {
             "preset": "skin_type",
             "steps": "1,3,4"
           }
         },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "preset": "spf_last",
+            "steps": "4"
+          }
+        },
+        "q6": {
+          "type": "qa",
+          "settings": {
+            "preset": "reapply",
+            "steps": "4,0"
+          }
+        },
+        "q7": {
+          "type": "qa",
+          "settings": {
+            "preset": "set_full_size",
+            "steps": "0"
+          }
+        },
         "q8": {
           "type": "qa",
           "settings": {
-            "preset": "fragrance",
-            "steps": "3"
+            "preset": "set_saving",
+            "steps": "0"
           }
         },
         "q9": {
           "type": "qa",
           "settings": {
-            "preset": "inci",
-            "steps": "1,2,3,4"
+            "preset": "delivery_time"
           }
         },
         "q10": {
           "type": "qa",
           "settings": {
-            "preset": "made"
+            "preset": "delivery_cost"
+          }
+        },
+        "q11": {
+          "type": "qa",
+          "settings": {
+            "preset": "returns"
+          }
+        },
+        "q12": {
+          "type": "qa",
+          "settings": {
+            "preset": "order"
           }
         }
       },
@@ -167,26 +118,22 @@
         "q7",
         "q8",
         "q9",
-        "q10"
+        "q10",
+        "q11",
+        "q12"
       ],
       "settings": {
         "compact": true,
         "show_contact": true,
         "schema": false
       }
-    },
-    "inside": {
-      "type": "bundle-inside",
-      "settings": {}
-    },
-    "reviews": {
-      "type": "product-reviews",
-      "settings": {}
     }
   },
   "order": [
     "main",
     "inside",
+    "benefits",
+    "howto",
     "routine",
     "reviews",
     "faq"

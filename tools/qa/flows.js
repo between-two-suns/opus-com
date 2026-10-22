@@ -126,7 +126,8 @@ for (const loc of ['', '/ar']) {
     ok(`${tag} set page has no routine strip`, (await page.$$('.routine-strip')).length === 0);
     await page.goto(`${BASE}${loc}/products/clarity-serum`, { waitUntil: 'networkidle' });
     const faqN = await page.$$eval('.faq summary', (l) => l.length);
-    ok(`${tag} serum FAQ skips SPF-only and set-only questions`, faqN === 4, `n=${faqN}`);
+    // product.json FAQ (DECISIONS 182): 12 questions; the serum shows the 7 that aren't SPF-only or set-only
+    ok(`${tag} serum FAQ skips SPF-only and set-only questions`, faqN === 7, `n=${faqN}`);
     if (vp.isMobile) ok(`${tag} phone PDP shows the buy bar from the start`, await page.$eval('sticky-atc', (s) => s.classList.contains('is-visible')));
     await page.goto(`${BASE}${loc}/`, { waitUntil: 'networkidle' });
 
