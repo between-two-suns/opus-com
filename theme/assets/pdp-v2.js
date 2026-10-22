@@ -137,6 +137,30 @@ function initGallery(gallery) {
 
   thumbs.forEach((t) => t.addEventListener('click', () => gallery.go?.(Number(t.dataset.thumb))));
   gallery.setActive(at());
+  fitStage(gallery);
+}
+
+/* Desktop: the photo fills the screen under the header. At the top of the page the announcement bar and the routine
+   tabs sit above it; once they scroll away and the gallery is pinned, it grows into the freed space, so there is never
+   a gap under it. Height = window − where the stage sits (never above its pinned position) − its nav row − margin. */
+function fitStage(gallery) {
+  const desk = matchMedia('(min-width: 990px)');
+  const nav = gallery.querySelector('.v2-thumbs') || gallery.querySelector('.gallery__nav');
+  let raf = 0;
+  const fit = () => {
+    raf = 0;
+    if (!desk.matches) { gallery.style.removeProperty('--v2-stage-h'); return; }
+    const pinned = parseFloat(getComputedStyle(gallery).top) || 0;
+    const top = Math.max(gallery.getBoundingClientRect().top, pinned);
+    const navH = nav ? nav.getBoundingClientRect().height + 12 : 0;
+    const h = Math.round(Math.max(400, window.innerHeight - top - navH - 20));
+    gallery.style.setProperty('--v2-stage-h', `${h}px`);
+  };
+  const queue = () => { if (!raf) raf = requestAnimationFrame(fit); };
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  desk.addEventListener?.('change', queue);
+  fit();
 }
 
 document.querySelectorAll('[data-v2-buy]').forEach(initBuy);

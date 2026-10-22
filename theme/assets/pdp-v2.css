@@ -243,3 +243,7 @@
 /* "BTS Pick" sits on the card's top edge, so it never pushes the name onto two lines */
 .v2-opt--pick { margin-block-start: 6px; }
 .v2-opt--pick .v2-opt__badge { position: absolute; inset-block-start: -9px; inset-inline-end: 14px; margin: 0; vertical-align: baseline; }
+/* Desktop stage height follows the free space under the header (set by pdp-v2.js), capped at the 4:5 shape */
+@media (min-width: 990px) {
+  .pdp--v2 .pdp__gallery .gallery__slide { block-size: min(125cqw, var(--v2-stage-h, max(400px, calc(100svh - 250px)))); }
+}
