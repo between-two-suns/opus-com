@@ -3,7 +3,7 @@
     "main": {
       "type": "main-product-v2",
       "settings": {
-        "preview_payments": false
+        "preview_payments": true
       }
     },
     "inside": {

@@ -42,7 +42,7 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - Delivery fees, remote fees and estimates are theme settings feeding the FAQ; COD answer appears only when COD is switched on; ICI-pending FAQs are hidden until answered; unverified claim badges are held (DECISIONS 169). Owner: set Shopify shipping rates to match.
 - Skin check live on staging at `/pages/skin-check`, in the menu and linked from sets and product pages (DECISIONS 172); ICI sign-off still needed before public launch; sensitive-skin and pregnancy FAQs answered; claims switch per product (DECISIONS 171). Morning-to-night concept dropped by owner (demo stays unlinked).
 - Shipping and Returns pages hold the owner's policies in English and Arabic (DECISIONS 177–178). Night Ritual photo leads its product page; favicon PNGs added. Contact hours, legal name/address in footer, offer bar wording as approved, PayPal icon hidden. Shopify shipping rates (flat EGP 118, international EGP 980) still don't match the site: owner to change.
-- **New product page design live on staging for all 11 products and sets** (DECISIONS 181–187). Payment badge design preview only at `?view=v2`; real pages show only live payment methods.
+- **New product page design live on staging for all 11 products and sets** (DECISIONS 181–187). Payment badge design preview is ON for testing (owner, DECISIONS 188); **switch `preview_payments` off in templates/product.json before launch.**
 - Language switch is a direct link to `/ar/…` (works on preview share links, DECISIONS 176). Repo and staging match file for file.
 - Morning-to-night demo at `/?view=day` for owner review; home unchanged (DECISIONS 168). Vanity photos need label-correct versions before any live use.
 

@@ -270,3 +270,8 @@
 .pdp--v2 .sticky-atc [data-v2-sticky-price] { flex: none; }
 .pdp--v2 .v2-sticky-save { font-size: 12px; font-weight: 650; color: var(--c-ink); overflow: hidden; text-overflow: ellipsis; min-inline-size: 0; }
 .pdp--v2 .v2-sticky-save:empty { display: none; }
+
+/* Round 6 ------------------------------------------------------------------ */
+/* One gap, not two, between the buy section and the next section ("Inside the set" / "What's inside"): the next
+   section's own top padding is the gap. */
+.pdp.pdp--v2 { padding-block-end: 0; }
