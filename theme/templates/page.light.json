@@ -1,0 +1,69 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-routine-light",
+      "settings": {}
+    },
+    "forecast": {
+      "type": "skin-forecast",
+      "settings": {}
+    },
+    "ampm": {
+      "type": "routine-ampm",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "qa",
+          "settings": {
+            "preset": "order"
+          }
+        },
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "am_pm"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "all_four"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "preset": "spf_last"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "preset": "reapply"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "compact": true,
+        "show_contact": true,
+        "schema": false
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "forecast",
+    "ampm",
+    "faq"
+  ]
+}
