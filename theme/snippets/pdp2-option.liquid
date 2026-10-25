@@ -104,10 +104,12 @@
       {%- if is_set -%}
         {%- for st in osteps -%}
           {%- assign si = st | plus: 0 -%}
-          <img src="{{ 'cut-' | append: step_handles[si] | append: '.webp' | asset_url }}" alt="" width="40" height="126" loading="lazy" data-step="{{ si }}">
+          {%- capture pack_src -%}{%- render 'cut-src', handle: step_handles[si], width: 80 -%}{%- endcapture -%}
+          <img src="{{ pack_src }}" alt="" width="40" height="126" loading="lazy" data-step="{{ si }}">
         {%- endfor -%}
       {%- else -%}
-        <img src="{{ 'cut-' | append: op.handle | append: '.webp' | asset_url }}" alt="" width="40" height="126" loading="lazy">
+        {%- capture pack_src -%}{%- render 'cut-src', handle: op.handle, width: 80 -%}{%- endcapture -%}
+        <img src="{{ pack_src }}" alt="" width="40" height="126" loading="lazy">
       {%- endif -%}
     </span>
     <span class="v2-opt__text">

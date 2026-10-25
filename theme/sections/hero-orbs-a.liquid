@@ -126,7 +126,7 @@
       {%- for h in handles -%}
         {%- assign p = all_products[h] -%}
         {%- unless p.id -%}{%- continue -%}{%- endunless -%}
-        {%- assign img = 'cut-' | append: h | append: '.webp' | asset_url -%}
+        {%- capture img -%}{%- render 'cut-src', handle: h, width: 600 -%}{%- endcapture -%}
         {%- assign st = forloop.index -%}
         <li class="hh-b{% if forloop.first %} hh-b--first{% endif %}" data-step="{{ st }}" style="--h: {{ hs[forloop.index0] }}; --i: {{ forloop.index0 }}">
           <a href="{{ p.url }}"><img src="{{ img }}" alt="" width="357" height="1100" fetchpriority="high"><span class="visually-hidden">{{ p.title | escape }}</span></a>

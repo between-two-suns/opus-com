@@ -23,7 +23,7 @@
           {%- for n in (1..4) -%}
             {%- assign p = all_products[handles[n]] -%}
             {%- assign v = p.selected_or_first_available_variant -%}
-            {%- assign cut = 'cut-' | append: handles[n] | append: '.webp' | asset_url -%}
+            {%- capture cut -%}{%- render 'cut-src', handle: handles[n], width: 240 -%}{%- endcapture -%}
             "{{ n }}": { "id": {{ v.id | default: 0 }}, "price": {{ v.price | default: 0 }}, "available": {{ v.available | default: false | json }}, "title": {{ p.title | json }}, "benefit": {{ p.metafields.bts.benefit | strip_html | json }}, "label": {{ p.metafields.bts.step_label.value | default: p.title | json }}, "url": {{ p.url | json }}, "img": {{ cut | json }}, "when": {{ when_keys[n] | json }} }{% unless forloop.last %},{% endunless %}
           {%- endfor -%}
         },

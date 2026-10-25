@@ -1,7 +1,7 @@
 {%- comment -%}
-  Set page demo (?view=set2): what's inside. One card per product that opens its own page (the stage's packs jump
+  Set pages (DECISIONS 189–190): what's inside. One card per product that opens its own page (the stage's packs jump
   here, #set-item-N), the sizes, which are the same full sizes sold on their own, and the saving worked out line by
-  line: the only place the breakdown appears. Morning/night moves to "Your day" (set-day) and other sets to the
+  line: the only place the breakdown appears. Sizes are on each card, so no separate sizes list. Morning/night moves to "Your day" (set-day) and other sets to the
   comparison table (set-compare). Computed from the set definition (snippets/bundle-def) and live prices.
   Renders nothing on single products.
 {%- endcomment -%}
@@ -39,7 +39,10 @@
         <p class="t-eyebrow">{{ 'bundle_inside.eyebrow' | t }}</p>
         <h2 class="t-display-m" id="S2In-{{ section.id }}">{{ 'bundle_inside.heading' | t: count: bundle_steps.size }}</h2>
       </div>
-      {%- unless who contains 'ranslation missing' -%}<p class="t-lead t-muted bi__who">{{ who }}</p>{%- endunless -%}
+      <div class="s2-inside__lede">
+        {%- unless who contains 'ranslation missing' -%}<p class="t-lead t-muted bi__who">{{ who }}</p>{%- endunless -%}
+        <p class="s2-inside__full">{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'set2.full_size' | t }}</p>
+      </div>
     </div>
 
     <ol class="bi__items" role="list" style="--n: {{ buniq.size | at_least: 2 }}">
@@ -77,6 +80,7 @@
                 {%- if comp.metafields.bts.size != blank -%}<span class="u-ltr">{{ comp.metafields.bts.size.value }}</span> · {% endif -%}
                 {%- if comp.metafields.bts.when_to_use != blank -%}{{ comp.metafields.bts.when_to_use.value | escape }}{%- endif -%}
               </span>
+              <span class="s2-inside__price">{% render 'egp', cents: comp.price %}{% if q > 1 %} × {{ q }}{% endif %}</span>
               <span class="s2-inside__view">{{ 'set2.view' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</span>
             </span>
           </a>
@@ -85,17 +89,6 @@
     </ol>
 
     <div class="bi__grid s2-inside__grid">
-      <div class="bi__card s2-inside__sizes">
-        <p class="s2-inside__full">{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'set2.full_size' | t }}</p>
-        <ul class="s2-inside__size-list" role="list">
-          {%- for st in buniq -%}
-            {%- assign si = st | plus: 0 -%}
-            {%- assign comp = all_products[step_handles[si]] -%}
-            <li data-step="{{ st }}"><span class="bi__dot" aria-hidden="true"></span><span>{{ comp.metafields.bts.step_label.value | default: comp.title | escape }}</span><span class="u-ltr">{% if bundle_steps.size > buniq.size %}{{ bundle_steps.size }} × {% endif %}{{ comp.metafields.bts.size.value }}</span></li>
-          {%- endfor -%}
-        </ul>
-      </div>
-
       {%- if saving > 0 -%}
         <div class="bi__card bi__save">
           <h3 class="bi__h">{{ 'bundle_inside.saving_heading' | t }}</h3>
@@ -103,7 +96,7 @@
             {%- for st in bundle_steps -%}
               {%- assign si = st | plus: 0 -%}
               {%- assign comp = all_products[step_handles[si]] -%}
-              <div><dt>{{ comp.title | escape }}</dt><dd>{% render 'egp', cents: comp.price %}</dd></div>
+              <div class="s2-sum-item"><dt>{{ comp.title | escape }}</dt><dd>{% render 'egp', cents: comp.price %}</dd></div>
             {%- endfor -%}
             <div class="bi__sum-total"><dt>{{ 'bundle_inside.separately' | t }}</dt><dd><s>{% render 'egp', cents: singles %}</s></dd></div>
             <div class="bi__sum-set"><dt>{{ set_name | escape }}</dt><dd>{% render 'egp', cents: variant.price %}</dd></div>
@@ -119,7 +112,7 @@
 
 {% schema %}
 {
-  "name": "Inside the set (demo)",
+  "name": "Inside the set",
   "enabled_on": { "templates": ["product"] }
 }
 {% endschema %}

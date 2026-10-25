@@ -38,7 +38,7 @@
     assign set_steps = bdef | split: '|' | first | split: ',' | uniq
     assign media_count = set_steps.size | plus: 1
     comment
-      Set page demo (?view=set2, DECISIONS 189): what the set does, who it's for and a fact line in the head; the
+      Set pages (DECISIONS 189–190): what the set does, who it's for and a fact line in the head; the
       packs side by side as the first photo; the buy box keeps the saving line but not a second list of products.
     endcomment
     if section.settings.set_v2
@@ -459,7 +459,7 @@
   "tag": "section",
   "class": "section-main-product",
   "settings": [
-    { "type": "checkbox", "id": "set_v2", "label": "Set page design (demo)", "info": "Sets only: outcome line, who it's for, packs-together first photo, no repeated product list in the buy box.", "default": false },
+    { "type": "checkbox", "id": "set_v2", "label": "Set page design", "info": "Sets only: outcome line, who it's for, packs-together first photo, no repeated product list in the buy box.", "default": false },
     { "type": "checkbox", "id": "preview_payments", "label": "Preview payment badges (design only)", "info": "Shows COD, Apple Pay, cards, wallets and Paymob for design review. Turn off before launch: only methods that are live and tested may be shown.", "default": false }
   ]
 }

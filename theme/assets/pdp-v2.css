@@ -276,7 +276,7 @@
    section's own top padding is the gap. */
 .pdp.pdp--v2 { padding-block-end: 0; }
 
-/* Set page demo (?view=set2, DECISIONS 189) ------------------------------------ */
+/* Set pages (DECISIONS 189–190) ------------------------------------ */
 /* Head: what the set does, a fact line, who it's for */
 .v2-set-outcome { margin: 0; font-size: clamp(19px, 5vw, 23px); font-weight: 650; line-height: 1.3; letter-spacing: -0.01em; text-wrap: pretty; }
 :lang(ar) .v2-set-outcome { letter-spacing: 0; line-height: 1.55; }
@@ -288,14 +288,8 @@
 
 /* Stage: the packs side by side, each with its step drawn out above it */
 .pdp--v2 .pdp__gallery .gallery__slide.s2-stage { background: var(--g); overflow: hidden; }
-.s2-stage__word {
-  position: absolute; inset-block-start: 36%; inset-inline: 0; text-align: center; z-index: 0;
-  font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .85; white-space: nowrap;
-  font-size: clamp(84px, 26vw, 220px); color: color-mix(in srgb, #fff 55%, transparent); user-select: none;
-}
-:lang(ar) .s2-stage__word { text-transform: none; line-height: 1.2; font-size: clamp(72px, 22vw, 190px); }
-@media (min-width: 990px) { .s2-stage__word { font-size: clamp(110px, 11vw, 200px); } .s2-stage__packs { inset-block-end: 10%; } }
 .s2-stage__packs { position: absolute; inset: 10% 5% 15%; z-index: 1; display: flex; justify-content: center; align-items: stretch; gap: clamp(6px, 2.5%, 22px); list-style: none; margin: 0; padding: 0; }
+@media (min-width: 990px) { .s2-stage__packs { inset-block-end: 10%; } }
 .s2-pack { flex: 0 1 calc(88% / max(var(--n), 3)); display: grid; grid-template-rows: auto 26px minmax(0, 1fr); justify-items: center; min-inline-size: 0; }
 .s2-pack__label { display: grid; justify-items: center; gap: 2px; min-block-size: 2.6em; text-align: center; }
 .s2-pack__num { font-family: var(--font-display); font-weight: 700; font-size: clamp(16px, 4vw, 22px); line-height: 1; }
@@ -312,24 +306,33 @@
 .s2-pack:nth-child(even) .s2-pack__img { rotate: 3deg; }
 .s2-pack__link:hover .s2-pack__img { translate: 0 -8px; }
 @media (prefers-reduced-motion: no-preference) {
-  .s2-pack__img { animation: s2-rise 800ms var(--ease-out) both; animation-delay: calc(120ms + var(--k) * 110ms); }
+  .s2-pack__img { animation: s2-lift 800ms var(--ease-out) both; animation-delay: calc(60ms + var(--k) * 90ms); }
   .s2-pack__line { animation: callout-draw-y 600ms var(--ease-out) both; animation-delay: calc(520ms + var(--k) * 110ms); }
   .s2-pack__label { animation: callout-in 600ms var(--ease-out) both; animation-delay: calc(640ms + var(--k) * 110ms); }
 }
 @keyframes s2-rise { from { opacity: 0; translate: 0 24px; } to { opacity: 1; translate: 0 0; } }
+/* the first photo's packs only lift into place (no fade from invisible), so they count as painted straight away */
+@keyframes s2-lift { from { translate: 0 18px; } to { translate: 0 0; } }
 @keyframes callout-draw-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 
 /* Inside the set: cards open their product; sizes and the saving side by side */
 .s2-inside .bi__item { scroll-margin-block-start: calc(var(--header-h) + 24px); }
 .s2-inside__view { display: inline-flex; align-items: center; gap: 6px; margin-block-start: 4px; font-size: 14px; font-weight: 700; color: var(--c-ink); }
 .bi__link:hover .s2-inside__view { text-decoration: underline; text-underline-offset: 3px; }
-.s2-inside__full { display: flex; align-items: flex-start; gap: 8px; margin: 0; font-size: 18px; font-weight: 700; line-height: 1.35; }
-.s2-inside__full .icon { flex: none; margin-block-start: 4px; color: var(--c-success); }
-.s2-inside__size-list { display: grid; gap: 0; list-style: none; margin: 0; padding: 0; }
-.s2-inside__size-list li { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding-block: 10px; border-block-end: 1px solid var(--c-line); font-size: 15px; }
-.s2-inside__size-list li:last-child { border-block-end: 0; }
-.s2-inside__size-list .u-ltr { font-weight: 650; font-variant-numeric: tabular-nums; }
-@media (min-width: 990px) { .s2-inside__grid { grid-template-columns: 1fr 1fr; } }
+.s2-inside__lede { display: grid; gap: 10px; max-inline-size: 460px; }
+.s2-inside__full { display: flex; align-items: flex-start; gap: 8px; margin: 0; font-size: 15px; font-weight: 700; line-height: 1.4; }
+.s2-inside__full .icon { flex: none; margin-block-start: 3px; color: var(--c-success); }
+.s2-inside__grid { max-inline-size: 620px; }
+.s2-inside__price { font-size: 15px; font-weight: 750; font-variant-numeric: tabular-nums; }
+/* Phones: the product cards are one swipe row, not a 2 × 2 grid (about a screen shorter) */
+@media (max-width: 749px) {
+  .s2-inside .bi__items { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 64%; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--gutter) * -1); padding: 0 var(--gutter) 6px; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
+  .s2-inside .bi__items::-webkit-scrollbar { display: none; }
+  .s2-inside .bi__item { scroll-snap-align: start; }
+  .s2-inside .bi__media { aspect-ratio: 4 / 3; }
+  /* each card shows its price, so the breakdown keeps just the totals */
+  .s2-inside .s2-sum-item { display: none !important; }
+}
 
 /* Your day: Morning / Night switch over the steps in order */
 .s2-day__toggle { display: inline-flex; padding: 4px; border-radius: 99px; background: color-mix(in srgb, var(--c-ink) 7%, #fff); }
@@ -368,6 +371,15 @@
 .s2-ing__what { font-size: 13px; font-weight: 650; color: var(--c-muted); }
 .s2-ing__in { display: flex; gap: 5px; margin-block-start: 6px; }
 .s2-ing__dot { inline-size: 12px; block-size: 12px; border-radius: 50%; background: var(--sku); box-shadow: 0 0 0 2px #fff; }
+/* Phones: compact two-line tiles */
+@media (max-width: 749px) {
+  .s2-ing__list { gap: 8px; }
+  .s2-ing__link { grid-template-columns: 1fr auto; align-items: center; gap: 2px 8px; padding: 12px 12px 11px; }
+  .s2-ing__name { font-size: 15px; grid-column: 1; }
+  .s2-ing__what { font-size: 12px; grid-column: 1; }
+  .s2-ing__in { grid-column: 2; grid-row: 1 / span 2; margin: 0; flex-direction: column; gap: 4px; }
+  .s2-ing__dot { inline-size: 9px; block-size: 9px; }
+}
 
 /* Compare sets */
 .s2-cmp__wrap { overflow-x: auto; border-radius: var(--radius-l); background: var(--c-paper); }

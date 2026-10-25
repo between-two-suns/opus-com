@@ -3,6 +3,13 @@
 const ar = () => (document.documentElement.lang || '').startsWith('ar');
 const rtl = () => document.documentElement.dir === 'rtl';
 const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Analytics-ready events (DECISIONS 190): published to Shopify's customer events, so a GA4 / Meta pixel connected later
+   receives them, and pushed to dataLayer for a tag manager. Nothing is sent anywhere until such a pixel exists. */
+export const track = (name, data = {}) => {
+  const payload = { page: document.querySelector('.pdp--v2')?.dataset.productTitle || '', ...data };
+  try { window.Shopify?.analytics?.publish?.(`bts_${name}`, payload); } catch (e) { /* no analytics on this page */ }
+  (window.dataLayer = window.dataLayer || []).push({ event: `bts_${name}`, ...payload });
+};
 // Same as snippets/egp.liquid: whole pounds, rounded down, "EGP 1,349" / "1,349 ج.م".
 const egp = (cents) => {
   const n = Math.floor(Math.max(0, cents) / 100).toLocaleString('en-US');
@@ -52,7 +59,10 @@ function initBuy(box) {
     updateShip();
   }
 
-  options.forEach((o) => o.addEventListener('change', render));
+  options.forEach((o) => o.addEventListener('change', () => {
+    render();
+    track('option_selected', { option: o.dataset.name, price: Number(o.dataset.price) / 100 });
+  }));
   // after anything is added the bag total changes: refresh the distance to free delivery
   document.addEventListener('cart:added', async () => {
     try {
@@ -184,6 +194,19 @@ function fitStage(gallery) {
 }
 
 document.querySelectorAll('[data-v2-buy]').forEach(initBuy);
+
+// what people tap on product and set pages
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('.s2-pack__link[href], a.s2-cmp__name, .skc-link, .v2-pair__add, .s2-inside .bi__link, .s2-ing__link');
+  if (!a) return;
+  if (a.matches('.s2-pack__link')) track('set_pack_tap', { step: a.closest('[data-step]')?.dataset.step });
+  else if (a.matches('.s2-cmp__name')) track('compare_set_click', { to: a.textContent.trim() });
+  else if (a.matches('.skc-link')) track('skin_check_click');
+  else if (a.matches('.v2-pair__add')) track('pair_add', { step: a.closest('[data-step]')?.dataset.step });
+  else if (a.matches('.bi__link')) track('set_product_click', { step: a.closest('[data-step]')?.dataset.step });
+  else if (a.matches('.s2-ing__link')) track('ingredient_click', { name: a.querySelector('.s2-ing__name')?.textContent.trim() });
+});
+document.querySelector('.v2-rev__box')?.addEventListener('toggle', (e) => { if (e.target.open) track('reviews_open'); });
 customElements.whenDefined('media-gallery').then(() => {
   document.querySelectorAll('.pdp--v2 media-gallery').forEach(initGallery);
 });

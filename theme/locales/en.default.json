@@ -1300,7 +1300,7 @@
         "why": "Hyaluronic acid draws in water and holds it in the top layers of the skin, so skin feels hydrated without a heavy layer. Useful in air-conditioned rooms and dry heat."
       },
       "zinc-pca": {
-        "what": "Zinc + PCA",
+        "what": "Zinc salt",
         "why": "Zinc paired with PCA, a natural part of the skin’s own moisturising factor. A classic in formulas for oily and combination skin, used to help keep shine in check while skin stays comfortable."
       },
       "panthenol": {
@@ -1344,15 +1344,6 @@
       "the-core-duo": "Removes oil, then evens skin tone and hydrates. The first two steps.",
       "spf-stock-up": "Invisible, lightweight UVA and UVB protection. Two tubes, so the morning step never runs out.",
       "serum-stock-up": "Controls oil, evens skin tone, hydrates. Two bottles, so it never runs out."
-    },
-    "word": {
-      "the-full-ritual": "Ritual",
-      "the-clear-protect-trio": "Trio",
-      "the-night-ritual": "Night",
-      "clear-protect-duo": "Duo",
-      "the-core-duo": "Core",
-      "spf-stock-up": "×2",
-      "serum-stock-up": "×2"
     },
     "facts": "{{ count }} full-size products · {{ when }}",
     "when_ampm": "Morning + night",

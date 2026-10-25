@@ -122,7 +122,7 @@
           {%- assign ph = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ',' -%}
           {%- for h in ph -%}
             {%- assign pp = all_products[h] -%}
-            {%- if pp.id -%}{ step: {{ forloop.index }}, variant: {{ pp.selected_or_first_available_variant.id }}, img: {{ 'cut-' | append: h | append: '.webp' | asset_url | json }} },{%- endif -%}
+            {%- if pp.id -%}{%- capture cimg -%}{%- render 'cut-src', handle: h, width: 240 -%}{%- endcapture -%}{ step: {{ forloop.index }}, variant: {{ pp.selected_or_first_available_variant.id }}, img: {{ cimg | json }} },{%- endif -%}
           {%- endfor -%}
         ],
         moneyFormat: {{ shop.money_format | json }},

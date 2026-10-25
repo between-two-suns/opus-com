@@ -1,0 +1,24 @@
+{%- comment -%}
+  A pack cutout as a responsive <img> from Files (see snippets/cut-src for why), falling back to the theme asset.
+  Params: handle, sizes, widths (default '120,240,360,480'), width + height (attributes; default 366 × 1100),
+  loading (default 'lazy'), class, priority (true: fetchpriority high, for the first photo)
+{%- endcomment -%}
+{%- liquid
+  assign ci_key = 'cut-' | append: handle | append: '.webp'
+  assign ci_png = 'cut-' | append: handle | append: '.png'
+  assign ci_img = images[ci_png]
+  assign ci_widths = widths | default: '120,240,360,480'
+  assign ci_max = ci_widths | split: ',' | last | plus: 0
+  assign ci_w = width | default: 366
+  assign ci_h = height | default: 1100
+  assign ci_loading = loading | default: 'lazy'
+-%}
+{%- if ci_img != blank -%}
+  {%- if priority -%}
+    {{ ci_img | image_url: width: ci_max | image_tag: widths: ci_widths, sizes: sizes, loading: ci_loading, alt: '', class: class, width: ci_w, height: ci_h, fetchpriority: 'high' }}
+  {%- else -%}
+    {{ ci_img | image_url: width: ci_max | image_tag: widths: ci_widths, sizes: sizes, loading: ci_loading, alt: '', class: class, width: ci_w, height: ci_h }}
+  {%- endif -%}
+{%- else -%}
+  <img src="{{ ci_key | asset_url }}" alt="" width="{{ ci_w }}" height="{{ ci_h }}" loading="{{ ci_loading }}"{% if class %} class="{{ class }}"{% endif %}>
+{%- endif -%}

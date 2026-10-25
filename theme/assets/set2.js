@@ -1,4 +1,9 @@
-/* Set page demo (?view=set2): the Morning / Night switch in "Your day" (tabs pattern: click, arrow keys, Home/End). */
+/* Set pages: the Morning / Night switch in "Your day" (tabs pattern: click, arrow keys, Home/End). */
+const track = (name, data = {}) => {
+  const payload = { page: document.querySelector('.pdp--v2')?.dataset.productTitle || '', ...data };
+  try { window.Shopify?.analytics?.publish?.(`bts_${name}`, payload); } catch (e) { /* no analytics on this page */ }
+  (window.dataLayer = window.dataLayer || []).push({ event: `bts_${name}`, ...payload });
+};
 document.querySelectorAll('[data-s2-day]').forEach((root) => {
   const tabs = [...root.querySelectorAll('[role="tab"]')];
   const select = (tab, focus) => {
@@ -13,7 +18,7 @@ document.querySelectorAll('[data-s2-day]').forEach((root) => {
     if (focus) tab.focus();
   };
   tabs.forEach((t, i) => {
-    t.addEventListener('click', () => select(t));
+    t.addEventListener('click', () => { select(t); track('day_mode', { mode: t.dataset.mode }); });
     t.addEventListener('keydown', (e) => {
       const rtl = document.documentElement.dir === 'rtl';
       const next = { ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1 }[e.key];

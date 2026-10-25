@@ -151,7 +151,7 @@
     {%- for h in handles -%}
       {%- assign p = all_products[h] -%}
       {%- unless p.id -%}{%- continue -%}{%- endunless -%}
-      {%- assign img = 'cut-' | append: h | append: '.webp' | asset_url -%}
+      {%- capture img -%}{%- render 'cut-src', handle: h, width: 600 -%}{%- endcapture -%}
       {%- capture price -%}{% render 'egp', cents: p.selected_or_first_available_variant.price %}{%- endcapture -%}
       <li class="hr-bottle{% if forloop.last %} hr-bottle--spf{% endif %}" style="--h: {{ hs[forloop.index0] }}; --ar: {{ ars[forloop.index0] }}; --sku: {{ skus[forloop.index0] }}; --i: {{ forloop.index0 }}">
         <span class="hr-g">

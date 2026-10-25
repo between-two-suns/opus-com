@@ -91,7 +91,7 @@
               <ul class="setsx-packs" role="list">
                 {%- for st in steps -%}
                   {%- assign n = st | plus: 0 -%}
-                  {%- assign cut = 'cut-' | append: step_handles[n] | append: '.webp' | asset_url -%}
+                  {%- capture cut -%}{%- render 'cut-src', handle: step_handles[n], width: 240 -%}{%- endcapture -%}
                   <li class="setsx-pack" data-step="{{ n }}"><img src="{{ cut }}" alt="" width="350" height="1100" loading="lazy"></li>
                 {%- endfor -%}
               </ul>

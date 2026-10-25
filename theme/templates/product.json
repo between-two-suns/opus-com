@@ -3,11 +3,12 @@
     "main": {
       "type": "main-product-v2",
       "settings": {
-        "preview_payments": true
+        "preview_payments": true,
+        "set_v2": true
       }
     },
     "inside": {
-      "type": "bundle-inside",
+      "type": "set-inside",
       "settings": {}
     },
     "benefits": {
@@ -127,14 +128,29 @@
         "show_contact": true,
         "schema": false
       }
+    },
+    "day": {
+      "type": "set-day",
+      "settings": {}
+    },
+    "ingredients": {
+      "type": "set-ingredients",
+      "settings": {}
+    },
+    "compare": {
+      "type": "set-compare",
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "day",
     "inside",
     "benefits",
     "howto",
     "routine",
+    "ingredients",
+    "compare",
     "reviews",
     "faq"
   ]

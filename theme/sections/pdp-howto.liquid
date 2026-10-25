@@ -80,7 +80,7 @@
               {%- else -%}
                 {%- assign next_i = step | plus: 1 -%}
                 {%- if step == 4 -%}{%- assign next_i = 4 -%}{%- endif -%}
-                <span class="v2-how__pack" data-step="{{ next_i }}"><img src="{{ 'cut-' | append: step_handles[next_i] | append: '.webp' | asset_url }}" alt="" width="120" height="378" loading="lazy"></span>
+                {%- capture pk_src -%}{%- render 'cut-src', handle: step_handles[next_i], width: 360 -%}{%- endcapture -%}<span class="v2-how__pack" data-step="{{ next_i }}"><img src="{{ pk_src }}" alt="" width="120" height="378" loading="lazy"></span>
               {%- endif -%}
               <span class="v2-how__n" aria-hidden="true">{{ n }}</span>
             </div>
@@ -101,7 +101,7 @@
             {%- assign pv = pp.selected_or_first_available_variant -%}
             {%- assign key = pair_keys[forloop.index0] -%}
             <li class="v2-pair__card" data-step="{{ pi }}">
-              <a class="v2-pair__visual" href="{{ pp.url }}" tabindex="-1" aria-hidden="true"><img src="{{ 'cut-' | append: pp.handle | append: '.webp' | asset_url }}" alt="" width="80" height="252" loading="lazy"></a>
+              {%- capture pk_src -%}{%- render 'cut-src', handle: pp.handle, width: 240 -%}{%- endcapture -%}<a class="v2-pair__visual" href="{{ pp.url }}" tabindex="-1" aria-hidden="true"><img src="{{ pk_src }}" alt="" width="80" height="252" loading="lazy"></a>
               <div class="v2-pair__body">
                 <p class="v2-pair__why">{{ key | t }}</p>
                 <h3 class="v2-pair__name"><a href="{{ pp.url }}">{{ pp.title | escape }}</a></h3>

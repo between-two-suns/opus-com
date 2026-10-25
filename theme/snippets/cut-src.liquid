@@ -1,0 +1,9 @@
+{%- comment -%}
+  URL of a pack cutout at a given width. The cutouts live in Files as PNG originals (cut-<handle>.png) so Shopify's
+  image service resizes them and sends WebP/AVIF to every browser. Theme assets, and Files uploaded as WebP, are sent
+  to iPhones as ~180–280 KB PNGs instead (measured, DECISIONS 190). Falls back to the theme asset if missing.
+  Params: handle, width (default 360)
+{%- endcomment -%}
+{%- assign cs_key = 'cut-' | append: handle | append: '.png' -%}
+{%- assign cs_img = images[cs_key] -%}
+{%- if cs_img != blank -%}{{ cs_img | image_url: width: width | default: 360 }}{%- else -%}{{ 'cut-' | append: handle | append: '.webp' | asset_url }}{%- endif -%}

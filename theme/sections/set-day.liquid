@@ -1,5 +1,5 @@
 {%- comment -%}
-  Set page demo (?view=set2): "Your day with <set>". A Morning / Night switch over the set's steps in order, each
+  Set pages (DECISIONS 189–190): "Your day with <set>". A Morning / Night switch over the set's steps in order, each
   with its application photo, its number and name, and the first sentence of its pack directions (bts.how_to_use,
   translated on the store). Sunscreen is morning only; when a set has none, the morning ends with an honest
   "not in this set" tile pointing to the SPF. Stock-ups (one product twice) skip this: their product page has
@@ -100,7 +100,7 @@
             <li class="s2-day__step s2-day__step--ghost" data-step="4">
               <a class="s2-day__link" href="{{ spf.url }}">
                 <span class="s2-day__media s2-day__media--ghost">
-                  <img src="{{ 'cut-' | append: spf.handle | append: '.webp' | asset_url }}" alt="" width="357" height="1100" loading="lazy">
+                  {%- render 'cut-img', handle: spf.handle, sizes: '160px', widths: '160,240,360' -%}
                 </span>
                 <span class="s2-day__body">
                   <span class="step-tag">{{ 'set2.not_in_set' | t }}</span>
@@ -122,7 +122,7 @@
 
 {% schema %}
 {
-  "name": "Your day (demo)",
+  "name": "Your day",
   "enabled_on": { "templates": ["product"] }
 }
 {% endschema %}

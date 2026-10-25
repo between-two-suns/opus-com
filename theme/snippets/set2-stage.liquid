@@ -1,5 +1,5 @@
 {%- comment -%}
-  Set page demo (?view=set2): the first photo of a set. The packs stand side by side on a stage tinted with each
+  Set pages (DECISIONS 189–190): the first photo of a set. The packs stand side by side on a stage tinted with each
   product's colour, each with its step number and name drawn out above it, the way single products show their
   label callouts. Tapping a pack goes to its card in "Inside the set" (#set-item-N). Uses the existing pack cutouts
   (assets/cut-<handle>.webp); nothing is redrawn.
@@ -7,11 +7,6 @@
 {%- endcomment -%}
 {%- liquid
   assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
-  assign word_key = 'set2.word.' | append: product.handle
-  assign word = word_key | t
-  if word contains 'ranslation missing'
-    assign word = ''
-  endif
   assign tints = ''
   assign seen = ''
   for st in units
@@ -25,7 +20,6 @@
   endif
 -%}
 <div class="gallery__slide s2-stage" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: 1, count: count }}" data-slide style="--g: linear-gradient(105deg{{ tints }})">
-  {%- if word != blank -%}<span class="s2-stage__word" aria-hidden="true">{{ word }}</span>{%- endif -%}
   <ul class="s2-stage__packs" role="list" style="--n: {{ units.size }}">
     {%- assign shown = '' -%}
     {%- for st in units -%}
@@ -43,12 +37,12 @@
           <span class="s2-pack__label" aria-hidden="true"><span class="s2-pack__num">0{{ si }}</span><span class="s2-pack__name">{{ comp.metafields.bts.step_label.value | default: comp.title | escape }}</span></span>
           <span class="s2-pack__line" aria-hidden="true"></span>
           <a class="s2-pack__link" href="#set-item-{{ si }}" aria-label="{{ 'set2.stage_go' | t: name: comp.title }}">
-            <img src="{{ 'cut-' | append: comp.handle | append: '.webp' | asset_url }}" alt="" width="357" height="1100" loading="eager" class="s2-pack__img">
+            {%- render 'cut-img', handle: comp.handle, sizes: '(min-width: 990px) 11vw, 24vw', widths: '120,180,240,360,480', loading: 'eager', class: 's2-pack__img', priority: true -%}
           </a>
         {%- else -%}
           <span class="s2-pack__label s2-pack__label--blank" aria-hidden="true"></span>
           <span class="s2-pack__line s2-pack__line--blank" aria-hidden="true"></span>
-          <span class="s2-pack__link" aria-hidden="true"><img src="{{ 'cut-' | append: comp.handle | append: '.webp' | asset_url }}" alt="" width="357" height="1100" loading="eager" class="s2-pack__img"></span>
+          <span class="s2-pack__link" aria-hidden="true">{%- render 'cut-img', handle: comp.handle, sizes: '(min-width: 990px) 11vw, 24vw', widths: '120,180,240,360,480', loading: 'eager', class: 's2-pack__img', priority: true -%}</span>
         {%- endunless -%}
       </li>
     {%- endfor -%}
