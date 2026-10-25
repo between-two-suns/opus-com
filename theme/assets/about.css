@@ -135,9 +135,12 @@
 }
 
 /* ---------- 2 · The routine: morning and night on one counter ---------- */
+/* The routine sits a little narrower than the page on wide screens, so the counter photo shows at (or below) its served
+   size instead of being enlarged (owner: it looked soft on a laptop). */
+.ab-rt > .container { max-inline-size: calc(960px + 2 * var(--gutter)); }
 .ab-rt__head { align-items: end; }
 .ab-rt__lede { max-inline-size: 40ch; margin: 0; }
-.ab-rt__frame { position: relative; aspect-ratio: 16 / 8; border-radius: var(--radius-l); overflow: hidden; background: #e8ddd0; isolation: isolate; }
+.ab-rt__frame { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-l); overflow: hidden; background: #e8ddd0; isolation: isolate; }
 .ab-rt__photo { position: absolute; inset: 0; margin: 0; transition: opacity .7s var(--ease-out); }
 .ab-rt__photo img { inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 45% 62%; }
 .ab-rt__photo[data-photo='pm'] { opacity: 0; }

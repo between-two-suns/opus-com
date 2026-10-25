@@ -30,7 +30,7 @@
         {%- if m == 1 -%}{%- assign img = img_am -%}{%- assign alt = 'about2.photo_am' | t -%}{%- assign key = 'am' -%}{%- else -%}{%- assign img = img_pm -%}{%- assign alt = 'about2.photo_pm' | t -%}{%- assign key = 'pm' -%}{%- endif -%}
         {%- if img != blank -%}
           <figure class="ab-rt__photo" data-photo="{{ key }}"{% if key == 'pm' %} aria-hidden="true"{% endif %}>
-            {{ img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600,900,1200,1600,2000,2400', sizes: '(min-width: 1440px) 1328px, calc(100vw - 2 * var(--gutter))', alt: alt }}
+            {{ img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600,900,1200,1600,2000,2400', sizes: '(min-width: 1040px) 960px, calc(100vw - 2 * var(--gutter))', alt: alt }}
           </figure>
         {%- endif -%}
       {%- endfor -%}
