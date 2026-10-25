@@ -1,7 +1,7 @@
 {%- comment -%}
-  Routines hero · light demo (DECISIONS 206, shown at /pages/routines?view=light while it is reviewed). The light moves: one sun at a
-  time crosses the sky on the AM/PM switch; the packs' own cast shadows swing across the surface and their lit edge follows the sun.
-  Same copy, switch, buttons and links as the hero-routine section; the sunscreen steps away in the evening.
+  Routines hero · studio demo (DECISIONS 206–207, shown at /pages/routines?view=light while it is reviewed). Flat ivory by day, ink
+  by night; the packs grounded and large with a tight contact shadow. The AM/PM switch spreads the night out from the switch as a
+  growing circle; the sunscreen steps away. Same copy, switch, buttons and links as the hero-routine section.
 {%- endcomment -%}
 {%- liquid
   assign full = all_products['the-full-ritual']
@@ -53,89 +53,37 @@
 .hr-climate li + li::before { content: '·'; margin-inline-end: 18px; }
 
 
-/* ---------- Routines hero, light demo (DECISIONS 206): the light moves ----------
-   The packs stand low and large on a soft surface. Each casts its own silhouette as a shadow across the surface, and
-   each catches the light on the side facing the sun. Morning: the first sun is up on the left (start), packs lit on
-   their left edges, long shadows falling right. The switch carries the sun across the sky in an arc: the shadows
-   swing to the other side, the light moves to the packs' other edges and cools, the sky turns to ink and the
-   sunscreen steps away. Only transforms, opacity and the sky layers move. */
-.lh-hero { --dir: 1; position: relative; height: calc(100svh - 36px); min-height: 620px; margin-top: calc(-1 * var(--hdr, var(--header-h))); overflow: hidden; isolation: isolate; color: var(--c-ink); transition: color .6s; }
+/* ---------- Routines hero, studio demo (DECISIONS 207) ----------
+   Calm studio: flat ivory by day, ink by night, the packs grounded and large with only a tight contact shadow. No faked
+   light. The switch is the moment: the night spreads out from the switch as a growing circle and washes over the
+   hero (and draws back into it for the morning), the packs glide together and the sunscreen steps away. */
+.lh-hero { --dir: 1; --ox: 20%; --oy: 60%; position: relative; height: calc(100svh - 36px); min-height: 620px; margin-top: calc(-1 * var(--hdr, var(--header-h))); overflow: hidden; isolation: isolate; color: var(--c-ink); transition: color .45s .2s; }
 [dir='rtl'] .lh-hero { --dir: -1; }
 .lh-hero[data-mode='pm'] { color: #f7f3ee; }
-/* sky and surface: no line, the surface is only a slow darkening toward the foot */
-.lh-sky { position: absolute; inset: 0; z-index: -3; background: linear-gradient(180deg, #F8F4ED 0%, #F4EEE5 56%, #ECE3D6 82%, #E6DCCD 100%); }
-.lh-sky::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity .8s cubic-bezier(.4,0,.2,1);
-  background:
-    radial-gradient(1.2px 1.2px at 8% 14%, #fff 99%, transparent), radial-gradient(1px 1px at 24% 8%, #fff 99%, transparent),
-    radial-gradient(1.4px 1.4px at 39% 20%, #fff 99%, transparent), radial-gradient(1px 1px at 58% 10%, #fff 99%, transparent),
-    radial-gradient(1.2px 1.2px at 71% 24%, #fff 99%, transparent), radial-gradient(1px 1px at 86% 7%, #fff 99%, transparent),
-    radial-gradient(1px 1px at 95% 30%, #fff 99%, transparent), radial-gradient(1.3px 1.3px at 31% 38%, #fff 99%, transparent),
-    radial-gradient(1px 1px at 5% 44%, #fff 99%, transparent), radial-gradient(1px 1px at 51% 46%, #fff 99%, transparent),
-    linear-gradient(180deg, #1c2035 0%, #22263d 56%, #2a2e48 82%, #30344f 100%); }
-.lh-hero[data-mode='pm'] .lh-sky::before { opacity: 1; }
-/* the light of whichever sun is up, from its side */
-.lh-glow { position: absolute; inset: 0; z-index: -2; pointer-events: none; }
-.lh-glow::before, .lh-glow::after { content: ''; position: absolute; inset: 0; transition: opacity .9s; }
-.lh-glow::before { background: radial-gradient(55% 75% at 30% 22%, rgb(255 206 160 / .5), transparent 70%); }
-.lh-glow::after { opacity: 0; background: radial-gradient(55% 75% at 92% 22%, rgb(150 178 232 / .28), transparent 70%); }
-[dir='rtl'] .lh-glow::before { background: radial-gradient(55% 75% at 70% 22%, rgb(255 206 160 / .5), transparent 70%); }
-[dir='rtl'] .lh-glow::after { background: radial-gradient(55% 75% at 8% 22%, rgb(150 178 232 / .28), transparent 70%); }
-.lh-hero[data-mode='pm'] .lh-glow::before { opacity: 0; }
-.lh-hero[data-mode='pm'] .lh-glow::after { opacity: 1; }
+.lh-hero[data-mode='am'] { transition-delay: .35s; }
+.lh-sky { position: absolute; inset: 0; z-index: -3; background: var(--c-daylight, #F5F1EA); }
+/* once the circle has covered the hero the ground itself is ink (so every browser and tool sees the night); going back to
+   morning it turns ivory at once, so the shrinking circle draws back over the day */
+.lh-hero[data-mode='pm'] .lh-sky { background: #22263d; transition: background-color 0s .95s; }
+/* the night: a circle from the switch to past every corner */
+.lh-sky::before { content: ''; position: absolute; inset: 0; background: #22263d;
+  clip-path: circle(0 at var(--ox) var(--oy)); transition: clip-path .95s cubic-bezier(.7,0,.25,1); }
+.lh-hero[data-mode='pm'] .lh-sky::before { clip-path: circle(150vmax at var(--ox) var(--oy)); }
 
 /* the stage: the right part of the screen on laptops */
-.lh-stage { position: absolute; z-index: 1; inset-block: var(--hdr, var(--header-h)) 0; inset-inline: 44vw 3vw; }
-/* the sun, carried across in an arc on the switch (the brand's two suns, still spheres) */
-.lh-sunpath { position: absolute; inset-inline: 0; inset-block-start: 0; block-size: 58%; container-type: size; pointer-events: none; z-index: 0; }
-.lh-sun { --ss: min(12.5vw, 18svh); position: absolute; inset-inline-start: 0; inset-block-start: 0; inline-size: var(--ss); aspect-ratio: 1;
-  --xa: 2cqw; --xp: calc(98cqw - var(--ss)); --y: 1cqh; --apex: -9cqh;
-  translate: calc(var(--xa) * var(--dir)) var(--y); }
-.lh-hero[data-mode='pm'] .lh-sun { translate: calc(var(--xp) * var(--dir)) var(--y); }
-.lh-hero.is-moving[data-mode='pm'] .lh-sun { animation: lh-arc-pm 1.25s cubic-bezier(.55,0,.35,1) both; }
-.lh-hero.is-moving[data-mode='am'] .lh-sun { animation: lh-arc-am 1.25s cubic-bezier(.55,0,.35,1) both; }
-@keyframes lh-arc-pm {
-  0% { translate: calc(var(--xa) * var(--dir)) var(--y); }
-  50% { translate: calc((var(--xa) + var(--xp)) / 2 * var(--dir)) var(--apex); }
-  100% { translate: calc(var(--xp) * var(--dir)) var(--y); } }
-@keyframes lh-arc-am {
-  0% { translate: calc(var(--xp) * var(--dir)) var(--y); }
-  50% { translate: calc((var(--xa) + var(--xp)) / 2 * var(--dir)) var(--apex); }
-  100% { translate: calc(var(--xa) * var(--dir)) var(--y); } }
-.lh-sun .ab-orb { inset: 0; inline-size: 100%; transition: opacity .9s; }
-.lh-sun .ab-orb--blue { opacity: 0; }
-.lh-hero[data-mode='pm'] .lh-sun .ab-orb--green { opacity: 0; }
-.lh-hero[data-mode='pm'] .lh-sun .ab-orb--blue { opacity: 1; }
-/* the light on the spheres comes from the sky, not from the side, here */
-.lh-sun .ab-orb { --hx: 50%; --hy: 26%; }
-
-/* the packs: low and large, standing on the surface */
-.lh-lineup { --gap: clamp(10px, 1.6vw, 26px); --base: min(56svh, 30vw, 520px); --slot: calc(var(--base) * .81 * 339 / 1100 + 2 * var(--gap));
+.lh-stage { position: absolute; z-index: 1; inset-block: var(--hdr, var(--header-h)) 0; inset-inline: 42vw 4vw; }
+/* the packs: low and large, standing on the floor of the frame */
+.lh-lineup { --gap: clamp(10px, 1.4vw, 22px); --base: min(59svh, 30vw, 540px); --slot: calc(var(--base) * .81 * 339 / 1100 + 2 * var(--gap));
   position: absolute; z-index: 2; inset-inline: 0; inset-block-end: 13svh; margin: 0; padding: 0; list-style: none; display: flex; justify-content: center; align-items: flex-end; }
 .lh-pack { position: relative; height: calc(var(--h) * var(--base)); aspect-ratio: var(--ar); margin-inline: var(--gap); }
 .lh-g { position: absolute; inset: 0; transition: translate .9s cubic-bezier(.65,0,.2,1); }
-.lh-img { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; transition: filter .8s, translate .5s cubic-bezier(.2,.75,.2,1); }
-.lh-hero[data-mode='pm'] .lh-img { filter: brightness(.9) saturate(.95); }
-/* the cast shadow: the pack's own silhouette laid across the surface, away from the sun */
-.lh-cast { position: absolute; inset: 0; z-index: 1; transform-origin: 50% 100%; opacity: .26;
-  transform: skewX(calc(-58deg * var(--dir))) scaleY(.36); transition: transform 1.25s cubic-bezier(.55,0,.35,1), opacity .9s; }
-.lh-cast img { position: absolute; inset: 0; width: 100%; height: 100%; filter: brightness(0) blur(2.5px);
-  -webkit-mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / .55) 40%, transparent 92%); mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / .55) 40%, transparent 92%); }
-.lh-hero[data-mode='pm'] .lh-cast { transform: skewX(calc(58deg * var(--dir))) scaleY(.36); opacity: .4; }
-/* where the pack meets the surface */
-.lh-contact { position: absolute; z-index: 2; inset-inline: 2%; inset-block-end: -5px; block-size: 12px; border-radius: 50%;
-  background: radial-gradient(closest-side, rgb(20 22 40 / .32), transparent); filter: blur(2px); }
-.lh-hero[data-mode='pm'] .lh-contact { background: radial-gradient(closest-side, rgb(0 0 0 / .55), transparent); }
-/* the light on the pack, on the side facing the sun (masked to the pack's own shape) */
-.lh-lit { position: absolute; inset: 0; z-index: 4; pointer-events: none; mix-blend-mode: soft-light; transition: opacity .9s;
-  -webkit-mask: var(--src) center / 100% 100% no-repeat; mask: var(--src) center / 100% 100% no-repeat; }
-.lh-lit--am { background: linear-gradient(90deg, rgb(255 214 170 / .95) 0%, rgb(255 214 170 / 0) 52%, rgb(60 40 30 / 0) 62%, rgb(60 40 30 / .35) 100%); }
-.lh-lit--pm { opacity: 0; background: linear-gradient(90deg, rgb(8 10 30 / .8) 0%, rgb(8 10 30 / 0) 48%, rgb(170 196 246 / 0) 52%, rgb(170 196 246 / .95) 100%); }
-[dir='rtl'] .lh-lit--am { background: linear-gradient(270deg, rgb(255 214 170 / .95) 0%, rgb(255 214 170 / 0) 52%, rgb(60 40 30 / 0) 62%, rgb(60 40 30 / .35) 100%); }
-[dir='rtl'] .lh-lit--pm { background: linear-gradient(270deg, rgb(8 10 30 / .8) 0%, rgb(8 10 30 / 0) 48%, rgb(170 196 246 / 0) 52%, rgb(170 196 246 / .95) 100%); }
-.lh-hero[data-mode='pm'] .lh-lit--am { opacity: 0; }
-.lh-hero[data-mode='pm'] .lh-lit--pm { opacity: 1; }
+.lh-img { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; transition: translate .5s cubic-bezier(.2,.75,.2,1); }
+/* where the pack meets the floor: one tight, soft contact shadow */
+.lh-contact { position: absolute; z-index: 2; inset-inline: 3%; inset-block-end: -7px; block-size: 14px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(32 35 58 / .3), transparent); filter: blur(2px); transition: background .6s; }
+.lh-hero[data-mode='pm'] .lh-contact { background: radial-gradient(closest-side, rgb(0 0 0 / .6), transparent); }
 /* evening: the sunscreen steps away and the other three glide over to stay centred */
-.lh-hero[data-mode='pm'] .lh-pack:not(.lh-pack--spf) .lh-g { translate: calc(var(--slot) / 2 * var(--dir)) 0; }
+.lh-hero[data-mode='pm'] .lh-pack:not(.lh-pack--spf) .lh-g { translate: calc(var(--slot) / 2 * var(--dir)) 0; transition-delay: .1s; }
 .lh-pack--spf .lh-g { transition: translate .9s cubic-bezier(.65,0,.2,1), opacity .5s ease .2s, visibility 0s; }
 .lh-hero[data-mode='pm'] .lh-pack--spf .lh-g { translate: calc(var(--slot) * .8 * var(--dir)) 0; opacity: 0; visibility: hidden; transition: translate .9s cubic-bezier(.65,0,.2,1), opacity .35s ease, visibility 0s linear .9s; }
 .lh-g a { position: absolute; inset: 0; z-index: 6; }
@@ -155,15 +103,13 @@
   .hr-title { font-size: min(15.4vw, 8svh); margin-top: 0; }
   .hr-switch { margin-top: 16px; } .hr-switch button { min-width: 104px; padding: 11px 16px; font-size: 12px; }
   .lh-stage { position: relative; inset: auto; flex: 1 1 0; min-height: 0; margin-top: 1svh; }
-  .lh-sunpath { block-size: 46%; }
-  .lh-sun { --ss: min(20vw, 10svh); --y: 0cqh; --apex: -6cqh; }
   .lh-lineup { container-type: size; inset-block: 0 6%; inset-inline: 0; --gap: 5px;
-    --base: min(72cqh, (100cqw - 8 * var(--gap)) / 1.1, 400px); }
+    --base: min(86cqh, (100cqw - 8 * var(--gap)) / 1.1, 420px); }
   .lh-foot { display: block; position: relative; flex: none; margin-top: 1.5svh; }
   .lh-foot .hr-ctas { display: flex; width: 100%; flex-direction: column; } .lh-foot .hr-btn { justify-content: center; padding: 16px; } .lh-foot .hr-btn--ghost { display: none; }
 }
 @media (max-height: 760px) and (min-width: 761px) and (min-aspect-ratio: 4/5) { .hr-title { font-size: clamp(52px, min(8vw, 12svh), 150px); } }
-.lh-hero.is-instant, .lh-hero.is-instant *, .lh-hero.is-instant *::before, .lh-hero.is-instant *::after { transition: none !important; animation: none !important; }
+.lh-hero.is-instant, .lh-hero.is-instant *, .lh-hero.is-instant *::before, .lh-hero.is-instant *::after { transition: none !important; }
 @media (prefers-reduced-motion: reduce) { .lh-hero *, .lh-hero *::before, .lh-hero *::after { transition-duration: 0s !important; animation: none !important; } }
 /* a gentle entrance */
 .js .lh-pack { animation: lh-rise 1.1s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(var(--i) * 90ms + 150ms); }
@@ -179,7 +125,6 @@
 </style>
 <section class="lh-hero" id="Hr-{{ section.id }}" data-mode="am" data-am-href="{{ full.url | default: all_url }}" data-pm-href="{{ night.url | default: all_url }}" aria-labelledby="HrTitle-{{ section.id }}">
   <div class="lh-sky" aria-hidden="true"></div>
-  <div class="lh-glow" aria-hidden="true"></div>
   <div class="hr-copy">
     <p class="hr-eyebrow">{{ 'sections.hero_panels.eyebrow' | t }}</p>
     <h1 class="hr-title" id="HrTitle-{{ section.id }}">{{ 'sections.hero_routine.before' | t }} <span class="hr-swap"><span class="hr-am">{{ 'sections.hero_routine.am' | t }}</span><span class="hr-pm" aria-hidden="true">{{ 'sections.hero_routine.pm' | t }}</span></span>{% if after != blank %}<br>{{ after }}{% endif %}</h1>
@@ -195,25 +140,16 @@
     </div>
   </div>
   <div class="lh-stage">
-    <div class="lh-sunpath" aria-hidden="true">
-      <span class="lh-sun">
-        {%- render 'about-orb', tone: 'green', class: 'lh-orb', sizes: '(min-width: 761px) 17vw, 30vw', priority: true -%}
-        {%- render 'about-orb', tone: 'blue', class: 'lh-orb', sizes: '(min-width: 761px) 17vw, 30vw' -%}
-      </span>
-    </div>
     <ul class="lh-lineup" role="list" aria-label="{{ 'sections.hero_routine.lineup' | t }}">
       {%- for h in handles -%}
         {%- assign p = all_products[h] -%}
         {%- unless p.id -%}{%- continue -%}{%- endunless -%}
         {%- capture img -%}{%- render 'cut-src', handle: h, width: 600 -%}{%- endcapture -%}
         {%- capture price -%}{% render 'egp', cents: p.selected_or_first_available_variant.price %}{%- endcapture -%}
-        <li class="lh-pack{% if forloop.last %} lh-pack--spf{% endif %}" style="--h: {{ hs[forloop.index0] }}; --ar: {{ ars[forloop.index0] }}; --i: {{ forloop.index0 }}; --src: url('{{ img | strip }}')">
+        <li class="lh-pack{% if forloop.last %} lh-pack--spf{% endif %}" style="--h: {{ hs[forloop.index0] }}; --ar: {{ ars[forloop.index0] }}; --i: {{ forloop.index0 }}">
           <span class="lh-g">
-            <span class="lh-cast" aria-hidden="true"><img src="{{ img | strip }}" alt="" width="350" height="1100"></span>
             <span class="lh-contact" aria-hidden="true"></span>
             <img class="lh-img" src="{{ img | strip }}" alt="" width="350" height="1100" fetchpriority="high">
-            <span class="lh-lit lh-lit--am" aria-hidden="true"></span>
-            <span class="lh-lit lh-lit--pm" aria-hidden="true"></span>
             <a href="{{ p.url }}"><span class="visually-hidden">{{ p.title | escape }}, {{ price | strip }}</span></a>
           </span>
         </li>
@@ -235,10 +171,14 @@
   const hdr = () => hero.style.setProperty('--hdr', hw.offsetHeight + 'px');
   if (hw) { hdr(); if (window.ResizeObserver) new ResizeObserver(hdr).observe(hw); }
   const btns = [...hero.querySelectorAll('.hr-switch [role=radio]')];
-  let ready = false;
+  // the night grows from (and shrinks back into) the switch
+  const origin = () => {
+    const sw = hero.querySelector('.hr-switch').getBoundingClientRect(), hb = hero.getBoundingClientRect();
+    hero.style.setProperty('--ox', Math.round(sw.left + sw.width / 2 - hb.left) + 'px');
+    hero.style.setProperty('--oy', Math.round(sw.top + sw.height / 2 - hb.top) + 'px');
+  };
   function set(mode, focus) {
-    // the sun is carried across in an arc only when the mode really changes
-    if (ready && hero.dataset.mode !== mode && !matchMedia('(prefers-reduced-motion: reduce)').matches) { hero.classList.remove('is-moving'); void hero.offsetWidth; hero.classList.add('is-moving'); }
+    origin();
     hero.dataset.mode = mode;
     hero.querySelectorAll('.hr-btn--main').forEach((a) => { a.href = mode === 'pm' ? hero.dataset.pmHref : hero.dataset.amHref; });
     btns.forEach((b) => { const on = b.dataset.mode === mode; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
@@ -250,14 +190,14 @@
   });
   // always opens on the morning routine (?mode=pm can link straight to the evening)
   const start = new URLSearchParams(location.search).get('mode') === 'pm' ? 'pm' : 'am';
-  hero.classList.add('is-instant'); set(start); requestAnimationFrame(() => requestAnimationFrame(() => { hero.classList.remove('is-instant'); ready = true; }));
-  hero.addEventListener('animationend', (e) => { if (e.animationName.startsWith('lh-arc')) hero.classList.remove('is-moving'); });
+  hero.classList.add('is-instant'); set(start); requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.remove('is-instant')));
+  addEventListener('resize', origin, { passive: true });
 })();
 </script>
 
 {% schema %}
 {
-  "name": "Routine hero: light",
+  "name": "Routine hero: studio",
   "tag": "div",
   "class": "section-hero",
   "settings": []
