@@ -2,13 +2,18 @@
 {%- comment -%}
   About (DECISIONS 193): "A routine, not a cabinet." One Morning / Night switch over the counter photo (four packs in
   the morning, three at night) and the four steps under it, each with its job, its label wording (bts.benefit) and
-  when it's used. At night the sunscreen steps back. Each step opens its product.
+  when it's used, each pack at its true size standing on its step's colour (DECISIONS 195). At night the sunscreen
+  steps back. Each step opens its product.
 {%- endcomment -%}
 {%- liquid
   assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
   assign img_am = section.settings.image_am | default: images['bts-demo-morning.jpg']
   assign img_pm = section.settings.image_pm | default: images['bts-demo-night.jpg']
   assign sets_url = routes.root_url | append: '/pages/sets' | replace: '//', '/'
+  comment
+    True pack heights relative to the cleanser (DECISIONS 191).
+  endcomment
+  assign pack_h = ',1,.65,.81,.81' | split: ','
 -%}
 <section class="section ab-rt" data-ab-rt data-mode="am" aria-labelledby="AbRt-{{ section.id }}">
   <div class="container">
@@ -42,6 +47,9 @@
         {%- unless p.id -%}{%- continue -%}{%- endunless -%}
         <li class="ab-rt__step{% if i == 4 %} is-am-only{% endif %}" data-step="{{ i }}">
           <a class="ab-rt__link" href="{{ p.url }}">
+            <span class="ab-rt__pack" style="--h: {{ pack_h[i] }}" aria-hidden="true">
+              {%- render 'cut-img', handle: p.handle, sizes: '(min-width: 990px) 90px, 64px', widths: '120,180,240,360', class: 'ab-rt__pack-img' -%}
+            </span>
             <span class="ab-rt__num" aria-hidden="true">0{{ i }}</span>
             <span class="ab-rt__job">{{ p.metafields.bts.step_label.value | default: p.title | escape }}</span>
             <span class="ab-rt__name">{{ p.title | escape }}</span>

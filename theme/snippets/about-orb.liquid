@@ -3,7 +3,7 @@
   service, theme asset as fallback), the same flat colour underneath and the same light, brightest toward the space
   between the two suns. The About page's sky and close use it (DECISIONS 194).
   Params: tone ('green' = today's sun, 'blue' = tomorrow's), side ('start' | 'end': where the sun sits, so the light
-  faces the middle), sizes, class
+  faces the middle), sizes, class, priority (true: eager + fetchpriority high, for the first screen's largest image)
 {%- endcomment -%}
 {%- liquid
   assign ob_key = 'orb-' | append: tone | append: '.png'
@@ -11,11 +11,15 @@
 -%}
 <span class="ab-orb ab-orb--{{ tone }} ab-orb--{{ side | default: 'start' }}{% if class %} {{ class }}{% endif %}" aria-hidden="true">
   {%- if ob_img != blank -%}
-    {{ ob_img | image_url: width: 1200 | image_tag: widths: '400,600,800,1000,1200', sizes: sizes, class: 'ab-orb__s', alt: '', loading: 'lazy' }}
+    {%- if priority -%}
+      {{ ob_img | image_url: width: 1200 | image_tag: widths: '400,600,800,1000,1200', sizes: sizes, class: 'ab-orb__s', alt: '', loading: 'eager', fetchpriority: 'high' }}
+    {%- else -%}
+      {{ ob_img | image_url: width: 1200 | image_tag: widths: '400,600,800,1000,1200', sizes: sizes, class: 'ab-orb__s', alt: '', loading: 'lazy' }}
+    {%- endif -%}
   {%- else -%}
     {%- assign ob_a = 'orb-' | append: tone | append: '-900.webp' -%}
     {%- assign ob_b = 'orb-' | append: tone | append: '-1200.webp' -%}
-    <img class="ab-orb__s" src="{{ ob_a | asset_url }}" srcset="{{ ob_a | asset_url }} 900w, {{ ob_b | asset_url }} 1200w" sizes="{{ sizes }}" width="1200" height="1200" alt="" loading="lazy">
+    <img class="ab-orb__s" src="{{ ob_a | asset_url }}" srcset="{{ ob_a | asset_url }} 900w, {{ ob_b | asset_url }} 1200w" sizes="{{ sizes }}" width="1200" height="1200" alt=""{% if priority %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
   {%- endif -%}
   <span class="ab-orb__l"></span>
 </span>

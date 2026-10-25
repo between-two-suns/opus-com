@@ -1424,6 +1424,8 @@
     "close_cta2": "Shop {{ name }}",
     "clock_day": "Out in the day",
     "clock_eve": "Evening",
-    "clock_sleep": "While you sleep"
+    "clock_sleep": "While you sleep",
+    "climate_link": "See the day hour by hour",
+    "meta_description": "Climate-adapted skincare made in Egypt for the space between two days: four steps, morning and night, with every ingredient listed as printed on the pack."
   }
 }

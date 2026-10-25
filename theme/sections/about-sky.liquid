@@ -5,23 +5,27 @@
   between them. Scrolling runs the clock from 06:00 to 06:00: one large time counts on under the arc with what that
   hour is (morning routine, out in the day, evening, night routine, while you sleep, tomorrow's sun), a dot travels
   the arc past the two routine marks, the sky goes ivory → lilac dusk → ink night → mint dawn, today's sun sets and
-  tomorrow's rises. The four lines are all in the page, one shown at a time.
+  tomorrow's rises (its glow comes up under the horizon through the night). The title rises in on load, the clock's
+  digits roll as they change, and the second line links to the Climate page's hour-by-hour day (DECISIONS 195).
+  The four lines are all in the page, one shown at a time.
   Without JS or with reduced motion: one still screen with every line, no pinning.
 {%- endcomment -%}
 <section class="ab-sky" data-ab-sky aria-labelledby="AbSky-{{ section.id }}">
   <div class="ab-sky__stage">
     <span class="ab-sky__stars" aria-hidden="true"></span>
     <div class="ab-sky__horizon" aria-hidden="true">
-      {%- render 'about-orb', tone: 'green', side: 'start', class: 'ab-sky__sun ab-sky__sun--a', sizes: '(min-width: 750px) 30vw, 54vw' -%}
+      <span class="ab-sky__dawn"></span>
+      {%- render 'about-orb', tone: 'green', side: 'start', class: 'ab-sky__sun ab-sky__sun--a', sizes: '(min-width: 750px) 30vw, 54vw', priority: true -%}
       {%- render 'about-orb', tone: 'blue', side: 'end', class: 'ab-sky__sun ab-sky__sun--b', sizes: '(min-width: 750px) 30vw, 54vw' -%}
     </div>
     <div class="container ab-sky__copy">
       <p class="t-eyebrow">{{ 'about2.eyebrow' | t }}</p>
-      <h1 class="ab-sky__title" id="AbSky-{{ section.id }}">{{ 'about2.title' | t }}</h1>
+      {%- assign title_words = 'about2.title' | t | split: ' ' -%}
+      <h1 class="ab-sky__title" id="AbSky-{{ section.id }}">{% for w in title_words %}<span class="w" style="--i: {{ forloop.index0 }}"><span>{{ w }}</span></span>{% unless forloop.last %}{{ ' ' }}{% endunless %}{% endfor %}</h1>
       <ol class="ab-sky__beats" role="list">
         {%- for i in (1..4) -%}
           {%- assign bk = 'about2.b' | append: i -%}
-          <li class="ab-sky__beat" data-beat="{{ i }}">{{ bk | t }}</li>
+          <li class="ab-sky__beat" data-beat="{{ i }}">{{ bk | t }}{% if i == 2 %} <a class="ab-sky__more" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{{ 'about2.climate_link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>{% endif %}</li>
         {%- endfor -%}
       </ol>
     </div>
@@ -36,7 +40,7 @@
       <span class="ab-sky__end ab-sky__end--a">{{ 'about2.sun_a' | t }}</span>
       <span class="ab-sky__end ab-sky__end--b">{{ 'about2.sun_b' | t }}</span>
       <span class="ab-sky__clock">
-        <span class="ab-sky__time" data-time>06:00</span>
+        <span class="ab-sky__time" data-time><span>0</span><span>6</span><span class="ab-sky__colon">:</span><span>0</span><span>0</span></span>
         <span class="ab-sky__now" data-now>{{ 'about2.am' | t }}</span>
       </span>
       <template data-labels>
@@ -46,6 +50,8 @@
     <p class="ab-sky__hint" aria-hidden="true">{{ 'about2.scroll' | t }}<span class="ab-sky__hint-line"></span></p>
   </div>
 </section>
+{%- comment -%} Scroll mode is set before the first paint, so the page doesn't shift when about.js arrives. (The space between the title's words is printed with {{ ' ' }}: Shopify drops a block that holds only whitespace.) {%- endcomment -%}
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.currentScript.previousElementSibling.classList.add('is-live');</script>
 <script src="{{ 'about.js' | asset_url }}" type="module" defer></script>
 
 {% schema %}
