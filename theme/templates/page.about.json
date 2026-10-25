@@ -1,96 +1,11 @@
 {
   "sections": {
-    "hero": {
-      "type": "page-hero",
-      "settings": {
-        "preset": "about",
-        "image": "shopify://shop_images/bts-portrait-terrace-wide.jpg"
-      }
-    },
-    "story": {
-      "type": "story",
-      "blocks": {
-        "s1": {
-          "type": "row",
-          "settings": {
-            "preset": "between",
-            "image": "shopify://shop_images/bts-portrait-window-wide.jpg"
-          }
-        },
-        "s2": {
-          "type": "row",
-          "settings": {
-            "preset": "routine",
-            "image": "shopify://shop_images/bts-the-full-ritual.jpg"
-          }
-        },
-        "s3": {
-          "type": "row",
-          "settings": {
-            "preset": "made",
-            "image": "shopify://shop_images/bts-lineup-sky.jpg"
-          }
-        },
-        "s4": {
-          "type": "row",
-          "settings": {
-            "preset": "transparent",
-            "image": "shopify://shop_images/bts-clarity-serum-texture.jpg"
-          }
-        }
-      },
-      "block_order": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
-      ],
-      "settings": {}
-    },
-    "routine": {
-      "type": "routine-grid",
-      "settings": {
-        "show_bundle": true
-      }
-    },
-    "faq": {
-      "type": "faq",
-      "blocks": {
-        "q0": {
-          "type": "qa",
-          "settings": {
-            "preset": "made"
-          }
-        },
-        "q1": {
-          "type": "qa",
-          "settings": {
-            "preset": "climate"
-          }
-        },
-        "q2": {
-          "type": "qa",
-          "settings": {
-            "preset": "inci"
-          }
-        }
-      },
-      "block_order": [
-        "q0",
-        "q1",
-        "q2"
-      ],
-      "settings": {
-        "compact": true,
-        "show_contact": true,
-        "schema": false
-      }
-    }
+    "sky": { "type": "about-sky", "settings": {} },
+    "routine": { "type": "about-routine", "settings": {} },
+    "made": { "type": "about-made", "settings": {} },
+    "founder": { "type": "about-founder", "settings": {} },
+    "rules": { "type": "about-rules", "settings": {} },
+    "close": { "type": "about-close", "settings": {} }
   },
-  "order": [
-    "hero",
-    "story",
-    "routine",
-    "faq"
-  ]
+  "order": ["sky", "routine", "made", "founder", "rules", "close"]
 }
