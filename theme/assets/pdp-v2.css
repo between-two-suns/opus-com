@@ -325,7 +325,37 @@
 .s2-inside__lede { display: grid; gap: 10px; max-inline-size: 460px; }
 .s2-inside__full { display: flex; align-items: flex-start; gap: 8px; margin: 0; font-size: 15px; font-weight: 700; line-height: 1.4; }
 .s2-inside__full .icon { flex: none; margin-block-start: 3px; color: var(--c-success); }
-.s2-inside__grid { max-inline-size: 620px; }
+.s2-inside__grid { max-inline-size: none; grid-template-columns: minmax(0, 1fr) !important; }
+/* The saving as an equation: a full-width strip on wider screens ("Cleanser 399 + Serum 499 … = 1,846 → 1,699"),
+   a totals list on phones (each card already shows its price) */
+.s2-eq { display: grid; list-style: none; margin: 0; padding: 0; }
+.s2-eq > li { display: flex; justify-content: space-between; gap: 12px; padding-block: 9px; border-block-end: 1px solid var(--c-line); font-size: 15px; }
+.s2-eq__label { color: var(--c-muted); }
+.s2-eq__val { font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.s2-eq__total .s2-eq__label { color: var(--c-ink); font-weight: 600; }
+.s2-eq__total .s2-eq__val { color: var(--c-muted); }
+.s2-eq__set { border-block-end: 0 !important; font-size: 18px !important; }
+.s2-eq__set .s2-eq__label { color: var(--c-ink); font-weight: 750; }
+.s2-eq__set .s2-eq__val { font-weight: 800; }
+@media (max-width: 749px) { .s2-eq__item { display: none !important; } }
+@media (min-width: 750px) {
+  .s2-save { grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 32px; }
+  .s2-save .bi__h { grid-column: 1; }
+  .s2-save .s2-eq { grid-column: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 0; }
+  .s2-save .bi__saved { grid-column: 2; grid-row: 1 / span 2; align-self: center; white-space: nowrap; }
+  .s2-eq > li { display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto; align-items: center; column-gap: 14px; row-gap: 2px; padding: 0 14px 0 0; border: 0; }
+  .s2-eq > li::before { grid-row: 1 / span 2; grid-column: 1; font-family: var(--font-display); font-size: 22px; line-height: 1; color: var(--c-muted); }
+  .s2-eq > li + li::before { content: '+'; }
+  .s2-eq > .s2-eq__total::before { content: '='; }
+  .s2-eq > .s2-eq__set::before { content: '→'; color: var(--c-ink); }
+  [dir='rtl'] .s2-eq > .s2-eq__set::before { content: '←'; }
+  .s2-eq__label, .s2-eq__val { grid-column: 2; }
+  .s2-eq > li:first-child .s2-eq__label, .s2-eq > li:first-child .s2-eq__val { grid-column: 1; }
+  .s2-eq__label { font-size: 13px; }
+  .s2-eq__val { font-size: 17px; }
+  .s2-eq__set { font-size: inherit !important; }
+  .s2-eq__set .s2-eq__val { font-size: 22px; }
+}
 .s2-inside__price { font-size: 15px; font-weight: 750; font-variant-numeric: tabular-nums; }
 /* Phones: the product cards are one swipe row, not a 2 × 2 grid (about a screen shorter) */
 @media (max-width: 749px) {
@@ -333,8 +363,6 @@
   .s2-inside .bi__items::-webkit-scrollbar { display: none; }
   .s2-inside .bi__item { scroll-snap-align: start; }
   .s2-inside .bi__media { aspect-ratio: 4 / 3; }
-  /* each card shows its price, so the breakdown keeps just the totals */
-  .s2-inside .s2-sum-item { display: none !important; }
 }
 
 /* Your day: Morning / Night switch over the steps in order */
@@ -365,47 +393,55 @@
   .s2-day__panel:not([hidden]) .s2-day__step { animation: s2-rise 500ms var(--ease-out) both; animation-delay: calc(var(--k, 1) * 70ms); }
 }
 
-/* Key ingredients across the set */
-.s2-ing__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; list-style: none; margin: 0; padding: 0; }
-@media (min-width: 750px) { .s2-ing__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.s2-ing__link { display: grid; align-content: start; gap: 6px; block-size: 100%; padding: 16px 16px 14px; border-radius: var(--radius-l); background: var(--c-paper); color: var(--c-ink); text-decoration: none; transition: translate var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out); }
-.s2-ing__link:hover { translate: 0 -2px; box-shadow: 0 14px 30px -18px rgba(32, 35, 58, .35); }
-.s2-ing__name { font-size: 17px; font-weight: 700; line-height: 1.2; }
-.s2-ing__what { font-size: 13px; font-weight: 650; color: var(--c-muted); }
-.s2-ing__in { display: flex; gap: 5px; margin-block-start: 6px; }
-.s2-ing__dot { inline-size: 12px; block-size: 12px; border-radius: 50%; background: var(--sku); box-shadow: 0 0 0 2px #fff; }
-/* Phones: compact two-line tiles */
+/* Key ingredients across the set (DECISIONS 192): one band in the set's colours, the ingredients as flowing tags */
+.s2-ing__band { border-radius: clamp(24px, 3vw, 36px); padding: clamp(24px, 5vw, 64px); background: var(--g); }
+.s2-ing__band .section-head { margin-block-end: clamp(18px, 2.5vw, 28px); }
+.s2-ing__list { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin: 0; padding: 0; }
+.s2-ing__link { display: inline-flex; align-items: center; gap: 10px; padding: 11px 20px 11px 14px; border-radius: 99px; background: color-mix(in srgb, #fff 80%, transparent); box-shadow: 0 10px 24px -18px rgba(32, 35, 58, .45); color: var(--c-ink); text-decoration: none; transition: background var(--dur) var(--ease-out), translate var(--dur) var(--ease-out); }
+.s2-ing__link:hover { background: #fff; translate: 0 -2px; }
+.s2-ing__link:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; }
+.s2-ing__in { display: inline-flex; gap: 3px; }
+.s2-ing__dot { inline-size: 10px; block-size: 10px; border-radius: 50%; background: var(--sku); }
+.s2-ing__name { font-size: 17px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+.s2-ing__what { font-size: 14px; font-weight: 600; color: var(--c-muted); white-space: nowrap; }
 @media (max-width: 749px) {
   .s2-ing__list { gap: 8px; }
-  .s2-ing__link { grid-template-columns: 1fr auto; align-items: center; gap: 2px 8px; padding: 12px 12px 11px; }
-  .s2-ing__name { font-size: 15px; grid-column: 1; }
-  .s2-ing__what { font-size: 12px; grid-column: 1; }
-  .s2-ing__in { grid-column: 2; grid-row: 1 / span 2; margin: 0; flex-direction: column; gap: 4px; }
-  .s2-ing__dot { inline-size: 9px; block-size: 9px; }
+  .s2-ing__link { gap: 8px; padding: 9px 14px 9px 11px; }
+  .s2-ing__name { font-size: 15px; }
+  .s2-ing__what { font-size: 12px; }
+  .s2-ing__dot { inline-size: 8px; block-size: 8px; }
 }
 
-/* Compare sets */
-.s2-cmp__wrap { overflow-x: auto; border-radius: var(--radius-l); background: var(--c-paper); }
-.s2-cmp__table { inline-size: 100%; border-collapse: collapse; font-size: 15px; }
-.s2-cmp__table th, .s2-cmp__table td { padding: 14px 12px; border-block-end: 1px solid var(--c-line); text-align: start; vertical-align: middle; }
-.s2-cmp__table tbody tr:last-child > * { border-block-end: 0; }
-.s2-cmp__table thead th { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c-muted); }
-:lang(ar) .s2-cmp__table thead th { letter-spacing: 0; text-transform: none; font-size: 13px; }
-.s2-cmp__step { text-align: center !important; inline-size: 9%; }
-.s2-cmp__num { display: block; font-family: var(--font-display); font-size: 15px; color: var(--c-ink); }
-.s2-cmp__label { display: block; font-size: 11px; }
-@media (max-width: 749px) { .s2-cmp__label { display: none; } .s2-cmp__table th, .s2-cmp__table td { padding: 12px 8px; } .s2-cmp__table { font-size: 14px; } }
-.s2-cmp__yes { display: inline-block; inline-size: 16px; block-size: 16px; border-radius: 50%; background: var(--sku); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--c-ink) 12%, transparent); }
-.s2-cmp__no { display: inline-block; inline-size: 12px; block-size: 2px; border-radius: 2px; background: color-mix(in srgb, var(--c-ink) 22%, transparent); }
-.s2-cmp__set { font-weight: 700; }
-.s2-cmp__name { color: var(--c-ink); }
-a.s2-cmp__name { text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--c-ink) 30%, transparent); text-underline-offset: 3px; }
-.s2-cmp__here { display: inline-block; margin-inline-start: 8px; padding: 2px 8px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; vertical-align: middle; white-space: nowrap; }
-:lang(ar) .s2-cmp__here { letter-spacing: 0; text-transform: none; }
-@media (max-width: 749px) { .s2-cmp__here { display: block; inline-size: fit-content; margin: 4px 0 0; } }
-.s2-cmp__row.is-here > * { background: color-mix(in srgb, var(--c-step-2) 12%, #fff); }
-.s2-cmp__price { text-align: end !important; white-space: nowrap; }
-.s2-cmp__now { display: block; font-weight: 800; font-variant-numeric: tabular-nums; }
-.s2-cmp__save { display: block; font-size: 13px; font-weight: 700; color: var(--c-success); }
-.s2-cmp__ship { display: inline-flex; align-items: center; justify-content: flex-end; gap: 4px; font-size: 12px; font-weight: 650; color: var(--c-success); }
+/* Compare sets (DECISIONS 192): cards, each with its packs at true sizes on its colours; missing steps faint */
+.s2-sets { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; list-style: none; margin: 0; padding: 0; }
+@media (max-width: 989px) {
+  .s2-sets { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(220px, 60%); overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--gutter) * -1); padding: 4px var(--gutter) 8px; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
+  .s2-sets::-webkit-scrollbar { display: none; }
+  .s2-set { scroll-snap-align: start; }
+}
+.s2-set__card { position: relative; display: grid; grid-template-rows: auto 1fr; block-size: 100%; border-radius: var(--radius-l); overflow: hidden; background: var(--c-paper); color: var(--c-ink); text-decoration: none; transition: translate var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out); }
+a.s2-set__card:hover { translate: 0 -3px; box-shadow: 0 18px 36px -22px rgba(32, 35, 58, .45); }
+a.s2-set__card:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; }
+.s2-set.is-here .s2-set__card { outline: 2px solid var(--c-ink); outline-offset: -2px; }
+.s2-set__stage { display: flex; align-items: flex-end; justify-content: center; gap: 3%; block-size: clamp(150px, 14vw, 190px); padding: 22px 8% 14px; background: var(--g); overflow: hidden; }
+.s2-set__pack { flex: 0 0 19%; display: flex; align-items: flex-end; justify-content: center; block-size: 100%; --s: 1; }
+.s2-set__pack[data-step='2'] { --s: .65; }
+.s2-set__pack[data-step='3'], .s2-set__pack[data-step='4'] { --s: .81; }
+.s2-set__pack img { block-size: calc(var(--s) * 100%); inline-size: auto; max-inline-size: 100%; object-fit: contain; object-position: 50% 100%; filter: drop-shadow(0 8px 8px rgba(32, 35, 58, .16)); transition: translate 500ms var(--ease-out); }
+.s2-set__pack.is-off img { opacity: .16; filter: grayscale(1); }
+a.s2-set__card:hover .s2-set__pack:not(.is-off) img { translate: 0 -4px; }
+.s2-set__body { display: grid; align-content: start; gap: 4px; padding: 14px 16px 18px; }
+.s2-set__here { justify-self: start; margin-block-end: 2px; padding: 3px 10px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+:lang(ar) .s2-set__here { letter-spacing: 0; text-transform: none; font-size: 12px; }
+.s2-set__name { font-size: 17px; font-weight: 750; line-height: 1.2; }
+.s2-set__steps { font-size: 13px; line-height: 1.4; color: var(--c-muted); }
+.s2-set__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin-block-start: 8px; }
+.s2-set__now { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.s2-set__was { font-size: 14px; color: var(--c-muted); }
+.s2-set__perks { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: 13px; font-weight: 700; color: var(--c-success); }
+.s2-set__ship { display: inline-flex; align-items: center; gap: 4px; }
 .s2-cmp__quiz { margin-block-start: 18px; }
+
+/* Set sections take one gap between them, like the home page (the next section's top padding goes) */
+.shopify-section:has(> .section--flow) ~ .shopify-section > .section--flow,
+.shopify-section:has(> .section--flow) ~ .shopify-section > .v2-rev { padding-block-start: 0; }

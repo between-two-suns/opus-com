@@ -31,8 +31,9 @@
   assign handles = handles | remove_first: ',' | split: ','
 -%}
 {%- if handles.size > 0 -%}
-<section class="section s2-ing" aria-labelledby="S2Ing-{{ section.id }}">
+<section class="section section--flow s2-ing" aria-labelledby="S2Ing-{{ section.id }}">
   <div class="container">
+    <div class="s2-ing__band" style="--g: linear-gradient(115deg{% for st in buniq %}, var(--c-step-{{ st }}-tint){% endfor %}{% if buniq.size == 1 %}, var(--c-step-{{ buniq[0] }}-tint){% endif %})">
     <div class="section-head">
       <div class="section-head__text">
         <p class="t-eyebrow">{{ 'set2.ing_eyebrow' | t }}</p>
@@ -68,8 +69,6 @@
         -%}
         <li class="s2-ing__item">
           <a class="s2-ing__link" href="{{ glossary_url }}#inci-{{ anchor }}">
-            <span class="s2-ing__name">{{ found.name.value | escape }}</span>
-            {%- if what != blank -%}<span class="s2-ing__what">{{ what }}</span>{%- endif -%}
             <span class="s2-ing__in">
               <span class="visually-hidden">{{ 'set2.ing_in' | t }}:</span>
               {%- for st in in_steps -%}
@@ -78,10 +77,13 @@
                 <span class="s2-ing__dot" data-step="{{ st }}" title="{{ comp.title | escape }}"><span class="visually-hidden">{{ comp.title | escape }}{% unless forloop.last %}, {% endunless %}</span></span>
               {%- endfor -%}
             </span>
+            <span class="s2-ing__name">{{ found.name.value | escape }}</span>
+            {%- if what != blank -%}<span class="s2-ing__what">{{ what }}</span>{%- endif -%}
           </a>
         </li>
       {%- endfor -%}
     </ul>
+    </div>
   </div>
 </section>
 {%- endif -%}

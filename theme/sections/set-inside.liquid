@@ -32,7 +32,7 @@
     assign set_name = product.title
   endif
 -%}
-<section class="section bi s2-inside" aria-labelledby="S2In-{{ section.id }}">
+<section class="section section--flow bi s2-inside" aria-labelledby="S2In-{{ section.id }}">
   <div class="container">
     <div class="section-head">
       <div class="section-head__text">
@@ -90,17 +90,18 @@
 
     <div class="bi__grid s2-inside__grid">
       {%- if saving > 0 -%}
-        <div class="bi__card bi__save">
+        <div class="bi__card bi__save s2-save">
           <h3 class="bi__h">{{ 'bundle_inside.saving_heading' | t }}</h3>
-          <dl class="bi__sum">
+          <ol class="s2-eq" role="list">
             {%- for st in bundle_steps -%}
               {%- assign si = st | plus: 0 -%}
               {%- assign comp = all_products[step_handles[si]] -%}
-              <div class="s2-sum-item"><dt>{{ comp.title | escape }}</dt><dd>{% render 'egp', cents: comp.price %}</dd></div>
+              {%- assign sk = 'pdp2.short.' | append: st -%}
+              <li class="s2-eq__item" data-step="{{ st }}"><span class="s2-eq__label">{{ sk | t }}</span><span class="s2-eq__val">{% render 'egp', cents: comp.price %}</span></li>
             {%- endfor -%}
-            <div class="bi__sum-total"><dt>{{ 'bundle_inside.separately' | t }}</dt><dd><s>{% render 'egp', cents: singles %}</s></dd></div>
-            <div class="bi__sum-set"><dt>{{ set_name | escape }}</dt><dd>{% render 'egp', cents: variant.price %}</dd></div>
-          </dl>
+            <li class="s2-eq__total"><span class="s2-eq__label">{{ 'bundle_inside.separately' | t }}</span><s class="s2-eq__val">{% render 'egp', cents: singles %}</s></li>
+            <li class="s2-eq__set"><span class="s2-eq__label">{{ set_name | escape }}</span><span class="s2-eq__val">{% render 'egp', cents: variant.price %}</span></li>
+          </ol>
           {%- capture save_m -%}{% render 'egp', cents: saving %}{%- endcapture -%}
           <p class="bi__saved">{{ 'bundles.save_vs' | t: amount: save_m }}</p>
         </div>
