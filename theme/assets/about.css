@@ -54,9 +54,10 @@
 .ab-sky[data-dark] .t-eyebrow { color: inherit; }
 .ab-sky__title {
   margin: 14px 0 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
-  font-size: clamp(68px, min(10.5vw, 17svh), 210px); line-height: .9; letter-spacing: -.005em; max-inline-size: 8.2ch; padding-block-end: .06em;
+  font-size: clamp(68px, min(10.5vw, 17svh), 210px); line-height: .9; letter-spacing: -.005em; max-inline-size: 8.2ch; padding-block-end: .16em;
 }
-.ab-sky__title .w { display: inline-block; overflow: hidden; vertical-align: top; padding-block: .04em .06em; margin-block: -.04em -.06em; }
+/* Each word's clipping box (for the rise-in) is taller than the line, so the condensed letters' curves are never trimmed. */
+.ab-sky__title .w { display: inline-block; overflow: hidden; vertical-align: top; padding-block: .14em .24em; margin-block: -.14em -.24em; }
 .ab-sky__title .w > span { display: inline-block; }
 @media (prefers-reduced-motion: no-preference) {
   .js .ab-sky__title .w > span { translate: 0 108%; animation: ab-word .9s cubic-bezier(.2, .75, .2, 1) calc(.1s + var(--i) * .08s) forwards; }
