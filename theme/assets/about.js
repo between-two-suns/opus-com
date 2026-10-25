@@ -2,8 +2,10 @@
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
-// Sky colour by hours after 06:00 (0–24): day, golden hour, dusk, night, then the next dawn.
-const STOPS = [[0, '#f8ede3'], [3, '#f5f1ea'], [8, '#f3eee4'], [10.5, '#f7dfc8'], [12.5, '#eebca8'], [13.6, '#8a6f86'], [14.6, '#3a3858'], [16, '#24283f'], [21, '#22263d'], [22.4, '#5d5272'], [23.2, '#e9c9bd'], [24, '#f8ede3']];
+// Sky colour by hours after 06:00 (0–24), in the brand's colours: ivory day, lilac dusk, ink night, mint dawn.
+const STOPS = [[0, '#f3f1ea'], [3, '#f5f1ea'], [8, '#f2efe9'], [10.5, '#efe7f0'], [12.3, '#e3d1e7'], [13.5, '#a48fb4'], [14.5, '#4f4a6e'], [16, '#24283f'], [21, '#22263d'], [22.3, '#3f5a66'], [23.1, '#cfe6df'], [24, '#eaf2ee']];
+// What each part of the day is, for the clock (hours after 06:00 where each one starts).
+const PARTS = [0, 2.5, 11, 15, 17, 23.5];
 const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
 const RGB = STOPS.map(([t, c]) => [t, hex(c)]);
 const skyAt = (t) => {
@@ -17,11 +19,28 @@ const lum = ([r, g, b]) => (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
 const ease = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
 
 // A module runs once per page however many sections load it; the editor's section reloads call init again.
+// The arc is drawn at its real size (not a stretched viewBox), so the trail's dashes match the dot exactly.
+const fitArc = (svg) => {
+  const w = Math.round(svg.clientWidth), h = Math.round(svg.clientHeight);
+  if (!w || !h) return;
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  svg.querySelectorAll('path').forEach((pa) => pa.setAttribute('d', `M0 ${h} Q${w / 2} ${-h} ${w} ${h}`));
+};
+
 const init = (root) => {
+  root.querySelectorAll('.ab-sky__arc').forEach((svg) => {
+    fitArc(svg);
+    if ('ResizeObserver' in window) new ResizeObserver(() => fitArc(svg)).observe(svg);
+  });
   root.querySelectorAll('[data-ab-sky]:not(.is-live)').forEach((el) => {
     if (reduce.matches) return;
     const beats = [...el.querySelectorAll('.ab-sky__beat')];
-    const moments = [...el.querySelectorAll('.ab-sky__moment')];
+    const marks = [...el.querySelectorAll('.ab-sky__mark')];
+    const trail = el.querySelector('.ab-sky__trail');
+    const timeEl = el.querySelector('[data-time]'), nowEl = el.querySelector('[data-now]');
+    const labels = [...(el.querySelector('template[data-labels]')?.content.children || [])].map((x) => x.textContent);
+    let part = -1;
     el.classList.add('is-live');
     let raf = 0, last = -1;
     const update = () => {
@@ -42,7 +61,14 @@ const init = (root) => {
       el.toggleAttribute('data-dark', L < 0.45);
       const beat = p < 0.16 ? 0 : p < 0.5 ? 1 : p < 0.84 ? 2 : 3;
       beats.forEach((b, i) => b.classList.toggle('is-on', i === beat));
-      moments.forEach((m) => m.classList.toggle('is-on', t >= Number(m.dataset.at)));
+      marks.forEach((m) => m.classList.toggle('is-on', t >= Number(m.dataset.at)));
+      if (trail) trail.style.strokeDashoffset = (1 - p).toFixed(4);
+      // The clock counts in five-minute steps; its line changes with the part of the day.
+      const mins = Math.round((t * 60) / 5) * 5, hh = (6 + Math.floor(mins / 60)) % 24, mm = mins % 60;
+      if (timeEl) timeEl.textContent = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+      let k = 0;
+      while (k < PARTS.length - 1 && t >= PARTS[k + 1]) k++;
+      if (k !== part && nowEl && labels[k]) { part = k; nowEl.textContent = labels[k]; }
     };
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
     addEventListener('scroll', onScroll, { passive: true });

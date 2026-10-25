@@ -1,7 +1,7 @@
 {{ 'about.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  About (DECISIONS 193): the close, back to the name: "Until the next sun", with tomorrow's sun rising from the
-  bottom edge. Two ways on: the skin check (when its page is set) and the Full Ritual.
+  About (DECISIONS 193): the close, back to the name: "Until the next sun", with tomorrow's sun (the home page's
+  periwinkle sphere) rising from the bottom edge. Two ways on: the skin check (when its page is set) and the Full Ritual.
 {%- endcomment -%}
 {%- liquid
   assign set = all_products['the-full-ritual']
@@ -12,7 +12,7 @@
   endif
 -%}
 <section class="ab-close" aria-labelledby="AbClose-{{ section.id }}">
-  <span class="ab-close__sun" aria-hidden="true"></span>
+  {%- render 'about-orb', tone: 'blue', side: 'top', class: 'ab-close__sun ab-orb--top', sizes: '(min-width: 750px) 56vw, 300px' -%}
   <div class="container ab-close__inner">
     <h2 class="ab-close__title" id="AbClose-{{ section.id }}">{{ 'about2.close_heading' | t }}</h2>
     <p class="t-lead ab-close__text">{{ 'about2.close_text' | t }}</p>

@@ -84,7 +84,7 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - QA tooling: preview harness, Theme Check, 272 flow tests, axe, Lighthouse scripts (see `QA.md`)
 
 ## Shipped to staging 2026-10-25
-- **About page demo** (DECISIONS 193) at `/pages/about?view=about2`: the name as time (today's sun to tomorrow's), the routine on one counter (morning/night), made in Egypt, a founder note slot (hidden until written), "What we won't do", "Until the next sun". The live About page is unchanged until the owner approves. Owner inputs that would lift it further: founder story, founder/team photo, real ICI photos, what the `)(` mark means, launch year.
+- **About page demo** (DECISIONS 193) at `/pages/about?view=about2`: the name as time (today's sun to tomorrow's), the routine on one counter (morning/night), made in Egypt, a founder note slot (hidden until written), "What we won't do" (lilac), "Until the next sun". Round 2 (DECISIONS 194): the home page's sage and periwinkle spheres as the two suns, an arc with one counting clock instead of the hour ruler, brand-colour sky. The live About page is unchanged until the owner approves. Owner inputs that would lift it further: founder story, founder/team photo, real ICI photos, what the `)(` mark means, launch year.
 
 ## Incomplete / outstanding
 - Owner setup for the pricing spec (see checklist below): taxes, shipping rates, payments, COD limit, inventory counts

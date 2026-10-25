@@ -1421,6 +1421,9 @@
     "close_heading": "Until the next sun.",
     "close_text": "Not sure where to start? Answer a few questions and we’ll suggest a routine.",
     "close_cta": "Find your routine",
-    "close_cta2": "Shop {{ name }}"
+    "close_cta2": "Shop {{ name }}",
+    "clock_day": "Out in the day",
+    "clock_eve": "Evening",
+    "clock_sleep": "While you sleep"
   }
 }
