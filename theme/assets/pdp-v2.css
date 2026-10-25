@@ -57,8 +57,8 @@
 .v2-opt__packs { display: flex; align-items: flex-end; block-size: 46px; }
 .v2-opt__packs img { block-size: 46px; inline-size: auto; filter: drop-shadow(0 4px 6px rgba(32, 35, 58, .18)); }
 .v2-opt__packs img + img { margin-inline-start: -8px; }
-.v2-opt__packs img[data-step='2'] { block-size: 34px; }
-.v2-opt__packs img[data-step='3'], .v2-opt__packs img[data-step='4'] { block-size: 39px; }
+.v2-opt__packs img[data-step='2'] { block-size: 30px; }
+.v2-opt__packs img[data-step='3'], .v2-opt__packs img[data-step='4'] { block-size: 37px; }
 .v2-opt__text { display: grid; gap: 1px; min-inline-size: 0; }
 .v2-opt__name { font-weight: 700; font-size: 15px; line-height: 1.25; }
 .v2-opt__badge { display: inline-block; margin-inline-start: 4px; padding: 2px 8px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; vertical-align: 2px; }
@@ -80,8 +80,8 @@
   .v2-opt { gap: 8px 10px; padding-inline: 12px; }
   .v2-opt__packs, .v2-opt--compact .v2-opt__packs { block-size: 32px; }
   .v2-opt__packs img, .v2-opt--compact .v2-opt__packs img { block-size: 32px; }
-  .v2-opt__packs img[data-step='2'] { block-size: 24px; }
-  .v2-opt__packs img[data-step='3'], .v2-opt__packs img[data-step='4'] { block-size: 28px; }
+  .v2-opt__packs img[data-step='2'] { block-size: 21px; }
+  .v2-opt__packs img[data-step='3'], .v2-opt__packs img[data-step='4'] { block-size: 26px; }
   .v2-opt__packs img + img { margin-inline-start: -7px; }
 }
 
@@ -290,16 +290,19 @@
 .pdp--v2 .pdp__gallery .gallery__slide.s2-stage { background: var(--g); overflow: hidden; }
 .s2-stage__packs { position: absolute; inset: 10% 5% 15%; z-index: 1; display: flex; justify-content: center; align-items: stretch; gap: clamp(6px, 2.5%, 22px); list-style: none; margin: 0; padding: 0; }
 @media (min-width: 990px) { .s2-stage__packs { inset-block-end: 10%; } }
-.s2-pack { flex: 0 1 calc(88% / max(var(--n), 3)); display: grid; grid-template-rows: auto 26px minmax(0, 1fr); justify-items: center; min-inline-size: 0; }
+.s2-pack { flex: 0 1 calc(88% / max(var(--n), 3)); display: flex; flex-direction: column; align-items: center; min-inline-size: 0; --s: 1; }
+/* true pack proportions, measured from the studio photo (DECISIONS 191): serum 65%, cream and SPF 81% of the cleanser */
+.s2-pack[data-step='2'] { --s: .65; }
+.s2-pack[data-step='3'], .s2-pack[data-step='4'] { --s: .81; }
 .s2-pack__label { display: grid; justify-items: center; gap: 2px; min-block-size: 2.6em; text-align: center; }
 .s2-pack__num { font-family: var(--font-display); font-weight: 700; font-size: clamp(16px, 4vw, 22px); line-height: 1; }
 .s2-pack__name { font-size: clamp(10px, 2.6vw, 12px); font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
 :lang(ar) .s2-pack__name { letter-spacing: 0; text-transform: none; font-size: clamp(11px, 3vw, 13px); }
-.s2-pack__line { position: relative; inline-size: 1.5px; block-size: 100%; background: color-mix(in srgb, var(--c-ink) 45%, transparent); transform-origin: 50% 0; }
+.s2-pack__line { position: relative; flex: 1 1 auto; min-block-size: 22px; inline-size: 1.5px; background: color-mix(in srgb, var(--c-ink) 45%, transparent); transform-origin: 50% 0; }
 .s2-pack__line::after { content: ''; position: absolute; inset-block-end: -3px; inset-inline-start: 50%; translate: -50% 0; inline-size: 7px; block-size: 7px; border-radius: 50%; background: var(--sku-deep, var(--c-ink)); box-shadow: 0 0 0 4px color-mix(in srgb, #fff 70%, transparent); }
 [dir='rtl'] .s2-pack__line::after { translate: 50% 0; }
 .s2-pack__line--blank { visibility: hidden; }
-.s2-pack__link { display: flex; align-items: flex-end; justify-content: center; min-block-size: 0; block-size: 100%; inline-size: 100%; padding-block-start: 10px; border-radius: 16px; }
+.s2-pack__link { flex: none; display: flex; align-items: flex-end; justify-content: center; block-size: calc(var(--s) / var(--smax, 1) * 78%); inline-size: 100%; padding-block-start: 10px; border-radius: 16px; }
 .s2-pack__link:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; }
 .s2-pack__img { display: block; block-size: 100%; inline-size: auto; max-inline-size: 100%; object-fit: contain; object-position: 50% 100%; filter: drop-shadow(0 18px 18px rgba(32, 35, 58, .18)); transition: translate 500ms var(--ease-out); }
 .s2-pack:nth-child(odd) .s2-pack__img { rotate: -3deg; }

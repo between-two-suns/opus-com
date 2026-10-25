@@ -16,8 +16,9 @@
 .setsx-card__stage { position: relative; display: flex; align-items: flex-end; justify-content: center; padding: 30px 18px 24px; overflow: hidden; background: radial-gradient(70% 60% at 50% 62%, rgba(255, 255, 255, .7), transparent 72%), linear-gradient(180deg, color-mix(in srgb, var(--c-step-3) 30%, #fff) 0%, color-mix(in srgb, var(--c-step-3) 14%, color-mix(in srgb, var(--c-ink) 6%, #fff)) 100%); text-decoration: none; }
 .setsx-packs { display: flex; align-items: flex-end; justify-content: center; gap: clamp(10px, 1.6vw, 20px); block-size: clamp(190px, 20vw, 260px); inline-size: 100%; margin: 0; padding: 0; list-style: none; }
 .setsx-pack { position: relative; display: flex; align-items: flex-end; justify-content: center; block-size: 100%; transition: transform var(--dur-slow) var(--ease-out); }
-.setsx-pack[data-step='2'] { block-size: 74%; }
-.setsx-pack[data-step='3'], .setsx-pack[data-step='4'] { block-size: 83%; }
+/* true pack proportions, measured from the studio photo (DECISIONS 191): serum 65%, cream and SPF 81% of the cleanser */
+.setsx-pack[data-step='2'] { block-size: 65%; }
+.setsx-pack[data-step='3'], .setsx-pack[data-step='4'] { block-size: 81%; }
 .setsx-pack img { block-size: 100%; inline-size: auto; filter: drop-shadow(0 12px 12px rgba(32, 35, 58, .12)); }
 .setsx-card:hover .setsx-pack { transform: translateY(-4px); }
 

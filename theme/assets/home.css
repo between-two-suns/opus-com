@@ -160,8 +160,8 @@
 :lang(ar) .lab__word { text-transform: none; line-height: 1.2; font-size: clamp(44px, 11vw, 110px); }
 .lab__bottles { position: absolute; inset-inline: 6%; inset-block-end: 7%; z-index: 1; display: flex; align-items: flex-end; justify-content: center; gap: 3%; block-size: 52%; }
 .lab__bottle { block-size: 100%; display: block; animation: lab-sway 6s ease-in-out infinite alternate; animation-delay: calc(var(--k) * -1.3s); transform-origin: 50% 100%; }
-.lab__bottle[data-step='2'] { block-size: 76%; }
-.lab__bottle[data-step='3'], .lab__bottle[data-step='4'] { block-size: 86%; }
+.lab__bottle[data-step='2'] { block-size: 65%; }
+.lab__bottle[data-step='3'], .lab__bottle[data-step='4'] { block-size: 81%; }
 .lab__bottle img { block-size: 100%; inline-size: auto; filter: drop-shadow(var(--sx) var(--sy) 18px var(--shadow)); transition: filter 900ms var(--ease-out); }
 
 /* Weather states */
@@ -419,8 +419,8 @@ climate-switch[data-active='sun'] .cs__photo[data-fx='sun'] img, climate-switch[
 @media (prefers-reduced-motion: reduce) { .cs__photo, .cs__photo img { transition: none; transform: none; } }
 .cs__bottles { position: absolute; inset-inline: 7%; inset-block-end: 8%; z-index: 1; display: flex; align-items: flex-end; justify-content: center; gap: 3%; block-size: 62%; }
 .cs__bottle { block-size: 100%; display: block; opacity: .38; filter: saturate(.6); transform: translateY(6%) scale(.92); transform-origin: 50% 100%; transition: opacity 600ms var(--ease-out), transform 700ms cubic-bezier(.2, .9, .25, 1.15), filter 600ms; }
-.cs__bottle[data-step='2'] { block-size: 76%; }
-.cs__bottle[data-step='3'], .cs__bottle[data-step='4'] { block-size: 86%; }
+.cs__bottle[data-step='2'] { block-size: 65%; }
+.cs__bottle[data-step='3'], .cs__bottle[data-step='4'] { block-size: 81%; }
 .cs__bottle img { block-size: 100%; inline-size: auto; filter: drop-shadow(var(--sx) var(--sy) 16px var(--shadow)); transition: filter 900ms var(--ease-out); }
 .cs__bottle.is-key { opacity: 1; filter: none; transform: translateY(-4%) scale(1.04); }
 .cs__read { display: grid; gap: 12px; justify-items: start; }

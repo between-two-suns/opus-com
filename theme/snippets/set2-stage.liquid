@@ -18,9 +18,19 @@
   if seen.size == 1
     assign tints = tints | append: tints
   endif
+  comment
+    Packs keep their true sizes relative to each other; the tallest one in this set fills the stage.
+  endcomment
+  assign smax = '.65'
+  if seen contains '3' or seen contains '4'
+    assign smax = '.81'
+  endif
+  if seen contains '1'
+    assign smax = '1'
+  endif
 -%}
 <div class="gallery__slide s2-stage" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: 1, count: count }}" data-slide style="--g: linear-gradient(105deg{{ tints }})">
-  <ul class="s2-stage__packs" role="list" style="--n: {{ units.size }}">
+  <ul class="s2-stage__packs" role="list" style="--n: {{ units.size }}; --smax: {{ smax }}">
     {%- assign shown = '' -%}
     {%- for st in units -%}
       {%- liquid
