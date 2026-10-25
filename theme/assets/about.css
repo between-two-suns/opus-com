@@ -229,39 +229,27 @@
 .ab-founder__role { color: var(--c-muted); font-size: 14px; }
 @media (min-width: 990px) { .ab-founder--media .ab-founder__grid { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); } }
 
-/* ---------- 5 · What we won't do: lilac, the cream's colour ---------- */
-.ab-rules { padding-block-end: var(--section-y); }
-.ab-rules__inner > * { position: relative; }
-.ab-rules__inner {
-  display: grid; gap: clamp(28px, 4vw, 64px); padding-block: clamp(40px, 7vw, 112px);
-  background: color-mix(in srgb, var(--c-step-3) 58%, #fff); color: var(--c-ink); border-radius: var(--radius-l);
-  padding-inline: clamp(22px, 6vw, 104px); max-inline-size: calc(var(--container) - 2 * var(--gutter)); inline-size: calc(100% - 2 * var(--gutter));
-  overflow: hidden; position: relative; isolation: isolate;
-}
-.ab-rules__inner::before {
-  content: ''; position: absolute; z-index: -1; inset-block-start: -38%; inset-inline-end: -16%; inline-size: min(72vw, 780px); aspect-ratio: 1; border-radius: 50%;
-  background: radial-gradient(closest-side, rgb(255 255 255 / .55), rgb(255 255 255 / .16) 60%, transparent 72%);
-}
+/* ---------- 5 · What we won't do: a short manifesto on the page's ivory ---------- */
+.ab-rules__head { max-inline-size: 30ch; margin-block-end: clamp(28px, 4vw, 56px); }
 .ab-rules__head .t-display-m { margin-block-start: 12px; }
 .ab-rules__list { list-style: none; margin: 0; padding: 0; display: grid; }
-.ab-rules__item { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 4px 18px; align-items: start; padding-block: 20px; border-block-start: 1px solid rgb(32 35 58 / .14); }
-.ab-rules__item:last-child { border-block-end: 1px solid rgb(32 35 58 / .14); }
-.ab-rules__n {
-  grid-row: span 2; display: grid; place-items: center; inline-size: 44px; aspect-ratio: 1; border-radius: 50%; background: #fff;
-  font-family: var(--font-display); font-weight: 700; font-size: 17px; line-height: 1; letter-spacing: .02em;
-  box-shadow: 0 6px 16px -10px rgb(32 35 58 / .45);
+.ab-rules__item {
+  --rc: var(--c-step-1);
+  display: grid; grid-template-columns: clamp(56px, 7vw, 112px) minmax(0, 1.15fr) minmax(0, 1fr); gap: 6px clamp(16px, 3vw, 48px);
+  align-items: baseline; padding-block: clamp(20px, 2.6vw, 34px); border-block-start: 2px solid var(--rc);
 }
-.ab-rules__h { font-size: clamp(20px, 1.9vw, 26px); font-weight: 680; letter-spacing: -.015em; line-height: 1.2; padding-block-start: 6px; }
-.ab-rules__t { color: rgb(32 35 58 / .78); font-size: 15.5px; line-height: 1.5; max-inline-size: 46ch; }
-@media (min-width: 990px) {
-  .ab-rules__inner { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; }
-  .ab-rules__head { position: sticky; inset-block-start: calc(var(--header-h) + 40px); }
-}
+.ab-rules__item[data-k='2'] { --rc: var(--c-step-2); }
+.ab-rules__item[data-k='3'] { --rc: var(--c-step-3); }
+.ab-rules__item[data-k='4'] { --rc: var(--c-step-4); }
+.ab-rules__item[data-k='5'] { --rc: rgb(171 193 233); }
+.ab-rules__item:last-child { border-block-end: 1px solid var(--c-line); }
+.ab-rules__n { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 2.8vw, 42px); line-height: 1; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.ab-rules__h { font-size: clamp(24px, 3vw, 44px); font-weight: 680; letter-spacing: -.025em; line-height: 1.08; text-wrap: balance; }
+.ab-rules__t { color: var(--c-muted); font-size: clamp(15px, 1.2vw, 17px); line-height: 1.5; max-inline-size: 40ch; }
+:lang(ar) .ab-rules__h { letter-spacing: 0; line-height: 1.35; }
 @media (max-width: 749px) {
-  .ab-rules__inner { border-radius: var(--radius-m); }
-  .ab-rules__item { grid-template-columns: 38px minmax(0, 1fr); gap: 4px 14px; }
-  .ab-rules__n { inline-size: 38px; font-size: 15px; }
-  .ab-rules__h { padding-block-start: 4px; }
+  .ab-rules__item { grid-template-columns: 44px minmax(0, 1fr); gap: 6px 12px; }
+  .ab-rules__t { grid-column: 2; }
 }
 
 /* ---------- 6 · Until the next sun ---------- */

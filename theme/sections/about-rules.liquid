@@ -1,10 +1,12 @@
 {{ 'about.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  About (DECISIONS 193): "What we won't do." The rules the site already keeps (no invented numbers, no fake
-  reviews, no false urgency, the formula in full, Arabic as a first language), as one dark band.
+  About (DECISIONS 193, 199): "What we won't do." The rules the site already keeps (no invented numbers, no fake
+  reviews, no false urgency, the formula in full, Arabic as a first language), set as a short manifesto on the page's
+  own ivory: one wide row per rule (number, the rule in large type, one line of why), divided by thin lines in the
+  step colours (the fifth is tomorrow's periwinkle). No panel, so it reads as part of the page.
 {%- endcomment -%}
-<section class="ab-rules" aria-labelledby="AbRules-{{ section.id }}">
-  <div class="container ab-rules__inner">
+<section class="section ab-rules" aria-labelledby="AbRules-{{ section.id }}">
+  <div class="container">
     <div class="ab-rules__head">
       <p class="t-eyebrow">{{ 'about2.rules_eyebrow' | t }}</p>
       <h2 class="t-display-m" id="AbRules-{{ section.id }}">{{ 'about2.rules_heading' | t }}</h2>
@@ -13,7 +15,7 @@
       {%- for i in (1..5) -%}
         {%- assign hk = 'about2.rules.r' | append: i | append: '_h' -%}
         {%- assign tk = 'about2.rules.r' | append: i -%}
-        <li class="ab-rules__item" style="--k: {{ i }}">
+        <li class="ab-rules__item" data-k="{{ i }}">
           <span class="ab-rules__n" aria-hidden="true">0{{ i }}</span>
           <span class="ab-rules__h">{{ hk | t }}</span>
           <span class="ab-rules__t">{{ tk | t }}</span>
