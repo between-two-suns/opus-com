@@ -6,8 +6,16 @@
   faces the middle), sizes, class, priority (true: eager + fetchpriority high, for the first screen's largest image)
 {%- endcomment -%}
 {%- liquid
-  assign ob_key = 'orb-' | append: tone | append: '.png'
+  comment
+    The About page uses the matte surface without the dew drops (owner, DECISIONS 200: drops looked odd behind text);
+    the home page's spheres keep theirs. Falls back to the dewy surface, then the theme asset.
+  endcomment
+  assign ob_key = 'orb-' | append: tone | append: '-clean.png'
   assign ob_img = images[ob_key]
+  if ob_img == blank or ob_img.width == blank
+    assign ob_key = 'orb-' | append: tone | append: '.png'
+    assign ob_img = images[ob_key]
+  endif
 -%}
 <span class="ab-orb ab-orb--{{ tone }} ab-orb--{{ side | default: 'start' }}{% if class %} {{ class }}{% endif %}" aria-hidden="true">
   {%- if ob_img != blank -%}

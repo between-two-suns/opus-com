@@ -2,7 +2,8 @@
 {%- comment -%}
   About (DECISIONS 193): "A routine, not a cabinet." One Morning / Night switch over the counter photo (four packs in
   the morning, three at night) and the four steps under it, each with its job, its label wording (bts.benefit) and
-  when it's used, each pack at its true size standing on its step's colour (DECISIONS 195). At night the sunscreen
+  when it's used, each pack at its true size standing on its step's colour (DECISIONS 195). On laptops the photo and
+  the steps sit side by side at full width (DECISIONS 200); on phones and tablets the steps follow the photo. At night the sunscreen
   steps back. Each step opens its product.
 {%- endcomment -%}
 {%- liquid
@@ -25,12 +26,13 @@
       <p class="t-lead t-muted ab-rt__lede">{{ 'about2.routine_text' | t }}</p>
     </div>
 
+    <div class="ab-rt__body">
     <div class="ab-rt__frame">
       {%- for m in (1..2) -%}
         {%- if m == 1 -%}{%- assign img = img_am -%}{%- assign alt = 'about2.photo_am' | t -%}{%- assign key = 'am' -%}{%- else -%}{%- assign img = img_pm -%}{%- assign alt = 'about2.photo_pm' | t -%}{%- assign key = 'pm' -%}{%- endif -%}
         {%- if img != blank -%}
           <figure class="ab-rt__photo" data-photo="{{ key }}"{% if key == 'pm' %} aria-hidden="true"{% endif %}>
-            {{ img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600,900,1200,1600,2000,2400', sizes: '(min-width: 1040px) 960px, calc(100vw - 2 * var(--gutter))', alt: alt }}
+            {{ img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600,900,1200,1600,2000,2400', sizes: '(min-width: 990px) 58vw, calc(100vw - 2 * var(--gutter))', alt: alt }}
           </figure>
         {%- endif -%}
       {%- endfor -%}
@@ -41,6 +43,7 @@
       </div>
     </div>
 
+    <div class="ab-rt__side">
     <ol class="ab-rt__steps" role="list">
       {%- for i in (1..4) -%}
         {%- assign p = all_products[step_handles[i]] -%}
@@ -50,6 +53,7 @@
             <span class="ab-rt__pack" style="--h: {{ pack_h[i] }}" aria-hidden="true">
               {%- render 'cut-img', handle: p.handle, sizes: '(min-width: 990px) 90px, 64px', widths: '120,180,240,360', class: 'ab-rt__pack-img' -%}
             </span>
+            <span class="ab-rt__text">
             <span class="ab-rt__num" aria-hidden="true">0{{ i }}</span>
             <span class="ab-rt__job">{{ p.metafields.bts.step_label.value | default: p.title | escape }}</span>
             <span class="ab-rt__name">{{ p.title | escape }}</span>
@@ -57,11 +61,14 @@
             <span class="ab-rt__when">
               {%- if i == 4 -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}{{ 'about2.am_only' | t }}{%- else -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}{% render 'icon', name: 'moon', class: 'icon--sm' %}{{ 'about2.am_pm' | t }}{%- endif -%}
             </span>
+            </span>
           </a>
         </li>
       {%- endfor -%}
     </ol>
     <a class="link-arrow ab-rt__more" href="{{ sets_url }}">{{ 'about2.sets_link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+    </div>
+    </div>
   </div>
 </section>
 <script src="{{ 'about.js' | asset_url }}" type="module" defer></script>

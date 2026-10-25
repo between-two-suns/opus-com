@@ -135,9 +135,6 @@
 }
 
 /* ---------- 2 · The routine: morning and night on one counter ---------- */
-/* The routine sits a little narrower than the page on wide screens, so the counter photo shows at (or below) its served
-   size instead of being enlarged (owner: it looked soft on a laptop). */
-.ab-rt > .container { max-inline-size: calc(960px + 2 * var(--gutter)); }
 .ab-rt__head { align-items: end; }
 .ab-rt__lede { max-inline-size: 40ch; margin: 0; }
 .ab-rt__frame { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-l); overflow: hidden; background: #e8ddd0; isolation: isolate; }
@@ -186,6 +183,21 @@
 .ab-rt[data-mode='pm'] .ab-rt__step.is-am-only { opacity: .38; }
 .ab-rt[data-mode='pm'] .ab-rt__step.is-am-only .ab-rt__when { color: var(--c-ink); }
 .ab-rt__more { margin-block-start: clamp(22px, 3vw, 36px); }
+.ab-rt__text { display: grid; gap: 4px; align-content: start; }
+/* Laptops: the counter photo and the steps side by side at full width, so the photo stays at a size where it's sharp
+   and the section lines up with the rest of the page. Each step is a row with its pack standing on its colour. */
+@media (min-width: 990px) {
+  .ab-rt__body { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 3.4vw, 56px); align-items: stretch; }
+  .ab-rt__frame { aspect-ratio: auto; min-block-size: 460px; block-size: 100%; }
+  .ab-rt__side { display: flex; flex-direction: column; }
+  .ab-rt__steps { grid-template-columns: minmax(0, 1fr); gap: 0; margin: 0; }
+  .ab-rt__link { grid-template-columns: 76px minmax(0, 1fr); gap: 0 20px; align-items: end; border-block-end: 2px solid var(--c); padding-block-start: 14px; }
+  .ab-rt__pack { block-size: 104px; border: 0; margin: 0; }
+  .ab-rt__text { padding-block-end: 14px; gap: 2px; }
+  .ab-rt__name { margin-block-start: 2px; }
+  .ab-rt__when { margin-block-start: 4px; }
+  .ab-rt__more { margin-block-start: auto; padding-block-start: 22px; align-self: flex-start; }
+}
 
 @media (max-width: 749px) {
   .ab-rt__frame { aspect-ratio: 1 / 1; border-radius: var(--radius-m); }
