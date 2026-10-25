@@ -1,9 +1,9 @@
 {{ 'about.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  About (DECISIONS 193, 202): "A routine, not a cabinet." The four packs stand on one shelf at their true sizes (the
+  About (DECISIONS 193, 202, 204): "A routine, not a cabinet." The four packs stand on one shelf at their true sizes (the
   pack cutouts, crisp at any size), each over its step's colour with its number, job, name, label wording and when
-  it's used. One Morning / Night switch: at night the whole section turns to night (ink ground, stars, light type) and
-  the sunscreen steps back, "Mornings only". Each pack opens its product. Phones: a 2 × 2 shelf.
+  it's used; the sunscreen is marked "Mornings only". (The Morning / Night switch moved to the Routines page, DECISIONS
+  204, so the dramatic night appears once.) Each pack opens its product. Phones: a 2 × 2 shelf.
 {%- endcomment -%}
 {%- liquid
   assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
@@ -13,19 +13,13 @@
   endcomment
   assign pack_h = ',1,.65,.81,.81' | split: ','
 -%}
-<section class="section ab-rt" data-ab-rt data-mode="am" aria-labelledby="AbRt-{{ section.id }}">
-  <span class="ab-rt__stars" aria-hidden="true"></span>
+<section class="section ab-rt" aria-labelledby="AbRt-{{ section.id }}">
   <div class="container">
     <div class="ab-rt__head">
       <div class="ab-rt__intro">
         <p class="t-eyebrow">{{ 'about2.routine_eyebrow' | t }}</p>
         <h2 class="t-display-m" id="AbRt-{{ section.id }}">{{ 'about2.routine_heading' | t }}</h2>
         <p class="t-lead ab-rt__lede">{{ 'about2.routine_text' | t }}</p>
-      </div>
-      <div class="ab-rt__toggle" role="radiogroup" aria-label="{{ 'about2.mode_label' | t }}">
-        <button type="button" role="radio" class="ab-rt__mode" aria-checked="true" data-mode="am">{% render 'icon', name: 'sun', class: 'icon--sm' %}{{ 'bundle_inside.morning' | t }}</button>
-        <button type="button" role="radio" class="ab-rt__mode" aria-checked="false" tabindex="-1" data-mode="pm">{% render 'icon', name: 'moon', class: 'icon--sm' %}{{ 'bundle_inside.night' | t }}</button>
-        <span class="ab-rt__pill" aria-hidden="true"></span>
       </div>
     </div>
 
@@ -54,7 +48,6 @@
     <a class="link-arrow ab-rt__more" href="{{ sets_url }}">{{ 'about2.sets_link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
   </div>
 </section>
-<script src="{{ 'about.js' | asset_url }}" type="module" defer></script>
 
 {% schema %}
 {

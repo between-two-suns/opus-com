@@ -1,4 +1,4 @@
-// About (DECISIONS 193): the two-suns sky (scroll runs one day, 06:00 to 06:00) and the morning/night counter.
+// About (DECISIONS 193): the two-suns sky (scroll runs one day, 06:00 to 06:00).
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -93,35 +93,6 @@ const init = (root) => {
     update();
   });
 
-  root.querySelectorAll('[data-ab-rt]:not([data-ready])').forEach((sec) => {
-    sec.dataset.ready = '';
-    const btns = [...sec.querySelectorAll('.ab-rt__mode')];
-    const photos = [...sec.querySelectorAll('.ab-rt__photo')];
-    const set = (mode, focus) => {
-      sec.dataset.mode = mode;
-      btns.forEach((b) => {
-        const on = b.dataset.mode === mode;
-        b.setAttribute('aria-checked', on);
-        b.tabIndex = on ? 0 : -1;
-        if (on && focus) b.focus();
-      });
-      photos.forEach((ph) => { if (ph.dataset.photo === mode) ph.removeAttribute('aria-hidden'); else ph.setAttribute('aria-hidden', 'true'); });
-    };
-    btns.forEach((b) => {
-      b.addEventListener('click', () => set(b.dataset.mode));
-      b.addEventListener('keydown', (e) => {
-        if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
-        e.preventDefault();
-        set(sec.dataset.mode === 'am' ? 'pm' : 'am', true);
-      });
-    });
-    // Warm the night photo once the section is near, so the first switch doesn't wait on the network.
-    const pm = sec.querySelector('.ab-rt__photo[data-photo="pm"] img');
-    if (pm && 'IntersectionObserver' in window) {
-      const io = new IntersectionObserver((es) => { if (es.some((x) => x.isIntersecting)) { pm.loading = 'eager'; io.disconnect(); } }, { rootMargin: '400px' });
-      io.observe(sec);
-    }
-  });
 };
 init(document);
 document.addEventListener('shopify:section:load', (e) => init(e.target));

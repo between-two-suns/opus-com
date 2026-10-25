@@ -3,19 +3,6 @@
    Logical properties throughout, so Arabic mirrors (time runs right to left).
    ========================================================================== */
 
-/* ---------- The home page's suns, still (snippets/about-orb) ---------- */
-.ab-orb { --c: 171 208 182; --hx: 68%; --hy: 34%; position: absolute; display: block; aspect-ratio: 1; border-radius: 50%; background: rgb(var(--c)); }
-.ab-orb--blue { --c: 171 193 233; }
-.ab-orb--end { --hx: 32%; }
-[dir='rtl'] .ab-orb--start { --hx: 32%; }
-[dir='rtl'] .ab-orb--end { --hx: 68%; }
-.ab-orb--top { --hx: 50%; --hy: 22%; }
-.ab-orb::before { content: ''; position: absolute; inset: -16%; z-index: -1; border-radius: 50%; background: radial-gradient(closest-side, rgb(var(--c) / .55), rgb(var(--c) / .18) 62%, transparent 74%); }
-.ab-orb__s { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; border-radius: 50%; transform: rotate(var(--spin, 0deg)); }
-.ab-orb__l { position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(circle at var(--hx) var(--hy), rgb(30 40 55 / 0) 0%, rgb(30 40 55 / 0) 17%, rgb(30 40 55 / .06) 40%, rgb(30 40 55 / .2) 74%, rgb(30 40 55 / .29) 100%); }
-.ab-orb__l::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at var(--hx) calc(var(--hy) - 2%), rgb(255 255 255 / .34), rgb(255 255 255 / .1) 20%, transparent 42%); }
-
 /* ---------- 1 · Two suns: one day, scrolled ---------- */
 .ab-sky {
   --sky: #f5f1ea; --night: 0; --a: 0; --b: 1; --p: 0;
@@ -137,46 +124,16 @@
 /* ---------- One rhythm: every middle section has the same gap above it, none below (DECISIONS 202) ---------- */
 .ab-rt, .ab-made, .ab-founder, .ab-rules { padding-block: var(--section-y) 0; }
 .ab-rules { padding-block-end: 0; } /* the close brings its own top gap */
-/* The routine's night ground needs room below its content, so it and the next section split the gap. */
-.ab-rt + * .ab-made, .ab-made { padding-block-start: calc(var(--section-y) * .5); }
 
-/* ---------- 2 · The routine: four packs on one shelf; Night turns the section to night ---------- */
+
+/* ---------- 2 · The routine: four packs on one shelf (DECISIONS 204: the day/night switch lives on the Routines page) ---------- */
 .ab-rt {
   --ink: var(--c-ink); --muted: var(--c-muted); --shelf-shadow: rgb(32 35 58 / .2);
-  position: relative; overflow: clip; isolation: isolate; color: var(--ink);
-  padding-block-end: calc(var(--section-y) * .5);
-  transition: background-color .7s var(--ease-out), color .5s;
+  position: relative; color: var(--ink);
 }
-.ab-rt[data-mode='pm'] { background: #22263d; --ink: #f7f3ee; --muted: rgb(247 243 238 / .68); --shelf-shadow: rgb(0 0 0 / .45); }
-.ab-rt[data-mode='pm'] .t-eyebrow { color: inherit; }
-.ab-rt__stars {
-  position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity .9s;
-  background-image:
-    radial-gradient(1.2px 1.2px at 8% 18%, #fff 99%, transparent), radial-gradient(1px 1px at 22% 9%, #fff 99%, transparent),
-    radial-gradient(1.4px 1.4px at 41% 22%, #fff 99%, transparent), radial-gradient(1px 1px at 63% 12%, #fff 99%, transparent),
-    radial-gradient(1.2px 1.2px at 78% 26%, #fff 99%, transparent), radial-gradient(1px 1px at 91% 8%, #fff 99%, transparent),
-    radial-gradient(1px 1px at 96% 38%, #fff 99%, transparent), radial-gradient(1.3px 1.3px at 33% 40%, #fff 99%, transparent),
-    radial-gradient(1px 1px at 4% 44%, #fff 99%, transparent), radial-gradient(1px 1px at 55% 34%, #fff 99%, transparent);
-}
-.ab-rt[data-mode='pm'] .ab-rt__stars { opacity: .8; }
-
 .ab-rt__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px 48px; margin-block-end: clamp(36px, 5vw, 72px); }
 .ab-rt__intro .t-display-m { margin-block-start: 12px; }
 .ab-rt__lede { margin: 16px 0 0; max-inline-size: 46ch; color: var(--muted); }
-.ab-rt__toggle {
-  position: relative; display: grid; grid-template-columns: 1fr 1fr; padding: 5px; border-radius: 999px; flex: none;
-  background: color-mix(in srgb, currentColor 8%, transparent); border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
-}
-.ab-rt__mode {
-  position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-block-size: 46px; padding: 0 24px;
-  border: 0; background: none; border-radius: 999px; font: inherit; font-size: 15px; font-weight: 650; color: inherit; cursor: pointer; transition: color .35s;
-}
-.ab-rt__mode[aria-checked='true'] { color: #fff; }
-.ab-rt[data-mode='pm'] .ab-rt__mode[aria-checked='true'] { color: var(--c-ink); }
-.ab-rt__pill { position: absolute; inset-block: 5px; inset-inline-start: 5px; inline-size: calc(50% - 5px); border-radius: 999px; background: var(--c-ink); transition: translate .45s var(--ease-out), background .5s; }
-.ab-rt[data-mode='pm'] .ab-rt__pill { translate: 100% 0; background: #f7f3ee; }
-[dir='rtl'] .ab-rt[data-mode='pm'] .ab-rt__pill { translate: -100% 0; }
-
 .ab-rt__steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 2.4vw, 36px); list-style: none; margin: 0; padding: 0; }
 .ab-rt__step { --c: var(--c-step-1); transition: opacity .5s var(--ease-out); }
 .ab-rt__step[data-step='2'] { --c: var(--c-step-2); }
@@ -200,17 +157,12 @@
 .ab-rt__link:hover .ab-rt__name { text-decoration: underline; text-underline-offset: 3px; }
 .ab-rt__benefit { font-size: 14.5px; line-height: 1.45; color: var(--muted); }
 .ab-rt__when { display: inline-flex; align-items: center; gap: 5px; margin-block-start: 8px; font-size: 13px; font-weight: 600; color: var(--muted); }
-.ab-rt[data-mode='pm'] .ab-rt__step.is-am-only { opacity: .3; }
-.ab-rt[data-mode='pm'] .ab-rt__step.is-am-only .ab-rt__when { color: var(--ink); }
 .ab-rt__more { margin-block-start: clamp(28px, 3.4vw, 48px); }
 
 @media (max-width: 749px) {
   .ab-rt__head { margin-block-end: 32px; }
-  .ab-rt__toggle { inline-size: 100%; }
   .ab-rt__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 16px; }
   .ab-rt__pack { block-size: 170px; margin-block-end: 14px; }
-  .ab-rt { padding-block-end: 48px; }
-  .ab-made { padding-block-start: 48px; }
 }
 
 /* ---------- 3 · Made in Egypt: the page's one photo-and-text section ---------- */

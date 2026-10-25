@@ -1,6 +1,6 @@
 {%- comment -%}
   Routines page hero · "First sun / second sun". The switch is the mark: left arc, the morning (first) sun; right arc, the evening (second).
-  Switching relights the room (the evening light is a second layer that fades in), the headline turns from morning to evening and the
+  Switching turns the sky from ivory morning to ink night with stars, today's sun (sage) sets as tomorrow's (periwinkle) rises (DECISIONS 204), the headline turns from morning to evening and the
   sunscreen steps out to the side while the other three glide over to stay centred (the evening routine is three steps). Every move is
   transform or opacity only, so nothing re-lays out mid-switch. Packs carry the same soft shadow and colour pool as the home hero.
   On phones copy, packs and buttons stack and the packs size to the space left. It always opens on the morning routine.
@@ -19,19 +19,29 @@
 <style>
 .hr-hero { --dir: 1; --floor: 66%; position: relative; height: calc(100svh - 36px); min-height: 600px; margin-top: calc(-1 * var(--hdr, var(--header-h))); overflow: hidden; isolation: isolate; color: var(--c-ink); }
 [dir='rtl'] .hr-hero { --dir: -1; }
-/* the room: cream wall, a floor, and the light of whichever sun is up. Evening is a second layer that fades in (opacity only, no repaint per frame) */
-.hr-room { position: absolute; inset: 0; z-index: -2;
-  background:
-    radial-gradient(70% 60% at 13% 18%, rgb(255 176 136 / .55), transparent 70%),
-    radial-gradient(60% 50% at 90% 84%, rgb(150 200 210 / .34), transparent 70%),
-    linear-gradient(#F6F1E9 0 var(--floor), #ECE3D5 calc(var(--floor) + .2%), #E6DAC8 100%); }
+/* the sky (DECISIONS 204): ivory in the morning; the evening is a second layer (ink, with stars) that fades in, opacity only.
+   No floor and no horizon line: the packs stand on their own shadow, as on the About shelf. */
+.hr-room { position: absolute; inset: 0; z-index: -2; background: var(--c-daylight, #F5F1EA); }
 .hr-room::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 1.1s cubic-bezier(.65,0,.25,1);
   background:
-    radial-gradient(70% 60% at 87% 18%, rgb(156 182 232 / .55), transparent 70%),
-    radial-gradient(60% 50% at 10% 84%, rgb(222 172 214 / .34), transparent 70%),
-    linear-gradient(#ECEAF0 0 var(--floor), #E2DFE7 calc(var(--floor) + .2%), #DAD6E0 100%); }
+    radial-gradient(1.2px 1.2px at 8% 18%, #fff 99%, transparent), radial-gradient(1px 1px at 22% 9%, #fff 99%, transparent),
+    radial-gradient(1.4px 1.4px at 41% 22%, #fff 99%, transparent), radial-gradient(1px 1px at 63% 12%, #fff 99%, transparent),
+    radial-gradient(1.2px 1.2px at 78% 26%, #fff 99%, transparent), radial-gradient(1px 1px at 91% 8%, #fff 99%, transparent),
+    radial-gradient(1px 1px at 96% 38%, #fff 99%, transparent), radial-gradient(1.3px 1.3px at 33% 44%, #fff 99%, transparent),
+    radial-gradient(1px 1px at 4% 52%, #fff 99%, transparent), radial-gradient(1px 1px at 55% 62%, #fff 99%, transparent),
+    radial-gradient(1px 1px at 18% 78%, #fff 99%, transparent), radial-gradient(1.2px 1.2px at 47% 88%, #fff 99%, transparent),
+    #22263d; }
 .hr-hero[data-mode='pm'] .hr-room::before { opacity: 1; }
-.hr-room::after { content: ''; position: absolute; inset-inline: 0; top: var(--floor); height: 1px; background: rgb(28 30 48 / .07); }
+/* the two suns behind the packs: today's (sage) in the morning sets as the evening's (periwinkle) rises */
+.hr-suns { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.hr-sun { --sd: min(58svh, 40vw); inline-size: var(--sd); inset-inline-end: calc(6vw + 2%); top: calc(var(--hdr, var(--header-h)) + 6svh);
+  transition: translate 1.1s cubic-bezier(.65,0,.25,1), opacity .9s; }
+.hr-sun--pm { translate: 0 45%; opacity: 0; }
+.hr-hero[data-mode='pm'] .hr-sun--am { translate: 0 45%; opacity: 0; }
+.hr-hero[data-mode='pm'] .hr-sun--pm { translate: 0 0; opacity: 1; }
+/* evening: light type, buttons and switch turn for the night ground */
+.hr-hero { transition: color .6s; }
+.hr-hero[data-mode='pm'] { color: #f7f3ee; }
 .hr-hero::after { content: ''; position: absolute; inset: 0; z-index: 9; pointer-events: none; opacity: .05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
@@ -45,24 +55,25 @@
 .hr-title .hr-swap .hr-pm { translate: 0 calc(100% + .3em); opacity: 0; }
 .hr-hero[data-mode='pm'] .hr-title .hr-swap .hr-am { translate: 0 calc(-100% - .3em); opacity: 0; }
 .hr-hero[data-mode='pm'] .hr-title .hr-swap .hr-pm { translate: 0 0; opacity: 1; }
-.hr-lede { margin-top: 20px; font-size: 17px; line-height: 1.55; color: rgb(28 30 48 / .74); max-width: 34ch; }
+.hr-lede { margin-top: 20px; font-size: 17px; line-height: 1.55; color: color-mix(in srgb, currentColor 76%, transparent); max-width: 34ch; }
 .hr-lede span { transition: opacity .5s; } .hr-lede .hr-pm { display: none; }
 .hr-hero[data-mode='pm'] .hr-lede .hr-am { display: none; } .hr-hero[data-mode='pm'] .hr-lede .hr-pm { display: inline; }
 
 /* the switch is the mark: left arc, the first sun; right arc, the second */
-.hr-switch { position: relative; display: inline-flex; align-items: center; margin-top: 28px; padding: 6px; border-radius: 999px; background: rgb(255 255 255 / .7); box-shadow: inset 0 0 0 1px rgb(28 30 48 / .1), 0 10px 30px -18px rgb(28 30 48 / .4); }
-.hr-switch::before { content: ''; position: absolute; top: 6px; bottom: 6px; inset-inline-start: 6px; width: calc(50% - 6px); border-radius: 999px; background: #fff; box-shadow: 0 2px 10px -4px rgb(28 30 48 / .25);
-  transition: translate .7s cubic-bezier(.65,0,.25,1); }
+.hr-switch { position: relative; display: inline-flex; align-items: center; margin-top: 28px; padding: 6px; border-radius: 999px; background: color-mix(in srgb, currentColor 7%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 16%, transparent); transition: background .6s, box-shadow .6s; }
+.hr-switch::before { content: ''; position: absolute; top: 6px; bottom: 6px; inset-inline-start: 6px; width: calc(50% - 6px); border-radius: 999px; background: var(--c-ink); transition: translate .7s cubic-bezier(.65,0,.25,1), background .6s; }
+.hr-hero[data-mode='pm'] .hr-switch::before { background: #f7f3ee; }
 .hr-hero[data-mode='pm'] .hr-switch::before { translate: calc(100% * var(--dir)) 0; }
-.hr-switch button { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 10px; font: inherit; font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--c-ink);
-  background: none; border: 0; padding: 12px 22px; border-radius: 999px; cursor: pointer; opacity: .55; transition: opacity .4s; min-width: 116px; justify-content: center; }
-.hr-switch button[aria-checked='true'] { opacity: 1; }
+.hr-switch button { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 10px; font: inherit; font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: inherit;
+  background: none; border: 0; padding: 12px 22px; border-radius: 999px; cursor: pointer; opacity: .62; transition: opacity .4s, color .5s; min-width: 116px; justify-content: center; }
+.hr-switch button[aria-checked='true'] { opacity: 1; color: #f7f3ee; }
+.hr-hero[data-mode='pm'] .hr-switch button[aria-checked='true'] { color: var(--c-ink); }
 .hr-switch .hr-mark { position: absolute; z-index: 2; left: 50%; top: 50%; translate: -50% -50%; height: 30px; width: auto; pointer-events: none; }
 .hr-arc { transition: fill .7s; }
-.hr-arc--am { fill: rgb(244 140 96); } .hr-arc--pm { fill: rgb(28 30 48 / .22); }
-.hr-hero[data-mode='pm'] .hr-arc--am { fill: rgb(28 30 48 / .22); } .hr-hero[data-mode='pm'] .hr-arc--pm { fill: rgb(108 140 214); }
+.hr-arc--am { fill: rgb(125 185 147); } .hr-arc--pm { fill: rgb(28 30 48 / .22); }
+.hr-hero[data-mode='pm'] .hr-arc--am { fill: rgb(255 255 255 / .28); } .hr-hero[data-mode='pm'] .hr-arc--pm { fill: rgb(171 193 233); }
 
-/* the four steps on the floor. Layout never changes on the switch: everything moves by transform and opacity only */
+/* the four steps, standing on their own shadows. Layout never changes on the switch: everything moves by transform and opacity only */
 .hr-lineup { --gap: clamp(8px, 1.4vw, 22px); --base: min(54svh, 500px); --slot: calc(.86 * var(--base) * 339 / 1100 + 2 * var(--gap));
   position: absolute; z-index: 3; inset-inline-end: 6vw; margin: 0; bottom: calc(100% - var(--floor) - 2.6svh); display: flex; align-items: flex-end; list-style: none; padding: 0; }
 .hr-bottle { position: relative; height: calc(var(--h) * var(--base)); aspect-ratio: var(--ar); margin-inline: var(--gap); }
@@ -80,10 +91,11 @@
 .hr-base { position: absolute; z-index: 4; inset-inline: 6vw; bottom: 4svh; }
 .hr-ctas { display: flex; gap: 12px; flex-wrap: nowrap; }
 .hr-btn { display: inline-flex; align-items: center; gap: 12px; white-space: nowrap; padding: 17px 26px; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; transition: background .3s, gap .3s; }
-.hr-btn--main { background: var(--c-ink); color: #F4EFE7; } .hr-btn--main:hover { gap: 18px; }
-.hr-btn--ghost { color: var(--c-ink); background: rgb(255 255 255 / .72); box-shadow: inset 0 0 0 1.5px rgb(28 30 48 / .7); }
+.hr-btn--main { background: var(--c-ink); color: #F4EFE7; transition: background .5s, color .5s, gap .3s; } .hr-btn--main:hover { gap: 18px; }
+.hr-btn--ghost { color: inherit; background: transparent; box-shadow: inset 0 0 0 1.5px color-mix(in srgb, currentColor 70%, transparent); }
+.hr-hero[data-mode='pm'] .hr-btn--main { background: #f7f3ee; color: var(--c-ink); }
 .hr-btn .hr-pm { display: none; } .hr-hero[data-mode='pm'] .hr-btn .hr-am { display: none; } .hr-hero[data-mode='pm'] .hr-btn .hr-pm { display: inline; }
-.hr-climate { display: flex; gap: 8px 18px; flex-wrap: wrap; list-style: none; padding: 0; font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: rgb(28 30 48 / .62); }
+.hr-climate { display: flex; gap: 8px 18px; flex-wrap: wrap; list-style: none; padding: 0; font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: color-mix(in srgb, currentColor 64%, transparent); }
 .hr-climate li + li::before { content: '·'; margin-inline-end: 18px; }
 
 .hr-base .hr-ctas { display: none; }
@@ -104,6 +116,7 @@
   .hr-base .hr-ctas { display: flex; }
   .hr-base { position: relative; inset: auto; bottom: auto; flex: none; margin-top: 3svh; }
   .hr-climate { display: none; }
+  .hr-sun { --sd: min(86vw, 48svh); inset-inline-end: auto; inset-inline-start: 50%; margin-inline-start: calc(var(--sd) / -2); top: 34%; }
   .hr-ctas { width: 100%; flex-direction: column; } .hr-btn { justify-content: center; padding: 16px; }
 }
 /* short laptop screens: the climate line gives way to the buttons */
@@ -124,7 +137,7 @@
 /* each bottle is a link to its product; it lifts a little on hover */
 .hr-g a { position: absolute; inset: 0; z-index: 5; }
 @media (hover: hover) { .hr-bottle:hover img, .hr-bottle:focus-within img { translate: 0 -8px; } }
-.hr-switch button:focus-visible, .hr-btn:focus-visible, .hr-g a:focus-visible { outline: 2px solid var(--c-ink); outline-offset: 3px; }
+.hr-switch button:focus-visible, .hr-btn:focus-visible, .hr-g a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 :lang(ar) .hr-title { text-transform: none; line-height: 1.15; font-size: clamp(56px, min(7.6vw, 12svh), 150px); }
 :lang(ar) .hr-eyebrow, :lang(ar) .hr-switch button, :lang(ar) .hr-btn, :lang(ar) .hr-climate { letter-spacing: 0; }
 @media (max-width: 760px), (max-aspect-ratio: 4/5) { :lang(ar) .hr-title { font-size: min(14vw, 7.4svh); } }
@@ -133,6 +146,10 @@
 </style>
 <section class="hr-hero" id="Hr-{{ section.id }}" data-mode="am" data-am-href="{{ full.url | default: all_url }}" data-pm-href="{{ night.url | default: all_url }}" aria-labelledby="HrTitle-{{ section.id }}">
   <div class="hr-room" aria-hidden="true"></div>
+  <div class="hr-suns" aria-hidden="true">
+    {%- render 'about-orb', tone: 'green', side: 'start', class: 'hr-sun hr-sun--am ab-orb--top', sizes: '(min-width: 761px) 40vw, 86vw', priority: true -%}
+    {%- render 'about-orb', tone: 'blue', side: 'end', class: 'hr-sun hr-sun--pm ab-orb--top', sizes: '(min-width: 761px) 40vw, 86vw' -%}
+  </div>
   <div class="hr-copy">
     <p class="hr-eyebrow">{{ 'sections.hero_panels.eyebrow' | t }}</p>
     <h1 class="hr-title" id="HrTitle-{{ section.id }}">{{ 'sections.hero_routine.before' | t }} <span class="hr-swap"><span class="hr-am">{{ 'sections.hero_routine.am' | t }}</span><span class="hr-pm" aria-hidden="true">{{ 'sections.hero_routine.pm' | t }}</span></span>{% if after != blank %}<br>{{ after }}{% endif %}</h1>
@@ -192,15 +209,6 @@
   // always opens on the morning routine (?mode=pm can link straight to the evening)
   const start = new URLSearchParams(location.search).get('mode') === 'pm' ? 'pm' : 'am';
   hero.classList.add('is-instant'); set(start); requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.remove('is-instant')));
-  // on phones the packs size to the space left, so the floor line is placed under them (measured on layout changes only)
-  const row = hero.querySelector('.hr-lineup'), stacked = matchMedia('(max-width: 760px), (max-aspect-ratio: 4/5)');
-  const floor = () => {
-    if (!stacked.matches || !row.firstElementChild) { hero.style.removeProperty('--floor'); return; }
-    const hb = hero.getBoundingClientRect(), rb = row.getBoundingClientRect(), li = row.firstElementChild;
-    const lift = parseFloat((getComputedStyle(li).translate || '0 0').split(' ')[1]) || 0;
-    hero.style.setProperty('--floor', Math.round(rb.bottom + lift - hb.top - li.offsetHeight * .05) + 'px');
-  };
-  floor(); if (window.ResizeObserver) new ResizeObserver(floor).observe(row);
 })();
 </script>
 

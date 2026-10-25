@@ -1297,3 +1297,16 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 .template-index .shopify-section:has(> .section) + .shopify-section:not(:has(> *)) + .shopify-section > .section { padding-block-start: 0; }
 /* On phones the photo band ends with its own section gap, so the FAQ after it drops its top one. */
 @media (max-width: 749px) { .template-index .shopify-section:has(> .eb) + .shopify-section > .section { padding-block-start: 0; } }
+
+/* ---------- The two suns, still (snippets/about-orb): the home page's spheres, used on About and Routines ---------- */
+.ab-orb { --c: 171 208 182; --hx: 68%; --hy: 34%; position: absolute; display: block; aspect-ratio: 1; border-radius: 50%; background: rgb(var(--c)); }
+.ab-orb--blue { --c: 171 193 233; }
+.ab-orb--end { --hx: 32%; }
+[dir='rtl'] .ab-orb--start { --hx: 32%; }
+[dir='rtl'] .ab-orb--end { --hx: 68%; }
+.ab-orb--top { --hx: 50%; --hy: 22%; }
+.ab-orb::before { content: ''; position: absolute; inset: -16%; z-index: -1; border-radius: 50%; background: radial-gradient(closest-side, rgb(var(--c) / .55), rgb(var(--c) / .18) 62%, transparent 74%); }
+.ab-orb__s { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; border-radius: 50%; transform: rotate(var(--spin, 0deg)); }
+.ab-orb__l { position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at var(--hx) var(--hy), rgb(30 40 55 / 0) 0%, rgb(30 40 55 / 0) 17%, rgb(30 40 55 / .06) 40%, rgb(30 40 55 / .2) 74%, rgb(30 40 55 / .29) 100%); }
+.ab-orb__l::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at var(--hx) calc(var(--hy) - 2%), rgb(255 255 255 / .34), rgb(255 255 255 / .1) 20%, transparent 42%); }
