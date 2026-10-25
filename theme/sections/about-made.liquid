@@ -1,0 +1,44 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About (DECISIONS 193): made in Egypt, said plainly. The photo, one paragraph, and four facts anyone can check:
+  who makes it (as in the FAQ), for whom, what every product page shows, and the two languages. Room for real
+  factory photos later (image setting).
+{%- endcomment -%}
+{%- liquid
+  assign img = section.settings.image | default: images['bts-editorial-sea.jpg']
+  assign glossary_url = routes.root_url | append: '/pages/ingredients' | replace: '//', '/'
+  assign facts = 'made_by,made_for,made_inci,made_lang' | split: ','
+  assign alt = 'about2.made_alt' | t
+-%}
+<section class="section ab-made" aria-labelledby="AbMade-{{ section.id }}">
+  <div class="container ab-made__grid">
+    {%- if img != blank -%}
+      <figure class="ab-made__media">
+        {{ img | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '500,800,1100,1600', sizes: '(min-width: 990px) 44vw, calc(100vw - 2 * var(--gutter))', alt: alt }}
+      </figure>
+    {%- endif -%}
+    <div class="ab-made__copy">
+      <p class="t-eyebrow">{{ 'about2.made_eyebrow' | t }}</p>
+      <h2 class="t-display-m" id="AbMade-{{ section.id }}">{{ 'about2.made_heading' | t }}</h2>
+      <p class="t-lead ab-made__text">{{ 'about2.made_text' | t }}</p>
+      <dl class="ab-made__facts">
+        {%- for f in facts -%}
+          {%- assign fk = 'about2.' | append: f | append: '_k' -%}
+          {%- assign fv = 'about2.' | append: f | append: '_v' -%}
+          <div class="ab-made__fact"><dt>{{ fk | t }}</dt><dd>{{ fv | t }}</dd></div>
+        {%- endfor -%}
+      </dl>
+      <a class="link-arrow" href="{{ glossary_url }}">{{ 'about2.made_link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About · made in Egypt",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo" }
+  ]
+}
+{% endschema %}

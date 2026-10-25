@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "sky": { "type": "about-sky", "settings": {} },
+    "routine": { "type": "about-routine", "settings": {} },
+    "made": { "type": "about-made", "settings": {} },
+    "founder": { "type": "about-founder", "settings": {} },
+    "rules": { "type": "about-rules", "settings": {} },
+    "close": { "type": "about-close", "settings": {} }
+  },
+  "order": ["sky", "routine", "made", "founder", "rules", "close"]
+}

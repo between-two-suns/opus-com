@@ -1,0 +1,31 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About (DECISIONS 193): "What we won't do." The rules the site already keeps (no invented numbers, no fake
+  reviews, no false urgency, the formula in full, Arabic as a first language), as one dark band.
+{%- endcomment -%}
+<section class="ab-rules" aria-labelledby="AbRules-{{ section.id }}">
+  <div class="container ab-rules__inner">
+    <div class="ab-rules__head">
+      <p class="t-eyebrow">{{ 'about2.rules_eyebrow' | t }}</p>
+      <h2 class="t-display-m" id="AbRules-{{ section.id }}">{{ 'about2.rules_heading' | t }}</h2>
+    </div>
+    <ol class="ab-rules__list" role="list">
+      {%- for i in (1..5) -%}
+        {%- assign hk = 'about2.rules.r' | append: i | append: '_h' -%}
+        {%- assign tk = 'about2.rules.r' | append: i -%}
+        <li class="ab-rules__item" style="--k: {{ i }}">
+          <span class="ab-rules__n" aria-hidden="true">0{{ i }}</span>
+          <span class="ab-rules__h">{{ hk | t }}</span>
+          <span class="ab-rules__t">{{ tk | t }}</span>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About · our rules",
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

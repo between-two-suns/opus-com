@@ -1,0 +1,35 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About (DECISIONS 193): the close, back to the name: "Until the next sun", with tomorrow's sun rising from the
+  bottom edge. Two ways on: the skin check (when its page is set) and the Full Ritual.
+{%- endcomment -%}
+{%- liquid
+  assign set = all_products['the-full-ritual']
+  assign sk = settings.skin_check_page
+  assign set_name = 'bundles.names.the-full-ritual' | t | replace: '&amp;', '&'
+  if set_name contains 'ranslation missing'
+    assign set_name = set.title
+  endif
+-%}
+<section class="ab-close" aria-labelledby="AbClose-{{ section.id }}">
+  <span class="ab-close__sun" aria-hidden="true"></span>
+  <div class="container ab-close__inner">
+    <h2 class="ab-close__title" id="AbClose-{{ section.id }}">{{ 'about2.close_heading' | t }}</h2>
+    <p class="t-lead ab-close__text">{{ 'about2.close_text' | t }}</p>
+    <div class="ab-close__ctas">
+      {%- if sk != blank and sk.url != blank -%}
+        <a class="btn" href="{{ sk.url }}">{{ 'about2.close_cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+      {%- endif -%}
+      {%- if set.id -%}
+        <a class="btn btn--secondary" href="{{ set.url }}">{{ 'about2.close_cta2' | t: name: set_name }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About · close",
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

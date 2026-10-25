@@ -554,7 +554,9 @@ function route(pathname, data, query) {
   if ((m = pathname.match(/^\/pages\/([^/]+)$/))) {
     const page = data.pages[m[1]];
     if (!page) return null;
-    const suffix = exists(path.join(THEME, 'templates', `page.${m[1]}.json`)) ? m[1] : null;
+    // ?view=x renders templates/page.x.json when it exists (alternate templates, as on Shopify)
+    const pgv = query?.get?.('view') || (query && query.view) || null;
+    const suffix = pgv && exists(path.join(THEME, 'templates', `page.${pgv}.json`)) ? pgv : exists(path.join(THEME, 'templates', `page.${m[1]}.json`)) ? m[1] : null;
     return { page_type: 'page', suffix, path: pathname, page_title: page.title, objects: { page } };
   }
   if (pathname === '/blogs/journal') return { page_type: 'blog', path: pathname, page_title: data.journal.title, objects: { blog: data.journal } };

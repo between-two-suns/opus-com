@@ -1,6 +1,6 @@
 # STATUS — Between Two Suns (Opus build)
 
-_Updated: 2026-10-20_
+_Updated: 2026-10-25_
 
 ## Current build state
 Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, with store content (metafields, metaobjects, pages, Arabic translations) wired up. QA on the local preview is green. Real-storefront visual verification is still outstanding: the build sandbox cannot reach `*.myshopify.com`.
@@ -82,6 +82,9 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - **Orbs smoothness pass (2026-10-18):** lean hand-off engine (measure on layout change, transforms only per frame), overlapping hand-over, less idle motion, no blend modes. See DECISIONS 141
 - **Real-store check (2026-10-16):** 22 routes × 390/1440 and 16 routes × 390/768/1024/1440 on the staging theme: no Liquid errors, missing translations, overflow or JS errors (after the fixes in DECISIONS 123–125)
 - QA tooling: preview harness, Theme Check, 272 flow tests, axe, Lighthouse scripts (see `QA.md`)
+
+## Shipped to staging 2026-10-25
+- **About page demo** (DECISIONS 193) at `/pages/about?view=about2`: the name as time (today's sun to tomorrow's), the routine on one counter (morning/night), made in Egypt, a founder note slot (hidden until written), "What we won't do", "Until the next sun". The live About page is unchanged until the owner approves. Owner inputs that would lift it further: founder story, founder/team photo, real ICI photos, what the `)(` mark means, launch year.
 
 ## Incomplete / outstanding
 - Owner setup for the pricing spec (see checklist below): taxes, shipping rates, payments, COD limit, inventory counts

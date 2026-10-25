@@ -1,0 +1,38 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About (DECISIONS 193): the founder's note. Renders nothing until the owner writes it in the editor: we don't
+  invent a founder story. Text, name and role, and an optional photo.
+{%- endcomment -%}
+{%- if section.settings.text != blank -%}
+<section class="section ab-founder{% if section.settings.image %} ab-founder--media{% endif %}" aria-labelledby="AbFounder-{{ section.id }}">
+  <div class="container ab-founder__grid">
+    {%- if section.settings.image -%}
+      {%- assign falt = section.settings.image.alt | default: section.settings.name | escape -%}
+      <figure class="ab-founder__media">
+        {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,700,1000,1200', sizes: '(min-width: 990px) 36vw, calc(100vw - 2 * var(--gutter))', alt: falt }}
+      </figure>
+    {%- endif -%}
+    <div class="ab-founder__copy">
+      <p class="t-eyebrow" id="AbFounder-{{ section.id }}">{{ section.settings.eyebrow | default: 'about2.founder_eyebrow' | t }}</p>
+      <blockquote class="ab-founder__quote">{{ section.settings.text }}</blockquote>
+      {%- if section.settings.name != blank -%}
+        <p class="ab-founder__by"><span class="ab-founder__name">{{ section.settings.name | escape }}</span>{% if section.settings.role != blank %}<span class="ab-founder__role">{{ section.settings.role | escape }}</span>{% endif %}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "About · founder note",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Leave empty for “Why we started”." },
+    { "type": "richtext", "id": "text", "label": "Note", "info": "The section stays hidden until this is filled in." },
+    { "type": "text", "id": "name", "label": "Name" },
+    { "type": "text", "id": "role", "label": "Role" },
+    { "type": "image_picker", "id": "image", "label": "Photo" }
+  ]
+}
+{% endschema %}

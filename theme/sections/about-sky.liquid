@@ -1,0 +1,48 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About (DECISIONS 193): the name, told as time. Between two suns is the space between two days: today's sun on one
+  side, tomorrow's on the other, and the hours in between on a ruler from 06:00 to 06:00. Scrolling runs the clock:
+  the sky goes from day to dusk to night to the next dawn, today's sun sets, tomorrow's rises, and the two routine
+  moments light up as the hour passes them. The lines are all in the page, one shown at a time.
+  Without JS or with reduced motion: one still screen with every line, no pinning.
+{%- endcomment -%}
+<section class="ab-sky" data-ab-sky aria-labelledby="AbSky-{{ section.id }}">
+  <div class="ab-sky__stage">
+    <span class="ab-sky__stars" aria-hidden="true"></span>
+    <div class="ab-sky__horizon" aria-hidden="true">
+      <span class="ab-sky__sun ab-sky__sun--a"></span>
+      <span class="ab-sky__sun ab-sky__sun--b"></span>
+    </div>
+    <div class="container ab-sky__copy">
+      <p class="t-eyebrow">{{ 'about2.eyebrow' | t }}</p>
+      <h1 class="ab-sky__title" id="AbSky-{{ section.id }}">{{ 'about2.title' | t }}</h1>
+      <ol class="ab-sky__beats" role="list">
+        {%- for i in (1..4) -%}
+          {%- assign bk = 'about2.b' | append: i -%}
+          <li class="ab-sky__beat" data-beat="{{ i }}">{{ bk | t }}</li>
+        {%- endfor -%}
+      </ol>
+    </div>
+    <div class="ab-sky__ruler" aria-hidden="true">
+      <span class="ab-sky__track"><span class="ab-sky__fill"></span><span class="ab-sky__dot"></span></span>
+      <span class="ab-sky__moment" data-at="1" style="--at: {{ 1.0 | divided_by: 24 }}">{% render 'icon', name: 'sun', class: 'icon--sm' %}{{ 'about2.am' | t }}</span>
+      <span class="ab-sky__moment" data-at="16" style="--at: {{ 16.0 | divided_by: 24 }}">{% render 'icon', name: 'moon', class: 'icon--sm' %}{{ 'about2.pm' | t }}</span>
+      <ol class="ab-sky__hours" role="list">
+        {%- for h in (0..8) -%}
+          {%- assign hr = h | times: 3 | plus: 6 | modulo: 24 -%}
+          <li style="--at: {{ h | times: 1.0 | divided_by: 8 }}">{% if hr < 10 %}0{% endif %}{{ hr }}:00</li>
+        {%- endfor -%}
+      </ol>
+      <span class="ab-sky__ends"><span class="ab-sky__end">{{ 'about2.sun_a' | t }}</span><span class="ab-sky__end">{{ 'about2.sun_b' | t }}</span></span>
+    </div>
+    <p class="ab-sky__hint" aria-hidden="true">{{ 'about2.scroll' | t }}<span class="ab-sky__hint-line"></span></p>
+  </div>
+</section>
+<script src="{{ 'about.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "About · two suns",
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}
