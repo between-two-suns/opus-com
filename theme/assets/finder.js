@@ -1,5 +1,5 @@
 /*
-  Routines · the finder demo (DECISIONS 211, 215, 216, 219). Once started it takes the whole screen, like an app (close or
+  Routines · the routine finder, the Routines page (DECISIONS 211, 215, 216, 219, 222). Once started it takes the whole screen, like an app (close or
   the browser's back returns to the page). Three questions beside the four packs: how your skin feels by midday, what
   you'd like help with, then anything else we should know (choose any: breakouts, sensitive, prescription skincare, none). The packs move only for what has been answered. The matching
   rules are the skin check's (match() in skin-check.js, shared so the two never disagree). Every answer ends in a routine.

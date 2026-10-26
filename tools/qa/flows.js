@@ -60,34 +60,31 @@ for (const loc of ['', '/ar']) {
     await page.waitForTimeout(600);
     ok(`${tag} sticky add-to-bag appears on scroll`, await page.$eval('sticky-atc', (s) => s.classList.contains('is-visible')));
 
-    // Forecast (lives on the Routines page since the v3 home)
+    // Routines page = the routine finder (DECISIONS 222): three questions, full screen once started, the result adds its set
     await page.goto(`${BASE}${loc}/pages/routines`, { waitUntil: 'networkidle' });
-    // Routines page opens on the first sun / second sun switch: PM swaps the main CTA to the Night Ritual
-    ok(`${tag} routines hero has one h1`, (await page.$$('h1')).length === 1);
-    ok(`${tag} routines hero opens on the morning routine`, (await page.$eval('.hr-hero', (h) => h.dataset.mode)) === 'am');
-    ok(`${tag} routines hero has no hover name tags`, (await page.$$('.hr-tag')).length === 0);
-    await page.click('.hr-switch [data-mode="pm"]');
-    ok(`${tag} routines hero PM CTA goes to the Night Ritual`, (await page.$eval('.hr-btn--main', (a) => new URL(a.href).pathname)).endsWith('/products/the-night-ritual'));
-    await page.click('.hr-switch [data-mode="am"]');
-    await page.locator('#forecast').scrollIntoViewIfNeeded();
-    await page.click('[data-time-btn="pm"]');
-    const included = await page.$$eval('.forecast__step [data-include]', (b) => b.filter((x) => x.checked).length);
-    ok(`${tag} forecast PM excludes SPF`, included === 3, `included=${included}`);
-    await page.click('[data-condition="ac"]');
-    const keyShown = await page.$$eval('.forecast__step [data-key]:not([hidden])', (b) => b.length);
-    ok(`${tag} forecast AC marks 2 key steps`, keyShown === 2, `key=${keyShown}`);
-    ok(`${tag} forecast ambient state set`, (await page.$eval('#forecast', (f) => f.dataset.ac)) === 'true');
-    const total = await page.$eval('#forecast [data-total]', (e) => e.textContent.trim());
-    // PM + AC = cleanse, treat, hydrate = The Night Ritual, so the bundle price (EGP 1,299) is used.
-    ok(`${tag} forecast total uses the matching bundle`, /1,299/.test(total), total);
-    ok(`${tag} forecast says which bundle it matched`, await page.locator('#forecast [data-bundle-match]').isVisible());
-    const forecastLines0 = Number(await count(page)) ? (await page.evaluate(() => fetch('/cart.js').then((r) => r.json()))).items.length : 0;
-    await page.click('[data-forecast-cta]');
-    await openBag(page, 4000);
-    const afterForecast = await page.$$eval('#CartDrawer .cart-line', (l) => l.length);
-    ok(`${tag} forecast adds its routine as one bundle`, afterForecast === forecastLines0 + 1, `lines ${forecastLines0}→${afterForecast}`);
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(300);
+    ok(`${tag} routines page has one h1`, (await page.$$('h1')).length === 1);
+    await page.click('[data-rf-start]');
+    await page.waitForTimeout(500);
+    ok(`${tag} finder opens full screen`, await page.$eval('.rf', (r) => r.classList.contains('is-open') && document.documentElement.classList.contains('rf-open')));
+    await page.click('[data-screen="type"] .rf-opt >> nth=0');
+    await page.waitForTimeout(1000);
+    ok(`${tag} finder moves on after a skin type`, (await page.$eval('.rf', (r) => r.dataset.state)) === 'concerns');
+    await page.click('[data-screen="concerns"] .rf-opt >> nth=1');
+    await page.click('[data-screen="concerns"] [data-rf-next]');
+    await page.waitForTimeout(500);
+    await page.click('[data-screen="more"] .rf-opt >> nth=3');
+    await page.click('[data-screen="more"] [data-rf-next]');
+    await page.waitForTimeout(800);
+    const rfName = await page.$eval('[data-rf-name]', (e) => e.textContent.trim());
+    ok(`${tag} oily skin gets The Full Ritual`, (await page.$$eval('[data-rf-steps] .rf-step', (l) => l.length)) === 4 && rfName.length > 0, rfName);
+    const finderLines0 = Number(await count(page)) ? (await page.evaluate(() => fetch('/cart.js').then((r) => r.json()))).items.length : 0;
+    await page.locator('[data-rf-add]:visible').first().click();
+    await page.waitForTimeout(2500);
+    const finderLines = (await page.evaluate(() => fetch('/cart.js').then((r) => r.json()))).items.length;
+    ok(`${tag} finder adds its routine as one set`, finderLines === finderLines0 + 1, `lines ${finderLines0}→${finderLines}`);
+    await page.click('[data-rf-close]');
+    await page.waitForTimeout(600);
+    ok(`${tag} close returns to the page`, await page.$eval('.rf', (r) => !r.classList.contains('is-open') && r.dataset.state === 'intro'));
 
     // Home: the orbs hero line-up is shoppable in step order, the main CTA goes to the Full Ritual, the sets section adds a set
     await page.goto(`${BASE}${loc}/`, { waitUntil: 'networkidle' });

@@ -1,15 +1,7 @@
 {
   "sections": {
-    "hero": {
-      "type": "hero-routine",
-      "settings": {}
-    },
-    "forecast": {
-      "type": "skin-forecast",
-      "settings": {}
-    },
-    "ampm": {
-      "type": "routine-ampm",
+    "finder": {
+      "type": "routine-finder",
       "settings": {}
     },
     "faq": {
@@ -61,9 +53,7 @@
     }
   },
   "order": [
-    "hero",
-    "forecast",
-    "ampm",
+    "finder",
     "faq"
   ]
 }
