@@ -157,11 +157,13 @@ const init = async (root) => {
       (p.level === 'core' ? list : also).append(row(s, p.level === 'core' && P[s].available, p.level !== 'core'));
     });
     root.querySelector('[data-rf-also-title]').hidden = !also.children.length || also.children.length === 1 && complete;
-    // "Made for": the visitor's own answers, so the routine reads as theirs
     const forEl = root.querySelector('[data-rf-for]');
-    const bits = full ? [] : [S.skin.replace('__T__', S.types[a.type] || ''), ...a.concerns.map((c) => S.chips[c]), a.acne === 'yes' && S.breakouts, a.react !== 'no' && S.sensitive].filter(Boolean);
-    forEl.hidden = !bits.length;
-    forEl.innerHTML = bits.length ? `<b>${forEl.dataset.label}</b>${bits.join(' · ')}` : '';
+    // "Made for": the skin in one phrase ("Mildly dry, sensitive skin"); "Helps with": their goals
+    const adj = [S.types[a.type], a.sensitive || a.rx ? S.adj_sensitive : '', a.acne === 'yes' ? S.adj_breakouts : ''].filter(Boolean);
+    const skin = full || !a.type ? '' : S.skin.replace('__T__', ar ? adj.join(' و') : adj.join(', '));
+    const goals = full ? [] : a.concerns.map((c) => S.chips[c]);
+    forEl.hidden = !skin && !goals.length;
+    forEl.innerHTML = (skin ? `<span><b>${forEl.dataset.label}</b>${skin}</span>` : '') + (goals.length ? `<span><b>${forEl.dataset.helps}</b>${goals.join(' · ')}</span>` : '');
     // "Before you start": the cautions that apply, in one line that opens
     const notes = { sensitive: !full && (a.sensitive || a.rx), pregnant: !full && a.pregnant, rx: !full && a.rx };
     Object.entries(notes).forEach(([k, on]) => { root.querySelector(`[data-rf-note="${k}"]`).hidden = !on; });

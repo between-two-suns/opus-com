@@ -120,6 +120,7 @@ html.rf-open .dock { display: none; }
 .rf-name { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; font-size: clamp(44px, min(4.6vw, 8svh), 96px); margin-top: 8px; }
 .rf-for { margin-top: 10px; font-size: 14px; line-height: 1.5; color: color-mix(in srgb, currentColor 72%, transparent); max-width: 52ch; }
 .rf-for b { font-weight: 700; color: var(--c-ink); margin-inline-end: 6px; }
+.rf-for span { display: block; }
 .rf-for[hidden] { display: none; }
 .rf-hero { display: none; }
 .rf-why { margin-top: 14px; max-width: 46ch; font-size: 16px; line-height: 1.45; font-weight: 500; }
@@ -278,6 +279,8 @@ html.rf-open .dock { display: none; }
         "complete_cta": {{ 'skin_check.complete_cta' | t: product: '__P__' | json }},
         "skin": {{ 'finder.skin' | t: type: '__T__' | json }},
         "breakouts": {{ 'finder.breakouts' | t | json }},
+        "adj_sensitive": {{ 'finder.adj_sensitive' | t | json }},
+        "adj_breakouts": {{ 'finder.adj_breakouts' | t | json }},
         "sensitive": {{ 'finder.sensitive' | t | json }},
         "save": {{ 'finder.save' | t: amount: '__A__' | json }},
         "step_of": {{ 'finder.step_of' | t: n: '__N__', total: '__T__' | json }},
@@ -360,7 +363,7 @@ html.rf-open .dock { display: none; }
       <div class="rf-hero" aria-hidden="true" data-rf-hero></div>
       <p class="rf-eyebrow" style="--i: 0" data-rf-eyebrow>{{ 'skin_check.result_title' | t }}</p>
       <h2 class="rf-name" style="--i: 1" data-rf-name></h2>
-      <p class="rf-for" style="--i: 1" data-rf-for data-label="{{ 'finder.made_for' | t | escape }}" hidden></p>
+      <p class="rf-for" style="--i: 1" data-rf-for data-label="{{ 'finder.made_for' | t | escape }}" data-helps="{{ 'skin_check.for_label' | t | escape }}" hidden></p>
       <p class="rf-why" style="--i: 2" data-rf-why></p>
       <ul class="rf-steps" role="list" style="--i: 2" data-rf-steps></ul>
       <p class="rf-sub" style="--i: 3" data-rf-also-title hidden>{{ 'skin_check.also' | t }}</p>

@@ -1464,6 +1464,8 @@
     "why_3": "moisturise with the cream",
     "why_4": "protect every morning",
     "and": "and",
-    "step_of": "{{ n }} of {{ total }}"
+    "step_of": "{{ n }} of {{ total }}",
+    "adj_sensitive": "sensitive",
+    "adj_breakouts": "breakout-prone"
   }
 }
