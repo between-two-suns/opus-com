@@ -75,7 +75,7 @@ const init = async (root) => {
     i = n;
     const q = ORDER[n];
     show(q);
-    back.hidden = false;
+    back.hidden = true;
     progress.textContent = S.progress.replace('__N__', n + 1).replace('__T__', ORDER.length);
     mark(n / ORDER.length);
     live();
@@ -177,11 +177,13 @@ const init = async (root) => {
   root.querySelector('[data-rf-start]').addEventListener('click', () => go(0));
   root.querySelectorAll('[data-rf-skip]').forEach((b) => b.addEventListener('click', () => result(true)));
   root.querySelectorAll('[data-rf-next]').forEach((b) => b.addEventListener('click', next));
-  back.addEventListener('click', () => {
+  const prev = () => {
     if (root.dataset.state === 'result') go(ORDER.length - 1);
     else if (i > 0) go(i - 1);
     else leave();
-  });
+  };
+  back.addEventListener('click', prev);
+  root.querySelectorAll('[data-rf-prev]').forEach((b) => b.addEventListener('click', prev));
   root.querySelectorAll('[data-rf-change]').forEach((b) => b.addEventListener('click', () => go(0)));
   root.querySelector('[data-rf-restart]').addEventListener('click', () => { form.reset(); form.querySelectorAll('[data-rf-next]').forEach((b) => { b.disabled = !b.closest('.rf-q--multi'); }); go(0); });
   root.querySelector('[data-rf-complete]').addEventListener('click', () => {

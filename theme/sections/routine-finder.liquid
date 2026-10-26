@@ -39,6 +39,7 @@
 .rf-back svg { transform: scaleX(-1); } [dir='rtl'] .rf-back svg { transform: none; }
 .rf-close { display: grid; place-items: center; inline-size: 44px; block-size: 44px; margin-inline-end: -10px; border: 0; border-radius: 50%; background: none; color: inherit; cursor: pointer; }
 .rf-close[hidden] { display: none; }
+.rf-back[hidden] + .rf-close { margin-inline-start: auto; }
 .rf-close svg { inline-size: 20px; block-size: 20px; }
 
 /* once started, the finder is the whole screen, like an app: no header, no bottom bar, nothing scrolls behind it */
@@ -83,6 +84,15 @@ html.rf-open .dock { display: none; }
 .rf-opt:has(input:checked) .rf-opt__box svg { opacity: 1; color: var(--c-ink); }
 .rf-opt:has(input:focus-visible) { outline: 2px solid var(--c-ink); outline-offset: 3px; }
 .rf-q .rf-row { margin-top: 22px; }
+/* each question ends like an app screen: Back and Next side by side, the shortcut small underneath */
+.rf-foot { margin-top: 24px; max-width: 520px; }
+.rf-nav { display: flex; gap: 10px; }
+.rf-nav .rf-btn { flex: 1; }
+.rf-prev { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 24px; border-radius: 999px; border: 0; font: inherit; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: inherit; cursor: pointer;
+  background: transparent; box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-ink) 22%, transparent); transition: box-shadow .25s; }
+.rf-prev:hover { box-shadow: inset 0 0 0 1.5px var(--c-ink); }
+.rf-prev svg { transform: scaleX(-1); } [dir='rtl'] .rf-prev svg { transform: none; }
+.rf-skip--small { display: block; margin: 12px auto 0; font-size: 13px; font-weight: 500; opacity: .72; }
 /* the six goals sit in two columns on wide screens, so the button stays in view */
 @media (min-width: 761px) and (min-aspect-ratio: 4/5) { .rf-q--multi .rf-opts { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 640px; } }
 .rf-q--multi .rf-opt__sub { display: block; white-space: normal; margin: 3px 0 0; }
@@ -163,11 +173,12 @@ html.rf-open .dock { display: none; }
      thumb's reach; the space grows and shrinks with the phone's height */
   .rf.is-open:not([data-state='result']) [data-rf-form] { flex: 1; display: flex; flex-direction: column; min-block-size: 0; }
   .rf.is-open .rf-q:not([hidden]) { flex: 1; display: flex; flex-direction: column; min-block-size: 0; margin-top: clamp(14px, 3svh, 34px); }
-  .rf.is-open .rf-q legend { font-size: min(7.8vw, 32px); }
+  .rf.is-open .rf-q legend { font-size: min(7vw, 30px); }
   .rf.is-open .rf-opts { margin-top: clamp(16px, 3.4svh, 36px); gap: clamp(8px, 1.5svh, 14px); }
-  .rf.is-open .rf-opt { padding-block: clamp(12px, 2.4svh, 22px); }
+  .rf.is-open .rf-opt { padding-block: clamp(11px, 2.1svh, 22px); }
   .rf.is-open .rf-q--multi .rf-opt { min-block-size: clamp(58px, 10.5svh, 100px); }
-  .rf.is-open .rf-q .rf-row { margin-top: auto; padding-top: 20px; }
+  .rf.is-open .rf-foot { margin-top: auto; padding-top: 16px; max-width: none; }
+  .rf.is-open .rf-skip--small { margin-top: 8px; }
   .rf[data-state='intro'] { padding-block-end: 0; }
   .rf-q--multi .rf-opts { grid-template-columns: 1fr 1fr; gap: 7px; }
   .rf-q--multi .rf-opt { padding: 9px 11px; gap: 10px; } .rf-q--multi .rf-opt__label { font-size: 13.5px; } .rf-q--multi .rf-opt__sub { display: none; }
@@ -194,7 +205,7 @@ html.rf-open .dock { display: none; }
 :lang(ar) .rf-title, :lang(ar) .rf-name { text-transform: none; line-height: 1.15; }
 :lang(ar) .rf-title { font-size: clamp(46px, min(6vw, 9.6svh), 120px); }
 :lang(ar) .rf-q legend { max-width: 26ch; }
-:lang(ar) .rf-eyebrow, :lang(ar) .rf-btn, :lang(ar) .rf-progress, :lang(ar) .rf-pack__cap, :lang(ar) .rf-sub, :lang(ar) .rf-opt__sub { letter-spacing: 0; }
+:lang(ar) .rf-eyebrow, :lang(ar) .rf-btn, :lang(ar) .rf-prev, :lang(ar) .rf-progress, :lang(ar) .rf-pack__cap, :lang(ar) .rf-sub, :lang(ar) .rf-opt__sub { letter-spacing: 0; }
 </style>
 
 <section class="rf" id="Rf-{{ section.id }}" data-state="intro" aria-labelledby="RfTitle-{{ section.id }}" data-match="{{ 'skin-check.js' | asset_url }}">
@@ -281,9 +292,12 @@ html.rf-open .dock { display: none; }
               </label>
             {%- endfor -%}
           </div>
-          <div class="rf-row" style="--i: 2">
-            {%- if multi -%}<button type="button" class="rf-btn" data-rf-next>{{ 'skin_check.next' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>{%- else -%}<button type="button" class="rf-btn" data-rf-next disabled>{{ 'skin_check.next' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>{%- endif -%}
-            <button type="button" class="rf-skip" data-rf-skip>{{ 'finder.skip' | t }}</button>
+          <div class="rf-foot" style="--i: 2">
+            <div class="rf-nav">
+              <button type="button" class="rf-prev" data-rf-prev>{% render 'icon', name: 'arrow', class: 'icon--sm' %}{{ 'skin_check.back' | t }}</button>
+              <button type="button" class="rf-btn" data-rf-next{% unless multi %} disabled{% endunless %}>{{ 'skin_check.next' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+            </div>
+            <button type="button" class="rf-skip rf-skip--small" data-rf-skip>{{ 'finder.skip' | t }}</button>
           </div>
         </fieldset>
       {%- endfor -%}
