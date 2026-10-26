@@ -1,7 +1,7 @@
 {%- comment -%}
   Product page demo (v2): reviews. With real reviews (Judge.me's rating count on the product), the full Judge.me
-  widget as on the live page. With none yet, one slim line that opens the same widget, so "write the first review"
-  still works without an empty section taking a whole screen. Nothing is placeholder or seeded.
+  widget as on the live page. With none yet, nothing (DECISIONS 209: a "No reviews yet" line read as "nobody buys
+  this"); Judge.me's review-request emails bring the first reviews in. Nothing is placeholder or seeded.
 {%- endcomment -%}
 {%- assign rc = product.metafields.reviews.rating_count.value | default: 0 | plus: 0 -%}
 {%- capture jdgm -%}
@@ -27,18 +27,6 @@
         </div>
       </div>
       {{ jdgm }}
-    </div>
-  </section>
-{%- else -%}
-  <section class="product-reviews v2-rev" id="reviews" aria-label="{{ 'reviews.heading' | t }}">
-    <div class="container">
-      <details class="v2-rev__box">
-        <summary class="v2-rev__line">
-          <span class="v2-rev__none">{{ 'pdp2.no_reviews' | t }}</span>
-          <span class="v2-rev__cta">{{ 'pdp2.write_first' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</span>
-        </summary>
-        <div class="v2-rev__widget">{{ jdgm }}</div>
-      </details>
     </div>
   </section>
 {%- endif -%}

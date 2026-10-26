@@ -99,10 +99,14 @@
         </fieldset>
 
         <div class="builder__presets" role="group" aria-label="{{ 'sections.builder.presets' | t }}">
-          <button type="button" class="chip" data-preset="1,2,3,4">{{ 'sections.bundles.sets.full.name' | t }}</button>
-          <button type="button" class="chip" data-preset="1,2,3">{{ 'sections.bundles.sets.evening.name' | t }}</button>
-          <button type="button" class="chip" data-preset="1,2">{{ 'sections.bundles.sets.oil.name' | t }}</button>
-          <button type="button" class="chip" data-preset="3,4">{{ 'sections.bundles.sets.day.name' | t }}</button>
+          {%- comment -%} Shortcuts are the real sets (DECISIONS 209), named as their products, so picking one gets that set's price {%- endcomment -%}
+          {%- assign bp_handles = 'the-full-ritual,the-night-ritual,the-clear-protect-trio,clear-protect-duo,the-core-duo' | split: ',' -%}
+          {%- for bh in bp_handles -%}
+            {%- assign bp = all_products[bh] -%}
+            {%- unless bp.id -%}{%- continue -%}{%- endunless -%}
+            {%- capture bdef -%}{% render 'bundle-def', handle: bh %}{%- endcapture -%}
+            <button type="button" class="chip" data-preset="{{ bdef | split: '|' | first | strip }}">{{ bp.title | escape }}</button>
+          {%- endfor -%}
         </div>
 
         <div class="builder__summary">

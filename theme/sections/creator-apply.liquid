@@ -55,15 +55,9 @@
                 <input id="Cr-email" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}"{% if form.errors contains 'email' %} aria-invalid="true"{% endif %}>
               </div>
             </div>
-            <div class="cr-form__row">
-              <div class="field">
-                <label for="Cr-phone">{{ 'creators.form.whatsapp' | t }}</label>
-                <input id="Cr-phone" type="tel" name="contact[phone]" autocomplete="tel" inputmode="tel" value="{{ form.phone }}">
-              </div>
-              <div class="field">
-                <label for="Cr-city">{{ 'creators.form.city' | t }}</label>
-                <input id="Cr-city" type="text" name="contact[City]" autocomplete="address-level2">
-              </div>
+            <div class="field">
+              <label for="Cr-city">{{ 'creators.form.city' | t }}</label>
+              <input id="Cr-city" type="text" name="contact[City]" autocomplete="address-level2">
             </div>
           </fieldset>
 

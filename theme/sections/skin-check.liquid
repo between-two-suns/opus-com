@@ -62,7 +62,8 @@
       {%- comment -%} Intro {%- endcomment -%}
       <div class="skc__screen skc__intro" data-screen="intro">
         <p class="t-eyebrow">{{ 'skin_check.eyebrow' | t }}</p>
-        <h2 class="t-display-m" id="SkcTitle-{{ section.id }}">{{ heading | escape }}</h2>
+        {%- assign skc_h = 'h2' -%}{%- if template.name == 'page' -%}{%- assign skc_h = 'h1' -%}{%- endif -%}
+        <{{ skc_h }} class="t-display-m" id="SkcTitle-{{ section.id }}">{{ heading | escape }}</{{ skc_h }}>
         <p class="t-lead t-muted">{{ 'skin_check.intro' | t }}</p>
         <noscript><p class="t-small">{{ 'skin_check.no_js' | t }} <a href="{{ routes.all_products_collection_url }}">{{ 'skin_check.browse' | t }}</a></p></noscript>
         <button type="button" class="btn skc__start" data-skc-start>{{ 'skin_check.start' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>

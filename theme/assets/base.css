@@ -340,6 +340,8 @@ main:focus { outline: none; }
 .site-nav__link[aria-current='page'] { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
 .lang-link { font-size: 14px; font-weight: 700; inline-size: auto; min-inline-size: 44px; padding-inline: 10px; border-radius: 999px; }
 .lang-link__ar { font-family: 'BTS Arabic', var(--font-sans); font-size: 15px; }
+/* on English pages the one Arabic word ("العربية") uses the device's Arabic face, so the brand Arabic font (31 KB) is only fetched on Arabic pages (DECISIONS 209) */
+html:not([dir='rtl']) .lang-link__ar, html:not([dir='rtl']) [data-lang-link] { --font-sans: 'Geeza Pro', 'Noto Sans Arabic', 'Segoe UI', system-ui, sans-serif; --font-display: var(--font-sans); font-family: var(--font-sans); }
 .header-hide-mobile { display: none; }
 
 @media (min-width: 990px) {

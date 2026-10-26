@@ -72,7 +72,7 @@
                       <li><a href="{{ root }}/pages/climate">{{ 'footer.links.climate' | t }}</a></li>
                       <li><a href="{{ root }}/pages/ingredients">{{ 'footer.links.ingredients' | t }}</a></li>
                       <li><a href="{{ root }}/pages/about">{{ 'footer.links.about' | t }}</a></li>
-                      <li><a href="{{ root }}/blogs/journal">{{ 'footer.links.journal' | t }}</a></li>
+                      {%- if blogs.journal.articles_count > 0 -%}<li><a href="{{ root }}/blogs/journal">{{ 'footer.links.journal' | t }}</a></li>{%- endif -%}
                       <li><a href="{{ root }}/pages/creators">{{ 'footer.links.creators' | t }}</a></li>
                     {%- when 'help' -%}
                       <li><a href="{{ root }}/pages/faq">{{ 'footer.links.faq' | t }}</a></li>

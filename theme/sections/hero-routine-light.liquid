@@ -23,6 +23,8 @@
 .hr-title .hr-swap { display: inline-grid; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
 .hr-title .hr-swap > span { grid-area: 1 / 1; justify-self: start; transition: translate 1s cubic-bezier(.7,0,.2,1), opacity .6s; }
 .hr-title .hr-swap .hr-pm { translate: 0 calc(100% + .3em); opacity: 0; }
+/* the evening word is drawn from data-w, so the page's heading reads "Your morning routine." to search engines (not "morningevening", DECISIONS 209) */
+.hr-title .hr-swap .hr-pm::before { content: attr(data-w); }
 .lh-hero[data-mode='pm'] .hr-title .hr-swap .hr-am { translate: 0 calc(-100% - .3em); opacity: 0; }
 .lh-hero[data-mode='pm'] .hr-title .hr-swap .hr-pm { translate: 0 0; opacity: 1; }
 .hr-lede { margin-top: 20px; font-size: 17px; line-height: 1.55; color: color-mix(in srgb, currentColor 76%, transparent); max-width: 34ch; }
@@ -161,7 +163,7 @@
   </div>
   <div class="hr-copy">
     <p class="hr-eyebrow">{{ 'sections.hero_panels.eyebrow' | t }}</p>
-    <h1 class="hr-title" id="HrTitle-{{ section.id }}">{{ 'sections.hero_routine.before' | t }} <span class="hr-swap"><span class="hr-am">{{ 'sections.hero_routine.am' | t }}</span><span class="hr-pm" aria-hidden="true">{{ 'sections.hero_routine.pm' | t }}</span></span>{% if after != blank %}<br>{{ after }}{% endif %}</h1>
+    <h1 class="hr-title" id="HrTitle-{{ section.id }}">{{ 'sections.hero_routine.before' | t }} <span class="hr-swap"><span class="hr-am">{{ 'sections.hero_routine.am' | t }}</span><span class="hr-pm" aria-hidden="true" data-w="{{ 'sections.hero_routine.pm' | t | escape }}"></span></span>{% if after != blank %}{{ ' ' }}<br>{{ after }}{% endif %}</h1>
     <p class="hr-lede"><span class="hr-am">{{ 'sections.hero_routine.lede_am' | t }}</span><span class="hr-pm">{{ 'sections.hero_routine.lede_pm' | t }}</span></p>
     <div class="hr-switch" role="radiogroup" aria-label="{{ 'sections.hero_routine.switch' | t }}">
       <button type="button" role="radio" aria-checked="true" data-mode="am"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg> {{ 'sections.hero_routine.am_label' | t }}</button>

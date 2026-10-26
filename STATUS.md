@@ -27,6 +27,11 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 
 To revert the site: in Shopify, preview or rename that snapshot theme (or copy its files back to staging); in code, `git checkout 5e78baf -- theme/`. Never published.
 
+## Version 1.1 (in progress on staging, from 2026-10-26)
+- Audit: `BETWEEN TWO SUNS · 10/10 audit` (Claude doc) — scorecard, what repeats, the big moves, conversion, page by page, order of work.
+- Round 1 fixes shipped to staging (DECISIONS 209): real set names in build-your-own, no empty reviews line, page headings (skin check, Routines), Creators email-only, Journal link hidden until a story, no Arabic font on English pages.
+- Next: speed round (every page under 2.5 s on a mid-range phone, no layout shift).
+
 ## Shipped to staging 2026-10-18
 - Home hero is now **Orbs** (`hero-orbs`), followed by Four steps. Earlier heroes are still available at `?view=hero|light|sun|system|orbsa`.
 - `/pages/routines` opens with the **first sun / second sun** routine module (`hero-routine`); everything below it is unchanged.
