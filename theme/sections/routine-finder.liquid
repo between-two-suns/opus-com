@@ -72,7 +72,7 @@
 
 /* result */
 .rf-name { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; font-size: clamp(44px, min(5vw, 8.6svh), 100px); margin-top: 10px; }
-.rf-steps { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 8px; max-width: 520px; }
+.rf .rf-steps { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 8px; max-width: 520px; }
 .rf-step { display: flex; align-items: center; gap: 14px; padding: 9px 14px; border-radius: 16px; background: color-mix(in srgb, #fff 62%, transparent); }
 .rf-step label { display: flex; align-items: center; gap: 14px; flex: 1; cursor: pointer; min-width: 0; }
 .rf-step input { inline-size: 18px; block-size: 18px; accent-color: var(--c-ink); flex: none; }
@@ -119,21 +119,23 @@
   /* intro: the stage is exactly as tall as the packs and their shadow, so the page flows straight on to the next section */
   .rf-stage { position: relative; order: 1; block-size: calc(min(30svh, 60vw, 320px) + 30px); }
   .rf-lineup { inset-inline: 4vw; inset-block-end: 14px; --gap: 6px; --base: min(30svh, 60vw, 320px); }
-  .rf:not([data-state='intro']) .rf-stage { order: -1; block-size: calc(var(--hdr, var(--header-h)) + 18svh); }
-  .rf:not([data-state='intro']) .rf-lineup { inset-block-end: 16px; --base: min(15svh, 36vw, 200px); }
+  /* once started, no packs on a phone: the question and every answer fit on one screen (the result names the steps with their coloured numbers) */
+  .rf:not([data-state='intro']) .rf-stage { display: none; }
   .rf-opt__sub { display: inline; margin: 0 0 0 6px; } [dir='rtl'] .rf-opt__sub { margin: 0 6px 0 0; }
   .rf-pack__cap { display: none; }
   .rf-copy { padding: calc(var(--hdr, var(--header-h)) + 3svh) 5vw 2svh; }
-  .rf:not([data-state='intro']) .rf-copy { padding: 1svh 5vw calc(var(--dock-h, 0px) + 6svh); }
+  .rf:not([data-state='intro']) .rf-copy { padding: calc(var(--hdr, var(--header-h)) + 1svh) 5vw calc(var(--dock-h, 0px) + 4svh); }
   .rf[data-state='intro'] { padding-block-end: 0; }
-  .rf-q--multi .rf-opts { grid-template-columns: 1fr 1fr; gap: 8px; }
-  .rf-q--multi .rf-opt { padding: 11px 12px; } .rf-q--multi .rf-opt__label { font-size: 14px; } .rf-q--multi .rf-opt__sub { display: none; }
-  .rf-screen { margin-top: 2svh; }
+  .rf-q--multi .rf-opts { grid-template-columns: 1fr 1fr; gap: 7px; }
+  .rf-q--multi .rf-opt { padding: 9px 11px; gap: 10px; } .rf-q--multi .rf-opt__label { font-size: 13.5px; } .rf-q--multi .rf-opt__sub { display: none; }
+  .rf-screen { margin-top: 1svh; }
   .rf-title { font-size: min(14vw, 7.6svh); }
-  .rf-q { margin-top: 2svh; }
-  .rf-q legend { font-size: min(7.4vw, 30px); }
-  .rf-opts { margin-top: 18px; }
-  .rf-opt { padding: 12px 15px; }
+  .rf-q { margin-top: 1.5svh; }
+  .rf-q legend { font-size: min(6.6vw, 26px); max-width: none; }
+  .rf-hint { margin-top: 6px; }
+  .rf-opts { margin-top: 14px; gap: 7px; }
+  .rf-opt { padding: 10px 14px; gap: 12px; } .rf-opt__label { font-size: 15px; } .rf-opt__sub { font-size: 11px; }
+  .rf-q .rf-row { margin-top: 16px; }
   .rf-name { font-size: min(13vw, 64px); }
 }
 @media (prefers-reduced-motion: reduce) { .rf *, .rf *::before, .rf *::after { transition-duration: 0s !important; animation: none !important; } }
