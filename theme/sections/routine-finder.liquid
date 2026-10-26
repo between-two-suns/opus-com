@@ -158,7 +158,16 @@ html.rf-open .dock { display: none; }
   .rf:not([data-state='intro']) .rf-stage { display: none; }
   .rf-pack__cap { display: none; }
   .rf-copy { padding: calc(var(--hdr, var(--header-h)) + 3svh) 5vw 2svh; }
-  .rf.is-open .rf-copy { padding: max(10px, env(safe-area-inset-top)) 5vw 4svh; }
+  .rf.is-open .rf-copy { padding: max(10px, env(safe-area-inset-top)) 5vw max(16px, env(safe-area-inset-bottom)); }
+  /* in the app the question uses the whole screen: question at the top, roomy answers, Next at the bottom within a
+     thumb's reach; the space grows and shrinks with the phone's height */
+  .rf.is-open:not([data-state='result']) [data-rf-form] { flex: 1; display: flex; flex-direction: column; min-block-size: 0; }
+  .rf.is-open .rf-q:not([hidden]) { flex: 1; display: flex; flex-direction: column; min-block-size: 0; margin-top: clamp(14px, 3svh, 34px); }
+  .rf.is-open .rf-q legend { font-size: min(7.8vw, 32px); }
+  .rf.is-open .rf-opts { margin-top: clamp(16px, 3.4svh, 36px); gap: clamp(8px, 1.5svh, 14px); }
+  .rf.is-open .rf-opt { padding-block: clamp(12px, 2.4svh, 22px); }
+  .rf.is-open .rf-q--multi .rf-opt { min-block-size: clamp(58px, 10.5svh, 100px); }
+  .rf.is-open .rf-q .rf-row { margin-top: auto; padding-top: 20px; }
   .rf[data-state='intro'] { padding-block-end: 0; }
   .rf-q--multi .rf-opts { grid-template-columns: 1fr 1fr; gap: 7px; }
   .rf-q--multi .rf-opt { padding: 9px 11px; gap: 10px; } .rf-q--multi .rf-opt__label { font-size: 13.5px; } .rf-q--multi .rf-opt__sub { display: none; }
