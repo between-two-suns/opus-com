@@ -116,15 +116,16 @@
 /* phones and portrait tablets: the stage first, compact; the question under it */
 @media (max-width: 760px), (max-aspect-ratio: 4/5) {
   .rf { display: flex; flex-direction: column; min-height: 0; }
-  .rf-stage { position: relative; order: 1; block-size: 34svh; }
-  .rf-lineup { inset-inline: 4vw; inset-block-end: 26px; --gap: 6px; --base: min(30svh, 60vw, 320px); }
+  /* intro: the stage is exactly as tall as the packs and their shadow, so the page flows straight on to the next section */
+  .rf-stage { position: relative; order: 1; block-size: calc(min(30svh, 60vw, 320px) + 30px); }
+  .rf-lineup { inset-inline: 4vw; inset-block-end: 14px; --gap: 6px; --base: min(30svh, 60vw, 320px); }
   .rf:not([data-state='intro']) .rf-stage { order: -1; block-size: calc(var(--hdr, var(--header-h)) + 18svh); }
   .rf:not([data-state='intro']) .rf-lineup { inset-block-end: 16px; --base: min(15svh, 36vw, 200px); }
   .rf-opt__sub { display: inline; margin: 0 0 0 6px; } [dir='rtl'] .rf-opt__sub { margin: 0 6px 0 0; }
   .rf-pack__cap { display: none; }
   .rf-copy { padding: calc(var(--hdr, var(--header-h)) + 3svh) 5vw 2svh; }
   .rf:not([data-state='intro']) .rf-copy { padding: 1svh 5vw calc(var(--dock-h, 0px) + 6svh); }
-  .rf[data-state='intro'] { padding-block-end: calc(var(--dock-h, 0px) + 3svh); }
+  .rf[data-state='intro'] { padding-block-end: 0; }
   .rf-q--multi .rf-opts { grid-template-columns: 1fr 1fr; gap: 8px; }
   .rf-q--multi .rf-opt { padding: 11px 12px; } .rf-q--multi .rf-opt__label { font-size: 14px; } .rf-q--multi .rf-opt__sub { display: none; }
   .rf-screen { margin-top: 2svh; }
