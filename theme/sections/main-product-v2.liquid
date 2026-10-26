@@ -189,6 +189,21 @@
                 </ul>
               {%- endif -%}
               {{ cutout | image_url: width: 900 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '300,450,600,750,900', sizes: '(min-width: 990px) 46vw, 92vw', alt: product.title, class: 'gallery__cutout' }}
+              {%- comment -%} Press to pour (demo, DECISIONS 211): hold the pack and its real texture pours from the nozzle and fills the frame behind it. Nothing moves unless pressed; the photo is fetched after the page has loaded. {%- endcomment -%}
+              {%- if section.settings.pour -%}
+                {%- assign pour_key = 'bts-' | append: product.handle | append: '-texture.jpg' -%}
+                {%- assign pour_img = images[pour_key] -%}
+                {%- if pour_img != blank -%}
+                  <span class="pour__tex" aria-hidden="true">
+                    <img data-srcset="{{ pour_img | image_url: width: 600 }} 600w, {{ pour_img | image_url: width: 900 }} 900w, {{ pour_img | image_url: width: 1200 }} 1200w" sizes="(min-width: 990px) 46vw, 92vw" alt="" width="{{ pour_img.width }}" height="{{ pour_img.height }}">
+                    {%- if mf.texture != blank -%}<span class="pour__label"><span>{{ 'product.texture' | t }}</span>{{ mf.texture }}</span>{%- endif -%}
+                  </span>
+                  <button type="button" class="pour__hint" data-pour aria-pressed="false">
+                    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.5c-.4 0-.8.2-1 .6C9.1 6.3 5.5 11.4 5.5 15a6.5 6.5 0 0 0 13 0c0-3.6-3.6-8.7-5.5-11.9-.2-.4-.6-.6-1-.6Z" fill="currentColor"/></svg>
+                    <span class="pour__a">{{ 'product.pour_hint' | t }}</span><span class="pour__b">{{ 'product.pour_back' | t }}</span>
+                  </button>
+                {%- endif -%}
+              {%- endif -%}
             </div>
           {%- endif -%}
           {%- if set_v2 -%}{%- render 'set2-stage', product: product, units: set_units, count: media_count -%}{%- endif -%}
@@ -453,6 +468,36 @@
 <script src="{{ 'product.js' | asset_url }}" type="module" defer></script>
 <script src="{{ 'pdp-v2.js' | asset_url }}" type="module" defer></script>
 
+{%- if section.settings.pour -%}
+<style>
+@property --pr { syntax: '<length>'; inherits: false; initial-value: 0px; }
+.gallery__slide--studio { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.gallery__slide--studio .gallery__cutout { z-index: 2; }
+.pour__tex { position: absolute; inset: 0; z-index: 1; pointer-events: none; --pr: 0px;
+  -webkit-mask: radial-gradient(circle at var(--px, 66%) var(--py, 14%), #000 calc(var(--pr) - 70px), transparent var(--pr));
+  mask: radial-gradient(circle at var(--px, 66%) var(--py, 14%), #000 calc(var(--pr) - 70px), transparent var(--pr));
+  transition: --pr .55s cubic-bezier(.4,0,.2,1); }
+.pour__tex img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.is-pour .pour__tex { --pr: 170vmax; transition: --pr 1.5s cubic-bezier(.75,0,.3,1); }
+.pour__label { position: absolute; inset-block-end: 16px; inset-inline-end: 16px; display: inline-flex; gap: 8px; align-items: baseline; padding: 9px 14px; border-radius: 999px;
+  background: rgb(255 255 255 / .82); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 13px; font-weight: 600; color: var(--c-ink); opacity: 0; translate: 0 6px; transition: opacity .3s, translate .3s; }
+.pour__label > span { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .6; }
+.is-poured .pour__label { opacity: 1; translate: 0 0; transition-delay: .1s; }
+.pour__hint { position: absolute; z-index: 4; inset-block-end: 16px; inset-inline-start: 16px; display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border: 0; border-radius: 999px;
+  background: rgb(255 255 255 / .72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font: inherit; font-size: 12px; font-weight: 600; color: var(--c-ink); cursor: pointer; transition: opacity .3s; }
+.pour__hint .pour__b, .is-poured .pour__hint .pour__a { display: none; }
+.is-poured .pour__hint .pour__b { display: inline; }
+.is-pour:not(.is-poured) .pour__hint { opacity: 0; }
+.gallery__slide--studio .callouts, .gallery__slide--studio .gallery__word { transition: opacity .4s; }
+.is-pour .callouts, .is-pour .gallery__word { opacity: 0; }
+.is-pour .gallery__cutout { transform: translateY(-1.5%) rotate(-4deg); }
+[dir='rtl'] .is-pour .gallery__cutout { transform: translateY(-1.5%) rotate(4deg); }
+@media (prefers-reduced-motion: reduce) { .pour__tex, .is-pour .pour__tex { transition: none; } .is-pour .gallery__cutout { transform: none; } }
+:lang(ar) .pour__label > span { letter-spacing: 0; }
+</style>
+<script src="{{ 'pour.js' | asset_url }}" type="module" defer></script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Product page",
@@ -460,6 +505,7 @@
   "class": "section-main-product",
   "settings": [
     { "type": "checkbox", "id": "set_v2", "label": "Set page design", "info": "Sets only: outcome line, who it's for, packs-together first photo, no repeated product list in the buy box.", "default": false },
+    { "type": "checkbox", "id": "pour", "label": "Press to pour (demo)", "info": "Single products: hold the pack to see its texture. Uses the Files photo bts-<handle>-texture.jpg.", "default": false },
     { "type": "checkbox", "id": "preview_payments", "label": "Preview payment badges (design only)", "info": "Shows COD, Apple Pay, cards, wallets and Paymob for design review. Turn off before launch: only methods that are live and tested may be shown.", "default": false }
   ]
 }

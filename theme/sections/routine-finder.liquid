@@ -1,0 +1,284 @@
+{%- comment -%}
+  Routines · the finder demo (DECISIONS 211, shown at /pages/routines?view=finder while it is reviewed): "the line-up that
+  listens". The skin check's four questions (same wording and matching rules, assets/skin-check.js, pending ICI sign-off),
+  one per screen, beside the four packs on a stage. The packs answer as you go: a step that suits you comes forward, one
+  that's optional steps back a little, one that doesn't suit you fades. The brand mark )( is the progress: its two arcs
+  close in with each answer and meet on your routine. The result is your steps, when you use them (morning, night), the
+  set that holds exactly those steps at its real price, and one button. "Just show me the full routine" is on every
+  screen. Highly reactive skin gets guidance, not products. No switch, no day/night choice.
+  Without JS: the intro with links to the sets and the shop.
+{%- endcomment -%}
+{%- liquid
+  assign handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign hs = '1,.65,.81,.81' | split: ','
+  assign ars = '357/1100,366/1100,343/1100,339/1100' | split: ','
+  assign sets_url = routes.root_url | append: '/pages/sets' | replace: '//', '/'
+  assign qs = 'type,react,acne,concerns' | split: ','
+-%}
+<style>
+.rf { --dir: 1; --p: 0; position: relative; display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); min-height: calc(100svh - 36px);
+  margin-top: calc(-1 * var(--hdr, var(--header-h))); background: var(--c-daylight, #F5F1EA); color: var(--c-ink); overflow: clip; isolation: isolate; }
+[dir='rtl'] .rf { --dir: -1; }
+.rf-copy { position: relative; z-index: 2; padding: calc(var(--hdr, var(--header-h)) + 7svh) 4vw 7svh 6vw; display: flex; flex-direction: column; min-width: 0; }
+[dir='rtl'] .rf-copy { padding-inline: 6vw 4vw; }
+
+/* the mark as progress: its two arcs close in with each answer */
+.rf-top { display: flex; align-items: center; gap: 16px; min-height: 48px; }
+.rf-mark { inline-size: 40px; block-size: 44px; overflow: visible; flex: none; }
+.rf-mark path { transition: transform .8s cubic-bezier(.65,0,.25,1), fill .6s; }
+.rf-mark .rf-l { fill: rgb(125 185 147); transform: translateX(calc((1 - var(--p)) * -150px)); }
+.rf-mark .rf-r { fill: rgb(150 172 221); transform: translateX(calc((1 - var(--p)) * 150px)); }
+.rf-progress { font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, currentColor 60%, transparent); }
+.rf-back { display: inline-flex; align-items: center; gap: 8px; margin-inline-start: auto; font: inherit; font-size: 13px; font-weight: 600; color: inherit; background: none; border: 0; padding: 10px 0; cursor: pointer; opacity: .7; }
+.rf-back:hover { opacity: 1; } .rf-back[hidden] { display: none; }
+.rf-back svg { transform: scaleX(-1); } [dir='rtl'] .rf-back svg { transform: none; }
+
+.rf-screen { margin-top: 4svh; }
+.rf-screen[hidden] { display: none; }
+.js .rf-screen.is-in > * { animation: rf-in .55s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(var(--i, 0) * 45ms); }
+@keyframes rf-in { from { opacity: 0; translate: 0 14px; } }
+.rf-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
+.rf-title { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; letter-spacing: -.01em; font-size: clamp(56px, min(7.4vw, 12.5svh), 148px); margin-top: 16px; }
+.rf-lede { margin-top: 20px; font-size: 17px; line-height: 1.55; color: color-mix(in srgb, currentColor 76%, transparent); max-width: 40ch; }
+.rf-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 30px; }
+.rf-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 17px 28px; border-radius: 999px; border: 0; font: inherit; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  background: var(--c-ink); color: #F4EFE7; cursor: pointer; transition: gap .3s, opacity .3s; text-decoration: none; }
+.rf-btn:hover { gap: 18px; } .rf-btn:disabled { opacity: .35; cursor: default; }
+.rf-skip { font: inherit; font-size: 14px; font-weight: 600; color: inherit; background: none; border: 0; padding: 8px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+
+/* questions */
+.rf-q { border: 0; padding: 0; margin: 4svh 0 0; min-width: 0; }
+.rf-q legend { font-size: clamp(28px, min(2.9vw, 4.6svh), 46px); font-weight: 600; line-height: 1.12; letter-spacing: -.015em; max-width: 18ch; padding: 0; }
+.rf-hint { margin-top: 10px; font-size: 14px; color: color-mix(in srgb, currentColor 62%, transparent); }
+.rf-opts { display: grid; gap: 10px; margin-top: 26px; max-width: 520px; }
+.rf-opt { position: relative; display: flex; align-items: center; gap: 14px; padding: 15px 18px; border-radius: 18px; cursor: pointer;
+  background: color-mix(in srgb, #fff 62%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-ink) 12%, transparent); transition: background .25s, box-shadow .25s, color .25s; }
+.rf-opt:hover { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-ink) 40%, transparent); }
+.rf-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.rf-opt__box { flex: none; inline-size: 20px; block-size: 20px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px color-mix(in srgb, currentColor 45%, transparent); display: grid; place-items: center; }
+.rf-q--multi .rf-opt__box { border-radius: 6px; }
+.rf-opt__box svg { opacity: 0; inline-size: 12px; block-size: 12px; }
+.rf-opt__label { font-size: 16px; font-weight: 600; line-height: 1.3; }
+.rf-opt__sub { display: block; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; opacity: .6; margin-top: 3px; }
+.rf-opt:has(input:checked) { background: var(--c-ink); color: #F4EFE7; box-shadow: none; }
+.rf-opt:has(input:checked) .rf-opt__box { background: #F4EFE7; box-shadow: none; }
+.rf-opt:has(input:checked) .rf-opt__box svg { opacity: 1; color: var(--c-ink); }
+.rf-opt:has(input:focus-visible) { outline: 2px solid var(--c-ink); outline-offset: 3px; }
+.rf-q .rf-row { margin-top: 22px; }
+/* the last question's six answers sit in two columns on wide screens, so its button stays in view */
+@media (min-width: 761px) and (min-aspect-ratio: 4/5) { .rf-q--multi .rf-opts { grid-template-columns: 1fr 1fr; max-width: 640px; } }
+
+/* result */
+.rf-name { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; font-size: clamp(44px, min(5vw, 8.6svh), 100px); margin-top: 10px; }
+.rf-steps { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 8px; max-width: 520px; }
+.rf-step { display: flex; align-items: center; gap: 14px; padding: 9px 14px; border-radius: 16px; background: color-mix(in srgb, #fff 62%, transparent); }
+.rf-step label { display: flex; align-items: center; gap: 14px; flex: 1; cursor: pointer; min-width: 0; }
+.rf-step input { inline-size: 18px; block-size: 18px; accent-color: var(--c-ink); flex: none; }
+.rf-step__dot { flex: none; inline-size: 30px; block-size: 30px; border-radius: 50%; background: var(--sku); display: grid; place-items: center; font-family: var(--font-display); font-size: 15px; color: var(--c-ink); }
+.rf-step__name { font-weight: 600; font-size: 15px; line-height: 1.25; }
+.rf-step__when { display: block; font-size: 12px; color: color-mix(in srgb, currentColor 62%, transparent); margin-top: 2px; }
+.rf-step__price { margin-inline-start: auto; font-size: 14px; font-weight: 600; white-space: nowrap; }
+.rf-step--opt { background: transparent; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-ink) 12%, transparent); }
+.rf-sub { margin-top: 22px; font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, currentColor 60%, transparent); }
+.rf-day { display: flex; flex-wrap: wrap; gap: 8px 26px; margin-top: 18px; font-size: 13px; font-weight: 600; }
+.rf-day span { display: inline-flex; align-items: center; gap: 8px; }
+.rf-day i { display: inline-flex; gap: 4px; font-style: normal; }
+.rf-day b { inline-size: 22px; block-size: 22px; border-radius: 50%; background: var(--sku); display: grid; place-items: center; font-family: var(--font-display); font-weight: 400; font-size: 12px; }
+.rf-note { margin-top: 18px; max-width: 52ch; font-size: 14px; line-height: 1.5; }
+.rf-buy { margin-top: 22px; }
+.rf-total { font-size: 15px; } .rf-total strong { font-size: 22px; margin-inline-start: 8px; }
+.rf-total s { opacity: .5; margin-inline-start: 8px; font-size: 14px; }
+.rf-buy .rf-row { margin-top: 14px; }
+.rf-ghost { font: inherit; font-size: 14px; font-weight: 600; background: none; border: 0; color: inherit; padding: 8px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.rf-ghost[hidden] { display: none; }
+.rf-small { margin-top: 18px; font-size: 12px; line-height: 1.5; color: color-mix(in srgb, currentColor 58%, transparent); max-width: 56ch; }
+.rf-links { display: flex; gap: 22px; margin-top: 16px; }
+
+/* the stage: four packs that answer */
+.rf-stage { position: relative; z-index: 1; min-height: 0; }
+.rf-lineup { --gap: clamp(10px, 1.4vw, 22px); --base: min(56svh, 28vw, 520px); position: absolute; inset-inline: 0 4vw; inset-block-end: 13svh; margin: 0; padding: 0; list-style: none;
+  display: flex; justify-content: center; align-items: flex-end; }
+.rf-pack { position: relative; height: calc(var(--h) * var(--base)); aspect-ratio: var(--ar); margin-inline: var(--gap); transform-origin: 50% 100%;
+  transition: transform .75s cubic-bezier(.2,.75,.2,1), opacity .6s ease, filter .6s ease; }
+.rf-pack img { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; }
+.rf-pack::after { content: ''; position: absolute; z-index: 1; inset-inline: 3%; inset-block-end: -7px; block-size: 14px; border-radius: 50%; background: radial-gradient(closest-side, rgb(32 35 58 / .3), transparent); filter: blur(2px); transition: opacity .6s; }
+.rf-pack__cap { position: absolute; inset-inline: -40px; top: calc(100% + 18px); text-align: center; font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; transition: opacity .5s; }
+.rf-pack__cap b { font-family: var(--font-display); font-weight: 400; letter-spacing: 0; margin-inline-end: 6px; }
+.rf-pack[data-state='opt'] { transform: translateY(2%) scale(.9); opacity: .62; }
+.rf-pack[data-state='off'] { transform: translateY(4%) scale(.8); opacity: .16; filter: saturate(.3); }
+.rf-pack[data-state='off']::after, .rf-pack[data-state='off'] .rf-pack__cap { opacity: 0; }
+.rf-pack[data-state='core'] { transform: none; }
+.rf-pack.is-pulse img { animation: rf-pulse .6s cubic-bezier(.2,.75,.2,1); }
+@keyframes rf-pulse { 40% { translate: 0 -10px; } }
+
+/* phones and portrait tablets: the stage first, compact; the question under it */
+@media (max-width: 760px), (max-aspect-ratio: 4/5) {
+  .rf { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; min-height: 0; }
+  /* the packs stay pinned under the header while you answer, so you can see them answer */
+  .rf-stage { order: -1; position: sticky; top: 0; z-index: 3; block-size: calc(var(--hdr, var(--header-h)) + 24svh);
+    background: linear-gradient(var(--c-daylight, #F5F1EA) 82%, color-mix(in srgb, var(--c-daylight, #F5F1EA) 0%, transparent)); }
+  .rf-lineup { inset-inline: 4vw; inset-block-end: 22px; --gap: 6px; --base: min(20svh, 44vw, 260px); }
+  .rf-mark .rf-l { transform: translateX(calc((1 - var(--p)) * -110px)); } .rf-mark .rf-r { transform: translateX(calc((1 - var(--p)) * 110px)); }
+  .rf-opt__sub { display: inline; margin: 0 0 0 6px; } [dir='rtl'] .rf-opt__sub { margin: 0 6px 0 0; }
+  .rf-pack__cap { display: none; }
+  .rf-copy { padding: 2svh 5vw calc(var(--dock-h, 0px) + 6svh); }
+  .rf-screen { margin-top: 2svh; }
+  .rf-title { font-size: min(14vw, 7.6svh); }
+  .rf-q { margin-top: 2svh; }
+  .rf-q legend { font-size: min(7.4vw, 30px); }
+  .rf-opts { margin-top: 18px; }
+  .rf-opt { padding: 12px 15px; }
+  .rf-name { font-size: min(13vw, 64px); }
+}
+@media (prefers-reduced-motion: reduce) { .rf *, .rf *::before, .rf *::after { transition-duration: 0s !important; animation: none !important; } }
+:lang(ar) .rf-title, :lang(ar) .rf-name { text-transform: none; line-height: 1.15; }
+:lang(ar) .rf-eyebrow, :lang(ar) .rf-btn, :lang(ar) .rf-progress, :lang(ar) .rf-pack__cap, :lang(ar) .rf-sub, :lang(ar) .rf-opt__sub { letter-spacing: 0; }
+</style>
+
+<section class="rf" id="Rf-{{ section.id }}" data-state="intro" aria-labelledby="RfTitle-{{ section.id }}" data-match="{{ 'skin-check.js' | asset_url }}" data-am="{{ 'finder.morning' | t | escape }}" data-pm="{{ 'finder.night' | t | escape }}">
+  <script type="application/json" data-rf-data>
+    {
+      "products": {
+        {%- for h in handles -%}
+          {%- assign p = all_products[h] -%}
+          {%- assign v = p.selected_or_first_available_variant -%}
+          "{{ forloop.index }}": { "id": {{ v.id | default: 0 }}, "price": {{ v.price | default: 0 }}, "available": {{ v.available | default: false | json }}, "title": {{ p.title | json }}, "label": {{ p.metafields.bts.step_label.value | default: p.title | json }}, "url": {{ p.url | json }}, "am": {{ forloop.last | json }} }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      },
+      "s": {
+        "progress": {{ 'skin_check.progress' | t: n: '__N__', total: '__T__' | json }},
+        "result": {{ 'skin_check.result_title' | t | json }},
+        "when_am": {{ 'skin_check.when_am' | t | json }},
+        "when_both": {{ 'skin_check.when_both' | t | json }},
+        "add_set": {{ 'skin_check.add_set' | t: set: '__S__' | json }},
+        "add_items": {{ 'skin_check.add_items' | t: count: '__N__' | json }},
+        "add_one": {{ 'skin_check.add_one' | t | json }},
+        "nothing": {{ 'skin_check.nothing' | t | json }},
+        "set_text": {{ 'skin_check.set_text' | t: set: '__S__', price: '__P__', singles: '__Q__' | json }},
+        "complete_text": {{ 'skin_check.complete_text' | t: product: '__P__', set: '__S__', extra: '__X__', single: '__Q__' | json }},
+        "complete_cta": {{ 'skin_check.complete_cta' | t: product: '__P__' | json }}
+      }
+    }
+  </script>
+  <div class="rf-copy">
+    <div class="rf-top">
+      <svg class="rf-mark" viewBox="0 0 501 547" aria-hidden="true" focusable="false"><path class="rf-l" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/><path class="rf-r" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>
+      <p class="rf-progress" aria-live="polite" data-rf-progress></p>
+      <button type="button" class="rf-back" data-rf-back hidden>{% render 'icon', name: 'arrow', class: 'icon--sm' %}{{ 'skin_check.back' | t }}</button>
+    </div>
+
+    <div class="rf-screen is-in" data-screen="intro">
+      <p class="rf-eyebrow" style="--i: 0">{{ 'finder.eyebrow' | t }}</p>
+      <h1 class="rf-title" id="RfTitle-{{ section.id }}" style="--i: 1">{{ 'finder.title' | t }}</h1>
+      <p class="rf-lede" style="--i: 2">{{ 'skin_check.intro' | t }}</p>
+      <div class="rf-row" style="--i: 3">
+        <button type="button" class="rf-btn" data-rf-start>{{ 'skin_check.start' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+        <button type="button" class="rf-skip" data-rf-skip>{{ 'finder.skip' | t }}</button>
+      </div>
+      <noscript><p class="rf-small"><a href="{{ sets_url }}">{{ 'about2.sets_link' | t }}</a> · <a href="{{ routes.all_products_collection_url }}">{{ 'skin_check.browse' | t }}</a></p></noscript>
+    </div>
+
+    <form data-rf-form novalidate>
+      {%- for q in qs -%}
+        {%- liquid
+          case q
+            when 'type'
+              assign opts = 'oily,combination,normal,dry,very_dry' | split: ','
+            when 'react'
+              assign opts = 'no,some,high' | split: ','
+            when 'acne'
+              assign opts = 'no,yes' | split: ','
+            else
+              assign opts = 'oil,tone,marks,dehydration,barrier,spf' | split: ','
+          endcase
+          assign qk = 'skin_check.q.' | append: q
+          assign multi = false
+          if q == 'concerns'
+            assign multi = true
+          endif
+        -%}
+        <fieldset class="rf-screen rf-q{% if multi %} rf-q--multi{% endif %}" data-screen="{{ q }}" hidden>
+          <legend style="--i: 0">{{ qk | t }}</legend>
+          {%- if multi -%}<p class="rf-hint" style="--i: 1">{{ 'skin_check.choose_any' | t }}</p>{%- endif -%}
+          <div class="rf-opts" style="--i: 1">
+            {%- for o in opts -%}
+              {%- assign ok = 'skin_check.a.' | append: q | append: '_' | append: o -%}
+              {%- assign okd = ok | append: '_d' -%}
+              {%- assign d = okd | t -%}
+              <label class="rf-opt">
+                <input type="{% if multi %}checkbox{% else %}radio{% endif %}" name="{{ q }}" value="{{ o }}">
+                <span class="rf-opt__box" aria-hidden="true">{% render 'icon', name: 'check', class: 'icon--sm' %}</span>
+                <span><span class="rf-opt__label">{{ ok | t }}</span>{%- unless d contains 'ranslation missing' or d == okd -%}<span class="rf-opt__sub">{{ d }}</span>{%- endunless -%}</span>
+              </label>
+            {%- endfor -%}
+          </div>
+          <div class="rf-row" style="--i: 2">
+            {%- if multi -%}<button type="button" class="rf-btn" data-rf-next>{{ 'skin_check.see' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>{%- else -%}<button type="button" class="rf-btn" data-rf-next disabled>{{ 'skin_check.next' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>{%- endif -%}
+            <button type="button" class="rf-skip" data-rf-skip>{{ 'finder.skip' | t }}</button>
+          </div>
+        </fieldset>
+      {%- endfor -%}
+    </form>
+
+    <div class="rf-screen" data-screen="result" hidden tabindex="-1">
+      <p class="rf-eyebrow" style="--i: 0">{{ 'skin_check.result_title' | t }}</p>
+      <h2 class="rf-name" style="--i: 1" data-rf-name></h2>
+      <ul class="rf-steps" role="list" style="--i: 2" data-rf-steps></ul>
+      <p class="rf-sub" style="--i: 3" data-rf-also-title hidden>{{ 'skin_check.also' | t }}</p>
+      <ul class="rf-steps" role="list" style="--i: 3" data-rf-also></ul>
+      <p class="rf-day" style="--i: 4" data-rf-day></p>
+      <p class="rf-note" style="--i: 4" data-rf-note hidden></p>
+      <button type="button" class="rf-ghost" style="--i: 4" data-rf-complete hidden></button>
+      <product-form class="rf-buy" style="--i: 5">
+        <form method="post" action="{{ routes.cart_add_url }}" novalidate>
+          <p class="rf-total"><span>{{ 'skin_check.total' | t }}</span><strong data-rf-total></strong><s data-rf-was></s></p>
+          <div class="rf-row">
+            <button type="submit" class="rf-btn" data-rf-add><span class="btn__label"></span></button>
+            <button type="submit" class="rf-ghost" data-rf-singles hidden>{{ 'skin_check.add_separately' | t }}</button>
+          </div>
+          <p class="rf-small" data-form-error hidden></p>
+        </form>
+      </product-form>
+      <div class="rf-links" style="--i: 6">
+        <button type="button" class="rf-ghost" data-rf-change>{{ 'skin_check.change' | t }}</button>
+        <button type="button" class="rf-ghost" data-rf-restart>{{ 'skin_check.restart' | t }}</button>
+      </div>
+      <p class="rf-small" style="--i: 6">{{ 'skin_check.disclaimer' | t }}</p>
+    </div>
+
+    <div class="rf-screen" data-screen="guidance" hidden tabindex="-1">
+      <h2 class="rf-name" style="--i: 0">{{ 'skin_check.guidance_title' | t }}</h2>
+      <p class="rf-lede" style="--i: 1">{{ 'skin_check.guidance_text' | t }}</p>
+      <div class="rf-links" style="--i: 2">
+        <button type="button" class="rf-ghost" data-rf-change>{{ 'skin_check.change' | t }}</button>
+        <a class="rf-ghost" href="{{ routes.all_products_collection_url }}">{{ 'skin_check.browse' | t }}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rf-stage" aria-hidden="true">
+    <ul class="rf-lineup" role="list">
+      {%- for h in handles -%}
+        {%- assign p = all_products[h] -%}
+        {%- capture img -%}{%- render 'cut-src', handle: h, width: 360 -%}{%- endcapture -%}
+        {%- capture img2 -%}{%- render 'cut-src', handle: h, width: 140 -%}{%- endcapture -%}
+        {%- capture img3 -%}{%- render 'cut-src', handle: h, width: 200 -%}{%- endcapture -%}
+        {%- capture img4 -%}{%- render 'cut-src', handle: h, width: 280 -%}{%- endcapture -%}
+        <li class="rf-pack" data-step="{{ forloop.index }}" data-state="core" style="--h: {{ hs[forloop.index0] }}; --ar: {{ ars[forloop.index0] }}">
+          <img src="{{ img | strip }}" srcset="{{ img2 | strip }} 140w, {{ img3 | strip }} 200w, {{ img4 | strip }} 280w, {{ img | strip }} 360w" sizes="(min-width: 761px) calc(13vw * {{ hs[forloop.index0] }}), calc(16vw * {{ hs[forloop.index0] }})" alt="" width="357" height="1100" fetchpriority="high">
+          <span class="rf-pack__cap"><b>0{{ forloop.index }}</b>{{ p.metafields.bts.step_label.value | default: p.title | escape }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+<script src="{{ 'finder.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "Routine finder (demo)",
+  "tag": "div",
+  "class": "section-hero",
+  "settings": []
+}
+{% endschema %}

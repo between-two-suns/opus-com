@@ -388,6 +388,7 @@
 .s2-day__body { display: grid; align-content: start; gap: 6px; padding: 14px 16px 18px; }
 .s2-day__name { font-size: 16px; font-weight: 700; line-height: 1.25; }
 .s2-day__how { font-size: 14px; line-height: 1.45; color: color-mix(in srgb, var(--c-ink) 80%, transparent); }
+.s2-day__when { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; font-weight: 650; color: color-mix(in srgb, var(--c-ink) 66%, transparent); }
 .s2-day__note { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; font-size: 14px; font-weight: 600; color: var(--c-muted); }
 @media (prefers-reduced-motion: no-preference) {
   .s2-day__panel:not([hidden]) .s2-day__step { animation: s2-rise 500ms var(--ease-out) both; animation-delay: calc(var(--k, 1) * 70ms); }

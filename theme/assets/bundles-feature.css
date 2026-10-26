@@ -76,3 +76,15 @@
   .setsx-card:hover, .setsx-card:hover .setsx-pack { transform: none; }
   .setsx-card:hover .setsx-card__media img { scale: none; }
 }
+
+/* One recommendation (DECISIONS 211): the pick alone, photo beside its steps and buying on wide screens; the companion as one line */
+.setsx-mate { margin: clamp(16px, 2vw, 24px) 0 0; font-size: 15px; color: var(--c-muted); }
+.setsx-mate a { color: var(--c-ink); font-weight: 650; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.setsx-mate a:hover { text-decoration: underline; text-underline-offset: 4px; }
+@media (min-width: 990px) {
+  .setsx--one .setsx__grid { grid-template-columns: minmax(0, 1fr); }
+  .setsx--one .setsx-card--hero { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+  .setsx--one .setsx-card--hero .setsx-card__media { aspect-ratio: 4 / 3; }
+  .setsx--one .setsx-card--hero .setsx-card__body { grid-template-columns: minmax(0, 1fr); align-content: center; padding: clamp(28px, 3vw, 48px); gap: 28px; }
+  .setsx--one .setsx-card__name { font-size: clamp(40px, 3.6vw, 60px); }
+}
