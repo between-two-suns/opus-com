@@ -22,12 +22,14 @@
 .rf-copy { position: relative; z-index: 2; padding: calc(var(--hdr, var(--header-h)) + 7svh) 4vw 7svh 6vw; display: flex; flex-direction: column; min-width: 0; }
 [dir='rtl'] .rf-copy { padding-inline: 6vw 4vw; }
 
-/* the mark as progress: its two arcs close in with each answer */
-.rf-top { display: flex; align-items: center; gap: 16px; min-height: 48px; }
-.rf-mark { inline-size: 40px; block-size: 44px; overflow: visible; flex: none; }
-.rf-mark path { transition: transform .8s cubic-bezier(.65,0,.25,1), fill .6s; }
-.rf-mark .rf-l { fill: rgb(125 185 147); transform: translateX(calc((1 - var(--p)) * -150px)); }
-.rf-mark .rf-r { fill: rgb(150 172 221); transform: translateX(calc((1 - var(--p)) * 150px)); }
+/* the brand mark as it is (ink, closed), and progress as one thin line that fills with each answer */
+.rf-top { position: relative; display: flex; align-items: center; gap: 12px; min-height: 44px; max-width: 520px; }
+.rf-mark { inline-size: 18px; block-size: 20px; flex: none; }
+.rf-mark path { fill: currentColor; }
+.rf-top::after { content: ''; position: absolute; inset-inline-start: 0; inset-block-end: -4px; block-size: 2px; inline-size: calc(var(--p) * 100%); background: currentColor; border-radius: 2px; transition: inline-size .6s cubic-bezier(.65,0,.25,1); }
+.rf-top::before { content: ''; position: absolute; inset-inline: 0; inset-block-end: -4px; block-size: 2px; background: color-mix(in srgb, currentColor 12%, transparent); border-radius: 2px; }
+.rf[data-state='intro'] .rf-top { display: none; }
+.rf[data-state='intro'] .rf-screen { margin-top: 0; }
 .rf-progress { font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, currentColor 60%, transparent); }
 .rf-back { display: inline-flex; align-items: center; gap: 8px; margin-inline-start: auto; font: inherit; font-size: 13px; font-weight: 600; color: inherit; background: none; border: 0; padding: 10px 0; cursor: pointer; opacity: .7; }
 .rf-back:hover { opacity: 1; } .rf-back[hidden] { display: none; }
@@ -113,15 +115,18 @@
 
 /* phones and portrait tablets: the stage first, compact; the question under it */
 @media (max-width: 760px), (max-aspect-ratio: 4/5) {
-  .rf { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; min-height: 0; }
-  /* the packs stay pinned under the header while you answer, so you can see them answer */
-  .rf-stage { order: -1; position: sticky; top: 0; z-index: 3; block-size: calc(var(--hdr, var(--header-h)) + 24svh);
-    background: linear-gradient(var(--c-daylight, #F5F1EA) 82%, color-mix(in srgb, var(--c-daylight, #F5F1EA) 0%, transparent)); }
-  .rf-lineup { inset-inline: 4vw; inset-block-end: 22px; --gap: 6px; --base: min(20svh, 44vw, 260px); }
-  .rf-mark .rf-l { transform: translateX(calc((1 - var(--p)) * -110px)); } .rf-mark .rf-r { transform: translateX(calc((1 - var(--p)) * 110px)); }
+  .rf { display: flex; flex-direction: column; min-height: 0; }
+  .rf-stage { position: relative; order: 1; block-size: 34svh; }
+  .rf-lineup { inset-inline: 4vw; inset-block-end: 26px; --gap: 6px; --base: min(30svh, 60vw, 320px); }
+  .rf:not([data-state='intro']) .rf-stage { order: -1; block-size: calc(var(--hdr, var(--header-h)) + 18svh); }
+  .rf:not([data-state='intro']) .rf-lineup { inset-block-end: 16px; --base: min(15svh, 36vw, 200px); }
   .rf-opt__sub { display: inline; margin: 0 0 0 6px; } [dir='rtl'] .rf-opt__sub { margin: 0 6px 0 0; }
   .rf-pack__cap { display: none; }
-  .rf-copy { padding: 2svh 5vw calc(var(--dock-h, 0px) + 6svh); }
+  .rf-copy { padding: calc(var(--hdr, var(--header-h)) + 3svh) 5vw 2svh; }
+  .rf:not([data-state='intro']) .rf-copy { padding: 1svh 5vw calc(var(--dock-h, 0px) + 6svh); }
+  .rf[data-state='intro'] { padding-block-end: calc(var(--dock-h, 0px) + 3svh); }
+  .rf-q--multi .rf-opts { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .rf-q--multi .rf-opt { padding: 11px 12px; } .rf-q--multi .rf-opt__label { font-size: 14px; } .rf-q--multi .rf-opt__sub { display: none; }
   .rf-screen { margin-top: 2svh; }
   .rf-title { font-size: min(14vw, 7.6svh); }
   .rf-q { margin-top: 2svh; }
@@ -168,7 +173,7 @@
     </div>
 
     <div class="rf-screen is-in" data-screen="intro">
-      <p class="rf-eyebrow" style="--i: 0">{{ 'finder.eyebrow' | t }}</p>
+      <p class="t-eyebrow" style="--i: 0">{{ 'finder.eyebrow' | t }}</p>
       <h1 class="rf-title" id="RfTitle-{{ section.id }}" style="--i: 1">{{ 'finder.title' | t }}</h1>
       <p class="rf-lede" style="--i: 2">{{ 'skin_check.intro' | t }}</p>
       <div class="rf-row" style="--i: 3">

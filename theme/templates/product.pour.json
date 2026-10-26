@@ -4,8 +4,7 @@
       "type": "main-product-v2",
       "settings": {
         "preview_payments": true,
-        "set_v2": true,
-        "pour": true
+        "set_v2": true
       }
     },
     "inside": {

@@ -1,8 +1,7 @@
 {{ 'bundles-feature.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  Sets: one recommendation (DECISIONS 211). The pick (The Full Ritual) as one calm card, its photo beside its four steps,
-  price, saving and one button; the companion (The Night Ritual) is one quiet line under it for people who already have
-  a sunscreen they love, no longer a second card sold as "the evening" beside it. Before: the companion card showed its
+  Sets, one hero and one companion, told as one day: the pick (The Full Ritual, morning and night) leads with its
+  photo and the four steps; the companion (The Night Ritual, evenings: sunscreen waits for the morning) shows its
   three packs on an evening stage (or its photo, when one is set). Prices and compare-at come from the Shopify bundle products.
 {%- endcomment -%}
 {%- liquid
@@ -19,7 +18,7 @@
   assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
   assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
 -%}
-<section class="section setsx setsx--one" id="sets" data-tone="lilac" aria-labelledby="SetsxTitle-{{ section.id }}">
+<section class="section setsx" id="sets" data-tone="lilac" aria-labelledby="SetsxTitle-{{ section.id }}">
   <div class="container">
     <div class="section-head">
       <div class="section-head__text">
@@ -34,7 +33,7 @@
     </div>
 
     <ul class="setsx__grid" role="list">
-      {%- for set in (1..1) -%}
+      {%- for set in (1..2) -%}
         {%- liquid
           if forloop.first
             assign p = hero
@@ -149,16 +148,6 @@
         </li>
       {%- endfor -%}
     </ul>
-    {%- if mate.id -%}
-      {%- liquid
-        assign mate_key = 'bundles.names.' | append: mate.handle
-        assign mate_name = mate_key | t | replace: '&amp;', '&'
-        if mate_name contains 'ranslation missing' or mate_name == mate_key
-          assign mate_name = mate.title
-        endif
-      -%}
-      <p class="setsx-mate">{{ 'sections.bundles_feature.mate_line' | t }} <a href="{{ mate.url }}">{{ mate_name | escape }} · {% render 'egp', cents: mate.selected_or_first_available_variant.price %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a></p>
-    {%- endif -%}
   </div>
 </section>
 
