@@ -1,6 +1,6 @@
 {%- comment -%}
-  Set pages (DECISIONS 189–192): "Which set is right for you?" The five routine sets as cards: each shows its packs
-  at their true sizes on its colours (steps it doesn't hold as faint outlines), what's inside, price, saving and free
+  Set pages (DECISIONS 189–192): "Which set is right for you?" The five routine sets as cards: each shows only its own packs
+  at their true sizes on its colours (DECISIONS 228), what's inside, price, saving and free
   delivery; the set being viewed is marked. Prices and savings are live (compare-at = the singles added up).
   Renders nothing on single products.
 {%- endcomment -%}
@@ -64,7 +64,8 @@
             <span class="s2-set__stage" style="--g: linear-gradient(115deg{{ tints }}{% if ds.size == 1 %}{{ tints }}{% endif %})" aria-hidden="true">
               {%- for i in (1..4) -%}
                 {%- assign is = i | append: '' -%}
-                <span class="s2-set__pack{% unless ds contains is %} is-off{% endunless %}" data-step="{{ i }}">
+                {%- unless ds contains is -%}{%- continue -%}{%- endunless -%}
+                <span class="s2-set__pack" data-step="{{ i }}">
                   {%- capture pk -%}{%- render 'cut-src', handle: step_handles[i], width: 160 -%}{%- endcapture -%}
                   <img src="{{ pk }}" alt="" width="366" height="1100" loading="lazy">
                 </span>
@@ -91,7 +92,6 @@
         </li>
       {%- endfor -%}
     </ul>
-    {%- render 'skin-check-link', key: 'skin_check.cta_sets', class: 's2-cmp__quiz' -%}
   </div>
 </section>
 {%- endif -%}

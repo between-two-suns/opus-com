@@ -1254,7 +1254,7 @@
     "restart": "Start again",
     "change": "Change answers",
     "disclaimer": "Suggestions are based on our ingredients, not a diagnosis, and can't guarantee how your skin will react. Patch test anything new. Not a medical treatment.",
-    "cta_sets": "Not sure which? Find your routine in 30 seconds",
+    "cta_sets": "Not sure which set? Find your routine in 30 seconds",
     "cta_product": "Not sure it suits your skin? Find your routine in 30 seconds",
     "result_text": "In the order you use them. Each step shows what it does for your skin and why.",
     "for_label": "Helps with",
@@ -1361,13 +1361,13 @@
   },
   "set2": {
     "outcome": {
-      "the-full-ritual": "Removes oil, evens skin tone, strengthens the skin barrier and protects from UVA and UVB. The whole routine, morning and night.",
-      "the-clear-protect-trio": "Removes oil, evens skin tone and protects from UVA and UVB. Three steps to start with.",
-      "the-night-ritual": "Removes oil, evens skin tone and strengthens the skin barrier. Your evening routine; sunscreen waits for the morning.",
-      "clear-protect-duo": "Evens skin tone and controls oil, then protects from UVA and UVB every morning.",
-      "the-core-duo": "Removes oil, then evens skin tone and hydrates. The first two steps.",
-      "spf-stock-up": "Invisible, lightweight UVA and UVB protection. Two tubes, so the morning step never runs out.",
-      "serum-stock-up": "Controls oil, evens skin tone, hydrates. Two bottles, so it never runs out."
+      "the-full-ritual": "The whole routine in one box.",
+      "the-clear-protect-trio": "Three steps to start with.",
+      "the-night-ritual": "Everything but the sunscreen. Add it in the morning.",
+      "clear-protect-duo": "Serum and sunscreen: the simplest start.",
+      "the-core-duo": "The first two steps of the routine.",
+      "spf-stock-up": "Two tubes, so the morning step never runs out.",
+      "serum-stock-up": "Two bottles, so it never runs out."
     },
     "facts": "{{ count }} full-size products · {{ when }}",
     "when_ampm": "Morning + night",

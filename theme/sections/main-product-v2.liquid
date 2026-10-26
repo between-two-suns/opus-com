@@ -384,7 +384,8 @@
             {%- endif -%}
           </ul>
           <p class="v2-ask">{{ 'pdp2.questions' | t }} <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{{ 'pdp2.questions_link' | t }}</a></p>
-          {%- render 'skin-check-link', key: 'skin_check.cta_product', class: 'pdp__skc' -%}
+          {%- if bdef != blank -%}{%- assign skc_key = 'skin_check.cta_sets' -%}{%- else -%}{%- assign skc_key = 'skin_check.cta_product' -%}{%- endif -%}
+          {%- render 'skin-check-link', key: skc_key, class: 'pdp__skc' -%}
           {%- if section.settings.preview_payments -%}
             {%- comment -%} Design preview only (owner, pre-launch): how the planned methods will look. Off at launch; real icons come from payment-icons once each method is live and tested. {%- endcomment -%}
             <div class="v2-pay" data-design-preview>

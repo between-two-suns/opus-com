@@ -278,11 +278,11 @@
 
 /* Set pages (DECISIONS 189–190) ------------------------------------ */
 /* Head: what the set does, a fact line, who it's for */
-.v2-set-outcome { margin: 0; font-size: clamp(19px, 5vw, 23px); font-weight: 650; line-height: 1.3; letter-spacing: -0.01em; text-wrap: pretty; }
-:lang(ar) .v2-set-outcome { letter-spacing: 0; line-height: 1.55; }
+.v2-set-outcome { margin: 0; font-size: 17px; font-weight: 450; line-height: 1.45; color: color-mix(in srgb, var(--c-ink) 82%, transparent); text-wrap: pretty; }
+:lang(ar) .v2-set-outcome { line-height: 1.6; }
 .v2-set-facts { margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c-muted); }
 :lang(ar) .v2-set-facts { letter-spacing: 0; text-transform: none; font-size: 14px; }
-@media (min-width: 990px) { .v2-set-outcome { font-size: clamp(20px, 1.6vw, 24px); } }
+@media (min-width: 990px) { .v2-set-outcome { font-size: 18px; } }
 .pdp--v2[data-step='0'] .v2-who__list li { background: color-mix(in srgb, var(--c-ink) 6%, #fff); }
 .pdp--v2[data-step='0'] .v2-who__list .icon { color: var(--c-success); }
 
@@ -318,43 +318,13 @@
 @keyframes s2-lift { from { translate: 0 18px; } to { translate: 0 0; } }
 @keyframes callout-draw-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 
-/* Inside the set: cards open their product; sizes and the saving side by side */
+/* Inside the set: cards open their product (the saving is shown once, in the buy box) */
 .s2-inside .bi__item { scroll-margin-block-start: calc(var(--header-h) + 24px); }
 .s2-inside__view { display: inline-flex; align-items: center; gap: 6px; margin-block-start: 4px; font-size: 14px; font-weight: 700; color: var(--c-ink); }
 .bi__link:hover .s2-inside__view { text-decoration: underline; text-underline-offset: 3px; }
 .s2-inside__lede { display: grid; gap: 10px; max-inline-size: 460px; }
 .s2-inside__full { display: flex; align-items: flex-start; gap: 8px; margin: 0; font-size: 15px; font-weight: 700; line-height: 1.4; }
 .s2-inside__full .icon { flex: none; margin-block-start: 3px; color: var(--c-success); }
-.s2-inside__grid { max-inline-size: none; grid-template-columns: minmax(0, 1fr) !important; }
-/* The saving as an equation: a full-width strip on wider screens ("Cleanser 399 + Serum 499 … = 1,846 → 1,699"),
-   a totals list on phones (each card already shows its price) */
-.s2-eq { display: grid; list-style: none; margin: 0; padding: 0; }
-.s2-eq > li { display: flex; justify-content: space-between; gap: 12px; padding-block: 9px; border-block-end: 1px solid var(--c-line); font-size: 15px; }
-.s2-eq__label { color: var(--c-muted); }
-.s2-eq__val { font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.s2-eq__total .s2-eq__label { color: var(--c-ink); font-weight: 600; }
-.s2-eq__total .s2-eq__val { color: var(--c-muted); }
-.s2-eq__set { border-block-end: 0 !important; font-size: 18px !important; }
-.s2-eq__set .s2-eq__label { color: var(--c-ink); font-weight: 750; }
-.s2-eq__set .s2-eq__val { font-weight: 800; }
-@media (max-width: 749px) { .s2-eq__item { display: none !important; } }
-@media (min-width: 750px) {
-  .s2-save { grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 32px; }
-  .s2-save .bi__h { grid-column: 1; }
-  .s2-save .s2-eq { grid-column: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 0; }
-  .s2-save .bi__saved { grid-column: 2; grid-row: 1 / span 2; align-self: center; white-space: nowrap; }
-  .s2-eq > li { display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto; align-items: center; column-gap: 14px; row-gap: 2px; padding: 0 14px 0 0; border: 0; }
-  .s2-eq > li::before { grid-row: 1 / span 2; grid-column: 1; font-family: var(--font-display); font-size: 22px; line-height: 1; color: var(--c-muted); }
-  .s2-eq > li + li::before { content: '+'; }
-  .s2-eq > .s2-eq__total::before { content: '='; }
-  .s2-eq > .s2-eq__set::before { content: '→'; color: var(--c-ink); }
-  [dir='rtl'] .s2-eq > .s2-eq__set::before { content: '←'; }
-  .s2-eq__label, .s2-eq__val { grid-column: 2; }
-  .s2-eq > li:first-child .s2-eq__label, .s2-eq > li:first-child .s2-eq__val { grid-column: 1; }
-  .s2-eq__label { font-size: 13px; }
-  .s2-eq__val { font-size: 17px; }
-  .s2-eq__set { font-size: inherit !important; }
-  .s2-eq__set .s2-eq__val { font-size: 22px; }
 }
 .s2-inside__price { font-size: 15px; font-weight: 750; font-variant-numeric: tabular-nums; }
 /* Phones: the product cards are one swipe row, not a 2 × 2 grid (about a screen shorter) */
@@ -428,8 +398,7 @@ a.s2-set__card:focus-visible { outline: 3px solid var(--c-focus); outline-offset
 .s2-set__pack[data-step='2'] { --s: .65; }
 .s2-set__pack[data-step='3'], .s2-set__pack[data-step='4'] { --s: .81; }
 .s2-set__pack img { block-size: calc(var(--s) * 100%); inline-size: auto; max-inline-size: 100%; object-fit: contain; object-position: 50% 100%; filter: drop-shadow(0 8px 8px rgba(32, 35, 58, .16)); transition: translate 500ms var(--ease-out); }
-.s2-set__pack.is-off img { opacity: .16; filter: grayscale(1); }
-a.s2-set__card:hover .s2-set__pack:not(.is-off) img { translate: 0 -4px; }
+a.s2-set__card:hover .s2-set__pack img { translate: 0 -4px; }
 .s2-set__body { display: grid; align-content: start; gap: 4px; padding: 14px 16px 18px; }
 .s2-set__here { justify-self: start; margin-block-end: 2px; padding: 3px 10px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 :lang(ar) .s2-set__here { letter-spacing: 0; text-transform: none; font-size: 12px; }
@@ -440,7 +409,6 @@ a.s2-set__card:hover .s2-set__pack:not(.is-off) img { translate: 0 -4px; }
 .s2-set__was { font-size: 14px; color: var(--c-muted); }
 .s2-set__perks { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: 13px; font-weight: 700; color: var(--c-success); }
 .s2-set__ship { display: inline-flex; align-items: center; gap: 4px; }
-.s2-cmp__quiz { margin-block-start: 18px; }
 
 /* Set sections take one gap between them, like the home page (the next section's top padding goes) */
 .shopify-section:has(> .section--flow) ~ .shopify-section > .section--flow,

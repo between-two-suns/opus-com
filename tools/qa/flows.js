@@ -118,7 +118,10 @@ for (const loc of ['', '/ar']) {
     // Set pages explain themselves; FAQs follow the product
     await page.goto(`${BASE}${loc}/products/the-full-ritual`, { waitUntil: 'networkidle' });
     ok(`${tag} set page lists its 4 products`, (await page.$$eval('.bi__item', (l) => l.length)) === 4);
-    ok(`${tag} set page works out the saving`, /147/.test(await page.$eval('.bi__saved', (e) => e.textContent)));
+    // the saving is shown once, in the buy box (DECISIONS 228)
+    ok(`${tag} set page shows the saving once, in the buy box`, /147/.test(await page.$eval('.v2-buy', (e) => e.textContent)) && (await page.$$('.bi__saved')).length === 0);
+    ok(`${tag} set page has one finder link`, (await page.$$('.skc-link')).length === 1);
+    ok(`${tag} set compare shows only each set's own packs`, (await page.$$eval('.s2-set', (l) => l.map((x) => x.querySelectorAll('.s2-set__pack').length).join(','))) === '4,3,3,2,2');
     ok(`${tag} set page has no empty FAQ rows`, (await page.$$eval('.faq summary', (l) => l.filter((x) => !x.textContent.trim()).length)) === 0);
     ok(`${tag} set page has no routine strip`, (await page.$$('.routine-strip')).length === 0);
     await page.goto(`${BASE}${loc}/products/clarity-serum`, { waitUntil: 'networkidle' });

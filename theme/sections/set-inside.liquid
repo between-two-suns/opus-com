@@ -1,7 +1,6 @@
 {%- comment -%}
   Set pages (DECISIONS 189–190): what's inside. One card per product that opens its own page (the stage's packs jump
-  here, #set-item-N), the sizes, which are the same full sizes sold on their own, and the saving worked out line by
-  line: the only place the breakdown appears. Sizes are on each card, so no separate sizes list. Morning/night moves to "Your day" (set-day) and other sets to the
+  here, #set-item-N), and the sizes, which are the same full sizes sold on their own. The saving is shown once, in the buy box (DECISIONS 228). Sizes are on each card, so no separate sizes list. Morning/night moves to "Your day" (set-day) and other sets to the
   comparison table (set-compare). Computed from the set definition (snippets/bundle-def) and live prices.
   Renders nothing on single products.
 {%- endcomment -%}
@@ -16,14 +15,6 @@
   assign bundle_steps = bdef | split: '|' | first | split: ','
   assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
   assign buniq = bundle_steps | uniq
-  assign variant = product.selected_or_first_available_variant
-  assign singles = 0
-  for st in bundle_steps
-    assign si = st | plus: 0
-    assign comp = all_products[step_handles[si]]
-    assign singles = singles | plus: comp.price
-  endfor
-  assign saving = singles | minus: variant.price
   assign who_key = 'bundle_inside.who.' | append: product.handle
   assign who = who_key | t | replace: '&amp;', '&'
   assign name_key = 'bundles.names.' | append: product.handle
@@ -88,25 +79,6 @@
       {%- endfor -%}
     </ol>
 
-    <div class="bi__grid s2-inside__grid">
-      {%- if saving > 0 -%}
-        <div class="bi__card bi__save s2-save">
-          <h3 class="bi__h">{{ 'bundle_inside.saving_heading' | t }}</h3>
-          <ol class="s2-eq" role="list">
-            {%- for st in bundle_steps -%}
-              {%- assign si = st | plus: 0 -%}
-              {%- assign comp = all_products[step_handles[si]] -%}
-              {%- assign sk = 'pdp2.short.' | append: st -%}
-              <li class="s2-eq__item" data-step="{{ st }}"><span class="s2-eq__label">{{ sk | t }}</span><span class="s2-eq__val">{% render 'egp', cents: comp.price %}</span></li>
-            {%- endfor -%}
-            <li class="s2-eq__total"><span class="s2-eq__label">{{ 'bundle_inside.separately' | t }}</span><s class="s2-eq__val">{% render 'egp', cents: singles %}</s></li>
-            <li class="s2-eq__set"><span class="s2-eq__label">{{ set_name | escape }}</span><span class="s2-eq__val">{% render 'egp', cents: variant.price %}</span></li>
-          </ol>
-          {%- capture save_m -%}{% render 'egp', cents: saving %}{%- endcapture -%}
-          <p class="bi__saved">{{ 'bundles.save_vs' | t: amount: save_m }}</p>
-        </div>
-      {%- endif -%}
-    </div>
   </div>
 </section>
 {%- endif -%}
