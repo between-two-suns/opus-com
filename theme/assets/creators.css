@@ -54,11 +54,14 @@
   @keyframes cr-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 }
 
-/* calm daylight hero, display headline (v3.1) */
+/* calm daylight hero; the title uses the site's own page-title style (t-display-l: sans, sentence case), like every
+   other page (DECISIONS 225) */
 .cr-hero { background: var(--c-daylight); }
 .cr-hero__mark { background: var(--c-step-2-tint); opacity: .5; }
-.cr-hero__title { font-family: var(--font-display); text-transform: uppercase; font-weight: 700; letter-spacing: 0; line-height: .86; font-size: clamp(58px, 9vw, 132px); }
-:lang(ar) .cr-hero__title { text-transform: none; line-height: 1.15; font-size: clamp(46px, 7vw, 100px); }
+
+/* the page's sections sit closer together than the site default */
+.creators .section, .cr-apply.section { padding-block: calc(var(--section-y) * .6); }
+.creators .cr-how { padding-block-start: calc(var(--section-y) * .45); }
 
 /* ---------- How it works: one timeline (DECISIONS 224). Ink and ivory only: product colours mean products on this site ---------- */
 .cr-line { --ico: 52px; position: relative; display: grid; gap: 0; list-style: none; margin: 0; padding: 0; }
@@ -67,9 +70,9 @@
 .cr-line__step:last-child::before { display: none; }
 .cr-line__ico { grid-row: span 2; display: grid; place-items: center; inline-size: var(--ico); block-size: var(--ico); border-radius: 50%; background: var(--c-ink); color: #F4EFE7; }
 .cr-line__ico .icon { inline-size: 22px; block-size: 22px; }
-.cr-line__title { margin: 4px 0 4px; font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 2.6vw, 34px); line-height: 1; text-transform: uppercase; }
-:lang(ar) .cr-line__title { font-family: inherit; text-transform: none; line-height: 1.3; font-size: clamp(20px, 2vw, 24px); }
-.cr-line__text { margin: 0; max-inline-size: 42ch; font-size: 15px; line-height: 1.55; color: color-mix(in srgb, var(--c-ink) 78%, transparent); }
+.cr-line__title { margin: 6px 0 4px; font-weight: 700; font-size: clamp(19px, 1.6vw, 22px); line-height: 1.25; letter-spacing: -0.01em; }
+:lang(ar) .cr-line__title { letter-spacing: 0; line-height: 1.4; }
+.cr-line__text { margin: 0; max-inline-size: 42ch; font-size: 15px; line-height: 1.5; color: color-mix(in srgb, var(--c-ink) 78%, transparent); }
 @media (min-width: 990px) {
   .cr-line { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
   .cr-line__step { grid-template-columns: 1fr; row-gap: 14px; padding: 0; }
@@ -78,8 +81,8 @@
   .cr-line__title { margin: 0; }
 }
 .cr-grow { margin-block-start: clamp(28px, 4vw, 48px); padding: clamp(22px, 3vw, 34px); border-radius: var(--radius-l); background: var(--c-ink); color: #F4EFE7; }
-.cr-grow__title { margin: 0 0 18px; font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 3vw, 40px); line-height: .95; text-transform: uppercase; }
-:lang(ar) .cr-grow__title { font-family: inherit; text-transform: none; line-height: 1.3; font-size: clamp(22px, 2.4vw, 28px); }
+.cr-grow__title { margin: 0 0 18px; font-weight: 700; font-size: clamp(22px, 2.2vw, 28px); line-height: 1.2; letter-spacing: -0.02em; }
+:lang(ar) .cr-grow__title { letter-spacing: 0; line-height: 1.4; }
 .cr-grow__list { display: grid; gap: 14px 32px; list-style: none; margin: 0; padding: 0; }
 @media (min-width: 990px) { .cr-grow__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .cr-grow__list li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.5; color: rgba(244, 239, 231, .86); }
@@ -94,33 +97,17 @@
 .cr-cardx::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgba(20, 22, 38, .78) 0%, rgba(20, 22, 38, 0) 55%), linear-gradient(to bottom, rgba(20, 22, 38, .3), rgba(20, 22, 38, 0) 28%); }
 .cr-cardx__chip { position: absolute; inset-inline-start: 14px; inset-block-start: 14px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px 6px 9px; border-radius: 99px; background: rgba(255, 255, 255, .86); color: var(--c-ink); font-size: 12px; font-weight: 700; line-height: 1; }
 .cr-cardx__idea { position: absolute; inset-inline: 16px; inset-block-end: 16px; font-size: 17px; font-weight: 700; line-height: 1.3; text-wrap: balance; }
-/* the signature card: two moments of one day side by side, with the space between */
-.cr-cardx--sig { grid-column: span 1; background: var(--c-daylight); color: var(--c-ink); }
-.cr-cardx--sig::after { content: none; }
-.cr-cardx__pair { position: absolute; inset: 0 0 46%; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 0; }
-.cr-cardx__pair img { inline-size: 100%; block-size: 100%; object-fit: cover; }
-.cr-cardx__body { position: absolute; inset: 54% 16px 16px; display: grid; align-content: start; gap: 6px; }
-.cr-cardx--sig .cr-cardx__chip { position: static; justify-self: start; background: var(--c-ink); color: #F4EFE7; }
-.cr-cardx__sig { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 6.6vw, 34px); line-height: .95; text-transform: uppercase; }
-:lang(ar) .cr-cardx__sig { font-family: inherit; text-transform: none; line-height: 1.3; font-size: 22px; }
-.cr-cardx__text { font-size: 13px; line-height: 1.45; color: color-mix(in srgb, var(--c-ink) 80%, transparent); }
-.cr-cardx__tag { justify-self: start; font-size: 13px; font-weight: 700; }
-[dir='rtl'] .cr-cardx__tag { justify-self: end; }
+:lang(ar) .cr-cardx__idea { line-height: 1.45; }
 @media (min-width: 990px) {
-  .cr-ideas .cr-cards { grid-auto-flow: row; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-columns: auto; overflow: visible; padding-block-end: 0; max-inline-size: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
-  .cr-cardx--sig { grid-column: span 2; aspect-ratio: auto; }
-  .cr-cardx--sig .cr-cardx__pair { inset: 0 50% 0 0; }
-  .cr-cardx--sig .cr-cardx__body { inset: 0 0 0 50%; padding: 28px; align-content: center; gap: 10px; }
-  [dir='rtl'] .cr-cardx--sig .cr-cardx__pair { inset: 0 0 0 50%; }
-  [dir='rtl'] .cr-cardx--sig .cr-cardx__body { inset: 0 50% 0 0; }
-  .cr-cardx__sig { font-size: clamp(34px, 3vw, 48px); }
-  .cr-cardx__text { font-size: 15px; }
+  .cr-ideas .cr-cards { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-columns: auto; gap: 16px; overflow: visible; padding-block-end: 0; max-inline-size: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+  .cr-cardx__idea { font-size: 19px; inset-inline: 20px; inset-block-end: 20px; }
 }
 .cr-rules { display: grid; gap: 14px; margin-block-start: clamp(20px, 3vw, 32px); padding: clamp(20px, 3vw, 32px); border-radius: var(--radius-l); background: var(--c-paper); box-shadow: inset 0 0 0 1px var(--c-line); }
-.cr-rules__title { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(24px, 2.4vw, 32px); text-transform: uppercase; line-height: 1; }
-:lang(ar) .cr-rules__title { font-family: inherit; text-transform: none; line-height: 1.3; }
+.cr-rules__title { margin: 0; font-weight: 700; font-size: clamp(20px, 2vw, 24px); line-height: 1.25; letter-spacing: -0.01em; }
+:lang(ar) .cr-rules__title { letter-spacing: 0; line-height: 1.4; }
 .cr-rules__list { display: grid; gap: 12px 28px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); list-style: none; margin: 0; padding: 0; }
 .cr-rules__list li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.5; }
+.cr-grow__list li span, .cr-who__list li { line-height: 1.5; }
 .cr-rules__list .icon { flex: none; margin-block-start: 3px; }
 
 /* ---------- Pinned Apply bar (phones) ---------- */

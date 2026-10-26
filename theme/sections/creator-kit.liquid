@@ -1,23 +1,23 @@
 {{ 'creators.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
   Creator kit (DECISIONS 224): a private page for accepted creators, at /pages/creators?view=creator-kit, never linked
-  and kept out of search engines (layout/theme.liquid). The signature format, the code and what they earn (the rules
+  and kept out of search engines (layout/theme.liquid). What to film (DECISIONS 225), the code and what they earn (the rules
   for the rest of the routine, refills and the higher rate), what to say (each product's own pack benefit) and what not
   to say, and the rules. Who gets which products first stays with the owner.
 {%- endcomment -%}
 {%- liquid
   assign handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign film = 'review,morning,night,texture,grwm,unboxing' | split: ','
 -%}
 <style>
   .kit { padding-block: calc(var(--header-h, 80px) + clamp(24px, 5vw, 56px)) clamp(48px, 8vw, 96px); background: var(--c-daylight); }
   .kit__inner { display: grid; gap: clamp(28px, 4vw, 44px); max-inline-size: 820px; }
-  .kit__title { margin: 8px 0 12px; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .9; font-size: clamp(48px, 8vw, 96px); }
-  :lang(ar) .kit__title { font-family: inherit; text-transform: none; line-height: 1.2; font-size: clamp(38px, 6vw, 64px); }
+  .kit__title { margin: 8px 0 12px; }
   .kit__block { display: grid; gap: 12px; padding: clamp(20px, 3vw, 32px); border-radius: var(--radius-l); background: var(--c-paper); box-shadow: inset 0 0 0 1px var(--c-line); }
   .kit__block > * { margin: 0; }
   .kit__block--ink { background: var(--c-ink); color: #F4EFE7; box-shadow: none; }
-  .kit__h { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: 1; font-size: clamp(26px, 3vw, 36px); }
-  :lang(ar) .kit__h { font-family: inherit; text-transform: none; line-height: 1.3; font-size: clamp(21px, 2.4vw, 26px); }
+  .kit__h { font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; font-size: clamp(22px, 2.4vw, 28px); }
+  :lang(ar) .kit__h { letter-spacing: 0; line-height: 1.35; }
   .kit__list { display: grid; gap: 10px; list-style: none; padding: 0; }
   .kit__list li { display: flex; gap: 10px; align-items: flex-start; line-height: 1.5; }
   .kit__list .icon { flex: none; margin-block-start: 3px; }
@@ -35,18 +35,17 @@
   <div class="container kit__inner">
     <div>
       <p class="t-eyebrow">{{ 'creators.eyebrow' | t }}</p>
-      <h1 class="kit__title">{{ 'creator_kit.title' | t }}</h1>
+      <h1 class="t-display-l kit__title">{{ 'creator_kit.title' | t }}</h1>
       <p class="t-lead">{{ 'creator_kit.intro' | t }}</p>
     </div>
 
     <div class="kit__block kit__block--ink">
-      <h2 class="kit__h">{{ 'creator_kit.sig_heading' | t }}</h2>
-      <p>{{ 'creator_kit.sig_text' | t }}</p>
-      <ol class="kit__list" role="list">
-        {%- for n in (1..3) -%}{%- assign k = 'creator_kit.shots.s' | append: n -%}<li>{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}<span>{{ k | t }}</span></li>{%- endfor -%}
-      </ol>
+      <h2 class="kit__h">{{ 'creator_kit.film_heading' | t }}</h2>
+      <p>{{ 'creator_kit.film_text' | t }}</p>
+      <ul class="kit__list" role="list">
+        {%- for k in film -%}{%- assign fk = 'creators.ideas.' | append: k -%}<li>{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}<span>{{ fk | t }}</span></li>{%- endfor -%}
+      </ul>
       <dl class="kit__pair">
-        <div><dt>{{ 'creator_kit.hook_label' | t }}</dt><dd>{{ 'creator_kit.hook' | t }}</dd></div>
         <div><dt>{{ 'creator_kit.hashtag_label' | t }}</dt><dd dir="ltr">#BetweenTwoSuns</dd></div>
       </dl>
     </div>

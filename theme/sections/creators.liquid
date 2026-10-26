@@ -24,8 +24,7 @@
   assign frames = 'daily-reset-cleanser:city:dust:1,clarity-serum:humidity:drop:2,daily-barrier-moisturizing-cream:ac:ac:3,daily-defense-sunscreen-spf-50:sun:sun:4' | split: ','
   assign step_icons = 'mail,chat,truck,cash' | split: ','
   assign grows = 'keep:refresh,featured:globe,top:arrow-up' | split: ','
-  assign sig_imgs = 'bts-climate-sun-tall.jpg,bts-climate-ac-tall.jpg' | split: ','
-  assign ideas = 'morning:sun:bts-climate-heat-tall.jpg,office:ac:bts-climate-ac-tall.jpg,commute:dust:bts-climate-city-tall.jpg,coast:drop:bts-climate-humidity-tall.jpg,night:moon:bts-demo-night.jpg,texture:layers:bts-clarity-serum-application-2.jpg' | split: ','
+  assign ideas = 'review:chat:bts-portrait-window-tall.jpg,morning:sun:bts-climate-heat-tall.jpg,night:moon:bts-demo-night.jpg,texture:layers:bts-clarity-serum-application-2.jpg,grwm:scan:bts-daily-defense-sunscreen-spf-50-application-2.jpg,unboxing:truck:bts-the-full-ritual.jpg' | split: ','
 -%}
 <div class="creators">
   <section class="cr-hero grain" aria-labelledby="CrTitle-{{ section.id }}">
@@ -102,7 +101,7 @@
     </div>
   </section>
 
-  {%- comment -%} Ideas: the brand's own photos as prompts (clearly ideas, never presented as creators' work), then the rules {%- endcomment -%}
+  {%- comment -%} Ideas: simple formats people know (review, morning, night, close-up, reel, unboxing), each on one of the brand's own photos; clearly ideas, never presented as creators' work. Then the rules. {%- endcomment -%}
   <section class="section cr-ideas" aria-labelledby="CrIdeas-{{ section.id }}">
     <div class="container">
       <div class="section-head">
@@ -114,27 +113,13 @@
       </div>
     </div>
     <ul class="cr-cards" role="list">
-      <li class="cr-cardx cr-cardx--sig">
-        <span class="cr-cardx__pair" aria-hidden="true">
-          {%- for k in sig_imgs -%}
-            {%- assign im = images[k] -%}
-            {%- if im != blank -%}{{ im | image_url: width: 600, height: 900, crop: 'center' | image_tag: loading: 'lazy', widths: '300,450,600', sizes: '(min-width: 990px) 16vw, 36vw', alt: '' }}{%- endif -%}
-          {%- endfor -%}
-        </span>
-        <span class="cr-cardx__body">
-          <span class="cr-cardx__chip">{{ 'creators.sig_eyebrow' | t }}</span>
-          <strong class="cr-cardx__sig">{{ 'creators.sig_title' | t }}</strong>
-          <span class="cr-cardx__text">{{ 'creators.sig_text' | t }}</span>
-          <span class="cr-cardx__tag" dir="ltr">#BetweenTwoSuns</span>
-        </span>
-      </li>
       {%- for i in ideas -%}
         {%- assign parts = i | split: ':' -%}
         {%- assign ik = 'creators.ideas.' | append: parts[0] -%}
         {%- assign tg = 'creators.tags.' | append: parts[0] -%}
         {%- assign im = images[parts[2]] -%}
         <li class="cr-cardx">
-          {%- if im != blank -%}{{ im | image_url: width: 640, height: 800, crop: 'center' | image_tag: loading: 'lazy', widths: '320,480,640', sizes: '(min-width: 990px) 22vw, 62vw', alt: '', class: 'cr-cardx__img' }}{%- endif -%}
+          {%- if im != blank -%}{{ im | image_url: width: 720, height: 900, crop: 'center' | image_tag: loading: 'lazy', widths: '360,540,720', sizes: '(min-width: 990px) 30vw, 62vw', alt: '', class: 'cr-cardx__img' }}{%- endif -%}
           <span class="cr-cardx__chip">{% render 'icon', name: parts[1], class: 'icon--sm' %}{{ tg | t }}</span>
           <span class="cr-cardx__idea">{{ ik | t }}</span>
         </li>

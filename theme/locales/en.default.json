@@ -1010,15 +1010,15 @@
       }
     },
     "ideas_eyebrow": "What we love",
-    "ideas_heading": "Real days, real weather",
-    "ideas_text": "No studio needed. Here’s what we’d love to see.",
+    "ideas_heading": "Simple ideas, real skin",
+    "ideas_text": "No studio needed. Film your real routine, on a real day.",
     "ideas": {
-      "morning": "Your morning routine on a 38° day",
-      "office": "Desk-day skin vs. office AC",
-      "commute": "The commute: dust, traffic and the reset after",
-      "coast": "Humid weekends on the coast",
+      "review": "An honest review after two weeks",
+      "morning": "Your morning routine, step by step",
       "night": "Your night routine in 60 seconds",
-      "texture": "Close-up textures and honest first impressions"
+      "texture": "Close-up textures and how they feel",
+      "grwm": "Get ready with me: a reel of your routine",
+      "unboxing": "Unboxing and first impressions"
     },
     "rules_heading": "The few rules",
     "rules": {
@@ -1095,16 +1095,13 @@
         "text": "Our top creators get a higher commission and paid collaborations."
       }
     },
-    "sig_eyebrow": "Our signature",
-    "sig_title": "The space between",
-    "sig_text": "Film your skin twice on the same day: once in the noon sun, once after hours of AC. Show them side by side.",
     "tags": {
-      "morning": "Sun",
-      "office": "Office AC",
-      "commute": "City & dust",
-      "coast": "Humidity",
+      "review": "Review",
+      "morning": "Morning",
       "night": "Night",
-      "texture": "Close-up"
+      "texture": "Close-up",
+      "grwm": "Reel",
+      "unboxing": "First look"
     },
     "who_heading": "Who we’re looking for",
     "who": {
@@ -1488,15 +1485,6 @@
   "creator_kit": {
     "title": "Creator kit",
     "intro": "Everything you need to make something with us. This page is just for our creators, so please keep the link to yourself.",
-    "sig_heading": "Our signature format: the space between",
-    "sig_text": "Film your skin twice on the same day, once in the noon sun and once after hours of AC, and show them side by side. Tell us how your skin felt in each.",
-    "shots": {
-      "s1": "Shot 1: you outside, in the noon light.",
-      "s2": "Shot 2: the same face after hours inside with the AC on.",
-      "s3": "Shot 3: your routine in between, step by step."
-    },
-    "hook_label": "Hook line",
-    "hook": "“My skin, between two suns.”",
     "hashtag_label": "Hashtag",
     "earn_heading": "Your code and what you earn",
     "earn": {
@@ -1520,6 +1508,8 @@
     "when_am": "Every morning",
     "when_both": "Morning and night",
     "questions_heading": "Questions?",
-    "questions_text": "Reply to the email we sent you when you were accepted. We’re happy to help."
+    "questions_text": "Reply to the email we sent you when you were accepted. We’re happy to help.",
+    "film_heading": "What to film",
+    "film_text": "Real, simple formats work best. Film in natural light, show the products in your hands, and say what you really think."
   }
 }
