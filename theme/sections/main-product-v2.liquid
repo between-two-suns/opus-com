@@ -252,22 +252,23 @@
           {%- endif -%}
           <h1 class="pdp__title v2-title">{{ pdp_title | escape }}</h1>
           {%- render 'jdgm-badge', product: product -%}
-          {%- comment -%} Single products: the photo's callouts carry the pack benefit, so the head names the key ingredients and who it's for. Sets: their one-line description. {%- endcomment -%}
+          {%- comment -%} Single products: the photo's callouts carry the pack benefit, so the head names the key ingredients and who it's for. Sets: one quiet facts line, then who it's for (DECISIONS 229). {%- endcomment -%}
           {%- if set_v2 -%}
             {%- liquid
-              assign out_key = 'set2.outcome.' | append: product.handle
-              assign outcome = out_key | t
-              if outcome contains 'ranslation missing'
-                assign outcome = benefit
-              endif
               assign set_when = 'set2.when_am' | t
               for st in set_steps
                 if st != '4'
                   assign set_when = 'set2.when_ampm' | t
                 endif
               endfor
+              comment
+                a routine set without the sunscreen says so (The Night Ritual, The Core Duo); stock-ups don't
+              endcomment
+              assign set_kind = bdef | split: '|' | last
+              unless set_steps contains '4' or set_kind == 'stock'
+                assign set_when = 'set2.when_nospf' | t
+              endunless
             -%}
-            <p class="v2-set-outcome">{{ outcome }}</p>
             <p class="v2-set-facts">{{ 'set2.facts' | t: count: set_units.size, when: set_when }}</p>
             {%- capture who -%}{% render 'pdp2-concerns', steps: set_steps_csv %}{%- endcapture -%}
             {%- if who != blank -%}

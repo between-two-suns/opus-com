@@ -278,11 +278,9 @@
 
 /* Set pages (DECISIONS 189–190) ------------------------------------ */
 /* Head: what the set does, a fact line, who it's for */
-.v2-set-outcome { margin: 0; font-size: 17px; font-weight: 450; line-height: 1.45; color: color-mix(in srgb, var(--c-ink) 82%, transparent); text-wrap: pretty; }
-:lang(ar) .v2-set-outcome { line-height: 1.6; }
-.v2-set-facts { margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c-muted); }
-:lang(ar) .v2-set-facts { letter-spacing: 0; text-transform: none; font-size: 14px; }
-@media (min-width: 990px) { .v2-set-outcome { font-size: 18px; } }
+.v2-set-facts { margin: 0; font-size: 17px; font-weight: 450; line-height: 1.45; color: color-mix(in srgb, var(--c-ink) 78%, transparent); text-wrap: pretty; }
+:lang(ar) .v2-set-facts { line-height: 1.6; }
+@media (min-width: 990px) { .v2-set-facts { font-size: 18px; } }
 .pdp--v2[data-step='0'] .v2-who__list li { background: color-mix(in srgb, var(--c-ink) 6%, #fff); }
 .pdp--v2[data-step='0'] .v2-who__list .icon { color: var(--c-success); }
 
