@@ -22,7 +22,7 @@
     {%- if priority -%}
       {{ ob_img | image_url: width: 1200 | image_tag: widths: '400,600,800,1000,1200', sizes: sizes, class: 'ab-orb__s', alt: '', loading: 'eager', fetchpriority: 'high' }}
     {%- else -%}
-      {{ ob_img | image_url: width: 1200 | image_tag: widths: '400,600,800,1000,1200', sizes: sizes, class: 'ab-orb__s', alt: '', loading: 'lazy' }}
+      {{ ob_img | image_url: width: 1200 | image_tag: widths: '400,600,800,1000,1200', sizes: sizes, class: 'ab-orb__s', alt: '', loading: 'lazy', fetchpriority: 'low' }}
     {%- endif -%}
   {%- else -%}
     {%- assign ob_a = 'orb-' | append: tone | append: '-900.webp' -%}

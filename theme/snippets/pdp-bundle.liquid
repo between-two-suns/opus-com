@@ -19,7 +19,9 @@
 {%- if offset -%}{%- assign g0 = 1 -%}{%- else -%}{%- assign g0 = 0 -%}{%- endif -%}
 {%- assign g1 = g0 | plus: 1 -%}
 <div class="gallery__slide gallery__slide--set" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: g1, count: count }}" data-slide>
-  {%- render 'set-visual', product: product, loading: 'eager', sizes: '(min-width: 990px) 46vw, 92vw' -%}
+  {%- comment -%} After the packs stage (offset) this photo is the second slide: it waits until the first screen is in (DECISIONS 210) {%- endcomment -%}
+  {%- if offset -%}{%- assign bg_load = 'lazy' -%}{%- else -%}{%- assign bg_load = 'eager' -%}{%- endif -%}
+  {%- render 'set-visual', product: product, loading: bg_load, sizes: '(min-width: 990px) 46vw, 92vw' -%}
 </div>
 {%- assign buniq = bundle_steps | uniq -%}
 {%- for st in buniq -%}

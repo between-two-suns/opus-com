@@ -99,14 +99,21 @@
       <div class="cst__media" aria-hidden="true">
         {%- if wide or tall -%}
           <picture>
-            {%- if tall -%}<source media="(max-width: 749px)" srcset="{{ tall | image_url: width: 750 }} 750w, {{ tall | image_url: width: 1100 }} 1100w" sizes="100vw">{%- endif -%}
+            {%- if tall -%}<source media="(max-width: 749px)" srcset="{{ tall | image_url: width: 560, height: 1120, crop: 'center' }} 560w, {{ tall | image_url: width: 780, height: 1560, crop: 'center' }} 780w, {{ tall | image_url: width: 960, height: 1920, crop: 'center' }} 960w" sizes="100vw">{%- endif -%}
             {%- liquid
               assign base = wide
               unless wide
                 assign base = tall
               endunless
             -%}
-            {{ base | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '1000,1400,1800,2400', sizes: '100vw', alt: '' }}
+            {%- comment -%} The first hour's photo is the page's main image: fetched first (DECISIONS 210); the next one waits its turn {%- endcomment -%}
+            {%- if forloop.first -%}
+              {{ base | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '1000,1400,1800,2400', sizes: '100vw', alt: '' }}
+            {%- elsif forloop.index == 2 -%}
+              {{ base | image_url: width: 2400 | image_tag: loading: 'lazy', fetchpriority: 'low', widths: '1000,1400,1800,2400', sizes: '100vw', alt: '' }}
+            {%- else -%}
+              {{ base | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '1000,1400,1800,2400', sizes: '100vw', alt: '' }}
+            {%- endif -%}
           </picture>
         {%- endif -%}
       </div>

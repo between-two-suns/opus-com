@@ -33,7 +33,11 @@
     </div>
     {%- if img -%}
       <div class="page-hero__media">
-        {{ img | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600,900,1200,1600', sizes: '(min-width: 990px) 50vw, 100vw', alt: img.alt | default: '' }}
+        {%- comment -%} Cut to the frame's shape on Shopify's side (4:3 on phones, 5:4 beside the title), so only the pixels shown are downloaded (DECISIONS 210) {%- endcomment -%}
+        <picture>
+          <source media="(min-width: 990px)" srcset="{{ img | image_url: width: 600, height: 480, crop: 'center' }} 600w, {{ img | image_url: width: 900, height: 720, crop: 'center' }} 900w, {{ img | image_url: width: 1200, height: 960, crop: 'center' }} 1200w" sizes="50vw">
+          <img src="{{ img | image_url: width: 800, height: 600, crop: 'center' }}" srcset="{{ img | image_url: width: 500, height: 375, crop: 'center' }} 500w, {{ img | image_url: width: 720, height: 540, crop: 'center' }} 720w, {{ img | image_url: width: 900, height: 675, crop: 'center' }} 900w" sizes="calc(100vw - 32px)" width="800" height="600" alt="{{ img.alt | default: '' | escape }}" loading="eager" fetchpriority="high">
+        </picture>
       </div>
     {%- endif -%}
   </div>

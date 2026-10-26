@@ -36,7 +36,13 @@
     <ul class="bundles__grid" role="list" data-n="{{ section.blocks.size }}">
       {%- for block in section.blocks -%}
         {%- if block.settings.product != blank -%}
-          {%- render 'bundle-card', product: block.settings.product -%}
+          {%- liquid
+            assign bc_first = false
+            if forloop.first and section.index <= 2
+              assign bc_first = true
+            endif
+          -%}
+          {%- render 'bundle-card', product: block.settings.product, priority: bc_first -%}
         {%- endif -%}
       {%- endfor -%}
     </ul>

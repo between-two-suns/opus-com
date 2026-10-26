@@ -2,7 +2,7 @@
   One fixed-price bundle (Pricing & Offers spec). Price and compare-at come from the Shopify bundle product
   (compare-at = the singles total, a real price). Saving wording: "Save EGP X vs buying separately",
   plus "Ships free" only when the price reaches the free-delivery threshold set in Theme settings → Offers.
-  Params: product (bundle product), tag ('li' default), heading_tag ('h3')
+  Params: product (bundle product), tag ('li' default), heading_tag ('h3'), priority (first card near the top of a page)
 {%- endcomment -%}
 {%- liquid
   capture def
@@ -52,7 +52,7 @@
       {%- assign badge_key = 'bundles.badges.' | append: badge -%}
       <span class="bundle__badge">{{ badge_key | t }}</span>
     {%- endif -%}
-    {%- render 'set-visual', product: product -%}
+    {%- render 'set-visual', product: product, priority: priority, phone_crop: true -%}
   </a>
   <div class="bundle__body">
     <p class="bundle__count t-xs">{{ 'sections.bundles.count' | t: count: steps.size }}</p>

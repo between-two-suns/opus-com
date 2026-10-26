@@ -30,7 +30,8 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 ## Version 1.1 (in progress on staging, from 2026-10-26)
 - Audit: `BETWEEN TWO SUNS · 10/10 audit` (Claude doc) — scorecard, what repeats, the big moves, conversion, page by page, order of work.
 - Round 1 fixes shipped to staging (DECISIONS 209): real set names in build-your-own, no empty reviews line, page headings (skin check, Routines), Creators email-only, Journal link hidden until a story, no Arabic font on English pages.
-- Next: speed round (every page under 2.5 s on a mid-range phone, no layout shift).
+- Round 2 speed shipped to staging (DECISIONS 210): Home 5.0 → 3.0 s, Ingredients 5.3 → 2.5 s, Sets 3.7 → 2.6 s, Climate 4.3 → 3.5 s, The Full Ritual 2.8 → 1.9 s (strict slow-4G phone test). Still over 2.5 s: Home, Arabic home, Climate, Routines. Options: one sphere on the home hero on phones, a lighter first climate photo, the single-sun Routines hero.
+- Next: round 3, the system (type and rhythm rules, new section types, four-item menu, "site keeps time" demo).
 
 ## Shipped to staging 2026-10-18
 - Home hero is now **Orbs** (`hero-orbs`), followed by Four steps. Earlier heroes are still available at `?view=hero|light|sun|system|orbsa`.

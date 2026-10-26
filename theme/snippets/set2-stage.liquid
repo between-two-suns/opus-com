@@ -47,12 +47,12 @@
           <span class="s2-pack__label" aria-hidden="true"><span class="s2-pack__num">0{{ si }}</span><span class="s2-pack__name">{{ comp.metafields.bts.step_label.value | default: comp.title | escape }}</span></span>
           <span class="s2-pack__line" aria-hidden="true"></span>
           <a class="s2-pack__link" href="#set-item-{{ si }}" aria-label="{{ 'set2.stage_go' | t: name: comp.title }}">
-            {%- render 'cut-img', handle: comp.handle, sizes: '(min-width: 990px) 11vw, 24vw', widths: '120,180,240,360,480', loading: 'eager', class: 's2-pack__img', priority: true -%}
+            {%- render 'cut-img', handle: comp.handle, sizes: '(min-width: 990px) 11vw, 22vw', widths: '120,180,240,360,480', loading: 'eager', class: 's2-pack__img', priority: true -%}
           </a>
         {%- else -%}
           <span class="s2-pack__label s2-pack__label--blank" aria-hidden="true"></span>
           <span class="s2-pack__line s2-pack__line--blank" aria-hidden="true"></span>
-          <span class="s2-pack__link" aria-hidden="true">{%- render 'cut-img', handle: comp.handle, sizes: '(min-width: 990px) 11vw, 24vw', widths: '120,180,240,360,480', loading: 'eager', class: 's2-pack__img', priority: true -%}</span>
+          <span class="s2-pack__link" aria-hidden="true">{%- render 'cut-img', handle: comp.handle, sizes: '(min-width: 990px) 11vw, 22vw', widths: '120,180,240,360,480', loading: 'eager', class: 's2-pack__img', priority: true -%}</span>
         {%- endunless -%}
       </li>
     {%- endfor -%}

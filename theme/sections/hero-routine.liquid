@@ -172,11 +172,11 @@
     {%- for h in handles -%}
       {%- assign p = all_products[h] -%}
       {%- unless p.id -%}{%- continue -%}{%- endunless -%}
-      {%- capture img -%}{%- render 'cut-src', handle: h, width: 600 -%}{%- endcapture -%}
+      {%- capture img -%}{%- render 'cut-src', handle: h, width: 360 -%}{%- endcapture -%}{%- capture img2 -%}{%- render 'cut-src', handle: h, width: 140 -%}{%- endcapture -%}{%- capture img3 -%}{%- render 'cut-src', handle: h, width: 200 -%}{%- endcapture -%}{%- capture img4 -%}{%- render 'cut-src', handle: h, width: 280 -%}{%- endcapture -%}
       {%- capture price -%}{% render 'egp', cents: p.selected_or_first_available_variant.price %}{%- endcapture -%}
       <li class="hr-bottle{% if forloop.last %} hr-bottle--spf{% endif %}" style="--h: {{ hs[forloop.index0] }}; --ar: {{ ars[forloop.index0] }}; --sku: {{ skus[forloop.index0] }}; --i: {{ forloop.index0 }}">
         <span class="hr-g">
-          <img src="{{ img }}" alt="" width="350" height="1100" fetchpriority="high">
+          <img src="{{ img | strip }}" srcset="{{ img2 | strip }} 140w, {{ img3 | strip }} 200w, {{ img4 | strip }} 280w, {{ img | strip }} 360w" sizes="(min-width: 761px) calc(13vw * {{ hs[forloop.index0] }}), calc(26vw * {{ hs[forloop.index0] }})" alt="" width="350" height="1100" fetchpriority="high">
           <a href="{{ p.url }}"><span class="visually-hidden">{{ p.title | escape }}, {{ price | strip }}</span></a>
         </span>
       </li>

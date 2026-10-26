@@ -45,13 +45,13 @@
 .ho-o--r .ho-spin { animation-name: ho-roll-r; animation-delay: .15s; }
 @keyframes ho-roll-l { from { transform: rotate(-40deg); } }
 @keyframes ho-roll-r { from { transform: rotate(40deg); } }
-.ho-s { display: block; width: 100%; height: 100%; transition: opacity .8s ease; }
-.js .ho-s:not(.is-in) { opacity: 0; }
+.ho-s { display: block; width: 100%; height: 100%; }
 /* the light: brightest toward the space between, shading away from it */
 .ho-l { position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
   background: radial-gradient(circle at var(--hx) 34%, rgb(30 40 55 / 0) 0%, rgb(30 40 55 / 0) 17%, rgb(30 40 55 / .06) 40%, rgb(30 40 55 / .2) 74%, rgb(30 40 55 / .29) 100%); }
 .ho-l::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at var(--hx) 32%, rgb(255 255 255 / .34), rgb(255 255 255 / .1) 20%, transparent 42%); }
 /* the dew catches the light once, after the entrance */
+.ho-o:not(.has-dm) .ho-g { display: none; }
 .ho-g { position: absolute; inset: 0; -webkit-mask: var(--dm) center / 100% 100% no-repeat; mask: var(--dm) center / 100% 100% no-repeat;
   background: linear-gradient(105deg, transparent 38%, rgb(255 255 255 / .95) 50%, transparent 62%) 130% 0 / 300% 100% no-repeat; animation: ho-glint 1.8s ease-in-out 1.7s both; }
 .ho-o--r .ho-g { animation-delay: 2.1s; background-image: linear-gradient(75deg, transparent 38%, rgb(255 255 255 / .95) 50%, transparent 62%); }
@@ -135,12 +135,12 @@
 <section class="hh" id="Hh-{{ section.id }}" aria-labelledby="HhTitle-{{ section.id }}">
   <div class="hh-stage">
     <div class="ho-orbs" aria-hidden="true">
-      <span class="ho-o ho-o--l" style="--dm: url('{{ 'orb-green-drops.webp' | asset_url }}')"><span class="ho-p">
-        <span class="ho-spin">{%- assign orb = images['orb-green.png'] -%}{%- if orb != blank -%}{{ orb | image_url: width: 1500 | image_tag: widths: '400,600,800,1000,1200,1500', sizes: '(min-width: 761px) min(94vh, 62vw), 400px', class: 'ho-s', alt: '', fetchpriority: 'high', loading: 'eager' }}{%- else -%}<img class="ho-s" src="{{ 'orb-green-1200.webp' | asset_url }}" srcset="{{ 'orb-green-900.webp' | asset_url }} 900w, {{ 'orb-green-1200.webp' | asset_url }} 1200w, {{ 'orb-green-1500.webp' | asset_url }} 1500w" sizes="(min-width: 761px) min(94vh, 62vw), 400px" width="1500" height="1500" alt="" fetchpriority="high">{%- endif -%}<span class="ho-g"></span></span>
+      <span class="ho-o ho-o--l" data-dm="{{ 'orb-green-drops.webp' | asset_url }}"><span class="ho-p">
+        <span class="ho-spin">{%- assign orb = images['orb-green.png'] -%}{%- if orb != blank -%}{{ orb | image_url: width: 1500 | image_tag: widths: '400,600,800,1000,1200,1500', sizes: '(min-width: 761px) min(94vh, 62vw), 300px', class: 'ho-s', alt: '', loading: 'eager' }}{%- else -%}<img class="ho-s" src="{{ 'orb-green-1200.webp' | asset_url }}" srcset="{{ 'orb-green-900.webp' | asset_url }} 900w, {{ 'orb-green-1200.webp' | asset_url }} 1200w, {{ 'orb-green-1500.webp' | asset_url }} 1500w" sizes="(min-width: 761px) min(94vh, 62vw), 400px" width="1500" height="1500" alt="" fetchpriority="high">{%- endif -%}<span class="ho-g"></span></span>
         <span class="ho-l"></span>
       </span></span>
-      <span class="ho-o ho-o--r" style="--dm: url('{{ 'orb-blue-drops.webp' | asset_url }}')"><span class="ho-p">
-        <span class="ho-spin">{%- assign orb = images['orb-blue.png'] -%}{%- if orb != blank -%}{{ orb | image_url: width: 1500 | image_tag: widths: '400,600,800,1000,1200,1500', sizes: '(min-width: 761px) min(94vh, 62vw), 400px', class: 'ho-s', alt: '', fetchpriority: 'high', loading: 'eager' }}{%- else -%}<img class="ho-s" src="{{ 'orb-blue-1200.webp' | asset_url }}" srcset="{{ 'orb-blue-900.webp' | asset_url }} 900w, {{ 'orb-blue-1200.webp' | asset_url }} 1200w, {{ 'orb-blue-1500.webp' | asset_url }} 1500w" sizes="(min-width: 761px) min(94vh, 62vw), 400px" width="1500" height="1500" alt="" fetchpriority="high">{%- endif -%}<span class="ho-g"></span></span>
+      <span class="ho-o ho-o--r" data-dm="{{ 'orb-blue-drops.webp' | asset_url }}"><span class="ho-p">
+        <span class="ho-spin">{%- assign orb = images['orb-blue.png'] -%}{%- if orb != blank -%}{{ orb | image_url: width: 1500 | image_tag: widths: '400,600,800,1000,1200,1500', sizes: '(min-width: 761px) min(94vh, 62vw), 300px', class: 'ho-s', alt: '', loading: 'eager' }}{%- else -%}<img class="ho-s" src="{{ 'orb-blue-1200.webp' | asset_url }}" srcset="{{ 'orb-blue-900.webp' | asset_url }} 900w, {{ 'orb-blue-1200.webp' | asset_url }} 1200w, {{ 'orb-blue-1500.webp' | asset_url }} 1500w" sizes="(min-width: 761px) min(94vh, 62vw), 400px" width="1500" height="1500" alt="" fetchpriority="high">{%- endif -%}<span class="ho-g"></span></span>
         <span class="ho-l"></span>
       </span></span>
     </div>
@@ -161,10 +161,13 @@
       {%- for h in handles -%}
         {%- assign p = all_products[h] -%}
         {%- unless p.id -%}{%- continue -%}{%- endunless -%}
-        {%- capture img -%}{%- render 'cut-src', handle: h, width: 600 -%}{%- endcapture -%}
+        {%- capture img -%}{%- render 'cut-src', handle: h, width: 360 -%}{%- endcapture -%}
+        {%- capture img2 -%}{%- render 'cut-src', handle: h, width: 140 -%}{%- endcapture -%}
+        {%- capture img3 -%}{%- render 'cut-src', handle: h, width: 200 -%}{%- endcapture -%}
+        {%- capture img4 -%}{%- render 'cut-src', handle: h, width: 280 -%}{%- endcapture -%}
         {%- assign st = forloop.index -%}
         <li class="hh-b{% if forloop.first %} hh-b--first{% endif %}" data-step="{{ st }}" style="--h: {{ hs[forloop.index0] }}; --i: {{ forloop.index0 }}">
-          <a href="{{ p.url }}"><img src="{{ img }}" alt="" width="357" height="1100" fetchpriority="high"><span class="visually-hidden">{{ p.title | escape }}</span></a>
+          <a href="{{ p.url }}"><img src="{{ img | strip }}" srcset="{{ img2 | strip }} 140w, {{ img3 | strip }} 200w, {{ img4 | strip }} 280w, {{ img | strip }} 360w" sizes="(min-width: 761px) calc(14vw * {{ hs[forloop.index0] }}), calc(25vw * {{ hs[forloop.index0] }})" alt="" width="357" height="1100" fetchpriority="{% if forloop.first %}low{% else %}high{% endif %}"><span class="visually-hidden">{{ p.title | escape }}</span></a>
           <span class="hh-lab" aria-hidden="true"><b>0{{ st }}</b>{{ p.metafields.bts.step_label.value | default: p.title | escape }}</span>
         </li>
       {%- endfor -%}
@@ -173,7 +176,7 @@
   {%- if first_cut -%}
     {%- assign fly_src = first_cut | image_url: width: 900 -%}
     <div class="hh-fly" aria-hidden="true">
-      <img src="{{ fly_src }}" alt="" width="{{ first_cut.width }}" height="{{ first_cut.height }}" fetchpriority="high">
+      <img src="{{ fly_src }}" srcset="{{ first_cut | image_url: width: 450 }} 450w, {{ first_cut | image_url: width: 600 }} 600w, {{ fly_src }} 900w" sizes="(min-width: 761px) 32vw, 56vw" alt="" width="{{ first_cut.width }}" height="{{ first_cut.height }}" fetchpriority="high">
       
     </div>
   {%- endif -%}
@@ -186,8 +189,10 @@
   const hw = document.querySelector('.site-header-wrap')?.closest('.shopify-section');
   const hdr = () => { if (hw) root.style.setProperty('--hdr', hw.offsetHeight + 'px'); };
   hdr(); if (hw && window.ResizeObserver) new ResizeObserver(hdr).observe(hw);
-  // the suns' surfaces fade in over their flat colour when they arrive
-  root.querySelectorAll('.ho-s').forEach((im) => { const on = () => im.classList.add('is-in'); if (im.complete && im.naturalWidth) on(); else im.addEventListener('load', on, { once: true }); });
+  // the suns' dew-drop masks come after the page's load (DECISIONS 210): the sheen they shape starts seconds later, so they no longer compete with the packs
+  const dm = () => root.querySelectorAll('.ho-o[data-dm]').forEach((o) => { o.style.setProperty('--dm', 'url("' + o.dataset.dm + '")'); o.classList.add('has-dm'); });
+  if (document.readyState === 'complete') dm(); else addEventListener('load', dm, { once: true });
+  // (the suns' surfaces show as soon as they arrive, over their flat colour, while the spheres roll in: no scripted fade, which held back the page's first full paint, DECISIONS 210)
   // the packs land once their pictures are in (or after 1.5s, whichever comes first)
   const whenLoaded = (imgs, cb) => { let n = imgs.length, done = false; const go = () => { if (!done) { done = true; cb(); } };
     if (!n) return go(); imgs.forEach((im) => { if (im.complete) { if (!--n) go(); } else { const f = () => { if (!--n) go(); }; im.addEventListener('load', f, { once: true }); im.addEventListener('error', f, { once: true }); } });

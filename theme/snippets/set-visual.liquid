@@ -1,7 +1,8 @@
 {%- comment -%}
   The picture for a set: its own photo from Files (bts-<handle>.jpg) when there is one; otherwise the set drawn as
   colour bands, one per product, from the studio photos (the same language as the home hero).
-  Params: product (the set), sizes, loading ('lazy'), class
+  Params: product (the set), sizes, loading ('lazy'), class, priority (true: eager + fetched first, for a page's first card),
+  phone_crop (true: on phones the photo is cut to the card's 4:3 frame on Shopify's side, so hidden pixels aren't downloaded)
 {%- endcomment -%}
 {%- liquid
   capture sv_def
@@ -15,10 +16,16 @@
     assign sv_photo = false
   endif
   assign sv_loading = loading | default: 'lazy'
-  assign sv_sizes = sizes | default: '(min-width: 990px) 33vw, 90vw'
+  assign sv_sizes = sizes | default: '(min-width: 990px) 33vw, 86vw'
 -%}
 {%- if sv_photo -%}
-  {{ sv_photo | image_url: width: 1200 | image_tag: loading: sv_loading, widths: '400,600,800,1000,1200', sizes: sv_sizes, alt: '', class: 'set-visual set-visual--photo' }}
+  {%- if phone_crop -%}<picture><source media="(max-width: 749px)" srcset="{{ sv_photo | image_url: width: 500, height: 375, crop: 'center' }} 500w, {{ sv_photo | image_url: width: 700, height: 525, crop: 'center' }} 700w, {{ sv_photo | image_url: width: 900, height: 675, crop: 'center' }} 900w" sizes="86vw">{%- endif -%}
+  {%- if priority -%}
+    {{ sv_photo | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400,600,700,800,1000,1200', sizes: sv_sizes, alt: '', class: 'set-visual set-visual--photo' }}
+  {%- else -%}
+    {{ sv_photo | image_url: width: 1200 | image_tag: loading: sv_loading, widths: '400,600,700,800,1000,1200', sizes: sv_sizes, alt: '', class: 'set-visual set-visual--photo' }}
+  {%- endif -%}
+  {%- if phone_crop -%}</picture>{%- endif -%}
 {%- else -%}
   <span class="set-visual set-visual--bands {{ class }}" style="--n: {{ sv_steps.size }}" aria-hidden="true">
     {%- for st in sv_steps -%}
