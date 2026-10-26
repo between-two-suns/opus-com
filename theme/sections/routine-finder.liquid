@@ -2,7 +2,7 @@
   Routines · the finder demo (DECISIONS 211, 215, 216; shown at /pages/routines?view=finder while it is reviewed). Once
   started it is the whole screen, like an app (question, answers, next, back, close; nothing else, no page scrolling).
   Three questions, one per screen, beside the four packs: how your skin feels by midday, what you'd like help with, then
-  anything else we should know (breakouts, sensitive, pregnant or breastfeeding, prescription skincare; choose any). The
+  anything else we should know (breakouts, sensitive, prescription skincare; choose any). The
   packs move only for what has actually been answered. Back and Next sit together at the bottom (DECISIONS 218, 219). The matching rules are the skin check's (match() in
   assets/skin-check.js), so the two never disagree. Every answer ends in a routine: sensitive skin changes how to start,
   never what's suggested. The result is the routine as products (the set that holds exactly those steps at its real price,
@@ -18,7 +18,7 @@
   assign qs = 'type,concerns,more' | split: ','
   assign goals = 'oil,tone,marks,dehydration,barrier,spf' | split: ','
   assign types = 'oily,combination,normal,dry,very_dry' | split: ','
-  assign mores = 'breakouts,sensitive,pregnant,rx,none' | split: ','
+  assign mores = 'breakouts,sensitive,rx,none' | split: ','
   assign whys = '1_oil,1,2_tone,2_oil,2_hydra,3_barrier,3_hydra,3,4' | split: ','
 -%}
 <style>
@@ -373,7 +373,6 @@ html.rf-open .dock { display: none; }
         <summary>{{ 'finder.before' | t }}</summary>
         <ul role="list">
           <li data-rf-note="sensitive" hidden>{{ 'finder.gentle' | t }}</li>
-          <li data-rf-note="pregnant" hidden>{{ 'finder.pregnant_note' | t }}</li>
           <li data-rf-note="rx" hidden>{{ 'finder.rx_note' | t }}</li>
         </ul>
       </details>

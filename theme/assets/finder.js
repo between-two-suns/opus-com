@@ -1,8 +1,7 @@
 /*
   Routines · the finder demo (DECISIONS 211, 215, 216, 219). Once started it takes the whole screen, like an app (close or
   the browser's back returns to the page). Three questions beside the four packs: how your skin feels by midday, what
-  you'd like help with, then anything else we should know (choose any: breakouts, sensitive, pregnant or breastfeeding,
-  prescription skincare, none). The packs move only for what has been answered. The matching
+  you'd like help with, then anything else we should know (choose any: breakouts, sensitive, prescription skincare, none). The packs move only for what has been answered. The matching
   rules are the skin check's (match() in skin-check.js, shared so the two never disagree). Every answer ends in a routine.
   The result: the set that holds exactly the suggested steps at its real price, each step with why it suits this visitor,
   one button (the bottom bar on phones). Answers stay in the page; nothing is stored or sent.
@@ -34,15 +33,14 @@ const init = async (root) => {
 
   const one = (n) => form.querySelector(`input[name="${n}"]:checked`)?.value;
   const all = (n) => [...form.querySelectorAll(`input[name="${n}"]:checked`)].map((x) => x.value);
-  // the last question: breakouts and sensitivity feed the rules; prescription skincare is treated as sensitive skin;
-  // pregnancy changes no product, it adds "check with your doctor"
+  // the last question: breakouts and sensitivity feed the rules; prescription skincare is treated as sensitive skin
   const answers = () => {
     const more = all('more');
     return {
       type: one('type'),
       acne: more.includes('breakouts') ? 'yes' : 'no',
       react: more.includes('sensitive') || more.includes('rx') ? 'some' : 'no',
-      pregnant: more.includes('pregnant'), rx: more.includes('rx'), sensitive: more.includes('sensitive'),
+      rx: more.includes('rx'), sensitive: more.includes('sensitive'),
       concerns: all('concerns'),
     };
   };
@@ -165,7 +163,7 @@ const init = async (root) => {
     forEl.hidden = !skin && !goals.length;
     forEl.innerHTML = (skin ? `<span><b>${forEl.dataset.label}</b>${skin}</span>` : '') + (goals.length ? `<span><b>${forEl.dataset.helps}</b>${goals.join(' · ')}</span>` : '');
     // "Before you start": the cautions that apply, in one line that opens
-    const notes = { sensitive: !full && (a.sensitive || a.rx), pregnant: !full && a.pregnant, rx: !full && a.rx };
+    const notes = { sensitive: !full && (a.sensitive || a.rx), rx: !full && a.rx };
     Object.entries(notes).forEach(([k, on]) => { root.querySelector(`[data-rf-note="${k}"]`).hidden = !on; });
     const before = root.querySelector('[data-rf-before]');
     before.hidden = !Object.values(notes).some(Boolean);
