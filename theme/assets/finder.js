@@ -124,6 +124,9 @@ const init = async (root) => {
       <span class="rf-step__img" aria-hidden="true"><img src="${d.img}" alt="" width="140" height="431" loading="lazy"></span>
       <span class="rf-step__txt"><span class="rf-step__name">${d.title}</span><span class="rf-step__when">${[d.am ? S.when_am : S.when_both, ...helps].join(' · ')}</span></span>
       <span class="rf-step__end"><span class="rf-step__price">${fmt(d.price)}</span><span class="rf-step__tog" aria-hidden="true" data-on="${root.dataset.remove}" data-off="${root.dataset.add}"></span></span></label>`;
+    // "Why this?": the ingredient reasons and notes the rules chose it for (the patch test is in "Before you start")
+    const detail = [...(p.reasons || []).map((k) => S.reasons[k]), ...(p.notes || []).filter((n) => n !== 'patch').map((n) => S.notes[n])].filter(Boolean);
+    if (detail.length) li.insertAdjacentHTML('beforeend', `<details class="rf-step__why"><summary>${S.why_this}</summary><p>${detail.join(' ')}</p></details>`);
     return li;
   };
   const list = root.querySelector('[data-rf-steps]'), also = root.querySelector('[data-rf-also]');

@@ -20,6 +20,8 @@
   assign types = 'oily,combination,normal,dry,very_dry' | split: ','
   assign mores = 'breakouts,sensitive,rx,none' | split: ','
   assign whys = '1_oil,1,2_tone,2_oil,2_hydra,3_barrier,3_hydra,3,4' | split: ','
+  assign reasons = 'cleanser_oil,cleanser_daily,serum_oil,serum_tone,serum_hydra,cream_daily,cream_barrier,cream_hydra,cream_oil,spf_daily' | split: ','
+  assign rnotes = 'tight,with_moisturiser,not_replace,not_acne,richer,spf_tone' | split: ','
 -%}
 <style>
 .rf { --dir: 1; --p: 0; position: relative; display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); min-height: calc(100svh - 36px);
@@ -136,6 +138,11 @@ html.rf-open .dock { display: none; }
 .rf-step__tog::before { content: '+ ' attr(data-off); }
 .rf-step:has(input:checked) .rf-step__tog::before { content: attr(data-on); }
 .rf-step:not(:has(input:checked)) .rf-step__tog { color: var(--c-ink); font-weight: 700; }
+/* "Why this?": the ingredients behind each step, for anyone who wants the detail */
+.rf-step__why { padding: 0 14px 9px calc(10px + 42px + 12px); font-size: 12px; line-height: 1.5; }
+.rf-step__why summary { display: inline; cursor: pointer; list-style: none; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; color: color-mix(in srgb, currentColor 72%, transparent); }
+.rf-step__why summary::-webkit-details-marker { display: none; }
+.rf-step__why p { margin: 4px 0 0; color: color-mix(in srgb, currentColor 80%, transparent); }
 .rf-step__img { position: relative; flex: none; inline-size: 42px; block-size: 50px; border-radius: 12px; background: color-mix(in srgb, var(--sku) 26%, #fff); }
 .rf-step__img img { position: absolute; inset: 5px 0; inline-size: 100%; block-size: calc(100% - 10px); object-fit: contain; }
 .rf-step__txt { min-width: 0; }
@@ -244,6 +251,7 @@ html.rf-open .dock { display: none; }
   .rf[data-state='result'] .rf-cta .rf-btn { inline-size: 100%; padding-inline: 20px; box-shadow: 0 18px 40px -14px rgb(32 35 58 / .55); }
   .rf[data-state='result'] .rf-btn__price { display: inline; opacity: .78; }
   .rf-step label { padding-inline: 8px 12px; gap: 10px; }
+  .rf-step__why { padding-inline: calc(8px + 42px + 10px) 12px; }
 }
 @keyframes rf-rise { from { opacity: 0; translate: 0 18px; } }
 @media (prefers-reduced-motion: reduce) { .rf *, .rf *::before, .rf *::after { transition-duration: 0s !important; animation: none !important; } }
@@ -286,6 +294,9 @@ html.rf-open .dock { display: none; }
         "step_of": {{ 'finder.step_of' | t: n: '__N__', total: '__T__' | json }},
         "complete_short": {{ 'finder.complete_short' | t: product: '__P__', set: '__S__', extra: '__X__' | json }},
         "and": {{ 'finder.and' | t | json }},
+        "why_this": {{ 'finder.why_this' | t | json }},
+        "reasons": { {%- for k in reasons -%}{%- assign kk = 'skin_check.reasons.' | append: k -%}"{{ k }}": {{ kk | t | json }}{% unless forloop.last %}, {% endunless %}{%- endfor -%} },
+        "notes": { {%- for k in rnotes -%}{%- assign kk = 'skin_check.notes.' | append: k -%}"{{ k }}": {{ kk | t | json }}{% unless forloop.last %}, {% endunless %}{%- endfor -%} },
         "why": { {%- for k in whys -%}{%- assign kk = 'finder.why_' | append: k -%}"{{ k }}": {{ kk | t | json }}{% unless forloop.last %}, {% endunless %}{%- endfor -%} },
         "types": { {%- for o in types -%}{%- assign k = 'skin_check.a.type_' | append: o | append: '_d' -%}"{{ o }}": {{ k | t | json }}{% unless forloop.last %}, {% endunless %}{%- endfor -%} },
         "chips": { {%- for o in goals -%}{%- assign k = 'skin_check.chips.' | append: o -%}"{{ o }}": {{ k | t | json }}{% unless forloop.last %}, {% endunless %}{%- endfor -%} }

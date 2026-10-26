@@ -1230,8 +1230,8 @@
     "restart": "Start again",
     "change": "Change answers",
     "disclaimer": "Suggestions are based on our ingredients, not a diagnosis, and can't guarantee how your skin will react. Patch test anything new. Not a medical treatment.",
-    "cta_sets": "Not sure which? Take the 30-second skin check",
-    "cta_product": "Not sure it suits your skin? Take the 30-second skin check",
+    "cta_sets": "Not sure which? Find your routine in 30 seconds",
+    "cta_product": "Not sure it suits your skin? Find your routine in 30 seconds",
     "result_text": "In the order you use them. Each step shows what it does for your skin and why.",
     "for_label": "Helps with",
     "chips": {
@@ -1464,6 +1464,7 @@
     "and": "and",
     "step_of": "{{ n }} of {{ total }}",
     "adj_sensitive": "sensitive",
-    "adj_breakouts": "breakout-prone"
+    "adj_breakouts": "breakout-prone",
+    "why_this": "Why this?"
   }
 }

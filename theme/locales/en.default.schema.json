@@ -371,9 +371,9 @@
       "documented_info": "One claim per line, written exactly as on the product (EN and AR lines both), only once its report is on file. Put the product handle first to limit it to that product, e.g. daily-barrier-moisturizing-cream: Non-comedogenic"
     },
     "skin_check": {
-      "name": "Skin check",
-      "page": "Skin check page",
-      "page_info": "Links to the skin check appear beside the sets and on product pages. Leave empty to remove every link at once."
+      "name": "Routine finder",
+      "page": "Routine finder page",
+      "page_info": "The page with the routine finder (Routines). Links to it appear beside the sets, on product pages and on About. Leave empty to remove every link at once."
     }
   }
 }
