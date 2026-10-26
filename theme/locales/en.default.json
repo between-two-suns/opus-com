@@ -554,9 +554,18 @@
     "scan": {
       "eyebrow": "You scanned a Between Two Suns pack",
       "heading": "Which one is in your hand?",
-      "text": "Pick your product for how to use it, where it sits in your routine, and the full ingredient list.",
+      "text": "Tap yours for how to use it, what comes next, and an easy reorder.",
       "how": "How to use",
-      "open": "Open product page"
+      "complete": "Complete your routine",
+      "complete_set": "Add the other three steps as {{ set }}.",
+      "complete_text": "Add the other three steps and you have the full routine.",
+      "complete_cta": "Add all three · {{ price }}",
+      "again": "Running low?",
+      "again_cta": "Buy again · {{ price }}",
+      "two_cta": "Get two · {{ price }}",
+      "inci": "Full ingredients",
+      "finder": "Not sure what else your skin needs? Find your routine in 30 seconds",
+      "open": "See the full product page"
     },
     "ingredients": {
       "search_label": "Filter ingredients",

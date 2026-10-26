@@ -1,61 +1,204 @@
 {{ 'pages.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  /pages/scan — destination for the "Discover More" QR on every pack.
-  The visitor taps the product in their hand and gets how-to-use, routine position and INCI immediately.
-  Supports ?p=<handle> deep links (open that product's panel).
+  /pages/scan: where the one "Discover More" QR on every pack lands (yourdomain.com/scan → URL redirect → here).
+  The four packs come first; tapping the one in your hand opens its card (DECISIONS 226):
+  how to use, complete the routine (the set that holds exactly the other three steps,
+  else the three as singles), reorder (and the two-pack where one exists), full ingredients, the routine finder.
+  Without JS the packs are anchors and the card shows by :target. ?p=<handle> opens a product (for a per-product
+  insert card later); the URL follows the tap so a link can be shared.
 {%- endcomment -%}
-{%- assign source = section.settings.collection | default: collections.all -%}
-<section class="section section--tight scan">
+{%- liquid
+  assign handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign sets = 'the-full-ritual,the-clear-protect-trio,clear-protect-duo,the-night-ritual,the-core-duo,spf-stock-up,serum-stock-up' | split: ','
+  assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
+  assign glossary_url = routes.root_url | append: '/pages/ingredients' | replace: '//', '/'
+-%}
+<section class="section scan" aria-labelledby="ScanTitle-{{ section.id }}">
   <div class="container">
-    <scan-picker class="scan__list">
-      {%- for s in (1..4) -%}
-        {%- for p in source.products limit: 12 -%}
-          {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
-          {%- assign ps = ps | strip | plus: 0 -%}
-          {%- if ps == s -%}
-            {%- assign cutout = p.metafields.bts.cutout.value -%}
-            <details class="scan__item" data-step="{{ s }}" id="scan-{{ p.handle }}" data-handle="{{ p.handle }}">
-              <summary class="scan__summary">
-                <span class="scan__media" aria-hidden="true">
-                  {%- if cutout -%}{{ cutout | image_url: width: 300 | image_tag: loading: 'eager', widths: '150,300', sizes: '120px', alt: '' }}{%- elsif p.featured_media -%}{{ p.featured_media | image_url: width: 300 | image_tag: loading: 'eager', widths: '150,300', sizes: '120px', alt: '' }}{%- endif -%}
-                </span>
-                <span class="scan__label">
-                  <span class="step-tag">{{ 'product.step' | t: number: s }}</span>
-                  <span class="scan__name">{{ p.title | escape }}</span>
-                  {%- if p.metafields.bts.size != blank -%}<span class="t-small t-muted u-ltr">{{ p.metafields.bts.size }}</span>{%- endif -%}
-                </span>
-                <span class="accordion__icon" aria-hidden="true"></span>
-              </summary>
-              <div class="scan__panel">
-                {%- if p.metafields.bts.how_to_use != blank -%}
-                  <h3 class="t-subheading">{{ 'pages.scan.how' | t }}</h3>
-                  <p class="t-body-l">{{ p.metafields.bts.how_to_use }}</p>
-                {%- endif -%}
-                {%- if p.metafields.bts.when_to_use != blank -%}<p class="pill pill--sku">{{ p.metafields.bts.when_to_use }}</p>{%- endif -%}
-                <div class="scan__route" aria-label="{{ 'product.routine.heading' | t }}">
-                  {%- for n in (1..4) -%}
-                    <span class="scan__dot{% if n == s %} is-on{% endif %}" data-step="{{ n }}">0{{ n }}</span>
-                  {%- endfor -%}
-                </div>
-                {%- if p.metafields.bts.caution != blank -%}<p class="t-small t-muted">{{ p.metafields.bts.caution }}</p>{%- endif -%}
-                <a class="btn" href="{{ p.url }}">{{ 'pages.scan.open' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-              </div>
-            </details>
-            {%- break -%}
-          {%- endif -%}
+    <header class="scan__head">
+      <p class="t-eyebrow">{{ 'pages.scan.eyebrow' | t }}</p>
+      <h1 class="t-display-m" id="ScanTitle-{{ section.id }}">{{ 'pages.scan.heading' | t }}</h1>
+    </header>
+
+    <scan-picker class="scan__picker">
+      <ul class="scan__picks" role="list">
+        {%- for h in handles -%}
+          {%- assign p = all_products[h] -%}
+          {%- if p == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign sk = 'pdp2.short.' | append: forloop.index -%}
+          {%- capture src -%}{%- render 'cut-src', handle: h, width: 200 -%}{%- endcapture -%}
+          <li data-step="{{ forloop.index }}">
+            <a class="scan__pick" href="#scan-{{ h }}" data-handle="{{ h }}" aria-controls="scan-{{ h }}">
+              <span class="scan__pick-media" aria-hidden="true"><img src="{{ src | strip }}" alt="" width="140" height="431" loading="eager"></span>
+              <span class="scan__pick-n" aria-hidden="true">0{{ forloop.index }}</span>
+              <span class="scan__pick-name">{{ sk | t }}<span class="visually-hidden">: {{ p.title | escape }}</span></span>
+            </a>
+          </li>
         {%- endfor -%}
+      </ul>
+      <p class="scan__hint t-small t-muted" data-scan-hint>{{ 'pages.scan.text' | t }}</p>
+
+      {%- for h in handles -%}
+        {%- assign p = all_products[h] -%}
+        {%- if p == blank -%}{%- continue -%}{%- endif -%}
+        {%- assign s = forloop.index -%}
+        {%- assign v = p.selected_or_first_available_variant -%}
+        {%- assign mf = p.metafields.bts -%}
+        {%- capture src -%}{%- render 'cut-src', handle: h, width: 360 -%}{%- endcapture -%}
+        {%- comment -%} the other three steps, and the set that holds exactly those (if any) {%- endcomment -%}
+        {%- assign rest = '' -%}
+        {%- for n in (1..4) -%}{%- unless n == s -%}{%- assign rest = rest | append: ',' | append: n -%}{%- endunless -%}{%- endfor -%}
+        {%- assign rest = rest | remove_first: ',' -%}
+        {%- assign match = nil -%}
+        {%- assign stock = nil -%}
+        {%- for b in sets -%}
+          {%- capture bdef -%}{%- render 'bundle-def', handle: b -%}{%- endcapture -%}
+          {%- assign bparts = bdef | strip | split: '|' -%}
+          {%- assign bsteps = bparts[0] -%}
+          {%- assign bplace = bparts[2] -%}
+          {%- assign want_place = 'pdp-' | append: s -%}
+          {%- if bsteps == rest and all_products[b] != blank -%}{%- assign match = all_products[b] -%}{%- endif -%}
+          {%- if bplace == want_place and all_products[b] != blank -%}{%- assign stock = all_products[b] -%}{%- endif -%}
+        {%- endfor -%}
+        {%- if match and match.selected_or_first_available_variant.available != true -%}{%- assign match = nil -%}{%- endif -%}
+        {%- assign rest_sum = 0 -%}
+        {%- assign rest_ok = true -%}
+        {%- for n in (1..4) -%}
+          {%- unless n == s -%}
+            {%- assign rp = all_products[handles[forloop.index0]] -%}
+            {%- assign rv = rp.selected_or_first_available_variant -%}
+            {%- if rv == blank or rv.available == false -%}{%- assign rest_ok = false -%}{%- endif -%}
+            {%- assign rest_sum = rest_sum | plus: rv.price -%}
+          {%- endunless -%}
+        {%- endfor -%}
+
+        <article class="scan__card" id="scan-{{ h }}" data-step="{{ s }}" data-handle="{{ h }}" data-product-title="{{ p.title | escape }}" aria-labelledby="ScanName-{{ h }}" tabindex="-1">
+          <div class="scan__pack" aria-hidden="true"><img src="{{ src | strip }}" alt="" width="357" height="1100" loading="lazy"></div>
+          <div class="scan__body">
+            <div class="scan__title">
+              <p class="step-tag">{{ 'product.step' | t: number: s }}</p>
+              <h2 class="scan__name" id="ScanName-{{ h }}">{{ p.title | escape }}</h2>
+              <p class="scan__meta">
+                {%- if mf.size != blank -%}<span class="u-ltr">{{ mf.size }}</span>{%- endif -%}
+                {%- if mf.when_to_use != blank -%}<span class="scan__when">{% render 'icon', name: 'sun', class: 'icon--sm' %}{% unless s == 4 %}{% render 'icon', name: 'moon', class: 'icon--sm' %}{% endunless %}{{ mf.when_to_use }}</span>{%- endif -%}
+              </p>
+            </div>
+
+            {%- if mf.how_to_use != blank -%}
+              <div class="scan__block">
+                <h3 class="scan__h">{{ 'pages.scan.how' | t }}</h3>
+                <p class="scan__how">{{ mf.how_to_use }}</p>
+                {%- if mf.caution != blank -%}<p class="scan__caution">{% render 'icon', name: 'info', class: 'icon--sm' %}<span>{{ mf.caution }}</span></p>{%- endif -%}
+              </div>
+            {%- endif -%}
+
+            {%- if rest_ok -%}
+              <div class="scan__offer">
+                <h3 class="scan__h">{{ 'pages.scan.complete' | t }}</h3>
+                <div class="scan__offer-row">
+                  <span class="scan__trio" aria-hidden="true">
+                    {%- for n in (1..4) -%}{%- unless n == s -%}{%- capture osrc -%}{%- render 'cut-src', handle: handles[forloop.index0], width: 140 -%}{%- endcapture -%}<img src="{{ osrc | strip }}" alt="" width="140" height="431" loading="lazy">{%- endunless -%}{%- endfor -%}
+                  </span>
+                  <div class="scan__offer-copy">
+                    {%- if match -%}
+                      {%- assign bk = 'bundles.names.' | append: match.handle -%}
+                      {%- assign mv = match.selected_or_first_available_variant -%}
+                      {%- assign bname = bk | t -%}
+                      <p>{{ 'pages.scan.complete_set' | t: set: bname }}</p>
+                      {%- assign offer_price = mv.price -%}
+                      {%- if mv.compare_at_price > mv.price -%}{%- assign bsave = mv.compare_at_price | minus: mv.price -%}{%- capture bsave_m -%}{% render 'egp', cents: bsave %}{%- endcapture -%}<p class="scan__save">{{ 'bundles.save_vs' | t: amount: bsave_m }}</p>{%- endif -%}
+                    {%- else -%}
+                      <p>{{ 'pages.scan.complete_text' | t }}</p>
+                      {%- assign offer_price = rest_sum -%}
+                    {%- endif -%}
+                    {%- if threshold > 0 and offer_price >= threshold -%}<p class="ship-badge">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</p>{%- endif -%}
+                  </div>
+                </div>
+                {%- capture offer_m -%}{% render 'egp', cents: offer_price %}{%- endcapture -%}
+                <product-form>
+                  <form method="post" action="{{ routes.cart_add_url }}" novalidate>
+                    {%- if match -%}
+                      <input type="hidden" name="id" value="{{ mv.id }}">
+                    {%- else -%}
+                      {%- for n in (1..4) -%}{%- unless n == s -%}<input type="hidden" name="items[][id]" value="{{ all_products[handles[forloop.index0]].selected_or_first_available_variant.id }}"><input type="hidden" name="items[][quantity]" value="1">{%- endunless -%}{%- endfor -%}
+                    {%- endif -%}
+                    <button type="submit" class="btn scan__btn">{{ 'pages.scan.complete_cta' | t: price: offer_m }}</button>
+                    <p class="t-small" data-form-error hidden></p>
+                  </form>
+                </product-form>
+              </div>
+            {%- endif -%}
+
+            {%- if v.available -%}
+              <div class="scan__block scan__again">
+                <h3 class="scan__h">{{ 'pages.scan.again' | t }}</h3>
+                {%- capture one_m -%}{% render 'egp', cents: v.price %}{%- endcapture -%}
+                <div class="scan__again-row">
+                  <product-form>
+                    <form method="post" action="{{ routes.cart_add_url }}" novalidate>
+                      <input type="hidden" name="id" value="{{ v.id }}">
+                      <button type="submit" class="btn btn--secondary scan__btn">{% render 'icon', name: 'refresh', class: 'icon--sm' %}{{ 'pages.scan.again_cta' | t: price: one_m }}</button>
+                      <p class="t-small" data-form-error hidden></p>
+                    </form>
+                  </product-form>
+                  {%- assign sv = stock.selected_or_first_available_variant -%}
+                  {%- if stock and sv.available -%}
+                    {%- capture two_m -%}{% render 'egp', cents: sv.price %}{%- endcapture -%}
+                    <product-form>
+                      <form method="post" action="{{ routes.cart_add_url }}" novalidate>
+                        <input type="hidden" name="id" value="{{ sv.id }}">
+                        <button type="submit" class="btn btn--secondary scan__btn">{{ 'pages.scan.two_cta' | t: price: two_m }}</button>
+                        {%- if sv.compare_at_price > sv.price -%}{%- assign ssave = sv.compare_at_price | minus: sv.price -%}{%- capture ssave_m -%}{% render 'egp', cents: ssave %}{%- endcapture -%}<p class="scan__save">{{ 'bundles.save_vs' | t: amount: ssave_m }}</p>{%- endif -%}
+                        <p class="t-small" data-form-error hidden></p>
+                      </form>
+                    </product-form>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+
+            {%- if mf.inci.value != blank -%}
+              <details class="scan__inci">
+                <summary>{{ 'pages.scan.inci' | t }}<span class="accordion__icon" aria-hidden="true"></span></summary>
+                {%- render 'inci-links', inci: mf.inci.value, base: glossary_url -%}
+              </details>
+            {%- endif -%}
+
+            <div class="scan__links">
+              <a class="scan__link" href="{{ p.url }}">{{ 'pages.scan.open' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            </div>
+          </div>
+        </article>
       {%- endfor -%}
+
+      {%- render 'skin-check-link', key: 'pages.scan.finder', class: 'scan__finder' -%}
     </scan-picker>
   </div>
 </section>
 <script type="module">
   class ScanPicker extends HTMLElement {
     connectedCallback() {
-      const items = [...this.querySelectorAll('details')];
-      const want = new URLSearchParams(location.search).get('p');
-      const target = items.find((d) => d.dataset.handle === want);
-      if (target) { target.open = true; target.scrollIntoView({ block: 'start' }); }
-      items.forEach((d) => d.addEventListener('toggle', () => { if (d.open) items.forEach((o) => o !== d && (o.open = false)); }));
+      this.picks = [...this.querySelectorAll('.scan__pick')];
+      this.cards = [...this.querySelectorAll('.scan__card')];
+      this.classList.add('is-js');
+      this.picks.forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); this.select(a.dataset.handle, true); }));
+      const q = new URLSearchParams(location.search).get('p') || location.hash.replace('#scan-', '');
+      if (q && this.cards.some((c) => c.dataset.handle === q)) this.select(q, false);
+    }
+    select(handle, user) {
+      this.picks.forEach((a) => a.setAttribute('aria-current', String(a.dataset.handle === handle)));
+      let card;
+      this.cards.forEach((c) => { const on = c.dataset.handle === handle; c.classList.toggle('is-on', on); if (on) card = c; });
+      this.querySelector('[data-scan-hint]').hidden = true;
+      const url = new URL(location.href);
+      url.searchParams.set('p', handle);
+      url.hash = '';
+      history.replaceState(null, '', url);
+      if (!card) return;
+      // the card opens right under the packs; it only scrolls when its top would sit low on the screen
+      const top = card.getBoundingClientRect().top;
+      if (user && top > innerHeight * 0.6) card.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      if (user) card.focus({ preventScroll: true });
     }
   }
   if (!customElements.get('scan-picker')) customElements.define('scan-picker', ScanPicker);
@@ -64,8 +207,6 @@
 {% schema %}
 {
   "name": "t:sections.scan.name",
-  "settings": [
-    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" }
-  ]
+  "settings": []
 }
 {% endschema %}

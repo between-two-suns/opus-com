@@ -276,6 +276,34 @@ for (const loc of ['', '/ar']) {
     ok(`${tag} no page errors`, errors.length === 0, errors.join(' | '));
     await ctx.close();
 
+    // Scan (DECISIONS 226): the one pack QR lands here; tapping a pack opens its card, Complete adds the other three
+    const sctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.isMobile, hasTouch: vp.hasTouch });
+    await sctx.addInitScript(() => { try { localStorage.setItem('bts:welcome', 'seen'); } catch (e) {} });
+    const sp = await sctx.newPage();
+    const serr = [];
+    sp.on('pageerror', (e) => serr.push(e.message));
+    await sp.goto(`${BASE}${loc}/pages/scan`, { waitUntil: 'networkidle' });
+    ok(`${tag} scan shows 4 packs, no card yet`, (await sp.locator('.scan__pick').count()) === 4 && (await sp.locator('.scan__card:visible').count()) === 0);
+    await sp.locator('.scan__pick[data-handle="clarity-serum"]').click();
+    await sp.waitForTimeout(500);
+    ok(`${tag} scan tap opens that pack's card`, await sp.locator('#scan-clarity-serum').isVisible() && (await sp.locator('.scan__card:visible').count()) === 1);
+    ok(`${tag} scan URL follows the tap`, sp.url().includes('p=clarity-serum'));
+    await sp.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
+    await sp.locator('#scan-clarity-serum .scan__offer [type="submit"]').click();
+    await sp.waitForTimeout(1500);
+    const scanSingles = await sp.evaluate(() => fetch('/cart.js').then((r) => r.json()).then((c) => c.items.map((i) => i.handle).sort().join(',')));
+    ok(`${tag} scan complete adds the other three`, scanSingles === 'daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50,daily-reset-cleanser', scanSingles);
+    await sp.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
+    await sp.goto(`${BASE}${loc}/pages/scan?p=daily-defense-sunscreen-spf-50`, { waitUntil: 'networkidle' });
+    ok(`${tag} scan ?p= opens the sunscreen`, await sp.locator('#scan-daily-defense-sunscreen-spf-50').isVisible());
+    await sp.locator('#scan-daily-defense-sunscreen-spf-50 .scan__offer [type="submit"]').click();
+    await sp.waitForTimeout(1500);
+    const scanSet = await sp.evaluate(() => fetch('/cart.js').then((r) => r.json()).then((c) => c.items.map((i) => i.handle).join(',')));
+    ok(`${tag} scan complete uses the matching set`, scanSet === 'the-night-ritual', scanSet);
+    await sp.evaluate(() => fetch('/cart/clear.js', { method: 'POST' }));
+    ok(`${tag} scan no page errors`, serr.length === 0, serr.join(' | '));
+    await sctx.close();
+
     // Creators: required fields block an empty submit; a full one shows the thank-you and takes focus
     const cctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.isMobile, hasTouch: vp.hasTouch });
     await cctx.addInitScript(() => { try { localStorage.setItem('bts:welcome', 'seen'); } catch (e) {} });
