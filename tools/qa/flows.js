@@ -288,9 +288,15 @@ for (const loc of ['', '/ar']) {
     await cp.waitForTimeout(600);
     ok(`${tag} creators CTA jumps to the form`, await cp.locator('#CreatorApply').evaluate((el) => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }));
     ok(`${tag} creators empty form is invalid`, !(await cp.locator('#CreatorForm').evaluate((f) => f.checkValidity())));
+    // the application is stepped like the finder (DECISIONS 224): Next is held until each part's required fields are filled
+    await cp.locator('[data-cr-next]').click();
+    ok(`${tag} creators Next waits for name and email`, await cp.locator('#Cr-name').isVisible() && !(await cp.locator('#Cr-handle').isVisible()));
     await cp.fill('#Cr-name', 'Test Creator');
     await cp.fill('#Cr-email', 'creator@example.com');
+    await cp.locator('[data-cr-next]').click();
     await cp.fill('#Cr-handle', '@testcreator');
+    await cp.locator('[data-cr-next]').click();
+    ok(`${tag} creators reaches the last part`, await cp.locator('[data-cr-send]').isVisible());
     await cp.locator('.cr-check').first().click();
     await cp.locator('.cr-consent input').check();
     await Promise.all([cp.waitForNavigation({ waitUntil: 'networkidle' }), cp.locator('#CreatorForm [type="submit"]').click()]);

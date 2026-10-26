@@ -733,21 +733,13 @@
         "q": "Do I need a lot of followers?",
         "a": "No. We look at how honest and well-made your content is, not just the numbers."
       },
-      "cr_paid": {
-        "q": "Is it paid?",
-        "a": "Every accepted creator gets the full routine. Depending on the collaboration, it can also include commission on sales through your code, or a paid project. We agree everything with you before you post."
-      },
       "cr_rights": {
         "q": "Can you use my content?",
         "a": "Only with your permission. If we’d like to use a piece on our site, channels or ads, we ask first and agree how, where and for how long."
       },
       "cr_post": {
         "q": "Do I have to post?",
-        "a": "We ask for honest content after you’ve lived with the routine for a while. What and when, we agree together. We never script your opinion."
-      },
-      "cr_where": {
-        "q": "Who can apply?",
-        "a": "Creators based in Egypt, for now. Any platform, any follower count."
+        "a": "We ask for honest content after you’ve used the products for a while. What and when, we agree together. We never script your opinion."
       },
       "cr_disclose": {
         "q": "Do I need to mark posts as an ad?",
@@ -828,6 +820,18 @@
       "pregnancy": {
         "q": "Can I use the products during pregnancy or breastfeeding?",
         "a": "We don't describe any of our products as pregnancy-safe. Please consult your doctor or a healthcare professional before using them during pregnancy or breastfeeding, especially before starting the Clarity Serum."
+      },
+      "cr_box": {
+        "q": "What will you send me?",
+        "a": "Free products, chosen for your skin and your channel. Keep posting and we send the rest of the routine, then refills when you run out."
+      },
+      "cr_earn": {
+        "q": "How do I earn?",
+        "a": "Your followers get 10% off with your code, and you earn 10% commission on every sale it brings, paid monthly. Our top creators get a higher rate and paid collaborations."
+      },
+      "cr_reply": {
+        "q": "When will I hear back?",
+        "a": "Within 7 days, by email. We read every application."
       }
     },
     "eyebrow": "Good to know",
@@ -985,50 +989,29 @@
       "ac": "8 hours of office AC",
       "sun": "38° and reapplying"
     },
-    "offer_eyebrow": "What you get",
-    "offer_heading": "Made with you, not around you",
-    "offers": {
-      "routine": {
-        "title": "The full routine, on us",
-        "text": "All four steps, sent to you to live with properly before you make anything."
-      },
-      "code": {
-        "title": "Your own code",
-        "text": "A personal code that gives your followers 10% off.",
-        "note": "For accepted creators."
-      },
-      "earn": {
-        "title": "Commission or paid collabs",
-        "text": "Depending on the collaboration: product, or product plus commission on sales through your code. We agree it with you, in writing, before you post."
-      },
-      "featured": {
-        "title": "Featured, with credit",
-        "text": "Our favourite work is shown on our site and channels, always credited and only with your permission."
-      }
-    },
     "how_eyebrow": "How it works",
-    "how_heading": "Four steps, no scripts",
+    "how_heading": "From application to your first post",
     "steps": {
       "s1": {
         "title": "Apply",
-        "text": "Two minutes. Tell us who you are and what you make."
+        "text": "Two minutes. Tell us who you are and what you make. Any follower count."
       },
       "s2": {
-        "title": "We get in touch",
-        "text": "We read every application. If it’s a fit, we message you to agree what the collaboration looks like."
+        "title": "Hear back in 7 days",
+        "text": "We read every application and reply by email within 7 days. If it’s a fit, we agree the details with you."
       },
       "s3": {
-        "title": "Your routine arrives",
-        "text": "Use it in your real weather for a while. Your skin, your pace."
+        "title": "Get your products",
+        "text": "Free, and chosen for your skin and your channel. Use them in your real weather before you film."
       },
       "s4": {
-        "title": "Create and share",
-        "text": "Make it your way and tag us. The best work gets featured, with credit."
+        "title": "Post and earn",
+        "text": "Your followers get 10% off with your code, and you earn 10% of every sale it brings."
       }
     },
     "ideas_eyebrow": "What we love",
     "ideas_heading": "Real days, real weather",
-    "ideas_text": "No studio needed. The best content looks like your actual day.",
+    "ideas_text": "No studio needed. Here’s what we’d love to see.",
     "ideas": {
       "morning": "Your morning routine on a 38° day",
       "office": "Desk-day skin vs. office AC",
@@ -1047,14 +1030,13 @@
     "apply_eyebrow": "Apply",
     "apply_heading": "Create with us",
     "apply_text": "Any follower count. We care more about honest, well-made content than numbers.",
-    "apply_note": "For creators based in Egypt for now. If it’s a fit, we’ll reply by email.",
+    "apply_note": "We reply by email within 7 days.",
     "success_heading": "Application received",
     "success_text": "Thank you. We read every application, and if it’s a fit we’ll reach out by email.",
     "form": {
       "about": "About you",
       "name": "Full name",
       "email": "Email",
-      "whatsapp": "WhatsApp number",
       "city": "City",
       "channels": "Your channels",
       "platform": "Main platform",
@@ -1097,7 +1079,43 @@
       "why_hint": "A few lines are plenty.",
       "consent": "I agree that Between Two Suns can contact me about this application.",
       "submit": "Send my application"
-    }
+    },
+    "grow_heading": "The more you create, the more you get",
+    "grow": {
+      "keep": {
+        "title": "Keep posting",
+        "text": "We send the rest of the routine, and refills when you run out."
+      },
+      "featured": {
+        "title": "Get featured",
+        "text": "Your best work on our site and channels, always credited and only with your permission."
+      },
+      "top": {
+        "title": "Grow with us",
+        "text": "Our top creators get a higher commission and paid collaborations."
+      }
+    },
+    "sig_eyebrow": "Our signature",
+    "sig_title": "The space between",
+    "sig_text": "Film your skin twice on the same day: once in the noon sun, once after hours of AC. Show them side by side.",
+    "tags": {
+      "morning": "Sun",
+      "office": "Office AC",
+      "commute": "City & dust",
+      "coast": "Humidity",
+      "night": "Night",
+      "texture": "Close-up"
+    },
+    "who_heading": "Who we’re looking for",
+    "who": {
+      "w1": "Based in Egypt",
+      "w2": "Real skin, any skin type",
+      "w3": "Arabic, English or both",
+      "w4": "Any platform, any follower count"
+    },
+    "bar_note": "We reply within 7 days",
+    "form_steps": "Step {{ n }} of {{ total }}",
+    "privacy": "Privacy policy"
   },
   "bundle_inside": {
     "eyebrow": "Inside the set",
@@ -1466,5 +1484,42 @@
     "adj_sensitive": "sensitive",
     "adj_breakouts": "breakout-prone",
     "why_this": "Why this?"
+  },
+  "creator_kit": {
+    "title": "Creator kit",
+    "intro": "Everything you need to make something with us. This page is just for our creators, so please keep the link to yourself.",
+    "sig_heading": "Our signature format: the space between",
+    "sig_text": "Film your skin twice on the same day, once in the noon sun and once after hours of AC, and show them side by side. Tell us how your skin felt in each.",
+    "shots": {
+      "s1": "Shot 1: you outside, in the noon light.",
+      "s2": "Shot 2: the same face after hours inside with the AC on.",
+      "s3": "Shot 3: your routine in between, step by step."
+    },
+    "hook_label": "Hook line",
+    "hook": "“My skin, between two suns.”",
+    "hashtag_label": "Hashtag",
+    "earn_heading": "Your code and what you earn",
+    "earn": {
+      "e1": "Your followers get 10% off with your code.",
+      "e2": "You earn 10% of every sale your code brings, paid monthly.",
+      "e3": "Post 2–3 times and bring your first sale: we send the rest of the routine.",
+      "e4": "Post 3 or more times in a month: we send a refill when you run out.",
+      "e5": "Bring 20 or more orders in a month: your commission goes up to 15%, and we talk about paid collaborations."
+    },
+    "say_heading": "What to say",
+    "say_text": "How it feels, the texture, how it fits your day, and what the pack itself says:",
+    "avoid_heading": "What not to say",
+    "avoid": {
+      "a1": "Medical claims: that it cures, heals or treats acne, scars or any condition.",
+      "a2": "Whitening or lightening.",
+      "a3": "That it’s safe in pregnancy or never irritates.",
+      "a4": "Percentages or results that aren’t on the pack.",
+      "a5": "Edited or filtered skin, or before-and-after photos that aren’t real."
+    },
+    "rules_heading": "The few rules",
+    "when_am": "Every morning",
+    "when_both": "Morning and night",
+    "questions_heading": "Questions?",
+    "questions_text": "Reply to the email we sent you when you were accepted. We’re happy to help."
   }
 }

@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "kit": {
+      "type": "creator-kit",
+      "settings": {}
+    }
+  },
+  "order": [
+    "kit"
+  ]
+}

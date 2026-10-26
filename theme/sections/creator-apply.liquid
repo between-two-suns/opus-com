@@ -3,6 +3,8 @@
   Creator application. Uses Shopify's contact form, so each application arrives in the store's
   notification email (Settings → Notifications → Staff), labelled "Creator application".
   Nothing is stored on the site. Required: name, email, main account, consent.
+  With JS it works like the routine finder: one part per screen (About you, Your channels, Your content), Back and
+  Next at the bottom, each part checked before moving on (assets/creators.js). Without JS all three show (DECISIONS 224).
 {%- endcomment -%}
 {%- liquid
   assign heading = section.settings.heading
@@ -13,6 +15,7 @@
   assign sizes = 'under_1k,1k_10k,10k_50k,50k_100k,over_100k' | split: ','
   assign kinds = 'video,photo,review,tutorial,ugc' | split: ','
   assign skins = 'oily,combination,normal,dry,sensitive,unsure' | split: ','
+  assign of_tpl = 'creators.form_steps' | t: n: '__N__', total: '__T__'
 -%}
 <section class="section cr-apply" id="CreatorApply" aria-labelledby="CrApplyTitle-{{ section.id }}">
   <div class="container cr-apply__inner">
@@ -20,11 +23,17 @@
       <p class="t-eyebrow">{{ 'creators.apply_eyebrow' | t }}</p>
       <h2 class="t-display-m" id="CrApplyTitle-{{ section.id }}">{{ heading | escape }}</h2>
       <p class="t-lead">{{ 'creators.apply_text' | t }}</p>
-      <p class="t-small t-muted">{{ 'creators.apply_note' | t }}</p>
+      <div class="cr-who">
+        <h3 class="cr-who__title">{{ 'creators.who_heading' | t }}</h3>
+        <ul class="cr-who__list" role="list">
+          {%- for n in (1..4) -%}{%- assign wk = 'creators.who.w' | append: n -%}<li>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ wk | t }}</li>{%- endfor -%}
+        </ul>
+      </div>
+      <p class="cr-apply__note">{% render 'icon', name: 'mail', class: 'icon--sm' %}{{ 'creators.apply_note' | t }}</p>
     </div>
 
     <div class="cr-apply__card">
-      {%- form 'contact', id: 'CreatorForm', class: 'cr-form' -%}
+      {%- form 'contact', id: 'CreatorForm', class: 'cr-form', data-cr-steps: '', data-of: of_tpl -%}
         {%- if form.posted_successfully? -%}
           <div class="cr-form__done" role="status" tabindex="-1" data-cr-done>
             <span class="cr-form__done-mark" aria-hidden="true"></span>
@@ -43,7 +52,7 @@
           {%- endif -%}
           <input type="hidden" name="contact[Form]" value="Creator application">
 
-          <fieldset class="cr-form__group">
+          <fieldset class="cr-form__group" data-cr-step>
             <legend class="cr-form__legend"><span class="step-num">01</span> {{ 'creators.form.about' | t }}</legend>
             <div class="cr-form__row">
               <div class="field">
@@ -61,7 +70,7 @@
             </div>
           </fieldset>
 
-          <fieldset class="cr-form__group">
+          <fieldset class="cr-form__group" data-cr-step>
             <legend class="cr-form__legend"><span class="step-num">02</span> {{ 'creators.form.channels' | t }}</legend>
             <div class="cr-form__row">
               <div class="field">
@@ -96,7 +105,7 @@
             <p class="t-xs t-muted">{{ 'creators.form.audience_note' | t }}</p>
           </fieldset>
 
-          <fieldset class="cr-form__group">
+          <fieldset class="cr-form__group" data-cr-step>
             <legend class="cr-form__legend"><span class="step-num">03</span> {{ 'creators.form.content' | t }}</legend>
             <div class="cr-form__checks">
               {%- for k in kinds -%}
@@ -126,13 +135,21 @@
               <label for="Cr-why">{{ 'creators.form.why' | t }}</label>
               <textarea id="Cr-why" name="contact[body]" rows="4" placeholder="{{ 'creators.form.why_hint' | t }}">{{ form.body }}</textarea>
             </div>
+
+            <label class="cr-consent">
+              <input type="checkbox" name="contact[Consent]" value="Agreed to be contacted about this application" required>
+              <span>{{ 'creators.form.consent' | t }}{%- if shop.privacy_policy -%}{{ ' ' }}<a href="{{ shop.privacy_policy.url }}" target="_blank" rel="noopener">{{ 'creators.privacy' | t }}</a>{%- endif -%}</span>
+            </label>
           </fieldset>
 
-          <label class="cr-consent">
-            <input type="checkbox" name="contact[Consent]" value="Agreed to be contacted about this application" required>
-            <span>{{ 'creators.form.consent' | t }}</span>
-          </label>
-          <button type="submit" class="btn btn--full" data-magnetic>{{ 'creators.form.submit' | t }}</button>
+          <div class="cr-form__foot">
+            <p class="cr-form__of" aria-live="polite" data-cr-of></p>
+            <div class="cr-form__nav">
+              <button type="button" class="cr-form__back" data-cr-back hidden>{% render 'icon', name: 'arrow', class: 'icon--sm' %}{{ 'skin_check.back' | t }}</button>
+              <button type="button" class="btn cr-form__next" data-cr-next hidden>{{ 'skin_check.next' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+              <button type="submit" class="btn cr-form__send" data-cr-send data-magnetic>{{ 'creators.form.submit' | t }}</button>
+            </div>
+          </div>
         {%- endif -%}
       {%- endform -%}
     </div>

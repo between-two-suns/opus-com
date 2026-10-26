@@ -1,0 +1,100 @@
+{{ 'creators.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Creator kit (DECISIONS 224): a private page for accepted creators, at /pages/creators?view=creator-kit, never linked
+  and kept out of search engines (layout/theme.liquid). The signature format, the code and what they earn (the rules
+  for the rest of the routine, refills and the higher rate), what to say (each product's own pack benefit) and what not
+  to say, and the rules. Who gets which products first stays with the owner.
+{%- endcomment -%}
+{%- liquid
+  assign handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+-%}
+<style>
+  .kit { padding-block: calc(var(--header-h, 80px) + clamp(24px, 5vw, 56px)) clamp(48px, 8vw, 96px); background: var(--c-daylight); }
+  .kit__inner { display: grid; gap: clamp(28px, 4vw, 44px); max-inline-size: 820px; }
+  .kit__title { margin: 8px 0 12px; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .9; font-size: clamp(48px, 8vw, 96px); }
+  :lang(ar) .kit__title { font-family: inherit; text-transform: none; line-height: 1.2; font-size: clamp(38px, 6vw, 64px); }
+  .kit__block { display: grid; gap: 12px; padding: clamp(20px, 3vw, 32px); border-radius: var(--radius-l); background: var(--c-paper); box-shadow: inset 0 0 0 1px var(--c-line); }
+  .kit__block > * { margin: 0; }
+  .kit__block--ink { background: var(--c-ink); color: #F4EFE7; box-shadow: none; }
+  .kit__h { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: 1; font-size: clamp(26px, 3vw, 36px); }
+  :lang(ar) .kit__h { font-family: inherit; text-transform: none; line-height: 1.3; font-size: clamp(21px, 2.4vw, 26px); }
+  .kit__list { display: grid; gap: 10px; list-style: none; padding: 0; }
+  .kit__list li { display: flex; gap: 10px; align-items: flex-start; line-height: 1.5; }
+  .kit__list .icon { flex: none; margin-block-start: 3px; }
+  .kit__pair { display: flex; flex-wrap: wrap; gap: 10px 28px; }
+  .kit__pair dt { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .7; }
+  :lang(ar) .kit__pair dt { letter-spacing: 0; }
+  .kit__pair dd { margin: 4px 0 0; font-size: 18px; font-weight: 700; }
+  .kit__products { display: grid; gap: 10px; list-style: none; padding: 0; }
+  .kit__product { display: grid; grid-template-columns: 46px 1fr; gap: 14px; align-items: center; padding: 10px; border-radius: 16px; background: color-mix(in srgb, var(--sku) 16%, #fff); }
+  .kit__product img { inline-size: 46px; block-size: 58px; object-fit: contain; }
+  .kit__product strong { display: block; }
+  .kit__product span { font-size: 14px; color: color-mix(in srgb, var(--c-ink) 80%, transparent); }
+</style>
+<section class="kit">
+  <div class="container kit__inner">
+    <div>
+      <p class="t-eyebrow">{{ 'creators.eyebrow' | t }}</p>
+      <h1 class="kit__title">{{ 'creator_kit.title' | t }}</h1>
+      <p class="t-lead">{{ 'creator_kit.intro' | t }}</p>
+    </div>
+
+    <div class="kit__block kit__block--ink">
+      <h2 class="kit__h">{{ 'creator_kit.sig_heading' | t }}</h2>
+      <p>{{ 'creator_kit.sig_text' | t }}</p>
+      <ol class="kit__list" role="list">
+        {%- for n in (1..3) -%}{%- assign k = 'creator_kit.shots.s' | append: n -%}<li>{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}<span>{{ k | t }}</span></li>{%- endfor -%}
+      </ol>
+      <dl class="kit__pair">
+        <div><dt>{{ 'creator_kit.hook_label' | t }}</dt><dd>{{ 'creator_kit.hook' | t }}</dd></div>
+        <div><dt>{{ 'creator_kit.hashtag_label' | t }}</dt><dd dir="ltr">#BetweenTwoSuns</dd></div>
+      </dl>
+    </div>
+
+    <div class="kit__block">
+      <h2 class="kit__h">{{ 'creator_kit.earn_heading' | t }}</h2>
+      <ul class="kit__list" role="list">
+        {%- for n in (1..5) -%}{%- assign k = 'creator_kit.earn.e' | append: n -%}<li>{% render 'icon', name: 'check', class: 'icon--sm' %}<span>{{ k | t }}</span></li>{%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="kit__block">
+      <h2 class="kit__h">{{ 'creator_kit.say_heading' | t }}</h2>
+      <p>{{ 'creator_kit.say_text' | t }}</p>
+      <ul class="kit__products" role="list">
+        {%- for h in handles -%}
+          {%- assign p = all_products[h] -%}
+          {%- capture img -%}{%- render 'cut-src', handle: h, width: 140 -%}{%- endcapture -%}
+          <li class="kit__product" style="--sku: var(--c-step-{{ forloop.index }})">
+            <img src="{{ img | strip }}" alt="" width="140" height="431" loading="lazy">
+            <div><strong>{{ p.title | escape }}</strong>
+              <span>{%- if p.metafields.bts.benefit != blank -%}{{ p.metafields.bts.benefit.value | escape }} · {% endif -%}{%- if forloop.last -%}{{ 'creator_kit.when_am' | t }}{%- else -%}{{ 'creator_kit.when_both' | t }}{%- endif -%}</span></div>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <h2 class="kit__h">{{ 'creator_kit.avoid_heading' | t }}</h2>
+      <ul class="kit__list" role="list">
+        {%- for n in (1..5) -%}{%- assign k = 'creator_kit.avoid.a' | append: n -%}<li>{% render 'icon', name: 'close', class: 'icon--sm' %}<span>{{ k | t }}</span></li>{%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="kit__block">
+      <h2 class="kit__h">{{ 'creator_kit.rules_heading' | t }}</h2>
+      <ul class="kit__list" role="list">
+        {%- for n in (1..4) -%}{%- assign k = 'creators.rules.r' | append: n -%}<li>{% render 'icon', name: 'check', class: 'icon--sm' %}<span>{{ k | t }}</span></li>{%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="kit__block">
+      <h2 class="kit__h">{{ 'creator_kit.questions_heading' | t }}</h2>
+      <p>{{ 'creator_kit.questions_text' | t }}</p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Creator kit",
+  "settings": []
+}
+{% endschema %}
