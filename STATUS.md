@@ -1,14 +1,14 @@
 # STATUS — Between Two Suns (Opus build)
 
-_Updated: 2026-10-25_
+_Updated: 2026-10-26_
 
 ## Current build state
 Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, with store content (metafields, metaobjects, pages, Arabic translations) wired up. QA on the local preview is green. Real-storefront visual verification is still outstanding: the build sandbox cannot reach `*.myshopify.com`.
 
 | | |
 |---|---|
-| **Staging preview URL** | https://qfj1gi-c9.myshopify.com/?preview_theme_id=167112540418 (store password required; or Online Store → Themes → "BTS Opus — staging" → Preview) |
-| Theme | `BTS Opus — staging` · `gid://shopify/OnlineStoreTheme/167112540418` · UNPUBLISHED |
+| **Staging preview URL** | https://qfj1gi-c9.myshopify.com/?preview_theme_id=167112540418 (store password required; or Online Store → Themes → "BTS Store — Version 1.1 (fixes, in progress)" → Preview) |
+| Theme | `BTS Store — Version 1.1 (fixes, in progress)` (was "BTS Opus — staging") · `gid://shopify/OnlineStoreTheme/167112540418` · UNPUBLISHED |
 | Live theme | Horizon (MAIN): **untouched** (store-level: Arabic published 2026-10-18 with owner approval) · `templates/index.json` MD5 `c828067cbc7ea00ac09f4927419385ce` (2026-10-18) |
 | Repo / branch | `between-two-suns/opus-com` · `opus-build` |
 | Last commit | see `git log -1 origin/opus-build` (pushed; GitHub access restored) |
@@ -16,6 +16,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 ## Restore points (revert here if needed)
 | Date | Shopify theme (unpublished, untouched copy) | Git commit on `opus-build` |
 |---|---|---|
+| 2026-10-26, **BTS Store — Version 1.0**: the site as audited, before the audit fixes | `BTS Store — Version 1.0` · `gid://shopify/OnlineStoreTheme/167875215618` (248 files, copied from staging) | `099ed58` |
 | 2026-10-18, before shipping the orbs hero + routine module | `snapshot 2026-10-18 before orbs ship` · `gid://shopify/OnlineStoreTheme/167562281218` | `1d0f79a` |
 | 2026-10-16, v3 rated 7 by owner, before loop 5 | `BTS Opus — snapshot 2026-10-16 (v3, rated 7, before loop 5)` · `gid://shopify/OnlineStoreTheme/167493992706` | `42678d6` |
 | 2026-10-16, before the v3 redesign loop | `BTS Opus — snapshot 2026-10-16 (before redesign loop)` · `gid://shopify/OnlineStoreTheme/167484195074` | `8ed2427` |
