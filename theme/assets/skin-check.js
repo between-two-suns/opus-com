@@ -2,8 +2,9 @@
   Skin check. Answers → products, from the four formulations (owner + ICI answers, DECISIONS 171, 173):
   - each product is 'core' (suggested, ticked) or 'optional' (shown under "Also worth considering", not ticked),
     and lists the customer's concerns it answers (shown as chips beside its pack benefit line);
-  - highly reactive or irritated skin gets guidance and no products;
-  - a set is offered only when the ticked products are exactly a set's contents, and never for sensitive skin;
+  - sensitive skin changes how to start (one product at a time, patch test each), never what is suggested: no answer ends
+    without a routine and the serum is never held back (owner, DECISIONS 215; replaces the guidance-only result);
+  - a set is offered only when the ticked products are exactly a set's contents;
   - a three-product result offers the missing step when it suits and The Full Ritual then costs less than that step
     alone (the bag's honest switch, same rule). Answers stay in the page; nothing is stored or sent.
 */
@@ -11,7 +12,7 @@ const ORDER = ['type', 'react', 'acne', 'concerns'];
 const TREAT = ['oil', 'tone', 'marks', 'dehydration'];
 
 export function match(a) {
-  if (a.react === 'high') return { guidance: true, picks: {} };
+  const sensitive = a.react === 'some' || a.react === 'high';
   const C = new Set(a.concerns);
   const t = a.type;
   const veryDry = t === 'very_dry';
@@ -52,14 +53,11 @@ export function match(a) {
   put(4, 'core', 'spf_daily', 'spf', 'tone', 'marks');
   if (C.has('tone') || C.has('marks')) note(4, 'spf_tone');
 
-  // Mildly sensitive: cautious, individual suggestions with a patch test; the cleanser and serum are not ticked
-  if (a.react === 'some') {
-    [1, 2].forEach((s) => { if (picks[s]) picks[s].level = 'optional'; });
-    Object.keys(picks).forEach((s) => note(s, 'patch'));
-  }
+  // Sensitive: the same suggestions, each introduced slowly with a patch test first
+  if (sensitive) Object.keys(picks).forEach((s) => note(s, 'patch'));
   // Three suggested products: the fourth may complete the routine as The Full Ritual, if it suits (never the
-  // cleanser for very dry skin, never for sensitive skin). The serum suits every type (ICI); offered on its pack benefit.
-  const sets = a.react === 'no';
+  // cleanser for very dry skin). The serum suits every type (ICI); offered on its pack benefit.
+  const sets = true;
   let complete = null;
   const core = [1, 2, 3, 4].filter((s) => picks[s]?.level === 'core');
   if (sets && core.length === 3) {
@@ -69,7 +67,7 @@ export function match(a) {
       complete = m;
     }
   }
-  return { guidance: false, picks, sets, complete };
+  return { guidance: false, picks, sets, complete, sensitive };
 }
 
 class SkinCheck extends (typeof HTMLElement !== "undefined" ? HTMLElement : class {}) {

@@ -1430,9 +1430,21 @@
   },
   "finder": {
     "eyebrow": "Find your routine",
-    "title": "Four questions. Your routine.",
+    "title": "Three questions. Your routine.",
     "skip": "Just show me the full routine",
     "morning": "Morning",
-    "night": "Night"
+    "night": "Night",
+    "intro": "Three quick questions. Then your routine, with what each step does for your skin.",
+    "q_more": "Anything else we should know?",
+    "more_breakouts": "I get breakouts",
+    "more_sensitive": "My skin is sensitive",
+    "more_both": "Both",
+    "more_neither": "Neither",
+    "made_for": "Made for",
+    "skin": "{{ type }} skin",
+    "breakouts": "Breakout-prone",
+    "sensitive": "Sensitive",
+    "save": "You save {{ amount }}",
+    "gentle": "For sensitive skin: start one new product every few days and patch test each one first. If your skin is broken or irritated right now, let it settle before you begin."
   }
 }
