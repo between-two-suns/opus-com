@@ -2,7 +2,8 @@
   Routines · the finder demo (DECISIONS 211, 215, 216; shown at /pages/routines?view=finder while it is reviewed). Once
   started it is the whole screen, like an app (question, answers, next, back, close; nothing else, no page scrolling).
   Three questions, one per screen, beside the four packs: how your skin feels by midday, what you'd like help with, then
-  breakouts or sensitivity. The packs move only for what has actually been answered. The matching rules are the skin check's (match() in
+  anything else we should know (breakouts, sensitive, pregnant or breastfeeding, prescription skincare; choose any). The
+  packs move only for what has actually been answered. Back and Next sit together at the bottom (DECISIONS 218, 219). The matching rules are the skin check's (match() in
   assets/skin-check.js), so the two never disagree. Every answer ends in a routine: sensitive skin changes how to start,
   never what's suggested. The result is the routine as products (the set that holds exactly those steps at its real price,
   what each step helps with, why it was chosen), one button, which is the bottom bar on phones. "Just show me the full
@@ -11,12 +12,14 @@
 {%- endcomment -%}
 {%- liquid
   assign handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
-  assign hs = '1,.65,.81,.81' | split: ','
+  assign hs = '1,0.65,0.81,0.81' | split: ','
   assign ars = '357/1100,366/1100,343/1100,339/1100' | split: ','
   assign sets_url = routes.root_url | append: '/pages/sets' | replace: '//', '/'
   assign qs = 'type,concerns,more' | split: ','
   assign goals = 'oil,tone,marks,dehydration,barrier,spf' | split: ','
   assign types = 'oily,combination,normal,dry,very_dry' | split: ','
+  assign mores = 'breakouts,sensitive,pregnant,rx,none' | split: ','
+  assign whys = '1_oil,1,2_tone,2_oil,2_hydra,3_barrier,3_hydra,3,4' | split: ','
 -%}
 <style>
 .rf { --dir: 1; --p: 0; position: relative; display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); min-height: calc(100svh - 36px);
@@ -33,7 +36,16 @@
 .rf-top::before { content: ''; position: absolute; inset-inline: 0; inset-block-end: -4px; block-size: 2px; background: color-mix(in srgb, currentColor 12%, transparent); border-radius: 2px; }
 .rf[data-state='intro'] .rf-top { display: none; }
 .rf[data-state='intro'] .rf-screen { margin-top: 0; }
-.rf-progress { font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, currentColor 60%, transparent); }
+.rf-progress { font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, currentColor 72%, transparent); }
+/* the step in the brand's display face: 01/03 */
+.rf-n { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: .02em; color: color-mix(in srgb, currentColor 36%, transparent); }
+.rf-n b { font-weight: inherit; color: var(--c-ink); }
+/* demo (?mini=1): four small packs in the top bar that answer with every tap, on phones */
+.rf-mini { display: none; align-items: flex-end; gap: 3px; block-size: 34px; margin-inline-start: auto; }
+.rf-mini img { block-size: calc(var(--h) * 34px); inline-size: auto; transition: opacity .5s ease, scale .5s cubic-bezier(.2,.75,.2,1), filter .5s; transform-origin: 50% 100%; }
+.rf-mini [data-state='opt'] { opacity: .45; scale: .86; }
+.rf-mini [data-state='off'] { opacity: .14; scale: .78; filter: saturate(.3); }
+.rf-mini [data-state='core'].is-pulse { animation: rf-pulse .6s cubic-bezier(.2,.75,.2,1); }
 .rf-back { display: inline-flex; align-items: center; gap: 8px; margin-inline-start: auto; font: inherit; font-size: 13px; font-weight: 600; color: inherit; background: none; border: 0; padding: 10px 0; cursor: pointer; opacity: .7; }
 .rf-back:hover { opacity: 1; } .rf-back[hidden] { display: none; }
 .rf-back svg { transform: scaleX(-1); } [dir='rtl'] .rf-back svg { transform: none; }
@@ -55,6 +67,9 @@ html.rf-open .dock { display: none; }
 .rf-screen[hidden] { display: none; }
 .js .rf-screen.is-in > * { animation: rf-in .55s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(var(--i, 0) * 45ms); }
 @keyframes rf-in { from { opacity: 0; translate: 0 14px; } }
+/* questions slide in from the side they come from (Next from the right, Back from the left; mirrored in Arabic) */
+.js .rf.is-open .rf-q.is-in > * { animation-name: rf-slide; animation-duration: .45s; animation-delay: calc(var(--i, 0) * 35ms); }
+@keyframes rf-slide { from { opacity: 0; translate: calc(var(--dx, 1) * var(--dir) * 32px) 0; } }
 .rf-eyebrow[hidden] { display: none; }
 .rf-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
 .rf-title { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; letter-spacing: -.01em; font-size: clamp(56px, min(7.4vw, 12.5svh), 148px); margin-top: 16px; }
@@ -68,55 +83,74 @@ html.rf-open .dock { display: none; }
 /* questions */
 .rf-q { border: 0; padding: 0; margin: 4svh 0 0; min-width: 0; }
 .rf-q legend { font-size: clamp(26px, min(2.7vw, 4.3svh), 44px); font-weight: 600; line-height: 1.12; letter-spacing: -.015em; max-width: 18ch; padding: 0; }
-.rf-hint { margin-top: 10px; font-size: 14px; color: color-mix(in srgb, currentColor 62%, transparent); }
+.rf-hint { margin-top: 10px; font-size: 14px; color: color-mix(in srgb, currentColor 72%, transparent); }
 .rf-opts { display: grid; gap: 8px; margin-top: 22px; max-width: 520px; }
 .rf-opt { position: relative; display: flex; align-items: center; gap: 14px; padding: 13px 18px; border-radius: 18px; cursor: pointer;
-  background: color-mix(in srgb, #fff 62%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-ink) 12%, transparent); transition: background .25s, box-shadow .25s, color .25s; }
+  background: color-mix(in srgb, #fff 62%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-ink) 12%, transparent); transition: background .25s, box-shadow .25s, color .25s, scale .2s; }
+.rf-opt:active { scale: .985; }
 .rf-opt:hover { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-ink) 40%, transparent); }
 .rf-opt input { position: absolute; opacity: 0; pointer-events: none; }
 .rf-opt__box { flex: none; inline-size: 20px; block-size: 20px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px color-mix(in srgb, currentColor 45%, transparent); display: grid; place-items: center; }
 .rf-q--multi .rf-opt__box { border-radius: 6px; }
 .rf-opt__box svg { opacity: 0; inline-size: 12px; block-size: 12px; }
 .rf-opt__label { font-size: 16px; font-weight: 600; line-height: 1.3; }
-.rf-opt__sub { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; opacity: .6; margin-inline-start: 6px; white-space: nowrap; }
+.rf-opt__sub { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; opacity: .78; margin-inline-start: 6px; white-space: nowrap; }
 .rf-opt:has(input:checked) { background: var(--c-ink); color: #F4EFE7; box-shadow: none; }
 .rf-opt:has(input:checked) .rf-opt__box { background: #F4EFE7; box-shadow: none; }
-.rf-opt:has(input:checked) .rf-opt__box svg { opacity: 1; color: var(--c-ink); }
+.rf-opt:has(input:checked) .rf-opt__box svg { opacity: 1; color: var(--c-ink); animation: rf-tick .35s cubic-bezier(.3,1.6,.5,1); }
+@keyframes rf-tick { from { scale: .2; opacity: 0; } }
 .rf-opt:has(input:focus-visible) { outline: 2px solid var(--c-ink); outline-offset: 3px; }
 .rf-q .rf-row { margin-top: 22px; }
 /* each question ends like an app screen: Back and Next side by side, the shortcut small underneath */
 .rf-foot { margin-top: 24px; max-width: 520px; }
 .rf-nav { display: flex; gap: 10px; }
 .rf-nav .rf-btn { flex: 1; }
+/* a tap on a single answer moves on by itself, so Next only appears once an answer is chosen (coming back to change it) */
+.rf-q:not(.rf-q--multi):not(:has(input:checked)) [data-rf-next] { display: none; }
 .rf-prev { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 24px; border-radius: 999px; border: 0; font: inherit; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: inherit; cursor: pointer;
   background: transparent; box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-ink) 22%, transparent); transition: box-shadow .25s; }
 .rf-prev:hover { box-shadow: inset 0 0 0 1.5px var(--c-ink); }
 .rf-prev svg { transform: scaleX(-1); } [dir='rtl'] .rf-prev svg { transform: none; }
-.rf-skip--small { display: block; margin: 12px auto 0; font-size: 13px; font-weight: 500; opacity: .72; }
+.rf-skip--small { display: block; margin: 12px auto 0; font-size: 13px; font-weight: 500; color: color-mix(in srgb, currentColor 76%, transparent); }
 /* the six goals sit in two columns on wide screens, so the button stays in view */
-@media (min-width: 761px) and (min-aspect-ratio: 4/5) { .rf-q--multi .rf-opts { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 640px; } }
-.rf-q--multi .rf-opt__sub { display: block; white-space: normal; margin: 3px 0 0; }
+@media (min-width: 761px) and (min-aspect-ratio: 4/5) { .rf-q--grid .rf-opts { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 640px; } }
+.rf-q--grid .rf-opt__sub { display: block; white-space: normal; margin: 3px 0 0; }
 
 /* result: the routine as products, with why each was chosen, and one button */
 .rf-name { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; font-size: clamp(44px, min(4.6vw, 8svh), 96px); margin-top: 8px; }
 .rf-for { margin-top: 10px; font-size: 14px; line-height: 1.5; color: color-mix(in srgb, currentColor 72%, transparent); max-width: 52ch; }
 .rf-for b { font-weight: 700; color: var(--c-ink); margin-inline-end: 6px; }
 .rf-for[hidden] { display: none; }
+.rf-hero { display: none; }
+.rf-why { margin-top: 14px; max-width: 46ch; font-size: 16px; line-height: 1.45; font-weight: 500; }
+.rf-why:empty { display: none; }
 .rf .rf-steps { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 6px; max-width: 540px; }
 .rf-step { border-radius: 16px; background: color-mix(in srgb, #fff 66%, transparent); }
-.rf-step label { display: flex; align-items: center; gap: 12px; padding: 7px 14px 7px 10px; cursor: pointer; min-width: 0; }
-.rf-step input { inline-size: 18px; block-size: 18px; accent-color: var(--c-ink); flex: none; order: 9; margin-inline-start: 4px; }
+.rf-step label { position: relative; display: flex; align-items: center; gap: 12px; padding: 7px 14px 7px 10px; cursor: pointer; min-width: 0; border-radius: inherit; }
+/* not a form: each step says Remove (or Add, when it's left out); the checkbox stays for keyboards and screen readers */
+.rf-step input { position: absolute; opacity: 0; pointer-events: none; }
+.rf-step label:has(input:focus-visible) { outline: 2px solid var(--c-ink); outline-offset: 2px; }
+.rf-step__end { margin-inline-start: auto; display: grid; justify-items: end; gap: 2px; }
+.rf-step__tog { font-size: 12px; font-weight: 600; color: color-mix(in srgb, currentColor 72%, transparent); text-decoration: underline; text-underline-offset: 3px; }
+.rf-step__tog::before { content: '+ ' attr(data-off); }
+.rf-step:has(input:checked) .rf-step__tog::before { content: attr(data-on); }
+.rf-step:not(:has(input:checked)) .rf-step__tog { color: var(--c-ink); font-weight: 700; }
 .rf-step__img { position: relative; flex: none; inline-size: 42px; block-size: 50px; border-radius: 12px; background: color-mix(in srgb, var(--sku) 26%, #fff); }
 .rf-step__img img { position: absolute; inset: 5px 0; inline-size: 100%; block-size: calc(100% - 10px); object-fit: contain; }
 .rf-step__txt { min-width: 0; }
 .rf-step__name { display: block; font-weight: 600; font-size: 15px; line-height: 1.25; }
-.rf-step__when { display: block; font-size: 12px; line-height: 1.4; color: color-mix(in srgb, currentColor 62%, transparent); margin-top: 2px; }
-.rf-step__price { margin-inline-start: auto; font-size: 14px; font-weight: 600; white-space: nowrap; }
+.rf-step__when { display: block; font-size: 12px; line-height: 1.4; color: color-mix(in srgb, currentColor 72%, transparent); margin-top: 2px; }
+.rf-step__price { font-size: 14px; font-weight: 600; white-space: nowrap; }
 .rf-step--opt { background: transparent; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-ink) 12%, transparent); }
 .rf-step:not(:has(input:checked)) .rf-step__img { filter: saturate(.4); opacity: .7; }
-.rf-sub { margin-top: 16px; font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, currentColor 60%, transparent); }
-.rf-note { margin-top: 14px; max-width: 54ch; font-size: 13px; line-height: 1.5; color: color-mix(in srgb, currentColor 72%, transparent); }
-.rf-note[hidden] { display: none; }
+.rf-sub { margin-top: 16px; font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, currentColor 72%, transparent); }
+/* "Before you start": the cautions in one line that opens */
+.rf-before { margin-top: 12px; max-width: 540px; font-size: 13px; line-height: 1.5; }
+.rf-before[hidden] { display: none; }
+.rf-before summary { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; list-style: none; padding: 6px 0; }
+.rf-before summary::-webkit-details-marker { display: none; }
+.rf-before summary::before { content: 'i'; display: grid; place-items: center; inline-size: 18px; block-size: 18px; border-radius: 50%; font-size: 11px; font-style: italic; font-family: Georgia, serif; box-shadow: inset 0 0 0 1.5px currentColor; }
+.rf-before ul { margin: 4px 0 0; padding-inline-start: 18px; display: grid; gap: 6px; color: color-mix(in srgb, currentColor 80%, transparent); }
 .rf-buy { margin-top: 18px; }
 .rf-total { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 15px; }
 .rf-total strong { font-size: 22px; }
@@ -127,9 +161,9 @@ html.rf-open .dock { display: none; }
 .rf-btn__price { display: none; }
 .rf-ghost { font: inherit; font-size: 14px; font-weight: 600; background: none; border: 0; color: inherit; padding: 8px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
 .rf-ghost[hidden] { display: none; }
-.rf-complete { display: block; margin-top: 8px; max-width: 540px; inline-size: 100%; text-align: start; font-size: 13px; line-height: 1.5; text-decoration: none; padding: 11px 14px; border-radius: 14px; background: color-mix(in srgb, var(--c-step-1, #7DB993) 22%, #fff); transition: background .25s; }
+.rf-complete { display: block; margin-top: 8px; max-width: 540px; inline-size: 100%; text-align: start; font-size: 14px; font-weight: 600; line-height: 1.4; text-decoration: none; padding: 11px 14px; border-radius: 14px; background: color-mix(in srgb, var(--c-step-1, #7DB993) 22%, #fff); transition: background .25s; }
 .rf-complete:hover { background: color-mix(in srgb, var(--c-step-1, #7DB993) 36%, #fff); }
-.rf-small { margin-top: 18px; font-size: 12px; line-height: 1.5; color: color-mix(in srgb, currentColor 58%, transparent); max-width: 56ch; }
+.rf-small { margin-top: 18px; font-size: 12px; line-height: 1.5; color: color-mix(in srgb, currentColor 72%, transparent); max-width: 56ch; }
 .rf-links { display: flex; flex-wrap: wrap; gap: 4px 22px; margin-top: 12px; }
 
 /* the stage: four packs that answer */
@@ -176,12 +210,21 @@ html.rf-open .dock { display: none; }
   .rf.is-open .rf-q legend { font-size: min(7vw, 30px); }
   .rf.is-open .rf-opts { margin-top: clamp(16px, 3.4svh, 36px); gap: clamp(8px, 1.5svh, 14px); }
   .rf.is-open .rf-opt { padding-block: clamp(11px, 2.1svh, 22px); }
-  .rf.is-open .rf-q--multi .rf-opt { min-block-size: clamp(58px, 10.5svh, 100px); }
+  .rf.is-open .rf-q--grid .rf-opt { min-block-size: clamp(58px, 10.5svh, 100px); }
+  .rf.has-mini .rf-mini { display: flex; }
+  .rf.has-mini .rf-back[hidden] + .rf-close { margin-inline-start: 0; }
+  .rf.has-mini[data-state='result'] .rf-mini { display: none; }
+  /* the result opens with the chosen packs standing together, then the name */
+  .rf-hero { display: flex; justify-content: center; align-items: flex-end; gap: 8px; block-size: clamp(96px, 17svh, 150px); margin-top: 6px; }
+  .rf-hero img { block-size: calc(var(--h) * 100%); inline-size: auto; filter: drop-shadow(0 10px 10px rgb(32 35 58 / .16)); }
+  .rf-hero img[data-on='0'] { display: none; }
+  .js .rf-screen.is-in .rf-hero img { animation: rf-rise .7s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(80ms + var(--k) * 70ms); }
+  .rf-why { font-size: 15px; }
   .rf.is-open .rf-foot { margin-top: auto; padding-top: 16px; max-width: none; }
   .rf.is-open .rf-skip--small { margin-top: 8px; }
   .rf[data-state='intro'] { padding-block-end: 0; }
-  .rf-q--multi .rf-opts { grid-template-columns: 1fr 1fr; gap: 7px; }
-  .rf-q--multi .rf-opt { padding: 9px 11px; gap: 10px; } .rf-q--multi .rf-opt__label { font-size: 13.5px; } .rf-q--multi .rf-opt__sub { display: none; }
+  .rf-q--grid .rf-opts { grid-template-columns: 1fr 1fr; gap: 7px; }
+  .rf-q--grid .rf-opt { padding: 9px 11px; gap: 10px; } .rf-q--grid .rf-opt__label { font-size: 13.5px; } .rf-q--grid .rf-opt__sub { display: none; }
   .rf-screen { margin-top: 1svh; }
   .rf-title { font-size: min(14vw, 7.6svh); }
   .rf-q { margin-top: 1.5svh; }
@@ -201,14 +244,16 @@ html.rf-open .dock { display: none; }
   .rf[data-state='result'] .rf-btn__price { display: inline; opacity: .78; }
   .rf-step label { padding-inline: 8px 12px; gap: 10px; }
 }
+@keyframes rf-rise { from { opacity: 0; translate: 0 18px; } }
 @media (prefers-reduced-motion: reduce) { .rf *, .rf *::before, .rf *::after { transition-duration: 0s !important; animation: none !important; } }
 :lang(ar) .rf-title, :lang(ar) .rf-name { text-transform: none; line-height: 1.15; }
 :lang(ar) .rf-title { font-size: clamp(46px, min(6vw, 9.6svh), 120px); }
 :lang(ar) .rf-q legend { max-width: 26ch; }
+:lang(ar) .rf-n { font-family: inherit; }
 :lang(ar) .rf-eyebrow, :lang(ar) .rf-btn, :lang(ar) .rf-prev, :lang(ar) .rf-progress, :lang(ar) .rf-pack__cap, :lang(ar) .rf-sub, :lang(ar) .rf-opt__sub { letter-spacing: 0; }
 </style>
 
-<section class="rf" id="Rf-{{ section.id }}" data-state="intro" aria-labelledby="RfTitle-{{ section.id }}" data-match="{{ 'skin-check.js' | asset_url }}">
+<section class="rf" id="Rf-{{ section.id }}" data-state="intro" data-remove="{{ 'finder.remove' | t | escape }}" data-add="{{ 'finder.add' | t | escape }}" aria-labelledby="RfTitle-{{ section.id }}" data-match="{{ 'skin-check.js' | asset_url }}">
   <script type="application/json" data-rf-data>
     {
       "products": {
@@ -216,7 +261,7 @@ html.rf-open .dock { display: none; }
           {%- assign p = all_products[h] -%}
           {%- assign v = p.selected_or_first_available_variant -%}
           {%- capture img -%}{%- render 'cut-src', handle: h, width: 140 -%}{%- endcapture -%}
-          "{{ forloop.index }}": { "id": {{ v.id | default: 0 }}, "price": {{ v.price | default: 0 }}, "available": {{ v.available | default: false | json }}, "title": {{ p.title | json }}, "label": {{ p.metafields.bts.step_label.value | default: p.title | json }}, "url": {{ p.url | json }}, "am": {{ forloop.last | json }}, "img": {{ img | strip | json }} }{% unless forloop.last %},{% endunless %}
+          "{{ forloop.index }}": { "id": {{ v.id | default: 0 }}, "price": {{ v.price | default: 0 }}, "available": {{ v.available | default: false | json }}, "title": {{ p.title | json }}, "label": {{ p.metafields.bts.step_label.value | default: p.title | json }}, "url": {{ p.url | json }}, "am": {{ forloop.last | json }}, "img": {{ img | strip | json }}, "h": {{ hs[forloop.index0] }} }{% unless forloop.last %},{% endunless %}
         {%- endfor -%}
       },
       "s": {
@@ -235,6 +280,10 @@ html.rf-open .dock { display: none; }
         "breakouts": {{ 'finder.breakouts' | t | json }},
         "sensitive": {{ 'finder.sensitive' | t | json }},
         "save": {{ 'finder.save' | t: amount: '__A__' | json }},
+        "step_of": {{ 'finder.step_of' | t: n: '__N__', total: '__T__' | json }},
+        "complete_short": {{ 'finder.complete_short' | t: product: '__P__', set: '__S__', extra: '__X__' | json }},
+        "and": {{ 'finder.and' | t | json }},
+        "why": { {%- for k in whys -%}{%- assign kk = 'finder.why_' | append: k -%}"{{ k }}": {{ kk | t | json }}{% unless forloop.last %}, {% endunless %}{%- endfor -%} },
         "types": { {%- for o in types -%}{%- assign k = 'skin_check.a.type_' | append: o | append: '_d' -%}"{{ o }}": {{ k | t | json }}{% unless forloop.last %}, {% endunless %}{%- endfor -%} },
         "chips": { {%- for o in goals -%}{%- assign k = 'skin_check.chips.' | append: o -%}"{{ o }}": {{ k | t | json }}{% unless forloop.last %}, {% endunless %}{%- endfor -%} }
       }
@@ -244,6 +293,9 @@ html.rf-open .dock { display: none; }
     <div class="rf-top">
       <svg class="rf-mark" viewBox="0 0 501 547" aria-hidden="true" focusable="false"><path class="rf-l" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/><path class="rf-r" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>
       <p class="rf-progress" aria-live="polite" data-rf-progress></p>
+      <span class="rf-mini" aria-hidden="true">
+        {%- for h in handles -%}{%- capture mi -%}{%- render 'cut-src', handle: h, width: 140 -%}{%- endcapture -%}<img src="{{ mi | strip }}" alt="" width="140" height="431" data-step="{{ forloop.index }}" data-state="core" style="--h: {{ hs[forloop.index0] }}" loading="lazy">{%- endfor -%}
+      </span>
       <button type="button" class="rf-back" data-rf-back hidden>{% render 'icon', name: 'arrow', class: 'icon--sm' %}{{ 'skin_check.back' | t }}</button>
       <button type="button" class="rf-close" data-rf-close aria-label="{{ 'general.close' | t | escape }}" hidden>{% render 'icon', name: 'close' %}</button>
     </div>
@@ -272,14 +324,15 @@ html.rf-open .dock { display: none; }
             when 'type'
               assign opts = types
             else
-              assign opts = 'breakouts,sensitive,both,neither' | split: ','
+              assign opts = mores
+              assign multi = true
               assign qk = 'finder.q_more'
               assign ak = 'finder.more_'
           endcase
         -%}
-        <fieldset class="rf-screen rf-q{% if multi %} rf-q--multi{% endif %}" data-screen="{{ q }}" hidden>
+        <fieldset class="rf-screen rf-q{% if multi %} rf-q--multi{% endif %}{% if q == 'concerns' %} rf-q--grid{% endif %}" data-screen="{{ q }}" hidden>
           <legend style="--i: 0">{{ qk | t }}</legend>
-          {%- if multi -%}<p class="rf-hint" style="--i: 1">{{ 'skin_check.choose_any' | t }}</p>{%- endif -%}
+          {%- if q == 'concerns' -%}<p class="rf-hint" style="--i: 1">{{ 'skin_check.choose_any' | t }}</p>{%- elsif multi -%}<p class="rf-hint" style="--i: 1">{{ 'finder.choose_any' | t }}</p>{%- endif -%}
           <div class="rf-opts" style="--i: 1">
             {%- for o in opts -%}
               {%- assign ok = ak | append: o -%}
@@ -304,14 +357,23 @@ html.rf-open .dock { display: none; }
     </form>
 
     <div class="rf-screen" data-screen="result" hidden tabindex="-1">
+      <div class="rf-hero" aria-hidden="true" data-rf-hero></div>
       <p class="rf-eyebrow" style="--i: 0" data-rf-eyebrow>{{ 'skin_check.result_title' | t }}</p>
       <h2 class="rf-name" style="--i: 1" data-rf-name></h2>
       <p class="rf-for" style="--i: 1" data-rf-for data-label="{{ 'finder.made_for' | t | escape }}" hidden></p>
+      <p class="rf-why" style="--i: 2" data-rf-why></p>
       <ul class="rf-steps" role="list" style="--i: 2" data-rf-steps></ul>
       <p class="rf-sub" style="--i: 3" data-rf-also-title hidden>{{ 'skin_check.also' | t }}</p>
       <ul class="rf-steps" role="list" style="--i: 3" data-rf-also></ul>
       <button type="button" class="rf-ghost rf-complete" style="--i: 3" data-rf-complete hidden></button>
-      <p class="rf-note" style="--i: 4" data-rf-gentle hidden>{{ 'finder.gentle' | t }}</p>
+      <details class="rf-before" style="--i: 4" data-rf-before hidden>
+        <summary>{{ 'finder.before' | t }}</summary>
+        <ul role="list">
+          <li data-rf-note="sensitive" hidden>{{ 'finder.gentle' | t }}</li>
+          <li data-rf-note="pregnant" hidden>{{ 'finder.pregnant_note' | t }}</li>
+          <li data-rf-note="rx" hidden>{{ 'finder.rx_note' | t }}</li>
+        </ul>
+      </details>
       <product-form class="rf-buy" style="--i: 4">
         <form method="post" action="{{ routes.cart_add_url }}" id="RfBuy-{{ section.id }}" novalidate>
           <p class="rf-total"><span>{{ 'skin_check.total' | t }}</span><strong data-rf-total></strong><s data-rf-was></s><span class="rf-save" data-rf-save></span></p>

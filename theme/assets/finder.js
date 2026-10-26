@@ -1,7 +1,8 @@
 /*
-  Routines · the finder demo (DECISIONS 211, 215, 216). Once started it takes the whole screen, like an app (close or
+  Routines · the finder demo (DECISIONS 211, 215, 216, 219). Once started it takes the whole screen, like an app (close or
   the browser's back returns to the page). Three questions beside the four packs: how your skin feels by midday, what
-  you'd like help with, then breakouts or sensitivity. The packs move only for what has been answered. The matching
+  you'd like help with, then anything else we should know (choose any: breakouts, sensitive, pregnant or breastfeeding,
+  prescription skincare, none). The packs move only for what has been answered. The matching
   rules are the skin check's (match() in skin-check.js, shared so the two never disagree). Every answer ends in a routine.
   The result: the set that holds exactly the suggested steps at its real price, each step with why it suits this visitor,
   one button (the bottom bar on phones). Answers stay in the page; nothing is stored or sent.
@@ -18,7 +19,10 @@ const init = async (root) => {
   const P = data.products, S = data.s;
   const form = root.querySelector('[data-rf-form]');
   const screens = [...root.querySelectorAll('[data-screen]')];
-  const packs = [...root.querySelectorAll('.rf-pack')];
+  const packs = [...root.querySelectorAll('.rf-pack, .rf-mini img')];
+  // demo of the small reacting packs in the phone's top bar: /pages/routines?view=finder&mini=1
+  if (new URLSearchParams(location.search).has('mini')) root.classList.add('has-mini');
+  const ar = document.documentElement.lang?.startsWith('ar');
   const progress = root.querySelector('[data-rf-progress]');
   const back = root.querySelector('[data-rf-back]');
   const hdrWrap = document.querySelector('.site-header-wrap')?.closest('.shopify-section');
@@ -29,14 +33,17 @@ const init = async (root) => {
   let i = -1, picks = null, chosen = [], sets = true, complete = null, currentSet = null, forceSingles = false;
 
   const one = (n) => form.querySelector(`input[name="${n}"]:checked`)?.value;
-  // the last question answers two of the rules' questions at once: breakouts, and sensitivity
+  const all = (n) => [...form.querySelectorAll(`input[name="${n}"]:checked`)].map((x) => x.value);
+  // the last question: breakouts and sensitivity feed the rules; prescription skincare is treated as sensitive skin;
+  // pregnancy changes no product, it adds "check with your doctor"
   const answers = () => {
-    const more = one('more');
+    const more = all('more');
     return {
       type: one('type'),
-      acne: more === 'breakouts' || more === 'both' ? 'yes' : 'no',
-      react: more === 'sensitive' || more === 'both' ? 'some' : 'no',
-      concerns: [...form.querySelectorAll('input[name="concerns"]:checked')].map((x) => x.value),
+      acne: more.includes('breakouts') ? 'yes' : 'no',
+      react: more.includes('sensitive') || more.includes('rx') ? 'some' : 'no',
+      pregnant: more.includes('pregnant'), rx: more.includes('rx'), sensitive: more.includes('sensitive'),
+      concerns: all('concerns'),
     };
   };
 
@@ -71,12 +78,15 @@ const init = async (root) => {
   };
   const copy = root.querySelector('.rf-copy');
   const top = () => { copy.scrollTop = 0; };
+  const two = (x) => String(x).padStart(2, '0');
   const go = (n) => {
+    // Next slides in from the right, Back from the left
+    root.style.setProperty('--dx', n > i ? 1 : -1);
     i = n;
     const q = ORDER[n];
     show(q);
     back.hidden = true;
-    progress.textContent = S.progress.replace('__N__', n + 1).replace('__T__', ORDER.length);
+    progress.innerHTML = `<span class="rf-n" aria-hidden="true"><b>${two(n + 1)}</b>/${two(ORDER.length)}</span><span class="visually-hidden">${S.step_of.replace('__N__', n + 1).replace('__T__', ORDER.length)}</span>`;
     mark(n / ORDER.length);
     live();
     const fs = root.querySelector(`[data-screen="${q}"]`);
@@ -90,7 +100,7 @@ const init = async (root) => {
   root.addEventListener('keydown', (e) => { if (e.key === 'Escape' && root.classList.contains('is-open')) leave(); });
   const next = () => {
     const q = ORDER[i];
-    if (q !== 'concerns' && !one(q)) return;
+    if (!root.querySelector(`[data-screen="${q}"]`).classList.contains('rf-q--multi') && !one(q)) return;
     if (i < ORDER.length - 1) go(i + 1); else result();
   };
 
@@ -115,10 +125,24 @@ const init = async (root) => {
     li.innerHTML = `<label><input type="checkbox" value="${step}" ${checked ? 'checked' : ''} ${d.available ? '' : 'disabled'}>
       <span class="rf-step__img" aria-hidden="true"><img src="${d.img}" alt="" width="140" height="431" loading="lazy"></span>
       <span class="rf-step__txt"><span class="rf-step__name">${d.title}</span><span class="rf-step__when">${[d.am ? S.when_am : S.when_both, ...helps].join(' · ')}</span></span>
-      <span class="rf-step__price">${fmt(d.price)}</span></label>`;
+      <span class="rf-step__end"><span class="rf-step__price">${fmt(d.price)}</span><span class="rf-step__tog" aria-hidden="true" data-on="${root.dataset.remove}" data-off="${root.dataset.add}"></span></span></label>`;
     return li;
   };
   const list = root.querySelector('[data-rf-steps]'), also = root.querySelector('[data-rf-also]');
+  const hero = root.querySelector('[data-rf-hero]'), why = root.querySelector('[data-rf-why]');
+  let answered = null;
+  // one sentence from the chosen steps and the visitor's answers, in routine order (wording from the pack benefits)
+  const sentence = () => {
+    const a = answered || {}, C = new Set(a.concerns || []);
+    const oily = a.type === 'oily' || a.type === 'combination' || a.acne === 'yes';
+    const dry = a.type === 'dry' || a.type === 'very_dry';
+    const pick = { 1: oily ? '1_oil' : '1', 2: C.has('tone') || C.has('marks') ? '2_tone' : oily || C.has('oil') ? '2_oil' : '2_hydra', 3: C.has('barrier') ? '3_barrier' : C.has('dehydration') || dry ? '3_hydra' : '3', 4: '4' };
+    const parts = chosen.map((s) => S.why[pick[s]]).filter(Boolean);
+    if (!parts.length) return '';
+    if (ar) return parts.map((x, k) => (k ? S.and + x : x)).join('، ') + '.';
+    const t = parts.length > 1 ? parts.slice(0, -1).join(', ') + ` ${S.and} ` + parts.at(-1) : parts[0];
+    return t[0].toUpperCase() + t.slice(1) + '.';
+  };
   const result = (full) => {
     const a = answers();
     const r = full ? { sets: true, complete: null, sensitive: false, picks: { 1: { level: 'core' }, 2: { level: 'core' }, 3: { level: 'core' }, 4: { level: 'core' } } } : match(a);
@@ -138,7 +162,15 @@ const init = async (root) => {
     const bits = full ? [] : [S.skin.replace('__T__', S.types[a.type] || ''), ...a.concerns.map((c) => S.chips[c]), a.acne === 'yes' && S.breakouts, a.react !== 'no' && S.sensitive].filter(Boolean);
     forEl.hidden = !bits.length;
     forEl.innerHTML = bits.length ? `<b>${forEl.dataset.label}</b>${bits.join(' · ')}` : '';
-    root.querySelector('[data-rf-gentle]').hidden = !r.sensitive;
+    // "Before you start": the cautions that apply, in one line that opens
+    const notes = { sensitive: !full && (a.sensitive || a.rx), pregnant: !full && a.pregnant, rx: !full && a.rx };
+    Object.entries(notes).forEach(([k, on]) => { root.querySelector(`[data-rf-note="${k}"]`).hidden = !on; });
+    const before = root.querySelector('[data-rf-before]');
+    before.hidden = !Object.values(notes).some(Boolean);
+    before.open = false;
+    // the chosen packs standing together (phones)
+    hero.innerHTML = [1, 2, 3, 4].map((s, k) => `<img src="${P[s].img}" alt="" width="140" height="431" data-step="${s}" style="--h: ${P[s].h}; --k: ${k}">`).join('');
+    answered = full ? null : a;
     show('result');
     update();
     root.querySelector('[data-screen="result"]').focus({ preventScroll: true });
@@ -160,6 +192,8 @@ const init = async (root) => {
     txt('[data-rf-was]', set && sum > set.price ? fmt(sum) : '');
     txt('[data-rf-save]', set && sum > set.price ? S.save.replace('__A__', fmt(sum - set.price)) : '');
     root.querySelector('[data-rf-btnprice]').textContent = chosen.length ? ` · ${fmt(total)}` : '';
+    why.textContent = sentence();
+    hero.querySelectorAll('img').forEach((im) => { im.dataset.on = chosen.includes(Number(im.dataset.step)) ? '1' : '0'; });
     // the honest switch: the fourth step, only when the full set then costs less than adding it on its own
     const cBtn = root.querySelector('[data-rf-complete]');
     const fullSet = setFor([1, 2, 3, 4]);
@@ -168,7 +202,7 @@ const init = async (root) => {
     const single = complete ? P[complete]?.price || 0 : 0;
     const extra = ready ? fullSet.price - others.reduce((t, x) => t + (P[x]?.price || 0), 0) : 0;
     cBtn.hidden = !(ready && extra > 0 && extra < single);
-    if (!cBtn.hidden) cBtn.textContent = S.complete_text.replace('__P__', P[complete].title).replace('__S__', fullSet.name).replace('__X__', fmt(extra)).replace('__Q__', fmt(single));
+    if (!cBtn.hidden) cBtn.textContent = S.complete_short.replace('__P__', P[complete].title).replace('__S__', fullSet.name).replace('__X__', fmt(extra));
     root.querySelectorAll('[data-rf-add]').forEach((b) => { b.disabled = !chosen.length; });
     txt('[data-rf-add] .btn__label', !chosen.length ? S.nothing : set ? S.add_set.replace('__S__', set.name) : chosen.length === 1 ? S.add_one : S.add_items.replace('__N__', chosen.length));
     root.querySelector('[data-rf-singles]').hidden = !set;
@@ -199,6 +233,8 @@ const init = async (root) => {
   root.querySelector('[data-screen="result"]').addEventListener('change', update);
   form.addEventListener('change', (e) => {
     if (e.target.type === 'radio') e.target.closest('fieldset').querySelector('[data-rf-next]').disabled = false;
+    // "None of these" stands alone
+    if (e.target.name === 'more' && e.target.checked) form.querySelectorAll('input[name="more"]').forEach((x) => { if (x !== e.target && (x.value === 'none' || e.target.value === 'none')) x.checked = false; });
     live();
   });
   // a tap on a single-choice answer moves on after a beat (so the packs can be seen answering); keyboard waits for Next
