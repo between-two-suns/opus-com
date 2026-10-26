@@ -1,69 +1,83 @@
 /*
-  Skin check. Answers → products, from the four formulations (owner + ICI answers, DECISIONS 171, 173):
-  - each product is 'core' (suggested, ticked) or 'optional' (shown under "Also worth considering", not ticked),
-    and lists the customer's concerns it answers (shown as chips beside its pack benefit line);
-  - sensitive skin changes how to start (one product at a time, patch test each), never what is suggested: no answer ends
-    without a routine and the serum is never held back (owner, DECISIONS 215; replaces the guidance-only result);
-  - a set is offered only when the ticked products are exactly a set's contents;
-  - a three-product result offers the missing step when it suits and The Full Ritual then costs less than that step
-    alone (the bag's honest switch, same rule). Answers stay in the page; nothing is stored or sent.
+  Skin check. Answers → products. Every suggestion has a reason that can be read on the product's own label
+  (DECISIONS 216, after the owner's "I need you to really check the logic"):
+  - 01 Cleanser · label "For oily to combination skin", non-stripping, soap-free: suggested for oily, combination and normal
+    skin and for breakouts, whatever the goals; an option for mildly dry skin (only if it doesn't leave it tight); not for
+    very dry skin (it is made to remove excess oil). Goals never take it away: everyone cleanses.
+  - 02 Clarity Serum · label "Controls oil. Evens skin tone. Hydrates.": suggested for oily and combination skin, for
+    breakouts (not as an acne treatment), and for the goals excess oil, uneven tone, dark spots and marks, dehydration;
+    an option for dry skin without those goals (for its hydration).
+  - 03 Barrier Cream · the daily moisturiser in every routine (lightweight, oil-control, barrier support).
+  - 04 SPF 50+ · every morning, for everyone ("For all skin types").
+  - Sensitive skin changes how to start (a patch test, one new product at a time), never what is suggested, so no answer
+    ends without a routine (owner, DECISIONS 215).
+  Each product is 'core' (suggested, ticked) or 'optional' (shown unticked), with the visitor's goals it answers
+  ('concerns') and which of their answers it suits ('fits': 'type', 'acne'). A set is offered only when the ticked products
+  are exactly a set's contents; a three-product result offers the missing step when The Full Ritual then costs less than
+  that step alone (the bag's honest switch). Answers stay in the page; nothing is stored or sent.
 */
 const ORDER = ['type', 'react', 'acne', 'concerns'];
-const TREAT = ['oil', 'tone', 'marks', 'dehydration'];
 
 export function match(a) {
   const sensitive = a.react === 'some' || a.react === 'high';
   const C = new Set(a.concerns);
   const t = a.type;
+  const oily = t === 'oily' || t === 'combination';
   const veryDry = t === 'very_dry';
   const dry = t === 'dry';
-  const treating = TREAT.some((c) => C.has(c));
+  const acne = a.acne === 'yes';
   const picks = {};
   const put = (step, level, reason, ...cids) => {
-    const p = (picks[step] ||= { level, reasons: [], notes: [], concerns: [] });
+    const p = (picks[step] ||= { level, reasons: [], notes: [], concerns: [], fits: [] });
     if (level === 'core') p.level = 'core';
     if (reason && !p.reasons.includes(reason)) p.reasons.push(reason);
     cids.filter((c) => C.has(c) && !p.concerns.includes(c)).forEach((c) => p.concerns.push(c));
   };
+  const fit = (step, f) => { if (picks[step] && !picks[step].fits.includes(f)) picks[step].fits.push(f); };
   const note = (step, n) => { if (picks[step] && !picks[step].notes.includes(n)) picks[step].notes.push(n); };
 
-  // 01 Cleanser: oily, combination, normal and acne-prone; an option for mildly dry; never very dry
-  if (!veryDry) {
-    if (a.acne === 'yes' || t === 'oily') put(1, 'core', 'cleanser_oil', 'oil');
-    else if (t === 'combination') put(1, C.has('oil') || !treating ? 'core' : 'optional', 'cleanser_oil', 'oil');
-    else if (t === 'normal') put(1, treating ? 'optional' : 'core', 'cleanser_daily');
-    else if (dry) { put(1, 'optional', 'cleanser_daily'); note(1, 'tight'); }
+  // 01 Cleanser
+  if (oily || (acne && !veryDry)) {
+    put(1, 'core', 'cleanser_oil', 'oil');
+    if (oily) fit(1, 'type');
+    if (acne) fit(1, 'acne');
+  } else if (t === 'normal') put(1, 'core', 'cleanser_daily');
+  else if (dry) put(1, 'optional', 'cleanser_daily');
+  if (dry) note(1, 'tight');
+  // 02 Clarity Serum
+  if (oily || acne || C.has('oil')) {
+    put(2, 'core', 'serum_oil', 'oil');
+    if (oily) fit(2, 'type');
+    if (acne) fit(2, 'acne');
   }
-  // 02 Clarity Serum: by concern, for every skin type
-  if (C.has('oil')) put(2, 'core', 'serum_oil', 'oil');
   if (C.has('tone') || C.has('marks')) put(2, 'core', 'serum_tone', 'tone', 'marks');
   if (C.has('dehydration')) put(2, 'core', 'serum_hydra', 'dehydration');
+  // dry skin: the serum's hydration ("Hydrates" on its label) is worth considering, even without a goal
+  if ((dry || veryDry) && !picks[2]) put(2, 'optional', 'serum_hydra');
   if (picks[2]) {
     if (dry) note(2, 'with_moisturiser');
     if (veryDry) note(2, 'not_replace');
-    if (a.acne === 'yes') note(2, 'not_acne');
+    if (acne) note(2, 'not_acne');
   }
-  // 03 Barrier Cream: the everyday moisturiser for every type (a lighter layer for very dry skin)
+  // 03 Barrier Cream
   if (C.has('barrier')) put(3, 'core', 'cream_barrier', 'barrier');
   if (C.has('dehydration')) put(3, 'core', 'cream_hydra', 'dehydration');
-  if (C.has('oil') && (t === 'oily' || t === 'combination' || a.acne === 'yes')) put(3, 'core', 'cream_oil', 'oil');
+  if (oily || acne) { put(3, 'core', 'cream_oil', 'oil'); if (oily) fit(3, 'type'); }
   if (!picks[3]) put(3, 'core', 'cream_daily');
   if (veryDry) note(3, 'richer');
-  // 04 SPF 50+: every morning, for everyone; part of any routine for uneven tone and marks
+  // 04 SPF 50+
   put(4, 'core', 'spf_daily', 'spf', 'tone', 'marks');
   if (C.has('tone') || C.has('marks')) note(4, 'spf_tone');
 
-  // Sensitive: the same suggestions, each introduced slowly with a patch test first
   if (sensitive) Object.keys(picks).forEach((s) => note(s, 'patch'));
-  // Three suggested products: the fourth may complete the routine as The Full Ritual, if it suits (never the
-  // cleanser for very dry skin). The serum suits every type (ICI); offered on its pack benefit.
+  // three suggested: the fourth may complete the routine as The Full Ritual (never the cleanser for very dry skin)
   const sets = true;
   let complete = null;
   const core = [1, 2, 3, 4].filter((s) => picks[s]?.level === 'core');
-  if (sets && core.length === 3) {
+  if (core.length === 3) {
     const m = [1, 2, 3, 4].find((s) => !core.includes(s));
     if (!(m === 1 && veryDry)) {
-      picks[m] ||= { level: 'optional', reasons: [], notes: [], concerns: [] };
+      picks[m] ||= { level: 'optional', reasons: [], notes: [], concerns: [], fits: [] };
       complete = m;
     }
   }

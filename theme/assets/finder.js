@@ -1,13 +1,13 @@
 /*
-  Routines · the finder demo (DECISIONS 211, 215). Three questions beside the four packs: what you'd like help with
-  (the packs answer with every tick), how your skin feels by midday, and breakouts or sensitivity. The matching rules
-  are the skin check's (match() in skin-check.js, shared so the two never disagree). Every answer ends in a routine.
-  The result: the set that holds exactly the suggested steps at its real price, each step with what it helps with,
+  Routines · the finder demo (DECISIONS 211, 215, 216). Once started it takes the whole screen, like an app (close or
+  the browser's back returns to the page). Three questions beside the four packs: how your skin feels by midday, what
+  you'd like help with, then breakouts or sensitivity. The packs move only for what has been answered. The matching
+  rules are the skin check's (match() in skin-check.js, shared so the two never disagree). Every answer ends in a routine.
+  The result: the set that holds exactly the suggested steps at its real price, each step with why it suits this visitor,
   one button (the bottom bar on phones). Answers stay in the page; nothing is stored or sent.
 */
-const ORDER = ['concerns', 'type', 'more'];
+const ORDER = ['type', 'concerns', 'more'];
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-const phone = matchMedia('(max-width: 760px), (max-aspect-ratio: 4/5)');
 const fmt = (c) => (window.BTS?.formatMoney ? window.BTS.formatMoney(c) : String(c / 100));
 
 const init = async (root) => {
@@ -24,31 +24,33 @@ const init = async (root) => {
   const hdrWrap = document.querySelector('.site-header-wrap')?.closest('.shopify-section');
   const hdr = () => hdrWrap && root.style.setProperty('--hdr', hdrWrap.offsetHeight + 'px');
   hdr(); if (hdrWrap && window.ResizeObserver) new ResizeObserver(hdr).observe(hdrWrap);
+  const close = root.querySelector('[data-rf-close]');
+  let pushed = false;
   let i = -1, picks = null, chosen = [], sets = true, complete = null, currentSet = null, forceSingles = false;
 
   const one = (n) => form.querySelector(`input[name="${n}"]:checked`)?.value;
   // the last question answers two of the rules' questions at once: breakouts, and sensitivity
-  const answers = (fill) => {
+  const answers = () => {
     const more = one('more');
     return {
-      type: one('type') || (fill ? 'normal' : undefined),
+      type: one('type'),
       acne: more === 'breakouts' || more === 'both' ? 'yes' : 'no',
       react: more === 'sensitive' || more === 'both' ? 'some' : 'no',
       concerns: [...form.querySelectorAll('input[name="concerns"]:checked')].map((x) => x.value),
     };
   };
 
-  // the stage answers: suggested steps forward, the rest back a little; only a step that doesn't suit fades
+  // the stage answers: suggested steps forward, optional ones back a little, a step that doesn't suit fades
   const stage = (states) => packs.forEach((li) => {
-    const s = states[li.dataset.step] || 'opt';
+    const s = states[li.dataset.step] || 'off';
     if (li.dataset.state !== s && s === 'core') { li.classList.remove('is-pulse'); void li.offsetWidth; li.classList.add('is-pulse'); }
     li.dataset.state = s;
   });
+  // nothing moves on an assumption: until the skin type is answered all four stand together
   const live = () => {
-    if (i < 0) return stage({ 1: 'core', 2: 'core', 3: 'core', 4: 'core' });
-    const a = answers(true), r = match(a), st = {};
+    if (i < 0 || !one('type')) return stage({ 1: 'core', 2: 'core', 3: 'core', 4: 'core' });
+    const r = match(answers()), st = {};
     Object.entries(r.picks).forEach(([k, v]) => { st[k] = v.level === 'core' ? 'core' : 'opt'; });
-    if (a.type === 'very_dry' && one('type')) st[1] = 'off';
     stage(st);
   };
   const mark = (p) => root.style.setProperty('--p', p.toFixed(3));
@@ -60,10 +62,15 @@ const init = async (root) => {
       sc.classList.toggle('is-in', on);
     });
     root.dataset.state = name;
-    // phones: on the result the button is the bottom bar, so the dock steps aside (as on a product page)
-    document.documentElement.classList.toggle('is-buying', name === 'result' && phone.matches);
+    const open = name !== 'intro';
+    root.classList.toggle('is-open', open);
+    document.documentElement.classList.toggle('rf-open', open);
+    close.hidden = !open;
+    // the browser's back (or a phone's back swipe) closes the finder instead of leaving the page
+    if (open && !pushed) { history.pushState({ rf: 1 }, ''); pushed = true; }
   };
-  const top = () => { if (root.getBoundingClientRect().top < -40) root.scrollIntoView({ block: 'start', behavior: reduce.matches ? 'auto' : 'smooth' }); };
+  const copy = root.querySelector('.rf-copy');
+  const top = () => { copy.scrollTop = 0; };
   const go = (n) => {
     i = n;
     const q = ORDER[n];
@@ -76,7 +83,11 @@ const init = async (root) => {
     (fs.querySelector('input:checked') || fs.querySelector('input'))?.focus({ preventScroll: true });
     top();
   };
-  const intro = () => { i = -1; show('intro'); back.hidden = true; progress.textContent = ''; mark(0); live(); };
+  const intro = (refocus) => { i = -1; show('intro'); back.hidden = true; progress.textContent = ''; mark(0); live(); if (refocus) root.querySelector('[data-rf-start]').focus({ preventScroll: true }); };
+  const leave = () => { if (pushed) history.back(); else intro(true); };
+  window.addEventListener('popstate', () => { if (pushed) { pushed = false; intro(true); } });
+  close.addEventListener('click', leave);
+  root.addEventListener('keydown', (e) => { if (e.key === 'Escape' && root.classList.contains('is-open')) leave(); });
   const next = () => {
     const q = ORDER[i];
     if (q !== 'concerns' && !one(q)) return;
@@ -94,7 +105,9 @@ const init = async (root) => {
   // each step: its pack, what it helps with among the visitor's own goals, when it's used, its price
   const row = (step, checked, opt) => {
     const d = P[step];
-    const helps = (picks[step]?.concerns || []).map((c) => S.chips[c]).filter(Boolean);
+    const p = picks[step] || {}, type = one('type');
+    const fits = (p.fits || []).map((f) => (f === 'type' ? type && S.skin.replace('__T__', S.types[type]) : f === 'acne' ? S.breakouts : ''));
+    const helps = [...fits, ...(p.concerns || []).map((c) => S.chips[c])].filter(Boolean);
     const li = document.createElement('li');
     li.className = 'rf-step' + (opt ? ' rf-step--opt' : '');
     li.dataset.step = step;
@@ -107,7 +120,7 @@ const init = async (root) => {
   };
   const list = root.querySelector('[data-rf-steps]'), also = root.querySelector('[data-rf-also]');
   const result = (full) => {
-    const a = answers(false);
+    const a = answers();
     const r = full ? { sets: true, complete: null, sensitive: false, picks: { 1: { level: 'core' }, 2: { level: 'core' }, 3: { level: 'core' }, 4: { level: 'core' } } } : match(a);
     mark(1);
     back.hidden = false;
@@ -167,10 +180,10 @@ const init = async (root) => {
   back.addEventListener('click', () => {
     if (root.dataset.state === 'result') go(ORDER.length - 1);
     else if (i > 0) go(i - 1);
-    else intro();
+    else leave();
   });
   root.querySelectorAll('[data-rf-change]').forEach((b) => b.addEventListener('click', () => go(0)));
-  root.querySelector('[data-rf-restart]').addEventListener('click', () => { form.reset(); form.querySelectorAll('[data-rf-next]').forEach((b) => { b.disabled = !b.closest('.rf-q--multi'); }); intro(); });
+  root.querySelector('[data-rf-restart]').addEventListener('click', () => { form.reset(); form.querySelectorAll('[data-rf-next]').forEach((b) => { b.disabled = !b.closest('.rf-q--multi'); }); go(0); });
   root.querySelector('[data-rf-complete]').addEventListener('click', () => {
     const li = also.querySelector(`.rf-step[data-step="${complete}"]`);
     if (!li) return;
@@ -194,7 +207,6 @@ const init = async (root) => {
     root._t = setTimeout(() => { if (input.checked) next(); }, reduce.matches ? 120 : 480);
   });
   form.addEventListener('submit', (e) => e.preventDefault());
-  phone.addEventListener('change', () => document.documentElement.classList.toggle('is-buying', root.dataset.state === 'result' && phone.matches));
   const buy = root.querySelector('product-form');
   root.querySelector('[data-rf-singles]').addEventListener('click', () => { forceSingles = true; });
   root.querySelectorAll('[data-rf-add]').forEach((b) => b.addEventListener('click', () => { forceSingles = false; }));

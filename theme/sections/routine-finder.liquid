@@ -1,7 +1,8 @@
 {%- comment -%}
-  Routines · the finder demo (DECISIONS 211, 215; shown at /pages/routines?view=finder while it is reviewed). Three
-  questions, one per screen, beside the four packs: what you'd like help with first (the packs answer as you tick), then
-  how your skin feels by midday, then breakouts or sensitivity. The matching rules are the skin check's (match() in
+  Routines · the finder demo (DECISIONS 211, 215, 216; shown at /pages/routines?view=finder while it is reviewed). Once
+  started it is the whole screen, like an app (question, answers, next, back, close; nothing else, no page scrolling).
+  Three questions, one per screen, beside the four packs: how your skin feels by midday, what you'd like help with, then
+  breakouts or sensitivity. The packs move only for what has actually been answered. The matching rules are the skin check's (match() in
   assets/skin-check.js), so the two never disagree. Every answer ends in a routine: sensitive skin changes how to start,
   never what's suggested. The result is the routine as products (the set that holds exactly those steps at its real price,
   what each step helps with, why it was chosen), one button, which is the bottom bar on phones. "Just show me the full
@@ -13,7 +14,7 @@
   assign hs = '1,.65,.81,.81' | split: ','
   assign ars = '357/1100,366/1100,343/1100,339/1100' | split: ','
   assign sets_url = routes.root_url | append: '/pages/sets' | replace: '//', '/'
-  assign qs = 'concerns,type,more' | split: ','
+  assign qs = 'type,concerns,more' | split: ','
   assign goals = 'oil,tone,marks,dehydration,barrier,spf' | split: ','
   assign types = 'oily,combination,normal,dry,very_dry' | split: ','
 -%}
@@ -36,6 +37,18 @@
 .rf-back { display: inline-flex; align-items: center; gap: 8px; margin-inline-start: auto; font: inherit; font-size: 13px; font-weight: 600; color: inherit; background: none; border: 0; padding: 10px 0; cursor: pointer; opacity: .7; }
 .rf-back:hover { opacity: 1; } .rf-back[hidden] { display: none; }
 .rf-back svg { transform: scaleX(-1); } [dir='rtl'] .rf-back svg { transform: none; }
+.rf-close { display: grid; place-items: center; inline-size: 44px; block-size: 44px; margin-inline-end: -10px; border: 0; border-radius: 50%; background: none; color: inherit; cursor: pointer; }
+.rf-close[hidden] { display: none; }
+.rf-close svg { inline-size: 20px; block-size: 20px; }
+
+/* once started, the finder is the whole screen, like an app: no header, no bottom bar, nothing scrolls behind it */
+html.rf-open, html.rf-open body { overflow: hidden; }
+html.rf-open .dock { display: none; }
+.rf.is-open { position: fixed; inset: 0; z-index: 65; margin: 0; min-height: 0; block-size: 100dvh; }
+.rf.is-open .rf-copy { padding-block: max(24px, 4svh, env(safe-area-inset-top)) 4svh; overflow-y: auto; overscroll-behavior: contain; }
+.rf.is-open .rf-stage { block-size: 100dvh; }
+.rf.is-open .rf-copy { min-height: 0; }
+@media (max-width: 760px), (max-aspect-ratio: 4/5) { .rf.is-open .rf-copy { flex: 1; } }
 
 .rf-screen { margin-top: 4svh; }
 .rf-screen[hidden] { display: none; }
@@ -145,7 +158,7 @@
   .rf:not([data-state='intro']) .rf-stage { display: none; }
   .rf-pack__cap { display: none; }
   .rf-copy { padding: calc(var(--hdr, var(--header-h)) + 3svh) 5vw 2svh; }
-  .rf:not([data-state='intro']) .rf-copy { padding: calc(var(--hdr, var(--header-h)) + 1svh) 5vw calc(var(--dock-h, 0px) + 4svh); }
+  .rf.is-open .rf-copy { padding: max(10px, env(safe-area-inset-top)) 5vw 4svh; }
   .rf[data-state='intro'] { padding-block-end: 0; }
   .rf-q--multi .rf-opts { grid-template-columns: 1fr 1fr; gap: 7px; }
   .rf-q--multi .rf-opt { padding: 9px 11px; gap: 10px; } .rf-q--multi .rf-opt__label { font-size: 13.5px; } .rf-q--multi .rf-opt__sub { display: none; }
@@ -159,7 +172,10 @@
   .rf-q .rf-row { margin-top: 16px; }
   .rf-name { font-size: min(12vw, 56px); }
   /* the result's button is the bottom bar (the dock steps aside), so it's always in reach */
-  .rf[data-state='result'] .rf-copy { padding-block-end: calc(96px + env(safe-area-inset-bottom)); }
+  .rf.is-open[data-state='result'] .rf-copy { padding-block-end: calc(96px + env(safe-area-inset-bottom)); }
+  /* the button's layer sits above everything else in the result (and doesn't slide in, so it is pinned to the screen) */
+  .rf[data-state='result'] .rf-buy { position: relative; z-index: 5; }
+  .js .rf[data-state='result'] .rf-screen.is-in > .rf-buy { animation: none; }
   .rf[data-state='result'] .rf-cta { position: fixed; z-index: 40; inset-inline: 12px; inset-block-end: calc(12px + env(safe-area-inset-bottom)); margin: 0; }
   .rf[data-state='result'] .rf-cta .rf-btn { inline-size: 100%; padding-inline: 20px; box-shadow: 0 18px 40px -14px rgb(32 35 58 / .55); }
   .rf[data-state='result'] .rf-btn__price { display: inline; opacity: .78; }
@@ -209,6 +225,7 @@
       <svg class="rf-mark" viewBox="0 0 501 547" aria-hidden="true" focusable="false"><path class="rf-l" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/><path class="rf-r" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>
       <p class="rf-progress" aria-live="polite" data-rf-progress></p>
       <button type="button" class="rf-back" data-rf-back hidden>{% render 'icon', name: 'arrow', class: 'icon--sm' %}{{ 'skin_check.back' | t }}</button>
+      <button type="button" class="rf-close" data-rf-close aria-label="{{ 'general.close' | t | escape }}" hidden>{% render 'icon', name: 'close' %}</button>
     </div>
 
     <div class="rf-screen is-in" data-screen="intro">
