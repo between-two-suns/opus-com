@@ -942,3 +942,8 @@ Each entry: decision · why · reversibility. Newest last.
     - Name in the sans, the same size in every card so a row lines up (the larger card is wider, not louder); one line under it ("4 steps · Morning + night" / "3 steps · Add sunscreen in the morning").
     - Sets without their own photo keep the clean packs shot as the picture.
     - Theme-check 0, flows 384/384, staging checksums match, checked on staging; live theme unchanged.
+238. **Owner on tile v2: "these don't explain anything… the best one was the Sets page card; only the 2 steps / 3 steps at the top could go into the explainer line to make it less bulky. Use this style across all cards."** Tile demo dropped; the Sets-page set card is now the one card everywhere:
+    - **Less bulky:** the separate "3 steps" / "Step 1" label above the name is gone; it now opens the line under the name ("3 steps · Add sunscreen in the morning", "Step 1 · …").
+    - **Same card on every page:** home Sets (two equal cards), shop/search (sets and single products, same surface, photo, condensed name and full-width "Add to bag"), the Sets page, and the set page "Which set is right for you?" row (swipeable; the current set is outlined and marked "You're here" with no add button).
+    - Tile demo files removed from the code. Unused on staging, can be deleted in admin → Edit code: snippets/tile.liquid, assets/tile.css, templates/index.tiles.json, templates/page.setstiles.json.
+    - Theme-check 0, flows 384/384, staging checksums (9 files) match, checked on staging; live theme unchanged.

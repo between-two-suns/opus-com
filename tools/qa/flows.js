@@ -121,7 +121,8 @@ for (const loc of ['', '/ar']) {
     // the saving is shown once, in the buy box (DECISIONS 228)
     ok(`${tag} set page shows the saving once, in the buy box`, /147/.test(await page.$eval('.v2-buy', (e) => e.textContent)) && (await page.$$('.bi__saved')).length === 0);
     ok(`${tag} set page has one finder link`, (await page.$$('.skc-link')).length === 1);
-    ok(`${tag} set compare shows only each set's own packs`, (await page.$$eval('.s2-set', (l) => l.map((x) => x.querySelectorAll('.s2-set__pack').length).join(','))) === '4,3,3,2,2');
+    // the compare row uses the shop's one card (DECISIONS 238): five sets, this one marked and without an add button
+    ok(`${tag} set compare uses the shop card, this set marked`, (await page.$$('.s2-sets > .bundle')).length === 5 && (await page.$$('.s2-sets > .bundle.is-here [type="submit"]')).length === 0 && (await page.$$('.s2-sets > .bundle.is-here')).length === 1);
     // buy box says each thing once (DECISIONS 230): free delivery only in the line under the button here
     ok(`${tag} set page has no Ships free badge in the buy box`, (await page.$$('.v2-buy .ship-badge, .v2-buy .v2-opt__ship')).length === 0);
     await page.goto(`${BASE}${loc}/products/the-clear-protect-trio`, { waitUntil: 'networkidle' });

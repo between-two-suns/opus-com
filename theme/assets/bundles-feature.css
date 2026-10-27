@@ -65,7 +65,7 @@
 
 /* Desktop: hero two-thirds, companion one-third; the hero's text and buying sit side by side */
 @media (min-width: 990px) {
-  .setsx__grid { grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr); }
+  .setsx__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .setsx-card--hero .setsx-card__media { aspect-ratio: 16 / 9; }
   .setsx-card--hero .setsx-card__body { grid-template-columns: minmax(0, 1fr) minmax(240px, 300px); align-items: end; padding: 24px 28px 28px; gap: 24px 32px; }
   .setsx-card--mate .setsx-card__stage { flex: 1; min-block-size: 0; align-items: center; }

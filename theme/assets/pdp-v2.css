@@ -381,32 +381,12 @@
 }
 
 /* Compare sets (DECISIONS 192): cards, each with its packs at true sizes on its colours; missing steps faint */
-.s2-sets { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; list-style: none; margin: 0; padding: 0; }
-@media (max-width: 989px) {
-  .s2-sets { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(220px, 60%); overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--gutter) * -1); padding: 4px var(--gutter) 8px; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
-  .s2-sets::-webkit-scrollbar { display: none; }
-  .s2-set { scroll-snap-align: start; }
-}
-.s2-set__card { position: relative; display: grid; grid-template-rows: auto 1fr; block-size: 100%; border-radius: var(--radius-l); overflow: hidden; background: var(--c-paper); color: var(--c-ink); text-decoration: none; transition: translate var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out); }
-a.s2-set__card:hover { translate: 0 -3px; box-shadow: 0 18px 36px -22px rgba(32, 35, 58, .45); }
-a.s2-set__card:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; }
-.s2-set.is-here .s2-set__card { outline: 2px solid var(--c-ink); outline-offset: -2px; }
-.s2-set__stage { display: flex; align-items: flex-end; justify-content: center; gap: 3%; block-size: clamp(150px, 14vw, 190px); padding: 22px 8% 14px; background: var(--g); overflow: hidden; }
-.s2-set__pack { flex: 0 0 19%; display: flex; align-items: flex-end; justify-content: center; block-size: 100%; --s: 1; }
-.s2-set__pack[data-step='2'] { --s: .65; }
-.s2-set__pack[data-step='3'], .s2-set__pack[data-step='4'] { --s: .81; }
-.s2-set__pack img { block-size: calc(var(--s) * 100%); inline-size: auto; max-inline-size: 100%; object-fit: contain; object-position: 50% 100%; filter: drop-shadow(0 8px 8px rgba(32, 35, 58, .16)); transition: translate 500ms var(--ease-out); }
-a.s2-set__card:hover .s2-set__pack img { translate: 0 -4px; }
-.s2-set__body { display: grid; align-content: start; gap: 4px; padding: 14px 16px 18px; }
-.s2-set__here { justify-self: start; margin-block-end: 2px; padding: 3px 10px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-:lang(ar) .s2-set__here { letter-spacing: 0; text-transform: none; font-size: 12px; }
-.s2-set__name { font-size: 17px; font-weight: 750; line-height: 1.2; }
-.s2-set__steps { font-size: 13px; line-height: 1.4; color: var(--c-muted); }
-.s2-set__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin-block-start: 8px; }
-.s2-set__now { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
-.s2-set__was { font-size: 14px; color: var(--c-muted); }
-.s2-set__perks { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: 13px; font-weight: 700; color: var(--c-success); }
-.s2-set__ship { display: inline-flex; align-items: center; gap: 4px; }
+/* "Which set is right for you?": the shop's one card in a row that scrolls (DECISIONS 238) */
+.s2-sets { display: grid; grid-auto-flow: column; grid-auto-columns: max(280px, calc((100% - 3 * 16px) / 3.3)); gap: 16px; list-style: none; margin: 0 calc(var(--gutter) * -1); padding: 6px var(--gutter) 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
+.s2-sets::-webkit-scrollbar { display: none; }
+.s2-sets > .bundle { scroll-snap-align: start; }
+.s2-sets .bundle__stage { aspect-ratio: 16 / 11; }
+@media (max-width: 749px) { .s2-sets { grid-auto-columns: 82%; } }
 
 /* Set sections take one gap between them, like the home page (the next section's top padding goes) */
 .shopify-section:has(> .section--flow) ~ .shopify-section > .section--flow,

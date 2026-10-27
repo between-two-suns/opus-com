@@ -953,6 +953,32 @@ html.has-open-dialog { overflow: hidden; }
   html.is-buying .site-header__end .header-lang { display: none; }
 }
 
+/* One card style for everything sold (DECISIONS 238): single products wear the sets' card. The photo on top,
+   edge to edge; the body on the card's soft tint; the name in the pack lettering; "Step 1 · …" as the one line;
+   price, then the full-width button. */
+.card { gap: 0; border-radius: var(--radius-l); overflow: hidden; isolation: isolate;
+  background: radial-gradient(90% 70% at 50% 34%, rgba(255, 255, 255, .9), transparent 70%), linear-gradient(165deg, color-mix(in srgb, var(--sku, var(--c-step-1)) 26%, #fff) 0%, color-mix(in srgb, var(--sku, var(--c-step-1)) 10%, #fff) 60%, #fff 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .6), 0 30px 60px -48px rgba(32, 35, 58, .5);
+  transition: transform var(--dur-slow) var(--ease-out), box-shadow var(--dur-slow) var(--ease-out); }
+.card:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7), 0 40px 70px -44px rgba(32, 35, 58, .55); }
+.card .card__media { border-radius: 0; aspect-ratio: 16 / 13; }
+.card .card__body { gap: 10px; padding: 18px 22px 0; }
+.card .card__title { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(24px, 2vw, 30px); line-height: .95; letter-spacing: 0; }
+:lang(ar) .card .card__title { text-transform: none; font-size: clamp(22px, 2vw, 28px); line-height: 1.3; }
+.card .card__benefit { font-size: 14px; color: var(--c-muted); }
+.card__n, .bundle__n { color: var(--c-ink); font-weight: 650; }
+.card .card__meta { padding-block-start: 8px; }
+.card .card__price { font-size: 20px; }
+.card .card__quick { padding: 12px 22px 22px; }
+.bundle__badge--here { background: #fff; color: var(--c-ink); box-shadow: inset 0 0 0 1.5px var(--c-ink); }
+.bundle.is-here { outline: 2px solid var(--c-ink); outline-offset: -2px; }
+@media (max-width: 749px) {
+  .product-grid .card .card__body { gap: 8px; padding: 14px 14px 0; }
+  .product-grid .card .card__title { font-size: 21px; }
+  .product-grid .card .card__price { font-size: 17px; }
+  .product-grid .card .card__quick { padding: 10px 14px 14px; }
+}
+
 /* v3 product card: the studio photo is the card. */
 .card__media--studio { background: var(--sku); }
 .card__media--studio > img { inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }

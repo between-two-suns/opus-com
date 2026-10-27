@@ -1,7 +1,6 @@
 {%- comment -%}
-  Set pages (DECISIONS 189–192): "Which set is right for you?" The five routine sets as cards: each shows only its own packs
-  at their true sizes on its colours (DECISIONS 228), what's inside, price, saving and free
-  delivery; the set being viewed is marked. Prices and savings are live (compare-at = the singles added up).
+  Set pages (DECISIONS 189–192, 238): "Which set is right for you?" The five routine sets in the shop's one card
+  (snippets/bundle-card), in a row that scrolls; the set being viewed is marked "You're here". Prices and savings are live (compare-at = the singles added up).
   Renders nothing on single products.
 {%- endcomment -%}
 {%- liquid
@@ -13,8 +12,6 @@
 {%- if bdef != blank -%}
 {%- liquid
   assign rows = 'the-full-ritual,the-clear-protect-trio,the-night-ritual,clear-protect-duo,the-core-duo' | split: ','
-  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
-  assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
 -%}
 <section class="section section--flow s2-cmp" aria-labelledby="S2Cmp-{{ section.id }}">
   <div class="container">
@@ -25,71 +22,14 @@
       </div>
       <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'sections.bundles.see_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
     </div>
+    {{ 'bundles.css' | asset_url | stylesheet_tag }}
+    {%- comment -%} The shop's one card (DECISIONS 238); the set being viewed is marked "You're here" and has no add button {%- endcomment -%}
     <ul class="s2-sets" role="list">
       {%- for h in rows -%}
-        {%- liquid
-          assign sp = all_products[h]
-          unless sp.id
-            continue
-          endunless
-          capture d
-            render 'bundle-def', handle: h
-          endcapture
-          assign ds = d | strip | split: '|' | first | split: ','
-          assign nk = 'bundles.names.' | append: h
-          assign nm = nk | t | replace: '&amp;', '&'
-          if nm contains 'ranslation missing'
-            assign nm = sp.title
-          endif
-          assign sv = sp.selected_or_first_available_variant
-          assign here = false
-          if h == product.handle
-            assign here = true
-          endif
-          assign names = ''
-          assign tints = ''
-          for st in ds
-            assign sk = 'pdp2.short.' | append: st
-            assign sn = sk | t
-            if names == ''
-              assign names = sn
-            else
-              assign names = names | append: ' + ' | append: sn
-            endif
-            assign tints = tints | append: ', var(--c-step-' | append: st | append: '-tint)'
-          endfor
-        -%}
-        <li class="s2-set{% if here %} is-here{% endif %}">
-          {%- if here -%}<div class="s2-set__card" aria-current="page">{%- else -%}<a class="s2-set__card" href="{{ sp.url }}">{%- endif -%}
-            <span class="s2-set__stage" style="--g: linear-gradient(115deg{{ tints }}{% if ds.size == 1 %}{{ tints }}{% endif %})" aria-hidden="true">
-              {%- for i in (1..4) -%}
-                {%- assign is = i | append: '' -%}
-                {%- unless ds contains is -%}{%- continue -%}{%- endunless -%}
-                <span class="s2-set__pack" data-step="{{ i }}">
-                  {%- capture pk -%}{%- render 'cut-src', handle: step_handles[i], width: 160 -%}{%- endcapture -%}
-                  <img src="{{ pk }}" alt="" width="366" height="1100" loading="lazy">
-                </span>
-              {%- endfor -%}
-            </span>
-            <span class="s2-set__body">
-              {%- if here -%}<span class="s2-set__here">{{ 'set2.cmp_here' | t }}</span>{%- endif -%}
-              <span class="s2-set__name">{{ nm | escape }}</span>
-              <span class="s2-set__steps">{{ names }}</span>
-              <span class="s2-set__price">
-                <span class="s2-set__now">{% render 'egp', cents: sv.price %}</span>
-                {%- if sv.compare_at_price > sv.price -%}<s class="s2-set__was"><span class="visually-hidden">{{ 'sections.bundles.was' | t }} </span>{% render 'egp', cents: sv.compare_at_price %}</s>{%- endif -%}
-              </span>
-              <span class="s2-set__perks">
-                {%- if sv.compare_at_price > sv.price -%}
-                  {%- assign sav = sv.compare_at_price | minus: sv.price -%}
-                  {%- capture sav_m -%}{% render 'egp', cents: sav %}{%- endcapture -%}
-                  <span class="s2-set__save">{{ 'pdp2.save' | t: amount: sav_m }}</span>
-                {%- endif -%}
-                {%- if threshold > 0 and sv.price >= threshold -%}<span class="s2-set__ship">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</span>{%- endif -%}
-              </span>
-            </span>
-          {%- if here -%}</div>{%- else -%}</a>{%- endif -%}
-        </li>
+        {%- assign sp = all_products[h] -%}
+        {%- unless sp.id -%}{%- continue -%}{%- endunless -%}
+        {%- if h == product.handle -%}{%- assign here = true -%}{%- else -%}{%- assign here = false -%}{%- endif -%}
+        {%- render 'bundle-card', product: sp, here: here -%}
       {%- endfor -%}
     </ul>
   </div>

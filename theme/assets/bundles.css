@@ -1,7 +1,7 @@
 /* Bundles (curated sets) + Routine builder */
 .bundles__text { max-inline-size: 440px; }
 .bundles__grid { display: grid; gap: clamp(14px, 1.6vw, 24px); grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); list-style: none; margin: 0; padding: 0; }
-@media (min-width: 1100px) { .bundles__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } .bundle:nth-child(-n+2) { grid-column: span 3; } .bundle:nth-child(n+3) { grid-column: span 2; } }
+@media (min-width: 1100px) { .bundles__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } .bundles__grid > .bundle:nth-child(-n+2) { grid-column: span 3; } .bundles__grid > .bundle:nth-child(n+3) { grid-column: span 2; } }
 .bundle {
   display: flex; flex-direction: column; border-radius: var(--radius-l); overflow: hidden; position: relative; isolation: isolate;
   /* Each set wears the colours of its first and last step. */
@@ -11,7 +11,7 @@
 }
 .bundle:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7), 0 40px 70px -44px rgba(32, 35, 58, .55); }
 .bundle__stage { position: relative; aspect-ratio: 16 / 10; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
-.bundle:nth-child(-n+2) .bundle__stage { aspect-ratio: 16 / 9; }
+.bundles__grid > .bundle:nth-child(-n+2) .bundle__stage, .setsx__grid > .bundle .bundle__stage { aspect-ratio: 16 / 9; }
 .bundle__glow { position: absolute; inset: 18% 8% -34%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, .85), rgba(255, 255, 255, 0)); }
 .bundle__packs { position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: center; gap: clamp(2px, .6vw, 10px); block-size: 74%; inline-size: 100%; margin-block-end: 7%; }
 .bundle__pack { position: relative; block-size: 100%; transform: translateY(calc(var(--k) * 2%)) rotate(calc((var(--k) - (var(--n) - 1) / 2) * 4deg)); transform-origin: 50% 100%; transition: transform var(--dur-slow) var(--ease-out); }

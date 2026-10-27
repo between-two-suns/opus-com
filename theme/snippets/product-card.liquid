@@ -73,14 +73,12 @@
     {%- endif -%}
   </div>
   <div class="card__body">
-    {%- if step > 0 -%}
-      <span class="step-tag">{{ 'product.step' | t: number: step }}{% if step_label != blank %} · {{ step_label }}{% endif %}</span>
-    {%- endif -%}
+    {%- comment -%} Same card as the sets (DECISIONS 238): the step opens the description line instead of a label above the name {%- endcomment -%}
     <{{ heading_tag }} class="card__title" id="CardTitle-{{ uid }}">
       <a href="{{ product.url }}">{{ product.title | escape }}</a>
     </{{ heading_tag }}>
-    {%- if product.metafields.bts.benefit != blank -%}
-      <p class="card__benefit">{{ product.metafields.bts.benefit }}</p>
+    {%- if step > 0 or product.metafields.bts.benefit != blank -%}
+      <p class="card__benefit">{%- if step > 0 -%}<span class="card__n">{{ 'product.step' | t: number: step }}</span>{%- if product.metafields.bts.benefit != blank %} · {% endif -%}{%- endif -%}{{ product.metafields.bts.benefit }}</p>
     {%- endif -%}
     <div class="card__meta">
       <span>
@@ -100,7 +98,7 @@
             <input type="hidden" name="quantity" value="1">
             <button
               type="submit"
-              class="btn btn--secondary btn--small btn--full card__add"
+              class="btn btn--full card__add"
               {% if coming_soon or variant.available == false %}disabled{% endif %}
               aria-describedby="CardTitle-{{ uid }}"
             >
@@ -117,7 +115,7 @@
           </form>
         </product-form>
       {%- else -%}
-        <a class="btn btn--secondary btn--small btn--full card__add" href="{{ product.url }}" aria-describedby="CardTitle-{{ uid }}">{{ 'product.choose_options' | t }}</a>
+        <a class="btn btn--full card__add" href="{{ product.url }}" aria-describedby="CardTitle-{{ uid }}">{{ 'product.choose_options' | t }}</a>
       {%- endif -%}
     </div>
   {%- endunless -%}
