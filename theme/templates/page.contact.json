@@ -1,54 +1,13 @@
 {
   "sections": {
     "form": {
-      "type": "contact-form",
+      "type": "contact-v2",
       "settings": {
         "email": "hello@betweentwosuns.co"
-      }
-    },
-    "faq": {
-      "type": "faq",
-      "blocks": {
-        "q0": {
-          "type": "qa",
-          "settings": {
-            "preset": "contact_reply"
-          }
-        },
-        "q1": {
-          "type": "qa",
-          "settings": {
-            "preset": "delivery_free"
-          }
-        },
-        "q2": {
-          "type": "qa",
-          "settings": {
-            "preset": "returns"
-          }
-        },
-        "q3": {
-          "type": "qa",
-          "settings": {
-            "preset": "payment"
-          }
-        }
-      },
-      "block_order": [
-        "q0",
-        "q1",
-        "q2",
-        "q3"
-      ],
-      "settings": {
-        "compact": true,
-        "show_contact": true,
-        "schema": false
       }
     }
   },
   "order": [
-    "form",
-    "faq"
+    "form"
   ]
 }

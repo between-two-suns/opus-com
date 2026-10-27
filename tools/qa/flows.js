@@ -314,25 +314,25 @@ for (const loc of ['', '/ar']) {
     ok(`${tag} scan no page errors`, serr.length === 0, serr.join(' | '));
     await sctx.close();
 
-    // Contact v2 demo (DECISIONS 232): the topic shapes the form; creators are sent to their own page; a message sends
+    // Contact (DECISIONS 232–233): the topic shapes the form; creators are sent to their own page; a message sends
     const xctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.isMobile, hasTouch: vp.hasTouch });
     await xctx.addInitScript(() => { try { localStorage.setItem('bts:welcome', 'seen'); } catch (e) {} });
     const xp = await xctx.newPage();
     const xerr = [];
     xp.on('pageerror', (e) => xerr.push(e.message));
-    await xp.goto(`${BASE}${loc}/pages/contact?view=contact2`, { waitUntil: 'networkidle' });
-    ok(`${tag} contact demo: no topic panel until a topic is picked`, (await xp.locator('.cx__panel:visible').count()) === 0);
+    await xp.goto(`${BASE}${loc}/pages/contact`, { waitUntil: 'networkidle' });
+    ok(`${tag} contact: no topic panel until a topic is picked`, (await xp.locator('.cx__panel:visible').count()) === 0);
     await xp.locator('.cx__chip:has([data-topic="order"])').click();
-    ok(`${tag} contact demo: My order asks for the order number`, await xp.locator('#Cx-order').isVisible());
+    ok(`${tag} contact: My order asks for the order number`, await xp.locator('#Cx-order').isVisible());
     await xp.locator('.cx__chip:has([data-topic="creators"])').click();
-    ok(`${tag} contact demo: Creators points to the Creators page instead of the form`, await xp.locator('[data-panel="creators"] a[href*="/pages/creators"]').isVisible() && !(await xp.locator('#Cx-email').isVisible()));
+    ok(`${tag} contact: Creators points to the Creators page instead of the form`, await xp.locator('[data-panel="creators"] a[href*="/pages/creators"]').isVisible() && !(await xp.locator('#Cx-email').isVisible()));
     await xp.locator('.cx__chip:has([data-topic="other"])').click();
     await xp.fill('#Cx-email', 'someone@example.com');
     await xp.fill('#Cx-body', 'Test message');
     await Promise.all([xp.waitForNavigation({ waitUntil: 'networkidle' }), xp.locator('#ContactForm [type="submit"]').click()]);
     await xp.waitForTimeout(400);
-    ok(`${tag} contact demo: thank-you shown`, await xp.locator('[data-cx-done]').isVisible());
-    ok(`${tag} contact demo no page errors`, xerr.length === 0, xerr.join(' | '));
+    ok(`${tag} contact: thank-you shown`, await xp.locator('[data-cx-done]').isVisible());
+    ok(`${tag} contact no page errors`, xerr.length === 0, xerr.join(' | '));
     await xctx.close();
 
     // Creators: required fields block an empty submit; a full one shows the thank-you and takes focus
