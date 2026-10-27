@@ -1,0 +1,65 @@
+{%- comment -%}
+  Home demo (DECISIONS 234; /?view=dusk): the whole page is one day, from the first sun to the second.
+  The page's light follows the scroll: morning in the hero and the routine (they keep their own colours), late
+  morning at the sets, warm afternoon at "What's today like?", golden at the ingredients, sunset at the closing
+  photo, dusk by the questions. The colour is the page background behind the sections (body's --tone, which the
+  header glass also picks up), mixed smoothly between the sections' stops as you scroll. All tones are light, so
+  text contrast doesn't change. Without JS the page keeps its usual daylight. Outputs nothing visible itself.
+{%- endcomment -%}
+<script>
+  (() => {
+    const stops = [
+      ['.hh', '#f5f1ea'],
+      ['.setsx', '#f6f0e6'],
+      ['.cs', '#f8ebdd'],
+      ['.ih', '#f7e3cf'],
+      ['.eb', '#f1d9cb'],
+      ['.faq', '#e8e1ec'],
+    ];
+    const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+    let pts = [];
+    const measure = () => {
+      pts = stops.map(([sel, c]) => {
+        const el = document.querySelector(sel);
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        return { y: r.top + scrollY + r.height / 2, c: hex(c) };
+      }).filter(Boolean).sort((a, b) => a.y - b.y);
+    };
+    let raf = 0;
+    const paint = () => {
+      raf = 0;
+      if (!pts.length) return;
+      const y = scrollY + innerHeight / 2;
+      let c = pts[0].c;
+      if (y >= pts[pts.length - 1].y) c = pts[pts.length - 1].c;
+      else for (let i = 0; i < pts.length - 1; i++) {
+        const a = pts[i], b = pts[i + 1];
+        if (y >= a.y && y < b.y) {
+          const t = (y - a.y) / (b.y - a.y);
+          const e = t * t * (3 - 2 * t);
+          c = a.c.map((v, k) => Math.round(v + (b.c[k] - v) * e));
+          break;
+        }
+      }
+      document.body.style.setProperty('--tone', `rgb(${c.join(',')})`);
+    };
+    const go = () => { if (!raf) raf = requestAnimationFrame(paint); };
+    const start = () => { measure(); paint(); };
+    addEventListener('scroll', go, { passive: true });
+    addEventListener('resize', () => { measure(); go(); });
+    addEventListener('load', start);
+    if (document.readyState !== 'loading') start(); else document.addEventListener('DOMContentLoaded', start);
+    // sections that change height after load (images, the pinned routine) move the stops
+    if ('ResizeObserver' in window) new ResizeObserver(() => { measure(); go(); }).observe(document.body);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Day light (demo)",
+  "settings": [
+    { "type": "paragraph", "content": "The page's light follows the scroll from morning to dusk. No visible content." }
+  ]
+}
+{% endschema %}

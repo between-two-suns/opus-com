@@ -28,7 +28,6 @@
       <div class="setsx__aside">
         <p class="t-lead t-muted">{{ text | escape }}</p>
         <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'sections.bundles.see_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-        {%- render 'skin-check-link', key: 'skin_check.cta_sets' -%}
       </div>
     </div>
 
@@ -148,6 +147,8 @@
         </li>
       {%- endfor -%}
     </ul>
+    {%- comment -%} Under the sets, where "which one?" comes up (DECISIONS 234) {%- endcomment -%}
+    <div class="setsx__quiz">{%- render 'skin-check-link', key: 'skin_check.cta_sets' -%}</div>
   </div>
 </section>
 

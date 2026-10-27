@@ -1,0 +1,103 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-orbs",
+      "settings": {}
+    },
+    "climate": {
+      "type": "climate-switch",
+      "settings": {
+        "link": "/pages/climate",
+        "photo_prefix": "bts-climate2-"
+      }
+    },
+    "bundles": {
+      "type": "bundles-feature",
+      "settings": {
+        "mate_image": "shopify://shop_images/bts-demo-night-ritual.jpg"
+      }
+    },
+    "routine": {
+      "type": "day-line",
+      "settings": {
+        "show_bundle": false
+      }
+    },
+    "ingredient_heroes": {
+      "type": "ingredient-heroes",
+      "settings": {}
+    },
+    "editorial": {
+      "type": "editorial-band",
+      "settings": {
+        "style": "sun"
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "qa",
+          "settings": {
+            "preset": "start_where"
+          }
+        },
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "all_four"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "order"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "preset": "delivery_free"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "preset": "made"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "compact": true,
+        "show_contact": true,
+        "schema": false
+      }
+    },
+    "reviews": {
+      "type": "reviews-home",
+      "settings": {}
+    },
+    "day_light": {
+      "type": "day-light",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "routine",
+    "bundles",
+    "reviews",
+    "climate",
+    "ingredient_heroes",
+    "editorial",
+    "faq",
+    "day_light"
+  ]
+}
