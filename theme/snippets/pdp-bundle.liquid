@@ -3,7 +3,8 @@
   part 'stage': the component packs fanned out when the bundle has no photos (placeholder for any other product).
   part 'info': saving vs buying separately (+ ships free when it reaches the threshold) and what's inside.
   Params: part, handle, variant (info), list (info: true hides the product list, when the page lists them elsewhere),
-  offset (gallery: true when a slide comes before these, for the "n of N" labels)
+  offset (gallery: true when a slide comes before these, for the "n of N" labels),
+  ship (info: false leaves out the "Ships free" badge where the page says it elsewhere)
 {%- endcomment -%}
 {%- liquid
   capture bdef
@@ -40,7 +41,7 @@
   {%- capture bsave_m -%}{% render 'egp', cents: bsave %}{%- endcapture -%}
   {%- assign bthr = settings.free_shipping_threshold | default: 0 | times: 100 -%}
   <p class="bundle__save t-small">{{ 'bundles.save_vs' | t: amount: bsave_m }}</p>
-  {%- if bthr > 0 and variant.price >= bthr -%}<p class="ship-badge ship-badge--lg">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</p>{%- endif -%}
+  {%- if bthr > 0 and variant.price >= bthr and ship != false -%}<p class="ship-badge ship-badge--lg">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</p>{%- endif -%}
 {%- endif -%}
 {%- unless list -%}
 <ul class="bundle__items pdp__bundle-items" role="list">

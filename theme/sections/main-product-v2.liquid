@@ -294,31 +294,37 @@
         </div>
 
         <div class="pdp__buy v2-buy" id="PdpBuy-{{ section.id }}" data-v2-buy data-threshold="{{ threshold }}" data-cart-total="{{ cart.total_price }}" data-price="{{ variant.price }}">
-          <div class="v2-buy__top">
-            {%- render 'price', product: product, variant: variant, class: 'pdp__price' -%}
-            {%- if bdef == blank and mf.size != blank -%}
-              <p class="v2-buy__facts"><span class="u-ltr">{{ mf.size }}</span>{% if mf.when_to_use != blank %} · {{ mf.when_to_use }}{% endif %}</p>
-            {%- endif -%}
-            {%- comment -%} On a set page with options, the cards carry the saving and contents, so the summary isn't repeated. {%- endcomment -%}
-            {%- unless set_upgrade -%}{%- render 'pdp-bundle', part: 'info', handle: product.handle, variant: variant, list: set_v2 -%}{%- endunless -%}
-          </div>
+          {%- comment -%}
+            With option cards the price lives in the chosen card and on the button (the cards switch it), so no separate
+            price on top that would go stale when another option is picked (DECISIONS 230).
+          {%- endcomment -%}
+          {%- unless show_options or set_upgrade -%}
+            <div class="v2-buy__top">
+              {%- render 'price', product: product, variant: variant, class: 'pdp__price' -%}
+              {%- if bdef == blank and mf.size != blank -%}
+                <p class="v2-buy__facts"><span class="u-ltr">{{ mf.size }}</span>{% if mf.when_to_use != blank %} · {{ mf.when_to_use }}{% endif %}</p>
+              {%- endif -%}
+              {%- comment -%} Free delivery is said once, by the live line under the button. {%- endcomment -%}
+              {%- render 'pdp-bundle', part: 'info', handle: product.handle, variant: variant, list: set_v2, ship: false -%}
+            </div>
+          {%- endunless -%}
 
           {%- if show_options -%}
             <fieldset class="v2-opts" data-v2-options>
               <legend class="v2-opts__legend">{{ 'pdp2.options' | t }}</legend>
-              {%- render 'pdp2-option', handle: product.handle, checked: true, here: product -%}
+              {%- render 'pdp2-option', handle: product.handle, checked: true, here: product, base: variant.price -%}
               {%- for h in opt_handles -%}
-                {%- render 'pdp2-option', handle: h, checked: false, here: product -%}
+                {%- render 'pdp2-option', handle: h, checked: false, here: product, base: variant.price -%}
               {%- endfor -%}
               {%- if stock_handle != blank -%}
-                {%- render 'pdp2-option', handle: stock_handle, checked: false, here: product, compact: true -%}
+                {%- render 'pdp2-option', handle: stock_handle, checked: false, here: product, compact: true, base: variant.price -%}
               {%- endif -%}
             </fieldset>
           {%- elsif set_upgrade -%}
             <fieldset class="v2-opts" data-v2-options>
               <legend class="v2-opts__legend">{{ 'pdp2.options' | t }}</legend>
-              {%- render 'pdp2-option', handle: product.handle, checked: true, here: product -%}
-              {%- render 'pdp2-option', handle: 'the-full-ritual', checked: false, here: product, from_steps: set_steps_s, from_price: variant.price -%}
+              {%- render 'pdp2-option', handle: product.handle, checked: true, here: product, base: variant.price -%}
+              {%- render 'pdp2-option', handle: 'the-full-ritual', checked: false, here: product, from_steps: set_steps_s, from_price: variant.price, base: variant.price -%}
             </fieldset>
           {%- endif -%}
 

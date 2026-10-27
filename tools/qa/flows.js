@@ -122,12 +122,19 @@ for (const loc of ['', '/ar']) {
     ok(`${tag} set page shows the saving once, in the buy box`, /147/.test(await page.$eval('.v2-buy', (e) => e.textContent)) && (await page.$$('.bi__saved')).length === 0);
     ok(`${tag} set page has one finder link`, (await page.$$('.skc-link')).length === 1);
     ok(`${tag} set compare shows only each set's own packs`, (await page.$$eval('.s2-set', (l) => l.map((x) => x.querySelectorAll('.s2-set__pack').length).join(','))) === '4,3,3,2,2');
+    // buy box says each thing once (DECISIONS 230): free delivery only in the line under the button here
+    ok(`${tag} set page has no Ships free badge in the buy box`, (await page.$$('.v2-buy .ship-badge, .v2-buy .v2-opt__ship')).length === 0);
+    await page.goto(`${BASE}${loc}/products/the-clear-protect-trio`, { waitUntil: 'networkidle' });
+    ok(`${tag} set with options has no stale top price`, (await page.$$('.v2-buy .pdp__price')).length === 0 && (await page.$$('.v2-opt')).length === 2);
+    await page.locator('.v2-opt').nth(1).click();
+    ok(`${tag} picking the Full Ritual updates the button`, /1,699/.test(await page.locator('[data-v2-atc-label]').textContent()));
     ok(`${tag} set page has no empty FAQ rows`, (await page.$$eval('.faq summary', (l) => l.filter((x) => !x.textContent.trim()).length)) === 0);
     ok(`${tag} set page has no routine strip`, (await page.$$('.routine-strip')).length === 0);
     await page.goto(`${BASE}${loc}/products/clarity-serum`, { waitUntil: 'networkidle' });
     const faqN = await page.$$eval('.faq summary', (l) => l.length);
     // product.json FAQ (DECISIONS 182): 12 questions; the serum shows the 7 that aren't SPF-only or set-only
     ok(`${tag} serum FAQ skips SPF-only and set-only questions`, faqN === 7, `n=${faqN}`);
+    ok(`${tag} serum: only the cards that ship free when the serum doesn't say so`, (await page.$$eval('.v2-opt', (l) => l.map((x) => (x.querySelector('.v2-opt__ship') ? 1 : 0)).join(''))) === '0010');
     if (vp.isMobile) ok(`${tag} phone PDP shows the buy bar from the start`, await page.$eval('sticky-atc', (s) => s.classList.contains('is-visible')));
     await page.goto(`${BASE}${loc}/`, { waitUntil: 'networkidle' });
 
