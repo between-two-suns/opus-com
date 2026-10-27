@@ -973,9 +973,9 @@ html.has-open-dialog { overflow: hidden; }
 .card .card__price { font-size: 19px; }
 .card .card__quick { padding: 12px 20px 20px; }
 .card .card__add { min-block-size: 46px; font-size: 15px; }
-/* Demo only (?view=deep on the shop page, DECISIONS 241): each product's button in a deep shade of its own colour.
-   Remove with templates/collection.deep.json if not kept. */
-.template-collection--deep .card .card__add { --btn-bg: var(--sku-deep); --btn-bd: var(--sku-deep); }
+/* Demo only (?view=deep on the shop page, DECISIONS 241–242): each product's button in its own step colour with dark
+   text (6.8–7.9:1; white on these colours would be about 2:1). Remove with templates/collection.deep.json if not kept. */
+.template-collection--deep .card .card__add { --btn-bg: var(--sku); --btn-bd: var(--sku); --btn-fg: var(--c-ink); --glow: 0; }
 @media (max-width: 749px) {
   .product-grid .card .card__body { gap: 6px; padding: 12px 14px 0; }
   .product-grid .card .card__title { font-size: min(21px, 12.6cqi); }

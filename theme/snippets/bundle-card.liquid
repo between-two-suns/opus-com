@@ -48,8 +48,22 @@
     assign concerns = concerns | append: ' ' | append: comp_concerns
   endfor
   assign concerns = concerns | strip | split: ' ' | uniq | join: ' '
+  comment
+    The card's colour is the steps inside, in routine order (DECISIONS 242): The Full Ritual runs the whole spectrum,
+    The Night Ritual green to purple, a stock-up is its one colour. Same strength as a product card (26%).
+  endcomment
+  assign grad = ''
+  for st in uniq
+    assign grad = grad | append: 'color-mix(in srgb, var(--c-step-' | append: st | append: ') 26%, #fff)'
+    if uniq.size == 1
+      assign grad = grad | append: ', color-mix(in srgb, var(--c-step-' | append: st | append: ') 26%, #fff)'
+    endif
+    unless forloop.last
+      assign grad = grad | append: ', '
+    endunless
+  endfor
 -%}
-<{{ wrap }} class="bundle" data-count="{{ steps.size }}" data-concerns="{{ concerns | escape }}" data-handle="{{ product.handle }}" style="--a: var(--c-step-{{ first }}); --b: var(--c-step-{{ last }});">
+<{{ wrap }} class="bundle" data-count="{{ steps.size }}" data-concerns="{{ concerns | escape }}" data-handle="{{ product.handle }}" style="--a: var(--c-step-{{ first }}); --b: var(--c-step-{{ last }}); --g: {{ grad }};">
   <a class="bundle__stage bundle__stage--photo" href="{{ product.url }}" tabindex="-1" aria-hidden="true" data-cursor="{{ 'general.view' | t }}">
     <span class="bundle__glow"></span>
     {%- if badge != blank -%}
