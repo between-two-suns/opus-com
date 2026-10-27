@@ -173,6 +173,10 @@ for (const loc of ['', '/ar']) {
     await page.goto(`${BASE}${loc}/collections/all`, { waitUntil: 'networkidle' });
     const names = await page.$$eval('.product-grid .card', (l) => l.map((c) => { const t = c.querySelector('.card__title'); const lh = parseFloat(getComputedStyle(t).lineHeight); return { lines: Math.round(t.querySelector('a').getBoundingClientRect().height / lh), step: !!c.querySelector('.card__n') }; }));
     ok(`${tag} product names are two lines each, no step text`, names.length === 4 && names.every((n) => n.lines === 2 && !n.step), JSON.stringify(names));
+    // the set offer fits its card at every width: the button never runs off the edge (DECISIONS 246)
+    await page.goto(`${BASE}${loc}/blogs/journal/how-to-layer-a-four-step-routine`, { waitUntil: 'networkidle' });
+    ok(`${tag} set offer button inside its card`, await page.$$eval('.offer', (l) => l.length > 0 && l.every((o) => { const r = o.getBoundingClientRect(); const b = o.querySelector('.offer__buy .btn').getBoundingClientRect(); return b.left >= r.left - 1 && b.right <= r.right + 1; })));
+    await page.goto(`${BASE}${loc}/collections/all`, { waitUntil: 'networkidle' });
     // sets on the shop page run from the highest price to the lowest (DECISIONS 240)
     const shopPrices = await page.$$eval('.sets-rail .bundle__now', (l) => l.map((e) => +e.textContent.replace(/[^0-9]/g, '')));
     ok(`${tag} shop sets run highest price first`, shopPrices.length > 1 && shopPrices.every((x, i) => i === 0 || shopPrices[i - 1] >= x), shopPrices.join(','));

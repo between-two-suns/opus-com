@@ -1034,8 +1034,8 @@ img.set-visual { object-fit: cover; transition: scale 900ms var(--ease-out); }
 .offer-wrap { container: offer / inline-size; }
 .offer-wrap + .offer-wrap { margin-block-start: 12px; }
 .offer__visual { grid-area: visual; position: relative; display: block; aspect-ratio: 1; border-radius: 16px; overflow: hidden; align-self: start; }
-.offer__ship { position: absolute; z-index: 2; inset-block-start: 6px; inset-inline-start: 6px; padding: 3px 8px 3px 6px; gap: 4px; font-size: 11px; }
-.offer__ship .icon { inline-size: 13px; block-size: 13px; }
+.offer__ship { position: absolute; z-index: 2; inset-block-start: 6px; inset-inline-start: 6px; padding: 3px 8px 3px 6px; gap: 4px; font-size: 11px; white-space: nowrap; }
+.offer__ship .icon { display: none; } /* the small picture only fits the words, in Arabic too */
 .offer__head { grid-area: head; display: grid; align-content: center; gap: 6px; min-inline-size: 0; }
 .offer__eyebrow { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: color-mix(in srgb, var(--c-ink) 66%, transparent); }
 :lang(ar) .offer__eyebrow { letter-spacing: 0; text-transform: none; font-size: 12.5px; }
@@ -1046,19 +1046,22 @@ img.set-visual { object-fit: cover; transition: scale 900ms var(--ease-out); }
 .offer__items li { display: flex; align-items: center; gap: 8px; }
 .offer__items li.is-here { color: color-mix(in srgb, var(--c-ink) 62%, transparent); font-weight: 500; }
 .offer__here { font-size: 12px; }
-.offer__buy { grid-area: buy; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 14px; }
+.offer__buy { grid-area: buy; display: grid; align-items: center; }
 .offer__price { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; line-height: 1.2; }
 .offer__now { font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .offer__was { color: var(--c-muted); font-size: 13px; }
 .offer__price .bundle__save { font-size: 13px; }
-@container offer (max-width: 380px) { .offer__buy { grid-template-columns: minmax(0, 1fr); } }
-/* Wide: picture, then name over the products, then price and button. */
-@container offer (min-width: 620px) {
+/* Until the wide layout, the price line sits over a full-width button, as on the set cards: side by side, the long
+   price line squeezed the button off the card on wider phones (DECISIONS 246). */
+.offer__buy { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+/* Wide (from 760 px, so the product names never wrap in the middle column): picture, then name over the products, then price and button. */
+@container offer (min-width: 760px) {
   .offer { grid-template-columns: 180px minmax(0, 1fr) minmax(240px, auto); grid-template-areas: 'visual head buy' 'visual items buy'; align-items: center; padding: 14px; gap: 10px 22px; }
   .offer__head { align-self: end; }
   .offer__items { align-self: start; }
   .offer__visual { align-self: center; }
   .offer__ship { inset-block-start: 10px; inset-inline-start: 10px; padding: 5px 10px 5px 8px; font-size: 12px; }
+  .offer__ship .icon { display: inline-block; inline-size: 13px; block-size: 13px; }
   .offer__buy { grid-template-columns: 1fr; justify-items: stretch; gap: 10px; padding-inline-end: 6px; }
   .offer__price { justify-content: flex-end; }
   .offer__name { font-size: 32px; }
