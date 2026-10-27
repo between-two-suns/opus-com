@@ -699,8 +699,10 @@ const server = http.createServer(async (req, res) => {
     }
     if (req.method === 'POST' && pathname === '/contact') {
       const ft = new URLSearchParams(await readBody(req)).get('form_type');
-      const back = (req.headers.referer || '/').split('?')[0].split('#')[0];
-      res.writeHead(302, { Location: `${back}?${ft === 'contact' ? 'contact_posted' : 'customer_posted'}=true` });
+      // back to the page the form was on, keeping an alternate template (?view=…) so demos show their own thank-you
+      const ref = new URL(req.headers.referer || '/', 'http://localhost');
+      const view = ref.searchParams.get('view');
+      res.writeHead(302, { Location: `${ref.pathname}?${view ? `view=${encodeURIComponent(view)}&` : ''}${ft === 'contact' ? 'contact_posted' : 'customer_posted'}=true` });
       return res.end();
     }
 

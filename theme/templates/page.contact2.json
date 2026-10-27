@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "form": {
+      "type": "contact-v2",
+      "settings": {
+        "email": "hello@betweentwosuns.co"
+      }
+    }
+  },
+  "order": [
+    "form"
+  ]
+}

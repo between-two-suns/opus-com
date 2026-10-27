@@ -1,0 +1,183 @@
+{{ 'pages.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Contact, v2 demo (DECISIONS 232; /pages/contact?view=contact2). The form comes first: title, one line on how we
+  reply, then the form. The topic shapes the form (CSS :has, no script needed):
+  - My order: an optional order number, where to find it, and the delivery / returns / payment answers
+  - A product: which one (optional), and the skin-type answers
+  - My routine: the routine finder first, the form still below
+  - Creators: the form steps aside for the Creators page, which has its own application
+  Answers come from the same built-in FAQ copy and Theme settings as the FAQ section, so they always match.
+  Shopify's contact form: messages arrive in the store's contact email, labelled with the topic.
+{%- endcomment -%}
+{%- liquid
+  assign root = routes.root_url
+  if root == '/'
+    assign root = ''
+  endif
+  assign email = section.settings.email
+  assign topics = 'order,product,routine,creators,other' | split: ','
+  assign handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign thr = settings.free_shipping_threshold | default: 0 | times: 100
+  capture thr_m
+    render 'egp', cents: thr
+  endcapture
+  assign thr_m = thr_m | strip
+  if shop.refund_policy
+    assign returns_url = shop.refund_policy.url
+  else
+    assign returns_url = root | append: '/pages/returns'
+  endif
+-%}
+{%- capture qa_order -%}
+  {%- if settings.delivery_days_main != blank and settings.delivery_days_other != blank -%}
+    <details class="cx__qa"><summary>{{ 'faq.items.delivery_time.q' | t }}</summary><p>{{ 'faq.items.delivery_time.a' | t: main: settings.delivery_days_main, other: settings.delivery_days_other }}</p></details>
+  {%- endif -%}
+  {%- if thr > 0 -%}
+    <details class="cx__qa"><summary>{{ 'faq.items.delivery_free.q' | t }}</summary><p>{{ 'faq.items.delivery_free.a' | t: amount: thr_m }}</p></details>
+  {%- endif -%}
+  <details class="cx__qa"><summary>{{ 'faq.items.returns.q' | t }}</summary><p>{{ 'faq.items.returns.a' | t }} <a href="{{ returns_url }}">{{ 'faq.items.returns.link' | t }}</a>.</p></details>
+  {%- if settings.show_cod -%}
+    <details class="cx__qa"><summary>{{ 'faq.items.cod.q' | t }}</summary><p>{{ 'faq.items.cod.a' | t }}</p></details>
+  {%- else -%}
+    <details class="cx__qa"><summary>{{ 'faq.items.payment.q' | t }}</summary><p>{{ 'faq.items.payment.a' | t }}</p></details>
+  {%- endif -%}
+{%- endcapture -%}
+
+<section class="cx" aria-labelledby="CxTitle-{{ section.id }}">
+  <div class="container cx__grid">
+    <div class="cx__intro">
+      <p class="t-eyebrow">{{ 'page_presets.contact.eyebrow' | t }}</p>
+      <h1 class="t-display-l" id="CxTitle-{{ section.id }}">{{ 'contact2.title' | t }}</h1>
+      <p class="t-lead">{{ 'contact2.lede' | t }}</p>
+      <ul class="cx__facts" role="list">
+        {%- if email != blank -%}
+          <li class="cx__fact">{% render 'icon', name: 'mail', class: 'icon--sm' %}<span><a href="mailto:{{ email }}">{{ email }}</a></span></li>
+        {%- endif -%}
+        <li class="cx__fact">{% render 'icon', name: 'refresh', class: 'icon--sm' %}<span>{{ 'pages.contact.way_hours' | t }}</span></li>
+        <li class="cx__fact cx__fact--link">{% render 'icon', name: 'search', class: 'icon--sm' %}<a href="{{ root }}/pages/faq">{{ 'contact2.faq_link' | t }}</a></li>
+      </ul>
+    </div>
+
+    <div class="cx__card">
+      {%- form 'contact', id: 'ContactForm', class: 'cx__form', novalidate: 'novalidate' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="cx__done" role="status" tabindex="-1" data-cx-done>
+            <span class="ct__done-mark" aria-hidden="true"></span>
+            <p class="cx__done-title">{{ 'contact2.done_title' | t }}</p>
+            <p>{{ 'contact2.done_text' | t }}</p>
+            <div class="cx__done-links">
+              <a class="btn" href="{{ root }}/pages/sets">{{ 'contact2.done_shop' | t }}</a>
+              {%- render 'skin-check-link', key: 'contact2.done_finder' -%}
+            </div>
+          </div>
+        {%- else -%}
+          {%- if form.errors -%}
+            <div class="form-status form-status--error" role="alert" tabindex="-1" data-cx-errors>
+              <ul>
+                {%- for field in form.errors -%}
+                  <li><a href="#Cx-{{ field }}">{{ form.errors.translated_fields[field] | capitalize }}</a> {{ form.errors.messages[field] }}</li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          <fieldset class="cx__topics">
+            <legend class="cx__label">{{ 'pages.contact.topic' | t }}</legend>
+            <div class="cluster">
+              {%- for tp in topics -%}
+                {%- assign tk = 'pages.contact.topics.' | append: tp -%}
+                <label class="chip cx__chip"><input class="visually-hidden" type="radio" name="contact[Topic]" value="{{ tk | t | escape }}" data-topic="{{ tp }}"><span>{{ tk | t }}</span></label>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+
+          <div class="cx__panel" data-panel="order">
+            <div class="field">
+              <label for="Cx-order">{{ 'contact2.order_no' | t }}</label>
+              <input id="Cx-order" type="text" name="contact[Order number]" placeholder="#1001" autocomplete="off" dir="ltr" inputmode="text">
+              <p class="t-xs t-muted">{{ 'contact2.order_find' | t }}{%- if shop.customer_accounts_enabled -%}{{ ' ' }}<a href="{{ routes.account_url }}">{{ 'contact2.order_link' | t }}</a>{%- endif -%}</p>
+            </div>
+            <div class="cx__answers">
+              <p class="cx__label">{{ 'contact2.answers' | t }}</p>
+              {{ qa_order }}
+            </div>
+          </div>
+
+          <div class="cx__panel" data-panel="product">
+            <fieldset class="cx__topics">
+              <legend class="cx__label">{{ 'contact2.which' | t }}</legend>
+              <div class="cluster">
+                {%- for h in handles -%}
+                  {%- assign p = all_products[h] -%}
+                  {%- if p == blank -%}{%- continue -%}{%- endif -%}
+                  {%- assign sk = 'pdp2.short.' | append: forloop.index -%}
+                  <label class="chip cx__chip" data-step="{{ forloop.index }}"><input class="visually-hidden" type="radio" name="contact[Product]" value="{{ p.title | escape }}"><span class="dict__dot" aria-hidden="true"></span><span>{{ sk | t }}</span></label>
+                {%- endfor -%}
+              </div>
+            </fieldset>
+            <div class="cx__answers">
+              <p class="cx__label">{{ 'contact2.answers' | t }}</p>
+              <details class="cx__qa"><summary>{{ 'faq.items.skin_type.q' | t }}</summary><p>{{ 'faq.items.skin_type.a' | t }}</p></details>
+              <details class="cx__qa"><summary>{{ 'faq.items.sensitive.q' | t }}</summary><p>{{ 'faq.items.sensitive.a' | t }}</p></details>
+            </div>
+          </div>
+
+          <div class="cx__panel" data-panel="routine">
+            <p>{{ 'contact2.routine_text' | t }}</p>
+            {%- render 'skin-check-link', key: 'contact2.routine_cta' -%}
+            <div class="cx__answers">
+              <p class="cx__label">{{ 'contact2.answers' | t }}</p>
+              <details class="cx__qa"><summary>{{ 'faq.items.order.q' | t }}</summary><p>{{ 'faq.items.order.a' | t }}</p></details>
+              <details class="cx__qa"><summary>{{ 'faq.items.all_four.q' | t }}</summary><p>{{ 'faq.items.all_four.a' | t }}</p></details>
+            </div>
+          </div>
+
+          <div class="cx__panel cx__panel--creators" data-panel="creators">
+            <p>{{ 'contact2.creators_text' | t }}</p>
+            <a class="btn" href="{{ root }}/pages/creators#CreatorApply">{{ 'contact2.creators_cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          </div>
+
+          <div class="cx__fields">
+            <div class="cx__row">
+              <div class="field">
+                <label for="Cx-name">{{ 'pages.contact.name' | t }}</label>
+                <input id="Cx-name" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}">
+              </div>
+              <div class="field">
+                <label for="Cx-email">{{ 'pages.contact.email' | t }} <span class="t-muted">({{ 'pages.contact.required' | t }})</span></label>
+                <input id="Cx-email" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}"{% if form.errors contains 'email' %} aria-invalid="true"{% endif %}>
+              </div>
+            </div>
+            <div class="field">
+              <label for="Cx-phone">{{ 'pages.contact.phone' | t }}</label>
+              <input id="Cx-phone" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}" dir="ltr">
+            </div>
+            <div class="field">
+              <label for="Cx-body">{{ 'pages.contact.message' | t }}</label>
+              <textarea id="Cx-body" name="contact[body]" rows="5" placeholder="{{ 'pages.contact.message_ph' | t }}">{{ form.body }}</textarea>
+            </div>
+            <button type="submit" class="btn btn--full">{{ 'pages.contact.send' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+            <p class="t-xs t-muted">{{ 'pages.contact.note' | t }}</p>
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    const t = document.querySelector('[data-cx-done], [data-cx-errors]');
+    if (!t) return;
+    const go = () => { t.scrollIntoView({ block: 'center' }); t.focus({ preventScroll: true }); };
+    document.readyState === 'complete' ? go() : addEventListener('load', go, { once: true });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.contact.name",
+  "settings": [
+    { "type": "text", "id": "email", "label": "t:sections.contact.email", "default": "hello@betweentwosuns.co" }
+  ]
+}
+{% endschema %}

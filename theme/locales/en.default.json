@@ -1512,5 +1512,23 @@
     "questions_text": "Reply to the email we sent you when you were accepted. We’re happy to help.",
     "film_heading": "What to film",
     "film_text": "Real, simple formats work best. Film in natural light, show the products in your hands, and say what you really think."
+  },
+  "contact2": {
+    "title": "Talk to us",
+    "lede": "Pick a topic and write to us. We reply by email within one working day.",
+    "faq_link": "All questions and answers",
+    "order_no": "Order number (optional)",
+    "order_find": "It's in your order confirmation email.",
+    "order_link": "Or see your orders.",
+    "which": "Which product? (optional)",
+    "answers": "Quick answers",
+    "routine_text": "Not sure which steps you need? The routine finder suggests them for your skin. Or write to us below.",
+    "routine_cta": "Find your routine in 30 seconds",
+    "creators_text": "Creator applications have their own short form on the Creators page, so they reach the right person.",
+    "creators_cta": "Apply on the Creators page",
+    "done_title": "Thanks, we've got it.",
+    "done_text": "We'll reply by email within one working day (Sunday to Thursday, 9:00–18:00 Egypt time).",
+    "done_shop": "Shop the sets",
+    "done_finder": "Find your routine in 30 seconds"
   }
 }
