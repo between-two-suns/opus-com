@@ -482,6 +482,10 @@
 .glossary__ref[open] [data-closed] { display: none; }
 .glossary__ref[open] > summary .icon { rotate: 180deg; }
 .glossary__ref[open] > summary { margin-block-end: 24px; }
+/* Closed list: its content leaves the layout outright and the filter stops being sticky. Safari kept the long list's
+   height (and the stuck filter's position) after closing, leaving blank space below the footer (DECISIONS 231). */
+.glossary__ref:not([open]) > :not(summary) { display: none; }
+@media (min-width: 990px) { .glossary__ref:not([open]) .dict__filter { position: static; } }
 .ibn__chip { white-space: nowrap; }
 
 /* ---------- Contact ---------- */

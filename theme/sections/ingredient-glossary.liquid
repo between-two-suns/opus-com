@@ -188,6 +188,15 @@
     }
   }
   if (!customElements.get('ingredient-filter')) customElements.define('ingredient-filter', IngredientFilter);
+  // Closing the long list from further down brings you back to its button instead of leaving you past the page's end
+  // (the page gets far shorter); it also makes Safari re-measure the page (DECISIONS 231).
+  document.querySelectorAll('.glossary__ref').forEach((ref) => {
+    ref.addEventListener('toggle', () => {
+      if (ref.open) return;
+      const btn = ref.querySelector('summary');
+      if (btn.getBoundingClientRect().top < 0) btn.scrollIntoView({ block: 'center' });
+    });
+  });
 </script>
 
 {% schema %}
