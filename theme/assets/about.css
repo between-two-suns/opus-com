@@ -123,7 +123,8 @@
 
 /* ---------- One rhythm: every middle section has the same gap above it, none below (DECISIONS 202) ---------- */
 .ab-rt, .ab-made, .ab-founder, .ab-rules { padding-block: var(--section-y) 0; }
-.ab-rules { padding-block-end: 0; } /* the close brings its own top gap */
+/* DECISIONS 243: the list's last rule line needs a full gap before the closing band (it sat right on it) */
+.ab-rules { padding-block-end: var(--section-y); }
 
 
 /* ---------- 2 · The routine: four packs on one shelf (DECISIONS 204: the day/night switch lives on the Routines page) ---------- */
@@ -132,8 +133,8 @@
   position: relative; color: var(--ink);
 }
 .ab-rt__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px 48px; margin-block-end: clamp(36px, 5vw, 72px); }
-.ab-rt__intro .t-display-m { margin-block-start: 12px; }
-.ab-rt__lede { margin: 16px 0 0; max-inline-size: 46ch; color: var(--muted); }
+.ab-rt__intro .t-display-m { margin-block-start: 7px; }
+.ab-rt__lede { margin: var(--stack) 0 0; max-inline-size: 46ch; color: var(--muted); }
 .ab-rt__steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 2.4vw, 36px); list-style: none; margin: 0; padding: 0; }
 .ab-rt__step { --c: var(--c-step-1); transition: opacity .5s var(--ease-out); }
 .ab-rt__step[data-step='2'] { --c: var(--c-step-2); }
@@ -169,8 +170,8 @@
 .ab-made__grid { display: grid; gap: clamp(28px, 5vw, 80px); align-items: start; }
 .ab-made__media { margin: 0; border-radius: var(--radius-l); overflow: hidden; aspect-ratio: 1 / 1; background: #e9dccd; }
 .ab-made__media img { inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 50% 55%; }
-.ab-made__copy .t-display-m { margin-block: 12px 0; }
-.ab-made__text { margin-block: 18px 0; max-inline-size: 38ch; }
+.ab-made__copy .t-display-m { margin-block: 7px 0; }
+.ab-made__text { margin-block: var(--stack) 0; max-inline-size: 38ch; }
 .ab-made__facts { margin: clamp(24px, 3vw, 36px) 0 clamp(22px, 2.6vw, 32px); }
 .ab-made__fact { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 4px 20px; align-items: baseline; padding-block: 14px; border-block-start: 1px solid var(--c-line-strong); }
 .ab-made__fact:last-child { border-block-end: 1px solid var(--c-line-strong); }
@@ -200,7 +201,7 @@
 
 /* ---------- 5 · What we won't do: a short manifesto on the page's ivory ---------- */
 .ab-rules__head { max-inline-size: 30ch; margin-block-end: clamp(28px, 4vw, 56px); }
-.ab-rules__head .t-display-m { margin-block-start: 12px; }
+.ab-rules__head .t-display-m { margin-block-start: 7px; }
 .ab-rules__list { list-style: none; margin: 0; padding: 0; display: grid; }
 .ab-rules__item {
   --rc: var(--c-step-1);

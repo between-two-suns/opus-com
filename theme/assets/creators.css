@@ -6,10 +6,10 @@
 .cr-hero { position: relative; isolation: isolate; overflow: clip; background: radial-gradient(120% 90% at 85% 10%, color-mix(in srgb, var(--c-step-4) 30%, transparent), transparent 60%), radial-gradient(90% 80% at 0% 100%, color-mix(in srgb, var(--c-step-2) 26%, transparent), transparent 65%), #f7f2ea; }
 .cr-hero__mark { position: absolute; z-index: -1; inset-inline-end: -12vmax; inset-block-start: 6%; inline-size: 62vmax; block-size: 66vmax; background: #fff; opacity: .55; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; pointer-events: none; }
 .cr-hero__inner { display: grid; gap: clamp(32px, 6vw, 64px); align-items: center; padding-block: clamp(40px, 7vw, 112px) clamp(48px, 7vw, 112px); }
-.cr-hero__copy { display: grid; gap: 18px; justify-items: start; max-inline-size: 620px; }
+.cr-hero__copy { display: grid; gap: var(--stack); justify-items: start; max-inline-size: 620px; }
 .cr-hero__title { margin: 0; }
 .cr-hero__copy .t-lead { margin: 0; }
-.cr-hero__ctas { --cluster-gap: 14px 24px; margin-block-start: 6px; }
+.cr-hero__ctas { --cluster-gap: 14px 24px; margin-block-start: 10px; }
 @media (min-width: 990px) { .cr-hero__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); } }
 
 /* Reels: phone-shaped frames built from the real cutouts */
@@ -60,7 +60,9 @@
 .cr-hero__mark { background: var(--c-step-2-tint); opacity: .5; }
 
 /* the page's sections sit closer together than the site default */
-.creators .section, .cr-apply.section { padding-block: calc(var(--section-y) * .6); }
+.creators .section { padding-block: calc(var(--section-y) * .6); }
+/* After the page's last block (.6 below it) the application adds .4: one full section gap, and a full one before the FAQ (DECISIONS 243) */
+.cr-apply.section { padding-block: calc(var(--section-y) * .4) var(--section-y); }
 .creators .cr-how { padding-block-start: calc(var(--section-y) * .45); }
 
 /* ---------- How it works: one timeline (DECISIONS 224). Ink and ivory only: product colours mean products on this site ---------- */
@@ -123,7 +125,8 @@
 /* ---------- Application ---------- */
 .cr-apply__inner { display: grid; gap: clamp(24px, 4vw, 56px); }
 @media (min-width: 990px) { .cr-apply__inner { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: start; } .cr-apply__aside { position: sticky; inset-block-start: 110px; } }
-.cr-apply__aside { display: grid; gap: 16px; }
+.cr-apply__aside { display: grid; gap: var(--stack); }
+.cr-apply__aside > .cr-who { margin-block-start: 10px; }
 .cr-apply__aside > * { margin: 0; }
 .cr-who { display: grid; gap: 10px; }
 .cr-who__title { margin: 0; font-size: 15px; font-weight: 700; }

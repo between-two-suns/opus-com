@@ -80,7 +80,7 @@
 .glossary__jump { margin-block-end: clamp(28px, 4vw, 48px); }
 .glossary__jump .cluster { gap: 8px; }
 #key-ingredients, #all-ingredients, #full-lists { scroll-margin-top: calc(var(--header-h) + 16px); }
-.glossary__head { display: grid; gap: 16px; max-inline-size: 720px; margin-block-end: clamp(20px, 3vw, 32px); }
+.glossary__head { display: grid; gap: var(--stack); max-inline-size: 720px; margin-block-end: clamp(20px, 3vw, 32px); }
 .glossary__inci-all { margin-block-start: clamp(56px, 8vw, 112px); display: grid; gap: 12px; }
 
 /* Every ingredient, A–Z */
@@ -131,7 +131,7 @@
 
 /* Scan landing (DECISIONS 226): four packs to tap, then that pack's card */
 .scan { padding-block: clamp(24px, 5vw, 72px) var(--section-y); }
-.scan__head { display: grid; gap: 10px; margin-block-end: clamp(20px, 3vw, 36px); max-inline-size: 760px; }
+.scan__head { display: grid; gap: var(--stack); margin-block-end: clamp(20px, 3vw, 36px); max-inline-size: 760px; }
 .scan .scan__picks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 1.4vw, 18px); margin: 0; padding: 0; list-style: none; }
 .scan__pick { position: relative; display: grid; justify-items: center; gap: 4px; padding: 14px 6px 12px; border-radius: var(--radius-l); background: var(--sku-tint); color: inherit; text-decoration: none; text-align: center; transition: box-shadow .25s, scale .2s, opacity .3s; }
 .scan__pick:active { scale: .97; }
@@ -337,6 +337,8 @@
 .page-hero .suns { display: none; }
 .page-hero__inner { justify-items: stretch; gap: clamp(20px, 3vw, 40px); padding-block: clamp(32px, 6vw, 88px) clamp(28px, 4vw, 56px); }
 .page-hero__copy { display: grid; gap: 14px; justify-items: start; max-inline-size: 760px; }
+/* Heroes without the copy wrapper (shop, journal) stack the same way: 14 px between eyebrow, title and text (DECISIONS 243) */
+.page-hero__inner:not(:has(> .page-hero__copy)) { gap: 14px; }
 .page-hero__media { border-radius: var(--radius-l); overflow: hidden; aspect-ratio: 4 / 3; background: var(--c-paper); }
 .page-hero__media img { inline-size: 100%; block-size: 100%; object-fit: cover; }
 @media (min-width: 990px) {
@@ -372,7 +374,7 @@
 .cst { display: block; position: relative; }
 .cst__intro { position: relative; padding-block: clamp(28px, 5vw, 72px) clamp(36px, 5vw, 72px); }
 .cst__intro-inner { display: grid; gap: clamp(28px, 4vw, 56px); align-items: end; }
-.cst__intro-copy { display: grid; gap: 16px; justify-items: start; }
+.cst__intro-copy { display: grid; gap: var(--stack); justify-items: start; }
 .cst__title { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(48px, 7.2vw, 112px); line-height: .96; letter-spacing: -.01em; max-inline-size: 11ch; text-wrap: balance; }
 :lang(ar) .cst__title { text-transform: none; font-size: clamp(40px, 5.6vw, 84px); line-height: 1.2; letter-spacing: 0; }
 .cst__lede { max-inline-size: 44ch; }
@@ -456,6 +458,7 @@
 .ibn__chip:hover { background: var(--sku-tint); }
 .ibn__ch { display: grid; gap: clamp(20px, 3vw, 48px); align-items: center; padding-block: clamp(28px, 5vw, 72px); scroll-margin-block-start: calc(var(--header-h) + 90px); }
 .ibn__ch + .ibn__ch { border-block-start: 1px solid var(--c-line); }
+.ibn__ch:last-of-type { padding-block-end: 0; } /* the section's own gap follows (DECISIONS 243) */
 .ibn__media { position: relative; aspect-ratio: 4 / 3; border-radius: var(--radius-l); overflow: hidden; background: var(--sku-tint); }
 .ibn__tex { inline-size: 100%; block-size: 100%; object-fit: cover; }
 .ibn__pack { position: absolute; inset-block-end: 14px; inset-inline-end: 14px; inline-size: clamp(84px, 11vw, 140px); aspect-ratio: 1; border-radius: 18px; overflow: hidden; box-shadow: 0 16px 30px -16px rgba(32, 35, 58, .5); border: 3px solid #fff; }
@@ -562,7 +565,7 @@
 /* Contact v2 demo (DECISIONS 232): the form first; the topic shapes the form */
 .cx { padding-block: clamp(24px, 5vw, 72px) var(--section-y); }
 .cx__grid { display: grid; gap: clamp(24px, 4vw, 40px); }
-.cx__intro { display: grid; gap: 12px; align-content: start; max-inline-size: 560px; }
+.cx__intro { display: grid; gap: var(--stack); align-content: start; max-inline-size: 560px; }
 .cx .cx__facts { display: grid; gap: 10px; margin: 6px 0 0; padding: 0; list-style: none; }
 .cx__fact { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; line-height: 1.45; }
 .cx__fact .icon { flex: none; margin-block-start: 3px; }

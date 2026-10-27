@@ -30,6 +30,8 @@
   --gutter: clamp(16px, 4.2vw, 56px);
   --container: 1440px;
   --section-y: clamp(64px, 9vw, 144px);
+  /* DECISIONS 243: one gap inside every heading stack (eyebrow → title → text) */
+  --stack: 14px;
   --radius-s: 10px;
   --radius-m: 18px;
   --radius-l: 28px;
@@ -514,7 +516,7 @@ html.has-open-dialog { overflow: hidden; }
 
 /* ---------- Section heads ---------- */
 .section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 32px; margin-block-end: clamp(28px, 4vw, 56px); }
-.section-head__text { display: grid; gap: 14px; max-inline-size: 820px; }
+.section-head__text { display: grid; gap: var(--stack); max-inline-size: 820px; }
 
 /* ---------- Footer ---------- */
 .site-footer {
@@ -655,7 +657,7 @@ html.has-open-dialog { overflow: hidden; }
 
 /* FAQ (used on PDPs and content pages, so it lives in base) */
 .faq__inner { display: grid; gap: 28px; }
-.faq__head { display: grid; gap: 12px; align-content: start; }
+.faq__head { display: grid; gap: var(--stack); align-content: start; }
 .faq__head a { font-weight: 650; }
 @media (min-width: 990px) {
   .faq__inner { grid-template-columns: 1fr 1.6fr; gap: 64px; }
@@ -973,9 +975,8 @@ html.has-open-dialog { overflow: hidden; }
 .card .card__price { font-size: 19px; }
 .card .card__quick { padding: 12px 20px 20px; }
 .card .card__add { min-block-size: 46px; font-size: 15px; }
-/* Demo only (?view=deep on the shop page, DECISIONS 241–242): each product's button in its own step colour with dark
-   text (6.8–7.9:1; white on these colours would be about 2:1). Remove with templates/collection.deep.json if not kept. */
-.template-collection--deep .card .card__add { --btn-bg: var(--sku); --btn-bd: var(--sku); --btn-fg: var(--c-ink); --glow: 0; }
+/* Each product's button in its own step colour with dark text (DECISIONS 242–243: 6.8–7.9:1; white would be about 2:1) */
+.card:is([data-step='1'], [data-step='2'], [data-step='3'], [data-step='4']) .card__add { --btn-bg: var(--sku); --btn-bd: var(--sku); --btn-fg: var(--c-ink); --glow: 0; }
 @media (max-width: 749px) {
   .product-grid .card .card__body { gap: 6px; padding: 12px 14px 0; }
   .product-grid .card .card__title { font-size: min(21px, 12.6cqi); }
@@ -1334,8 +1335,16 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 /* Home: neighbouring sections share one gap. Each .section pads top and bottom, so two in a row stacked to a double gap
    (sets → climate → ingredients) while sections next to the full-bleed photo band had a single one. An empty section
    in between (the reviews carousel before it has reviews) is skipped over. */
-.template-index .shopify-section:has(> .section) + .shopify-section > .section,
-.template-index .shopify-section:has(> .section) + .shopify-section:not(:has(> *)) + .shopify-section > .section { padding-block-start: 0; }
+/* DECISIONS 243: the same on every page. A plain section after a plain section drops its top padding, skipping empty
+   sections (a reviews block with no reviews yet). Colour bands keep theirs: their padding is inside the band. About keeps
+   its own model (a gap above each section, none below). */
+main > .shopify-section:has(> .section:not(.v2-ben, .routine-strip)) + .shopify-section > .section:not(.v2-ben, .routine-strip, .ab-rt, .ab-made, .ab-founder, .ab-rules),
+main > .shopify-section:has(> .section:not(.v2-ben, .routine-strip)) + .shopify-section:not(:has(> *)) + .shopify-section > .section:not(.v2-ben, .routine-strip, .ab-rt, .ab-made, .ab-founder, .ab-rules),
+main > .shopify-section:has(> .section:not(.v2-ben, .routine-strip)) + .shopify-section:not(:has(> *)) + .shopify-section:not(:has(> *)) + .shopify-section > .section:not(.v2-ben, .routine-strip, .ab-rt, .ab-made, .ab-founder, .ab-rules),
+main > .shopify-section:has(> .section:not(.v2-ben, .routine-strip)) + .shopify-section:not(:has(> *)) + .shopify-section:not(:has(> *)) + .shopify-section:not(:has(> *)) + .shopify-section > .section:not(.v2-ben, .routine-strip, .ab-rt, .ab-made, .ab-founder, .ab-rules) { padding-block-start: 0; }
+/* Sections that end with their own gap: the next one adds only what makes one section gap in total. */
+.shopify-section:has(> .cst) + .shopify-section > .section { padding-block-start: 0; }
+.shopify-section:has(> .article) + .shopify-section > .section { padding-block-start: calc(var(--section-y) * .45); }
 /* On phones the photo band ends with its own section gap, so the FAQ after it drops its top one. */
 @media (max-width: 749px) { .template-index .shopify-section:has(> .eb) + .shopify-section > .section { padding-block-start: 0; } }
 
