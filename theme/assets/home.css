@@ -625,39 +625,3 @@ climate-switch[data-active='sun'] .cs__badge[data-fx='sun'], climate-switch[data
 @media (min-width: 990px) { :lang(ar) .hp__title { font-size: min(5.6vw, 10svh, 92px); line-height: 1.3; } }
 @media (min-width: 750px) and (max-width: 989px) { :lang(ar) .hp__title { font-size: clamp(48px, 8vw, 80px); line-height: 1.25; } }
 
-/* ---------- Editorial band, "sun" style: the closing moment of the day (DECISIONS 234) ---------- */
-/* Text up on the bright wall, the sun low on the other side of the eye's path, setting into the page's dusk below. */
-.eb--sun { min-block-size: max(100svh, 640px); align-items: stretch; }
-.eb--sun .eb__media { overflow: hidden; }
-.eb--sun .eb__img { scale: 1.12; object-position: 30% 50%; }
-.eb--sun .eb__fade { position: absolute; inset: auto 0 0; z-index: 0; block-size: 34%; pointer-events: none;
-  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--tone, var(--c-daylight)) 60%, transparent) 60%, var(--tone, var(--c-daylight))); }
-.eb--sun .eb__sun { position: absolute; z-index: 0; inset-inline-start: 18%; inset-block-end: 0; inline-size: min(110vw, 1100px); aspect-ratio: 1; translate: -50% 55%; pointer-events: none;
-  background: radial-gradient(closest-side, rgb(255 226 186 / .95), rgb(255 196 150 / .55) 38%, rgb(250 170 140 / .18) 64%, transparent); mix-blend-mode: screen; }
-[dir='rtl'] .eb--sun .eb__sun { translate: 50% 55%; }
-.eb--sun .eb__inner { position: relative; z-index: 1; align-items: start; padding-block: calc(var(--header-h) + clamp(28px, 5vw, 72px)) var(--gutter); }
-.eb--sun .eb__text { display: grid; gap: 14px; justify-items: start; max-inline-size: 600px; }
-.eb--sun .eb__text .t-lead { margin: 0; max-inline-size: 42ch; }
-.eb--sun .eb__text h2 { margin: 0; }
-@media (min-width: 990px) {
-  .eb--sun .eb__inner { justify-items: end; }
-  .eb--sun .eb__text { max-inline-size: 560px; }
-}
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .eb--sun .eb__img { animation: eb-drift linear both; animation-timeline: view(); animation-range: cover; }
-    .eb--sun .eb__sun { animation: eb-set linear both; animation-timeline: view(); animation-range: cover 20% cover 100%; }
-    [dir='rtl'] .eb--sun .eb__sun { animation-name: eb-set-rtl; }
-  }
-}
-@media (max-width: 749px) {
-  .eb--sun { min-block-size: max(100svh, 620px); }
-  .eb--sun .eb__media { position: absolute; aspect-ratio: auto; }
-  .eb--sun .eb__img { object-position: 31% 18%; }
-  .eb--sun .eb__fade { block-size: 62%; }
-  .eb--sun .eb__inner { margin-block-start: 0; align-items: end; padding-block: var(--section-y) clamp(40px, 10vw, 64px); }
-  .eb--sun .eb__sun { inset-inline-start: 70%; inline-size: 150vw; }
-}
-@keyframes eb-drift { from { translate: 0 -5%; } to { translate: 0 5%; } }
-@keyframes eb-set { from { translate: -50% 40%; } to { translate: -50% 78%; } }
-@keyframes eb-set-rtl { from { translate: 50% 40%; } to { translate: 50% 78%; } }
