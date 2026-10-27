@@ -958,13 +958,13 @@
       "serum-stock-up": "Serum Stock-Up"
     },
     "desc": {
-      "the-clear-protect-trio": "Cleanse, clarity, defense. Three steps to start with.",
-      "the-full-ritual": "All four steps, in order.",
-      "clear-protect-duo": "Clarity Serum plus daily SPF.",
-      "the-night-ritual": "Cleanse, clarity, barrier. SPF waits for the morning.",
-      "the-core-duo": "The first two steps: cleanse, then clarity.",
-      "spf-stock-up": "Two tubes of SPF 50+, for every morning.",
-      "serum-stock-up": "Two bottles of Clarity Serum."
+      "the-clear-protect-trio": "Leaves skin fresh and even, finished with SPF 50+.",
+      "the-full-ritual": "Controls oil, evens tone, protects with SPF 50+.",
+      "clear-protect-duo": "Evens tone and protects it with SPF 50+.",
+      "the-night-ritual": "Controls oil and strengthens your skin barrier.",
+      "the-core-duo": "Removes oil, then keeps it under control.",
+      "spf-stock-up": "Invisible, lightweight SPF 50+, with a spare.",
+      "serum-stock-up": "Controls oil and evens tone, with a spare."
     },
     "badges": {
       "bts_pick": "BTS Pick",

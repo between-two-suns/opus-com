@@ -345,14 +345,18 @@
 }
 
 /* v3 shop: four products, then a sets rail. */
-.collection__sets { margin-block-start: clamp(56px, 8vw, 112px); }
+.collection__sets { margin-block-start: var(--section-y); }
+/* DECISIONS 240: one rhythm down the shop page. Products, sets, the finder card and the FAQs are each one section gap
+   apart (the FAQ section brings its own); the hero's bottom padding is the only space above the filter. */
+.collection > .section--tight { padding-block: 0; }
+@media (max-width: 749px) { .collection > .section--tight { padding-block-start: 24px; } }
 .sets-rail {
   display: grid; grid-auto-flow: column; grid-auto-columns: min(82vw, 360px); gap: 14px;
   overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
   margin-inline: calc(var(--gutter) * -1); padding: 4px var(--gutter) 12px; scrollbar-width: thin;
 }
 .sets-rail > .bundle { scroll-snap-align: start; }
-.collection__cta { margin-block-start: clamp(40px, 6vw, 72px); }
+.collection__cta { margin-block-start: var(--section-y); }
 @media (min-width: 1100px) { .sets-rail { grid-auto-columns: calc((100% - 3 * 14px) / 3.4); } }
 .sets-rail > .bundle { grid-column: auto !important; }
 .sets-rail .bundle__stage { aspect-ratio: 4 / 3 !important; }

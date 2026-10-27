@@ -173,6 +173,12 @@ for (const loc of ['', '/ar']) {
     await page.goto(`${BASE}${loc}/collections/all`, { waitUntil: 'networkidle' });
     const names = await page.$$eval('.product-grid .card', (l) => l.map((c) => { const t = c.querySelector('.card__title'); const lh = parseFloat(getComputedStyle(t).lineHeight); return { lines: Math.round(t.querySelector('a').getBoundingClientRect().height / lh), step: !!c.querySelector('.card__n') }; }));
     ok(`${tag} product names are two lines each, no step text`, names.length === 4 && names.every((n) => n.lines === 2 && !n.step), JSON.stringify(names));
+    // sets on the shop page run from the highest price to the lowest (DECISIONS 240)
+    const shopPrices = await page.$$eval('.sets-rail .bundle__now', (l) => l.map((e) => +e.textContent.replace(/[^0-9]/g, '')));
+    ok(`${tag} shop sets run highest price first`, shopPrices.length > 1 && shopPrices.every((x, i) => i === 0 || shopPrices[i - 1] >= x), shopPrices.join(','));
+    await page.goto(`${BASE}${loc}/pages/sets`, { waitUntil: 'networkidle' });
+    const setPrices = await page.$$eval('.bundles__grid .bundle__now', (l) => l.map((e) => +e.textContent.replace(/[^0-9]/g, '')));
+    ok(`${tag} Sets page runs highest price first`, setPrices.length === 5 && setPrices.every((x, i) => i === 0 || setPrices[i - 1] >= x), setPrices.join(','));
 
     // Language switch round trip
     if (vp.width > 1000) {

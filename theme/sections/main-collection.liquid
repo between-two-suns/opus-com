@@ -47,9 +47,10 @@
           {%- endfor -%}
         </ul>
 
-        {%- comment -%} Sets live in their own rail under the four products, never mixed into the grid. {%- endcomment -%}
+        {%- comment -%} Sets live in their own rail under the four products, never mixed into the grid; highest price first (DECISIONS 240). {%- endcomment -%}
+        {%- assign sets_by_price = collection.products | sort: 'price' | reverse -%}
         {%- capture sets_html -%}
-          {%- for product in collection.products -%}
+          {%- for product in sets_by_price -%}
             {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
             {%- assign step = step | strip | plus: 0 -%}
             {%- if step == 0 -%}

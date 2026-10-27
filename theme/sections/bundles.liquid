@@ -33,17 +33,31 @@
       <h2 class="visually-hidden" id="BundlesTitle-{{ section.id }}">{{ heading | escape }}</h2>
     {%- endunless -%}
 
-    <ul class="bundles__grid" role="list" data-n="{{ section.blocks.size }}">
-      {%- for block in section.blocks -%}
-        {%- if block.settings.product != blank -%}
-          {%- liquid
-            assign bc_first = false
-            if forloop.first and section.index <= 2
-              assign bc_first = true
-            endif
-          -%}
-          {%- render 'bundle-card', product: block.settings.product, priority: bc_first -%}
-        {%- endif -%}
+    {%- comment -%}
+      Highest price first, whatever order the blocks are in (DECISIONS 240): each set becomes "price|handle" with the
+      price padded to 10 digits, so a plain text sort is a price sort.
+    {%- endcomment -%}
+    {%- liquid
+      assign bc_keys = ''
+      for block in section.blocks
+        if block.settings.product != blank
+          assign bc_p = block.settings.product.price | plus: 10000000000 | append: ''
+          assign bc_keys = bc_keys | append: bc_p | append: '|' | append: block.settings.product.handle | append: ','
+        endif
+      endfor
+      assign bc_keys = bc_keys | split: ',' | sort | reverse
+    -%}
+    <ul class="bundles__grid" role="list" data-n="{{ bc_keys.size }}">
+      {%- for k in bc_keys -%}
+        {%- liquid
+          assign bc_handle = k | split: '|' | last
+          assign bc_product = all_products[bc_handle]
+          assign bc_first = false
+          if forloop.first and section.index <= 2
+            assign bc_first = true
+          endif
+        -%}
+        {%- if bc_product.id -%}{%- render 'bundle-card', product: bc_product, priority: bc_first -%}{%- endif -%}
       {%- endfor -%}
     </ul>
   </div>
