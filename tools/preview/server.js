@@ -548,7 +548,10 @@ function route(pathname, data, query) {
   if ((m = pathname.match(/^\/collections\/([^/]+)$/))) {
     const collection = data.collections[m[1]];
     if (!collection) return null;
-    return { page_type: 'collection', path: pathname, page_title: collection.title, objects: { collection } };
+    // ?view=x renders templates/collection.x.json when it exists (alternate templates, as on Shopify)
+    const cv = query?.get?.('view') || (query && query.view) || null;
+    const csuffix = cv && fs.existsSync(path.join(THEME, 'templates', `collection.${cv}.json`)) ? cv : null;
+    return { page_type: 'collection', path: pathname, page_title: collection.title, objects: { collection }, suffix: csuffix };
   }
   if (pathname === '/collections') return { page_type: 'list-collections', path: pathname, page_title: 'Collections' };
   if ((m = pathname.match(/^\/pages\/([^/]+)$/))) {

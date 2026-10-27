@@ -973,6 +973,9 @@ html.has-open-dialog { overflow: hidden; }
 .card .card__price { font-size: 19px; }
 .card .card__quick { padding: 12px 20px 20px; }
 .card .card__add { min-block-size: 46px; font-size: 15px; }
+/* Demo only (?view=deep on the shop page, DECISIONS 241): each product's button in a deep shade of its own colour.
+   Remove with templates/collection.deep.json if not kept. */
+.template-collection--deep .card .card__add { --btn-bg: var(--sku-deep); --btn-bd: var(--sku-deep); }
 @media (max-width: 749px) {
   .product-grid .card .card__body { gap: 6px; padding: 12px 14px 0; }
   .product-grid .card .card__title { font-size: min(21px, 12.6cqi); }
@@ -1312,6 +1315,9 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 /* Link to the skin check (sets, product pages): a quiet pill, not a second buy button */
 .skc-link { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border-radius: 99px; background: color-mix(in srgb, var(--c-step-2) 22%, #fff); color: var(--c-ink); font-size: 14px; font-weight: 650; text-decoration: none; transition: background var(--dur) var(--ease-out); }
 .skc-link:hover { background: color-mix(in srgb, var(--c-step-2) 36%, #fff); }
+/* Short lines break evenly, never leaving one word alone (DECISIONS 241) */
+.card__benefit, .bundle__desc { text-wrap: pretty; }
+.skc-link { text-wrap: balance; }
 .skc-link__ico { display: grid; place-items: center; inline-size: 28px; block-size: 28px; border-radius: 99px; background: var(--c-step-2); }
 .pdp__skc { margin-block-start: 4px; }
 
