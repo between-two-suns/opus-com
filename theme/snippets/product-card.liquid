@@ -73,12 +73,24 @@
     {%- endif -%}
   </div>
   <div class="card__body">
-    {%- comment -%} Same card as the sets (DECISIONS 238): the step opens the description line instead of a label above the name {%- endcomment -%}
+    {%- comment -%}
+      Same card as the sets (DECISIONS 238). Every name sits on two lines so a row lines up (DECISIONS 239): where to
+      break is set per language in product.card_lines.<handle> ("Daily|Reset Cleanser"); other products show the title.
+      The step is the big number on the photo, so the line under the name is the benefit only.
+    {%- endcomment -%}
+    {%- liquid
+      assign cl_key = 'product.card_lines.' | append: product.handle
+      assign cl = cl_key | t
+      if cl contains 'ranslation missing' or cl == cl_key
+        assign cl = product.title
+      endif
+      assign cl = cl | split: '|'
+    -%}
     <{{ heading_tag }} class="card__title" id="CardTitle-{{ uid }}">
-      <a href="{{ product.url }}">{{ product.title | escape }}</a>
+      <a href="{{ product.url }}">{% for line in cl %}<span class="card__line">{{ line | strip | escape }}</span>{% unless forloop.last %} {% endunless %}{% endfor %}</a>
     </{{ heading_tag }}>
-    {%- if step > 0 or product.metafields.bts.benefit != blank -%}
-      <p class="card__benefit">{%- if step > 0 -%}<span class="card__n">{{ 'product.step' | t: number: step }}</span>{%- if product.metafields.bts.benefit != blank %} · {% endif -%}{%- endif -%}{{ product.metafields.bts.benefit }}</p>
+    {%- if product.metafields.bts.benefit != blank -%}
+      <p class="card__benefit">{{ product.metafields.bts.benefit }}</p>
     {%- endif -%}
     <div class="card__meta">
       <span>

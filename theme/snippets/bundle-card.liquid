@@ -1,10 +1,10 @@
 {%- comment -%}
   One fixed-price bundle (Pricing & Offers spec). Price and compare-at come from the Shopify bundle product
-  (compare-at = the singles total, a real price). Saving wording: "Save EGP X vs buying separately",
-  plus "Ships free" only when the price reaches the free-delivery threshold set in Theme settings → Offers.
+  (compare-at = the singles total, a real price). The saving sits on the price line
+  ("Save EGP X") and "Ships free" is a pill on the photo, only when the price reaches the free-delivery threshold set
+  in Theme settings → Offers (DECISIONS 239: a shorter card).
   Params: product (bundle product), tag ('li' default), heading_tag ('h3'), priority (first card near the top of a page),
-  image (a photo to use instead of the set's own, e.g. the home page's evening shot), here (true on the set's own page:
-  marked "You're here" and no add button, the buy box above already has it).
+  image (a photo to use instead of the set's own, e.g. the home page's evening shot).
   One card style for everything sold (DECISIONS 238): the step count opens the description line ("3 steps · …")
   instead of a separate label above the name; single products use the same look (snippets/product-card).
 {%- endcomment -%}
@@ -49,15 +49,14 @@
   endfor
   assign concerns = concerns | strip | split: ' ' | uniq | join: ' '
 -%}
-<{{ wrap }} class="bundle{% if here %} is-here{% endif %}" data-count="{{ steps.size }}" data-concerns="{{ concerns | escape }}" data-handle="{{ product.handle }}" style="--a: var(--c-step-{{ first }}); --b: var(--c-step-{{ last }});">
+<{{ wrap }} class="bundle" data-count="{{ steps.size }}" data-concerns="{{ concerns | escape }}" data-handle="{{ product.handle }}" style="--a: var(--c-step-{{ first }}); --b: var(--c-step-{{ last }});">
   <a class="bundle__stage bundle__stage--photo" href="{{ product.url }}" tabindex="-1" aria-hidden="true" data-cursor="{{ 'general.view' | t }}">
     <span class="bundle__glow"></span>
-    {%- if here -%}
-      <span class="bundle__badge bundle__badge--here">{{ 'set2.cmp_here' | t }}</span>
-    {%- elsif badge != blank -%}
+    {%- if badge != blank -%}
       {%- assign badge_key = 'bundles.badges.' | append: badge -%}
       <span class="bundle__badge">{{ badge_key | t }}</span>
     {%- endif -%}
+    {%- if ships_free -%}<span class="ship-badge bundle__ship">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</span>{%- endif -%}
     {%- if image != blank -%}
       {{ image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '(min-width: 990px) 40vw, 86vw', alt: '', class: 'set-visual set-visual--photo' }}
     {%- else -%}
@@ -66,7 +65,7 @@
   </a>
   <div class="bundle__body">
     <{{ htag }} class="bundle__name"><a href="{{ product.url }}">{{ name | escape }}</a></{{ htag }}>
-    <p class="bundle__desc t-small t-muted"><span class="bundle__n">{{ 'sections.bundles.count' | t: count: steps.size }}</span>{% if desc != blank %} · {{ desc | escape }}{% endif %}</p>
+    <p class="bundle__desc t-small t-muted"><span class="bundle__n">{% if uniq.size == 1 and steps.size > 1 %}{{ 'sections.bundles.pack' | t: count: steps.size }}{% else %}{{ 'sections.bundles.count' | t: count: steps.size }}{% endif %}</span>{% if desc != blank %} · {{ desc | escape }}{% endif %}</p>
     <ul class="bundle__items" role="list">
       {%- for st in uniq -%}
         {%- assign s = st | plus: 0 -%}
@@ -81,16 +80,12 @@
         <span class="bundle__now">{% render 'egp', cents: v.price %}</span>
         {%- if saving > 0 -%}
           <s class="bundle__was"><span class="visually-hidden">{{ 'sections.bundles.was' | t }} </span>{% render 'egp', cents: v.compare_at_price %}</s>
+          {%- capture amt -%}{% render 'egp', cents: saving %}{%- endcapture -%}
+          <span class="bundle__save">{{ 'bundles.save_short' | t: amount: amt }}</span>
         {%- endif -%}
+        {%- comment -%} The photo's "Ships free" pill is hidden from screen readers with the photo link, so it's said here {%- endcomment -%}
+        {%- if ships_free -%}<span class="visually-hidden">{{ 'bundles.ships_free' | t }}</span>{%- endif -%}
       </div>
-      {%- if saving > 0 -%}
-        {%- capture amt -%}{% render 'egp', cents: saving %}{%- endcapture -%}
-        <p class="bundle__save t-small">{{ 'bundles.save_vs' | t: amount: amt }}</p>
-      {%- endif -%}
-      {%- if ships_free -%}
-        <p class="ship-badge">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</p>
-      {%- endif -%}
-      {%- unless here -%}
       <product-form>
         <form method="post" action="{{ routes.cart_add_url }}">
           <input type="hidden" name="id" value="{{ v.id }}">
@@ -101,7 +96,6 @@
           <p class="t-xs t-muted" data-form-error hidden></p>
         </form>
       </product-form>
-      {%- endunless -%}
     </div>
   </div>
 </{{ wrap }}>

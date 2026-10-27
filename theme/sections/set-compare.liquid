@@ -1,6 +1,6 @@
 {%- comment -%}
   Set pages (DECISIONS 189–192, 238): "Which set is right for you?" The five routine sets in the shop's one card
-  (snippets/bundle-card), in a row that scrolls; the set being viewed is marked "You're here". Prices and savings are live (compare-at = the singles added up).
+  (snippets/bundle-card), in a row that scrolls; the set being viewed is left out (DECISIONS 239). Prices and savings are live (compare-at = the singles added up).
   Renders nothing on single products.
 {%- endcomment -%}
 {%- liquid
@@ -23,13 +23,11 @@
       <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'sections.bundles.see_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
     </div>
     {{ 'bundles.css' | asset_url | stylesheet_tag }}
-    {%- comment -%} The shop's one card (DECISIONS 238); the set being viewed is marked "You're here" and has no add button {%- endcomment -%}
     <ul class="s2-sets" role="list">
       {%- for h in rows -%}
         {%- assign sp = all_products[h] -%}
-        {%- unless sp.id -%}{%- continue -%}{%- endunless -%}
-        {%- if h == product.handle -%}{%- assign here = true -%}{%- else -%}{%- assign here = false -%}{%- endif -%}
-        {%- render 'bundle-card', product: sp, here: here -%}
+        {%- if sp.id == blank or h == product.handle -%}{%- continue -%}{%- endif -%}
+        {%- render 'bundle-card', product: sp -%}
       {%- endfor -%}
     </ul>
   </div>

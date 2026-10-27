@@ -121,8 +121,10 @@ for (const loc of ['', '/ar']) {
     // the saving is shown once, in the buy box (DECISIONS 228)
     ok(`${tag} set page shows the saving once, in the buy box`, /147/.test(await page.$eval('.v2-buy', (e) => e.textContent)) && (await page.$$('.bi__saved')).length === 0);
     ok(`${tag} set page has one finder link`, (await page.$$('.skc-link')).length === 1);
-    // the compare row uses the shop's one card (DECISIONS 238): five sets, this one marked and without an add button
-    ok(`${tag} set compare uses the shop card, this set marked`, (await page.$$('.s2-sets > .bundle')).length === 5 && (await page.$$('.s2-sets > .bundle.is-here [type="submit"]')).length === 0 && (await page.$$('.s2-sets > .bundle.is-here')).length === 1);
+    // the compare row uses the shop's one card (DECISIONS 238) and leaves out the set being viewed (DECISIONS 239)
+    ok(`${tag} set compare shows the other four sets`, (await page.$$('.s2-sets > .bundle')).length === 4 && (await page.$$('.s2-sets > .bundle[data-handle="the-full-ritual"]')).length === 0);
+    // shorter set card (DECISIONS 239): "Ships free" on the photo, the saving on the price line, every photo 4:3
+    ok(`${tag} set card: ships free on the photo, saving on the price line`, await page.$$eval('.s2-sets > .bundle', (l) => l.every((c) => !c.querySelector('.bundle__body .ship-badge') && (!c.querySelector('.bundle__save') || c.querySelector('.bundle__price .bundle__save'))) && l.some((c) => c.querySelector('.bundle__stage .bundle__ship')) && l.every((c) => { const r = c.querySelector('.bundle__stage').getBoundingClientRect(); return Math.abs(r.width / r.height - 4 / 3) < 0.02; })));
     // buy box says each thing once (DECISIONS 230): free delivery only in the line under the button here
     ok(`${tag} set page has no Ships free badge in the buy box`, (await page.$$('.v2-buy .ship-badge, .v2-buy .v2-opt__ship')).length === 0);
     await page.goto(`${BASE}${loc}/products/the-clear-protect-trio`, { waitUntil: 'networkidle' });
@@ -166,6 +168,11 @@ for (const loc of ['', '/ar']) {
     const grid = await page.$$eval('#CollectionGrid > li', (l) => l.map((x) => ({ hidden: x.hidden, c: (x.querySelector('[data-concerns]')?.dataset.concerns || '').split(' ') })));
     const vis = grid.filter((x) => !x.hidden);
     ok(`${tag} concern filter (sun) narrows grid to sun picks`, vis.length > 0 && vis.length < grid.length && vis.every((x) => x.c.includes('sun')), `visible=${vis.length}/${grid.length}`);
+
+    // every product name sits on exactly two lines and the step is only the number on the photo (DECISIONS 239)
+    await page.goto(`${BASE}${loc}/collections/all`, { waitUntil: 'networkidle' });
+    const names = await page.$$eval('.product-grid .card', (l) => l.map((c) => { const t = c.querySelector('.card__title'); const lh = parseFloat(getComputedStyle(t).lineHeight); return { lines: Math.round(t.querySelector('a').getBoundingClientRect().height / lh), step: !!c.querySelector('.card__n') }; }));
+    ok(`${tag} product names are two lines each, no step text`, names.length === 4 && names.every((n) => n.lines === 2 && !n.step), JSON.stringify(names));
 
     // Language switch round trip
     if (vp.width > 1000) {

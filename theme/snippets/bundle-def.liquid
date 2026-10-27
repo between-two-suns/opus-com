@@ -1,16 +1,17 @@
 {%- comment -%}
   The seven fixed-price bundles from the Pricing & Offers spec (prices live on the Shopify bundle products).
-  Returns a pipe string for a handle: "steps|badge|place|kind", e.g. "1,2,3,4|bts_pick|featured-1|ritual".
+  Returns a pipe string for a handle: "steps|badge|place|kind|focus", e.g. "1,2,3,4|bts_pick|featured-1|ritual".
   steps: routine steps in the box (repeats = units) · place: featured-N (home + shop), sets (bundles page),
-  pdp-2 / pdp-4 (stock-ups, only on that step's product page).
+  pdp-2 / pdp-4 (stock-ups, only on that step's product page) · focus (optional): how far down, in %, the set's square
+  photo is placed in the 4:3 card frame so pump tops and bottle bases both show (default 50; a 4:3 photo isn't cut).
   Usage: {% capture def %}{% render 'bundle-def', handle: product.handle %}{% endcapture %}
 {%- endcomment -%}
 {%- case handle -%}
   {%- when 'the-full-ritual' -%}1,2,3,4|bts_pick|featured-1|ritual
   {%- when 'the-clear-protect-trio' -%}1,2,4||featured-2|trio
   {%- when 'clear-protect-duo' -%}2,4|daily_essential|featured-3|duo
-  {%- when 'the-night-ritual' -%}1,2,3||sets|ritual
-  {%- when 'the-core-duo' -%}1,2||sets|duo
+  {%- when 'the-night-ritual' -%}1,2,3||sets|ritual|30
+  {%- when 'the-core-duo' -%}1,2||sets|duo|56
   {%- when 'spf-stock-up' -%}4,4||pdp-4|stock
   {%- when 'serum-stock-up' -%}2,2||pdp-2|stock
 {%- endcase -%}

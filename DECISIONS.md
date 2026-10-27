@@ -947,3 +947,11 @@ Each entry: decision · why · reversibility. Newest last.
     - **Same card on every page:** home Sets (two equal cards), shop/search (sets and single products, same surface, photo, condensed name and full-width "Add to bag"), the Sets page, and the set page "Which set is right for you?" row (swipeable; the current set is outlined and marked "You're here" with no add button).
     - Tile demo files removed from the code. Unused on staging, can be deleted in admin → Edit code: snippets/tile.liquid, assets/tile.css, templates/index.tiles.json, templates/page.setstiles.json.
     - Theme-check 0, flows 384/384, staging checksums (9 files) match, checked on staging; live theme unchanged.
+239. **Owner's card review answers (1 ships free stays, 3 fix crops, 4 my call, 5 every name on two lines, 6 drop "Step N").** One shorter card everywhere:
+    - **"Ships free" moved onto the photo** (top corner opposite the badge, mirrored in Arabic; still read out to screen readers in the price line). **The saving joined the price line:** "EGP 1,699 ~~1,846~~ Save EGP 147" (new key bundles.save_short). Two rows fewer per set card.
+    - **Every set photo shows at 4:3** (was 16:9 / 16:10 / 16:11, which cut the bottle bases). The three square set photos are placed per set so pump tops and bases both show (bundle-def focus: Night Ritual 30, Core Duo 56, others centre); phones get the same cut from Shopify (crop region), so no hidden pixels are downloaded. A 4:3 photo isn't cut at all.
+    - **Set page "Which set is right for you?"** leaves out the set being viewed (four others), so no "You're here" card with a gap where the button was.
+    - **Product names on two lines each,** break points per language (product.card_lines: "Daily | Reset Cleanser", "Daily Barrier | Moisturizing Cream", "غسول | ديلي ريست" …); the size follows the card width so the longer line always fits (checked 360–1440, EN/AR). "Step N ·" removed from the line under the name; the big number on the photo says it.
+    - **Bug fixed:** stock-up sets said "2 steps"; now "Pack of 2" / "2 عبوات" (card and bag).
+    - New set-card copy lines sent to the owner for approval; photo brief sent (4 missing set photos, 3000 × 2250).
+    - Theme-check 0, flows 392/392, staging checksums (11 files) match, checked on staging laptop + phone; live theme unchanged.

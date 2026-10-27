@@ -273,6 +273,7 @@
       "heading": "Routines, ready to go.",
       "text": "Fixed-price sets of the four steps. The saving is against buying the same products separately.",
       "count": "{{ count }} steps",
+      "pack": "Pack of {{ count }}",
       "was": "Was",
       "save": "Save {{ pct }}%",
       "cta": "Add set to bag",
@@ -450,7 +451,13 @@
     "share": "Share",
     "inci_hint": "Tap any ingredient to see what it does.",
     "routine_tabs": "The routine, step by step",
-    "made_for": "Made for"
+    "made_for": "Made for",
+    "card_lines": {
+      "daily-reset-cleanser": "Daily|Reset Cleanser",
+      "clarity-serum": "Clarity|Serum",
+      "daily-barrier-moisturizing-cream": "Daily Barrier|Moisturizing Cream",
+      "daily-defense-sunscreen-spf-50": "Daily Defense|Sunscreen SPF 50+"
+    }
   },
   "collection": {
     "eyebrow": "Shop",
@@ -965,6 +972,7 @@
       "daily_essential": "Daily Essential"
     },
     "save_vs": "Save {{ amount }} vs buying separately",
+    "save_short": "Save {{ amount }}",
     "ships_free": "Ships free",
     "upgrade": "Add {{ product }} for {{ amount }} more and get free delivery",
     "upgrade_cta": "Upgrade to {{ bundle }}",
@@ -1379,7 +1387,6 @@
     "cmp_heading": "Which set is right for you?",
     "cmp_set": "Set",
     "cmp_price": "Price",
-    "cmp_here": "You're here",
     "cmp_view": "View",
     "yes": "Included",
     "no": "Not included",

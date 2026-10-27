@@ -37,7 +37,7 @@
           <p class="cart-line__step"><span class="cart-line__dot" aria-hidden="true"></span>{{ 'product.step' | t: number: cl_step }}{% if item.product.metafields.bts.step_label != blank %} · {{ item.product.metafields.bts.step_label.value }}{% endif %}</p>
         {%- elsif cl_def != blank -%}
           {%- assign cl_steps = cl_def | split: '|' | first | split: ',' -%}
-          <p class="cart-line__step cart-line__step--set">{%- for s in cl_steps -%}<span class="cart-line__dot" style="--sku: var(--c-step-{{ s }})" aria-hidden="true"></span>{%- endfor -%}{{ 'sections.bundles.count' | t: count: cl_steps.size }}</p>
+          <p class="cart-line__step cart-line__step--set">{%- for s in cl_steps -%}<span class="cart-line__dot" style="--sku: var(--c-step-{{ s }})" aria-hidden="true"></span>{%- endfor -%}{%- assign cl_uniq = cl_steps | uniq -%}{% if cl_uniq.size == 1 and cl_steps.size > 1 %}{{ 'sections.bundles.pack' | t: count: cl_steps.size }}{% else %}{{ 'sections.bundles.count' | t: count: cl_steps.size }}{% endif %}</p>
         {%- endif -%}
         <a class="cart-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
         {%- unless item.product.has_only_default_variant -%}<p class="cart-line__meta">{{ item.variant.title | escape }}</p>{%- endunless -%}

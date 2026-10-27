@@ -273,6 +273,7 @@
       "heading": "روتينات جاهزة.",
       "text": "مجموعات بسعر ثابت من الخطوات الأربع. التوفير مقارنةً بشراء المنتجات نفسها منفصلة.",
       "count": "{{ count }} خطوات",
+      "pack": "{{ count }} عبوات",
       "was": "كان",
       "save": "وفّر {{ pct }}٪",
       "cta": "أضف المجموعة إلى السلة",
@@ -450,7 +451,13 @@
     "share": "مشاركة",
     "inci_hint": "اضغط على أي مكوّن لمعرفة وظيفته.",
     "routine_tabs": "الروتين خطوة بخطوة",
-    "made_for": "صُمّم لـ"
+    "made_for": "صُمّم لـ",
+    "card_lines": {
+      "daily-reset-cleanser": "غسول|ديلي ريست",
+      "clarity-serum": "سيروم|كلاريتي",
+      "daily-barrier-moisturizing-cream": "كريم ديلي باريير|المرطّب",
+      "daily-defense-sunscreen-spf-50": "واقي الشمس|ديلي ديفنس SPF 50+‎"
+    }
   },
   "collection": {
     "eyebrow": "تسوّق",
@@ -965,6 +972,7 @@
       "daily_essential": "أساسي يومي"
     },
     "save_vs": "وفّر {{ amount }} مقارنة بالشراء منفصلًا",
+    "save_short": "وفّر {{ amount }}",
     "ships_free": "توصيل مجاني",
     "upgrade": "أضف {{ product }} مقابل {{ amount }} إضافية واحصل على توصيل مجاني",
     "upgrade_cta": "الترقية إلى {{ bundle }}",
@@ -1379,7 +1387,6 @@
     "cmp_heading": "أي مجموعة تناسبك؟",
     "cmp_set": "المجموعة",
     "cmp_price": "السعر",
-    "cmp_here": "أنت هنا",
     "cmp_view": "عرض",
     "yes": "ضمن المجموعة",
     "no": "غير موجود",
