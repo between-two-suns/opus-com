@@ -101,7 +101,11 @@
             {%- assign pv = pp.selected_or_first_available_variant -%}
             {%- assign key = pair_keys[forloop.index0] -%}
             <li class="v2-pair__card" data-step="{{ pi }}">
-              {%- capture pk_src -%}{%- render 'cut-src', handle: pp.handle, width: 240 -%}{%- endcapture -%}<a class="v2-pair__visual" href="{{ pp.url }}" tabindex="-1" aria-hidden="true"><img src="{{ pk_src }}" alt="" width="80" height="252" loading="lazy"></a>
+              {%- comment -%} The product card's language (DECISIONS 244): its studio photo, its colour, its own-colour button {%- endcomment -%}
+              {%- assign pk_key = 'bts-' | append: pp.handle | append: '-studio.jpg' -%}{%- assign pk_studio = images[pk_key] -%}
+              <a class="v2-pair__visual" href="{{ pp.url }}" tabindex="-1" aria-hidden="true">
+                {%- if pk_studio != blank -%}{{ pk_studio | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,220,300', sizes: '110px', alt: '' }}{%- else -%}{%- capture pk_src -%}{%- render 'cut-src', handle: pp.handle, width: 240 -%}{%- endcapture -%}<img class="v2-pair__cut" src="{{ pk_src }}" alt="" width="80" height="252" loading="lazy">{%- endif -%}
+              </a>
               <div class="v2-pair__body">
                 <p class="v2-pair__why">{{ key | t }}</p>
                 <h3 class="v2-pair__name"><a href="{{ pp.url }}">{{ pp.title | escape }}</a></h3>
@@ -112,8 +116,8 @@
                   <input type="hidden" name="id" value="{{ pv.id }}">
                   <input type="hidden" name="quantity" value="1">
                   <span class="v2-pair__price">{% render 'egp', cents: pv.price %}</span>
-                  <button type="submit" class="btn btn--secondary btn--small v2-pair__add"{% unless pv.available %} disabled{% endunless %}>
-                    {%- render 'icon', name: 'plus', class: 'icon--sm' -%}<span class="btn__label">{{ 'pdp2.add' | t }}<span class="visually-hidden">: {{ pp.title | escape }}</span></span>
+                  <button type="submit" class="btn v2-pair__add"{% unless pv.available %} disabled{% endunless %}>
+                    <span class="btn__label">{{ 'product.add_to_cart' | t }}<span class="visually-hidden">: {{ pp.title | escape }}</span></span>
                   </button>
                   <p class="t-xs t-muted" data-form-error hidden></p>
                 </form>

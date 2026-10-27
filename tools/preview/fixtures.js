@@ -116,7 +116,8 @@ export const ARTICLES = [
       ar: '<p>كل عبوة من Between Two Suns تخبرك بالخطوة التالية. الغسول يقول <em>يُستخدم قبل السيروم</em>. والسيروم يقول <em>ثم يوضع المرطب</em>. والمرطب يقول <em>يُستخدم قبل واقي الشمس في الصباح</em>. وواقي الشمس يقول <em>آخر خطوة في الروتين كل صباح</em>.</p><h2>الصباح</h2><ol><li>غسول ديلي ريست — ضغطة أو ضغطتان على بشرة مبللة، ثم التدليك والشطف.</li><li>سيروم كلاريتي — قطرات قليلة على الوجه والرقبة.</li><li>كريم ديلي باريير المرطّب — ضغطة أو ضغطتان.</li><li>واقي الشمس ديلي ديفنس SPF 50 — يوضع بالتساوي على الوجه والرقبة، ويُعاد كل ساعتين.</li></ol><h2>المساء</h2><p>الخطوات الثلاث الأولى نفسها. واقي الشمس خطوة صباحية.</p>',
     },
     published_at: '2026-10-01T09:00:00Z',
-    image: null,
+    // a photo from the owner's Drive shoot, standing in until the real articles and their pictures are added (DECISIONS 244)
+    image: 'bts-daily-reset-cleanser-routine-scene.jpg',
   },
 ];
 

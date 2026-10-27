@@ -1,7 +1,7 @@
 {%- comment -%}
   A set offer card: the set's picture (photo or colour bands), what's inside (the product you're looking at is
-  marked), the saving vs buying separately, a "Ships free" badge when it reaches the free-delivery setting,
-  and one add button with the real price. Renders nothing if the set doesn't exist.
+  marked), and one add button with the real price. Same language as the set cards (DECISIONS 244): the set's step
+  colours as the card, "Ships free" on the picture, the saving on the price line. Renders nothing if the set doesn't exist.
   Params: handle (set product handle), class (extra class on the wrapper)
 {%- endcomment -%}
 {%- assign bp = all_products[handle] -%}
@@ -26,17 +26,25 @@
       assign saving = v.compare_at_price | minus: v.price
     endif
     assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
+    capture grad
+      render 'set-tint', steps: uniq
+    endcapture
     if kind == 'stock'
       assign eyebrow = 'bundle_offer.stock' | t
     else
       assign eyebrow = 'bundle_offer.complete' | t
     endif
   -%}
-  <div class="offer-wrap"><article class="offer {{ class }}" data-handle="{{ bp.handle }}" aria-labelledby="Offer-{{ bp.id }}-{{ class | handleize }}">
-    <a class="offer__visual" href="{{ bp.url }}" tabindex="-1" aria-hidden="true">{%- render 'set-visual', product: bp, sizes: '(min-width: 990px) 220px, 120px' -%}</a>
-    <div class="offer__body">
+  {%- assign ships_free = false -%}{%- if threshold > 0 and v.price >= threshold -%}{%- assign ships_free = true -%}{%- endif -%}
+  <div class="offer-wrap"><article class="offer {{ class }}" data-handle="{{ bp.handle }}" style="--g: {{ grad | strip }};" aria-labelledby="Offer-{{ bp.id }}-{{ class | handleize }}">
+    <a class="offer__visual" href="{{ bp.url }}" tabindex="-1" aria-hidden="true">
+      {%- render 'set-visual', product: bp, sizes: '(min-width: 990px) 220px, 120px' -%}
+      {%- if ships_free -%}<span class="ship-badge offer__ship">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</span>{%- endif -%}
+    </a>
+    <div class="offer__head">
       <p class="offer__eyebrow">{{ eyebrow }}</p>
       <h3 class="offer__name" id="Offer-{{ bp.id }}-{{ class | handleize }}"><a href="{{ bp.url }}">{{ name | escape }}</a></h3>
+    </div>
       <ul class="offer__items" role="list">
         {%- for st in uniq -%}
           {%- assign si = st | plus: 0 -%}
@@ -45,13 +53,8 @@
           <li data-step="{{ si }}"{% if product and comp.id == product.id %} class="is-here"{% endif %}><span class="bundle__dot" aria-hidden="true"></span>{% if q > 1 %}{{ q }} × {% endif %}{{ comp.title | escape }}{% if product and comp.id == product.id %} <span class="offer__here">{{ 'bundle_offer.this_one' | t }}</span>{% endif %}</li>
         {%- endfor -%}
       </ul>
-      <div class="offer__meta">
-        {%- if saving > 0 -%}{%- capture amt -%}{% render 'egp', cents: saving %}{%- endcapture -%}<p class="bundle__save t-small">{{ 'bundles.save_vs' | t: amount: amt }}</p>{%- endif -%}
-        {%- if threshold > 0 and v.price >= threshold -%}<p class="ship-badge">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</p>{%- endif -%}
-      </div>
-    </div>
     <div class="offer__buy">
-      <p class="offer__price"><span class="offer__now">{% render 'egp', cents: v.price %}</span>{%- if saving > 0 -%} <s class="offer__was"><span class="visually-hidden">{{ 'sections.bundles.was' | t }} </span>{% render 'egp', cents: v.compare_at_price %}</s>{%- endif -%}</p>
+      <p class="offer__price"><span class="offer__now">{% render 'egp', cents: v.price %}</span>{%- if saving > 0 -%} <s class="offer__was"><span class="visually-hidden">{{ 'sections.bundles.was' | t }} </span>{% render 'egp', cents: v.compare_at_price %}</s>{%- capture amt -%}{% render 'egp', cents: saving %}{%- endcapture %} <span class="bundle__save">{{ 'bundles.save_short' | t: amount: amt }}</span>{%- endif -%}{%- if ships_free -%}<span class="visually-hidden"> {{ 'bundles.ships_free' | t }}</span>{%- endif -%}</p>
       <product-form>
         <form method="post" action="{{ routes.cart_add_url }}">
           <input type="hidden" name="id" value="{{ v.id }}">

@@ -166,7 +166,7 @@ function buildData(locale, cart) {
 
   const articles = ARTICLES.map((a, i) => ({
     id: i + 1, handle: a.handle, title: a.title[locale] || a.title.en, excerpt: a.excerpt[locale] || a.excerpt.en,
-    content: a.body[locale] || a.body.en, published_at: a.published_at, created_at: a.published_at, image: a.image,
+    content: a.body[locale] || a.body.en, published_at: a.published_at, created_at: a.published_at, image: a.image ? new ImageDrop(photoObj(a.image, a.title[locale] || a.title.en)) : null,
     url: `${prefix}/blogs/journal/${a.handle}`, author: 'Between Two Suns', tags: ['Routine'], comments_enabled: false,
   }));
   const journal = { id: 1, handle: 'journal', title: locale === 'ar' ? 'المجلة' : 'Journal', url: `${prefix}/blogs/journal`, articles, articles_count: articles.length, all_tags: ['Routine'] };

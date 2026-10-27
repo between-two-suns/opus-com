@@ -1,0 +1,6 @@
+{%- comment -%}
+  A set's colours as gradient stops: each step inside, in routine order, at a product card's strength (26%);
+  a one-step set (a stock-up) is its one colour (DECISIONS 242, 244). Used by snippets/bundle-card and bundle-bar.
+  Params: steps (the set's step numbers, no repeats, in order)
+{%- endcomment -%}
+{%- for st in steps -%}color-mix(in srgb, var(--c-step-{{ st }}) 26%, #fff){% if steps.size == 1 %}, color-mix(in srgb, var(--c-step-{{ st }}) 26%, #fff){% endif %}{% unless forloop.last %}, {% endunless %}{%- endfor -%}

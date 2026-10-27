@@ -627,6 +627,7 @@
   },
   "blog": {
     "read_more": "Read",
+    "read_story": "Read the story",
     "back": "Back to the journal",
     "empty": "Stories are coming soon.",
     "minutes": "{{ count }} min read",

@@ -1,17 +1,51 @@
-<article class="article-card">
+{%- comment -%}
+  A journal story (DECISIONS 244), in the shop's card language: the photo edge to edge on top, the body on a soft wash
+  of the four step colours (or the one step the story is tagged with: step-1 … step-4), the topic and reading time,
+  the title in the sans, two lines of excerpt and "Read the story". The whole card opens the story.
+  Params: article, heading_tag ('h3')
+{%- endcomment -%}
+{%- liquid
+  assign ac_step = 0
+  for tg in article.tags
+    assign tgh = tg | handle
+    case tgh
+      when 'step-1'
+        assign ac_step = 1
+      when 'step-2'
+        assign ac_step = 2
+      when 'step-3'
+        assign ac_step = 3
+      when 'step-4'
+        assign ac_step = 4
+    endcase
+  endfor
+  assign ac_topic = ''
+  for tg in article.tags
+    assign tgh = tg | handle
+    unless tgh contains 'step-'
+      assign ac_topic = tg
+      break
+    endunless
+  endfor
+  assign ac_words = article.content | strip_html | split: ' ' | size
+  assign ac_min = ac_words | divided_by: 200 | floor | plus: 1
+  assign htag = heading_tag | default: 'h3'
+-%}
+<article class="article-card"{% if ac_step > 0 %} data-step="{{ ac_step }}"{% endif %}>
   <a class="article-card__media" href="{{ article.url }}" tabindex="-1" aria-hidden="true">
     {%- if article.image -%}
-      {{ article.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 990px) 30vw, 90vw', alt: '' }}
+      {{ article.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1400', sizes: '(min-width: 990px) 58vw, 92vw', alt: '' }}
     {%- else -%}
       <span class="article-card__placeholder"><span class="sun sun--warm"></span><span class="sun sun--cool"></span></span>
     {%- endif -%}
   </a>
   <div class="article-card__body">
-    <p class="t-xs t-muted">{{ article.published_at | time_tag: format: 'date' }}</p>
-    {%- assign htag = heading_tag | default: 'h3' -%}
+    <p class="article-card__meta">{% if ac_topic != blank %}<span class="article-card__topic">{{ ac_topic | escape }}</span><span aria-hidden="true"> · </span>{% endif %}{{ 'blog.minutes' | t: count: ac_min }}</p>
     <{{ htag }} class="article-card__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></{{ htag }}>
     {%- if article.excerpt != blank -%}
-      <p class="t-small t-muted">{{ article.excerpt | strip_html | truncate: 140 }}</p>
+      <p class="article-card__excerpt">{{ article.excerpt | strip_html | truncate: 160 }}</p>
     {%- endif -%}
+    <p class="article-card__more" aria-hidden="true">{{ 'blog.read_story' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</p>
+    <p class="article-card__date">{{ article.published_at | time_tag: format: 'date' }}</p>
   </div>
 </article>

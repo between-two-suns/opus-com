@@ -164,18 +164,34 @@
 /* Works best with */
 .v2-pair { display: grid; gap: 12px; margin-block-start: clamp(36px, 5vw, 64px); }
 .v2-pair__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.v2-pair__card { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 14px 12px 12px; border-radius: 22px; background: var(--c-paper); box-shadow: 0 1px 0 var(--c-line); }
-.v2-pair__visual { display: grid; place-items: center; inline-size: 64px; block-size: 76px; border-radius: 16px; background: var(--sku-tint); }
-.v2-pair__visual img { block-size: 62px; inline-size: auto; filter: drop-shadow(0 6px 8px rgba(32, 35, 58, .2)); }
-.v2-pair__body { display: grid; gap: 2px; min-inline-size: 0; }
-.v2-pair__why { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--sku-deep); }
+/* The product card's language (DECISIONS 244): the card in the product's colour, its square studio photo whole,
+   the name in the pack lettering, its own-colour "Add to bag" (no "+"). */
+.v2-pair__card { display: grid; grid-template-columns: 104px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 10px 16px 10px 10px; border-radius: var(--radius-l); background: var(--sku-tint); box-shadow: 0 30px 60px -48px rgba(32, 35, 58, .5); }
+[dir='rtl'] .v2-pair__card { padding: 10px 10px 10px 16px; }
+.v2-pair__visual { display: block; inline-size: 104px; aspect-ratio: 1; border-radius: 16px; overflow: hidden; background: var(--sku); }
+.v2-pair__visual img { inline-size: 100%; block-size: 100%; object-fit: cover; transition: scale 600ms var(--ease-out); }
+.v2-pair__card:hover .v2-pair__visual img { scale: 1.05; }
+.v2-pair__visual .v2-pair__cut { block-size: 86%; inline-size: auto; margin: 7% auto 0; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(32, 35, 58, .2)); }
+.v2-pair__body { display: grid; gap: 4px; min-inline-size: 0; }
+.v2-pair__why { margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sku-deep); }
 :lang(ar) .v2-pair__why { letter-spacing: 0; text-transform: none; font-size: 13px; }
-.v2-pair__name { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.25; }
+.v2-pair__name { margin: 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: 22px; line-height: .95; text-wrap: balance; }
+:lang(ar) .v2-pair__name { text-transform: none; font-size: 19px; line-height: 1.3; }
 .v2-pair__name a { text-decoration: none; }
-.v2-pair__benefit { margin: 0; font-size: 13.5px; color: var(--c-muted); }
-.v2-pair__buy form { display: grid; justify-items: end; gap: 6px; }
-.v2-pair__price { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.v2-pair__add { gap: 6px; min-block-size: 40px; padding-inline: 14px; }
+.v2-pair__benefit { margin: 0; font-size: 13.5px; color: color-mix(in srgb, var(--c-ink) 72%, transparent); text-wrap: pretty; }
+.v2-pair__buy form { display: grid; justify-items: end; gap: 8px; }
+.v2-pair__price { font-weight: 800; font-size: 17px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.v2-pair__add { --btn-bg: var(--sku); --btn-bd: var(--sku); --btn-fg: var(--c-ink); --glow: 0; min-block-size: 42px; padding-inline: 18px; font-size: 14px; }
+@media (max-width: 749px) {
+  /* Narrow: photo and words side by side, price and button as one row under them */
+  .v2-pair__card { grid-template-columns: 84px minmax(0, 1fr); grid-template-areas: 'visual body' 'buy buy'; row-gap: 12px; padding: 10px 12px 12px 10px; }
+  [dir='rtl'] .v2-pair__card { padding: 10px 10px 12px 12px; }
+  .v2-pair__visual { grid-area: visual; inline-size: 84px; }
+  .v2-pair__body { grid-area: body; }
+  .v2-pair__buy { grid-area: buy; }
+  .v2-pair__buy form { grid-template-columns: auto minmax(0, 1fr); align-items: center; justify-items: stretch; gap: 14px; }
+  .v2-pair__name { font-size: 20px; }
+}
 @media (min-width: 990px) {
   .v2-pair__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
