@@ -935,3 +935,10 @@ Each entry: decision · why · reversibility. Newest last.
     - Laptops: hovering swaps the lifestyle photo for the clean packs shot. Sets without their own photo (Trio, Clear & Protect Duo) show the packs shot as the picture.
     - Demo links: home /?view=tiles (index.tiles.json, Sets section setting "Tile cards") and the Sets page /pages/sets?view=setstiles (page.setstiles.json). Current cards unchanged until approved; on approval the same tile replaces the Sets page/shop/search cards and the set-page compare cards.
     - Theme-check 0, flows 384/384, staging checksums (6 files) match, checked on staging; live theme unchanged.
+237. **Owner on the first tile: "much worse… the plus is terrible… no borders looks very weird… only the coloured bar is slightly nice; loop until it's a 10."** Reworked in three self-reviewed rounds (screenshots each round, EN/AR, phone/laptop), same demo links:
+    - **Contained card:** white surface with a hairline border and soft shadow; the photo set inside with an even 8 px margin and its own rounded corners. The whole card opens the page; it lifts slightly on hover and the photo eases in.
+    - **Real button:** "Add to bag" pill (dark) at the right of the price row; the round "+" is gone. Price above "Save EGP …" on the left.
+    - **The step meter is the card's divider:** a full-width four-part bar in the step colours (filled = in this set, pale = not) between the details and the price row, aligned across a row; on hover the filled steps light up in order 01→04. Arabic mirrors it (step 1 on the right).
+    - Name in the sans, the same size in every card so a row lines up (the larger card is wider, not louder); one line under it ("4 steps · Morning + night" / "3 steps · Add sunscreen in the morning").
+    - Sets without their own photo keep the clean packs shot as the picture.
+    - Theme-check 0, flows 384/384, staging checksums match, checked on staging; live theme unchanged.

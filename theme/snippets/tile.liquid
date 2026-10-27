@@ -110,25 +110,23 @@
   </a>
   <div class="tile__body">
     <h3 class="tile__name"><a href="{{ product.url }}">{{ t_name | escape }}</a></h3>
-    <p class="tile__meta">
-      <span class="tile__bar" aria-hidden="true">{%- for n in (1..4) -%}{%- assign ns = n | append: '' -%}<span data-step="{{ n }}"{% if t_steps contains ns %} class="is-in"{% endif %}></span>{%- endfor -%}</span>
-      <span>{{ t_meta }}</span>
-    </p>
+    <p class="tile__meta">{{ t_meta }}</p>
+    <span class="tile__bar" aria-hidden="true">{%- for n in (1..4) -%}{%- assign ns = n | append: '' -%}<span data-step="{{ n }}"{% if t_steps contains ns %} class="is-in"{% endif %}></span>{%- endfor -%}</span>
     <div class="tile__buy">
       <p class="tile__price">
         <span class="tile__now">{% render 'egp', cents: t_v.price %}</span>
         {%- if t_saving > 0 -%}{%- capture t_save -%}{% render 'egp', cents: t_saving %}{%- endcapture -%}<span class="tile__save">{{ 'pdp2.save' | t: amount: t_save }}</span>{%- endif -%}
       </p>
-      {%- if t_v.available -%}
-        <product-form class="tile__add">
-          <form method="post" action="{{ routes.cart_add_url }}">
-            <input type="hidden" name="id" value="{{ t_v.id }}">
-            <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="tile__plus" aria-label="{{ 'cart.add_item' | t: product: t_name | escape }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
-            <p class="visually-hidden" data-form-error hidden></p>
-          </form>
-        </product-form>
-      {%- endif -%}
+      <product-form class="tile__add">
+        <form method="post" action="{{ routes.cart_add_url }}">
+          <input type="hidden" name="id" value="{{ t_v.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="tile__btn"{% unless t_v.available %} disabled{% endunless %}>
+            <span class="btn__label">{%- if t_v.available -%}{{ 'product.add_to_cart' | t }}{%- else -%}{{ 'product.sold_out' | t }}{%- endif -%}<span class="visually-hidden">: {{ t_name | escape }}</span></span>
+          </button>
+          <p class="visually-hidden" data-form-error hidden></p>
+        </form>
+      </product-form>
     </div>
   </div>
 </{{ t_wrap }}>
