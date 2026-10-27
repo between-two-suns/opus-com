@@ -631,7 +631,10 @@
     "back": "Back to the journal",
     "empty": "Stories are coming soon.",
     "minutes": "{{ count }} min read",
-    "tagged": "Filed under"
+    "tagged": "Filed under",
+    "topics": {
+      "routine": "Routine"
+    }
   },
   "errors": {
     "404_title": "This page went out in the sun.",

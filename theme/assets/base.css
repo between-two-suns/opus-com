@@ -1355,7 +1355,7 @@ main > .shopify-section:has(> .section:not(.v2-ben, .routine-strip)) + .shopify-
 main > .shopify-section:has(> .section:not(.v2-ben, .routine-strip)) + .shopify-section:not(:has(> *)) + .shopify-section:not(:has(> *)) + .shopify-section:not(:has(> *)) + .shopify-section > .section:not(.v2-ben, .routine-strip, .ab-rt, .ab-made, .ab-founder, .ab-rules) { padding-block-start: 0; }
 /* Sections that end with their own gap: the next one adds only what makes one section gap in total. */
 .shopify-section:has(> .cst) + .shopify-section > .section { padding-block-start: 0; }
-.shopify-section:has(> .article) + .shopify-section > .section { padding-block-start: calc(var(--section-y) * .45); }
+.shopify-section:has(> .article) + .shopify-section > .section { padding-block-start: 0; }
 /* On phones the photo band ends with its own section gap, so the FAQ after it drops its top one. */
 @media (max-width: 749px) { .template-index .shopify-section:has(> .eb) + .shopify-section > .section { padding-block-start: 0; } }
 

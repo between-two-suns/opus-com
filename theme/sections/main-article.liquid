@@ -1,20 +1,45 @@
 {{ 'pages.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  comment
+    DECISIONS 245: the story page in the journal card's language. Topic and reading time over a large title, the
+    summary as the lede, the photo wide, then a 680 px reading column; numbered lists are the routine steps.
+  endcomment
+  assign ar_topic = ''
+  for tg in article.tags
+    assign tgh = tg | handle
+    unless tgh contains 'step-'
+      assign ar_topic = tg
+      comment
+        A topic is shown in the page's language when blog.topics has it ("Routine" → "روتين"); otherwise as tagged
+      endcomment
+      assign tk = 'blog.topics.' | append: tgh
+      assign tt = tk | t
+      unless tt contains 'ranslation missing' or tt == tk
+        assign ar_topic = tt
+      endunless
+      break
+    endunless
+  endfor
+  assign ar_words = article.content | strip_html | split: ' ' | size
+  assign ar_min = ar_words | divided_by: 200 | floor | plus: 1
+-%}
 <article class="article" aria-labelledby="ArticleTitle">
-  <header class="page-hero page-hero--compact">
-    <div class="suns" aria-hidden="true"><span class="sun sun--warm page-hero__sun-a"></span><span class="sun sun--cool page-hero__sun-b"></span></div>
-    <div class="container container--text page-hero__inner">
+  <header class="article__head">
+    <div class="container article__head-inner">
       <a class="link-arrow article__back" href="{{ blog.url }}">{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip article__back-icon' %} {{ 'blog.back' | t }}</a>
-      <h1 class="t-display-m" id="ArticleTitle">{{ article.title | escape }}</h1>
-      <p class="t-small t-muted">{{ article.published_at | time_tag: format: 'date' }}{% if article.tags.size > 0 %} · {{ 'blog.tagged' | t }} {{ article.tags | join: ', ' }}{% endif %}</p>
+      <p class="article-card__meta">{% if ar_topic != blank %}{{ ar_topic | escape }}<span aria-hidden="true"> · </span>{% endif %}{{ 'blog.minutes' | t: count: ar_min }}</p>
+      <h1 class="t-display-l article__title" id="ArticleTitle">{{ article.title | escape }}</h1>
+      {%- if article.excerpt != blank -%}<p class="t-lead article__lede">{{ article.excerpt | strip_html }}</p>{%- endif -%}
+      <p class="article__date">{{ article.published_at | time_tag: format: 'date' }}</p>
     </div>
   </header>
   {%- if article.image -%}
-    <div class="container article__image">
-      {{ article.image | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600,900,1200,1600', sizes: '(min-width: 1200px) 1100px, 92vw', alt: article.image.alt | default: '' }}
-    </div>
+    <figure class="container article__image">
+      {{ article.image | image_url: width: 2000 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600,900,1200,1600,2000', sizes: '(min-width: 1400px) 1300px, 94vw', alt: article.image.alt | default: '' }}
+    </figure>
   {%- endif -%}
-  <div class="section section--tight">
-    <div class="container container--text">
+  <div class="article__main">
+    <div class="container article__col">
       <div class="rte article__body">{{ article.content }}</div>
     </div>
   </div>

@@ -24,6 +24,14 @@
     assign tgh = tg | handle
     unless tgh contains 'step-'
       assign ac_topic = tg
+      comment
+        A topic is shown in the page's language when blog.topics has it ("Routine" → "روتين"); otherwise as tagged
+      endcomment
+      assign tk = 'blog.topics.' | append: tgh
+      assign tt = tk | t
+      unless tt contains 'ranslation missing' or tt == tk
+        assign ac_topic = tt
+      endunless
       break
     endunless
   endfor

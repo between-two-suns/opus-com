@@ -99,7 +99,7 @@ To revert the site: in Shopify, preview or rename that snapshot theme (or copy i
 - Photo fixes from the triage (A04/C03/C08 minarets, P05 ingredient name, P08 SPF 50 vs 50+); optional Day Ritual and Clear & Protect scene images; no video yet
 - Native Arabic review; legal/EDA review of web claims (PROMAT)
 - Navigation menus are the theme's built-in bilingual fallbacks (no Shopify menus created, intentionally)
-- Journal has no published articles (a factual draft exists only in preview fixtures, with a Drive shoot photo). The owner's articles are in Google Drive: reconnect the Drive connector (it lacks a permission), then add them in Shopify (Journal blog) with a photo each; publishing makes them visible on the live store too (DECISIONS 244).
+- Journal: first story published ("How to layer a four-step routine", EN/AR, DECISIONS 245). ICI to check its wording with the other copy; the Arabic reading time reads "قراءة في 2 دقائق" (have the Arabic reviewer confirm the phrasing).
 - Reviews app not installed (slot ready)
 
 ## Known issues
