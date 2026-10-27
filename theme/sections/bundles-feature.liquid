@@ -31,6 +31,13 @@
       </div>
     </div>
 
+    {%- if section.settings.tiles -%}
+      {{ 'tile.css' | asset_url | stylesheet_tag }}
+      <ul class="tiles tiles--pair" role="list">
+        {%- if hero.id -%}{%- render 'tile', product: hero, size: 'feature' -%}{%- endif -%}
+        {%- if mate.id -%}{%- render 'tile', product: mate, image: section.settings.mate_image -%}{%- endif -%}
+      </ul>
+    {%- else -%}
     <ul class="setsx__grid" role="list">
       {%- for set in (1..2) -%}
         {%- liquid
@@ -147,6 +154,7 @@
         </li>
       {%- endfor -%}
     </ul>
+    {%- endif -%}
     {%- comment -%} Under the sets, where "which one?" comes up (DECISIONS 234) {%- endcomment -%}
     <div class="setsx__quiz">{%- render 'skin-check-link', key: 'skin_check.cta_sets' -%}</div>
   </div>
@@ -156,6 +164,7 @@
 {
   "name": "t:sections.bundles_feature.name",
   "settings": [
+    { "type": "checkbox", "id": "tiles", "label": "Tile cards (demo)", "default": false },
     { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" },
     { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
     { "type": "product", "id": "hero", "label": "t:sections.bundles_feature.hero" },

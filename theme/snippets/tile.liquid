@@ -1,0 +1,134 @@
+{%- comment -%}
+  One tile for everything the shop sells, sets and single products alike (demo, DECISIONS 236). Same parts in the
+  same order everywhere; only the size changes ('feature' spans two columns where one item should lead).
+  - The photo is the tile: no box under it, the words sit on the page.
+  - Name in the sans. One line on what's inside: the step bar (the four step colours, filled for the steps in it,
+    pale for the ones it doesn't hold) and "4 steps · Morning + night" / "2 × Clarity Serum" / "30 mL · AM + PM".
+  - Price with the saving beside it in green; a round "+" adds it to the bag. The whole photo and name open the page.
+  - Laptops: hovering swaps the lifestyle photo for the clean product shot (sets: the studio packs; singles: the cutout).
+  Params: product (required), size ('feature' | 'standard', default standard), image (photo to use instead of the
+  set's own), loading ('lazy'), sizes, tag ('li' default)
+{%- endcomment -%}
+{%- liquid
+  assign t_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign t_wrap = tag | default: 'li'
+  assign t_size = size | default: 'standard'
+  assign t_loading = loading | default: 'lazy'
+  assign t_v = product.selected_or_first_available_variant
+  capture t_def
+    render 'bundle-def', handle: product.handle
+  endcapture
+  assign t_def = t_def | strip
+  assign t_is_set = false
+  if t_def != blank
+    assign t_is_set = true
+    assign t_parts = t_def | split: '|'
+    assign t_steps = t_parts[0] | split: ','
+    assign t_badge = t_parts[1]
+    assign t_kind = t_parts[3]
+    assign t_name_key = 'bundles.names.' | append: product.handle
+    assign t_name = t_name_key | t | replace: '&amp;', '&'
+    if t_name contains 'ranslation missing'
+      assign t_name = product.title
+    endif
+    if t_kind == 'stock'
+      assign t_si = t_steps[0] | plus: 0
+      assign t_meta = 'pdp2.stock_sub' | t: count: t_steps.size, name: all_products[t_handles[t_si]].title
+    else
+      assign t_when = 'set2.when_am' | t
+      for st in t_steps
+        if st != '4'
+          assign t_when = 'set2.when_ampm' | t
+        endif
+      endfor
+      unless t_steps contains '4'
+        assign t_when = 'set2.when_nospf' | t
+      endunless
+      assign t_meta = 'sections.bundles.count' | t: count: t_steps.size | append: ' · ' | append: t_when
+    endif
+  else
+    capture t_step
+      render 'product-step', product: product
+    endcapture
+    assign t_step = t_step | strip
+    assign t_steps = t_step | split: ','
+    assign t_badge = ''
+    assign t_name = product.title
+    assign t_meta = product.metafields.bts.size.value | default: ''
+    if product.metafields.bts.when_to_use != blank
+      if t_meta != blank
+        assign t_meta = t_meta | append: ' · '
+      endif
+      assign t_meta = t_meta | append: product.metafields.bts.when_to_use
+    endif
+  endif
+  assign t_saving = 0
+  if t_v.compare_at_price > t_v.price
+    assign t_saving = t_v.compare_at_price | minus: t_v.price
+  endif
+  comment
+    a set without its own photo shows the clean packs shot as its picture (no hover swap then)
+  endcomment
+  assign t_photo = true
+  if image == blank and t_is_set
+    assign t_pk = 'bts-' | append: product.handle | append: '.jpg'
+    if images[t_pk] == blank
+      assign t_photo = false
+    endif
+  endif
+  assign t_sizes = sizes | default: '(min-width: 990px) 33vw, 92vw'
+  if t_size == 'feature'
+    assign t_sizes = sizes | default: '(min-width: 990px) 60vw, 92vw'
+  endif
+-%}
+<{{ t_wrap }} class="tile tile--{{ t_size }}{% unless t_photo %} tile--packs{% endunless %}" data-handle="{{ product.handle }}">
+  <a class="tile__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+    {%- if t_photo -%}
+    <span class="tile__img">
+      {%- if image != blank -%}
+        {{ image | image_url: width: 1600 | image_tag: loading: t_loading, widths: '480,720,960,1200,1600', sizes: t_sizes, alt: '' }}
+      {%- elsif t_is_set -%}
+        {%- render 'set-visual', product: product, sizes: t_sizes, loading: t_loading -%}
+      {%- elsif product.featured_media -%}
+        {{ product.featured_media | image_url: width: 1200 | image_tag: loading: t_loading, widths: '400,600,800,1200', sizes: t_sizes, alt: '' }}
+      {%- endif -%}
+    </span>
+    {%- endif -%}
+    <span class="tile__alt" aria-hidden="true">
+      {%- if t_is_set -%}
+        {%- for st in t_steps -%}
+          {%- assign n = st | plus: 0 -%}
+          {%- capture cut -%}{%- render 'cut-src', handle: t_handles[n], width: 240 -%}{%- endcapture -%}
+          <img src="{{ cut | strip }}" alt="" width="357" height="1100" loading="lazy" data-step="{{ n }}">
+        {%- endfor -%}
+      {%- else -%}
+        {%- capture cut -%}{%- render 'cut-src', handle: product.handle, width: 360 -%}{%- endcapture -%}
+        <img src="{{ cut | strip }}" alt="" width="357" height="1100" loading="lazy" data-step="{{ t_steps[0] }}">
+      {%- endif -%}
+    </span>
+    {%- if t_badge != blank -%}{%- assign bk = 'bundles.badges.' | append: t_badge -%}<span class="tile__badge">{{ bk | t }}</span>{%- endif -%}
+  </a>
+  <div class="tile__body">
+    <h3 class="tile__name"><a href="{{ product.url }}">{{ t_name | escape }}</a></h3>
+    <p class="tile__meta">
+      <span class="tile__bar" aria-hidden="true">{%- for n in (1..4) -%}{%- assign ns = n | append: '' -%}<span data-step="{{ n }}"{% if t_steps contains ns %} class="is-in"{% endif %}></span>{%- endfor -%}</span>
+      <span>{{ t_meta }}</span>
+    </p>
+    <div class="tile__buy">
+      <p class="tile__price">
+        <span class="tile__now">{% render 'egp', cents: t_v.price %}</span>
+        {%- if t_saving > 0 -%}{%- capture t_save -%}{% render 'egp', cents: t_saving %}{%- endcapture -%}<span class="tile__save">{{ 'pdp2.save' | t: amount: t_save }}</span>{%- endif -%}
+      </p>
+      {%- if t_v.available -%}
+        <product-form class="tile__add">
+          <form method="post" action="{{ routes.cart_add_url }}">
+            <input type="hidden" name="id" value="{{ t_v.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="tile__plus" aria-label="{{ 'cart.add_item' | t: product: t_name | escape }}">{% render 'icon', name: 'plus', class: 'icon--sm' %}</button>
+            <p class="visually-hidden" data-form-error hidden></p>
+          </form>
+        </product-form>
+      {%- endif -%}
+    </div>
+  </div>
+</{{ t_wrap }}>

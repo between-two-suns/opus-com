@@ -1,0 +1,114 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "preset": "sets",
+        "compact": true
+      }
+    },
+    "builder": {
+      "type": "routine-builder",
+      "settings": {}
+    },
+    "bundles": {
+      "type": "bundles",
+      "blocks": {
+        "bundle_1": {
+          "type": "bundle",
+          "settings": {
+            "product": "the-full-ritual"
+          }
+        },
+        "bundle_2": {
+          "type": "bundle",
+          "settings": {
+            "product": "the-clear-protect-trio"
+          }
+        },
+        "bundle_3": {
+          "type": "bundle",
+          "settings": {
+            "product": "clear-protect-duo"
+          }
+        },
+        "bundle_4": {
+          "type": "bundle",
+          "settings": {
+            "product": "the-night-ritual"
+          }
+        },
+        "bundle_5": {
+          "type": "bundle",
+          "settings": {
+            "product": "the-core-duo"
+          }
+        }
+      },
+      "block_order": [
+        "bundle_1",
+        "bundle_2",
+        "bundle_3",
+        "bundle_4",
+        "bundle_5"
+      ],
+      "settings": {
+        "hide_head": true,
+        "tiles": true
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "qa",
+          "settings": {
+            "preset": "start_where"
+          }
+        },
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "set_full_size"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "set_saving"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "preset": "delivery_free"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "preset": "order"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "compact": true,
+        "show_contact": true,
+        "schema": false
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "bundles",
+    "builder",
+    "faq"
+  ]
+}
