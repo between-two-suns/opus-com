@@ -1,0 +1,171 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-orbs",
+      "settings": {}
+    },
+    "routine": {
+      "type": "day-line",
+      "settings": {
+        "show_bundle": false
+      }
+    },
+    "bundles": {
+      "type": "bundles-feature",
+      "settings": {
+        "mate_image": "shopify://shop_images/bts-demo-night-ritual.jpg"
+      }
+    },
+    "reviews_demo": {
+      "type": "reviews-showcase",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "step": 2,
+            "stars": 5,
+            "media": "photo",
+            "title": "Review title, a few words",
+            "text": "Sample text. A real review sits here in the customer's own words: usually two to four sentences about how the product feels, when they use it and what they noticed after a few weeks.",
+            "name": "First name L.",
+            "city": "City",
+            "skin": "Combination skin",
+            "gift": false
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "step": 1,
+            "stars": 5,
+            "media": "none",
+            "title": "A text-only review",
+            "text": "Sample text. A medium review: a few sentences on texture, how it layers with the next step, and whether they would buy it again.",
+            "name": "First name L.",
+            "city": "City",
+            "skin": "Oily skin",
+            "gift": false
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "step": 4,
+            "stars": 5,
+            "media": "video",
+            "title": "A video review",
+            "text": "Sample text. A short review, one or two sentences long.",
+            "name": "First name L.",
+            "city": "City",
+            "skin": "Normal skin",
+            "gift": false
+          }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "step": 3,
+            "stars": 4,
+            "media": "photo",
+            "title": "A gifted review, disclosed",
+            "text": "Sample text. A medium review: a few sentences on texture, how it layers with the next step, and whether they would buy it again.",
+            "name": "First name L.",
+            "city": "City",
+            "skin": "Dry skin",
+            "gift": true
+          }
+        },
+        "r5": {
+          "type": "review",
+          "settings": {
+            "step": 2,
+            "stars": 5,
+            "media": "none",
+            "title": "Another text review",
+            "text": "Sample text. A real review sits here in the customer's own words: usually two to four sentences about how the product feels, when they use it and what they noticed after a few weeks.",
+            "name": "First name L.",
+            "city": "City",
+            "skin": "",
+            "gift": false
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5"
+      ]
+    },
+    "promises": {
+      "type": "promises",
+      "settings": {}
+    },
+    "ingredient_heroes": {
+      "type": "ingredient-heroes",
+      "settings": {}
+    },
+    "editorial": {
+      "type": "editorial-band",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "qa",
+          "settings": {
+            "preset": "start_where"
+          }
+        },
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "preset": "all_four"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "preset": "order"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "preset": "delivery_free"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "preset": "made"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "compact": true,
+        "show_contact": true,
+        "schema": false
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "routine",
+    "bundles",
+    "reviews_demo",
+    "promises",
+    "ingredient_heroes",
+    "editorial",
+    "faq"
+  ]
+}

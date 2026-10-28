@@ -1541,5 +1541,30 @@
     "done_text": "We'll reply by email within one working day (Sunday to Thursday, 9:00–18:00 Egypt time).",
     "done_shop": "Shop the sets",
     "done_finder": "Find your routine in 30 seconds"
+  },
+  "promises": {
+    "eyebrow": "Our promise",
+    "heading": "What you can count on.",
+    "p1_h": "Every ingredient, explained.",
+    "p1_t": "The full list, exactly as printed on the pack, with what each one does in plain words.",
+    "p1_link": "See every ingredient",
+    "p2_h": "Full size, every time.",
+    "p2_t": "Every product in a set is the same full-size bottle sold on its own.",
+    "p2_link": "See the sets",
+    "p3_h": "Made in Egypt.",
+    "p3_t": "Made by Nuu Group for Cosmetics, for skin that lives here.",
+    "p3_link": "Our story",
+    "p4_h": "A real person replies.",
+    "p4_t": "A question about a product or your order? We reply within one working day.",
+    "p4_link": "Ask us"
+  },
+  "reviews_demo": {
+    "sample": "Design preview · sample content, not real reviews",
+    "all": "Read all reviews",
+    "photo": "Customer photo · 4:5",
+    "video": "Customer video · 9:16, up to 30 s",
+    "verified": "Verified buyer",
+    "gift": "Received as a gift",
+    "stars": "{{ count }} out of 5 stars"
   }
 }
