@@ -39,8 +39,7 @@
 -%}
 {%- if keys.size > 0 -%}
   <ul class="v2-who__list" role="list">
-    {%- comment -%} A short visible "For" at the start of the row says what the chips are, without a heading line; no ticks, which read as a tick next to a problem (DECISIONS 258) {%- endcomment -%}
-    <li class="v2-who__lead" aria-hidden="true">{{ 'pdp2.who_short' | t }}</li>
+    {%- comment -%} No ticks: next to a concern they read as "has excess oil ✓"; the "Best for" line above says what the chips are (DECISIONS 258, 260) {%- endcomment -%}
     {%- for k in keys -%}
       {%- if k == 'cleanse' -%}
         {%- assign label = 'pdp2.chip_cleanse' | t -%}

@@ -177,7 +177,7 @@
     "routine": {
       "eyebrow": "The routine",
       "heading": "Four steps. Every climate.",
-      "text": "Reset, clarity, barrier, defense. Each step has its colour — and its place in your day.",
+      "text": "Cleanse, treat, moisturize, protect. Each step has its colour — and its place in your day.",
       "bundle_title": "The full routine · {{ count }} steps",
       "bundle_note": "All four in one tap. The price shown is the sum of each product.",
       "bundle_cta": "Add the full routine",
@@ -281,11 +281,11 @@
       "sets": {
         "full": {
           "name": "The Full Routine",
-          "desc": "Every step, in order: reset, clarity, barrier, defense."
+          "desc": "Every step, in order: cleanse, treat, moisturize, protect."
         },
         "evening": {
           "name": "The Evening Routine",
-          "desc": "Cleanse, serum, moisturise. SPF waits for the morning."
+          "desc": "Cleanse, treat, moisturize. SPF waits for the morning."
         },
         "oil": {
           "name": "Oil-Control Duo",
@@ -293,7 +293,7 @@
         },
         "day": {
           "name": "Day Shield Duo",
-          "desc": "Moisturise, then SPF 50+ as the last step every morning."
+          "desc": "Moisturize, then SPF 50+ as the last step every morning."
         },
         "starter": {
           "name": "Everyday Starter",
@@ -375,8 +375,8 @@
       "am": "morning",
       "pm": "evening",
       "after": "routine.",
-      "lede_am": "First sun: cleanse, treat, moisturise, protect. Four light steps for the day ahead.",
-      "lede_pm": "Second sun: cleanse, treat, moisturise. The sunscreen can rest.",
+      "lede_am": "First sun: cleanse, treat, moisturize, protect. Four light steps for the day ahead.",
+      "lede_pm": "Second sun: cleanse, treat, moisturize. The sunscreen can rest.",
       "switch": "Routine",
       "am_label": "AM",
       "pm_label": "PM",
@@ -920,7 +920,7 @@
     "routine": {
       "eyebrow": "The routine",
       "heading": "A routine, not a cabinet",
-      "text": "Four products. Each has one job, one colour and one place in your day: reset, clarity, barrier, defense — always in that order."
+      "text": "Four products. Each has one job, one colour and one place in your day: cleanse, treat, moisturize, protect — always in that order."
     },
     "made": {
       "eyebrow": "Made in Egypt",
@@ -1146,8 +1146,8 @@
     "separately": "Bought separately",
     "who": {
       "the-full-ritual": "For starting from scratch: the complete morning and night routine in one box.",
-      "the-clear-protect-trio": "For starting with three: cleanse, treat and protect. Want all four? The Full Ritual costs less than adding Barrier later.",
-      "the-night-ritual": "For evenings: cleanse, treat, moisturise. Sunscreen waits for the morning.",
+      "the-clear-protect-trio": "For starting with three: cleanse, treat and protect. Want all four? The Full Ritual costs less than adding the cream later.",
+      "the-night-ritual": "For evenings: cleanse, treat, moisturize. Sunscreen waits for the morning.",
       "clear-protect-duo": "For oil and sun: the serum, and the SPF that finishes every morning.",
       "the-core-duo": "The two-step start: cleanse, then treat.",
       "spf-stock-up": "Already on our SPF? Two tubes, so the morning step never runs out.",
@@ -1253,10 +1253,10 @@
     },
     "notes": {
       "tight": "Only if it doesn't leave your skin feeling tight.",
-      "with_moisturiser": "Best used with a moisturiser.",
-      "not_replace": "Adds hydration, but doesn't replace a moisturiser.",
+      "with_moisturiser": "Best used with a moisturizer.",
+      "not_replace": "Adds hydration, but doesn't replace a moisturizer.",
       "not_acne": "Not a treatment for active acne.",
-      "richer": "Very dry skin may need a richer moisturiser as well.",
+      "richer": "Very dry skin may need a richer moisturizer as well.",
       "spf_tone": "Daily sun protection is an important part of any routine for uneven tone.",
       "patch": "Introduce it slowly and patch test first."
     },
@@ -1275,7 +1275,7 @@
       "tone": "Uneven tone",
       "marks": "Dark spots & marks",
       "dehydration": "Dehydration",
-      "barrier": "Barrier",
+      "barrier": "Barrier support",
       "spf": "Sun protection"
     },
     "complete_title": "Complete your routine",
@@ -1313,7 +1313,7 @@
     "details": "The details",
     "per_step": "Step {{ n }}",
     "who": "Who it’s for",
-    "who_short": "For",
+    "who_short": "Best for",
     "chip_cleanse": "Daily cleansing",
     "inside_eyebrow": "Key ingredients",
     "inside_heading": "What’s inside, and why",
@@ -1338,7 +1338,7 @@
       },
       "zinc-pca": {
         "what": "Zinc salt",
-        "why": "Zinc paired with PCA, a natural part of the skin’s own moisturising factor. A classic in formulas for oily and combination skin, used to help keep shine in check while skin stays comfortable."
+        "why": "Zinc paired with PCA, a natural part of the skin’s own moisturizing factor. A classic in formulas for oily and combination skin, used to help keep shine in check while skin stays comfortable."
       },
       "panthenol": {
         "what": "Pro-vitamin B5",
@@ -1487,7 +1487,7 @@
     "why_2_hydra": "hydrate with the serum",
     "why_3_barrier": "support your barrier with the cream",
     "why_3_hydra": "seal in moisture with the cream",
-    "why_3": "moisturise with the cream",
+    "why_3": "moisturize with the cream",
     "why_4": "protect every morning",
     "and": "and",
     "step_of": "{{ n }} of {{ total }}",

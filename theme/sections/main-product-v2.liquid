@@ -273,7 +273,7 @@
             {%- capture who -%}{% render 'pdp2-concerns', steps: set_steps_csv %}{%- endcapture -%}
             {%- if who != blank -%}
               <div class="v2-who">
-                <p class="v2-who__label visually-hidden">{{ 'pdp2.who' | t }}</p>
+                <p class="v2-who__label">{{ 'pdp2.who_short' | t }}</p>
                 {{ who }}
               </div>
             {%- endif -%}
@@ -286,7 +286,7 @@
             {%- capture who -%}{% render 'pdp2-concerns', step: step %}{%- endcapture -%}
             {%- if who != blank -%}
               <div class="v2-who">
-                <p class="v2-who__label visually-hidden">{{ 'pdp2.who' | t }}</p>
+                <p class="v2-who__label">{{ 'pdp2.who_short' | t }}</p>
                 {{ who }}
               </div>
             {%- endif -%}
