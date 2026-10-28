@@ -80,6 +80,9 @@
     },
     "creators": {
       "type": "creators-reel",
+      "settings": {
+        "show_standins": true
+      },
       "blocks": {
         "p1": {
           "type": "post",

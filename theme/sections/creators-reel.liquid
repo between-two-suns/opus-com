@@ -2,9 +2,10 @@
   "In their routine" (DECISIONS 248): creators' photos and story videos on the home page. Content comes from the
   Creator post entries in admin (Content → Metaobjects → Creator post: photo or video, name, handle, product).
   The section stays hidden on the storefront until there are enough real posts (3 by default, so the row is never
-  half-empty, DECISIONS 258). Before that it shows only in the theme editor and on the preview template
-  /?view=creators: the real posts so far, or else the section's stand-in blocks (photos and two short clips made from
-  our own shoot) under a "Design preview" label.
+  half-empty, DECISIONS 258). Before that it shows only in the theme editor or with "Show on the storefront before
+  then" on (the home page has it on while the design is reviewed, DECISIONS 259; switch off before launch): the real
+  posts so far, or else the section's stand-in blocks (photos and two short clips made from our own shoot) under a
+  "Design preview" label.
   One video plays at a time, silently, looped (DECISIONS 253): on laptops the one under the mouse, else the first in
   view; on phones the one most in view. Photos ease in slowly. Each tile is content only: the creator's
   name and handle and one small product tag (DECISIONS 249: no price or "Add to bag" on creator posts). A tile opens the
@@ -188,7 +189,7 @@
   "name": "Creators",
   "settings": [
     { "type": "range", "id": "min_posts", "min": 1, "max": 6, "step": 1, "default": 3, "label": "Real posts needed before the section shows" },
-    { "type": "checkbox", "id": "show_standins", "default": false, "label": "Show on the storefront before then (preview only)", "info": "Leave off on the home page. The preview template /?view=creators has it on." }
+    { "type": "checkbox", "id": "show_standins", "default": false, "label": "Show on the storefront before then (preview only)", "info": "On for now so the design can be reviewed (DECISIONS 259). Switch off before launch." }
   ],
   "blocks": [
     {
