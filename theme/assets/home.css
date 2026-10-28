@@ -663,6 +663,7 @@ climate-switch[data-active='sun'] .cs__badge[data-fx='sun'], climate-switch[data
 /* On the picture: who made it, then one small glass tag naming the product (the only link) */
 .creel__cap { position: absolute; z-index: 1; inset-inline: 12px; inset-block-end: 12px; display: grid; justify-items: start; gap: 10px; pointer-events: none; }
 .creel__who { display: grid; gap: 1px; color: #fff; text-align: start; text-shadow: 0 1px 12px rgba(0, 0, 0, .25); }
+.creel__who > span { justify-self: start; }  /* the handle reads left to right but sits on the Arabic side */
 .creel__name { font-weight: 700; font-size: 15px; }
 .creel__handle { font-size: 13px; opacity: .85; }
 .creel__tag { pointer-events: auto; display: inline-flex; align-items: center; gap: 7px; max-inline-size: 100%; min-block-size: 34px; padding: 0 10px 0 9px; border-radius: 99px; background: rgba(255, 255, 255, .2); color: #fff; font-size: 13px; font-weight: 650; text-decoration: none; -webkit-backdrop-filter: blur(12px) saturate(1.4); backdrop-filter: blur(12px) saturate(1.4); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28); transition: background var(--dur) var(--ease-out); }

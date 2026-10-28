@@ -25,7 +25,7 @@
     {%- endif -%}
   </button>
   <div class="creel__cap">
-    <span class="creel__who"><span class="creel__name">{{ name | escape }}</span>{% if handle != blank %}<span class="creel__handle">{{ handle | escape }}</span>{% endif %}</span>
+    <span class="creel__who"><span class="creel__name">{{ name | escape }}</span>{% if handle != blank %}<span class="creel__handle" dir="ltr">{{ handle | escape }}</span>{% endif %}</span>
     {%- if product.id -%}
       <a class="creel__tag" href="{{ product.url }}"><span class="creel__dot" aria-hidden="true"></span><span class="creel__tagname">{{ product.title | escape }}</span>{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
     {%- endif -%}

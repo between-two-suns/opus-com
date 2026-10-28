@@ -78,16 +78,69 @@
         "schema": false
       }
     },
-    "reviews": {
-      "type": "reviews-home",
-      "settings": {}
+    "creators": {
+      "type": "creators-reel",
+      "blocks": {
+        "p1": {
+          "type": "post",
+          "settings": {
+            "video": "shopify://files/videos/bts-standin-serum.mp4",
+            "name": "Creator name",
+            "handle": "@handle",
+            "product": "clarity-serum"
+          }
+        },
+        "p2": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/bts-daily-reset-cleanser-in-hand.jpg",
+            "name": "Creator name",
+            "handle": "@handle",
+            "product": "daily-reset-cleanser"
+          }
+        },
+        "p3": {
+          "type": "post",
+          "settings": {
+            "video": "shopify://files/videos/bts-standin-barrier.mp4",
+            "name": "Creator name",
+            "handle": "@handle",
+            "product": "daily-barrier-moisturizing-cream"
+          }
+        },
+        "p4": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/bts-daily-defense-sunscreen-spf-50-application.jpg",
+            "name": "Creator name",
+            "handle": "@handle",
+            "product": "daily-defense-sunscreen-spf-50"
+          }
+        },
+        "p5": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/bts-clarity-serum-application.jpg",
+            "name": "Creator name",
+            "handle": "@handle",
+            "product": "clarity-serum"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ]
     }
   },
   "order": [
     "hero",
     "routine",
     "bundles",
-    "reviews",
+    "creators",
     "climate",
     "ingredient_heroes",
     "editorial",
