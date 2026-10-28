@@ -170,12 +170,9 @@
             <span class="t-subheading">{{ 'cart.subtotal' | t }}</span>
             <span class="cart-totals__subtotal">{% render 'egp', cents: cart.total_price %}</span>
           </div>
-          <p class="cart-note-line">
-            {%- if cart.taxes_included -%}{{ 'cart.taxes_included' | t }}{%- else -%}{{ 'cart.taxes_excluded' | t }}{%- endif %}
-            {% if settings.shipping_note != blank %}{{ settings.shipping_note | escape }}{% else %}{{ 'cart.shipping_at_checkout' | t }}{% endif -%}
-          </p>
+          <p class="cart-note-line">{% render 'cart-ship-note' %}</p>
           {%- if settings.show_cod -%}
-            <p class="cart-note-line">{% render 'icon', name: 'cash', class: 'icon--sm' %} {{ 'cart.cod_available' | t }}</p>
+            <p class="cart-note-line cart-note-line--icon">{% render 'icon', name: 'cash', class: 'icon--sm' %}<span>{{ 'cart.cod_available' | t }}</span></p>
           {%- endif -%}
           <button type="submit" name="checkout" class="btn btn--checkout u-mt-s">
             <span class="btn--checkout__label">{% render 'icon', name: 'lock', class: 'icon--sm' %}{{ 'cart.checkout' | t }}</span>

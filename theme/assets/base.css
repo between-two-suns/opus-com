@@ -578,6 +578,8 @@ html.has-open-dialog { overflow: hidden; }
 .cart-totals__row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .cart-totals__subtotal { font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .cart-note-line { font-size: 13px; color: var(--c-muted); }
+.cart-note-line--icon { display: flex; align-items: center; gap: 6px; }
+.cart-note-line--icon .icon { flex: none; }
 .cart-upsell { margin-block-start: 20px; padding: 16px; border-radius: var(--radius-m); background: var(--c-paper); display: grid; gap: 12px; }
 .cart-upsell__item { display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center; }
 .cart-upsell__img { inline-size: 52px; block-size: 64px; border-radius: 10px; background: var(--sku-tint); display: grid; place-items: center; }

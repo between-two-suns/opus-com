@@ -101,6 +101,37 @@ document.addEventListener('close', (event) => {
   if (!$('dialog[open]')) document.documentElement.classList.remove('has-open-dialog');
 }, true);
 
+/* Bag sheet (phones): its grab handle works. Pull down from the top of the sheet, or from the top of the list when it's
+   scrolled to the start, and let go past 90px to close (DECISIONS 263). */
+(() => {
+  const phone = window.matchMedia('(max-width: 749px)');
+  let sheet = null, y0 = null, d = 0;
+  document.addEventListener('touchstart', (e) => {
+    sheet = e.target.closest?.('#CartDrawer[open]');
+    if (!sheet || !phone.matches) { sheet = null; return; }
+    const body = sheet.querySelector('.drawer__body');
+    const fromHead = !!e.target.closest('.drawer__head');
+    const fromTop = body?.contains(e.target) && body.scrollTop <= 0 && !e.target.closest('.cart-upsell > .cart-lines, quantity-input');
+    if (!fromHead && !fromTop) { sheet = null; return; }
+    y0 = e.touches[0].clientY; d = 0;
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    if (!sheet || y0 == null) return;
+    d = Math.max(0, e.touches[0].clientY - y0);
+    sheet.style.transition = 'none';
+    sheet.style.transform = d ? `translateY(${d}px)` : '';
+  }, { passive: true });
+  const end = () => {
+    if (!sheet || y0 == null) return;
+    const s = sheet;
+    s.style.transition = ''; s.style.transform = '';
+    if (d > 90) s.close();
+    sheet = null; y0 = null; d = 0;
+  };
+  document.addEventListener('touchend', end);
+  document.addEventListener('touchcancel', end);
+})();
+
 /* ---------- Header ---------- */
 class SiteHeader extends HTMLElement {
   connectedCallback() {

@@ -50,7 +50,7 @@
               <span>{{ 'cart.subtotal' | t }}</span>
               <span class="cart-totals__subtotal">{% render 'egp', cents: cart.total_price %}</span>
             </div>
-            <p class="cart-note-line">{% if cart.taxes_included %}{{ 'cart.taxes_included' | t }}{% else %}{{ 'cart.taxes_excluded' | t }}{% endif %} {% if settings.shipping_note != blank %}{{ settings.shipping_note | escape }}{% else %}{{ 'cart.shipping_at_checkout' | t }}{% endif %}</p>
+            <p class="cart-note-line">{% render 'cart-ship-note' %}</p>
           </div>
           <details class="cart-note"{% if cart.note != blank %} open{% endif %}>
             <summary>{% render 'icon', name: 'chat', class: 'icon--sm' %}<span>{{ 'cart.add_note' | t }}</span>{% render 'icon', name: 'plus', class: 'icon--sm cart-note__plus' %}</summary>

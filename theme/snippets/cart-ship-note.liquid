@@ -1,0 +1,21 @@
+{%- comment -%}
+  The line under the subtotal (bag drawer and bag page): taxes, then delivery. Once the order reaches the free-delivery
+  threshold it says so, with the remote-area fee if there is one, instead of "calculated at checkout" (DECISIONS 263).
+{%- endcomment -%}
+{%- liquid
+  assign sn_threshold = settings.free_shipping_threshold | default: 0 | times: 100
+  assign sn_remote = settings.remote_fee_over | default: 0 | times: 100
+-%}
+{%- if cart.taxes_included -%}{{ 'cart.taxes_included' | t }}{%- else -%}{{ 'cart.taxes_excluded' | t }}{%- endif %}
+{% if sn_threshold > 0 and cart.total_price >= sn_threshold -%}
+  {%- if sn_remote > 0 -%}
+    {%- capture sn_fee -%}{% render 'egp', cents: sn_remote %}{%- endcapture -%}
+    {{ 'cart.shipping_free_remote' | t: amount: sn_fee }}
+  {%- else -%}
+    {{ 'cart.shipping_free' | t }}
+  {%- endif -%}
+{%- elsif settings.shipping_note != blank -%}
+  {{ settings.shipping_note | escape }}
+{%- else -%}
+  {{ 'cart.shipping_at_checkout' | t }}
+{%- endif -%}
