@@ -498,7 +498,7 @@
     "taxes_excluded": "تُحسب الضرائب عند إتمام الطلب.",
     "shipping_at_checkout": "تُحسب تكلفة الشحن عند إتمام الطلب.",
     "shipping_free": "التوصيل العادي مجاني.",
-    "shipping_free_remote": "التوصيل العادي مجاني، والمناطق النائية {{ amount }}.",
+    "shipping_free_remote": "المناطق النائية: توصيل {{ amount }}.",
     "cod_available": "الدفع عند الاستلام متاح عند إتمام الطلب.",
     "checkout": "إتمام الطلب",
     "view_cart": "عرض السلة",

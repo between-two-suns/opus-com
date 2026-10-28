@@ -1,6 +1,7 @@
 {%- comment -%}
   The line under the subtotal (bag drawer and bag page): taxes, then delivery. Once the order reaches the free-delivery
-  threshold it says so, with the remote-area fee if there is one, instead of "calculated at checkout" (DECISIONS 263).
+  threshold the meter above already says delivery is free, so this line only names the remote-area fee, if there is one,
+  instead of "calculated at checkout" (DECISIONS 263, 264: one short line, no orphaned "EGP 50").
 {%- endcomment -%}
 {%- liquid
   assign sn_threshold = settings.free_shipping_threshold | default: 0 | times: 100

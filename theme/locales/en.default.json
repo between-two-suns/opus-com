@@ -498,7 +498,7 @@
     "taxes_excluded": "Taxes calculated at checkout.",
     "shipping_at_checkout": "Shipping calculated at checkout.",
     "shipping_free": "Standard delivery is free.",
-    "shipping_free_remote": "Standard delivery is free; remote areas {{ amount }}.",
+    "shipping_free_remote": "Remote areas: {{ amount }} delivery.",
     "cod_available": "Cash on delivery available at checkout.",
     "checkout": "Check out",
     "view_cart": "View bag",
