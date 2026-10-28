@@ -1019,4 +1019,4 @@ Each entry: decision · why · reversibility. Newest last.
     - **"What's today like?" (climate switch) stays** on the owner's call, to be reviewed after a few rounds.
     - **The owner's test reviews** (16, 4 per product, imported, not verified buyers) are on the store now. They make the review cards visible on staging. They are store data, so they show on every theme. **They must be deleted in Judge.me before launch** (no invented reviews).
     - **Not verifiable here:** the test browser cannot decode H.264 video, so video playback on staging must be checked on a real phone. The viewer now loads its copied video explicitly before playing.
-    - Theme-check 0, flows (below), spacing 178/178 EN + AR, staging checksums match, checked on staging laptop + phone EN/AR; live theme unchanged.
+    - Theme-check 0, flows 404/404, spacing 178/178 EN + AR, staging checksums match, checked on staging laptop + phone EN/AR; live theme unchanged.
