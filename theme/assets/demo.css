@@ -1,0 +1,57 @@
+/* Demo switch (DECISIONS 265). `?demo=1` on any link shows the proposed bag and menu changes for the rest of the visit,
+   `?demo=off` goes back. Normally nothing here shows. Remove this file, demo.js and every `demo-on` / `demo-off` block
+   once the owner has decided. */
+html:not(.is-demo) .demo-on { display: none !important; }
+html.is-demo .demo-off { display: none !important; }
+
+/* badge: which version you're looking at */
+.demo-badge { position: fixed; z-index: 130; inset-inline-start: 10px; inset-block-end: calc(var(--dock-h, 0px) + 10px); display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 12px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 12px; font-weight: 650; box-shadow: 0 10px 24px -12px rgba(32, 35, 58, .6); }
+.demo-badge a { padding: 4px 10px; border-radius: 99px; background: rgba(255, 255, 255, .16); color: #fff; text-decoration: none; }
+
+/* bag: the cash-on-delivery icon on the same line as its text */
+html.is-demo .cart-note-line--icon { display: flex; align-items: center; gap: 6px; }
+html.is-demo .cart-note-line--icon .icon { flex: none; }
+/* bag page on phones: the pinned checkout takes the bottom bar's place */
+@media (max-width: 989px) {
+  html.is-demo body.template-cart:has(.cart-page__bar) { --dock-h: env(safe-area-inset-bottom); }
+  html.is-demo body.template-cart:has(.cart-page__bar) .dock { display: none; }
+}
+
+/* The Full Ritual card (phone menu, empty bag, Shop menu) */
+.demo-ritual { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 10px 14px 10px 10px; border-radius: 20px; text-decoration: none; color: var(--c-ink);
+  background: linear-gradient(110deg, color-mix(in srgb, var(--c-step-1) 28%, #fff), color-mix(in srgb, var(--c-step-2) 28%, #fff) 35%, color-mix(in srgb, var(--c-step-3) 28%, #fff) 68%, color-mix(in srgb, var(--c-step-4) 32%, #fff)); }
+.demo-ritual img { inline-size: 88px; block-size: 88px; object-fit: cover; border-radius: 14px; display: block; }
+.demo-ritual strong { display: block; font-size: 17px; line-height: 1.2; }
+.demo-ritual em { display: block; margin-block-start: 2px; font-style: normal; font-size: 12.5px; line-height: 1.35; color: color-mix(in srgb, var(--c-ink) 72%, transparent); }
+.demo-ritual__price .price { display: grid; justify-items: end; font-size: 15px; font-weight: 700; white-space: nowrap; }
+.demo-pick { display: inline-block; margin-block-end: 4px; padding: 3px 8px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+:lang(ar) .demo-pick { letter-spacing: 0; }
+.demo-ritual--mega { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 8px; }
+.demo-ritual--mega img { inline-size: 64px; block-size: 64px; border-radius: 12px; }
+.demo-ritual--mega strong { font-size: 15px; }
+.demo-ritual--mega .demo-ritual__price .price { justify-items: start; font-size: 13px; }
+
+/* phone menu: Shop opens in place */
+.demo-menu { display: grid; gap: 4px; }
+.demo-menu__shop > summary { list-style: none; cursor: pointer; }
+.demo-menu__shop > summary::-webkit-details-marker { display: none; }
+.demo-menu__chev { inline-size: 20px; block-size: 20px; transition: transform var(--dur) var(--ease-out); }
+.demo-menu__shop[open] .demo-menu__chev { transform: rotate(180deg); }
+.demo-menu__shop[open] > summary { border-block-end-color: transparent; }
+.demo-menu__panel { display: grid; gap: 14px; padding: 4px 0 20px; border-block-end: 1px solid var(--c-line); }
+.demo-menu__row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.demo-menu__p { display: grid; gap: 4px; text-decoration: none; color: var(--c-ink); font-size: 13px; font-weight: 650; line-height: 1.2; }
+.demo-menu__p img { inline-size: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 14px; display: block; background: var(--sku-tint); }
+.demo-menu__p small { display: flex; align-items: center; gap: 5px; margin-block-start: 2px; font-size: 10.5px; font-weight: 700; letter-spacing: .08em; color: var(--c-muted); }
+.demo-dot { inline-size: 7px; block-size: 7px; border-radius: 50%; background: var(--sku); }
+.demo-menu__price { font-size: 12px; font-weight: 600; color: var(--c-muted); }
+.demo-menu__all { justify-self: start; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--c-ink); text-underline-offset: 4px; }
+
+/* empty bag */
+.demo-empty { display: grid; gap: 16px; padding-block: 8px 20px; }
+.demo-empty > p { margin: 0; }
+.demo-empty__tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.demo-empty__tile { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 10px; align-items: center; padding: 8px; border-radius: 16px; background: var(--sku-tint); text-decoration: none; color: var(--c-ink); font-size: 13.5px; font-weight: 650; line-height: 1.25; }
+.demo-empty__tile img { inline-size: 56px; block-size: 56px; object-fit: cover; border-radius: 12px; display: block; }
+.demo-empty__price { display: block; margin-block-start: 3px; font-size: 12px; font-weight: 600; color: var(--c-muted); }
+.demo-empty__quiz { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; border-radius: 16px; background: color-mix(in srgb, var(--c-step-2) 22%, #fff); text-decoration: none; color: var(--c-ink); font-weight: 650; font-size: 14.5px; }

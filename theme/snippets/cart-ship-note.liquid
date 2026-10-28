@@ -1,22 +1,29 @@
 {%- comment -%}
-  The line under the subtotal (bag drawer and bag page): taxes, then delivery. Once the order reaches the free-delivery
-  threshold the meter above already says delivery is free, so this line only names the remote-area fee, if there is one,
-  instead of "calculated at checkout" (DECISIONS 263, 264: one short line, no orphaned "EGP 50").
+  The line under the subtotal (bag drawer and bag page): taxes, then delivery.
+  Demo only (DECISIONS 265, `?demo=1`): once the order reaches the free-delivery threshold, the bar above already says
+  delivery is free, so this line names only the remote-area fee instead of "calculated at checkout".
 {%- endcomment -%}
 {%- liquid
   assign sn_threshold = settings.free_shipping_threshold | default: 0 | times: 100
   assign sn_remote = settings.remote_fee_over | default: 0 | times: 100
+  capture sn_old
+    if settings.shipping_note != blank
+      echo settings.shipping_note | escape
+    else
+      echo 'cart.shipping_at_checkout' | t
+    endif
+  endcapture
 -%}
 {%- if cart.taxes_included -%}{{ 'cart.taxes_included' | t }}{%- else -%}{{ 'cart.taxes_excluded' | t }}{%- endif %}
 {% if sn_threshold > 0 and cart.total_price >= sn_threshold -%}
+  <span class="demo-off">{{ sn_old }}</span><span class="demo-on">
   {%- if sn_remote > 0 -%}
     {%- capture sn_fee -%}{% render 'egp', cents: sn_remote %}{%- endcapture -%}
     {{ 'cart.shipping_free_remote' | t: amount: sn_fee }}
   {%- else -%}
     {{ 'cart.shipping_free' | t }}
   {%- endif -%}
-{%- elsif settings.shipping_note != blank -%}
-  {{ settings.shipping_note | escape }}
+  </span>
 {%- else -%}
-  {{ 'cart.shipping_at_checkout' | t }}
+  {{ sn_old }}
 {%- endif -%}

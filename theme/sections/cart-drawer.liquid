@@ -48,10 +48,34 @@
 
     <div class="drawer__body">
       {%- if cart.item_count == 0 -%}
-        <div class="cart-empty">
+        <div class="cart-empty demo-off">
           <p class="t-display-s">{{ 'cart.empty_title' | t }}</p>
           <p class="t-muted">{{ 'cart.empty_text' | t }}</p>
           <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.shop_routine' | t }}</a>
+        </div>
+        {%- comment -%} Demo only (DECISIONS 265, `?demo=1`): the empty bag offers the routine, like the empty bag page (160) {%- endcomment -%}
+        <div class="demo-on demo-empty">
+          <p class="t-display-s">{{ 'cart.empty_title' | t }}</p>
+          <p class="t-muted">{{ 'demo.empty_lead' | t }}</p>
+          {%- assign demo_ritual = all_products['the-full-ritual'] -%}
+          {%- if demo_ritual.id -%}
+            <a class="demo-ritual" href="{{ demo_ritual.url }}">
+              {%- if demo_ritual.featured_media -%}{{ demo_ritual.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '88px', alt: '' }}{%- endif -%}
+              <span><span class="demo-pick">{{ 'demo.pick' | t }}</span><strong>{{ demo_ritual.title | escape }}</strong><em>{{ 'demo.all_four' | t }}</em></span>
+              <span class="demo-ritual__price">{% render 'price', product: demo_ritual %}</span>
+            </a>
+          {%- endif -%}
+          <div class="demo-empty__tiles">
+            {%- for h in step_handles offset: 1 -%}{%- assign product = all_products[h] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
+              {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}{%- assign studio = images[studio_key] -%}
+              {%- assign short_key = 'demo.short.' | append: product.handle -%}
+              <a class="demo-empty__tile" href="{{ product.url }}" data-step="{{ forloop.index }}">
+                {%- if studio != blank -%}{{ studio | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '56px', alt: '' }}{%- elsif product.featured_media -%}{{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '56px', alt: '' }}{%- endif -%}
+                <span>0{{ forloop.index }} · {{ short_key | t }}{%- render 'price', product: product, class: 'demo-empty__price' -%}</span>
+              </a>
+            {%- endfor -%}
+          </div>
+          <a class="demo-empty__quiz" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}"><span>{{ 'demo.finder' | t }}</span>{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
         </div>
       {%- else -%}
         {%- comment -%} Routine progress: which of the four steps are in the bag {%- endcomment -%}

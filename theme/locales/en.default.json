@@ -65,7 +65,8 @@
   "search": {
     "title": "Search",
     "label": "Search the store",
-    "placeholder": "Search products or ingredients",
+    "placeholder": "Search products, ingredients, concerns",
+    "placeholder_demo": "Search products or ingredients",
     "popular": "Popular",
     "popular_terms": "Niacinamide, SPF, Oily skin, Cleanser, Dark spots",
     "no_results": "No results for “{{ terms }}”.",
@@ -512,7 +513,8 @@
     "tier_items": "{{ count }} items",
     "tier_items_plus": "{{ count }}+ items",
     "ship_remaining": "{{ amount }} away from free delivery",
-    "ship_unlocked": "Free standard delivery unlocked",
+    "ship_unlocked": "Free delivery unlocked",
+    "ship_unlocked_demo": "Free standard delivery unlocked",
     "ship_label": "Progress to free delivery",
     "added_short": "Added",
     "routine_count": "{{ count }} of 4 steps",
@@ -1602,6 +1604,21 @@
       "s2_d": "We reply with how to send it back.",
       "s3_t": "You're refunded",
       "s3_d": "Once it reaches us and is checked. Your bank may take a few extra days."
+    }
+  },
+  "demo": {
+    "on": "Demo: new bag & menu",
+    "off": "Turn off",
+    "shop_all": "Shop all products",
+    "pick": "BTS Pick",
+    "all_four": "All four steps, morning + night",
+    "empty_lead": "Start with the whole routine, or one step.",
+    "finder": "Not sure? Find your routine in 30 seconds",
+    "short": {
+      "daily-reset-cleanser": "Cleanser",
+      "clarity-serum": "Serum",
+      "daily-barrier-moisturizing-cream": "Cream",
+      "daily-defense-sunscreen-spf-50": "Sunscreen"
     }
   }
 }

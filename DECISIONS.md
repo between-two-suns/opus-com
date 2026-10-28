@@ -1118,3 +1118,18 @@ Each entry: decision · why · reversibility. Newest last.
       - Hiding the bottom bar while scrolling: the owner disliked things moving on scroll (184), and the dock/buy-bar swap caused flicker before (96).
       - Replacing Creators in the laptop Shop menu: it was put there on purpose (104); a Full Ritual card would be added beside it instead.
     - **Still proposed, compatible with earlier decisions (owner to choose):** phone menu with Shop opening in place (four products in a slim row, The Full Ritual, Shop all), keeping Home and adding Ingredients; a Full Ritual card in the laptop Shop menu, Creators kept; the empty bag with The Full Ritual, the four steps and the finder link (like the empty bag page, 160); product photos for the four sets that have none.
+265. **Owner: "I don't want any of the new things on staging, I need all changes to be on a demo so we can compare."** Staging is back to exactly what it was before 263 (base.css, pages.css and theme.js byte-identical to commit b3eea85; every page shows the old wording, labels and behaviour). Every change from 263–264 plus the three proposals still standing after the 264 re-check now sit behind a **demo switch**:
+    - **How:** add `?demo=1` to any staging link; the demo stays on for that browser tab while browsing, with a small "Demo: new bag & menu · Turn off" badge. `?demo=off` (or the badge's button) goes back. Mechanism: a few lines in layout/theme.liquid set `html.is-demo` from sessionStorage; assets/demo.css shows `demo-on` blocks and hides `demo-off` ones; assets/demo.js holds the demo behaviours. Without the switch none of it shows.
+    - **In the demo:**
+      1. Bag delivery line: once free delivery is reached, "Taxes included. Remote areas: EGP 50 delivery." (old: "Shipping calculated at checkout."); the meter says "Free standard delivery unlocked".
+      2. Cash-on-delivery icon on the same line as its text.
+      3. Bag sheet closes with a downward pull on phones.
+      4. Bottom bar's second item reads "Sets" instead of "Routine".
+      5. Bag page on phones: the pinned checkout takes the bottom bar's place.
+      6. Shorter search hint ("Search products or ingredients").
+      7. Phone menu: links first; Shop opens in place (open when the menu opens) with the four steps in a slim row, The Full Ritual (BTS Pick) and "Shop all products"; Home kept; Ingredients added before About.
+      8. Laptop Shop menu: a The Full Ritual card above Creators (Creators kept).
+      9. Empty bag: The Full Ritual, the four steps as tiles with prices, and "Find your routine in 30 seconds".
+    - Not in the demo: product photos for the four sets without one (store data, it would change checkout for everyone); waiting for the owner.
+    - **Before launch:** keep the chosen items as normal code, then delete assets/demo.css, assets/demo.js, the switch lines in layout/theme.liquid, the badge, and every `demo-on` / `demo-off` block.
+    - Checked: theme check 0; flows 404/404 (normal mode); local phone + laptop, EN + AR: normal mode shows the old wording and behaviour, demo mode shows all nine; staging (light check, Shopify's bot check limited test traffic): `?demo=1` turns it on (badge, "Sets", new menu, short search hint), `?demo=off` turns it off. 13 files match on staging; the live home template unchanged.

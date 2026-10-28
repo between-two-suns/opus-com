@@ -293,11 +293,6 @@
 .cart-page__bar { display: none; }
 .cart-page__bar { transition: translate var(--dur) var(--ease-out), opacity var(--dur); }
 .cart-page__bar.is-away { translate: 0 calc(100% + 30px); opacity: 0; pointer-events: none; }
-/* phones: on a bag with items the pinned checkout takes the dock's place, so two bars never stack (DECISIONS 263) */
-@media (max-width: 989px) {
-  .template-cart:has(.cart-page__bar) { --dock-h: env(safe-area-inset-bottom); }
-  .template-cart:has(.cart-page__bar) .dock { display: none; }
-}
 @media (max-width: 989px) {
   .cart-page { padding-block-end: 96px; }
   .cart-page__bar { position: fixed; z-index: 45; inset-inline: 10px; inset-block-end: calc(var(--dock-h, 0px) + 10px); display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 10px 10px 18px; border-radius: 999px; background: #fff; box-shadow: 0 0 0 1px rgba(32, 35, 58, .06), 0 20px 40px -18px rgba(32, 35, 58, .5); }

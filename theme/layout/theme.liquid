@@ -76,6 +76,7 @@
     </style>
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'demo.css' | asset_url | stylesheet_tag }}
     {%- liquid
       assign tpl = template.name
       assign sfx = template.suffix | default: ''
@@ -95,6 +96,13 @@
 
     <script>
       document.documentElement.classList.replace('no-js', 'js');
+      // Demo switch (DECISIONS 265): ?demo=1 turns the proposed bag and menu changes on for this visit, ?demo=off turns them off
+      try {
+        const dq = location.search;
+        if (/[?&]demo=off\b/.test(dq)) sessionStorage.removeItem('bts:demo');
+        else if (/[?&]demo=1\b/.test(dq)) sessionStorage.setItem('bts:demo', '1');
+        if (sessionStorage.getItem('bts:demo')) document.documentElement.classList.add('is-demo');
+      } catch (e) {}
       window.BTS = {
         routes: {
           root: {{ routes.root_url | json }},
@@ -147,6 +155,7 @@
       };
     </script>
     <script src="{{ 'theme.js' | asset_url }}" type="module"></script>
+    <script src="{{ 'demo.js' | asset_url }}" type="module"></script>
 
     {{ content_for_header }}
   </head>
@@ -164,6 +173,7 @@
 
     {%- section 'cart-drawer' -%}
     {%- render 'bottom-dock' -%}
+    <div class="demo-on demo-badge" role="status">{{ 'demo.on' | t }} <a href="?demo=off">{{ 'demo.off' | t }}</a></div>
     {%- render 'welcome-offer' -%}
     <template id="BtsMark">{{ 'bts-icon.svg' | inline_asset_content }}</template>
 
