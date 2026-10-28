@@ -102,6 +102,15 @@
         this.lead();
       }, { threshold: [0, 0.25, 0.55, 0.8, 1] });
       this.items.forEach((it) => this.io.observe(it));
+      // TEMPORARY (DECISIONS 254, remove before launch): ?videocheck shows each row video's state, to confirm playback in desktop Safari
+      if (/[?&]videocheck/.test(location.search)) this.items.forEach((it) => {
+        const v = it.querySelector('.creel__media video'); if (!v) return;
+        const tag = document.createElement('span');
+        tag.style.cssText = 'position:absolute;z-index:3;inset-block-start:12px;inset-inline-start:12px;padding:4px 8px;border-radius:6px;background:#000;color:#fff;font:600 12px/1.2 monospace;pointer-events:none';
+        it.append(tag);
+        const show = () => { tag.textContent = v.error ? `can't play (error ${v.error.code})` : `${v.paused ? 'paused' : 'playing'} ${v.currentTime.toFixed(1)}s · ready ${v.readyState}`; };
+        ['timeupdate', 'play', 'pause', 'error', 'loadeddata', 'stalled'].forEach((ev) => v.addEventListener(ev, show)); setInterval(show, 500); show();
+      });
       if (!coarse) this.items.forEach((it) => {
         it.addEventListener('pointerenter', () => { this.hover = it; this.lead(); });
         it.addEventListener('pointerleave', () => { if (this.hover === it) { this.hover = null; this.lead(); } });
