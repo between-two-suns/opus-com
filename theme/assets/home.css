@@ -653,7 +653,9 @@ climate-switch[data-active='sun'] .cs__badge[data-fx='sun'], climate-switch[data
 .creel__row::-webkit-scrollbar { display: none; }
 @media (min-width: 990px) { .creel__row { grid-auto-columns: calc((100% - 2 * var(--gutter) - 3 * 14px) / 4.25); } }
 .creel__item { position: relative; scroll-snap-align: start; border-radius: var(--radius-l); overflow: hidden; background: var(--sku, var(--c-paper)); box-shadow: 0 30px 60px -44px rgba(32, 35, 58, .55); }
-.creel__media { position: relative; display: block; inline-size: 100%; aspect-ratio: 9 / 16; padding: 0; border: 0; overflow: hidden; background: var(--sku, var(--c-paper)); cursor: zoom-in; }
+.creel__media { position: relative; display: block; inline-size: 100%; aspect-ratio: 9 / 16; overflow: hidden; background: var(--sku, var(--c-paper)); }
+.creel__open { position: absolute; z-index: 1; inset: 0; padding: 0; border: 0; border-radius: inherit; background: transparent; cursor: zoom-in; }
+.creel__open:focus-visible { outline: 2px solid #fff; outline-offset: -5px; }
 .creel__media img, .creel__media video, .creel__frame img, .creel__frame video { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
 .creel__vid { scale: 1.02; }  /* hides a hairline seam at the frame edge some phone exports carry */
 .creel__img { transform: scale(1); transition: transform 9s linear; }
@@ -661,7 +663,7 @@ climate-switch[data-active='sun'] .cs__badge[data-fx='sun'], climate-switch[data
 @media (prefers-reduced-motion: reduce) { .creel__img { transition: none; } .creel__item.is-in .creel__img { transform: none; } }
 .creel__media::after { content: ''; position: absolute; inset: 50% 0 0; background: linear-gradient(to top, rgba(14, 16, 28, .7), transparent); pointer-events: none; }
 /* On the picture: who made it, then one small glass tag naming the product (the only link) */
-.creel__cap { position: absolute; z-index: 1; inset-inline: 12px; inset-block-end: 12px; display: grid; justify-items: start; gap: 10px; pointer-events: none; }
+.creel__cap { position: absolute; z-index: 2; inset-inline: 12px; inset-block-end: 12px; display: grid; justify-items: start; gap: 10px; pointer-events: none; }
 .creel__who { display: grid; gap: 1px; color: #fff; text-align: start; text-shadow: 0 1px 12px rgba(0, 0, 0, .25); }
 .creel__who > span { justify-self: start; }  /* the handle reads left to right but sits on the Arabic side */
 .creel__name { font-weight: 700; font-size: 15px; }

@@ -1,7 +1,8 @@
 {%- comment -%}
   One creator post (DECISIONS 249): content, not a shop card. A tall 9:16 tile (photo with a slow zoom, or a silent
   looping video) with the creator's name and handle on it and one small tag naming the product, linking to its page.
-  No price, no "Add to bag". The tile opens the post full screen as a story.
+  No price, no "Add to bag". The tile opens the post full screen as a story (DECISIONS 251: the button covers the
+  picture rather than holding it, so Safari draws videos).
   Params: media (image or video object), name, handle, product, index
 {%- endcomment -%}
 {%- liquid
@@ -15,7 +16,8 @@
   endif
 -%}
 <li class="creel__item"{% if ct_step > 0 %} data-step="{{ ct_step }}"{% endif %} data-index="{{ index }}">
-  <button type="button" class="creel__media{% if ct_video %} creel__media--video{% endif %}" data-open aria-label="{{ 'creators_reel.open' | t: name: name }}">
+  {%- comment -%} The picture sits in a plain box with the tap target over it: Safari does not draw a video inside a <button> {%- endcomment -%}
+  <div class="creel__media{% if ct_video %} creel__media--video{% endif %}">
     {%- if ct_video -%}
       {{ media | video_tag: autoplay: false, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata', image_size: '720x', class: 'creel__vid' }}
       <span class="creel__sound" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></span>
@@ -23,7 +25,8 @@
       {%- assign ct_alt = media.alt | default: '' -%}
       {{ media | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 990px) 22vw, 60vw', alt: ct_alt, class: 'creel__img' }}
     {%- endif -%}
-  </button>
+  </div>
+  <button type="button" class="creel__open" data-open aria-label="{{ 'creators_reel.open' | t: name: name }}"></button>
   <div class="creel__cap">
     <span class="creel__who"><span class="creel__name">{{ name | escape }}</span>{% if handle != blank %}<span class="creel__handle" dir="ltr">{{ handle | escape }}</span>{% endif %}</span>
     {%- if product.id -%}

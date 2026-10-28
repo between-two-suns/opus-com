@@ -83,7 +83,7 @@
       this.io = new IntersectionObserver((es) => es.forEach((e) => {
         e.target.classList.toggle('is-in', e.isIntersecting);
         const v = e.target.querySelector('video');
-        if (v && !still) e.isIntersecting ? v.play().catch(() => {}) : v.pause();
+        if (v && !still) { v.muted = true; e.isIntersecting ? v.play().catch(() => {}) : v.pause(); }  // Safari autoplays only when muted is set in code
       }), { threshold: 0.55 });
       this.items.forEach((it) => this.io.observe(it));
       this.addEventListener('click', (e) => {
