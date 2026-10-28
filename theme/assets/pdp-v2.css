@@ -235,8 +235,6 @@
 /* Delivery estimate rides under the free-delivery bar; "Ask us" is a quiet link */
 .v2-assure__sub { font-size: 13.5px; font-weight: 500; color: var(--c-muted); }
 .v2-assure__ship.is-done .v2-assure__sub { color: var(--c-muted); }
-.v2-ask { margin: -4px 0 0; font-size: 13.5px; color: var(--c-muted); }
-.v2-ask a { color: var(--c-ink); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
 /* The stock-up is already in the buy box; the routine strip keeps only The Full Ritual card */
 .template-product:has(.pdp--v2) .routine-strip__offers .offer-wrap:has(.offer[data-handle$='-stock-up']) { display: none; }
 /* Shorter texture photo on phones, so the ingredient cards start sooner */

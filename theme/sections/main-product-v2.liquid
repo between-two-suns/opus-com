@@ -390,7 +390,7 @@
               <li>{% render 'icon', name: 'cash', class: 'icon--sm' %}<span>{{ 'product.cod' | t }}</span></li>
             {%- endif -%}
           </ul>
-          <p class="v2-ask">{{ 'pdp2.questions' | t }} <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{{ 'pdp2.questions_link' | t }}</a></p>
+          {%- comment -%} "Questions? Ask us" removed from the buy card (DECISIONS 255): the page's FAQ ends with the contact link {%- endcomment -%}
           {%- if bdef != blank -%}{%- assign skc_key = 'skin_check.cta_sets' -%}{%- else -%}{%- assign skc_key = 'skin_check.cta_product' -%}{%- endif -%}
           {%- render 'skin-check-link', key: skc_key, class: 'pdp__skc' -%}
           {%- if section.settings.preview_payments -%}

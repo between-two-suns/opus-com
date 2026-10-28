@@ -153,10 +153,10 @@ function initGallery(gallery) {
   fitStage(gallery);
 }
 
-/* Desktop: the photo fills the screen under the header. The 01–04 steps stay pinned under the header (CSS), and the
-   gallery pins under them, so the only thing that moves above it is the announcement bar. The stage gets one height for
-   the top of the page and one once pinned, and CSS eases between them once; it never follows the scroll pixel by pixel
-   (that re-cropped portrait photos on every frame). Height = window − where the stage sits − its nav row − margin. */
+/* Desktop: the photo fills the first screen under the header. The 01–04 steps stay pinned under the header (CSS), and
+   the gallery pins under them. The stage has ONE height, fitted to where it sits at the top of the page, and keeps it
+   when it pins: changing size on scroll read as a glitch (DECISIONS 255). Only a window resize refits it.
+   Height = window − where the stage sits at the top of the page − its nav row − margin. */
 function fitStage(gallery) {
   const desk = matchMedia('(min-width: 990px)');
   const root = gallery.closest('.pdp--v2');
@@ -171,9 +171,8 @@ function fitStage(gallery) {
     raf = 0;
     if (!desk.matches) { gallery.style.removeProperty('--v2-stage-h'); last = ''; if (tabs) tabs.style.transform = ''; return; }
     const pinnedTop = parseFloat(getComputedStyle(gallery).top) || 0;
-    const restTop = grid.getBoundingClientRect().top + scrollY; // where the stage sits at the top of the page
-    const pinned = scrollY + pinnedTop >= restTop - 1;
-    const top = pinned ? pinnedTop : restTop;
+    const restTop = grid.getBoundingClientRect().top + scrollY; // where the stage sits at the top of the page (fixed)
+    const top = restTop;
     const navH = nav ? nav.getBoundingClientRect().height + 12 : 0;
     const h = `${Math.round(Math.max(400, window.innerHeight - top - navH - 20))}px`;
     if (h !== last) { gallery.style.setProperty('--v2-stage-h', h); last = h; }

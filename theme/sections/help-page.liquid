@@ -1,0 +1,116 @@
+{{ 'help.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Help pages (DECISIONS 256): Shipping and Returns in one designed layout, demo at /pages/shipping?view=help and
+  /pages/returns?view=help. The words are the page's own (the legal text in admin, EN/AR), shown unchanged; the design
+  adds what a reader needs in five seconds before it starts:
+  - a header with the help area's tabs (Shipping · Returns · FAQ · Contact),
+  - three facts in the step colours, then "How it works" in three steps on the brand's dotted line,
+  - the full policy as numbered sections with an "On this page" list on laptops, its tables as cards.
+  The numbers (free-delivery threshold, fees, days, cash on delivery) come from the theme settings that checkout copy
+  and the FAQ use, so they cannot drift apart. Any other page handle gets the header, tabs and styled text only.
+{%- endcomment -%}
+{%- liquid
+  assign root = routes.root_url | remove_last: '/'
+  assign kind = 'other'
+  if page.handle contains 'shipping' or page.handle contains 'delivery'
+    assign kind = 'shipping'
+  elsif page.handle contains 'return' or page.handle contains 'refund'
+    assign kind = 'returns'
+  endif
+  assign threshold = settings.free_shipping_threshold | default: 0 | times: 100
+  capture free_from
+    render 'egp', cents: threshold
+  endcapture
+  assign free_from = free_from | strip
+  # word joiners keep "1–3" on one line
+  assign days_main = settings.delivery_days_main | default: '1–3' | replace: '–', '⁠–⁠'
+  assign days_other = settings.delivery_days_other | default: '3–5' | replace: '–', '⁠–⁠'
+  assign parts = page.content | split: '<h2>'
+-%}
+<section class="help" data-kind="{{ kind }}">
+  <div class="container help__head">
+    <p class="t-eyebrow">{{ 'help.eyebrow' | t }}</p>
+    <h1 class="t-display-l help__title">{{ page.title | escape }}</h1>
+    {%- if kind == 'shipping' -%}
+      <p class="t-lead help__lead">{{ 'help.shipping.lead' | t: amount: free_from, days: days_main }}</p>
+    {%- elsif kind == 'returns' -%}
+      <p class="t-lead help__lead">{{ 'help.returns.lead' | t }}</p>
+    {%- endif -%}
+    <nav class="help__tabs" aria-label="{{ 'help.nav' | t }}">
+      <a href="{{ root }}/pages/shipping"{% if kind == 'shipping' %} aria-current="page"{% endif %}>{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'footer.links.shipping' | t }}</a>
+      <a href="{{ root }}/pages/returns"{% if kind == 'returns' %} aria-current="page"{% endif %}>{% render 'icon', name: 'refresh', class: 'icon--sm' %}{{ 'footer.links.returns' | t }}</a>
+      <a href="{{ root }}/pages/faq">{% render 'icon', name: 'info', class: 'icon--sm' %}{{ 'footer.links.faq' | t }}</a>
+      <a href="{{ root }}/pages/contact">{% render 'icon', name: 'mail', class: 'icon--sm' %}{{ 'footer.links.contact' | t }}</a>
+    </nav>
+  </div>
+
+  {%- if kind != 'other' -%}
+    <div class="container">
+      <ul class="help__facts" role="list">
+        {%- if kind == 'shipping' -%}
+          <li class="help__fact" data-step="1">{% render 'icon', name: 'truck' %}<strong>{{ 'help.shipping.f1' | t }}</strong><span>{{ 'help.shipping.f1_sub' | t: amount: free_from }}</span></li>
+          <li class="help__fact" data-step="2">{% render 'icon', name: 'city' %}<strong>{{ 'help.shipping.f2' | t: days: days_main }}</strong><span>{{ 'help.shipping.f2_sub' | t: days: days_other }}</span></li>
+          {%- if settings.show_cod -%}
+            <li class="help__fact" data-step="4">{% render 'icon', name: 'cash' %}<strong>{{ 'help.shipping.f3_cod' | t }}</strong><span>{{ 'help.shipping.f3_cod_sub' | t }}</span></li>
+          {%- else -%}
+            <li class="help__fact" data-step="4">{% render 'icon', name: 'lock' %}<strong>{{ 'help.shipping.f3' | t }}</strong><span>{{ 'help.shipping.f3_sub' | t }}</span></li>
+          {%- endif -%}
+        {%- else -%}
+          <li class="help__fact" data-step="1">{% render 'icon', name: 'refresh' %}<strong>{{ 'help.returns.f1' | t }}</strong><span>{{ 'help.returns.f1_sub' | t }}</span></li>
+          <li class="help__fact" data-step="2">{% render 'icon', name: 'check' %}<strong>{{ 'help.returns.f2' | t }}</strong><span>{{ 'help.returns.f2_sub' | t }}</span></li>
+          <li class="help__fact" data-step="4">{% render 'icon', name: 'cash' %}<strong>{{ 'help.returns.f3' | t }}</strong><span>{{ 'help.returns.f3_sub' | t }}</span></li>
+        {%- endif -%}
+      </ul>
+
+      <div class="help__how">
+        <h2 class="t-display-m">{{ 'help.how' | t }}</h2>
+        <ol class="help__steps" role="list">
+          {%- for n in (1..3) -%}
+            {%- assign sk = 'help.' | append: kind | append: '.s' | append: n -%}
+            {%- assign st = sk | append: '_t' -%}
+            {%- assign sd = sk | append: '_d' -%}
+            <li class="help__step" data-step="{% if n == 3 %}4{% else %}{{ n }}{% endif %}">
+              <span class="help__num" aria-hidden="true">0{{ n }}</span>
+              <strong>{{ st | t }}</strong>
+              <span>{{ sd | t: days: days_main, other: days_other }}</span>
+            </li>
+          {%- endfor -%}
+        </ol>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="container help__body">
+    {%- if parts.size > 1 -%}
+      <nav class="help__toc" aria-label="{{ 'help.toc' | t }}">
+        <p class="t-eyebrow">{{ 'help.toc' | t }}</p>
+        <ol role="list">
+          {%- for part in parts offset: 1 -%}
+            {%- assign head = part | split: '</h2>' | first | strip_html | strip -%}
+            <li><a href="#help-{{ forloop.index }}">{{ head }}</a></li>
+          {%- endfor -%}
+        </ol>
+      </nav>
+      <div class="help__text rte">
+        {%- if parts[0] != blank -%}<div class="help__intro">{{ parts[0] }}</div>{%- endif -%}
+        {%- for part in parts offset: 1 -%}
+          {%- assign head = part | split: '</h2>' | first -%}
+          {%- assign rest = part | remove_first: head | remove_first: '</h2>' -%}
+          <section class="help__part" id="help-{{ forloop.index }}" aria-labelledby="help-h-{{ forloop.index }}">
+            <h2 id="help-h-{{ forloop.index }}"><span class="help__pn" aria-hidden="true">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>{{ head }}</h2>
+            {{ rest }}
+          </section>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="help__text rte">{{ page.content }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Help page",
+  "settings": []
+}
+{% endschema %}

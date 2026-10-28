@@ -1561,5 +1561,43 @@
     "prev": "Previous post",
     "next": "Next post",
     "sound": "Sound"
+  },
+  "help": {
+    "eyebrow": "Help",
+    "nav": "Help pages",
+    "toc": "On this page",
+    "how": "How it works",
+    "shipping": {
+      "lead": "Free delivery on orders of {{ amount }} or more, in {{ days }} business days in Cairo & Giza.",
+      "f1": "Free delivery",
+      "f1_sub": "On orders of {{ amount }} or more, in standard areas",
+      "f2": "{{ days }} business days",
+      "f2_sub": "Cairo & Giza. Other governorates: {{ days }} business days",
+      "f3_cod": "Cash on delivery",
+      "f3_cod_sub": "No extra charge",
+      "f3": "Secure checkout",
+      "f3_sub": "Your payment options are shown at checkout",
+      "s1_t": "You order",
+      "s1_d": "You get a confirmation email with your order number.",
+      "s2_t": "We ship it",
+      "s2_d": "We email you a tracking link where our courier provides one.",
+      "s3_t": "It arrives",
+      "s3_d": "In {{ days }} business days in Cairo & Giza, {{ other }} elsewhere."
+    },
+    "returns": {
+      "lead": "Unopened products can be returned within 14 days of delivery. Damaged or wrong? We put it right at no cost to you.",
+      "f1": "14 days",
+      "f1_sub": "To return unopened products in their original sealed packaging",
+      "f2": "No cost to you",
+      "f2_sub": "For damaged, defective or wrong products",
+      "f3": "Your refund",
+      "f3_sub": "Back to your card. Cash orders: by InstaPay or another way we agree",
+      "s1_t": "Email us",
+      "s1_d": "With your order number and the items you'd like to return.",
+      "s2_t": "We send instructions",
+      "s2_d": "We reply with how to send it back.",
+      "s3_t": "You're refunded",
+      "s3_d": "Once it reaches us and is checked. Your bank may take a few extra days."
+    }
   }
 }
