@@ -277,6 +277,8 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
 .pdp__gallery { container-type: inline-size; }
 .gallery__word { font-size: min(clamp(88px, 27vw, 230px), calc(86cqw / (var(--len, 7) * .43))); }
 :lang(ar) .gallery__word { font-size: min(clamp(72px, 22vw, 190px), calc(86cqw / (var(--len, 7) * .72))); }
+/* centred in the frame, so a short word ("Treat") sits on the same axis as a long one ("Cleanse"), DECISIONS 261 */
+.gallery__word { inset-inline: 0; text-align: center; }
 @media (min-width: 990px) {
   .pdp__grid { grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); }
   .pdp__gallery { inline-size: 100%; justify-self: stretch; }
