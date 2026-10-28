@@ -1,7 +1,7 @@
 {{ 'creators.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
   Creator kit (DECISIONS 224): a private page for accepted creators, at /pages/creators?view=creator-kit, never linked
-  and kept out of search engines (layout/theme.liquid). What to film (DECISIONS 225), the code and what they earn (the rules
+  and kept out of search engines (layout/theme.liquid). What to film (DECISIONS 225), how to send a post for the site (DECISIONS 248), the code and what they earn (the rules
   for the rest of the routine, refills and the higher rate), what to say (each product's own pack benefit) and what not
   to say, and the rules. Who gets which products first stays with the owner.
 {%- endcomment -%}
@@ -48,6 +48,14 @@
       <dl class="kit__pair">
         <div><dt>{{ 'creator_kit.hashtag_label' | t }}</dt><dd dir="ltr">#BetweenTwoSuns</dd></div>
       </dl>
+    </div>
+
+    <div class="kit__block">
+      <h2 class="kit__h">{{ 'creator_kit.send_heading' | t }}</h2>
+      <p>{{ 'creator_kit.send_text' | t }}</p>
+      <ul class="kit__list" role="list">
+        {%- for n in (1..6) -%}{%- assign k = 'creator_kit.send.s' | append: n -%}<li>{% render 'icon', name: 'check', class: 'icon--sm' %}<span>{{ k | t }}</span></li>{%- endfor -%}
+      </ul>
     </div>
 
     <div class="kit__block">

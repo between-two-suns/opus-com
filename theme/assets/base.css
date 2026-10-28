@@ -1299,7 +1299,7 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 /* Judge.me in the brand: its own widgets, our type, ink stars, our buttons. A badge with no reviews is never shown. */
 .reviews-badge { margin-block-start: 8px; }
 .reviews-badge:has(.jdgm-prev-badge[data-number-of-reviews='0']), .reviews-badge:has(> .jdgm-widget[style*='display: none']), .reviews-badge:not(:has(.jdgm-widget)) { display: none; }
-.jdgm-widget, .jdgm-widget * { font-family: var(--font-sans) !important; }
+.jdgm-widget, .jdgm-widget *:not([class*='icon']):not(.jdgm-star) { font-family: var(--font-sans) !important; }  /* not on star glyphs: they are an icon font */
 .jdgm-star, .jdgm-star.jdgm--on, .jdgm-star.jdgm--half, .jdgm-star.jdgm--off { color: var(--c-ink) !important; }
 .jdgm-prev-badge__text { color: var(--c-muted); font-size: 14px; }
 .product-reviews .jdgm-rev-widg { padding: 0 !important; border: 0 !important; }
@@ -1326,6 +1326,34 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 /* Our section already spaces the block: drop the widget's own outer spacing (it set 48px above and below) */
 .product-reviews .jdgm-widget .jm-review-widget { padding-block: 0 !important; margin-block: 0 !important; }
 .product-reviews .jm-review-widget:has(.jm-no-reviews-state) .jm-no-reviews-state { margin-block-start: 0 !important; }
+/* Review cards (DECISIONS 248): the customer's words first and large, on a card in the product's colour; stars, name and
+   date under a hairline; Judge.me's badges (Verified buyer, gifted) as our quiet pills. Sets have no step: paper cards. */
+.product-reviews .jdgm-review-list { display: grid !important; gap: 14px !important; }
+@media (min-width: 750px) { .product-reviews .jdgm-review-list { grid-template-columns: 1fr 1fr; } .product-reviews .jdgm-review-list > :last-child:nth-child(odd) { grid-column: 1 / -1; } }
+/* Judge.me spaces its stacks with margins on every child after the first: inside the cards our gaps do it instead */
+.product-reviews .jdgm-review-list > *, .product-reviews .jm-review-item .jm-stack > * { margin-block: 0 !important; }
+.product-reviews .jm-review-item > .jm-stack > .jm-cluster:not(.jm-review-item__body):empty { display: none; }
+.product-reviews .jm-review-item { --jm-review-widget-star-and-histogram-color: var(--sku-deep, var(--c-ink)) !important; --jm-review-widget-text-color: var(--c-ink) !important; --jm-review-widget-lighter-text-color: var(--c-muted) !important; box-sizing: border-box; padding: clamp(22px, 3vw, 32px) !important; border: 0 !important; border-radius: var(--radius-l) !important; background: var(--sku-tint, var(--c-paper)) !important; }
+.product-reviews .jm-review-item__content { display: flex !important; flex-flow: row wrap; align-items: center; gap: 12px 14px !important; inline-size: 100%; }
+.product-reviews .jm-review-item__content > .jm-review-content { order: -1; flex: 1 0 100%; display: grid !important; gap: 10px !important; padding-block-end: 18px; margin-block-end: 6px; border-block-end: 1px solid color-mix(in srgb, var(--sku-deep, var(--c-ink)) 20%, transparent); }
+.product-reviews .jm-review-content__title { font-size: clamp(21px, 2vw, 24px) !important; font-weight: 650 !important; line-height: 1.2 !important; letter-spacing: -.01em; text-wrap: balance; color: var(--c-ink) !important; }
+.product-reviews .jm-review-content__body { font-size: 17px !important; line-height: 1.5 !important; color: var(--c-ink) !important; text-wrap: pretty; }
+.product-reviews .jm-review-content__body p { margin: 0; }
+/* A review keeps its own direction: an English review on the Arabic site reads left to right, punctuation in place */
+.product-reviews :is(.jm-review-content__title, .jm-review-content__body p, .jm-reviewer-info__name, .jm-average-rating-display--minimal-header .jm-text) { unicode-bidi: plaintext; text-align: start; }
+.product-reviews .jm-star-rating__font-icon { font-size: 17px !important; }
+.product-reviews .jm-reviewer-avatar { display: none !important; }
+.product-reviews .jm-reviewer-info { gap: 8px !important; }
+.product-reviews .jm-reviewer-info__details { display: grid !important; gap: 2px !important; }
+.product-reviews .jm-reviewer-info__name { font-size: 15px !important; font-weight: 650 !important; }
+.product-reviews .jm-reviewer-info__details .jm-text:not(.jm-reviewer-info__name) { font-size: 13px !important; }
+.product-reviews .jm-review-item [class*='verified'], .product-reviews .jm-review-item [class*='transparency'] { display: inline-flex !important; align-items: center; gap: 4px; padding: 3px 10px !important; border: 0 !important; border-radius: 99px !important; background: color-mix(in srgb, #fff 62%, transparent) !important; color: var(--c-ink) !important; font-size: 12px !important; font-weight: 650 !important; }
+.product-reviews .jm-review-item [class*='verified'] *, .product-reviews .jm-review-item [class*='transparency'] * { color: inherit !important; font-size: inherit !important; }
+/* The summary line and the two round tools beside "Write a review" */
+.product-reviews .jm-average-rating-display--minimal-header .jm-text:first-child { font-size: 28px !important; font-weight: 650 !important; }
+.product-reviews .jm-average-rating-display--minimal-header .jm-text + .jm-text { color: var(--c-muted); font-size: 14px !important; }
+.product-reviews .jm-custom-answer-filter--compact, .product-reviews .jm-sort-filter--compact { box-sizing: border-box; inline-size: 48px !important; min-inline-size: 48px; block-size: 48px !important; padding: 0 !important; border: 1px solid var(--c-line) !important; border-radius: 50% !important; background: transparent !important; color: var(--c-ink) !important; }
+.product-reviews .jm-sort-filter--compact select { box-sizing: border-box; inline-size: 100% !important; block-size: 100% !important; padding: 0 !important; border: 0 !important; border-radius: 50% !important; background: transparent !important; }
 
 /* Link to the skin check (sets, product pages): a quiet pill, not a second buy button */
 .skc-link { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border-radius: 99px; background: color-mix(in srgb, var(--c-step-2) 22%, #fff); color: var(--c-ink); font-size: 14px; font-weight: 650; text-decoration: none; transition: background var(--dur) var(--ease-out); }

@@ -1,0 +1,40 @@
+{%- comment -%}
+  One creator post (DECISIONS 248): a tall 9:16 tile (photo with a slow zoom, or a silent looping video), the creator's
+  name over it, then the product in its colour with its own-colour "Add to bag". The tile opens the post full screen.
+  Params: media (image or video object), name, handle, product, index
+{%- endcomment -%}
+{%- liquid
+  capture ct_step
+    render 'product-step', product: product
+  endcapture
+  assign ct_step = ct_step | strip | plus: 0
+  assign ct_v = product.selected_or_first_available_variant
+  assign ct_video = false
+  if media.media_type == 'video' or media.sources
+    assign ct_video = true
+  endif
+-%}
+<li class="creel__item"{% if ct_step > 0 %} data-step="{{ ct_step }}"{% endif %} data-index="{{ index }}">
+  <button type="button" class="creel__media{% if ct_video %} creel__media--video{% endif %}" data-open aria-label="{{ 'creators_reel.open' | t: name: name }}">
+    {%- if ct_video -%}
+      {{ media | video_tag: autoplay: false, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata', image_size: '720x', class: 'creel__vid' }}
+      <span class="creel__sound" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></span>
+    {%- elsif media != blank -%}
+      {{ media | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 990px) 22vw, 70vw', alt: media.alt | default: '', class: 'creel__img' }}
+    {%- endif -%}
+    <span class="creel__who"><span class="creel__name">{{ name | escape }}</span>{% if handle != blank %}<span class="creel__handle">{{ handle | escape }}</span>{% endif %}</span>
+  </button>
+  {%- if product.id -%}
+    <div class="creel__foot">
+      <a class="creel__product" href="{{ product.url }}"><span class="bundle__dot" aria-hidden="true"></span><span class="creel__pname">{{ product.title | escape }}</span><span class="creel__price">{% render 'egp', cents: ct_v.price %}</span></a>
+      <product-form>
+        <form method="post" action="{{ routes.cart_add_url }}">
+          <input type="hidden" name="id" value="{{ ct_v.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="btn btn--full creel__add"{% unless ct_v.available %} disabled{% endunless %}><span class="btn__label">{{ 'product.add_to_cart' | t }}<span class="visually-hidden">: {{ product.title | escape }}</span></span></button>
+          <p class="t-xs t-muted" data-form-error hidden></p>
+        </form>
+      </product-form>
+    </div>
+  {%- endif -%}
+</li>

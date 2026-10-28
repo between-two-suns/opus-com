@@ -18,7 +18,8 @@
 {%- endcapture -%}
 
 {%- if rc > 0 -%}
-  <section class="section product-reviews" id="reviews" aria-labelledby="ReviewsTitle-{{ section.id }}">
+  {%- capture step -%}{%- render 'product-step', product: product -%}{%- endcapture -%}{%- assign step = step | strip | plus: 0 -%}
+  <section class="section product-reviews" id="reviews"{% if step > 0 %} data-step="{{ step }}"{% endif %} aria-labelledby="ReviewsTitle-{{ section.id }}">
     <div class="container">
       <div class="section-head">
         <div class="section-head__text">

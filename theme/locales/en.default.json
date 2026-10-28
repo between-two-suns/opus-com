@@ -1522,7 +1522,17 @@
     "questions_heading": "Questions?",
     "questions_text": "Reply to the email we sent you when you were accepted. We’re happy to help.",
     "film_heading": "What to film",
-    "film_text": "Real, simple formats work best. Film in natural light, show the products in your hands, and say what you really think."
+    "film_text": "Real, simple formats work best. Film in natural light, show the products in your hands, and say what you really think.",
+    "send_heading": "Sending us your post",
+    "send_text": "Your best posts can appear on our website with your name and handle. We always ask your permission in writing first.",
+    "send": {
+      "s1": "Shoot vertical, 9:16. Photos and videos both work.",
+      "s2": "Videos: 10 to 30 seconds, with the product in shot from the first second.",
+      "s3": "Photos: at least 1080 × 1920 pixels. Square or 4:5 feed photos get cropped on our site.",
+      "s4": "If you talk, add subtitles on screen, in English or Arabic.",
+      "s5": "Send the original file from your camera roll, not a screen recording or a download from the app.",
+      "s6": "Tell us which product the post is about."
+    }
   },
   "contact2": {
     "title": "Talk to us",
@@ -1542,29 +1552,13 @@
     "done_shop": "Shop the sets",
     "done_finder": "Find your routine in 30 seconds"
   },
-  "promises": {
-    "eyebrow": "Our promise",
-    "heading": "What you can count on.",
-    "p1_h": "Every ingredient, explained.",
-    "p1_t": "The full list, exactly as printed on the pack, with what each one does in plain words.",
-    "p1_link": "See every ingredient",
-    "p2_h": "Full size, every time.",
-    "p2_t": "Every product in a set is the same full-size bottle sold on its own.",
-    "p2_link": "See the sets",
-    "p3_h": "Made in Egypt.",
-    "p3_t": "Made by Nuu Group for Cosmetics, for skin that lives here.",
-    "p3_link": "Our story",
-    "p4_h": "A real person replies.",
-    "p4_t": "A question about a product or your order? We reply within one working day.",
-    "p4_link": "Ask us"
-  },
-  "reviews_demo": {
-    "sample": "Design preview · sample content, not real reviews",
-    "all": "Read all reviews",
-    "photo": "Customer photo · 4:5",
-    "video": "Customer video · 9:16, up to 30 s",
-    "verified": "Verified buyer",
-    "gift": "Received as a gift",
-    "stars": "{{ count }} out of 5 stars"
+  "creators_reel": {
+    "eyebrow": "From our creators",
+    "heading": "In their routine.",
+    "join": "Become a creator",
+    "sample": "Design preview · stand-ins from our own shoot",
+    "open": "Open {{ name }}'s post",
+    "prev": "Previous post",
+    "next": "Next post"
   }
 }

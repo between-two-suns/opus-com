@@ -16,91 +16,73 @@
         "mate_image": "shopify://shop_images/bts-demo-night-ritual.jpg"
       }
     },
-    "reviews_demo": {
-      "type": "reviews-showcase",
+    "creators": {
+      "type": "creators-reel",
       "blocks": {
-        "r1": {
-          "type": "review",
+        "p1": {
+          "type": "post",
           "settings": {
-            "step": 2,
-            "stars": 5,
-            "media": "photo",
-            "title": "Review title, a few words",
-            "text": "Sample text. A real review sits here in the customer's own words: usually two to four sentences about how the product feels, when they use it and what they noticed after a few weeks.",
-            "name": "First name L.",
-            "city": "City",
-            "skin": "Combination skin",
-            "gift": false
+            "video": "shopify://files/videos/bts-standin-serum.mp4",
+            "name": "Creator name",
+            "handle": "@handle",
+            "product": "clarity-serum"
           }
         },
-        "r2": {
-          "type": "review",
+        "p2": {
+          "type": "post",
           "settings": {
-            "step": 1,
-            "stars": 5,
-            "media": "none",
-            "title": "A text-only review",
-            "text": "Sample text. A medium review: a few sentences on texture, how it layers with the next step, and whether they would buy it again.",
-            "name": "First name L.",
-            "city": "City",
-            "skin": "Oily skin",
-            "gift": false
+            "image": "shopify://shop_images/bts-daily-reset-cleanser-in-hand.jpg",
+            "name": "Creator name",
+            "handle": "@handle",
+            "product": "daily-reset-cleanser"
           }
         },
-        "r3": {
-          "type": "review",
+        "p3": {
+          "type": "post",
           "settings": {
-            "step": 4,
-            "stars": 5,
-            "media": "video",
-            "title": "A video review",
-            "text": "Sample text. A short review, one or two sentences long.",
-            "name": "First name L.",
-            "city": "City",
-            "skin": "Normal skin",
-            "gift": false
+            "video": "shopify://files/videos/bts-standin-barrier.mp4",
+            "name": "Creator name",
+            "handle": "@handle",
+            "product": "daily-barrier-moisturizing-cream"
           }
         },
-        "r4": {
-          "type": "review",
+        "p4": {
+          "type": "post",
           "settings": {
-            "step": 3,
-            "stars": 4,
-            "media": "photo",
-            "title": "A gifted review, disclosed",
-            "text": "Sample text. A medium review: a few sentences on texture, how it layers with the next step, and whether they would buy it again.",
-            "name": "First name L.",
-            "city": "City",
-            "skin": "Dry skin",
-            "gift": true
+            "image": "shopify://shop_images/bts-daily-defense-sunscreen-spf-50-application.jpg",
+            "name": "Creator name",
+            "handle": "@handle",
+            "product": "daily-defense-sunscreen-spf-50"
           }
         },
-        "r5": {
-          "type": "review",
+        "p5": {
+          "type": "post",
           "settings": {
-            "step": 2,
-            "stars": 5,
-            "media": "none",
-            "title": "Another text review",
-            "text": "Sample text. A real review sits here in the customer's own words: usually two to four sentences about how the product feels, when they use it and what they noticed after a few weeks.",
-            "name": "First name L.",
-            "city": "City",
-            "skin": "",
-            "gift": false
+            "image": "shopify://shop_images/bts-clarity-serum-application.jpg",
+            "name": "Creator name",
+            "handle": "@handle",
+            "product": "clarity-serum"
           }
         }
       },
       "block_order": [
-        "r1",
-        "r2",
-        "r3",
-        "r4",
-        "r5"
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
       ]
     },
-    "promises": {
-      "type": "promises",
+    "reviews": {
+      "type": "reviews-home",
       "settings": {}
+    },
+    "climate": {
+      "type": "climate-switch",
+      "settings": {
+        "link": "/pages/climate",
+        "photo_prefix": "bts-climate2-"
+      }
     },
     "ingredient_heroes": {
       "type": "ingredient-heroes",
@@ -162,8 +144,9 @@
     "hero",
     "routine",
     "bundles",
-    "reviews_demo",
-    "promises",
+    "creators",
+    "reviews",
+    "climate",
     "ingredient_heroes",
     "editorial",
     "faq"

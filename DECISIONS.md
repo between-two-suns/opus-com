@@ -995,3 +995,28 @@ Each entry: decision · why · reversibility. Newest last.
     - **Reviews, final design** (sections/reviews-showcase.liquid, SAMPLE content, labelled "Design preview · sample content, not real reviews" on the page): big average + stars + count + "Read all reviews", then a swipeable row of cards in the reviewed product's colour. Three card types: photo (square on the card, 4:5 when opened), video (square, play button, length; 9:16 up to 30 s) and text-only (a quote card, large quote mark in the product colour, bigger words). Every card: stars, title, text (5 lines, then Read more), first name + initial · city, Verified buyer, skin type, "Received as a gift" when gifted, the product at the foot. Format and content brief for real reviews and the Judge.me settings: content/reviews-brief.md. When real reviews exist, the live home section is styled to this design from Judge.me's own data; never with sample text.
     - **Four steps arc fixed (live):** the dotted line now stops before the product text on laptop (it ran through the name, benefit and price); EN/AR, checked at 1280 and 1440.
     - Theme-check 0, flows 404/404, spacing 178/178, staging checksums match (the template differs only by Shopify's header comment), checked on staging laptop + phone; live theme unchanged.
+248. **Owner: "the dotted line was better before; promises don't make sense; customers will mostly send text, photos and videos come from creators. Remove the promises, bring back the line, redesign the reviews or make the section for creators: you tell me." Then: creators can post photos too (yes); Judge.me can be restyled (yes); no Gifted/Paid label; keep "What's today like?" for now; do the rest.**
+    - **Four steps dotted line restored exactly as before 247** (home.css back to its pre-247 rules). The 247 change stopped the line before the product text and read as cut off.
+    - **Promises removed** (sections/promises.liquid deleted from the code). **Sample reviews demo removed** (sections/reviews-showcase.liquid deleted): it was built around customer photos and videos, which customers rarely send.
+    - **Customer reviews: text first, through Judge.me, restyled to the site (all product pages; base.css).** Each review is a card in that product's colour (sets: paper). The customer's words come first: title 21–24 px, text 17 px. Under a hairline: stars in the product's deep colour, then name and date (no avatar circle). Verified buyer and gifted badges (Judge.me's own) are our small white pills. Filter and sort are two round 48 px buttons beside "Write a review". Two columns from 750 px; a fifth review spans both columns; one column on phones. Judge.me's own "Customer Reviews" title stays hidden under ours.
+    - **Bug fixed:** our font rule also hit Judge.me's star icon font, so stars drew as diamonds and an empty star as a box. Icons are now excluded.
+    - **Arabic:** an English review keeps its own direction (punctuation in place) inside the Arabic page.
+    - **Creators section, on the demo home page** (`/?view=trust`, after the sets; sections/creators-reel.liquid + snippets/creator-tile.liquid). "From our creators / In their routine.", with "Become a creator" linking to the Creators page.
+      - The tiles are tall 9:16 photos and videos in a swipeable row: about 4 at a time on laptop, 1.5 on phones (58 vw).
+      - Videos play muted, looped, only while on screen, with a small sound icon. Photos zoom in slowly while visible. Reduced motion turns both off.
+      - Each tile shows the creator's name and @handle on the picture and the product under it in its colour, with price and its own-colour "Add to bag".
+      - A tap opens the post full screen. Videos play with sound and controls, and the product and "Add to bag" sit under the post. Close, previous and next buttons and the arrow keys work (mirrored in Arabic). The phone viewer is sized so the arrows never cover the card.
+      - **No Gifted/Paid label** (owner).
+    - **Content comes from admin:** Content → Metaobjects → **Creator post** (type `bts_creator_post`: media (photo or video), creator name, handle, product, post link). While there are no entries, the section shows the theme editor's stand-in tiles, labelled "Design preview · stand-ins from our own shoot". Two of the stand-ins are short clips made from the shoot photos (Files: bts-standin-serum.mp4, bts-standin-barrier.mp4). With no entries and no stand-ins, the section shows nothing.
+    - **Creator kit gets "Sending us your post"** (EN/AR, Egyptian Arabic like the rest of the kit). It asks for:
+      - vertical 9:16 photos or videos
+      - videos 10–30 s with the product in shot from the first second
+      - photos at least 1080 × 1920 (square and 4:5 get cropped)
+      - on-screen subtitles in EN or AR
+      - the original file, not a screen recording
+      - the product named
+      The kit also tells creators we always ask their written permission before showing a post.
+    - **"What's today like?" (climate switch) stays** on the owner's call, to be reviewed after a few rounds.
+    - **The owner's test reviews** (16, 4 per product, imported, not verified buyers) are on the store now. They make the review cards visible on staging. They are store data, so they show on every theme. **They must be deleted in Judge.me before launch** (no invented reviews).
+    - **Not verifiable here:** the test browser cannot decode H.264 video, so video playback on staging must be checked on a real phone. The viewer now loads its copied video explicitly before playing.
+    - Theme-check 0, flows (below), spacing 178/178 EN + AR, staging checksums match, checked on staging laptop + phone EN/AR; live theme unchanged.
