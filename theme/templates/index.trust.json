@@ -73,10 +73,6 @@
         "p5"
       ]
     },
-    "reviews": {
-      "type": "reviews-home",
-      "settings": {}
-    },
     "climate": {
       "type": "climate-switch",
       "settings": {
@@ -145,7 +141,6 @@
     "routine",
     "bundles",
     "creators",
-    "reviews",
     "climate",
     "ingredient_heroes",
     "editorial",

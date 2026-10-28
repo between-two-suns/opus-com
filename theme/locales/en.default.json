@@ -1559,6 +1559,7 @@
     "sample": "Design preview · stand-ins from our own shoot",
     "open": "Open {{ name }}'s post",
     "prev": "Previous post",
-    "next": "Next post"
+    "next": "Next post",
+    "sound": "Sound"
   }
 }

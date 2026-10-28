@@ -1,12 +1,19 @@
 {%- comment -%}
   Reviews on the home page: Judge.me's featured carousel. Renders nothing at all until the store has real reviews
-  (shop.metafields.judgeme.all_reviews_count > 0) and featured ones exist; no placeholder, invented count or rating.
+  (shop.metafields.judgeme.all_reviews_count > 0) and the carousel has reviews in it; no placeholder, invented count
+  or rating. Judge.me always writes the carousel, even empty (no featured reviews): then our heading stood alone over
+  nothing (DECISIONS 249), so an empty carousel counts as none.
 {%- endcomment -%}
 {%- liquid
   assign jm = shop.metafields.judgeme
   assign jm_count = jm.all_reviews_count | plus: 0
+  assign jm_items = false
+  assign jm_body = jm.featured_carousel | split: '</style>' | last
+  if jm_body contains 'jdgm-carousel-item'
+    assign jm_items = true
+  endif
 -%}
-{%- if jm_count > 0 and jm.featured_carousel != blank -%}
+{%- if jm_count > 0 and jm_items -%}
 <section class="section reviews-home" aria-labelledby="ReviewsHomeTitle-{{ section.id }}">
   <div class="container">
     <div class="section-head">

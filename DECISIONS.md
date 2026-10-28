@@ -1020,3 +1020,14 @@ Each entry: decision · why · reversibility. Newest last.
     - **The owner's test reviews** (16, 4 per product, imported, not verified buyers) are on the store now. They make the review cards visible on staging. They are store data, so they show on every theme. **They must be deleted in Judge.me before launch** (no invented reviews).
     - **Not verifiable here:** the test browser cannot decode H.264 video, so video playback on staging must be checked on a real phone. The viewer now loads its copied video explicitly before playing.
     - Theme-check 0, flows 404/404, spacing 178/178 EN + AR, staging checksums match, checked on staging laptop + phone EN/AR; live theme unchanged.
+249. **Owner (iPhone): "why do the creator videos have the price and add to cart under them, that's very bad; it also looks super bad when opened. And what's the 'What people say' under it on the home page?"**
+    - **Creator tiles are content, not shop cards.** No price, no "Add to bag". The 9:16 photo or video fills the tile; the creator's name and @handle sit on it, with one small glass tag naming the product (its colour dot, name, arrow) that links to the product page. That tag is the only link.
+    - **The opened post is now a full-screen story, not a card.** Phones: the photo or video edge to edge. Laptops: a 9:16 frame on a dark room, with glass arrows beside it.
+      - Top: a thin progress line (videos only), the name and handle, and a plain close ×.
+      - Bottom: the product tag and a sound on/off switch (videos).
+      - No browser video bar. Tap the middle to pause. On phones, tap the sides or swipe for the next post (mirrored in Arabic). Arrow keys and Escape work on laptops.
+      - A video that ends moves on to the next post.
+    - **Bug fixed:** the photo tiles' image code lost its class (a filter in the alt text swallowed it). The slow zoom never ran on photos, and the opened view showed only the colour for photos. Fixed; photos now open full size.
+    - **"What people say" with nothing under it** was the home reviews section (Judge.me's featured carousel). Judge.me writes the carousel even when no reviews are featured, so our heading showed over nothing on the staging home. The section now shows only when the carousel actually has reviews in it.
+    - **Removed from the demo home** (`/?view=trust`): right after the creators row it would repeat the same "people like it" message. Customer reviews stay on the product pages, where they help someone decide (DECISIONS 248).
+    - Theme-check 0, flows 404/404, staging checksums match, checked on staging phone + laptop (row, story, next, close; main home has no empty heading); live theme unchanged.

@@ -3,8 +3,12 @@
   Creator post entries in admin (Content → Metaobjects → Creator post: photo or video, name, handle, product).
   Until there are any, the section's own blocks show stand-ins (the demo uses photos and two short clips made from
   our own shoot) under a "Design preview" label; with neither, the section renders nothing.
-  Videos play silently, looped, only while on screen; photos ease in slowly. A tile opens the post full screen
-  (videos with sound); arrows and Escape work. Reduced motion: no zoom, no autoplay.
+  Videos play silently, looped, only while on screen; photos ease in slowly. Each tile is content only: the creator's
+  name and handle and one small product tag (DECISIONS 249: no price or "Add to bag" on creator posts). A tile opens the
+  post as a full-screen story: the photo or video edge to edge on phones (a 9:16 frame on laptops), a thin progress
+  line for videos, the name at the top, the product tag and a sound switch at the bottom, no browser video bar.
+  Tap the middle to pause; tap the sides or swipe for the next post (phones); arrows, keys and Escape on laptops; a video
+  that ends moves on to the next post. Reduced motion: no zoom, no autoplay in the row.
 {%- endcomment -%}
 {%- liquid
   assign posts = shop.metaobjects.bts_creator_post.values
@@ -40,8 +44,21 @@
         {%- endif -%}
       </ul>
       <dialog class="creel__viewer" aria-label="{{ 'creators_reel.heading' | t | escape }}">
-        <div class="creel__stage" data-stage></div>
-        <button type="button" class="creel__btn creel__close" data-close aria-label="{{ 'general.close' | t }}">{% render 'icon', name: 'close' %}</button>
+        <div class="creel__story" data-story>
+          <div class="creel__frame" data-frame></div>
+          <div class="creel__bar" data-bar hidden><span data-progress></span></div>
+          <div class="creel__top">
+            <span class="creel__who" data-who></span>
+            <button type="button" class="creel__icon" data-close aria-label="{{ 'general.close' | t }}">{% render 'icon', name: 'close' %}</button>
+          </div>
+          <div class="creel__bottom">
+            <span data-tag></span>
+            <button type="button" class="creel__icon" data-mute aria-label="{{ 'creators_reel.sound' | t }}" aria-pressed="true" hidden>
+              <svg class="creel__on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+              <svg class="creel__off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
         <button type="button" class="creel__btn creel__prev" data-step-by="-1" aria-label="{{ 'creators_reel.prev' | t }}">{% render 'icon', name: 'chevron-left' %}</button>
         <button type="button" class="creel__btn creel__next" data-step-by="1" aria-label="{{ 'creators_reel.next' | t }}">{% render 'icon', name: 'chevron-right' %}</button>
       </dialog>
@@ -53,8 +70,15 @@
     connectedCallback() {
       this.items = [...this.querySelectorAll('.creel__item')];
       this.dialog = this.querySelector('dialog');
-      this.stage = this.querySelector('[data-stage]');
+      this.story = this.querySelector('[data-story]');
+      this.frame = this.querySelector('[data-frame]');
+      this.bar = this.querySelector('[data-bar]');
+      this.progress = this.querySelector('[data-progress]');
+      this.mute = this.querySelector('[data-mute]');
       const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const coarse = matchMedia('(pointer: coarse)').matches;
+      const n = this.items.length, rtl = document.dir === 'rtl';
+      this.go = (d) => this.open((this.i + d + n) % n);
       // play on screen, pause off screen; photos get their slow zoom while visible
       this.io = new IntersectionObserver((es) => es.forEach((e) => {
         e.target.classList.toggle('is-in', e.isIntersecting);
@@ -65,27 +89,53 @@
       this.addEventListener('click', (e) => {
         const o = e.target.closest('[data-open]'); if (o) return this.open(this.items.indexOf(o.closest('.creel__item')));
         if (e.target.closest('[data-close]')) return this.dialog.close();
-        const s = e.target.closest('[data-step-by]'); if (s) this.open((this.i + +s.dataset.stepBy + this.items.length) % this.items.length);
+        const s = e.target.closest('[data-step-by]'); if (s) return this.go(+s.dataset.stepBy);
+        if (e.target.closest('[data-mute]')) { const v = this.frame.querySelector('video'); if (v) { v.muted = !v.muted; this.sync(); } return; }
+        if (e.target.closest('[data-frame]')) {
+          // phones: the outer quarters step like stories (mirrored in Arabic); the middle pauses
+          const r = this.frame.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+          if (coarse && (x < .28 || x > .72)) return this.go((x > .72) !== rtl ? 1 : -1);
+          const v = this.frame.querySelector('video'); if (v) v.paused ? v.play().catch(() => {}) : v.pause();
+        }
+      });
+      let sx = null;
+      this.story.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
+      this.story.addEventListener('touchend', (e) => {
+        if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null;
+        if (Math.abs(dx) > 50) { e.preventDefault(); this.go((dx < 0) !== rtl ? 1 : -1); }
       });
       this.dialog.addEventListener('keydown', (e) => {
-        const rtl = document.dir === 'rtl';
-        if (e.key === 'ArrowRight') this.open((this.i + (rtl ? -1 : 1) + this.items.length) % this.items.length);
-        if (e.key === 'ArrowLeft') this.open((this.i + (rtl ? 1 : -1) + this.items.length) % this.items.length);
+        if (e.key === 'ArrowRight') this.go(rtl ? -1 : 1);
+        if (e.key === 'ArrowLeft') this.go(rtl ? 1 : -1);
       });
-      this.dialog.addEventListener('close', () => { this.stage.innerHTML = ''; });
+      this.dialog.addEventListener('close', () => { this.frame.innerHTML = ''; });
+    }
+    sync() {
+      const v = this.frame.querySelector('video');
+      this.mute.hidden = !v; this.bar.hidden = !v;
+      if (v) this.mute.setAttribute('aria-pressed', String(!v.muted));
     }
     open(i) {
       this.i = i;
       const it = this.items[i];
-      const media = it.querySelector('.creel__media').cloneNode(true);
-      media.removeAttribute('data-open'); media.setAttribute('tabindex', '-1');
-      const foot = it.querySelector('.creel__foot')?.cloneNode(true);
-      this.stage.replaceChildren(media, ...(foot ? [foot] : []));
-      this.stage.dataset.step = it.dataset.step || '';
-      const v = media.querySelector('video');
+      const m = it.querySelector('.creel__media > video, .creel__media > img')?.cloneNode(true);
+      if (m) { m.loading = 'eager'; if (m.sizes) m.sizes = '(min-width: 750px) 56dvh, 100vw'; }
+      this.frame.replaceChildren(...(m ? [m] : []));
+      this.querySelector('[data-who]').innerHTML = it.querySelector('.creel__who').innerHTML;
+      const tag = it.querySelector('.creel__tag'); this.querySelector('[data-tag]').replaceChildren(...(tag ? [tag.cloneNode(true)] : []));
+      this.story.dataset.step = it.dataset.step || '';
+      this.progress.style.transform = 'scaleX(0)';
       if (!this.dialog.open) this.dialog.showModal();
-      // a copied video does not fetch on its own: load it, then play with sound (muted if the browser refuses)
-      if (v) { v.muted = false; v.controls = true; v.preload = 'auto'; v.load(); v.play().catch(() => { v.muted = true; v.play().catch(() => {}); }); }
+      const v = m && m.tagName === 'VIDEO' ? m : null;
+      if (v) {
+        // a copied video does not fetch on its own: load it, then play with sound (muted if the browser refuses)
+        v.loop = false; v.muted = false; v.preload = 'auto'; v.load();
+        v.addEventListener('timeupdate', () => { if (v.duration) this.progress.style.transform = `scaleX(${v.currentTime / v.duration})`; });
+        v.addEventListener('volumechange', () => this.sync());
+        v.addEventListener('ended', () => { if (this.i < this.items.length - 1) this.go(1); else { v.currentTime = 0; } });
+        v.play().catch(() => { v.muted = true; this.sync(); v.play().catch(() => {}); });
+      }
+      this.sync();
     }
   });
 </script>
