@@ -273,7 +273,7 @@
             {%- capture who -%}{% render 'pdp2-concerns', steps: set_steps_csv %}{%- endcapture -%}
             {%- if who != blank -%}
               <div class="v2-who">
-                <p class="v2-who__label">{{ 'pdp2.who' | t }}</p>
+                <p class="v2-who__label visually-hidden">{{ 'pdp2.who' | t }}</p>
                 {{ who }}
               </div>
             {%- endif -%}
@@ -286,7 +286,7 @@
             {%- capture who -%}{% render 'pdp2-concerns', step: step %}{%- endcapture -%}
             {%- if who != blank -%}
               <div class="v2-who">
-                <p class="v2-who__label">{{ 'pdp2.who' | t }}</p>
+                <p class="v2-who__label visually-hidden">{{ 'pdp2.who' | t }}</p>
                 {{ who }}
               </div>
             {%- endif -%}
@@ -394,10 +394,9 @@
           {%- if bdef != blank -%}{%- assign skc_key = 'skin_check.cta_sets' -%}{%- else -%}{%- assign skc_key = 'skin_check.cta_product' -%}{%- endif -%}
           {%- render 'skin-check-link', key: skc_key, class: 'pdp__skc' -%}
           {%- if section.settings.preview_payments -%}
-            {%- comment -%} Design preview only (owner, pre-launch): how the planned methods will look. Off at launch; real icons come from payment-icons once each method is live and tested. {%- endcomment -%}
+            {%- comment -%} Design preview only (owner, pre-launch): how the planned methods will look. Off at launch; real icons come from payment-icons once each method is live and tested. Cash on delivery isn't repeated here: the line above already says it (DECISIONS 257). {%- endcomment -%}
             <div class="v2-pay" data-design-preview>
               <ul class="v2-pay__list" role="list">
-                <li class="v2-pay__chip">{% render 'icon', name: 'cash', class: 'icon--sm' %}{{ 'pdp2.cod' | t }}</li>
                 <li>{{ 'apple_pay' | payment_type_svg_tag: class: 'v2-pay__icon' }}</li>
                 <li>{{ 'visa' | payment_type_svg_tag: class: 'v2-pay__icon' }}</li>
                 <li>{{ 'master' | payment_type_svg_tag: class: 'v2-pay__icon' }}</li>

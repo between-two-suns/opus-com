@@ -200,18 +200,20 @@
 .template-product:has(.pdp--v2) .shopify-section:has(> .product-reviews) + .shopify-section > .faq { padding-block-start: 0; }
 
 /* Who it's for (round 2): the concerns, in the skin check's words */
-.v2-who { display: grid; gap: 8px; margin-block-start: 4px; }
+.v2-who { display: grid; gap: 8px; margin-block-start: 2px; }
 .v2-who__label { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-muted); }
 :lang(ar) .v2-who__label { letter-spacing: 0; text-transform: none; font-size: 13px; }
 .v2-who__list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
-.v2-who__list li { display: inline-flex; align-items: center; gap: 6px; min-block-size: 34px; padding: 4px 13px 4px 10px; border-radius: 99px; background: color-mix(in srgb, var(--sku) 18%, #fff); font-size: 14px; font-weight: 650; }
-.v2-who__list .icon { inline-size: 14px; block-size: 14px; color: var(--sku-deep); }
+/* the concerns as light tags (DECISIONS 257): every one kept, the heading read by screen readers only */
+.v2-who__list li { display: inline-flex; align-items: center; gap: 5px; min-block-size: 28px; padding: 2px 11px 2px 9px; border-radius: 99px; background: color-mix(in srgb, var(--sku) 13%, #fff); font-size: 13.5px; font-weight: 600; }
+.v2-who__list .icon { inline-size: 13px; block-size: 13px; color: var(--sku-deep); }
 @media (max-width: 749px) {
-  .v2-who__list li { min-block-size: 30px; padding: 3px 10px 3px 8px; font-size: 13px; gap: 5px; }
+  .v2-who__list li { min-block-size: 27px; padding: 2px 9px 2px 7px; font-size: 12.5px; gap: 4px; }
 }
 
 /* Payment design preview (pre-launch only) */
-.v2-pay { display: grid; gap: 8px; padding-block-start: 12px; border-block-start: 1px solid var(--c-line); }
+/* badges and the Paymob note share one row (DECISIONS 257) */
+.v2-pay { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding-block-start: 12px; border-block-start: 1px solid var(--c-line); }
 .v2-pay__list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; list-style: none; margin: 0; padding: 0; }
 .v2-pay__list li { display: flex; }
 .v2-pay__icon { inline-size: 38px; block-size: 24px; border-radius: 4px; box-shadow: 0 0 0 1px var(--c-line); }
