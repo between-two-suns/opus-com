@@ -657,7 +657,7 @@ climate-switch[data-active='sun'] .cs__badge[data-fx='sun'], climate-switch[data
 .creel__open { position: absolute; z-index: 1; inset: 0; padding: 0; border: 0; border-radius: inherit; background: transparent; cursor: zoom-in; }
 .creel__open:focus-visible { outline: 2px solid #fff; outline-offset: -5px; }
 .creel__media img, .creel__media video, .creel__frame img, .creel__frame video { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
-.creel__vid { scale: 1.02; }  /* hides a hairline seam at the frame edge some phone exports carry */
+.creel__media .creel__vid { inset: -1px; inline-size: calc(100% + 2px); block-size: calc(100% + 2px); }  /* 1px bleed hides a hairline seam some phone exports carry; no transform (desktop Safari, DECISIONS 252) */
 .creel__img { transform: scale(1); transition: transform 9s linear; }
 .creel__item.is-in .creel__img { transform: scale(1.08); }
 @media (prefers-reduced-motion: reduce) { .creel__img { transition: none; } .creel__item.is-in .creel__img { transform: none; } }
@@ -668,12 +668,12 @@ climate-switch[data-active='sun'] .cs__badge[data-fx='sun'], climate-switch[data
 .creel__who > span { justify-self: start; }  /* the handle reads left to right but sits on the Arabic side */
 .creel__name { font-weight: 700; font-size: 15px; }
 .creel__handle { font-size: 13px; opacity: .85; }
-.creel__tag { pointer-events: auto; display: inline-flex; align-items: center; gap: 7px; max-inline-size: 100%; min-block-size: 34px; padding: 0 10px 0 9px; border-radius: 99px; background: rgba(255, 255, 255, .2); color: #fff; font-size: 13px; font-weight: 650; text-decoration: none; -webkit-backdrop-filter: blur(12px) saturate(1.4); backdrop-filter: blur(12px) saturate(1.4); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28); transition: background var(--dur) var(--ease-out); }
-.creel__tag:hover { background: rgba(255, 255, 255, .32); }
+.creel__tag { pointer-events: auto; display: inline-flex; align-items: center; gap: 7px; max-inline-size: 100%; min-block-size: 34px; padding: 0 10px 0 9px; border-radius: 99px; background: rgba(20, 22, 38, .4); color: #fff; font-size: 13px; font-weight: 650; text-decoration: none; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3); transition: background var(--dur) var(--ease-out); }
+.creel__tag:hover { background: rgba(20, 22, 38, .58); }
 .creel__tagname { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .creel__tag .icon { flex: none; inline-size: 14px; block-size: 14px; }
 .creel__dot { flex: none; inline-size: 9px; block-size: 9px; border-radius: 50%; background: var(--sku, #fff); box-shadow: 0 0 0 2px rgba(255, 255, 255, .9); }
-.creel__sound { position: absolute; z-index: 1; inset-block-start: 12px; inset-inline-end: 12px; display: grid; place-items: center; inline-size: 30px; block-size: 30px; border-radius: 50%; background: rgba(20, 22, 38, .45); color: #fff; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.creel__sound { position: absolute; z-index: 1; inset-block-start: 12px; inset-inline-end: 12px; display: grid; place-items: center; inline-size: 30px; block-size: 30px; border-radius: 50%; background: rgba(20, 22, 38, .5); color: #fff; }
 .creel__sound svg { inline-size: 16px; block-size: 16px; fill: currentColor; }
 /* The opened post: a full-screen story. Phones: edge to edge. Laptops: a 9:16 frame on a dark room, arrows beside it. */
 .creel__viewer { inline-size: 100vw; block-size: 100dvh; max-inline-size: none; max-block-size: none; margin: 0; padding: 0; border: 0; background: #0E101C; color: #fff; overscroll-behavior: contain; }

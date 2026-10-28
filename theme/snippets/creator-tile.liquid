@@ -19,6 +19,8 @@
   {%- comment -%} The picture sits in a plain box with the tap target over it: Safari does not draw a video inside a <button> {%- endcomment -%}
   <div class="creel__media{% if ct_video %} creel__media--video{% endif %}">
     {%- if ct_video -%}
+      {%- comment -%} The preview frame as a plain image behind the video: desktop Safari sometimes draws no video at all (DECISIONS 252) {%- endcomment -%}
+      {%- if media.preview_image -%}{{ media.preview_image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '360,540,720', sizes: '(min-width: 990px) 22vw, 60vw', alt: '', class: 'creel__poster' }}{%- endif -%}
       {{ media | video_tag: autoplay: false, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata', image_size: '720x', class: 'creel__vid' }}
       <span class="creel__sound" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></span>
     {%- elsif media != blank -%}

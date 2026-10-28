@@ -118,9 +118,10 @@
     open(i) {
       this.i = i;
       const it = this.items[i];
-      const m = it.querySelector('.creel__media > video, .creel__media > img')?.cloneNode(true);
-      if (m) { m.loading = 'eager'; if (m.sizes) m.sizes = '(min-width: 750px) 56dvh, 100vw'; }
-      this.frame.replaceChildren(...(m ? [m] : []));
+      const m = (it.querySelector('.creel__media > video') || it.querySelector('.creel__media > img'))?.cloneNode(true);
+      const poster = m && m.tagName === 'VIDEO' ? it.querySelector('.creel__poster')?.cloneNode(true) : null;
+      [poster, m].forEach((el) => { if (el) { el.loading = 'eager'; if (el.sizes) el.sizes = '(min-width: 750px) 56dvh, 100vw'; } });
+      this.frame.replaceChildren(...[poster, m].filter(Boolean));
       this.querySelector('[data-who]').innerHTML = it.querySelector('.creel__who').innerHTML;
       const tag = it.querySelector('.creel__tag'); this.querySelector('[data-tag]').replaceChildren(...(tag ? [tag.cloneNode(true)] : []));
       this.story.dataset.step = it.dataset.step || '';
