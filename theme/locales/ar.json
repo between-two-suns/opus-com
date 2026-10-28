@@ -457,6 +457,12 @@
       "clarity-serum": "سيروم|كلاريتي",
       "daily-barrier-moisturizing-cream": "كريم ديلي باريير|المرطّب",
       "daily-defense-sunscreen-spf-50": "واقي الشمس|ديلي ديفنس SPF 50+‎"
+    },
+    "stage_word": {
+      "s1": "تنظيف",
+      "s2": "صفاء",
+      "s3": "ترطيب",
+      "s4": "حماية"
     }
   },
   "collection": {

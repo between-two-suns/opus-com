@@ -174,7 +174,12 @@
                 assign tex = textures[tex_index]
               -%}
               {%- if tex != blank -%}<span class="gallery__texture" aria-hidden="true" style="--tex: url('{{ tex | asset_url }}')"></span>{%- endif -%}
-              {%- if step_label != blank -%}<span class="gallery__word" aria-hidden="true" style="--len: {{ step_label | size }}">{{ step_label | escape }}</span>{%- endif -%}
+              {%- comment -%} The photo's big word is the brand word on the pack (Reset · Clarity · Barrier · Defense), not the step name (DECISIONS 262) {%- endcomment -%}
+              {%- if step > 0 and step < 5 -%}
+                {%- assign stage_key = 'product.stage_word.s' | append: step -%}
+                {%- assign stage_word = stage_key | t -%}
+                <span class="gallery__word" aria-hidden="true" style="--len: {{ stage_word | size }}">{{ stage_word | escape }}</span>
+              {%- endif -%}
               {%- if mf.benefit != blank -%}
                 {%- assign callouts = mf.benefit | split: '.' -%}
                 <ul class="callouts" role="list" aria-hidden="true">

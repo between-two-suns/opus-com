@@ -457,6 +457,12 @@
       "clarity-serum": "Clarity|Serum",
       "daily-barrier-moisturizing-cream": "Daily Barrier|Moisturizing Cream",
       "daily-defense-sunscreen-spf-50": "Daily Defense|Sunscreen SPF 50+"
+    },
+    "stage_word": {
+      "s1": "Reset",
+      "s2": "Clarity",
+      "s3": "Barrier",
+      "s4": "Defense"
     }
   },
   "collection": {
