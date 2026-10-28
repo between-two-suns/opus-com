@@ -4,7 +4,8 @@
   /pages/returns?view=help. The words are the page's own (the legal text in admin, EN/AR), shown unchanged; the design
   adds what a reader needs in five seconds before it starts:
   - a header with the help area's tabs (Shipping · Returns · FAQ · Contact),
-  - three facts in the step colours, then "How it works" in three steps on the brand's dotted line,
+  - three facts in the step colours; on Returns, "How it works" in three steps on the brand's dotted line (Shipping has
+    none: its steps only repeated the facts, DECISIONS 258),
   - the full policy as numbered sections with an "On this page" list on laptops, its tables as cards.
   The numbers (free-delivery threshold, fees, days, cash on delivery) come from the theme settings that checkout copy
   and the FAQ use, so they cannot drift apart. Any other page handle gets the header, tabs and styled text only.
@@ -32,7 +33,7 @@
     <p class="t-eyebrow">{{ 'help.eyebrow' | t }}</p>
     <h1 class="t-display-l help__title">{{ page.title | escape }}</h1>
     {%- if kind == 'shipping' -%}
-      <p class="t-lead help__lead">{{ 'help.shipping.lead' | t: amount: free_from, days: days_main }}</p>
+      <p class="t-lead help__lead">{{ 'help.shipping.lead' | t }}</p>
     {%- elsif kind == 'returns' -%}
       <p class="t-lead help__lead">{{ 'help.returns.lead' | t }}</p>
     {%- endif -%}
@@ -53,7 +54,7 @@
           {%- if settings.show_cod -%}
             <li class="help__fact" data-step="4">{% render 'icon', name: 'cash' %}<strong>{{ 'help.shipping.f3_cod' | t }}</strong><span>{{ 'help.shipping.f3_cod_sub' | t }}</span></li>
           {%- else -%}
-            <li class="help__fact" data-step="4">{% render 'icon', name: 'lock' %}<strong>{{ 'help.shipping.f3' | t }}</strong><span>{{ 'help.shipping.f3_sub' | t }}</span></li>
+            <li class="help__fact" data-step="4">{% render 'icon', name: 'refresh' %}<strong>{{ 'help.shipping.f3_dmg' | t }}</strong><span>{{ 'help.shipping.f3_dmg_sub' | t }}</span></li>
           {%- endif -%}
         {%- else -%}
           <li class="help__fact" data-step="1">{% render 'icon', name: 'refresh' %}<strong>{{ 'help.returns.f1' | t }}</strong><span>{{ 'help.returns.f1_sub' | t }}</span></li>
@@ -62,6 +63,7 @@
         {%- endif -%}
       </ul>
 
+      {%- if kind == 'returns' -%}
       <div class="help__how">
         <h2 class="t-display-m">{{ 'help.how' | t }}</h2>
         <ol class="help__steps" role="list">
@@ -72,11 +74,12 @@
             <li class="help__step" data-step="{% if n == 3 %}4{% else %}{{ n }}{% endif %}">
               <span class="help__num" aria-hidden="true">0{{ n }}</span>
               <strong>{{ st | t }}</strong>
-              <span>{{ sd | t: days: days_main, other: days_other }}</span>
+              <span>{{ sd | t }}</span>
             </li>
           {%- endfor -%}
         </ol>
       </div>
+      {%- endif -%}
     </div>
   {%- endif -%}
 

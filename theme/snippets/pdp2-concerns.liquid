@@ -39,6 +39,8 @@
 -%}
 {%- if keys.size > 0 -%}
   <ul class="v2-who__list" role="list">
+    {%- comment -%} A short visible "For" at the start of the row says what the chips are, without a heading line; no ticks, which read as a tick next to a problem (DECISIONS 258) {%- endcomment -%}
+    <li class="v2-who__lead" aria-hidden="true">{{ 'pdp2.who_short' | t }}</li>
     {%- for k in keys -%}
       {%- if k == 'cleanse' -%}
         {%- assign label = 'pdp2.chip_cleanse' | t -%}
@@ -46,7 +48,7 @@
         {%- assign ck = 'skin_check.chips.' | append: k -%}
         {%- assign label = ck | t -%}
       {%- endif -%}
-      <li>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ label }}</li>
+      <li>{{ label }}</li>
     {%- endfor -%}
   </ul>
 {%- endif -%}

@@ -204,11 +204,12 @@
 .v2-who__label { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-muted); }
 :lang(ar) .v2-who__label { letter-spacing: 0; text-transform: none; font-size: 13px; }
 .v2-who__list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
-/* the concerns as light tags (DECISIONS 257): every one kept, the heading read by screen readers only */
-.v2-who__list li { display: inline-flex; align-items: center; gap: 5px; min-block-size: 28px; padding: 2px 11px 2px 9px; border-radius: 99px; background: color-mix(in srgb, var(--sku) 13%, #fff); font-size: 13.5px; font-weight: 600; }
-.v2-who__list .icon { inline-size: 13px; block-size: 13px; color: var(--sku-deep); }
+/* the concerns as light tags (DECISIONS 257, 258): every one kept, led by a small "For"; the full heading is for screen readers */
+.v2-who__list li { display: inline-flex; align-items: center; min-block-size: 28px; padding: 2px 11px; border-radius: 99px; background: color-mix(in srgb, var(--sku) 13%, #fff); font-size: 13.5px; font-weight: 600; }
+.v2-who__list li.v2-who__lead { padding-inline: 0 2px; background: none; color: var(--c-muted); font-weight: 500; }
 @media (max-width: 749px) {
-  .v2-who__list li { min-block-size: 27px; padding: 2px 9px 2px 7px; font-size: 12.5px; gap: 4px; }
+  .v2-who__list li { min-block-size: 27px; padding: 2px 10px; font-size: 12.5px; }
+  .v2-who__list li.v2-who__lead { padding-inline: 0 2px; }
 }
 
 /* Payment design preview (pre-launch only) */
@@ -297,8 +298,7 @@
 .v2-set-facts { margin: 0; font-size: 17px; font-weight: 450; line-height: 1.45; color: color-mix(in srgb, var(--c-ink) 78%, transparent); text-wrap: pretty; }
 :lang(ar) .v2-set-facts { line-height: 1.6; }
 @media (min-width: 990px) { .v2-set-facts { font-size: 18px; } }
-.pdp--v2[data-step='0'] .v2-who__list li { background: color-mix(in srgb, var(--c-ink) 6%, #fff); }
-.pdp--v2[data-step='0'] .v2-who__list .icon { color: var(--c-success); }
+.pdp--v2[data-step='0'] .v2-who__list li:not(.v2-who__lead) { background: color-mix(in srgb, var(--c-ink) 6%, #fff); }
 
 /* Stage: the packs side by side, each with its step drawn out above it */
 .pdp--v2 .pdp__gallery .gallery__slide.s2-stage { background: var(--g); overflow: hidden; }
