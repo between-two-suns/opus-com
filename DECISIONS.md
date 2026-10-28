@@ -1043,3 +1043,9 @@ Each entry: decision · why · reversibility. Newest last.
     - **No blur over videos:** the product tag and sound icon lose their backdrop blur (a known desktop Safari trouble spot over video). They're now a dark see-through pill with a thin white edge, the same on every tile.
     - **No transform on videos:** the 2% zoom that hid an edge seam is now a 1px bleed instead.
     - Checked on staging in Chrome with every video hidden on purpose (standing in for Safari drawing nothing): all five tiles show their pictures, the story opens with the picture under the video, and no element in the row uses a blur. **Still to confirm in desktop Safari by the owner.**
+253. **Owner: "Wouldn't all videos playing at once on desktop be weird?" Yes: with real posts, four or five moving tiles on a laptop would be busy, none would get attention, and every video would load at once.** Now **one video plays at a time**, silently and looped:
+    - **Laptop:** the first video in view plays. Hover another video tile and it plays instead; the rest hold their still picture. Hovering a photo, or moving away, hands back to the first.
+    - **Phone:** the video most in view plays. As you swipe, the next takes over and the last pauses.
+    - **While a story is open,** the row's video pauses; it picks up again on close.
+    - Photos keep their slow zoom. Reduced motion: nothing plays or zooms by itself.
+    - Checked on staging, laptop + phone. Laptop: before scrolling, both still. In view: tile 1 plays. Hover tile 3: only 3 plays. Hover photo tile 2 or move away: back to 1. Story open: none. Closed: 1 again. Phone: in view, 1 plays; swiped to 3, only 3 plays. No errors.
