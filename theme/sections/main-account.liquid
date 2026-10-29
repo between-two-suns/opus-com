@@ -58,11 +58,13 @@
             <button type="submit" class="btn btn--primary acct-out__go">{{ 'account_page.continue' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
           </div>
         </form>
-        <ol class="acct-out__how" role="list">
-          <li><span>1</span>{{ 'account_page.how_1' | t }}</li>
-          <li><span>2</span>{{ 'account_page.how_2' | t }}</li>
-          <li><span>3</span>{{ 'account_page.how_3' | t }}</li>
-        </ol>
+        <p class="acct-out__how">{{ 'account_page.how_1' | t }}{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}{{ 'account_page.how_2' | t }}{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}{{ 'account_page.how_3' | t }}</p>
+        {%- comment -%} On phones the benefits sit here, under the form, instead of crowding the picture {%- endcomment -%}
+        <span class="acct-out__perks acct-out__perks--panel">
+          <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_reorder' | t }}</span>
+          <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_track' | t }}</span>
+          <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_address' | t }}</span>
+        </span>
         <p class="acct-out__new">{{ 'account_page.new_here' | t }}</p>
         <p class="acct-out__legal t-muted">{{ 'account_page.legal_html' | t: privacy: '/policies/privacy-policy' }}</p>
       </div>
