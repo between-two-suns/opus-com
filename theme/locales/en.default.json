@@ -65,8 +65,7 @@
   "search": {
     "title": "Search",
     "label": "Search the store",
-    "placeholder": "Search products, ingredients, concerns",
-    "placeholder_demo": "Search products or ingredients",
+    "placeholder": "Search products or ingredients",
     "popular": "Popular",
     "popular_terms": "Niacinamide, SPF, Oily skin, Cleanser, Dark spots",
     "no_results": "No results for “{{ terms }}”.",
@@ -513,8 +512,7 @@
     "tier_items": "{{ count }} items",
     "tier_items_plus": "{{ count }}+ items",
     "ship_remaining": "{{ amount }} away from free delivery",
-    "ship_unlocked": "Free delivery unlocked",
-    "ship_unlocked_demo": "Free standard delivery unlocked",
+    "ship_unlocked": "Free standard delivery unlocked",
     "ship_label": "Progress to free delivery",
     "added_short": "Added",
     "routine_count": "{{ count }} of 4 steps",
@@ -956,7 +954,6 @@
   "dock": {
     "label": "Quick navigation",
     "shop": "Shop",
-    "routine": "Routine",
     "sets": "Sets",
     "home": "Home",
     "search": "Search",
@@ -1606,9 +1603,7 @@
       "s3_d": "Once it reaches us and is checked. Your bank may take a few extra days."
     }
   },
-  "demo": {
-    "on": "Demo: new bag & menu",
-    "off": "Turn off",
+  "shop_menu": {
     "shop_all": "Shop all products",
     "pick": "Our pick",
     "all_four": "All four steps, morning + night",

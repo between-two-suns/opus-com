@@ -67,7 +67,7 @@
         {%- capture remaining_money -%}{% render 'egp', cents: remaining %}{%- endcapture -%}
         {{ 'cart.ship_remaining' | t: amount: remaining_money }}
       {%- else -%}
-        <strong><span class="demo-off">{{ 'cart.ship_unlocked' | t }}</span><span class="demo-on">{{ 'cart.ship_unlocked_demo' | t }}</span></strong>
+        <strong>{{ 'cart.ship_unlocked' | t }}</strong>
       {%- endif -%}
     </p>
     <div class="incentive__meter" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ progress }}" aria-label="{{ 'cart.ship_label' | t }}"><span style="--v: {{ progress }}%"></span></div>

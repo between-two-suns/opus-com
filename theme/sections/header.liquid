@@ -27,18 +27,8 @@
               {%- for link in menu.links -%}
                 <li class="site-nav__item">
                   {%- if forloop.first and section.settings.enable_mega and mega_collection.products_count > 0 -%}
-                    <button
-                      type="button"
-                      class="site-nav__link demo-off"
-                      aria-expanded="false"
-                      aria-controls="MegaShop"
-                      data-mega-toggle
-                    >
-                      {{ link.title | escape }}
-                      {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}
-                    </button>
-                    {%- comment -%} Demo only (DECISIONS 266): clicking Shop goes to all products; hovering still opens the menu {%- endcomment -%}
-                    <a class="site-nav__link demo-on" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>
+                    {%- comment -%} Clicking Shop goes to all products; pointing at it (or ↓ on the keyboard) opens the menu (DECISIONS 266) {%- endcomment -%}
+                    <a class="site-nav__link" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %} aria-expanded="false" aria-controls="MegaShop" data-mega-toggle>
                       {{ link.title | escape }}
                       {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}
                     </a>
@@ -48,7 +38,7 @@
                 </li>
               {%- endfor -%}
             {%- else -%}
-              <li class="site-nav__item"><button type="button" class="site-nav__link demo-off" aria-expanded="false" aria-controls="MegaShop" data-mega-toggle>{{ 'header.nav.shop' | t }} {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}</button><a class="site-nav__link demo-on" href="{{ routes.all_products_collection_url }}">{{ 'header.nav.shop' | t }} {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}</a></li>
+              <li class="site-nav__item"><a class="site-nav__link" href="{{ routes.all_products_collection_url }}" aria-expanded="false" aria-controls="MegaShop" data-mega-toggle>{{ 'header.nav.shop' | t }} {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}</a></li>
               <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'header.nav.sets' | t }}</a></li>
               <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{{ 'header.nav.climate' | t }}</a></li>
               <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }}</a></li>
@@ -97,32 +87,28 @@
   </header>
   {%- if section.settings.enable_mega -%}
     <div class="mega" id="MegaShop" hidden data-mega>
-      {%- comment -%}
-        Demo only (DECISIONS 267, `?demo=1`): a word-led menu with the three ways people shop (by step, by set, help me
-        choose) and one row of links (Shop all products · Ingredients · Creators), instead of four big photos.
-      {%- endcomment -%}
-      <div class="container demo-on demo-mega">
+      <div class="container mega-ed">
         {%- comment -%} Editorial (DECISIONS 268–270): the four names large; pointing at a product shows its photo, at a set its page's first picture {%- endcomment -%}
         <div class="dm-b">
           <div class="dm-b__names">
-            <p class="t-eyebrow t-muted">{{ 'demo.mega_routine' | t }}</p>
+            <p class="t-eyebrow t-muted">{{ 'shop_menu.mega_routine' | t }}</p>
             <ol class="dm-names" role="list">
               {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
                 {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}{%- assign step = step | strip -%}
                 <li><a class="dm-name" href="{{ product.url }}" data-step="{{ step }}" data-i="{{ forloop.index }}"><span class="step-num">0{{ step }}</span><span class="dm-name__t">{{ product.title | escape }}</span></a></li>
               {%- endfor -%}
             </ol>
-            <a class="btn btn--primary btn--small dm-all" href="{{ routes.all_products_collection_url }}">{{ 'demo.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <a class="btn btn--primary btn--small dm-all" href="{{ routes.all_products_collection_url }}">{{ 'shop_menu.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
           </div>
           <div class="dm-b__side">
-            <p class="t-eyebrow t-muted">{{ 'demo.mega_sets' | t }}</p>
+            <p class="t-eyebrow t-muted">{{ 'shop_menu.mega_sets' | t }}</p>
             <ul class="dm-links" role="list">
               {%- assign set_handles = 'the-full-ritual,the-night-ritual,the-clear-protect-trio' | split: ',' -%}
               {%- for sh in set_handles -%}{%- assign product = all_products[sh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
                 <li><a class="dm-set" href="{{ product.url }}" data-i="{{ forloop.index | plus: 4 }}">{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</a></li>
               {%- endfor -%}
             </ul>
-            <p class="t-eyebrow t-muted">{{ 'demo.mega_more' | t }}</p>
+            <p class="t-eyebrow t-muted">{{ 'shop_menu.mega_more' | t }}</p>
             <ul class="dm-links" role="list">
               <li><a href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }}</a></li>
               <li><a href="{{ routes.root_url | append: '/pages/creators' | replace: '//', '/' }}">{{ 'footer.links.creators' | t }}</a></li>
@@ -132,7 +118,7 @@
             {%- comment -%} first: what shows before pointing at anything (The Full Ritual) {%- endcomment -%}
             {%- assign product = all_products['the-full-ritual'] -%}
             {%- if product.id -%}
-              <span class="dm-fig dm-fig--rest">{% render 'demo-set-stage', handle: 'the-full-ritual' %}<span class="dm-fig__cap"><span class="demo-pick">{{ 'demo.pick' | t }}</span>{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
+              <span class="dm-fig dm-fig--rest">{% render 'mega-set-stage', handle: 'the-full-ritual' %}<span class="dm-fig__cap"><span class="pick-chip">{{ 'shop_menu.pick' | t }}</span>{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
             {%- endif -%}
             {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
               {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}{%- assign step = step | strip -%}
@@ -143,39 +129,9 @@
               </span>
             {%- endfor -%}
             {%- for sh in set_handles -%}{%- assign product = all_products[sh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
-              <span class="dm-fig" data-i="{{ forloop.index | plus: 4 }}">{% render 'demo-set-stage', handle: sh %}<span class="dm-fig__cap">{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
+              <span class="dm-fig" data-i="{{ forloop.index | plus: 4 }}">{% render 'mega-set-stage', handle: sh %}<span class="dm-fig__cap">{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
             {%- endfor -%}
           </div>
-        </div>
-      </div>
-      <div class="container mega__inner demo-off">
-        {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
-          {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
-          {%- assign step = step | strip -%}
-          {%- assign cutout = product.metafields.bts.cutout.value -%}
-          {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
-          {%- assign studio = images[studio_key] -%}{%- if studio == blank -%}{%- assign studio = false -%}{%- endif -%}
-          <a class="mega-card" href="{{ product.url }}" data-step="{{ step }}">
-            <span class="mega-card__media">
-              {%- if studio -%}
-                {{ studio | image_url: width: 480 | image_tag: loading: 'lazy', widths: '240,360,480', sizes: '240px', alt: '', class: 'mega-card__photo' }}
-              {%- elsif cutout -%}
-                {{ cutout | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '' }}
-              {%- elsif product.featured_media -%}
-                {{ product.featured_media | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '' }}
-              {%- endif -%}
-            </span>
-            <span class="step-tag">{{ 'product.step' | t: number: step }}</span>
-            <span class="mega-card__title">{{ product.title | escape }}</span>
-            {%- render 'price', product: product, class: 't-small' -%}
-          </a>
-        {%- endfor -%}
-        <div class="mega__aside">
-          <p class="t-eyebrow t-muted">{{ 'header.mega.title' | t }}</p>
-          <a class="link-arrow" href="{{ mega_collection.url | default: routes.all_products_collection_url }}">{{ 'header.mega.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-          <a class="link-arrow" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{{ 'header.mega.find_routine' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-          <a class="link-arrow" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.mega.ingredients' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-          <a class="mega__creators" href="{{ routes.root_url | append: '/pages/creators' | replace: '//', '/' }}"><span class="mega__creators-mark" aria-hidden="true"></span><span><strong>{{ 'footer.links.creators' | t }}</strong><br><span class="t-small t-muted">{{ 'pages.contact.way_creators_sub' | t }}</span></span></a>
         </div>
       </div>
     </div>
@@ -195,38 +151,38 @@
   </div>
   <div class="drawer__body">
     {%- comment -%}
-      Demo only (DECISIONS 265, `?demo=1`): links first, with Shop opening in place like the laptop dropdown (open when the
-      menu opens): the four steps in a slim row, The Full Ritual, Shop all; then Sets, Find Your Routine, The Climate, About.
-      Five links only (266): Home is the logo and the dock; Ingredients is in the footer; Creators is in the small row (267).
+      Links first, with Shop opening in place like the laptop menu (open when the menu opens): the four steps in a slim row,
+      The Full Ritual, Shop all; then Sets, Find Your Routine, The Climate, About (DECISIONS 265–267). Home is the logo and
+      the dock; Ingredients is in the footer; Creators is in the small row.
     {%- endcomment -%}
-    <nav class="demo-on demo-menu" aria-label="{{ 'header.primary_nav' | t }}">
-      <details class="demo-menu__shop" open>
-        <summary class="menu-drawer__link">{% if menu.links.size > 0 %}{{ menu.links.first.title | escape }}{% else %}{{ 'header.nav.shop' | t }}{% endif %} {% render 'icon', name: 'chevron-down', class: 'demo-menu__chev' %}</summary>
-        <div class="demo-menu__panel">
-          <div class="demo-menu__row">
+    <nav class="pmenu" aria-label="{{ 'header.primary_nav' | t }}">
+      <details class="pmenu__shop" open>
+        <summary class="menu-drawer__link">{% if menu.links.size > 0 %}{{ menu.links.first.title | escape }}{% else %}{{ 'header.nav.shop' | t }}{% endif %} {% render 'icon', name: 'chevron-down', class: 'pmenu__chev' %}</summary>
+        <div class="pmenu__panel">
+          <div class="pmenu__row">
             {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
               {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
               {%- assign step = step | strip -%}
               {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
               {%- assign studio = images[studio_key] -%}
-              {%- assign short_key = 'demo.short.' | append: product.handle -%}
-              <a class="demo-menu__p" href="{{ product.url }}" data-step="{{ step }}">
+              {%- assign short_key = 'shop_menu.short.' | append: product.handle -%}
+              <a class="pmenu__p" href="{{ product.url }}" data-step="{{ step }}">
                 {%- if studio != blank -%}{{ studio | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120,240', sizes: '84px', alt: '' }}{%- elsif product.featured_media -%}{{ product.featured_media | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120,240', sizes: '84px', alt: '' }}{%- endif -%}
-                <small><span class="demo-dot" aria-hidden="true"></span>0{{ step }}</small>
+                <small><span class="step-dot" aria-hidden="true"></span>0{{ step }}</small>
                 <span>{{ short_key | t }}</span>
-                {%- render 'price', product: product, class: 'demo-menu__price' -%}
+                {%- render 'price', product: product, class: 'pmenu__price' -%}
               </a>
             {%- endfor -%}
           </div>
-          {%- assign demo_ritual = all_products['the-full-ritual'] -%}
-          {%- if demo_ritual.id -%}
-            <a class="demo-ritual" href="{{ demo_ritual.url }}">
-              {%- if demo_ritual.featured_media -%}{{ demo_ritual.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '88px', alt: '' }}{%- endif -%}
-              <span><span class="demo-pick">{{ 'demo.pick' | t }}</span><strong>{{ demo_ritual.title | escape }}</strong><em>{{ 'demo.all_four' | t }}</em></span>
-              <span class="demo-ritual__price">{% render 'price', product: demo_ritual %}</span>
+          {%- assign ritual = all_products['the-full-ritual'] -%}
+          {%- if ritual.id -%}
+            <a class="ritual-card" href="{{ ritual.url }}">
+              {%- if ritual.featured_media -%}{{ ritual.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '88px', alt: '' }}{%- endif -%}
+              <span><span class="pick-chip">{{ 'shop_menu.pick' | t }}</span><strong>{{ ritual.title | escape }}</strong><em>{{ 'shop_menu.all_four' | t }}</em></span>
+              <span class="ritual-card__price">{% render 'price', product: ritual %}</span>
             </a>
           {%- endif -%}
-          <a class="demo-menu__all" href="{{ routes.all_products_collection_url }}">{{ 'demo.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <a class="pmenu__all" href="{{ routes.all_products_collection_url }}">{{ 'shop_menu.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
         </div>
       </details>
       {%- if menu.links.size > 0 -%}
@@ -238,41 +194,6 @@
         <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{{ 'header.nav.routines' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
         <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{{ 'header.nav.climate' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
         <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
-      {%- endif -%}
-    </nav>
-    <div class="menu-drawer__products demo-off">
-      {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
-        {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
-        {%- assign step = step | strip -%}
-        {%- assign cutout = product.metafields.bts.cutout.value -%}
-        {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
-        {%- assign studio = images[studio_key] -%}{%- if studio == blank -%}{%- assign studio = false -%}{%- endif -%}
-        <a class="menu-drawer__product" href="{{ product.url }}" data-step="{{ step }}">
-          {%- if studio -%}
-            {{ studio | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '150px', alt: '', class: 'menu-drawer__photo' }}
-          {%- elsif cutout -%}
-            {{ cutout | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '100px', alt: '' }}
-          {%- elsif product.featured_media -%}
-            {{ product.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '100px', alt: '' }}
-          {%- endif -%}
-          <span class="step-tag">{{ 'product.step' | t: number: step }}</span>
-          <span>{{ product.title | escape }}</span>
-        </a>
-      {%- endfor -%}
-    </div>
-    <nav class="menu-drawer__nav demo-off" aria-label="{{ 'header.primary_nav' | t }}">
-      <a class="menu-drawer__link" href="{{ routes.root_url }}"{% if request.page_type == 'index' %} aria-current="page"{% endif %}>{{ 'general.home' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
-      {%- if menu.links.size > 0 -%}
-        {%- for link in menu.links -%}
-          <a class="menu-drawer__link" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
-        {%- endfor -%}
-      {%- else -%}
-        <a class="menu-drawer__link" href="{{ routes.all_products_collection_url }}">{{ 'header.nav.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
-        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'header.nav.sets' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
-        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{{ 'header.nav.routines' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
-        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
-        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{{ 'header.nav.climate' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
-        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/blogs/journal' | replace: '//', '/' }}">{{ 'header.nav.journal' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
       {%- endif -%}
     </nav>
     <div class="menu-drawer__secondary">
@@ -302,7 +223,6 @@
             type="search"
             name="q"
             placeholder="{{ 'search.placeholder' | t }}"
-            data-demo-placeholder="{{ 'search.placeholder_demo' | t }}"
             autocomplete="off"
             autocapitalize="off"
             spellcheck="false"

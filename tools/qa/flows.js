@@ -158,10 +158,20 @@ for (const loc of ['', '/ar']) {
       ok(`${tag} mobile menu opens`, await page.$eval('#MenuDrawer', (d) => d.open));
       await page.keyboard.press('Escape');
     } else {
-      await page.click('[data-mega-toggle]');
-      ok(`${tag} mega menu opens`, !(await page.$eval('#MegaShop', (m) => m.hidden)));
+      // Shop is a link to all products; pointing at it or ↓ opens the menu (DECISIONS 266)
+      await page.hover('[data-mega-toggle]');
+      await page.waitForTimeout(400);
+      ok(`${tag} mega menu opens on hover`, !(await page.$eval('#MegaShop', (m) => m.hidden)));
       await page.keyboard.press('Escape');
       ok(`${tag} mega closes on Escape`, await page.$eval('#MegaShop', (m) => m.hidden));
+      await page.mouse.move(5, 700);
+      await page.waitForTimeout(400);
+      await page.focus('[data-mega-toggle]');
+      await page.keyboard.press('ArrowDown');
+      ok(`${tag} mega opens with ↓ and focuses its first link`, !(await page.$eval('#MegaShop', (m) => m.hidden)) && (await page.evaluate(() => !!document.activeElement?.closest('#MegaShop'))));
+      await page.keyboard.press('Escape');
+      await Promise.all([page.waitForNavigation({ waitUntil: 'domcontentloaded' }), page.click('[data-mega-toggle]')]);
+      ok(`${tag} clicking Shop goes to all products`, /\/collections\/all/.test(page.url()), page.url());
     }
 
     await page.goto(`${BASE}${loc}/collections/all?concern=sun`, { waitUntil: 'networkidle' });

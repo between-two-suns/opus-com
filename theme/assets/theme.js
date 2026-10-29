@@ -119,6 +119,8 @@ class SiteHeader extends HTMLElement {
       });
       this.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !this.panel.hidden) { this.setMega(false); this.toggle.focus(); }
+        // Shop is a link to all products, so the keyboard opens its menu with ↓ (DECISIONS 266)
+        if (e.key === 'ArrowDown' && e.target === this.toggle) { e.preventDefault(); this.setMega(true); this.panel.querySelector('a')?.focus(); }
       });
       document.addEventListener('click', (e) => { if (!this.contains(e.target)) this.setMega(false); });
       this.panel.addEventListener('focusout', (e) => {
@@ -852,3 +854,34 @@ window.addEventListener('pagereveal', (e) => {
   root.classList.add('vt-step');
   e.viewTransition.finished.finally(() => root.classList.remove('vt-step'));
 });
+
+/* ---------- Bag sheet on phones: pull down to close (DECISIONS 265) ---------- */
+{
+  // bag sheet (phones): pull down from its top, or from the top of the list when scrolled to the start; past 90px it closes
+  const phone = window.matchMedia('(max-width: 749px)');
+  let sheet = null, y0 = null, d = 0;
+  document.addEventListener('touchstart', (e) => {
+    sheet = e.target.closest?.('#CartDrawer[open]');
+    if (!sheet || !phone.matches) { sheet = null; return; }
+    const body = sheet.querySelector('.drawer__body');
+    const fromHead = !!e.target.closest('.drawer__head');
+    const fromTop = body?.contains(e.target) && body.scrollTop <= 0 && !e.target.closest('.cart-upsell > .cart-lines, quantity-input');
+    if (!fromHead && !fromTop) { sheet = null; return; }
+    y0 = e.touches[0].clientY; d = 0;
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    if (!sheet || y0 == null) return;
+    d = Math.max(0, e.touches[0].clientY - y0);
+    sheet.style.transition = 'none';
+    sheet.style.transform = d ? `translateY(${d}px)` : '';
+  }, { passive: true });
+  const end = () => {
+    if (!sheet || y0 == null) return;
+    const s = sheet;
+    s.style.transition = ''; s.style.transform = '';
+    if (d > 90) s.close();
+    sheet = null; y0 = null; d = 0;
+  };
+  document.addEventListener('touchend', end);
+  document.addEventListener('touchcancel', end);
+}

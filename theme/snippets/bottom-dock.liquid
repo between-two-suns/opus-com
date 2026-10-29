@@ -1,6 +1,6 @@
 {%- comment -%}
   App-style bottom dock (mobile/tablet only). The brand icon sits in the centre as Home.
-  Demo only (DECISIONS 265, `?demo=1`): the second item reads "Sets", the header's word for that page, instead of "Routine".
+  The second item reads "Sets", the header's word for that page (DECISIONS 265).
   On product pages the dock hands its place to the buy bar (sticky-atc) once the main button scrolls away.
 {%- endcomment -%}
 {%- liquid
@@ -18,7 +18,7 @@
     {% render 'icon', name: 'grid' %}<span class="dock__label">{{ 'dock.shop' | t }}</span>
   </a>
   <a class="dock__item" href="{{ routes.root_url }}pages/sets"{% if here == 'routine' %} aria-current="page"{% endif %}>
-    {% render 'icon', name: 'layers' %}<span class="dock__label"><span class="demo-off">{{ 'dock.routine' | t }}</span><span class="demo-on">{{ 'dock.sets' | t }}</span></span>
+    {% render 'icon', name: 'layers' %}<span class="dock__label">{{ 'dock.sets' | t }}</span>
   </a>
   <a class="dock__home" href="{{ routes.root_url }}"{% if here == 'home' %} aria-current="page"{% endif %} aria-label="{{ 'dock.home' | t }}">
     <span class="dock__mark" aria-hidden="true">{{ 'bts-icon.svg' | inline_asset_content }}</span>

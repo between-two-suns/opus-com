@@ -48,34 +48,29 @@
 
     <div class="drawer__body">
       {%- if cart.item_count == 0 -%}
-        <div class="cart-empty demo-off">
+        {%- comment -%} The empty bag offers the routine, like the empty bag page (DECISIONS 160, 265) {%- endcomment -%}
+        <div class="bag-empty">
           <p class="t-display-s">{{ 'cart.empty_title' | t }}</p>
-          <p class="t-muted">{{ 'cart.empty_text' | t }}</p>
-          <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.shop_routine' | t }}</a>
-        </div>
-        {%- comment -%} Demo only (DECISIONS 265, `?demo=1`): the empty bag offers the routine, like the empty bag page (160) {%- endcomment -%}
-        <div class="demo-on demo-empty">
-          <p class="t-display-s">{{ 'cart.empty_title' | t }}</p>
-          <p class="t-muted">{{ 'demo.empty_lead' | t }}</p>
-          {%- assign demo_ritual = all_products['the-full-ritual'] -%}
-          {%- if demo_ritual.id -%}
-            <a class="demo-ritual" href="{{ demo_ritual.url }}">
-              {%- if demo_ritual.featured_media -%}{{ demo_ritual.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '88px', alt: '' }}{%- endif -%}
-              <span><span class="demo-pick">{{ 'demo.pick' | t }}</span><strong>{{ demo_ritual.title | escape }}</strong><em>{{ 'demo.all_four' | t }}</em></span>
-              <span class="demo-ritual__price">{% render 'price', product: demo_ritual %}</span>
+          <p class="t-muted">{{ 'shop_menu.empty_lead' | t }}</p>
+          {%- assign ritual = all_products['the-full-ritual'] -%}
+          {%- if ritual.id -%}
+            <a class="ritual-card" href="{{ ritual.url }}">
+              {%- if ritual.featured_media -%}{{ ritual.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '88px', alt: '' }}{%- endif -%}
+              <span><span class="pick-chip">{{ 'shop_menu.pick' | t }}</span><strong>{{ ritual.title | escape }}</strong><em>{{ 'shop_menu.all_four' | t }}</em></span>
+              <span class="ritual-card__price">{% render 'price', product: ritual %}</span>
             </a>
           {%- endif -%}
-          <div class="demo-empty__tiles">
+          <div class="bag-empty__tiles">
             {%- for h in step_handles offset: 1 -%}{%- assign product = all_products[h] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
               {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}{%- assign studio = images[studio_key] -%}
-              {%- assign short_key = 'demo.short.' | append: product.handle -%}
-              <a class="demo-empty__tile" href="{{ product.url }}" data-step="{{ forloop.index }}">
+              {%- assign short_key = 'shop_menu.short.' | append: product.handle -%}
+              <a class="bag-empty__tile" href="{{ product.url }}" data-step="{{ forloop.index }}">
                 {%- if studio != blank -%}{{ studio | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '56px', alt: '' }}{%- elsif product.featured_media -%}{{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '56px', alt: '' }}{%- endif -%}
-                <span>0{{ forloop.index }} · {{ short_key | t }}{%- render 'price', product: product, class: 'demo-empty__price' -%}</span>
+                <span>0{{ forloop.index }} · {{ short_key | t }}{%- render 'price', product: product, class: 'bag-empty__price' -%}</span>
               </a>
             {%- endfor -%}
           </div>
-          <a class="demo-empty__quiz" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}"><span>{{ 'demo.finder' | t }}</span>{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <a class="bag-empty__quiz" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}"><span>{{ 'shop_menu.finder' | t }}</span>{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
         </div>
       {%- else -%}
         {%- comment -%} Routine progress: which of the four steps are in the bag {%- endcomment -%}
@@ -190,22 +185,13 @@
               <span>{{ discount.title | escape }}</span><span>−{% render 'egp', cents: discount.total_allocated_amount %}</span>
             </div>
           {%- endfor -%}
-          <div class="cart-totals__row demo-off">
-            <span class="t-subheading">{{ 'cart.subtotal' | t }}</span>
-            <span class="cart-totals__subtotal">{% render 'egp', cents: cart.total_price %}</span>
-          </div>
-          <p class="cart-note-line demo-off">{% render 'cart-ship-note' %}</p>
-          {%- if settings.show_cod -%}
-            <p class="cart-note-line cart-note-line--icon demo-off">{% render 'icon', name: 'cash', class: 'icon--sm' %}<span>{{ 'cart.cod_available' | t }}</span></p>
-          {%- endif -%}
-          {%- comment -%} Demo only (DECISIONS 266): the total once (in Check out), and one short line above it {%- endcomment -%}
-          <p class="cart-note-line demo-on demo-foot-note">{% if cart.taxes_included %}{{ 'cart.taxes_included' | t | remove: '.' }}{% else %}{{ 'cart.taxes_excluded' | t | remove: '.' }}{% endif %}{% if settings.show_cod %} · {{ 'demo.cod_short' | t }}{% endif %}</p>
+          {%- comment -%} The total once (in Check out), and one short line above it (DECISIONS 266) {%- endcomment -%}
+          <p class="cart-note-line cart-foot-note">{% if cart.taxes_included %}{{ 'cart.taxes_included' | t | remove: '.' }}{% else %}{{ 'cart.taxes_excluded' | t | remove: '.' }}{% endif %}{% if settings.show_cod %} · {{ 'shop_menu.cod_short' | t }}{% endif %}</p>
           <button type="submit" name="checkout" class="btn btn--checkout u-mt-s">
             <span class="btn--checkout__label">{% render 'icon', name: 'lock', class: 'icon--sm' %}{{ 'cart.checkout' | t }}</span>
             <span class="btn--checkout__total">{% render 'egp', cents: cart.total_price %}</span>
           </button>
           <a class="cart-drawer__full" href="{{ routes.cart_url }}">{{ 'cart.view_full' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-          {%- render 'payment-icons', class: 'u-mt-s' -%}
         </form>
       </div>
     {%- endif -%}

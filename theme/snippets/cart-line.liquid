@@ -41,7 +41,8 @@
         {%- endif -%}
         <a class="cart-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
         {%- unless item.product.has_only_default_variant -%}<p class="cart-line__meta">{{ item.variant.title | escape }}</p>{%- endunless -%}
-        {%- if item.product.metafields.bts.size != blank -%}<p class="cart-line__meta u-ltr">{{ item.product.metafields.bts.size }}</p>{%- endif -%}
+        {%- comment -%} A size is a single pack's (200 mL); a set has none, so nothing shows under its name {%- endcomment -%}
+        {%- if cl_def == blank and item.product.metafields.bts.size != blank -%}<p class="cart-line__meta u-ltr">{{ item.product.metafields.bts.size }}</p>{%- endif -%}
       </div>
       <div class="cart-line__prices">
         <span class="cart-line__price">{% render 'egp', cents: item.final_line_price %}</span>

@@ -1,7 +1,7 @@
 {%- comment -%}
   The line under the subtotal (bag drawer and bag page): taxes, then delivery.
-  Demo only (DECISIONS 265, `?demo=1`): once the order reaches the free-delivery threshold, the bar above already says
-  delivery is free, so this line names only the remote-area fee instead of "calculated at checkout".
+  Once the order reaches the free-delivery threshold, the bar above already says delivery is free, so this line names
+  only the remote-area fee instead of "calculated at checkout" (DECISIONS 264–265).
 {%- endcomment -%}
 {%- liquid
   assign sn_threshold = settings.free_shipping_threshold | default: 0 | times: 100
@@ -16,14 +16,12 @@
 -%}
 {%- if cart.taxes_included -%}{{ 'cart.taxes_included' | t }}{%- else -%}{{ 'cart.taxes_excluded' | t }}{%- endif %}
 {% if sn_threshold > 0 and cart.total_price >= sn_threshold -%}
-  <span class="demo-off">{{ sn_old }}</span><span class="demo-on">
   {%- if sn_remote > 0 -%}
     {%- capture sn_fee -%}{% render 'egp', cents: sn_remote %}{%- endcapture -%}
     {{ 'cart.shipping_free_remote' | t: amount: sn_fee }}
   {%- else -%}
     {{ 'cart.shipping_free' | t }}
   {%- endif -%}
-  </span>
 {%- else -%}
   {{ sn_old }}
 {%- endif -%}
