@@ -104,6 +104,21 @@ html.is-demo .cart-drawer .drawer__foot .payment-icons { display: none; }
 .dm-b:has([data-i='6']:is(:hover, :focus-visible)) .dm-fig[data-i='6'],
 .dm-b:has([data-i='7']:is(:hover, :focus-visible)) .dm-fig[data-i='7'] { opacity: 1; }
 .dm-b:has(.dm-name:is(:hover, :focus-visible)) .dm-fig > img { scale: 1; }
+/* a set: its page's first picture (snippets/demo-set-stage), packs at true relative sizes with their step drawn out above */
+.dm-stage { position: absolute; inset: 0; display: flex; justify-content: center; align-items: stretch; gap: 4%; padding: 9% 6% 21%; background: var(--g); }
+.dm-pk { flex: 0 1 calc(88% / max(var(--n), 3)); display: flex; flex-direction: column; align-items: center; min-inline-size: 0; --s: 1; }
+.dm-pk[data-step='2'] { --s: .65; }
+.dm-pk[data-step='3'], .dm-pk[data-step='4'] { --s: .81; }
+.dm-pk__num { font-family: var(--font-display); font-size: 17px; font-weight: 700; line-height: 1; }
+.dm-pk__name { margin-block-start: 2px; font-size: 9.5px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+:lang(ar) .dm-pk__name { font-size: 11px; letter-spacing: 0; }
+.dm-pk__line { position: relative; flex: 1 1 auto; min-block-size: 14px; inline-size: 1.5px; margin-block-start: 6px; background: color-mix(in srgb, var(--c-ink) 45%, transparent); }
+.dm-pk__line::after { content: ''; position: absolute; inset-block-end: -3px; inset-inline-start: 50%; translate: -50% 0; inline-size: 6px; block-size: 6px; border-radius: 50%; background: var(--c-ink); box-shadow: 0 0 0 3px color-mix(in srgb, #fff 70%, transparent); }
+[dir='rtl'] .dm-pk__line::after { translate: 50% 0; }
+.dm-pk__img { flex: none; display: flex; align-items: flex-end; justify-content: center; block-size: calc(var(--s) / var(--smax, 1) * 70%); inline-size: 100%; padding-block-start: 8px; }
+.dm-pk__cut { display: block; block-size: 100%; inline-size: auto; max-inline-size: 100%; object-fit: contain; object-position: 50% 100%; filter: drop-shadow(0 14px 14px rgba(32, 35, 58, .18)); }
+.dm-pk:nth-child(odd) .dm-pk__cut { rotate: -3deg; }
+.dm-pk:nth-child(even) .dm-pk__cut { rotate: 3deg; }
 @media (prefers-reduced-motion: reduce) { .dm-name__t, .dm-fig, .dm-fig > img { transition: none; } }
 
 /* phone menu: the five main links in the brand's tall face, like the laptop menu */

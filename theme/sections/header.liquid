@@ -102,7 +102,7 @@
         choose) and one row of links (Shop all products · Ingredients · Creators), instead of four big photos.
       {%- endcomment -%}
       <div class="container demo-on demo-mega">
-        {%- comment -%} Editorial (DECISIONS 268–269): the four names large; pointing at a product or a set shows its photo {%- endcomment -%}
+        {%- comment -%} Editorial (DECISIONS 268–270): the four names large; pointing at a product shows its photo, at a set its page's first picture {%- endcomment -%}
         <div class="dm-b">
           <div class="dm-b__names">
             <p class="t-eyebrow t-muted">{{ 'demo.mega_routine' | t }}</p>
@@ -132,7 +132,7 @@
             {%- comment -%} first: what shows before pointing at anything (The Full Ritual) {%- endcomment -%}
             {%- assign product = all_products['the-full-ritual'] -%}
             {%- if product.id -%}
-              <span class="dm-fig dm-fig--rest">{% render 'set-visual', product: product, sizes: '420px' %}<span class="dm-fig__cap"><span class="demo-pick">{{ 'demo.pick' | t }}</span>{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
+              <span class="dm-fig dm-fig--rest">{% render 'demo-set-stage', handle: 'the-full-ritual' %}<span class="dm-fig__cap"><span class="demo-pick">{{ 'demo.pick' | t }}</span>{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
             {%- endif -%}
             {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
               {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}{%- assign step = step | strip -%}
@@ -143,7 +143,7 @@
               </span>
             {%- endfor -%}
             {%- for sh in set_handles -%}{%- assign product = all_products[sh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
-              <span class="dm-fig" data-i="{{ forloop.index | plus: 4 }}">{% render 'set-visual', product: product, sizes: '420px' %}<span class="dm-fig__cap">{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
+              <span class="dm-fig" data-i="{{ forloop.index | plus: 4 }}">{% render 'demo-set-stage', handle: sh %}<span class="dm-fig__cap">{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
             {%- endfor -%}
           </div>
         </div>

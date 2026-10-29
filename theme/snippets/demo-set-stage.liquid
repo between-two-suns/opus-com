@@ -1,0 +1,37 @@
+{%- comment -%}
+  Demo (DECISIONS 270): the set page's first picture (snippets/set2-stage), small, for the laptop Shop menu: the packs at their
+  true relative sizes on the set's colour gradient, each with its step number and name drawn out above it. Remove with the demo.
+  Params: handle (the set)
+{%- endcomment -%}
+{%- liquid
+  capture dss_def
+    render 'bundle-def', handle: handle
+  endcapture
+  assign dss_units = dss_def | strip | split: '|' | first | split: ',' | uniq
+  assign dss_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign dss_tints = ''
+  for st in dss_units
+    assign dss_tints = dss_tints | append: ', var(--c-step-' | append: st | append: '-tint)'
+  endfor
+  if dss_units.size == 1
+    assign dss_tints = dss_tints | append: dss_tints
+  endif
+  assign dss_max = '.65'
+  if dss_units contains '3' or dss_units contains '4'
+    assign dss_max = '.81'
+  endif
+  if dss_units contains '1'
+    assign dss_max = '1'
+  endif
+-%}
+<span class="dm-stage" style="--g: linear-gradient(105deg{{ dss_tints }}); --n: {{ dss_units.size }}; --smax: {{ dss_max }}">
+  {%- for st in dss_units -%}
+    {%- assign si = st | plus: 0 -%}{%- assign comp = all_products[dss_handles[si]] -%}
+    <span class="dm-pk" data-step="{{ si }}">
+      <span class="dm-pk__num">0{{ si }}</span>
+      <span class="dm-pk__name">{{ comp.metafields.bts.step_label.value | default: comp.title | escape }}</span>
+      <span class="dm-pk__line"></span>
+      <span class="dm-pk__img">{%- render 'cut-img', handle: comp.handle, sizes: '90px', widths: '120,180,240', class: 'dm-pk__cut' -%}</span>
+    </span>
+  {%- endfor -%}
+</span>

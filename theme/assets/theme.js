@@ -266,16 +266,29 @@ function shownShare(el) {
   const h = Math.max(0, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0));
   return r.width && r.height ? (w * h) / (r.width * r.height) : 0;
 }
-// the pack picture to throw and where it leaves from: its photo when that is mostly in view, otherwise it rises out of the button
-function launch(form, button) {
+// the pack picture to throw and where it leaves from: its photo when that is mostly in view, otherwise it rises out of the button.
+// Only the bottle flies: when the picture on the page is a photo (pack + background), the pack's cutout leaves from the middle of it.
+function launch(form, button, pack) {
   const img = sourceImage(form, button) || $('.gallery__slide--studio .gallery__cutout, .pdp__gallery img');
-  if (!img || !(img.currentSrc || img.src)) return null;
-  if (shownShare(img) >= 0.5) return { src: img.currentSrc || img.src, rect: img.getBoundingClientRect(), ratio: img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 0 };
+  const cut = pack?.img;
+  if (!cut && (!img || !(img.currentSrc || img.src))) return null;
+  const path = (u) => { try { return new URL(u, location.href).pathname.replace(/\.[a-z]+$/i, ''); } catch (e) { return u; } };
+  const isCut = !cut || (img && path(img.currentSrc || img.src) === path(cut));
+  const src = isCut ? img.currentSrc || img.src : cut;
+  const CUT = 0.36; // a pack cutout's width : height
+  // a tiny picture (the sticky bar's thumbnail) makes a speck of a throw: then the pack rises out of the button instead
+  if (img && shownShare(img) >= 0.5 && img.getBoundingClientRect().height >= 72) {
+    const r = img.getBoundingClientRect();
+    if (isCut) return { src, rect: r, ratio: img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 0 };
+    let h = r.height * 0.8, w = h * CUT;
+    if (w > r.width * 0.8) { w = r.width * 0.8; h = w / CUT; }
+    return { src, thumb: img.currentSrc || img.src, rect: { left: r.left + (r.width - w) / 2, top: r.top + (r.height - h) / 2, width: w, height: h } };
+  }
   const b = button.getBoundingClientRect();
-  const ir = img.getBoundingClientRect();
-  const ratio = ir.width && ir.height ? ir.width / ir.height : 0.6;
+  const ir = img?.getBoundingClientRect();
+  const ratio = !isCut ? CUT : ir && ir.width && ir.height ? ir.width / ir.height : 0.6;
   const h = Math.min(120, Math.max(72, b.height * 2));
-  return { src: img.currentSrc || img.src, rect: { left: b.left + b.width / 2 - (h * ratio) / 2, top: b.top + b.height / 2 - h / 2, width: h * ratio, height: h }, fromButton: true };
+  return { src, thumb: img ? img.currentSrc || img.src : '', rect: { left: b.left + b.width / 2 - (h * ratio) / 2, top: b.top + b.height / 2 - h / 2, width: h * ratio, height: h }, fromButton: true };
 }
 
 /* The throw: x glides, y rises then falls (separate easings on nested layers make a true arc). */
@@ -591,10 +604,11 @@ class ProductForm extends HTMLElement {
     const steps = stepsFor(items);
     const routine = steps.length > 1;
     const packs = !fromDialog && routine ? routineSources(this, button, steps) : [];
-    const src = fromDialog || routine ? null : launch(this, button);
+    const src = fromDialog || routine ? null : launch(this, button, steps.length === 1 ? packFor(steps[0]) : null);
     const bag = fromDialog ? null : visibleBag();
     const tint = getComputedStyle(this.closest('[data-step]') || this).getPropertyValue('--sku').trim();
-    const thumb = src ? src.src : '';
+    // the card keeps the picture that was on the page; only the throw uses the bare pack
+    const thumb = src ? src.thumb || src.src : '';
     const name = this.closest('[data-product-title]')?.dataset.productTitle || '';
     // the throw starts with the tap; the request runs alongside it
     Cart.holdCount = !fromDialog;

@@ -982,7 +982,7 @@
       "serum-stock-up": "Controls oil and evens tone, with a spare."
     },
     "badges": {
-      "bts_pick": "BTS Pick",
+      "bts_pick": "Our pick",
       "best_value": "Best value",
       "daily_essential": "Daily Essential"
     },
@@ -1610,7 +1610,7 @@
     "on": "Demo: new bag & menu",
     "off": "Turn off",
     "shop_all": "Shop all products",
-    "pick": "BTS Pick",
+    "pick": "Our pick",
     "all_four": "All four steps, morning + night",
     "empty_lead": "Start with the whole routine, or one step.",
     "finder": "Not sure? Find your routine in 30 seconds",
