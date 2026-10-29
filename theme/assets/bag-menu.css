@@ -149,3 +149,28 @@
   :root .cart-drawer .cart-upsell__item product-form { grid-column: auto; }
   :root .cart-drawer .cart-upsell__item .cart-upsell__why { display: none; }
 }
+
+/* ---------- Laptop Shop menu: opening motion (DECISIONS 272) ----------
+   Shown to the owner to try; this one block is the whole change, so deleting it goes back to the still menu.
+   Each time the menu opens: the panel settles, the four names rise one after another, the sets column follows, the
+   picture fades up and its packs lift in (like the set page's first picture). Under 0.7 s; none with reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .mega:not([hidden]) .mega-ed { animation: mm-settle 280ms var(--ease-out) both; }
+  .mega:not([hidden]) .dm-names li { animation: mm-rise 460ms var(--ease-out) both; animation-delay: 50ms; }
+  .mega:not([hidden]) .dm-names li:nth-child(2) { animation-delay: 105ms; }
+  .mega:not([hidden]) .dm-names li:nth-child(3) { animation-delay: 160ms; }
+  .mega:not([hidden]) .dm-names li:nth-child(4) { animation-delay: 215ms; }
+  .mega:not([hidden]) .dm-b__names > .t-eyebrow { animation: mm-fade 360ms var(--ease-out) both; }
+  .mega:not([hidden]) .dm-b__names > .dm-all { animation: mm-rise 420ms var(--ease-out) 270ms both; }
+  .mega:not([hidden]) .dm-b__side { animation: mm-rise 460ms var(--ease-out) 170ms both; }
+  .mega:not([hidden]) .dm-view { animation: mm-view 620ms var(--ease-out) 60ms both; }
+  .mega:not([hidden]) .dm-fig--rest .dm-pk { animation: mm-lift 560ms var(--ease-out) both; animation-delay: 220ms; }
+  .mega:not([hidden]) .dm-fig--rest .dm-pk:nth-child(2) { animation-delay: 280ms; }
+  .mega:not([hidden]) .dm-fig--rest .dm-pk:nth-child(3) { animation-delay: 340ms; }
+  .mega:not([hidden]) .dm-fig--rest .dm-pk:nth-child(4) { animation-delay: 400ms; }
+}
+@keyframes mm-settle { from { opacity: 0; transform: translateY(-8px); } }
+@keyframes mm-rise { from { opacity: 0; transform: translateY(12px); } }
+@keyframes mm-fade { from { opacity: 0; } }
+@keyframes mm-view { from { opacity: 0; transform: scale(.97); } }
+@keyframes mm-lift { from { opacity: 0; transform: translateY(18px); } }
