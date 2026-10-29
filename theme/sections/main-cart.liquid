@@ -46,7 +46,7 @@
             {%- if cp_saved > 0 -%}
               <div class="cart-totals__row cart-totals__row--deal"><span>{{ 'cart.you_save' | t }}</span><span>{% render 'egp', cents: cp_saved %}</span></div>
             {%- endif -%}
-            <div class="cart-totals__row cart-totals__row--total">
+            <div class="cart-totals__row cart-totals__row--total demo-off">
               <span>{{ 'cart.subtotal' | t }}</span>
               <span class="cart-totals__subtotal">{% render 'egp', cents: cart.total_price %}</span>
             </div>

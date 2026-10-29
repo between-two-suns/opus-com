@@ -190,14 +190,16 @@
               <span>{{ discount.title | escape }}</span><span>−{% render 'egp', cents: discount.total_allocated_amount %}</span>
             </div>
           {%- endfor -%}
-          <div class="cart-totals__row">
+          <div class="cart-totals__row demo-off">
             <span class="t-subheading">{{ 'cart.subtotal' | t }}</span>
             <span class="cart-totals__subtotal">{% render 'egp', cents: cart.total_price %}</span>
           </div>
-          <p class="cart-note-line">{% render 'cart-ship-note' %}</p>
+          <p class="cart-note-line demo-off">{% render 'cart-ship-note' %}</p>
           {%- if settings.show_cod -%}
-            <p class="cart-note-line cart-note-line--icon">{% render 'icon', name: 'cash', class: 'icon--sm' %}<span>{{ 'cart.cod_available' | t }}</span></p>
+            <p class="cart-note-line cart-note-line--icon demo-off">{% render 'icon', name: 'cash', class: 'icon--sm' %}<span>{{ 'cart.cod_available' | t }}</span></p>
           {%- endif -%}
+          {%- comment -%} Demo only (DECISIONS 266): the total once (in Check out), and one short line above it {%- endcomment -%}
+          <p class="cart-note-line demo-on demo-foot-note">{% if cart.taxes_included %}{{ 'cart.taxes_included' | t | remove: '.' }}{% else %}{{ 'cart.taxes_excluded' | t | remove: '.' }}{% endif %}{% if settings.show_cod %} · {{ 'demo.cod_short' | t }}{% endif %}</p>
           <button type="submit" name="checkout" class="btn btn--checkout u-mt-s">
             <span class="btn--checkout__label">{% render 'icon', name: 'lock', class: 'icon--sm' %}{{ 'cart.checkout' | t }}</span>
             <span class="btn--checkout__total">{% render 'egp', cents: cart.total_price %}</span>

@@ -5,7 +5,8 @@ html:not(.is-demo) .demo-on { display: none !important; }
 html.is-demo .demo-off { display: none !important; }
 
 /* badge: which version you're looking at */
-.demo-badge { position: fixed; z-index: 130; inset-inline-start: 10px; inset-block-end: calc(var(--dock-h, 0px) + 10px); display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 12px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 12px; font-weight: 650; box-shadow: 0 10px 24px -12px rgba(32, 35, 58, .6); }
+/* top centre: Shopify's own preview bar covers the bottom of the screen on staging */
+.demo-badge { position: fixed; z-index: 130; inset-block-start: 6px; left: 50%; translate: -50% 0; white-space: nowrap; display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 12px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 12px; font-weight: 650; box-shadow: 0 10px 24px -12px rgba(32, 35, 58, .6); }
 .demo-badge a { padding: 4px 10px; border-radius: 99px; background: rgba(255, 255, 255, .16); color: #fff; text-decoration: none; }
 
 /* bag: the cash-on-delivery icon on the same line as its text */
@@ -55,3 +56,23 @@ html.is-demo .cart-note-line--icon .icon { flex: none; }
 .demo-empty__tile img { inline-size: 56px; block-size: 56px; object-fit: cover; border-radius: 12px; display: block; }
 .demo-empty__price { display: block; margin-block-start: 3px; font-size: 12px; font-weight: 600; color: var(--c-muted); }
 .demo-empty__quiz { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; border-radius: 16px; background: color-mix(in srgb, var(--c-step-2) 22%, #fff); text-decoration: none; color: var(--c-ink); font-weight: 650; font-size: 14.5px; }
+
+/* round 2 (DECISIONS 266) */
+/* laptop Shop menu: cards keep their size; the right column is The Full Ritual, Shop all products, Find your routine */
+html.is-demo .mega__inner { align-items: start; }
+html.is-demo .mega-card { align-content: start; }
+html.is-demo .mega__aside { gap: 14px; }
+html.is-demo .mega__aside > .demo-ritual { order: 1; }
+html.is-demo .mega__aside > .demo-mega-all { order: 2; }
+html.is-demo .mega__aside > .link-arrow { order: 3; justify-self: start; }
+.demo-mega-all { justify-content: center; inline-size: 100%; min-block-size: 48px; }
+/* phone menu: the small links on one row */
+html.is-demo .menu-drawer__secondary { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
+/* bag footer: slimmer */
+html.is-demo .cart-drawer .drawer__foot { padding-block: 12px max(12px, env(safe-area-inset-bottom)); }
+html.is-demo .cart-drawer .cart-totals { gap: 10px; }
+html.is-demo .cart-drawer .btn--checkout.u-mt-s { margin-block-start: 0; }
+.demo-foot-note { text-align: center; }
+html.is-demo .cart-drawer__full { min-block-size: 36px; }
+/* the store's payment logos already show on product pages and at checkout; the bag ends at View full bag */
+html.is-demo .cart-drawer .drawer__foot .payment-icons { display: none; }

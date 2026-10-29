@@ -102,6 +102,18 @@
         if (/[?&]demo=off\b/.test(dq)) sessionStorage.removeItem('bts:demo');
         else if (/[?&]demo=1\b/.test(dq)) sessionStorage.setItem('bts:demo', '1');
         if (sessionStorage.getItem('bts:demo')) document.documentElement.classList.add('is-demo');
+        // Testing aid (DECISIONS 266): while previewing an unpublished theme, every page link carries its preview id, so
+        // browsing never falls back to the live theme. Does nothing on the published theme.
+        document.addEventListener('click', (e) => {
+          const t = window.Shopify && window.Shopify.theme;
+          if (!t || !t.id || t.role === 'main') return;
+          const a = e.target.closest && e.target.closest('a[href]');
+          if (!a || a.origin !== location.origin || a.target || /preview_theme_id=/.test(a.href)) return;
+          const u = new URL(a.href);
+          if (/^\/(checkouts?|cart\/c|account|password)/.test(u.pathname)) return;
+          u.searchParams.set('preview_theme_id', t.id);
+          a.href = u.toString();
+        }, true);
       } catch (e) {}
       window.BTS = {
         routes: {
