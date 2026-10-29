@@ -18,7 +18,7 @@ html.is-demo .cart-note-line--icon .icon { flex: none; }
   html.is-demo body.template-cart:has(.cart-page__bar) .dock { display: none; }
 }
 
-/* The Full Ritual card (phone menu, empty bag, Shop menu) */
+/* The Full Ritual card (phone menu, empty bag) */
 .demo-ritual { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 10px 14px 10px 10px; border-radius: 20px; text-decoration: none; color: var(--c-ink);
   background: linear-gradient(110deg, color-mix(in srgb, var(--c-step-1) 28%, #fff), color-mix(in srgb, var(--c-step-2) 28%, #fff) 35%, color-mix(in srgb, var(--c-step-3) 28%, #fff) 68%, color-mix(in srgb, var(--c-step-4) 32%, #fff)); }
 .demo-ritual img { inline-size: 88px; block-size: 88px; object-fit: cover; border-radius: 14px; display: block; }
@@ -27,10 +27,6 @@ html.is-demo .cart-note-line--icon .icon { flex: none; }
 .demo-ritual__price .price { display: grid; justify-items: end; font-size: 15px; font-weight: 700; white-space: nowrap; }
 .demo-pick { display: inline-block; margin-block-end: 4px; padding: 3px 8px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 :lang(ar) .demo-pick { letter-spacing: 0; }
-.demo-ritual--mega { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 8px; }
-.demo-ritual--mega img { inline-size: 64px; block-size: 64px; border-radius: 12px; }
-.demo-ritual--mega strong { font-size: 15px; }
-.demo-ritual--mega .demo-ritual__price .price { justify-items: start; font-size: 13px; }
 
 /* phone menu: Shop opens in place */
 .demo-menu { display: grid; gap: 4px; }
@@ -58,14 +54,6 @@ html.is-demo .cart-note-line--icon .icon { flex: none; }
 .demo-empty__quiz { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; border-radius: 16px; background: color-mix(in srgb, var(--c-step-2) 22%, #fff); text-decoration: none; color: var(--c-ink); font-weight: 650; font-size: 14.5px; }
 
 /* round 2 (DECISIONS 266) */
-/* laptop Shop menu: cards keep their size; the right column is The Full Ritual, Shop all products, Find your routine */
-html.is-demo .mega__inner { align-items: start; }
-html.is-demo .mega-card { align-content: start; }
-html.is-demo .mega__aside { gap: 14px; }
-html.is-demo .mega__aside > .demo-ritual { order: 1; }
-html.is-demo .mega__aside > .demo-mega-all { order: 2; }
-html.is-demo .mega__aside > .link-arrow { order: 3; justify-self: start; }
-.demo-mega-all { justify-content: center; inline-size: 100%; min-block-size: 48px; }
 /* phone menu: the small links on one row */
 html.is-demo .menu-drawer__secondary { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
 /* bag footer: slimmer */
@@ -76,3 +64,70 @@ html.is-demo .cart-drawer .btn--checkout.u-mt-s { margin-block-start: 0; }
 html.is-demo .cart-drawer__full { min-block-size: 36px; }
 /* the store's payment logos already show on product pages and at checkout; the bag ends at View full bag */
 html.is-demo .cart-drawer .drawer__foot .payment-icons { display: none; }
+
+/* round 3 (DECISIONS 267) */
+/* laptop Shop menu: words first, three ways to shop, one row of links */
+.demo-mega { display: grid; grid-template-columns: 1.35fr 1fr .95fr; gap: 12px 40px; padding: 26px 28px 0; }
+.demo-mega__col { display: grid; align-content: start; gap: 10px; }
+.demo-mega__col > .t-eyebrow { margin: 0 0 2px; }
+.demo-mega__list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.demo-mega__row { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 6px; margin-inline: -6px; border-radius: 14px; text-decoration: none; color: var(--c-ink); transition: background-color var(--dur) var(--ease-out); }
+.demo-mega__row--set { grid-template-columns: minmax(0, 1fr) auto; padding-block: 10px; }
+.demo-mega__row:hover, .demo-mega__row:focus-visible { background: color-mix(in srgb, var(--sku, var(--c-ink)) 16%, #fff); }
+.demo-mega__row--set:hover, .demo-mega__row--set:focus-visible { background: var(--c-paper); }
+.demo-mega__thumb img { inline-size: 52px; block-size: 52px; object-fit: cover; border-radius: 12px; display: block; background: var(--sku-tint); }
+.demo-mega__text { display: grid; gap: 3px; min-inline-size: 0; }
+.demo-mega__text small { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c-muted); }
+:lang(ar) .demo-mega__text small { letter-spacing: 0; }
+.demo-mega__text small .demo-dot { margin-inline-end: -2px; }
+.demo-mega__text small .demo-pick { margin: 0 0 0 6px; }
+.demo-mega__text strong { font-size: 15px; font-weight: 650; line-height: 1.25; }
+.demo-mega__price { font-size: 14px; font-weight: 600; color: var(--c-muted); white-space: nowrap; }
+.demo-mega__price .price__compare, .demo-mega__price s { display: none; }
+.demo-mega__more { justify-self: start; margin-block-start: 4px; font-weight: 650; }
+.demo-mega__help { position: relative; display: grid; align-content: end; gap: 6px; min-block-size: 250px; padding: 20px; border-radius: 22px; text-decoration: none; color: var(--c-ink); overflow: hidden;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--c-step-1) 34%, #fff), color-mix(in srgb, var(--c-step-2) 34%, #fff) 38%, color-mix(in srgb, var(--c-step-3) 34%, #fff) 70%, color-mix(in srgb, var(--c-step-4) 40%, #fff)); }
+.demo-mega__help .t-eyebrow { margin: 0; }
+.demo-mega__help strong { font-size: 19px; line-height: 1.25; max-inline-size: 14ch; }
+.demo-mega__packs { position: absolute; inset-block-start: 18px; inset-inline-end: 14px; display: flex; align-items: flex-end; }
+.demo-mega__packs img { inline-size: auto; block-size: 96px; margin-inline-start: -14px; filter: drop-shadow(0 10px 12px rgba(32, 35, 58, .18)); transition: translate .5s var(--ease-out); }
+.demo-mega__packs img:nth-child(2) { block-size: 74px; } .demo-mega__packs img:nth-child(3) { block-size: 84px; } .demo-mega__packs img:nth-child(4) { block-size: 84px; }
+.demo-mega__help:hover .demo-mega__packs img { translate: 0 -4px; }
+.demo-mega__go { position: absolute; inset-block-end: 20px; inset-inline-end: 20px; inline-size: 22px; block-size: 22px; }
+.demo-mega__foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 28px; margin: 14px -28px 0; padding: 16px 28px; border-block-start: 1px solid var(--c-line); }
+.demo-mega__foot a { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 650; color: var(--c-ink); text-decoration: none; }
+.demo-mega__foot a:first-child { margin-inline-end: auto; }
+.demo-mega__foot a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* bag: calmer and tighter */
+@media (min-width: 750px) {
+  html.is-demo .cart-drawer.drawer { inline-size: min(480px, 100vw); }
+  html.is-demo .cart-drawer .drawer__body { --gutter: 28px; }
+  html.is-demo .cart-drawer .drawer__head, html.is-demo .cart-drawer .drawer__foot { padding-inline: 28px 16px; }
+  html.is-demo .cart-drawer .drawer__foot { padding-inline: 28px; }
+}
+html.is-demo .cart-drawer .drawer__title { font-family: var(--font-sans); text-transform: none; font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+html.is-demo .cart-drawer .drawer__title .t-muted { font-weight: 500; }
+html.is-demo .cart-drawer .drawer__body { scrollbar-width: none; }
+html.is-demo .cart-drawer .drawer__body::-webkit-scrollbar { display: none; }
+/* the routine and free delivery as one quiet block: dots for the steps, one bar for delivery */
+html.is-demo .cart-drawer .cart-routine { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px 0; border-radius: 16px 16px 0 0; background: var(--c-paper); }
+html.is-demo .cart-drawer .cart-routine__label { margin: 0; gap: 8px; justify-content: flex-start; font-size: 13.5px; }
+html.is-demo .cart-drawer .cart-routine__label strong { font-weight: 650; }
+html.is-demo .cart-drawer .cart-progress { flex: none; gap: 5px; }
+html.is-demo .cart-drawer .cart-progress span { flex: none; inline-size: 10px; block-size: 10px; border-radius: 50%; }
+html.is-demo .cart-drawer .cart-routine + .incentive { margin-block-start: 0; border-radius: 0 0 16px 16px; padding-block: 8px 14px; background: var(--c-paper); color: inherit; animation: none; }
+html.is-demo .cart-drawer .cart-routine + .incentive--ship.is-done { color: #0f5132; }
+html.is-demo .cart-drawer .incentive { margin-block-end: 16px; }
+html.is-demo .cart-drawer .incentive__msg { font-size: 13.5px; }
+html.is-demo .cart-drawer .incentive__meter { block-size: 4px; }
+/* one corner radius for every card in the bag */
+html.is-demo .cart-drawer .cart-upsell__item { border-radius: 16px; }
+/* laptop: suggestions as a list, not a sideways row that cuts the second card off */
+@media (min-width: 750px) {
+  html.is-demo .cart-drawer .cart-upsell > .cart-lines { display: grid !important; gap: 8px; overflow: visible; margin-inline: 0; padding-inline: 0; }
+  html.is-demo .cart-drawer .cart-upsell__item { flex: none; grid-template-columns: 52px minmax(0, 1fr) auto; grid-template-rows: auto; align-items: center; gap: 12px; padding: 10px; box-shadow: inset 0 0 0 1px var(--c-line); background: #fff; }
+  html.is-demo .cart-drawer .cart-upsell__item .cart-upsell__img { grid-row: auto; inline-size: 52px; block-size: 52px; }
+  html.is-demo .cart-drawer .cart-upsell__item product-form { grid-column: auto; }
+  html.is-demo .cart-drawer .cart-upsell__item .cart-upsell__why { display: none; }
+}

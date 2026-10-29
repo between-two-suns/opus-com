@@ -1620,6 +1620,11 @@
       "daily-barrier-moisturizing-cream": "Cream",
       "daily-defense-sunscreen-spf-50": "Sunscreen"
     },
-    "cod_short": "Cash on delivery available"
+    "cod_short": "Cash on delivery available",
+    "mega_routine": "The routine",
+    "mega_sets": "Sets",
+    "mega_all_sets": "All sets",
+    "help_title": "Help me choose",
+    "help_cta": "Find your routine in 30 seconds"
   }
 }
