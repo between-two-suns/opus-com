@@ -31,3 +31,11 @@ if (document.documentElement.classList.contains('is-demo')) {
   document.addEventListener('touchend', end);
   document.addEventListener('touchcancel', end);
 }
+
+// laptop Shop menu: two directions to compare (DECISIONS 268). ?menu=b shows B (editorial names), ?menu=a back to A (the shelf)
+try {
+  const q = location.search;
+  if (/[?&]menu=a\b/.test(q)) sessionStorage.removeItem('bts:menu');
+  else if (/[?&]menu=b\b/.test(q)) sessionStorage.setItem('bts:menu', 'b');
+  if (sessionStorage.getItem('bts:menu') === 'b') document.documentElement.classList.add('menu-b');
+} catch (e) {}

@@ -102,51 +102,76 @@
         choose) and one row of links (Shop all products · Ingredients · Creators), instead of four big photos.
       {%- endcomment -%}
       <div class="container demo-on demo-mega">
-        <div class="demo-mega__col">
-          <p class="t-eyebrow t-muted">{{ 'demo.mega_routine' | t }}</p>
-          <ul class="demo-mega__list" role="list">
+        {%- comment -%} A · the shelf: the four packs standing on their own colours, then The Full Ritual {%- endcomment -%}
+        <div class="dm-a">
+          <ul class="dm-shelf" role="list">
             {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
-              {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}
-              {%- assign step = step | strip -%}
-              {%- assign studio_key = 'bts-' | append: product.handle | append: '-studio.jpg' -%}
-              {%- assign studio = images[studio_key] -%}
-              <li><a class="demo-mega__row" href="{{ product.url }}" data-step="{{ step }}">
-                <span class="demo-mega__thumb">{%- if studio != blank -%}{{ studio | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '52px', alt: '' }}{%- elsif product.featured_media -%}{{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '52px', alt: '' }}{%- endif -%}</span>
-                <span class="demo-mega__text"><small><span class="demo-dot" aria-hidden="true"></span>0{{ step }}{% if product.metafields.bts.step_label != blank %} · {{ product.metafields.bts.step_label.value }}{% endif %}</small><strong>{{ product.title | escape }}</strong></span>
-                {%- render 'price', product: product, class: 'demo-mega__price' -%}
+              {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}{%- assign step = step | strip -%}
+              {%- assign cutout = product.metafields.bts.cutout.value -%}
+              <li><a class="dm-tile" href="{{ product.url }}" data-step="{{ step }}">
+                <span class="dm-tile__stage">{%- if cutout -%}{{ cutout | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300', sizes: '90px', alt: '' }}{%- endif -%}</span>
+                <span class="dm-tile__meta"><small><b class="step-num">0{{ step }}</b>{% if product.metafields.bts.step_label != blank %} {{ product.metafields.bts.step_label.value }}{% endif %}</small><strong>{{ product.title | escape }}</strong>{%- render 'price', product: product, class: 'dm-price' -%}</span>
               </a></li>
             {%- endfor -%}
-          </ul>
-        </div>
-        <div class="demo-mega__col">
-          <p class="t-eyebrow t-muted">{{ 'demo.mega_sets' | t }}</p>
-          <ul class="demo-mega__list" role="list">
-            {%- assign set_handles = 'the-full-ritual,the-night-ritual,the-clear-protect-trio' | split: ',' -%}
-            {%- for sh in set_handles -%}{%- assign product = all_products[sh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
-              {%- capture sdef -%}{% render 'bundle-def', handle: sh %}{%- endcapture -%}
-              {%- assign ssteps = sdef | strip | split: '|' | first | split: ',' -%}
-              <li><a class="demo-mega__row demo-mega__row--set" href="{{ product.url }}">
-                <span class="demo-mega__text"><small>{%- for st in ssteps -%}<span class="demo-dot" style="--sku: var(--c-step-{{ st }})" aria-hidden="true"></span>{%- endfor -%}{% if forloop.first %}<span class="demo-pick">{{ 'demo.pick' | t }}</span>{% endif %}</small><strong>{{ product.title | escape }}</strong></span>
-                {%- render 'price', product: product, class: 'demo-mega__price' -%}
+            {%- assign product = all_products['the-full-ritual'] -%}
+            {%- if product.id -%}
+              <li><a class="dm-tile dm-tile--set" href="{{ product.url }}">
+                <span class="dm-tile__stage">
+                  {%- for mh in mega_handles -%}{%- assign cutout = all_products[mh].metafields.bts.cutout.value -%}{%- if cutout -%}{{ cutout | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '60px', alt: '' }}{%- endif -%}{%- endfor -%}
+                  <span class="demo-pick">{{ 'demo.pick' | t }}</span>
+                </span>
+                <span class="dm-tile__meta"><small>{{ 'demo.all_four' | t }}</small><strong>{{ product.title | escape }}</strong>{%- render 'price', product: product, class: 'dm-price' -%}</span>
               </a></li>
-            {%- endfor -%}
+            {%- endif -%}
           </ul>
-          <a class="link-arrow demo-mega__more" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'demo.mega_all_sets' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <div class="dm-foot">
+            <a href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }}</a>
+            <a href="{{ routes.root_url | append: '/pages/creators' | replace: '//', '/' }}">{{ 'footer.links.creators' | t }}</a>
+            <a class="btn btn--primary btn--small dm-all" href="{{ routes.all_products_collection_url }}">{{ 'demo.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          </div>
         </div>
-        <a class="demo-mega__help" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">
-          <span class="demo-mega__packs" aria-hidden="true">
-            {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- assign cutout = product.metafields.bts.cutout.value -%}
-              {%- if cutout -%}{{ cutout | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '56px', alt: '' }}{%- endif -%}
+
+        {%- comment -%} B · editorial: the four names large; pointing at one shows its pack on the right {%- endcomment -%}
+        <div class="dm-b">
+          <div class="dm-b__names">
+            <p class="t-eyebrow t-muted">{{ 'demo.mega_routine' | t }}</p>
+            <ol class="dm-names" role="list">
+              {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
+                {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}{%- assign step = step | strip -%}
+                <li><a class="dm-name" href="{{ product.url }}" data-step="{{ step }}" data-i="{{ forloop.index }}"><span class="step-num">0{{ step }}</span><span class="dm-name__t">{{ product.title | escape }}</span></a></li>
+              {%- endfor -%}
+            </ol>
+            <a class="btn btn--primary btn--small dm-all" href="{{ routes.all_products_collection_url }}">{{ 'demo.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          </div>
+          <div class="dm-b__side">
+            <p class="t-eyebrow t-muted">{{ 'demo.mega_sets' | t }}</p>
+            <ul class="dm-links" role="list">
+              {%- assign set_handles = 'the-full-ritual,the-night-ritual,the-clear-protect-trio' | split: ',' -%}
+              {%- for sh in set_handles -%}{%- assign product = all_products[sh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
+                <li><a href="{{ product.url }}">{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</a></li>
+              {%- endfor -%}
+            </ul>
+            <p class="t-eyebrow t-muted">{{ 'demo.mega_more' | t }}</p>
+            <ul class="dm-links" role="list">
+              <li><a href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }}</a></li>
+              <li><a href="{{ routes.root_url | append: '/pages/creators' | replace: '//', '/' }}">{{ 'footer.links.creators' | t }}</a></li>
+            </ul>
+          </div>
+          <div class="dm-view" aria-hidden="true">
+            {%- assign product = all_products['the-full-ritual'] -%}
+            <span class="dm-fig dm-fig--set">
+              <span class="dm-fig__packs">{%- for mh in mega_handles -%}{%- assign cutout = all_products[mh].metafields.bts.cutout.value -%}{%- if cutout -%}{{ cutout | image_url: width: 260 | image_tag: loading: 'lazy', widths: '130,260', sizes: '90px', alt: '' }}{%- endif -%}{%- endfor -%}</span>
+              <span class="dm-fig__cap"><span class="demo-pick">{{ 'demo.pick' | t }}</span> {{ product.title | escape }}{%- if product.id -%}{%- render 'price', product: product, class: 'dm-price' -%}{%- endif -%}</span>
+            </span>
+            {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
+              {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}{%- assign step = step | strip -%}
+              {%- assign cutout = product.metafields.bts.cutout.value -%}
+              <span class="dm-fig" data-step="{{ step }}" data-i="{{ forloop.index }}">
+                <span class="dm-fig__packs">{%- if cutout -%}{{ cutout | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200,400', sizes: '130px', alt: '' }}{%- endif -%}</span>
+                <span class="dm-fig__cap">{% if product.metafields.bts.step_label != blank %}{{ product.metafields.bts.step_label.value }} · {% endif %}{%- render 'price', product: product, class: 'dm-price' -%}</span>
+              </span>
             {%- endfor -%}
-          </span>
-          <span class="t-eyebrow">{{ 'demo.help_title' | t }}</span>
-          <strong>{{ 'demo.help_cta' | t }}</strong>
-          {% render 'icon', name: 'arrow', class: 'icon--flip demo-mega__go' %}
-        </a>
-        <div class="demo-mega__foot">
-          <a href="{{ routes.all_products_collection_url }}">{{ 'demo.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-          <a href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }}</a>
-          <a href="{{ routes.root_url | append: '/pages/creators' | replace: '//', '/' }}">{{ 'footer.links.creators' | t }}</a>
+          </div>
         </div>
       </div>
       <div class="container mega__inner demo-off">
