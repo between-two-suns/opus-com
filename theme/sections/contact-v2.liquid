@@ -95,7 +95,7 @@
             <div class="field">
               <label for="Cx-order">{{ 'contact2.order_no' | t }}</label>
               <input id="Cx-order" type="text" name="contact[Order number]" placeholder="#1001" autocomplete="off" dir="ltr" inputmode="text">
-              <p class="t-xs t-muted">{{ 'contact2.order_find' | t }}{%- if shop.customer_accounts_enabled -%}{{ ' ' }}<a href="{{ routes.account_url }}">{{ 'contact2.order_link' | t }}</a>{%- endif -%}</p>
+              <p class="t-xs t-muted">{{ 'contact2.order_find' | t }}{%- if shop.customer_accounts_enabled -%}{{ ' ' }}<a href="{{ routes.root_url | append: '/pages/account' | replace: '//', '/' }}">{{ 'contact2.order_link' | t }}</a>{%- endif -%}</p>
             </div>
             <div class="cx__answers">
               <p class="cx__label">{{ 'contact2.answers' | t }}</p>

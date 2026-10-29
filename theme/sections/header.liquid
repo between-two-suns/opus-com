@@ -64,7 +64,8 @@
         </a>
         <span class="header-lang">{% render 'language-switch', form_id: 'HeaderLang' %}</span>
         {%- if shop.customer_accounts_enabled -%}
-          <a href="{{ routes.account_url }}" class="header-icon header-hide-mobile">
+          {%- comment -%} Our account page: sign-in when signed out, the customer's home when signed in (DECISIONS 273, 275) {%- endcomment -%}
+          <a href="{{ routes.root_url | append: '/pages/account' | replace: '//', '/' }}" class="header-icon header-hide-mobile">
             {% render 'icon', name: 'account' %}
             <span class="visually-hidden">{% if customer %}{{ 'header.account' | t }}{% else %}{{ 'header.log_in' | t }}{% endif %}</span>
           </a>
@@ -198,7 +199,7 @@
     </nav>
     <div class="menu-drawer__secondary">
       {%- if shop.customer_accounts_enabled -%}
-        <a href="{{ routes.account_url }}">{% render 'icon', name: 'account', class: 'icon--sm' %}&nbsp;{% if customer %}{{ 'header.account' | t }}{% else %}{{ 'header.log_in' | t }}{% endif %}</a>
+        <a href="{{ routes.root_url | append: '/pages/account' | replace: '//', '/' }}">{% render 'icon', name: 'account', class: 'icon--sm' %}&nbsp;{% if customer %}{{ 'header.account' | t }}{% else %}{{ 'header.log_in' | t }}{% endif %}</a>
       {%- endif -%}
       <a href="{{ routes.root_url | append: '/pages/faq' | replace: '//', '/' }}">{{ 'header.nav.faq' | t }}</a>
       <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{{ 'header.nav.contact' | t }}</a>

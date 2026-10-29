@@ -13,6 +13,9 @@
     when 'cart', 'password', 'gift_card', 'customers/account', 'customers/order', 'customers/addresses'
       assign skip = true
   endcase
+  if template.suffix == 'account'
+    assign skip = true
+  endif
   if customer and customer.accepts_marketing
     assign skip = true
   endif
