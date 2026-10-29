@@ -78,6 +78,7 @@ export function inciFor(locale) {
 }
 
 export const PAGES = {
+  account: { en: 'Account', ar: 'الحساب' },
   sets: { en: 'Sets', ar: 'المجموعات' },
   routines: { en: 'Routines', ar: 'الروتينات' },
   ingredients: { en: 'Ingredient glossary', ar: 'دليل المكوّنات' },

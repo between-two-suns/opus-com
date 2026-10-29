@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="{{ settings.color_daylight }}">
     <link rel="canonical" href="{{ canonical_url }}">
-    {%- if template.suffix == 'creator-kit' -%}<meta name="robots" content="noindex, nofollow">{%- endif -%}
+    {%- if template.suffix == 'creator-kit' or template.suffix == 'account' -%}<meta name="robots" content="noindex, nofollow">{%- endif -%}
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">

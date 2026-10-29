@@ -1,0 +1,249 @@
+{{ 'account.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  The account page (DECISIONS 273), /pages/account. This store uses Shopify's new customer accounts: sign-in and the
+  profile are Shopify-hosted, so this page is our own front door and home for them.
+  Signed out: our sign-in. The email goes to Shopify's sign-in already filled in (login_hint), Shopify sends the
+  6-digit code, and return_to brings the customer back here.
+  Signed in: the customer's routine (the steps they've bought, from their own orders), reorder in one tap, their
+  orders (each opens Shopify's order page with tracking), their details, and sign out.
+{%- endcomment -%}
+{%- liquid
+  assign step_handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign acct_base = routes.account_url | split: '?' | first
+-%}
+<section class="acct{% if customer %} acct--in{% else %} acct--out{% endif %}">
+  {%- unless customer -%}
+    {%- comment -%} The sign-in form posts to Shopify's own sign-in route, keeping its parameters and adding the email {%- endcomment -%}
+    {%- liquid
+      assign login_url = routes.storefront_login_url | default: '/customer_authentication/login'
+      assign login_parts = login_url | split: '?'
+      assign login_action = login_parts | first
+      assign login_query = ''
+      if login_parts.size > 1
+        assign login_query = login_parts.last | split: '&'
+      endif
+    -%}
+    <div class="acct-out">
+      <div class="acct-out__stage" aria-hidden="true">
+        <span class="acct-out__packs">
+          {%- for h in step_handles -%}
+            <span class="acct-out__pack" data-step="{{ forloop.index }}" style="--k: {{ forloop.index0 }}">{%- render 'cut-img', handle: h, sizes: '(min-width: 990px) 9vw, 18vw', widths: '120,180,240,360', loading: 'eager', class: 'acct-out__cut' -%}</span>
+          {%- endfor -%}
+        </span>
+        <span class="acct-out__claim">
+          <span class="acct-out__title">{{ 'customer.perks_title' | t }}</span>
+          <span class="acct-out__perks">
+            <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_reorder' | t }}</span>
+            <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_track' | t }}</span>
+            <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_address' | t }}</span>
+          </span>
+        </span>
+      </div>
+
+      <div class="acct-out__panel">
+        <p class="t-eyebrow t-muted">{{ 'account_page.eyebrow' | t }}</p>
+        <h1 class="acct-out__h">{{ 'account_page.title' | t }}</h1>
+        <p class="acct-out__lead">{{ 'account_page.lead' | t }}</p>
+        <form class="acct-out__form" action="{{ login_action }}" method="get">
+          {%- assign has_return = false -%}
+          {%- for pair in login_query -%}
+            {%- assign kv = pair | split: '=' -%}
+            {%- if kv.first == 'return_to' -%}{%- assign has_return = true -%}{%- endif -%}
+            {%- if kv.first != 'login_hint' and kv.first != blank -%}<input type="hidden" name="{{ kv.first | url_decode | escape }}" value="{{ kv.last | url_decode | escape }}">{%- endif -%}
+          {%- endfor -%}
+          {%- unless has_return -%}<input type="hidden" name="return_to" value="{{ request.path | escape }}">{%- endunless -%}
+          <label class="acct-out__label" for="AcctEmail">{{ 'customer.email' | t }}</label>
+          <div class="acct-out__row">
+            <input id="AcctEmail" class="acct-out__input" type="email" name="login_hint" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" required placeholder="name@email.com" dir="ltr">
+            <button type="submit" class="btn btn--primary acct-out__go">{{ 'account_page.continue' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+          </div>
+        </form>
+        <ol class="acct-out__how" role="list">
+          <li><span>1</span>{{ 'account_page.how_1' | t }}</li>
+          <li><span>2</span>{{ 'account_page.how_2' | t }}</li>
+          <li><span>3</span>{{ 'account_page.how_3' | t }}</li>
+        </ol>
+        <p class="acct-out__new">{{ 'account_page.new_here' | t }}</p>
+        <p class="acct-out__legal t-muted">{{ 'account_page.legal_html' | t: privacy: '/policies/privacy-policy' }}</p>
+      </div>
+    </div>
+  {%- else -%}
+    {%- liquid
+      comment
+        The steps this customer has: every routine step in their orders, singles and the steps inside sets.
+      endcomment
+      assign owned = ''
+    -%}
+    {%- paginate customer.orders by 20 -%}
+      {%- for order in customer.orders -%}
+        {%- for li in order.line_items -%}
+          {%- capture li_step -%}{% render 'product-step', product: li.product %}{%- endcapture -%}
+          {%- assign li_step = li_step | strip -%}
+          {%- if li_step != '' and li_step != '0' -%}
+            {%- assign owned = owned | append: li_step -%}
+          {%- else -%}
+            {%- capture li_def -%}{% render 'bundle-def', handle: li.product.handle %}{%- endcapture -%}
+            {%- assign li_steps = li_def | strip | split: '|' | first -%}
+            {%- assign owned = owned | append: li_steps -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+
+      <header class="acct-in__head">
+        <div class="container acct-in__head-inner">
+          <p class="t-eyebrow t-muted">{{ 'account_page.eyebrow' | t }}</p>
+          <h1 class="acct-in__h">{% if customer.first_name != blank %}{{ 'account_page.hello_name' | t: name: customer.first_name }}{% else %}{{ 'account_page.hello' | t }}{% endif %}</h1>
+          <p class="acct-in__who"><span dir="ltr">{{ customer.email }}</span> · <a href="{{ routes.account_logout_url }}">{{ 'account_page.sign_out' | t }}</a></p>
+        </div>
+      </header>
+
+      <div class="container acct-in__grid">
+        <div class="acct-in__main">
+          {%- comment -%} Your routine: the four steps, the ones they have in colour {%- endcomment -%}
+          {%- assign have = 0 -%}
+          {%- for h in step_handles -%}{%- assign sn = forloop.index | append: '' -%}{%- if owned contains sn -%}{%- assign have = have | plus: 1 -%}{%- endif -%}{%- endfor -%}
+          <article class="acct-card acct-routine">
+            <div class="acct-card__top">
+              <h2 class="acct-card__h">{{ 'account_page.routine' | t }}</h2>
+              <p class="acct-routine__count">{{ 'account_page.routine_count' | t: have: have }}</p>
+            </div>
+            <ol class="acct-routine__steps" role="list">
+              {%- for h in step_handles -%}
+                {%- assign product = all_products[h] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
+                {%- assign sn = forloop.index | append: '' -%}
+                {%- assign got = false -%}{%- if owned contains sn -%}{%- assign got = true -%}{%- endif -%}
+                <li class="acct-step{% if got %} is-have{% endif %}" data-step="{{ forloop.index }}">
+                  <a class="acct-step__pack" href="{{ product.url }}">{%- render 'cut-img', handle: h, sizes: '90px', widths: '120,180,240', class: 'acct-step__cut' -%}</a>
+                  <span class="acct-step__num">0{{ forloop.index }}</span>
+                  <span class="acct-step__name">{{ product.metafields.bts.step_label.value | default: product.title | escape }}</span>
+                  {%- if got -%}
+                    <span class="acct-step__state">{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.in_routine' | t }}</span>
+                  {%- else -%}
+                    <product-form class="acct-step__add" data-product-title="{{ product.title | escape }}">
+                      <form method="post" action="{{ routes.cart_add_url }}">
+                        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                        <button type="submit" class="acct-step__btn">{% render 'icon', name: 'plus', class: 'icon--sm' %}{{ 'account_page.add' | t }} · {% render 'egp', cents: product.price %}</button>
+                        <p class="visually-hidden" data-form-error role="alert" hidden></p>
+                      </form>
+                    </product-form>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ol>
+            {%- if have == 4 -%}
+              <p class="acct-routine__note">{{ 'account_page.routine_full' | t }}</p>
+            {%- elsif have == 0 -%}
+              {%- assign ritual = all_products['the-full-ritual'] -%}
+              {%- if ritual.id -%}<a class="acct-routine__ritual" href="{{ ritual.url }}"><span class="pick-chip">{{ 'shop_menu.pick' | t }}</span> {{ ritual.title | escape }} · {% render 'egp', cents: ritual.price %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>{%- endif -%}
+            {%- endif -%}
+          </article>
+
+          {%- comment -%} Reorder: the last order, all of it, in one tap {%- endcomment -%}
+          {%- assign last = customer.last_order -%}
+          {%- if last -%}
+            <article class="acct-card acct-reorder">
+              <div class="acct-card__top">
+                <h2 class="acct-card__h">{{ 'account_page.reorder' | t }}</h2>
+                <p class="t-muted acct-reorder__from">{{ 'account_page.reorder_from' | t: name: last.name }}</p>
+              </div>
+              <div class="acct-reorder__body">
+                <ul class="acct-reorder__items" role="list">
+                  {%- for li in last.line_items limit: 4 -%}
+                    {%- capture li_step -%}{% render 'product-step', product: li.product %}{%- endcapture -%}{%- assign li_step = li_step | strip | plus: 0 -%}
+                    <li class="acct-reorder__item">
+                      <span class="acct-thumb" data-step="{{ li_step }}">{%- if li_step > 0 -%}{%- render 'cut-img', handle: li.product.handle, sizes: '44px', widths: '120', class: 'acct-thumb__cut' -%}{%- elsif li.image -%}{{ li.image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}</span>
+                      <span>{{ li.product.title | escape }}{% if li.quantity > 1 %} <b>× {{ li.quantity }}</b>{% endif %}</span>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+                <product-form data-multi class="acct-reorder__form" data-product-title="{{ 'account_page.reorder' | t | escape }}">
+                  <form method="post" action="{{ routes.cart_add_url }}">
+                    {%- for li in last.line_items -%}
+                      {%- if li.variant.available -%}
+                        <input type="hidden" name="items[][id]" value="{{ li.variant.id }}">
+                        <input type="hidden" name="items[][quantity]" value="{{ li.quantity }}">
+                      {%- endif -%}
+                    {%- endfor -%}
+                    <button type="submit" class="btn btn--primary">{{ 'account_page.add_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+                    <p class="t-small" data-form-error role="alert" hidden></p>
+                  </form>
+                </product-form>
+              </div>
+            </article>
+          {%- endif -%}
+
+          {%- comment -%} Orders: each opens Shopify's order page (status and tracking) {%- endcomment -%}
+          <article class="acct-card acct-orders">
+            <div class="acct-card__top">
+              <h2 class="acct-card__h">{{ 'account_page.orders' | t }}</h2>
+              {%- if customer.orders_count > 0 -%}<a class="acct-card__more" href="{{ acct_base }}/orders">{{ 'account_page.all_orders' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>{%- endif -%}
+            </div>
+            {%- if customer.orders.size > 0 -%}
+              <ul class="acct-orders__list" role="list">
+                {%- for order in customer.orders limit: 5 -%}
+                  <li>
+                    <a class="acct-order" href="{{ order.customer_url }}">
+                      <span class="acct-thumbs acct-thumbs--sm">
+                        {%- for li in order.line_items limit: 3 -%}
+                          {%- capture li_step -%}{% render 'product-step', product: li.product %}{%- endcapture -%}{%- assign li_step = li_step | strip | plus: 0 -%}
+                          <span class="acct-thumb" data-step="{{ li_step }}">{%- if li_step > 0 -%}{%- render 'cut-img', handle: li.product.handle, sizes: '32px', widths: '120', class: 'acct-thumb__cut' -%}{%- elsif li.image -%}{{ li.image | image_url: width: 96 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}</span>
+                        {%- endfor -%}
+                      </span>
+                      <span class="acct-order__main">
+                        <strong>{{ order.name }}</strong>
+                        <span class="t-muted">{{ order.created_at | date: format: 'account_date' }}</span>
+                      </span>
+                      {%- comment -%} The customer's words, not the shop's: being prepared, partly shipped, shipped, cancelled {%- endcomment -%}
+                      {%- if order.cancelled -%}
+                        <span class="acct-order__status is-off">{{ 'account_page.status_cancelled' | t }}</span>
+                      {%- elsif order.fulfillment_status == 'fulfilled' -%}
+                        <span class="acct-order__status is-done">{{ 'account_page.status_shipped' | t }}</span>
+                      {%- elsif order.fulfillment_status == 'partial' -%}
+                        <span class="acct-order__status">{{ 'account_page.status_partial' | t }}</span>
+                      {%- else -%}
+                        <span class="acct-order__status">{{ 'account_page.status_preparing' | t }}</span>
+                      {%- endif -%}
+                      <span class="acct-order__total">{% render 'egp', cents: order.total_price %}</span>
+                      {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip acct-order__go' %}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- else -%}
+              <div class="acct-empty">
+                <p>{{ 'account_page.no_orders' | t }}</p>
+                <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.shop_routine' | t }}</a>
+              </div>
+            {%- endif -%}
+          </article>
+        </div>
+
+        <aside class="acct-in__side">
+          <article class="acct-card acct-details">
+            <h2 class="acct-card__h">{{ 'account_page.details' | t }}</h2>
+            <dl class="acct-details__list">
+              {%- if customer.name != blank -%}<div><dt>{{ 'account_page.name' | t }}</dt><dd>{{ customer.name | escape }}</dd></div>{%- endif -%}
+              <div><dt>{{ 'customer.email' | t }}</dt><dd dir="ltr">{{ customer.email | escape }}</dd></div>
+              <div><dt>{{ 'account_page.address' | t }}</dt><dd>{% if customer.default_address %}{{ customer.default_address.summary | escape }}{% else %}<span class="t-muted">{{ 'account_page.no_address' | t }}</span>{% endif %}</dd></div>
+            </dl>
+            <a class="acct-card__more" href="{{ acct_base }}/profile">{{ 'account_page.edit' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          </article>
+          <article class="acct-card acct-help">
+            <h2 class="acct-card__h">{{ 'account_page.help' | t }}</h2>
+            <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{{ 'account_page.help_contact' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <a href="{{ routes.root_url | append: '/pages/returns' | replace: '//', '/' }}">{{ 'account_page.help_returns' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <a href="{{ routes.root_url | append: '/pages/shipping' | replace: '//', '/' }}">{{ 'account_page.help_delivery' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          </article>
+        </aside>
+      </div>
+    {%- endpaginate -%}
+  {%- endunless -%}
+</section>
+
+{% schema %}
+{
+  "name": "Account",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}

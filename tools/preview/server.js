@@ -196,7 +196,7 @@ function buildData(locale, cart) {
     root_url: prefix || '/', cart_url: `${prefix}/cart`, cart_add_url: `${prefix}/cart/add`, cart_change_url: `${prefix}/cart/change`,
     cart_update_url: `${prefix}/cart/update`, search_url: `${prefix}/search`, predictive_search_url: `${prefix}/search/suggest`,
     all_products_collection_url: `${prefix}/collections/all`, collections_url: `${prefix}/collections`, account_url: `${prefix}/account`,
-    account_login_url: `${prefix}/account/login`, account_register_url: `${prefix}/account/register`, account_logout_url: `${prefix}/account/logout`,
+    account_login_url: `${prefix}/account/login`, storefront_login_url: `${prefix}/customer_authentication/login`, account_register_url: `${prefix}/account/register`, account_logout_url: `${prefix}/account/logout`,
     product_recommendations_url: `${prefix}/recommendations/products`,
   };
 
@@ -337,6 +337,18 @@ function reloadLocales() { locales.en = json(path.join(THEME, 'locales/en.defaul
 function lookup(obj, key) { return key.split('.').reduce((o, k) => (o && o[k] !== undefined ? o[k] : undefined), obj); }
 const kv = (args) => Object.fromEntries(args.filter(Array.isArray));
 
+// Like Shopify, `date: format: 'name'` uses the locale's date_formats.name (only these strftime codes are needed here)
+const builtinDate = engine.filters.date || engine.filters.get?.('date');
+engine.registerFilter('date', function (v, fmt, ...rest) {
+  if (Array.isArray(fmt) && fmt[0] === 'format') {
+    const f = lookup(locales[currentLocale], `date_formats.${fmt[1]}`) || lookup(locales.en, `date_formats.${fmt[1]}`) || '%Y-%m-%d';
+    const d = new Date(v); const M = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return f.replace(/%-d/g, d.getUTCDate()).replace(/%d/g, String(d.getUTCDate()).padStart(2, '0')).replace(/%m/g, String(d.getUTCMonth() + 1).padStart(2, '0')).replace(/%b/g, M[d.getUTCMonth()]).replace(/%Y/g, d.getUTCFullYear());
+  }
+  const h = typeof builtinDate === 'function' ? builtinDate : builtinDate?.handler;
+  return h ? h.call(this, v, fmt, ...rest) : v;
+});
+
 engine.registerFilter('t', function (key, ...args) {
   const vars = kv(args);
   let v = lookup(locales[currentLocale], key);
@@ -404,6 +416,19 @@ engine.registerFilter('color_to_rgb', (s) => s);
 engine.registerFilter('camelize', (s) => String(s).replace(/[-_](\w)/g, (_, c) => c.toUpperCase()));
 engine.registerFilter('pluralize', (n, a, b) => (Number(n) === 1 ? a : b));
 
+/* A signed-in customer for the account page preview: two orders, one of them The Night Ritual, so steps 1–3 are "in the routine" */
+function mockCustomer(data, kind) {
+  const li = (h, q = 1) => { const p = data.byHandle[h]; const v = p.variants?.[0] || p.selected_or_first_available_variant; return { product: p, variant: { ...v, available: true }, quantity: q, title: p.title, image: p.featured_image || null }; };
+  const order = (n, date, items, status, label) => ({ name: `#${n}`, order_number: n, created_at: date, fulfillment_status: status, fulfillment_status_label: label, financial_status_label: 'Paid',
+    total_price: items.reduce((t, i) => t + i.product.price * i.quantity, 0), customer_url: `https://shopify.com/84281229570/account/orders/${n}`, line_items: items });
+  const orders = kind === 'new' ? [] : [
+    order(1012, '2026-10-21T10:00:00Z', [li('clarity-serum', 2)].filter(Boolean), null, 'Unfulfilled'),
+    order(1004, '2026-09-30T10:00:00Z', [li('the-night-ritual')], 'fulfilled', 'Fulfilled'),
+  ];
+  return { first_name: 'Nour', last_name: 'Hassan', name: 'Nour Hassan', email: 'nour@example.com', orders, orders_count: orders.length, last_order: orders[0] || null,
+    default_address: kind === 'new' ? null : { summary: '12 Road 9, Maadi, Cairo, Egypt' } };
+}
+
 /* ------------------------------------------------------------------ page rendering */
 function globalsFor(locale, data, extra = {}) {
   const settingsData = json(path.join(THEME, 'config/settings_data.json')).current;
@@ -437,7 +462,8 @@ function globalsFor(locale, data, extra = {}) {
     pages: data.pages,
     blogs: { journal: data.journal },
     linklists: {},
-    customer: null,
+    // ?as=customer (orders) or ?as=new (no orders yet) previews a signed-in customer (DECISIONS 273)
+    customer: globalThis.__asCustomer ? mockCustomer(data, globalThis.__asCustomer) : null,
     content_for_header: '',
     powered_by_link: '',
     canonical_url: `http://localhost:${PORT}${data.prefix}${extra.path === '/' && data.prefix ? '' : (extra.path || '/')}`,
@@ -624,6 +650,7 @@ const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://localhost:${PORT}`);
     globalThis.__customerPosted = url.searchParams.get('customer_posted') === 'true';
+    globalThis.__asCustomer = url.searchParams.get('as') || null;
     globalThis.__contactPosted = url.searchParams.get('contact_posted') === 'true';
     let pathname = decodeURIComponent(url.pathname);
     let locale = 'en';
