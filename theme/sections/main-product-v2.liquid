@@ -257,6 +257,7 @@
           {%- endif -%}
           <h1 class="pdp__title v2-title">{{ pdp_title | escape }}</h1>
           {%- render 'jdgm-badge', product: product -%}
+          {%- render 'set-rating', steps: set_steps -%}
           {%- comment -%} Single products: the photo's callouts carry the pack benefit, so the head names the key ingredients and who it's for. Sets: one quiet facts line, then who it's for (DECISIONS 229). {%- endcomment -%}
           {%- if set_v2 -%}
             {%- liquid
@@ -384,11 +385,11 @@
                   <span data-v2-ship-text>{%- if left <= 0 -%}{{ 'pdp2.free_done' | t }}{%- else -%}{{ 'pdp2.free_left' | t: amount: left_label }}{%- endif -%}</span>
                   {%- assign pct = after | times: 100 | divided_by: threshold | at_most: 100 -%}
                   <span class="v2-meter" aria-hidden="true"><span data-v2-meter style="--v: {{ pct }}%"></span></span>
-                  {%- if delivery_line != blank -%}<span class="v2-assure__sub">{{ delivery_line }}</span>{%- endif -%}
+                  {%- if delivery_line != blank -%}<span class="v2-assure__sub" data-delivery-line>{{ delivery_line }}</span>{%- endif -%}
                 </span>
               </li>
             {%- elsif delivery_line != blank -%}
-              <li>{% render 'icon', name: 'truck', class: 'icon--sm' %}<span>{{ delivery_line }}</span></li>
+              <li>{% render 'icon', name: 'truck', class: 'icon--sm' %}<span data-delivery-line>{{ delivery_line }}</span></li>
             {%- endif -%}
             <li>{% render 'icon', name: 'refresh', class: 'icon--sm' %}<span>{{ 'pdp2.returns' | t }} <a href="{{ routes.root_url | append: '/pages/returns' | replace: '//', '/' }}">{{ 'pdp2.returns_link' | t }}</a></span></li>
             {%- if settings.show_cod or section.settings.preview_payments -%}

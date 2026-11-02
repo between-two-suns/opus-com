@@ -1378,7 +1378,12 @@
       "4": "واقي الشمس"
     },
     "adds": "يضيف {{ items }} مقابل {{ amount }} إضافية",
-    "routine_tabs_more": "الخطوات الأخرى"
+    "routine_tabs_more": "الخطوات الأخرى",
+    "set_rating_html": {
+      "one": "{{ rating }} لمنتجات المجموعة ({{ count }} تقييم)",
+      "other": "{{ rating }} لمنتجات المجموعة ({{ count }} تقييم)"
+    },
+    "delivery_dates": "يوصل {{ main }} في القاهرة والجيزة، و{{ other }} في باقي المحافظات"
   },
   "set2": {
     "facts": "عدد المنتجات: {{ count }}، كلها بالحجم الكامل · {{ when }}",

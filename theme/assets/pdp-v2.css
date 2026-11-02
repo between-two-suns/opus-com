@@ -35,6 +35,8 @@
 }
 @media (min-width: 990px) {
   .pdp--v2 .v2-title { font-size: clamp(44px, 4.4vw, 68px); }
+  /* the title's capitals start exactly at the top edge of the picture, whatever the browser's font metrics (DECISIONS 276) */
+  .pdp--v2 .pdp__title.v2-title:not(:lang(ar)) { text-box: trim-both cap alphabetic; margin-block-end: 6px; }
   :lang(ar) .pdp--v2 .v2-title { font-size: clamp(32px, 3.2vw, 48px); }
   .v2-benefit { font-size: clamp(24px, 2.1vw, 30px); }
 }
@@ -265,6 +267,8 @@
 @media (min-width: 990px) {
   .pdp--v2 .pdp-tabs--top { position: sticky; inset-block-start: calc(var(--header-h) - 16px); z-index: 3; margin-block: -8px 0; padding-block: 8px 10px; background-color: var(--tone, var(--c-daylight)); transition: background-color 1100ms var(--ease-out); }
   .pdp--v2 .pdp__gallery { inset-block-start: calc(var(--header-h) - 16px + var(--v2-tabs-h, 72px)); }
+  /* sets have no step tabs: the picture sticks under the header only, so it never sits lower than the title (DECISIONS 276) */
+  .pdp--v2[data-step='0'] .pdp__gallery { inset-block-start: calc(var(--header-h) + 16px); }
   .pdp--v2 .pdp__gallery .gallery__slide { block-size: min(125cqw, var(--v2-stage-h, max(400px, calc(100svh - 250px)))); }
   .pdp--v2 .pdp__gallery.is-fitted .gallery__slide { transition: block-size 420ms cubic-bezier(.22, .8, .24, 1); }
 }

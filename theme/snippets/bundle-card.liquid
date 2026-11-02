@@ -4,6 +4,7 @@
   ("Save EGP X") and "Ships free" is a pill on the photo, only when the price reaches the free-delivery threshold set
   in Theme settings → Offers (DECISIONS 239: a shorter card).
   Params: product (bundle product), tag ('li' default), heading_tag ('h3'), priority (first card near the top of a page),
+  stage (true: the packs picture instead of the photo; product page demo, DECISIONS 276),
   image (a photo to use instead of the set's own, e.g. the home page's evening shot).
   One card style for everything sold (DECISIONS 238): the step count opens the description line ("3 steps · …")
   instead of a separate label above the name; single products use the same look (snippets/product-card).
@@ -64,7 +65,10 @@
       <span class="bundle__badge">{{ badge_key | t }}</span>
     {%- endif -%}
     {%- if ships_free -%}<span class="ship-badge bundle__ship">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</span>{%- endif -%}
-    {%- if image != blank -%}
+    {%- if stage -%}
+      {%- comment -%} Demo (DECISIONS 276): every set shows the packs picture, the same as its page and the menu {%- endcomment -%}
+      {%- render 'mega-set-stage', handle: product.handle -%}
+    {%- elsif image != blank -%}
       {{ image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '(min-width: 990px) 40vw, 86vw', alt: '', class: 'set-visual set-visual--photo' }}
     {%- else -%}
       {%- render 'set-visual', product: product, priority: priority, phone_crop: true -%}

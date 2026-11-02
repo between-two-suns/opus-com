@@ -1378,7 +1378,12 @@
       "4": "SPF 50+"
     },
     "adds": "Adds {{ items }} for {{ amount }} more",
-    "routine_tabs_more": "The other steps"
+    "routine_tabs_more": "The other steps",
+    "set_rating_html": {
+      "one": "{{ rating }} across the products inside ({{ count }} review)",
+      "other": "{{ rating }} across the products inside ({{ count }} reviews)"
+    },
+    "delivery_dates": "Arrives {{ main }} in Cairo & Giza, {{ other }} elsewhere"
   },
   "set2": {
     "facts": "{{ count }} full-size products · {{ when }}",

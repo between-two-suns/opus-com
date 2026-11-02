@@ -1,0 +1,34 @@
+{%- comment -%}
+  Product page demo (DECISIONS 276): a set's stars, the rating of the products inside it, said as such ("4.8 across the
+  products inside (16 reviews)"). Shown only on the demo template, on sets, when those products have real Judge.me counts. Params: steps (the set's steps; blank on single products)
+{%- endcomment -%}
+{%- if template.suffix == 'demo' and steps != blank -%}
+{%- liquid
+  assign rh = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign r_sum = 0.0
+  assign r_n = 0
+  for st in steps
+    assign si = st | plus: 0
+    assign comp = all_products[rh[si]]
+    assign c = comp.metafields.reviews.rating_count.value | default: 0 | plus: 0
+    if c > 0
+      assign rv = comp.metafields.reviews.rating.value.rating | default: 0 | times: 1.0
+      assign r_sum = rv | times: c | plus: r_sum
+      assign r_n = r_n | plus: c
+    endif
+  endfor
+-%}
+{%- if r_n > 0 -%}
+  {%- assign r_avg = r_sum | divided_by: r_n | round: 1 -%}
+  <p class="v2-set-rating">
+    <span class="v2-set-rating__stars" aria-hidden="true">
+      {%- for i in (1..5) -%}
+        {%- assign half = i | minus: 0.5 -%}
+        <svg viewBox="0 0 24 24"{% if r_avg >= half %} fill="currentColor"{% else %} fill="none" stroke="currentColor" stroke-width="1.6"{% endif %}><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>
+      {%- endfor -%}
+    </span>
+    {%- capture r_txt -%}<strong>{{ r_avg }}</strong>{%- endcapture -%}
+    {{ 'pdp2.set_rating_html' | t: rating: r_txt, count: r_n }}
+  </p>
+  {%- endif -%}
+{%- endif -%}

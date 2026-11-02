@@ -1,0 +1,84 @@
+{{ 'pdp-demo.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Product page demo (DECISIONS 276, /products/<handle>?view=demo): one full-width picture between the buy area and the
+  rest of the page, to change the pace of the page. Single products: the texture close-up, edge to edge, with its texture
+  name in the brand face (the texture photo leaves the "What's inside" section, so it is shown once). Sets: the textures
+  of the products inside, side by side, each with its step. Nothing moves. Remove with templates/product.demo.json.
+{%- endcomment -%}
+{%- liquid
+  assign mf = product.metafields.bts
+  capture step
+    render 'product-step', product: product
+  endcapture
+  assign step = step | strip | plus: 0
+  capture bdef
+    render 'bundle-def', handle: product.handle
+  endcapture
+  assign bdef = bdef | strip
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+-%}
+{%- if step > 0 -%}
+  {%- assign tex_key = 'bts-' | append: product.handle | append: '-texture.jpg' -%}
+  {%- assign photo = images[tex_key] -%}
+  {%- if photo != blank -%}
+    <section class="pdp-break" data-step="{{ step }}" aria-label="{{ 'product.texture' | t }}">
+      {{ photo | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '800,1200,1600,2000,2400', sizes: '100vw', alt: '', class: 'pdp-break__img' }}
+      <div class="pdp-break__words container">
+        <p class="t-eyebrow">{{ 'product.texture' | t }}</p>
+        <p class="pdp-break__big">{{ mf.texture | default: product.title | escape }}</p>
+        {%- if mf.hero_ingredients != blank -%}<p class="pdp-break__small">{{ mf.hero_ingredients }}</p>{%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+{%- elsif bdef != blank -%}
+  {%- assign units = bdef | split: '|' | first | split: ',' | uniq -%}
+  <section class="pdp-break pdp-break--set" style="--n: {{ units.size }}" aria-label="{{ 'product.texture' | t }}">
+    {%- for st in units -%}
+      {%- assign si = st | plus: 0 -%}
+      {%- assign comp = all_products[step_handles[si]] -%}
+      {%- assign tk = 'bts-' | append: step_handles[si] | append: '-texture.jpg' -%}
+      {%- assign tp = images[tk] -%}
+      <div class="pdp-break__panel" data-step="{{ si }}">
+        {%- if tp != blank -%}{{ tp | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,600,800,1000', sizes: '(min-width: 750px) 25vw, 50vw', alt: '', class: 'pdp-break__img' }}{%- endif -%}
+        <p class="pdp-break__label"><span>0{{ si }}</span>{{ comp.metafields.bts.step_label.value | default: comp.title | escape }}</p>
+      </div>
+    {%- endfor -%}
+  </section>
+{%- endif -%}
+
+<template id="DeliveryDates" data-main="{{ settings.delivery_days_main | escape }}" data-other="{{ settings.delivery_days_other | escape }}" data-tpl="{{ 'pdp2.delivery_dates' | t: main: '__M__', other: '__O__' }}"></template>
+<script>
+  /* Demo (DECISIONS 276): "1–3 business days" as dates. Egypt's working week is Sunday–Thursday; day 1 is the next
+     working day after today (Cairo time). Public holidays are not known here, so they are not skipped. */
+  (() => {
+    const cfg = document.getElementById('DeliveryDates')?.dataset;
+    const els = document.querySelectorAll('[data-delivery-line]');
+    if (!cfg || !els.length) return;
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Cairo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+    const base = new Date(today + 'T12:00:00Z');
+    const work = (d) => d.getUTCDay() !== 5 && d.getUTCDay() !== 6;
+    const after = (n) => { const d = new Date(base); let k = 0; while (k < n) { d.setUTCDate(d.getUTCDate() + 1); if (work(d)) k++; } return d; };
+    const ar = document.documentElement.lang === 'ar';
+    const lang = ar ? 'ar-EG-u-nu-latn' : 'en-GB';
+    const part = (d, o) => new Intl.DateTimeFormat(lang, { ...o, timeZone: 'UTC' }).format(d);
+    // "Tue 3 Nov"; a range in one month says the month once: "Tue 3 – Thu 5 Nov"
+    const day = (d, month) => [part(d, { weekday: 'short' }), part(d, { day: 'numeric' }), month ? part(d, { month: 'short' }) : ''].filter(Boolean).join('\u00a0');
+    const range = (r) => {
+      const [a, b] = String(r).split(/[–-]/).map((x) => parseInt(x, 10));
+      if (isNaN(a) || isNaN(b)) return null;
+      const x = after(a), y = after(b);
+      return day(x, x.getUTCMonth() !== y.getUTCMonth()) + '\u00a0–\u00a0' + day(y, true); // each range stays on one line
+    };
+    els.forEach((el) => {
+      const m = range(cfg.main), o = range(cfg.other);
+      if (m && o) el.textContent = cfg.tpl.replace('__M__', m).replace('__O__', o);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Full-width picture (demo)",
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
