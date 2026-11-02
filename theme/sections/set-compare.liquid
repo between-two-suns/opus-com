@@ -1,6 +1,6 @@
 {%- comment -%}
   Set pages (DECISIONS 189–192, 238): "Which set is right for you?" The five routine sets in the shop's one card
-  (snippets/bundle-card), in a row that scrolls; the set being viewed is left out (DECISIONS 239). Prices and savings are live (compare-at = the singles added up).
+  (snippets/bundle-card, with the packs picture, DECISIONS 277), in a row that scrolls; the set being viewed is left out (DECISIONS 239). Prices and savings are live (compare-at = the singles added up).
   Renders nothing on single products.
 {%- endcomment -%}
 {%- liquid
@@ -27,7 +27,7 @@
       {%- for h in rows -%}
         {%- assign sp = all_products[h] -%}
         {%- if sp.id == blank or h == product.handle -%}{%- continue -%}{%- endif -%}
-        {%- if template.suffix == 'demo' -%}{%- render 'bundle-card', product: sp, stage: true -%}{%- else -%}{%- render 'bundle-card', product: sp -%}{%- endif -%}
+        {%- render 'bundle-card', product: sp, stage: true -%}
       {%- endfor -%}
     </ul>
   </div>

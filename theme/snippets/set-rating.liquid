@@ -1,8 +1,8 @@
 {%- comment -%}
-  Product page demo (DECISIONS 276): a set's stars, the rating of the products inside it, said as such ("4.8 across the
-  products inside (16 reviews)"). Shown only on the demo template, on sets, when those products have real Judge.me counts. Params: steps (the set's steps; blank on single products)
+  Set pages (DECISIONS 276–277): a set's stars, the rating of the products inside it, said as such ("4.8 across the
+  products inside (16 reviews)"). Shown on sets when those products have real Judge.me counts. Params: steps (the set's steps; blank on single products)
 {%- endcomment -%}
-{%- if template.suffix == 'demo' and steps != blank -%}
+{%- if steps != blank -%}
 {%- liquid
   assign rh = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
   assign r_sum = 0.0

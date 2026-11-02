@@ -140,10 +140,15 @@
     "compare": {
       "type": "set-compare",
       "settings": {}
+    },
+    "textures": {
+      "type": "set-textures",
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "textures",
     "day",
     "inside",
     "benefits",
