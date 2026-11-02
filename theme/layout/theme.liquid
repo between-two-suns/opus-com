@@ -77,6 +77,7 @@
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'bag-menu.css' | asset_url | stylesheet_tag }}
+    {{ 'white-demo.css' | asset_url | stylesheet_tag }}
     {%- liquid
       assign tpl = template.name
       assign sfx = template.suffix | default: ''
@@ -97,6 +98,11 @@
     <script>
       document.documentElement.classList.replace('no-js', 'js');
       try {
+        // White background demo (DECISIONS 278): ?white=1 shows the site on white for this visit, ?white=off goes back
+        const wq = location.search;
+        if (/[?&]white=off\b/.test(wq)) sessionStorage.removeItem('bts:white');
+        else if (/[?&]white=1\b/.test(wq)) sessionStorage.setItem('bts:white', '1');
+        if (sessionStorage.getItem('bts:white')) { document.documentElement.classList.add('is-white'); document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#ffffff'); }
         // Testing aid (DECISIONS 266): while previewing an unpublished theme, every page link carries its preview id, so
         // browsing never falls back to the live theme. Does nothing on the published theme.
         document.addEventListener('click', (e) => {
@@ -179,6 +185,7 @@
 
     {%- section 'cart-drawer' -%}
     {%- render 'bottom-dock' -%}
+    <div class="white-badge" role="status">{{ 'white_demo.on' | t }} <a href="?white=off">{{ 'white_demo.off' | t }}</a></div>
     {%- render 'welcome-offer' -%}
     <template id="BtsMark">{{ 'bts-icon.svg' | inline_asset_content }}</template>
 

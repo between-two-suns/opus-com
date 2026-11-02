@@ -1668,5 +1668,9 @@
   },
   "date_formats": {
     "account_date": "%-d %b %Y"
+  },
+  "white_demo": {
+    "on": "Demo: white background",
+    "off": "Back to ivory"
   }
 }
