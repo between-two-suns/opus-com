@@ -6,7 +6,8 @@
 
 /* ---------- Tokens ---------- */
 :root {
-  --c-paper: #ffffff;
+  /* surfaces on the white page (cards, the buy box, alternate sections, fields): a very light cool grey (DECISIONS 278–279) */
+  --c-paper: #f4f5f6;
   --c-muted: #565a6d;
   --c-line: rgba(32, 35, 58, 0.14);
   --c-line-strong: rgba(32, 35, 58, 0.32);
@@ -54,11 +55,11 @@
 
 /* Time of day: sections name a tone; the page drifts to it as the section reaches the middle of the screen. */
 [data-tone='dawn'] { --tone-c: #f8ede3; }
-[data-tone='day'] { --tone-c: #f5f1ea; }
+[data-tone='day'] { --tone-c: #ffffff; }
 [data-tone='aqua'] { --tone-c: #e9f0ec; }
 [data-tone='lilac'] { --tone-c: #f2ecef; }
 [data-tone='sand'] { --tone-c: #f4ecdf; }
-[data-tone='sku'] { --tone-c: color-mix(in srgb, var(--sku) 14%, #f5f1ea); }
+[data-tone='sku'] { --tone-c: #ffffff; } /* product pages: white, the step colour lives in the photo, tabs and chips (DECISIONS 279) */
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }

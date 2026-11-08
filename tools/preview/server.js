@@ -29,7 +29,8 @@ const missing = new Set();
 /* ------------------------------------------------------------------ helpers */
 const read = (p) => fs.readFileSync(p, 'utf8');
 const exists = (p) => fs.existsSync(p);
-const json = (p) => JSON.parse(read(p));
+// Shopify writes a /* … */ notice at the top of config/settings_data.json; strip leading comments before parsing
+const json = (p) => JSON.parse(read(p).replace(/^\s*\/\*[\s\S]*?\*\/\s*/, ''));
 const schemaOf = (src) => {
   const m = src.match(/\{%-?\s*schema\s*-?%\}([\s\S]*?)\{%-?\s*endschema\s*-?%\}/);
   return m ? JSON.parse(m[1]) : {};

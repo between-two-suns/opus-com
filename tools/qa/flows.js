@@ -1,10 +1,12 @@
 // Interaction tests: real browser, real clicks, mobile + desktop, EN + AR.
 // Usage: node qa/flows.js   (BASE env overrides the preview URL)
 import { chromium } from 'playwright';
+import fs from 'node:fs';
 const BASE = process.env.BASE || 'http://localhost:4321';
 const results = [];
 const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'} ${name}${extra ? ' — ' + extra : ''}`);
-const browser = await chromium.launch();
+// the session machine's pre-installed browser when present (a newer Playwright build than the one in package.json)
+const browser = await chromium.launch(fs.existsSync('/opt/pw-browsers/chromium') ? { executablePath: '/opt/pw-browsers/chromium' } : {});
 const count = (page) => page.$eval('[data-cart-count]', (e) => (e.dataset.count ?? e.textContent).trim());
 // After an add the bag no longer opens by itself: a confirmation card appears and its View bag opens the full bag.
 const openBag = async (page, timeout = 5000) => {
