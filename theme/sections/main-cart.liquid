@@ -12,12 +12,12 @@
     </header>
     {%- if cart.item_count == 0 -%}
       <div class="cart-page__empty">
-        {%- render 'cart-routine-board' -%}
         <div class="cart-empty">
           <p class="t-lead">{{ 'cart.empty_title' | t }}</p>
           <p class="t-muted">{{ 'cart.empty_text' | t }}</p>
           <a class="btn" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'cart.shop_routine' | t }}</a>
         </div>
+        {%- render 'cart-routine-board' -%}
       </div>
     {%- else -%}
       <form id="CartForm" action="{{ routes.cart_url }}" method="post" hidden></form>

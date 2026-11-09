@@ -19,7 +19,7 @@
 .ritual-card strong { display: block; font-size: 17px; line-height: 1.2; }
 .ritual-card em { display: block; margin-block-start: 2px; font-style: normal; font-size: 12.5px; line-height: 1.35; color: color-mix(in srgb, var(--c-ink) 72%, transparent); }
 .ritual-card__price .price { display: grid; justify-items: end; font-size: 15px; font-weight: 700; white-space: nowrap; }
-.pick-chip { display: inline-block; margin-block-end: 4px; padding: 3px 8px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.pick-chip { display: inline-block; margin-block-end: 4px; padding: 3px 8px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 :lang(ar) .pick-chip { letter-spacing: 0; }
 
 /* phone menu: Shop opens in place */
@@ -33,7 +33,7 @@
 .pmenu__row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .pmenu__p { display: grid; gap: 4px; text-decoration: none; color: var(--c-ink); font-size: 13px; font-weight: 650; line-height: 1.2; }
 .pmenu__p img { inline-size: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 14px; display: block; background: var(--sku-tint); }
-.pmenu__p small { display: flex; align-items: center; gap: 5px; margin-block-start: 2px; font-size: 10.5px; font-weight: 700; letter-spacing: .08em; color: var(--c-muted); }
+.pmenu__p small { display: flex; align-items: center; gap: 5px; margin-block-start: 2px; font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--c-muted); }
 .step-dot { inline-size: 7px; block-size: 7px; border-radius: 50%; background: var(--sku); }
 .pmenu__price { font-size: 12px; font-weight: 600; color: var(--c-muted); }
 .pmenu__all { justify-self: start; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--c-ink); text-underline-offset: 4px; }
@@ -102,8 +102,8 @@
 .dm-pk[data-step='2'] { --s: .65; }
 .dm-pk[data-step='3'], .dm-pk[data-step='4'] { --s: .81; }
 .dm-pk__num { font-family: var(--font-display); font-size: 17px; font-weight: 700; line-height: 1; }
-.dm-pk__name { margin-block-start: 2px; font-size: 9.5px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
-:lang(ar) .dm-pk__name { font-size: 11px; letter-spacing: 0; }
+.dm-pk__name { margin-block-start: 2px; font-size: 12px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+:lang(ar) .dm-pk__name { font-size: 12px; letter-spacing: 0; }
 .dm-pk__line { position: relative; flex: 1 1 auto; min-block-size: 14px; inline-size: 1.5px; margin-block-start: 6px; background: color-mix(in srgb, var(--c-ink) 45%, transparent); }
 .dm-pk__line::after { content: ''; position: absolute; inset-block-end: -3px; inset-inline-start: 50%; translate: -50% 0; inline-size: 6px; block-size: 6px; border-radius: 50%; background: var(--c-ink); box-shadow: 0 0 0 3px color-mix(in srgb, #fff 70%, transparent); }
 [dir='rtl'] .dm-pk__line::after { translate: 50% 0; }

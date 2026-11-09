@@ -107,7 +107,7 @@
 .acct-step[data-step='2'] .acct-step__pack { block-size: 84px; margin-block-start: 36px; }
 .acct-step[data-step='3'] .acct-step__pack, .acct-step[data-step='4'] .acct-step__pack { block-size: 98px; margin-block-start: 22px; }
 .acct-step__num { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1; }
-.acct-step__name { font-size: 11px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+.acct-step__name { font-size: 12px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
 :lang(ar) .acct-step__name { letter-spacing: 0; font-size: 12.5px; }
 .acct-step__state { display: inline-flex; align-items: center; gap: 4px; margin-block-start: 6px; font-size: 12.5px; font-weight: 650; color: #0f5132; }
 .acct-step__add { display: contents; }

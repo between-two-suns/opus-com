@@ -116,7 +116,7 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
 .routine-strip__bundle { margin-block-start: 28px; background: var(--c-daylight); }
 @media (max-width: 749px) {
   .routine-strip__name { display: none; }
-  .routine-strip__this { font-size: 10px; padding: 2px 6px; }
+  .routine-strip__this { font-size: 12px; padding: 2px 6px; }
 }
 
 @media (max-width: 989px) {
@@ -157,7 +157,7 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
 .pdp-tabs__link[aria-current='page']::after { background: var(--sku-deep); }
 .pdp-tabs__link:hover::after { background: var(--sku); }
 .pdp-tabs__num { font-family: var(--font-display); font-weight: 700; font-size: 15px; line-height: 1; }
-.pdp-tabs__name { font-size: 11px; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pdp-tabs__name { font-size: 12px; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 :lang(ar) .pdp-tabs__name { text-transform: none; letter-spacing: 0; font-size: 12px; }
 
 /* Stage: product colour, texture, the step word huge on the start side, the pack tilted across it */

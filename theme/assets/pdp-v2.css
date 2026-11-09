@@ -11,8 +11,8 @@
   .pdp--v2 .pdp-tabs__list { grid-template-columns: repeat(4, auto); gap: 6px; }
   .pdp--v2 .pdp-tabs__link { padding-block: 6px 9px; min-block-size: 40px; grid-auto-flow: column; justify-content: start; align-items: baseline; gap: 5px; }
   .pdp--v2 .pdp-tabs__num { font-size: 13px; }
-  .pdp--v2 .pdp-tabs__name { font-size: 10px; letter-spacing: .05em; overflow: visible; }
-  :lang(ar) .pdp--v2 .pdp-tabs__name { font-size: 11px; }
+  .pdp--v2 .pdp-tabs__name { font-size: 12px; letter-spacing: .05em; overflow: visible; }
+  :lang(ar) .pdp--v2 .pdp-tabs__name { font-size: 12px; }
 }
 
 /* Head: name, then the pack's benefit line as the big promise, then what it helps with */
@@ -65,8 +65,8 @@
 .v2-opt__packs img[data-step='3'], .v2-opt__packs img[data-step='4'] { block-size: 37px; }
 .v2-opt__text { display: grid; gap: 1px; min-inline-size: 0; }
 .v2-opt__name { font-weight: 700; font-size: 15px; line-height: 1.25; }
-.v2-opt__badge { display: inline-block; margin-inline-start: 4px; padding: 2px 8px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; vertical-align: 2px; }
-:lang(ar) .v2-opt__badge { letter-spacing: 0; text-transform: none; font-size: 11px; }
+.v2-opt__badge { display: inline-block; margin-inline-start: 4px; padding: 2px 8px; border-radius: 99px; background: var(--c-ink); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; vertical-align: 2px; }
+:lang(ar) .v2-opt__badge { letter-spacing: 0; text-transform: none; font-size: 12px; }
 .v2-opt__sub { font-size: 13px; color: var(--c-muted); }
 .v2-opt__perks { display: flex; flex-wrap: wrap; gap: 2px 10px; margin-block-start: 2px; font-size: 12.5px; font-weight: 700; }
 .v2-opt__save { color: var(--c-success); }
@@ -129,7 +129,7 @@
 .v2-ben__media { position: relative; border-radius: var(--radius-l); overflow: hidden; aspect-ratio: 4 / 3; background: var(--sku-tint); }
 .v2-ben__media img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
 .v2-ben__tex { position: absolute; inset-block-end: 14px; inset-inline-start: 14px; display: grid; gap: 2px; margin: 0; padding: 10px 14px; border-radius: 14px; background: color-mix(in srgb, #fff 82%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-weight: 700; }
-.v2-ben__tex .t-eyebrow { font-size: 11px; }
+.v2-ben__tex .t-eyebrow { font-size: 12px; }
 .v2-ben__body { display: grid; gap: 14px; align-content: start; }
 .v2-ben__body h2 { margin: 0; }
 .v2-ben__list { list-style: none; margin: 8px 0 4px; padding: 0; display: grid; gap: 0; }
@@ -177,7 +177,7 @@
 .v2-pair__card:hover .v2-pair__visual img { scale: 1.05; }
 .v2-pair__visual .v2-pair__cut { block-size: 86%; inline-size: auto; margin: 7% auto 0; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(32, 35, 58, .2)); }
 .v2-pair__body { display: grid; gap: 4px; min-inline-size: 0; }
-.v2-pair__why { margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sku-deep); }
+.v2-pair__why { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sku-deep); }
 :lang(ar) .v2-pair__why { letter-spacing: 0; text-transform: none; font-size: 13px; }
 .v2-pair__name { margin: 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: 22px; line-height: .95; text-wrap: balance; }
 :lang(ar) .v2-pair__name { text-transform: none; font-size: 19px; line-height: 1.3; }
@@ -404,7 +404,7 @@
 .s2-sets { display: grid; grid-auto-flow: column; grid-auto-columns: max(280px, calc((100% - 3 * 16px) / 3.3)); gap: 16px; list-style: none; margin: 0 calc(var(--gutter) * -1); padding: 6px var(--gutter) 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
 .s2-sets::-webkit-scrollbar { display: none; }
 /* room for the cards' shadows (DECISIONS 286); [role='list'] because the global list reset would otherwise win */
-.s2-sets[role='list'] { padding-block-end: var(--sp-12); margin-block-end: calc(-1 * var(--sp-10)); }
+.s2-sets[role='list'] { padding-block-end: var(--sp-12); margin-block-end: calc(-1 * var(--sp-12)); }
 .s2-sets > .bundle { scroll-snap-align: start; }
 @media (max-width: 749px) { .s2-sets { grid-auto-columns: 82%; } .s2-sets .bundle__now { font-size: 18px; } .s2-sets .bundle__price { column-gap: 8px; } }
 
@@ -415,3 +415,6 @@
 /* Finish pass (DECISIONS 286): the pack pictures sit in one fixed-width column, so names and prices line up row to row */
 .v2-opt__packs { inline-size: 24px; justify-content: center; }
 .v2-opt--compact .v2-opt__packs { inline-size: 24px; }
+
+/* Finish pass batch 2 (DECISIONS 287): ingredient chips match the product chips, no tick */
+.v2-ben__chip .icon { display: none; }

@@ -139,7 +139,7 @@
   [dir='rtl'] .bundles__grid .bundle__body { padding: 14px 12px 14px 14px; }
   .bundles__grid .bundle__name { font-size: 24px; }
   .bundles__grid .bundle__body > .t-small, .bundles__grid .bundle__items { display: none; }
-  .bundles__grid .bundle__badge { inset-block-start: 8px; inset-inline-start: 8px; font-size: 11px; padding: 4px 9px; }
+  .bundles__grid .bundle__badge { inset-block-start: 8px; inset-inline-start: 8px; font-size: 12px; padding: 4px 9px; }
   .bundles__grid .bundle__packs { block-size: 62%; }
   .bundles__grid .bundle__now { font-size: 18px; }
   .bundles__grid .bundle__save { font-size: 12.5px; }
@@ -207,5 +207,5 @@
 .bundle__stage .dm-pk__img { block-size: calc(var(--s) / var(--smax, 1) * 66%); }
 
 /* Swipe rows: the scroller keeps room for the cards' shadows, so nothing is sliced off under a card */
-.sets-rail, .bundles__grid { padding-block-end: var(--sp-12) !important; margin-block-end: calc(-1 * var(--sp-10)) !important; }
+.sets-rail, .bundles__grid { padding-block-end: var(--sp-12) !important; margin-block-end: calc(-1 * var(--sp-12)) !important; }
 @media (min-width: 750px) { .bundles__grid { padding-block-end: 0 !important; margin-block-end: 0 !important; } }

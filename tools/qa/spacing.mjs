@@ -4,14 +4,20 @@
 // sections that isn't one --section-y (about 101 px laptop, 56 px phone). Known exceptions are listed in SKIP with why.
 import { chromium } from 'playwright';
 const BASE = process.env.BASE || 'http://localhost:4321';
+import fs from 'node:fs';
+const require_exe = () => (fs.existsSync('/opt/pw-browsers/chromium') ? { executablePath: '/opt/pw-browsers/chromium' } : {});
 const LOC = process.env.LOC || ''; // LOC=/ar for Arabic
 const PAGES = ['/', '/collections/all', '/pages/sets', '/products/clarity-serum', '/products/the-full-ritual', '/pages/about', '/pages/climate', '/pages/ingredients', '/pages/faq', '/pages/contact', '/pages/routines', '/pages/scan', '/pages/creators', '/blogs/journal', '/blogs/journal/how-to-layer-a-four-step-routine', '/search?q=serum'];
 // Measured content edges that aren't real gaps: scroll stories (tall by design), sticky columns/bars measured away from
 // their resting place, decorative images that overflow, arrow-link underlines, full-screen bands measured to their edge.
 const SKIP = [/hero -> /, /routine -> template--bundles/, /sky -> /, /main -> template--(benefits|day)/, /builder -> template--faq/, /finder -> /,
-  /bundles -> template--climate/];
+  /bundles -> template--climate/,
+  // set pages: the gallery column is sticky, so the main section's content is measured from the buy box; on screen the textures band sits ~86 px under the gallery (DECISIONS 276)
+  /main -> template--textures/];
+// page tops on laptops put the text beside the title, not under it (DECISIONS 283)
+const SKIP_STACK_WIDE = [/page-hero__text/];
 const SKIP_STACK = [/ab-sky__/, /v2-ben__list/, /v2-pair__list/, /cluster/, /cst__steps/, /cst__agenda/, /^span\.$/, /ab-made__facts/, /cx__facts/, /cr-who/, /rf-row/, /a\.btn/, /a\.skc-link/, /ol\./, /ul\./, /dl\./, /div\./];
-const b = await chromium.launch();
+const b = await chromium.launch(require_exe());
 let fails = 0, checks = 0;
 for (const w of [1440, 390]) {
   const ctx = await b.newContext({ viewport: { width: w, height: 900 } });
@@ -49,7 +55,7 @@ for (const w of [1440, 390]) {
       for (const s of secs) { const [t, bo] = ext(s); if (prev && isFinite(t)) gaps.push([prev.id.replace('shopify-section-', '') + ' -> ' + s.id.replace('shopify-section-', ''), Math.round(t - prev.b)]); if (isFinite(bo)) prev = { id: s.id, b: bo }; }
       return { stacks, gaps, secY };
     });
-    for (const [n, g] of r.stacks) { if (SKIP_STACK.some((x) => x.test(n))) continue; checks++; if (Math.abs(g - 14) > 2) { fails++; console.log(`FAIL ${w} ${u} stack ${n}: ${g}px (want 14)`); } }
+    for (const [n, g] of r.stacks) { if (SKIP_STACK.some((x) => x.test(n)) || (w >= 990 && SKIP_STACK_WIDE.some((x) => x.test(n)))) continue; checks++; if (Math.abs(g - 14) > 2) { fails++; console.log(`FAIL ${w} ${u} stack ${n}: ${g}px (want 14)`); } }
     for (const [n, g] of r.gaps) { if (SKIP.some((x) => x.test(n))) continue; checks++; if (Math.abs(g - r.secY) > 8) { fails++; console.log(`FAIL ${w} ${u} section ${n}: ${g}px (want ${Math.round(r.secY)})`); } }
   }
   await ctx.close();

@@ -141,7 +141,7 @@
 .scan__pick:hover .scan__pick-media img { translate: 0 -4px; }
 .scan__pick-n { font-family: var(--font-display); font-weight: 700; font-size: clamp(18px, 2vw, 26px); line-height: 1; margin-block-start: 6px; }
 .scan__pick-name { font-size: clamp(12px, 1.3vw, 15px); font-weight: 650; line-height: 1.2; }
-@media (max-width: 420px) { :lang(ar) .scan__pick-name { font-size: 11px; white-space: nowrap; letter-spacing: -.01em; } }
+@media (max-width: 420px) { :lang(ar) .scan__pick-name { font-size: 12px; white-space: nowrap; letter-spacing: -.01em; } }
 .scan__pick[aria-current='true'] { box-shadow: inset 0 0 0 2px var(--c-ink); }
 .scan__picker:has(.scan__pick[aria-current='true']) .scan__pick:not([aria-current='true']) { opacity: .55; }
 .scan__picker:has(.scan__pick[aria-current='true']) .scan__pick:not([aria-current='true']):hover { opacity: 1; }
@@ -427,7 +427,7 @@
 :lang(ar) .cst__agenda-cond { letter-spacing: 0; text-transform: none; font-size: 14px; }
 .cst__agenda-h { font-weight: 600; font-size: 15px; }
 @media (min-width: 990px) { .cst__intro-inner { grid-template-columns: 1.15fr 1fr; } }
-@media (max-width: 599px) { .cst__agenda-row { grid-template-columns: 50px 112px 1fr; gap: 8px; padding-block: 11px; } .cst__agenda-time { font-size: 17px; } .cst__agenda-cond { font-size: 10.5px; letter-spacing: .08em; gap: 6px; } .cst__agenda-h { font-size: 13.5px; } }
+@media (max-width: 599px) { .cst__agenda-row { grid-template-columns: 50px 112px 1fr; gap: 8px; padding-block: 11px; } .cst__agenda-time { font-size: 17px; } .cst__agenda-cond { font-size: 12px; letter-spacing: .08em; gap: 6px; } .cst__agenda-h { font-size: 13.5px; } }
 /* The clock follows the day: a slim pill pinned under the header while the chapters scroll. */
 .cst__clock {
   position: sticky; inset-block-start: calc(var(--header-h) + 18px); z-index: 6; margin: 24px auto 0; inline-size: max-content; max-inline-size: calc(100% - 2 * var(--gutter));
@@ -651,12 +651,29 @@
 @media (prefers-reduced-motion: reduce) { .cx__panel { animation: none; } }
 
 /* Finish pass (DECISIONS 286): search page */
-.search-page .t-eyebrow { margin: 0 0 var(--sp-2); }
+.search-page > .container > .t-eyebrow { margin: 0 0 var(--stack); }
 main h1.search-page__title { margin: 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(40px, 5vw, 72px); line-height: .95; letter-spacing: .005em; overflow-wrap: anywhere; }
 :lang(ar) main h1.search-page__title { text-transform: none; line-height: 1.3; font-size: clamp(32px, 4vw, 56px); }
-.search-page__count { margin: var(--sp-2) 0 0; font-size: var(--fs-3); }
-.search-page__form { margin-block-start: var(--sp-6); padding: 6px; padding-inline-start: var(--sp-4); border: 1.5px solid var(--c-line-strong); border-radius: var(--radius-pill); background: var(--c-paper); max-inline-size: 640px; }
-.search-page__form:focus-within { border-color: var(--c-ink); }
+.search-page__count { margin: var(--stack) 0 0; font-size: var(--fs-3); }
+.search-page__form { margin-block-start: var(--sp-6); padding: 6px; padding-inline-start: var(--sp-4); border: 1.5px solid var(--c-line-strong); border-radius: var(--radius-pill); background: #fff; max-inline-size: 640px; transition: border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out); }
+.search-page__form:focus-within { border-color: var(--c-ink); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-focus) 18%, transparent); }
 .search-page__form .search-modal__input { font-size: var(--fs-3); font-weight: 500; padding-block: 0; }
 .search-page__form .btn { min-block-size: 44px; }
 .search-page__grid { margin-block-start: var(--sp-8); }
+
+/* Finish pass batch 2 (DECISIONS 287): climate hour cards. The time and its condition get air; on phones each product
+   row is picture | name, line, price, so the price never floats on a row of its own. */
+.cst__time { margin-block-end: var(--sp-1); }
+.cst__card { gap: var(--sp-3); }
+@media (max-width: 749px) {
+  .cst__step { grid-template-columns: 48px 1fr; row-gap: 2px; padding-block: var(--sp-2); padding-inline-start: var(--sp-2); }
+  .cst__thumb { grid-row: span 2; align-self: center; }
+  .cst__step-price { grid-column: 2; }
+}
+/* Empty bag: the message and the way back first; the routine below it in full colour (nothing is "missing" yet) */
+.cart-page__empty .cart-empty { margin-block-end: var(--sp-8); }
+.cart-page__empty .routine-board__step:not(.is-on) .routine-board__media img { filter: none; }
+.cart-page__empty .routine-board__step:not(.is-on) .routine-board__media::after { display: none; }
+.cart-page__empty .routine-board__step:not(.is-on) .routine-board__num { color: #fff; opacity: 1; text-shadow: 0 1px 10px rgba(32, 35, 58, .25); }
+.cart-empty .t-lead { font-size: var(--fs-5); font-weight: 700; margin: 0 0 var(--sp-1); }
+.cart-empty .btn { margin-block-start: var(--sp-4); }

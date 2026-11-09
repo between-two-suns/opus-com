@@ -1227,3 +1227,15 @@ Each entry: decision · why · reversibility. Newest last.
     - Search: eyebrow "Search", the searched word as the title (tall face, 40–72px), the count under it (new keys search.found), the field in one pill box.
     - Paragraphs and list items use text-wrap: pretty (fewer one-word last lines).
     - Checked locally: theme check 0; flows 408/408; before/after shots of each, English + Arabic, phone + laptop.
+287. **Finish pass, batch 2 (local demo, waiting on the owner before staging); batch 1 (286) approved and on staging (8 files match by checksum; live home template unchanged).**
+    - Home climate block: full-width add button on phones; the set note at 14px.
+    - Home routine on phones: the travelling sun is hidden (it crossed the big step word); the pack sits lower, nearer its name.
+    - Climate hour cards: air under the time; on phones each product row is picture | name, line, price.
+    - Empty bag: the message and button first, then the routine board in full colour (no grey, no dashed frames while nothing is in the bag).
+    - Ingredient chips: no tick, as the product chips (258).
+    - One field system: white boxes in forms; one white pill with the button inside for any single field + button (footer and welcome sign-up, search, FAQ search, account email); one focus ring.
+    - No text under 12px on live pages (36 declarations raised to 12px).
+    - Phone footer: Shop | Help side by side, Learn underneath in two columns (follows the editor's block order Shop, Learn, Help).
+    - Shadow room on swipe rows now nets to zero (margin −48px for 48px of room), so section gaps stay one --section-y; search stacks use the 14px --stack.
+    - QA: new tools/qa/finish.mjs (fails on a name within 12px of its picture, text under 12px, soft shadows cut by a swipe row, text touching a card's edge); it catches the original set-card slip on the pre-fix theme. The existing tools/qa/spacing.mjs (stacks and section gaps, DECISIONS 243) now launches the installed browser, and documents two exceptions: laptop page tops (text beside the title, 283) and the set pages' textures band (measured from the sticky buy box; ~86px on screen).
+    - Checked locally: theme check 0; flows 408/408; finish 0 failures; spacing 186/186 English and Arabic.

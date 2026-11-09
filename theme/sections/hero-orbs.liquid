@@ -59,7 +59,7 @@
 @media (max-width: 760px) { .ho-orbs { --d: 112vw; --peek: 31vw; } .ho-o--l { top: calc(27% - var(--d) / 2); } .ho-o--r { top: calc(74% - var(--d) / 2); } }
 @media (min-width: 700px) and (max-aspect-ratio: 4/5) { .ho-orbs { --d: 84vw; --peek: 20vw; } .ho-o--l { top: calc(30% - var(--d) / 2); } .ho-o--r { top: calc(74% - var(--d) / 2); } }
 .hh-copy { position: relative; z-index: 1; display: grid; justify-items: center; text-align: center; padding-inline: 5vw; }
-.hh-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
+.hh-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
 .hh-eyebrow svg { height: 15px; width: auto; }
 .hh-title { margin-top: clamp(10px, 2vh, 22px); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; letter-spacing: -.01em; font-size: var(--fs); }
 /* the word mask reaches past the letters' foot (the display font's line box ends above the baseline), so round letters keep their curves */
@@ -83,7 +83,7 @@
   background: radial-gradient(closest-side, color-mix(in srgb, var(--sku) 55%, transparent), transparent); filter: blur(6px); opacity: calc(var(--f) * .9); animation: hh-pool .8s ease both; animation-delay: calc(.9s + var(--i) * .1s); }
 @keyframes hh-pool { from { opacity: 0; } }
 .js .hh-row:not(.is-ready) .hh-b::before { animation-play-state: paused; }
-.hh-lab { position: absolute; bottom: 0; opacity: var(--f); white-space: nowrap; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgb(28 30 48 / .72); }
+.hh-lab { position: absolute; bottom: 0; opacity: var(--f); white-space: nowrap; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgb(28 30 48 / .72); }
 .hh-lab b { font-family: var(--font-display); font-size: 13px; letter-spacing: .04em; margin-inline-end: 6px; color: var(--c-ink); }
 .hh-foot { position: relative; z-index: 3; margin-top: clamp(16px, 3vh, 32px); display: flex; gap: 10px; justify-content: center; }
 .hh-sub { display: none; }
@@ -114,7 +114,7 @@
 @media (max-width: 760px) {
   .hh-stage { --fs: min(14vw, 7.6svh); padding-top: calc(var(--hdr, var(--header-h)) + clamp(14px, 2.6vh, 26px)); }
   .hh-title br.hh-d { display: none; } .hh-title { max-width: 9ch; }
-  .hh-eyebrow { font-size: 10px; letter-spacing: .2em; white-space: nowrap; }
+  .hh-eyebrow { font-size: 12px; letter-spacing: .2em; white-space: nowrap; }
   /* never wider than the screen: the four packs together are about 1.12 × their height */
   .hh-stage .hh-row { gap: 6px; margin-top: auto; padding-top: clamp(12px, 2.4vh, 22px); max-height: calc((100vw - 52px) / 1.12 + 24px); }
   .hh-lab { display: none; } .hh-b { padding-bottom: 12px; height: calc(var(--h) * (100% - 12px) + 12px); }

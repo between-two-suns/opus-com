@@ -526,7 +526,7 @@ climate-switch.is-entered .cs__line:not([hidden]) { animation: cs-in 420ms var(-
   .hp__link:hover .hp__cap { translate: 0 -4px; }
   .hp__num { color: var(--c-ink); text-shadow: none; font-size: 30px; }
   .hp__cap-text { display: grid; gap: 0; min-inline-size: 0; }
-  .hp__step { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c-muted); }
+  .hp__step { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c-muted); }
   :lang(ar) .hp__step { letter-spacing: 0; text-transform: none; font-size: 12.5px; }
   .hp__name { font-size: 15px; font-weight: 680; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .hp__price { font-size: 14px; font-weight: 600; }
@@ -618,7 +618,7 @@ climate-switch[data-active='sun'] .cs__badge[data-fx='sun'], climate-switch[data
   .hp__stage { block-size: clamp(520px, 62svh, 580px); }
   .hp__overlay { padding-block-start: 18px; gap: 8px; }
   .hp__mark { inline-size: 30px; }
-  .hp__eyebrow { font-size: 11px; }
+  .hp__eyebrow { font-size: 12px; }
   .hp__media { block-size: 330px; -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%); mask-image: linear-gradient(to bottom, transparent 0, #000 14%); }
   /* Each band is a quarter of the screen: draw the photo ~3.3x the band width so the whole bottle fits. */
   .hp__img { position: absolute; inset-block-end: 0; inset-inline-start: 50%; inline-size: 330%; block-size: auto; max-inline-size: none; translate: -50% 0; object-fit: contain; }
@@ -707,4 +707,14 @@ climate-switch[data-active='sun'] .cs__badge[data-fx='sun'], climate-switch[data
 [dir='rtl'] .creel__prev .icon, [dir='rtl'] .creel__next .icon { transform: scaleX(-1); }
 
 /* Finish pass (DECISIONS 286): the reel keeps room for its cards' shadows ([role='list'] beats the global list reset) */
-.creel__row[role='list'] { padding-block-end: var(--sp-12); margin-block-end: calc(-1 * var(--sp-10)); }
+.creel__row[role='list'] { padding-block-end: var(--sp-12); margin-block-end: calc(-1 * var(--sp-12)); }
+
+/* Finish pass batch 2 (DECISIONS 287) ---------- */
+/* Climate block: the add button spans the column like every other main button on a phone; the set note reads as a line, not fine print */
+@media (max-width: 749px) { .cs__form .btn { inline-size: 100%; } }
+.cs__form .bundle-match { margin-block-start: var(--sp-3); font-size: var(--fs-2); line-height: 1.45; }
+/* Routine on phones: the sun only travels where it can't cross the big word; the pack sits a little lower, closing the gap above its name */
+@media (max-width: 749px) {
+  .dayline__sun { display: none; }
+  .js .dayline .dayline__bottle { inset-block-end: calc(max(186px, 22svh) + var(--dock-h, 0px)); }
+}
