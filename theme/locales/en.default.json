@@ -321,6 +321,23 @@
       "label": "Today’s conditions",
       "cta": "Add these {{ count }} steps"
     },
+    "climate_live": {
+      "today_in": "Today in",
+      "city_label": "Your city",
+      "today": "Today",
+      "uv": "UV {{ value }}",
+      "humidity": "Humidity {{ value }}%",
+      "dust": "Dust {{ level }}",
+      "levels": "low|moderate|high|very high",
+      "cities": {
+        "cairo": "Cairo",
+        "giza": "Giza",
+        "new_cairo": "New Cairo",
+        "alexandria": "Alexandria",
+        "hurghada": "Hurghada",
+        "sharm": "Sharm El Sheikh"
+      }
+    },
     "facts_band": {
       "steps": "steps, one routine",
       "ingredients": "ingredients, every one listed",
