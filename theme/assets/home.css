@@ -705,3 +705,6 @@ climate-switch[data-active='sun'] .cs__badge[data-fx='sun'], climate-switch[data
 .creel__prev { inset-inline-end: calc(50% + (100dvh - 48px) * 9 / 32 + 24px); }
 .creel__next { inset-inline-start: calc(50% + (100dvh - 48px) * 9 / 32 + 24px); }
 [dir='rtl'] .creel__prev .icon, [dir='rtl'] .creel__next .icon { transform: scaleX(-1); }
+
+/* Finish pass (DECISIONS 286): the reel keeps room for its cards' shadows ([role='list'] beats the global list reset) */
+.creel__row[role='list'] { padding-block-end: var(--sp-12); margin-block-end: calc(-1 * var(--sp-10)); }

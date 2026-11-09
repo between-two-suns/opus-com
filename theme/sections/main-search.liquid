@@ -1,9 +1,14 @@
 {{ 'pages.css' | asset_url | stylesheet_tag }}
 <section class="section section--tight search-page" aria-labelledby="SearchTitle">
   <div class="container">
-    <h1 class="t-display-m" id="SearchTitle">
-      {%- if search.performed -%}{{ 'search.results_count' | t: count: search.results_count, terms: search.terms }}{%- else -%}{{ 'search.title' | t }}{%- endif -%}
-    </h1>
+    {%- comment -%} A utility page: the word searched is the title, the count sits under it (DECISIONS 286) {%- endcomment -%}
+    {%- if search.performed -%}
+      <p class="t-eyebrow">{{ 'search.title' | t }}</p>
+      <h1 class="search-page__title" id="SearchTitle"><span class="visually-hidden">{{ 'search.results_count' | t: count: search.results_count, terms: search.terms }}</span><span aria-hidden="true">{{ search.terms | escape }}</span></h1>
+      <p class="search-page__count t-muted" aria-hidden="true">{{ 'search.found' | t: count: search.results_count }}</p>
+    {%- else -%}
+      <h1 class="search-page__title" id="SearchTitle">{{ 'search.title' | t }}</h1>
+    {%- endif -%}
     <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
       <label class="visually-hidden" for="SearchPageInput">{{ 'search.label' | t }}</label>
       <input id="SearchPageInput" class="search-modal__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'search.placeholder' | t }}" autocomplete="off">

@@ -73,6 +73,7 @@
     "learn": "Learn",
     "view_all": "See all results for “{{ terms }}”",
     "results_count": "{{ count }} results for “{{ terms }}”",
+    "found": {"one": "1 result", "other": "{{ count }} results"},
     "submit": "Search",
     "empty_hint": "Try an ingredient (niacinamide), a concern (oiliness) or a step (SPF)."
   },
@@ -453,7 +454,7 @@
     "routine_tabs": "The routine, step by step",
     "made_for": "Made for",
     "card_lines": {
-      "daily-reset-cleanser": "Daily|Reset Cleanser",
+      "daily-reset-cleanser": "Daily Reset|Cleanser",
       "clarity-serum": "Clarity|Serum",
       "daily-barrier-moisturizing-cream": "Daily Barrier|Moisturizing Cream",
       "daily-defense-sunscreen-spf-50": "Daily Defense|Sunscreen SPF 50+"

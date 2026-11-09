@@ -180,3 +180,32 @@
 .sets-rail > .bundle { grid-column: auto !important; }
 .sets-rail .bundle__stage { aspect-ratio: 4 / 3 !important; }
 .bi__others { margin-block-start: clamp(56px, 8vw, 104px); }
+
+/* ---------- Finish pass (DECISIONS 286): set cards ----------
+   The name gets real air under the picture; one price line (now + was) with the saving always on its own line, so
+   every card in a row lines up; on wide cards the text grows with the card instead of staying phone-sized. */
+.bundle .bundle__body, .bundles__grid .bundle__body { padding: var(--sp-5) var(--sp-5) var(--sp-5); gap: var(--sp-3); }
+.bundle__name { margin: 0; }
+.bundle__desc { margin: 0; font-size: var(--fs-2); }
+.bundle__items { font-size: var(--fs-2); gap: var(--sp-1); }
+.bundle__buy { gap: var(--sp-4); padding-block-start: var(--sp-2); }
+.bundle__price { display: grid; grid-template-columns: auto auto 1fr; align-items: baseline; column-gap: var(--sp-2); row-gap: 2px; }
+.bundle__price .bundle__save { grid-column: 1 / -1; font-size: var(--fs-2); }
+.bundle__now { font-size: var(--fs-5); }
+.bundle__was { font-size: var(--fs-2); }
+@media (min-width: 990px) {
+  .bundle .bundle__body, .bundles__grid .bundle__body { padding: var(--sp-6) var(--sp-8) var(--sp-8); gap: var(--sp-4); }
+  .bundles__grid > .bundle:nth-child(-n+2) .bundle__name { font-size: clamp(32px, 2.8vw, 44px); }
+  .bundles__grid > .bundle:nth-child(-n+2) :is(.bundle__desc, .bundle__items) { font-size: var(--fs-3); }
+  .bundles__grid > .bundle:nth-child(-n+2) .bundle__now { font-size: var(--fs-6); }
+  .bundles__grid > .bundle:nth-child(-n+2) .bundle__items { gap: var(--sp-2); }
+  .bundles__grid > .bundle:nth-child(-n+2) :is(.bundle__was, .bundle__price .bundle__save) { font-size: var(--fs-3); }
+}
+/* Packs picture on a set card: the labels start under the "Ships free" pill, and every pack stands whole in the frame */
+.bundle__stage .dm-stage { padding: calc(var(--sp-12) + var(--sp-1)) 6% var(--sp-4); }
+.bundle__stage .dm-pk__line { min-block-size: 8px; }
+.bundle__stage .dm-pk__img { block-size: calc(var(--s) / var(--smax, 1) * 66%); }
+
+/* Swipe rows: the scroller keeps room for the cards' shadows, so nothing is sliced off under a card */
+.sets-rail, .bundles__grid { padding-block-end: var(--sp-12) !important; margin-block-end: calc(-1 * var(--sp-10)) !important; }
+@media (min-width: 750px) { .bundles__grid { padding-block-end: 0 !important; margin-block-end: 0 !important; } }

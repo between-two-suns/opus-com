@@ -36,6 +36,11 @@
   --radius-s: 10px;
   --radius-m: 18px;
   --radius-l: 28px;
+  /* Design system (DECISIONS 286): every component takes its text sizes and gaps from these, nothing in between.
+     Text: 12 · 14 · 16 · 18 · 22 · 28 (display sizes are the .t-display classes). Space: steps of 4. Corners: s · m · l · pill. */
+  --fs-1: 12px; --fs-2: 14px; --fs-3: 16px; --fs-4: 18px; --fs-5: 22px; --fs-6: 28px;
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px; --sp-12: 48px;
+  --radius-pill: 999px;
   --header-h: 64px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -1411,3 +1416,13 @@ main > .shopify-section:has(> .section:not(.v2-ben, .routine-strip)) + .shopify-
 .ab-orb__l::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at var(--hx) calc(var(--hy) - 2%), rgb(255 255 255 / .34), rgb(255 255 255 / .1) 20%, transparent 42%); }
 /* a <picture> that only swaps the image source for phones takes no box of its own, so the image keeps its usual layout (DECISIONS 210) */
 .page-hero__media picture, picture:has(> .set-visual--photo) { display: contents; }
+
+/* Finish pass (DECISIONS 286): text never leaves one word alone on its last line. */
+p, li, dd, figcaption, .t-lead, .t-small { text-wrap: pretty; }
+
+/* Finish pass (DECISIONS 286): product cards. The name has the same air under the photo as the set cards. */
+.card .card__body { padding: var(--sp-5) var(--sp-5) 0; gap: var(--sp-2); }
+@media (max-width: 749px) {
+  .product-grid .card .card__body { padding: var(--sp-4) var(--sp-4) 0; gap: var(--sp-2); }
+  .product-grid .card .card__quick { padding: var(--sp-3) var(--sp-3) var(--sp-3); }
+}
