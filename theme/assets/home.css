@@ -661,14 +661,14 @@ climate-switch[data-active='sun'] .cs__badge[data-fx='sun'], climate-switch[data
 .creel__img { transform: scale(1); transition: transform 9s linear; }
 .creel__item.is-in .creel__img { transform: scale(1.08); }
 @media (prefers-reduced-motion: reduce) { .creel__img { transition: none; } .creel__item.is-in .creel__img { transform: none; } }
-.creel__media::after { content: ''; position: absolute; inset: 50% 0 0; background: linear-gradient(to top, rgba(14, 16, 28, .7), transparent); pointer-events: none; }
 /* On the picture: who made it, then one small glass tag naming the product (the only link) */
-.creel__cap { position: absolute; z-index: 2; inset-inline: 12px; inset-block-end: 12px; display: grid; justify-items: start; gap: 10px; pointer-events: none; }
+/* The caption carries its own shade (bottom half of the card), so the white name reads on any picture or colour (DECISIONS 284) */
+.creel__cap { position: absolute; z-index: 2; inset-inline: 0; inset-block: 50% 0; padding: 12px; display: grid; align-content: end; justify-items: start; gap: 10px; pointer-events: none; background: linear-gradient(to top, rgba(14, 16, 28, .78), rgba(14, 16, 28, .42) 45%, transparent); }
 .creel__who { display: grid; gap: 1px; color: #fff; text-align: start; text-shadow: 0 1px 12px rgba(0, 0, 0, .25); }
 .creel__who > span { justify-self: start; }  /* the handle reads left to right but sits on the Arabic side */
 .creel__name { font-weight: 700; font-size: 15px; }
-.creel__handle { font-size: 13px; opacity: .85; }
-.creel__tag { pointer-events: auto; display: inline-flex; align-items: center; gap: 7px; max-inline-size: 100%; min-block-size: 34px; padding: 0 10px 0 9px; border-radius: 99px; background: rgba(20, 22, 38, .4); color: #fff; font-size: 13px; font-weight: 650; text-decoration: none; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3); transition: background var(--dur) var(--ease-out); }
+.creel__handle { font-size: 13px; opacity: .92; }
+.creel__tag { pointer-events: auto; display: inline-flex; align-items: center; gap: 7px; max-inline-size: 100%; min-block-size: 34px; padding: 0 10px 0 9px; border-radius: 99px; background: rgba(20, 22, 38, .5); color: #fff; font-size: 13px; font-weight: 650; text-decoration: none; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3); transition: background var(--dur) var(--ease-out); }
 .creel__tag:hover { background: rgba(20, 22, 38, .58); }
 .creel__tagname { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .creel__tag .icon { flex: none; inline-size: 14px; block-size: 14px; }

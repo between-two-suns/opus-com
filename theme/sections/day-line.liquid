@@ -95,7 +95,7 @@
 
       <nav class="dayline__nav" aria-label="{{ 'sections.routine.nav' | t }}">
         {%- for s in (1..4) -%}
-          <button type="button" class="dayline__dot" data-step="{{ s }}" data-go="{{ forloop.index0 }}" aria-label="{{ 'product.step' | t: number: s }}"><span aria-hidden="true">0{{ s }}</span></button>
+          <button type="button" class="dayline__dot" data-step="{{ s }}" data-go="{{ forloop.index0 }}" aria-label="0{{ s }}, {{ 'product.step' | t: number: s }}"><span aria-hidden="true">0{{ s }}</span></button>
         {%- endfor -%}
       </nav>
     </div>

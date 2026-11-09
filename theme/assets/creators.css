@@ -94,6 +94,7 @@
 /* ---------- Ideas: photo cards (the brand's own photos as prompts), swipeable on phones ---------- */
 .cr-ideas .cr-cards { --gut: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter))); display: grid; grid-auto-flow: column; grid-auto-columns: min(62vw, 300px); gap: 12px; margin: 0; padding: 4px var(--gut) 18px; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gut); scrollbar-width: none; }
 .cr-cards::-webkit-scrollbar { display: none; }
+.cr-cards:focus-visible { outline: 2px solid var(--c-ink); outline-offset: 4px; border-radius: var(--radius-m, 14px); }
 .cr-cardx { position: relative; aspect-ratio: 4 / 5; border-radius: var(--radius-l); overflow: hidden; scroll-snap-align: start; background: var(--c-ink); color: #fff; isolation: isolate; }
 .cr-cardx__img, .cr-cardx > img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; z-index: -1; }
 .cr-cardx::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgba(20, 22, 38, .78) 0%, rgba(20, 22, 38, 0) 55%), linear-gradient(to bottom, rgba(20, 22, 38, .3), rgba(20, 22, 38, 0) 28%); }

@@ -1,4 +1,4 @@
-/* WELCOME75 card: shows once per visitor after a real pause (15s on the page, or half-way down it),
+/* WELCOME75 card: shows once per visitor (not on product pages) after a real pause (15s on the page, or half-way down it),
    never over an open bag/menu and never while someone is typing. It does not take focus unless the
    visitor just submitted it. After sign-up it shows the shared code, with copy and apply-to-bag. */
 const KEY = 'bts:welcome';
@@ -21,6 +21,9 @@ class WelcomeOffer extends HTMLElement {
     if (success) { store.set('done'); this.open(); this.querySelector('#WelcomeTitle')?.focus({ preventScroll: true }); return; }
     if (error) { this.open(); error.focus({ preventScroll: true }); return; }
     if (store.get()) return;
+    // Never on product and set pages: those visitors are already choosing, and the card would sit over the buy bar
+    // (DECISIONS 285). It still opens there to show the code after a footer sign-up (above).
+    if (document.body.classList.contains('template-product')) return;
     this.arm();
   }
 

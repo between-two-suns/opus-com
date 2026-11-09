@@ -112,7 +112,7 @@
         </div>
       </div>
     </div>
-    <ul class="cr-cards" role="list">
+    <ul class="cr-cards" role="list" tabindex="0" aria-labelledby="CrIdeas-{{ section.id }}">
       {%- for i in ideas -%}
         {%- assign parts = i | split: ':' -%}
         {%- assign ik = 'creators.ideas.' | append: parts[0] -%}

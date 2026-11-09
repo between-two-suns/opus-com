@@ -369,6 +369,21 @@
   .page-hero--media .page-hero__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; }
   .page-hero--media .page-hero__media { aspect-ratio: 5 / 4; }
 }
+/* Page tops without a picture (Sets, Shop all, FAQ, Journal…), laptop: the title on the left, its text and links on the
+   right, bottom-aligned, so the first products start about half-way up the first screen (DECISIONS 283). */
+@media (min-width: 990px) {
+  .page-hero:not(.page-hero--media) .page-hero__inner { padding-block: clamp(40px, 5vw, 72px) clamp(28px, 3.5vw, 48px); }
+  .page-hero:not(.page-hero--media) :is(.page-hero__copy, .page-hero__inner:not(:has(> .page-hero__copy))):has(> .page-hero__text) {
+    max-inline-size: none; inline-size: 100%; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    column-gap: clamp(40px, 6vw, 112px); row-gap: 14px; align-items: end; justify-items: start;
+  }
+  .page-hero:not(.page-hero--media) :is(.page-hero__copy, .page-hero__inner):has(> .page-hero__text) > .t-eyebrow { grid-column: 1; grid-row: 1; }
+  .page-hero:not(.page-hero--media) :is(.page-hero__copy, .page-hero__inner):has(> .page-hero__text) > h1 { grid-column: 1; grid-row: 2 / span 2; margin: 0; }
+  .page-hero:not(.page-hero--media) :is(.page-hero__copy, .page-hero__inner):has(> .page-hero__text) > .page-hero__text { grid-column: 2; grid-row: 2; margin: 0; }
+  .page-hero:not(.page-hero--media) :is(.page-hero__copy, .page-hero__inner):has(> .page-hero__text) > :not(.t-eyebrow, h1, .page-hero__text) { grid-column: 2; grid-row: 3; align-self: start; }
+  /* only a title and its text: the text sits on the title's last line */
+  .page-hero:not(.page-hero--media) :is(.page-hero__copy, .page-hero__inner):has(> .page-hero__text):not(:has(> :not(.t-eyebrow, h1, .page-hero__text))) > .page-hero__text { grid-row: 2 / span 2; align-self: end; padding-block-end: .5em; }
+}
 
 /* v3 shop: four products, then a sets rail. */
 .collection__sets { margin-block-start: var(--section-y); }
