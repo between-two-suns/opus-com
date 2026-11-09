@@ -22,7 +22,7 @@
 
 .hero__warm-wash {
   position: absolute; inset: 0;
-  background: linear-gradient(170deg, #fff4ea 0%, #fbf3ee 45%, #f4f6f3 100%);
+  background: linear-gradient(170deg, #ffffff 0%, #f8f9f9 45%, #f4f6f6 100%);
   opacity: calc(1 - var(--p) * 0.85);
 }
 .hero__sun { --sun-size: max(88vmax, 900px); }

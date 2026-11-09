@@ -54,11 +54,11 @@
 }
 
 /* Time of day: sections name a tone; the page drifts to it as the section reaches the middle of the screen. */
-[data-tone='dawn'] { --tone-c: #f8ede3; }
+[data-tone='dawn'] { --tone-c: #f7f8f9; }
 [data-tone='day'] { --tone-c: #ffffff; }
 [data-tone='aqua'] { --tone-c: #e9f0ec; }
 [data-tone='lilac'] { --tone-c: #f2ecef; }
-[data-tone='sand'] { --tone-c: #f4ecdf; }
+[data-tone='sand'] { --tone-c: #f4f5f6; }
 [data-tone='sku'] { --tone-c: #ffffff; } /* product pages: white, the step colour lives in the photo, tabs and chips (DECISIONS 279) */
 
 /* ---------- Reset ---------- */
@@ -833,7 +833,7 @@ html.has-open-dialog { overflow: hidden; }
 /* ---------- Welcome offer (WELCOME75) — non-modal card, once per visitor ---------- */
 .welcome { position: fixed; z-index: 70; inset-inline: 16px; inset-block-end: calc(var(--dock-h) + 12px); display: flex; justify-content: center; pointer-events: none; }
 .welcome[hidden] { display: none; }
-.welcome__card { position: relative; pointer-events: auto; inline-size: min(100%, 420px); padding: 22px 22px 18px; border-radius: var(--radius-l); background: #fbf8f3; color: var(--c-ink); overflow: hidden; box-shadow: 0 30px 60px -28px rgba(32, 35, 58, .45), 0 0 0 1px var(--c-line); transform: translateY(24px); opacity: 0; transition: transform var(--dur-slow) var(--ease-out), opacity var(--dur) var(--ease-out); }
+.welcome__card { position: relative; pointer-events: auto; inline-size: min(100%, 420px); padding: 22px 22px 18px; border-radius: var(--radius-l); background: #ffffff; color: var(--c-ink); overflow: hidden; box-shadow: 0 30px 60px -28px rgba(32, 35, 58, .45), 0 0 0 1px var(--c-line); transform: translateY(24px); opacity: 0; transition: transform var(--dur-slow) var(--ease-out), opacity var(--dur) var(--ease-out); }
 .welcome__card::before { content: ''; position: absolute; inset-inline: 0; inset-block-start: 0; block-size: 4px; background: linear-gradient(90deg, var(--c-step-1), var(--c-step-2) 38%, var(--c-step-3) 66%, var(--c-step-4)); }
 .welcome.is-in .welcome__card { transform: none; opacity: 1; }
 .welcome__mark { position: absolute; inset-inline-end: -34px; inset-block-start: -30px; inline-size: 150px; block-size: 160px; background: var(--c-step-2-tint); opacity: .55; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; pointer-events: none; }
@@ -870,6 +870,12 @@ html.has-open-dialog { overflow: hidden; }
 :lang(ar) .t-display-l, :lang(ar) .t-display-m { font-weight: 750; line-height: 1.3; letter-spacing: 0; }
 :lang(ar) .t-display-l { font-size: clamp(36px, 5.4vw, 80px); }
 :lang(ar) .t-display-m { font-size: clamp(28px, 3.8vw, 52px); }
+/* Page titles (DECISIONS 280): every page's one h1 speaks in the tall caps face, like the home, product, climate, About
+   and bag titles. Section headings below stay in the sans. */
+main h1:is(.t-display-l, .t-display-m) { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .005em; line-height: .95; padding-block-end: .12em; }
+main h1.t-display-l { font-size: clamp(52px, 6.6vw, 104px); }
+main h1.t-display-m { font-size: clamp(44px, 5.4vw, 84px); }
+:lang(ar) main h1:is(.t-display-l, .t-display-m) { text-transform: none; letter-spacing: 0; line-height: 1.3; font-weight: 800; padding-block-end: 0; }
 /* Small headings too (footer "Hear it first", empty bag, thank-yous): the tall caps face is kept for the hero line
    and product/set names only (DECISIONS 234). */
 .t-display-s { font-family: var(--font-sans); text-transform: none; font-weight: 700; letter-spacing: -0.02em; font-size: clamp(24px, 2.4vw, 32px); line-height: 1.15; }
@@ -1201,7 +1207,7 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 .added.is-in .added__eyebrow svg path { animation: tick 420ms 260ms var(--ease-out) both; }
 @keyframes tick { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 .added__name { margin: 0; font-weight: 700; font-size: 15px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.added__close { inline-size: 36px; block-size: 36px; border: 0; border-radius: 50%; background: var(--c-paper, #f4efe7); color: var(--c-ink); display: grid; place-items: center; cursor: pointer; }
+.added__close { inline-size: 36px; block-size: 36px; border: 0; border-radius: 50%; background: var(--c-paper, #f4f5f6); color: var(--c-ink); display: grid; place-items: center; cursor: pointer; }
 .added__close svg { inline-size: 16px; block-size: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
 .added__routine:empty, .added__ship:empty, .added__next:empty { display: none; }
 .added__routine .cart-routine__label { margin-block-end: 6px; font-size: 13px; }
@@ -1212,7 +1218,7 @@ main:has(> .shopify-section:last-child .eb) { padding-block-end: 0; }
 .added .cart-progress span.is-new::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .9), transparent); translate: -100% 0; animation: glint 900ms 760ms ease-out both; }
 @keyframes seg-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes glint { to { translate: 100% 0; } }
-.added .incentive { margin: 0; padding: 10px 12px; border-radius: 14px; background: var(--c-paper, #f4efe7); }
+.added .incentive { margin: 0; padding: 10px 12px; border-radius: 14px; background: var(--c-paper, #f4f5f6); }
 .added .incentive__meter span { transition: inline-size 900ms 220ms cubic-bezier(.2, .8, .3, 1); }
 .added .incentive.is-new .incentive__msg { animation: unlock 700ms 400ms cubic-bezier(.2, 1.4, .4, 1) both; }
 @keyframes unlock { from { transform: scale(.9); opacity: 0; } }

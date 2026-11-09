@@ -1,4 +1,6 @@
 {{ 'home.css' | asset_url | stylesheet_tag }}
+{%- comment -%} Loaded here, not in the head, so the home page's first paint does not wait for it (DECISIONS 281). {%- endcomment -%}
+{{ 'forecast.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
   Climate, compact: five conditions as an icon switch. The chosen one sets the light around the bottles
   (glare, dust, droplets, air-con airflow, heat haze) and lifts the steps that matter for it, with one tap

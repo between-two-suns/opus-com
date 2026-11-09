@@ -2,10 +2,10 @@
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
-// Sky colour by hours after 06:00 (0–24), in the brand's colours: ivory day, lilac dusk, ink night, mint dawn, ending on
+// Sky colour by hours after 06:00 (0–24), in the brand's colours: white day, lilac dusk, ink night, mint dawn, ending on
 // the page's own colour so the next section follows without a seam.
-const PAGE = ((v) => (/^#[0-9a-f]{6}/i.test(v) ? v.slice(0, 7) : '#f5f1ea'))(getComputedStyle(document.documentElement).getPropertyValue('--c-daylight').trim());
-const STOPS = [[0, '#f3f1ea'], [3, '#f5f1ea'], [8, '#f2efe9'], [10.5, '#efe7f0'], [12.3, '#e3d1e7'], [13.5, '#a48fb4'], [14.5, '#4f4a6e'], [16, '#24283f'], [21, '#22263d'], [22.3, '#3f5a66'], [23, '#cfe6df'], [23.6, '#e2eee7'], [24, PAGE]];
+const PAGE = ((v) => (/^#[0-9a-f]{6}/i.test(v) ? v.slice(0, 7) : '#ffffff'))(getComputedStyle(document.documentElement).getPropertyValue('--c-daylight').trim());
+const STOPS = [[0, '#ffffff'], [3, '#ffffff'], [8, '#f7f7f9'], [10.5, '#efe7f0'], [12.3, '#e3d1e7'], [13.5, '#a48fb4'], [14.5, '#4f4a6e'], [16, '#24283f'], [21, '#22263d'], [22.3, '#3f5a66'], [23, '#cfe6df'], [23.6, '#e2eee7'], [24, PAGE]];
 // What each part of the day is, for the clock (hours after 06:00 where each one starts).
 const PARTS = [0, 2.5, 11, 15, 17, 23.5];
 const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));

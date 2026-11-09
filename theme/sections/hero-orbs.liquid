@@ -64,8 +64,10 @@
 .hh-title { margin-top: clamp(10px, 2vh, 22px); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; letter-spacing: -.01em; font-size: var(--fs); }
 /* the word mask reaches past the letters' foot (the display font's line box ends above the baseline), so round letters keep their curves */
 .hh-title .hh-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .16em; margin-bottom: -.16em; }
-.hh-title .hh-w > span { display: inline-block; animation: hh-rise 1s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(.2s + var(--i) * .06s); }
-@keyframes hh-rise { from { transform: translateY(130%); } }
+/* The headline is readable on the very first frame (it is what Google times the page by, DECISIONS 281): each word only
+   settles a little upward, inside the mask's spare foot, so no letter is ever hidden. The motion lives in the orbs and packs. */
+.hh-title .hh-w > span { display: inline-block; animation: hh-rise .9s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(var(--i) * .04s); }
+@keyframes hh-rise { from { transform: translateY(.14em); } }
 /* the line-up stands in front of the last line of the headline and takes the height that is left */
 .hh-stage .hh-row { position: relative; z-index: 2; flex: 1 1 0; min-height: 0; width: 100%; margin: clamp(14px, 3vh, 34px) 0 0; padding: 0; list-style: none;
   display: flex; justify-content: center; align-items: flex-end; gap: clamp(10px, 1.6vw, 28px); }
@@ -124,7 +126,7 @@
 :lang(ar) .hh-title { text-transform: none; line-height: 1.18; letter-spacing: 0; font-size: calc(var(--fs) * .795); }
 :lang(ar) .hh-title .hh-w { overflow: visible; padding: 0; margin: 0; }
 :lang(ar) .hh-title .hh-w > span { animation-name: hh-fade; }
-@keyframes hh-fade { from { opacity: 0; transform: translateY(.25em); } }
+@keyframes hh-fade { from { transform: translateY(.14em); } }
 @media (max-width: 760px) { :lang(ar) .hh-title { font-size: 12vw; max-width: none; } :lang(ar) .hh-title br.hh-d { display: inline; } }
 :lang(ar) .hh-eyebrow, :lang(ar) .hh-lab, :lang(ar) .hh-btn { letter-spacing: 0; }
 @media (prefers-reduced-motion: reduce) {

@@ -5,7 +5,7 @@
 
 /* ---------- 1 · Two suns: one day, scrolled ---------- */
 .ab-sky {
-  --sky: #f5f1ea; --night: 0; --a: 0; --b: 1; --p: 0;
+  --sky: #ffffff; --night: 0; --a: 0; --b: 1; --p: 0;
   --db: calc(var(--dock-h, 0px) + clamp(40px, 7svh, 72px));
   --dh: clamp(130px, 25svh, 240px);
   --s: clamp(170px, 30vw, 440px);
@@ -14,7 +14,7 @@
 .ab-sky.is-live { block-size: 280svh; }
 .ab-sky__stage { position: relative; overflow: clip; isolation: isolate; min-block-size: 100svh; background: var(--sky); transition: color .5s; }
 .ab-sky.is-live .ab-sky__stage { position: sticky; inset-block-start: 0; block-size: 100svh; min-block-size: 0; }
-.ab-sky[data-dark] .ab-sky__stage { color: #f7f3ee; }
+.ab-sky[data-dark] .ab-sky__stage { color: #ffffff; }
 .ab-sky__stars {
   position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: calc(var(--night) * .9);
   background-image:
@@ -82,7 +82,7 @@
 }
 .ab-sky__mark.is-on, .ab-sky:not(.is-live) .ab-sky__mark { opacity: 1; background: var(--c-ink); color: #fff; border-color: transparent; }
 .ab-sky[data-dark] .ab-sky__mark { background: color-mix(in srgb, var(--sky) 80%, #fff 6%); }
-.ab-sky[data-dark] .ab-sky__mark.is-on { background: #f7f3ee; color: var(--c-ink); }
+.ab-sky[data-dark] .ab-sky__mark.is-on { background: #ffffff; color: var(--c-ink); }
 .ab-sky__end { position: absolute; inset-block-start: calc(100% + 12px); font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; opacity: .78; white-space: nowrap; }
 .ab-sky__end--a { inset-inline-start: 0; }
 .ab-sky__end--b { inset-inline-end: 0; }

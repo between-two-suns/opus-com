@@ -3,7 +3,7 @@
    ========================================================================== */
 
 /* ---------- Hero ---------- */
-.cr-hero { position: relative; isolation: isolate; overflow: clip; background: radial-gradient(120% 90% at 85% 10%, color-mix(in srgb, var(--c-step-4) 30%, transparent), transparent 60%), radial-gradient(90% 80% at 0% 100%, color-mix(in srgb, var(--c-step-2) 26%, transparent), transparent 65%), #f7f2ea; }
+.cr-hero { position: relative; isolation: isolate; overflow: clip; background: radial-gradient(120% 90% at 85% 10%, color-mix(in srgb, var(--c-step-4) 30%, transparent), transparent 60%), radial-gradient(90% 80% at 0% 100%, color-mix(in srgb, var(--c-step-2) 26%, transparent), transparent 65%), #f6f7f8; }
 .cr-hero__mark { position: absolute; z-index: -1; inset-inline-end: -12vmax; inset-block-start: 6%; inline-size: 62vmax; block-size: 66vmax; background: #fff; opacity: .55; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; pointer-events: none; }
 .cr-hero__inner { display: grid; gap: clamp(32px, 6vw, 64px); align-items: center; padding-block: clamp(40px, 7vw, 112px) clamp(48px, 7vw, 112px); }
 .cr-hero__copy { display: grid; gap: var(--stack); justify-items: start; max-inline-size: 620px; }
@@ -70,7 +70,7 @@
 .cr-line__step { position: relative; display: grid; grid-template-columns: var(--ico) 1fr; column-gap: 18px; padding-block-end: clamp(22px, 3vw, 30px); }
 .cr-line__step::before { content: ''; position: absolute; inset-inline-start: calc(var(--ico) / 2 - 1px); inset-block: var(--ico) 0; inline-size: 2px; background: color-mix(in srgb, var(--c-ink) 14%, transparent); }
 .cr-line__step:last-child::before { display: none; }
-.cr-line__ico { grid-row: span 2; display: grid; place-items: center; inline-size: var(--ico); block-size: var(--ico); border-radius: 50%; background: var(--c-ink); color: #F4EFE7; }
+.cr-line__ico { grid-row: span 2; display: grid; place-items: center; inline-size: var(--ico); block-size: var(--ico); border-radius: 50%; background: var(--c-ink); color: #ffffff; }
 .cr-line__ico .icon { inline-size: 22px; block-size: 22px; }
 .cr-line__title { margin: 6px 0 4px; font-weight: 700; font-size: clamp(19px, 1.6vw, 22px); line-height: 1.25; letter-spacing: -0.01em; }
 :lang(ar) .cr-line__title { letter-spacing: 0; line-height: 1.4; }
@@ -82,13 +82,13 @@
   .cr-line__ico { grid-row: auto; }
   .cr-line__title { margin: 0; }
 }
-.cr-grow { margin-block-start: clamp(28px, 4vw, 48px); padding: clamp(22px, 3vw, 34px); border-radius: var(--radius-l); background: var(--c-ink); color: #F4EFE7; }
+.cr-grow { margin-block-start: clamp(28px, 4vw, 48px); padding: clamp(22px, 3vw, 34px); border-radius: var(--radius-l); background: var(--c-ink); color: #ffffff; }
 .cr-grow__title { margin: 0 0 18px; font-weight: 700; font-size: clamp(22px, 2.2vw, 28px); line-height: 1.2; letter-spacing: -0.02em; }
 :lang(ar) .cr-grow__title { letter-spacing: 0; line-height: 1.4; }
 .cr-grow__list { display: grid; gap: 14px 32px; list-style: none; margin: 0; padding: 0; }
 @media (min-width: 990px) { .cr-grow__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.cr-grow__list li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.5; color: rgba(244, 239, 231, .86); }
-.cr-grow__list strong { display: block; color: #F4EFE7; font-weight: 700; }
+.cr-grow__list li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.5; color: rgba(255, 255, 255, .86); }
+.cr-grow__list strong { display: block; color: #ffffff; font-weight: 700; }
 .cr-grow__list .icon { flex: none; inline-size: 22px; block-size: 22px; margin-block-start: 2px; color: var(--c-step-1); }
 
 /* ---------- Ideas: photo cards (the brand's own photos as prompts), swipeable on phones ---------- */

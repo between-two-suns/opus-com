@@ -31,7 +31,14 @@
     {%- comment -%} The same card as the Sets page and the shop (DECISIONS 238); the pick leads at the wider column {%- endcomment -%}
     {{ 'bundles.css' | asset_url | stylesheet_tag }}
     <ul class="setsx__grid" role="list">
-      {%- if hero.id -%}{%- render 'bundle-card', product: hero, priority: true -%}{%- endif -%}
+      {%- comment -%} Fetched first only when the section opens the page; lower down (home) it waits its turn (DECISIONS 281). {%- endcomment -%}
+      {%- liquid
+        assign bf_first = false
+        if section.index <= 2
+          assign bf_first = true
+        endif
+      -%}
+      {%- if hero.id -%}{%- render 'bundle-card', product: hero, priority: bf_first -%}{%- endif -%}
       {%- if mate.id -%}{%- render 'bundle-card', product: mate, image: section.settings.mate_image -%}{%- endif -%}
     </ul>
     {%- comment -%} Under the sets, where "which one?" comes up (DECISIONS 234) {%- endcomment -%}

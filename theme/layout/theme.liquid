@@ -83,7 +83,7 @@
       if tpl == 'index' or tpl == 'collection' or tpl == 'blog' or tpl == 'article' or sfx == 'climate' or sfx == 'about'
         echo 'home.css' | asset_url | stylesheet_tag
       endif
-      if tpl == 'index' or sfx == 'routines'
+      if sfx == 'routines'
         echo 'forecast.css' | asset_url | stylesheet_tag
       endif
       if tpl == 'product'

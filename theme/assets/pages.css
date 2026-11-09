@@ -3,7 +3,7 @@
    ========================================================================== */
 
 /* Page hero */
-.page-hero { position: relative; isolation: isolate; overflow: clip; background: linear-gradient(170deg, #fff4ea 0%, #f6f7f4 55%, #eaf4f4 100%); }
+.page-hero { position: relative; isolation: isolate; overflow: clip; background: linear-gradient(170deg, #ffffff 0%, #f5f7f7 55%, #eaf4f4 100%); }
 .page-hero__inner { position: relative; z-index: 1; display: grid; gap: 16px; justify-items: start; padding-block: clamp(48px, 8vw, 120px) clamp(40px, 6vw, 88px); }
 .page-hero--compact .page-hero__inner { padding-block: clamp(36px, 5vw, 72px) clamp(28px, 4vw, 56px); }
 .page-hero__text { max-inline-size: 640px; }
@@ -29,7 +29,7 @@
 .story__num { position: relative; z-index: 1; color: rgba(32, 35, 58, 0.9); font-size: clamp(96px, 14vw, 200px); }
 .story__art[data-variant='3'] .story__num { color: #fff; }
 .story__art--lineup, .story__art--single { display: flex; align-items: center; justify-content: center; }
-.story__art--lineup { background: linear-gradient(170deg, #fff4ea, #eef5f5); }
+.story__art--lineup { background: linear-gradient(170deg, #ffffff, #eef5f5); }
 .story__packs { position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: center; gap: clamp(4px, 1.4vw, 18px); block-size: 72%; }
 .story__media .story__pack { object-fit: contain; max-inline-size: none; }
 .story__media .story__packs .story__pack { block-size: 100%; inline-size: auto; filter: drop-shadow(0 16px 18px rgba(32, 35, 58, 0.16)); }
@@ -304,7 +304,7 @@
 .cart-page__empty { display: grid; gap: 20px; margin-block-start: 24px; }
 
 /* 404 + password */
-.notfound, .password { position: relative; isolation: isolate; overflow: clip; min-block-size: 70svh; display: grid; align-items: center; background: linear-gradient(170deg, #fff4ea 0%, #f6f7f4 55%, #eaf4f4 100%); }
+.notfound, .password { position: relative; isolation: isolate; overflow: clip; min-block-size: 70svh; display: grid; align-items: center; background: linear-gradient(170deg, #ffffff 0%, #f5f7f7 55%, #eaf4f4 100%); }
 .password { min-block-size: 100svh; }
 .notfound__inner, .password__inner { position: relative; z-index: 1; display: grid; gap: 18px; justify-items: start; padding-block: 64px; max-inline-size: 760px; }
 .notfound__code { line-height: 0.8; color: transparent; -webkit-text-stroke: 2px var(--c-ink); }
