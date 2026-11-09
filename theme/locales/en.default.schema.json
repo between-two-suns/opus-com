@@ -216,9 +216,7 @@
     "climate_switch": {
       "name": "Climate switch",
       "photo_prefix": "Photo file prefix",
-      "photo_prefix_info": "Scenes load from Files by name: prefix + condition + -wide.jpg / -tall.jpg. Leave empty for bts-climate-.",
-      "live": "Live weather (demo)",
-      "live_info": "Shows today's UV, humidity and dust for the visitor's chosen city and selects the day's main condition. Weather from Open-Meteo, which needs its paid plan for commercial use: decide before launch."
+      "photo_prefix_info": "Scenes load from Files by name: prefix + condition + -wide.jpg / -tall.jpg. Leave empty for bts-climate-."
     },
     "facts_band": {
       "name": "Facts band",

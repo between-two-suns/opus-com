@@ -321,23 +321,6 @@
       "label": "أجواء اليوم",
       "cta": "أضف هذه الخطوات ({{ count }})"
     },
-    "climate_live": {
-      "today_in": "اليوم في",
-      "city_label": "مدينتك",
-      "today": "اليوم",
-      "uv": "مؤشر UV {{ value }}",
-      "humidity": "الرطوبة {{ value }}%",
-      "dust": "الغبار {{ level }}",
-      "levels": "منخفض|متوسط|مرتفع|مرتفع جدًا",
-      "cities": {
-        "cairo": "القاهرة",
-        "giza": "الجيزة",
-        "new_cairo": "القاهرة الجديدة",
-        "alexandria": "الإسكندرية",
-        "hurghada": "الغردقة",
-        "sharm": "شرم الشيخ"
-      }
-    },
     "facts_band": {
       "steps": "خطوات، روتين واحد",
       "ingredients": "مكوّنًا، مذكورة كلها",

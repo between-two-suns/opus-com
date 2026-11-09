@@ -33,33 +33,6 @@
       <h2 class="t-display-m" id="CsTitle-{{ section.id }}">{{ heading | escape }}</h2>
     </header>
 
-    {%- comment -%}
-      Live conditions (DECISIONS 288, demo): with the section's "Live weather" setting on, or ?live in the address, the
-      script fetches today's UV, temperature, humidity and dust for the chosen city (Open-Meteo, from the visitor's
-      browser) and selects the day's main condition. Nothing shows until real numbers arrive; on any failure the block
-      stays the manual switch it always was. No location permission is asked: the visitor picks a city.
-    {%- endcomment -%}
-    <div class="cs__live" data-live{% if section.settings.live %} data-on{% endif %} hidden
-      data-s-uv="{{ 'sections.climate_live.uv' | t: value: '__V__' }}" data-s-hum="{{ 'sections.climate_live.humidity' | t: value: '__V__' }}" data-s-dust="{{ 'sections.climate_live.dust' | t: level: '__V__' }}"
-      data-s-levels="{{ 'sections.climate_live.levels' | t }}" data-s-today="{{ 'sections.climate_live.today' | t }}">
-      <span class="cs__live-dot" aria-hidden="true"></span>
-      <span class="cs__live-in">{{ 'sections.climate_live.today_in' | t }}</span>
-      <label class="visually-hidden" for="CsCity-{{ section.id }}">{{ 'sections.climate_live.city_label' | t }}</label>
-      <span class="cs__city-wrap">
-        <span class="cs__city-name" data-city-name aria-hidden="true">{{ 'sections.climate_live.cities.cairo' | t }}</span>
-        <select class="cs__city" id="CsCity-{{ section.id }}" data-city>
-          <option value="30.0444,31.2357">{{ 'sections.climate_live.cities.cairo' | t }}</option>
-          <option value="30.0131,31.2089">{{ 'sections.climate_live.cities.giza' | t }}</option>
-          <option value="30.0074,31.4913">{{ 'sections.climate_live.cities.new_cairo' | t }}</option>
-          <option value="31.2001,29.9187">{{ 'sections.climate_live.cities.alexandria' | t }}</option>
-          <option value="27.2579,33.8116">{{ 'sections.climate_live.cities.hurghada' | t }}</option>
-          <option value="27.9158,34.3300">{{ 'sections.climate_live.cities.sharm' | t }}</option>
-        </select>
-        {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}
-      </span>
-      <span class="cs__facts" data-facts role="status"></span>
-    </div>
-
     <div class="cs__switch" role="group" aria-label="{{ 'sections.climate_switch.label' | t }}">
       {%- for c in conditions -%}
         {%- liquid
@@ -80,7 +53,6 @@
         <button type="button" class="cs__opt" data-c="{{ c }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
           <span class="cs__ico">{% render 'icon', name: ic %}</span>
           <span class="cs__opt-label">{{ ck | t }}</span>
-          <span class="cs__today" hidden>{{ 'sections.climate_live.today' | t }}</span>
         </button>
       {%- endfor -%}
     </div>
@@ -215,7 +187,6 @@
   </climate-switch>
 </section>
 <script src="{{ 'climate-switch.js' | asset_url }}" type="module" defer></script>
-<script src="{{ 'climate-live.js' | asset_url }}" type="module" defer></script>
 
 {% schema %}
 {
@@ -226,8 +197,7 @@
     { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
     { "type": "url", "id": "link", "label": "t:sections.climate.link_label" },
     { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" },
-    { "type": "text", "id": "photo_prefix", "label": "t:sections.climate_switch.photo_prefix", "info": "t:sections.climate_switch.photo_prefix_info", "placeholder": "bts-climate-" },
-    { "type": "checkbox", "id": "live", "label": "t:sections.climate_switch.live", "info": "t:sections.climate_switch.live_info", "default": false }
+    { "type": "text", "id": "photo_prefix", "label": "t:sections.climate_switch.photo_prefix", "info": "t:sections.climate_switch.photo_prefix_info", "placeholder": "bts-climate-" }
   ],
   "presets": [{ "name": "t:sections.climate_switch.name" }]
 }
