@@ -197,6 +197,8 @@ const Cart = {
   },
   async add(items) {
     const data = await Cart.request(BTS.routes.cartAdd + '.js', { items });
+    // the add is in: whoever asked (the button) hears at once; the bag's contents wait for the pack to land
+    const heard = Cart.onAdded; Cart.onAdded = null; heard?.(data);
     await Cart.render(data.sections);
     // Spec limits: 5 per single, 3 per bundle. Trim any line the add pushed over, and say why.
     for (const it of data.items || []) {
@@ -316,9 +318,10 @@ function flyToBag(src, bag) {
   const inner = outer.firstElementChild;
   const total = lift + dur;
   const k = lift / total;
-  const peakY = Math.min(0, dy) - arc;
+  // the arc never leaves the window: when the bag is at the top of the screen the pack peaks just under the edge
+  const peakY = Math.max(Math.min(0, dy) - arc, 10 + (h * (1 + end)) / 4 - sy);
   const spin = dx > 0 ? 14 : -14;
-  outer.animate([{ transform: 'translateX(0)' }, { transform: `translateX(${dx}px)` }],
+  const glide = outer.animate([{ transform: 'translateX(0)' }, { transform: `translateX(${dx}px)` }],
     { duration: dur, delay: lift, easing: 'cubic-bezier(.4, 0, .6, 1)', fill: 'both' });
   const anim = inner.animate([
     { transform: 'translateY(0) scale(1) rotate(0deg)', opacity: 1, easing: 'cubic-bezier(.3, .6, .5, 1)' },
@@ -327,13 +330,31 @@ function flyToBag(src, bag) {
     { transform: `translateY(${dy * 0.96}px) scale(${end * 1.15}) rotate(${spin}deg)`, opacity: 1, offset: 0.93 },
     { transform: `translateY(${dy}px) scale(${end}) rotate(${spin}deg)`, opacity: 0 },
   ], { duration: total, fill: 'forwards' });
-  return new Promise((resolve) => {
-    let settled = false;
-    const done = () => { if (settled) return; settled = true; outer.remove(); resolve(); };
-    anim.onfinish = done;
-    anim.oncancel = done;
-    setTimeout(done, total + 120);
-  });
+  let settled = false, finish;
+  const flight = new Promise((resolve) => { finish = resolve; });
+  const done = () => { if (settled) return; settled = true; outer.remove(); finish(); };
+  anim.onfinish = done;
+  anim.oncancel = done;
+  setTimeout(done, total + 120);
+  // The add failed while the pack was in the air: it turns round and goes back to where it left from, so the
+  // page never shows something landing in the bag that isn't in it. (Already landed: nothing to call back.)
+  flight.abort = () => {
+    if (settled) return flight;
+    settled = true;
+    const at = getComputedStyle(outer).transform, it = getComputedStyle(inner).transform;
+    anim.onfinish = anim.oncancel = null;
+    glide.cancel(); anim.cancel();
+    const back = { duration: 420, easing: 'cubic-bezier(.3, 0, .2, 1)', fill: 'forwards' };
+    outer.animate([{ transform: at === 'none' ? 'translateX(0)' : at }, { transform: 'translateX(0)' }], back);
+    inner.animate([
+      { transform: it === 'none' ? 'translateY(0)' : it, opacity: 1 },
+      { transform: 'translateY(0) scale(1) rotate(0deg)', opacity: 1, offset: 0.78 },
+      { transform: 'translateY(6px) scale(.96) rotate(0deg)', opacity: 0 },
+    ], back);
+    setTimeout(() => { outer.remove(); finish(); }, 440);
+    return flight;
+  };
+  return flight;
 }
 
 /* The catch: the bag gives a little, a ring in the pack colour opens, the two arcs close around it. */
@@ -397,9 +418,14 @@ function throwRoutine(sources, bag) {
     const r = src.rect, top = Math.min(Math.max(r.top, 8), innerHeight - r.height - 8);
     src.rect = { left: r.left, top, width: r.width, height: r.height };
   });
-  return Promise.all(sources.map((src, i) => new Promise((r) => setTimeout(r, i * 110))
-    .then(() => flyToBag(src, bag))
-    .then(() => { if (i < sources.length - 1) catchInBag(bag, src.tint, false); })));
+  let stopped = false;
+  const flights = [];
+  const all = Promise.all(sources.map((src, i) => new Promise((r) => setTimeout(r, i * 70))
+    .then(() => { if (stopped) return null; const f = flyToBag(src, bag); flights.push(f); return f; })
+    .then(() => { if (!stopped && i < sources.length - 1) catchInBag(bag, src.tint, false); })));
+  // a failed add calls every bottle back (those not yet thrown stay where they are)
+  all.abort = () => { stopped = true; flights.forEach((f) => f.abort()); return all; };
+  return all;
 }
 function closeMark(rect) {
   const tpl = document.getElementById('BtsMark');
@@ -617,6 +643,7 @@ class ProductForm extends HTMLElement {
     const flight = !bag || reduceMotion() ? Promise.resolve() : packs.length ? throwRoutine(packs, bag) : src ? flyToBag(src, bag) : Promise.resolve();
     // the bag's contents refresh after the landing, so nothing re-lays out the page mid-flight
     Cart.holdRender = flight;
+    Cart.onAdded = () => celebrate(button);
     try {
       const data = await Cart.add(items);
       await flight;
@@ -624,7 +651,6 @@ class ProductForm extends HTMLElement {
       Cart.holdCount = false;
       rollCount(Cart.pendingCount ?? before.count);
       Cart.pendingCount = null;
-      celebrate(button);
       announce(BTS.strings?.added || 'Added');
       this.dispatchEvent(new CustomEvent('cart:added', { bubbles: true, detail: { items } }));
       // on the bag page itself the page simply refreshes to show the new line and the lit step
@@ -639,7 +665,9 @@ class ProductForm extends HTMLElement {
         AddedCard.show({ name: label || line?.product_title || name, thumb: thumb || line?.image, tint, before, packs: stack });
       }
     } catch (err) {
-      await flight;
+      Cart.onAdded = null;
+      // the pack goes back to where it came from: nothing is shown landing in the bag
+      await (flight.abort ? flight.abort() : flight);
       Cart.holdRender = null;
       Cart.holdCount = false;
       if (Cart.pendingCount != null) { rollCount(Cart.pendingCount); Cart.pendingCount = null; }
@@ -884,4 +912,35 @@ window.addEventListener('pagereveal', (e) => {
   };
   document.addEventListener('touchend', end);
   document.addEventListener('touchcancel', end);
+}
+
+/* ---------- Motion fixes (demo) ---------- */
+{
+  const idle = (fn) => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 1200));
+  const loaded = (fn) => (document.readyState === 'complete' ? fn() : addEventListener('load', fn, { once: true }));
+
+  // Home: the sections after "Four steps" rise in as they are reached. Only sections still below the screen
+  // are prepared, so nothing already visible is hidden; the motion is a one-off animation, so no transform is left
+  // behind. Reduced motion, or no IntersectionObserver: the page is as it was.
+  if (document.body.classList.contains('template-index') && !reduceMotion() && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      e.target.classList.add('is-risen');
+      e.target.addEventListener('animationend', (ev) => { if (ev.target === e.target) e.target.classList.remove('rise', 'is-risen'); });
+    }), { rootMargin: '0px 0px -14% 0px' });
+    $$('#main > .shopify-section').forEach((sec) => {
+      if (sec.querySelector('.hh, .dayline') || sec.getBoundingClientRect().top < innerHeight) return;
+      sec.classList.add('rise');
+      io.observe(sec);
+    });
+  }
+
+  // Menus: their pictures are fetched once the page is idle, so the first opening never shows empty tiles.
+  loaded(() => idle(() => $$('.shopify-section-group-header-group img[loading="lazy"]').forEach((img) => { img.loading = 'eager'; })));
+
+  // Product pages: the other steps' pages are fetched ahead, so 01–04 switch without a wait.
+  loaded(() => idle(() => $$('.pdp-tabs__link[href]:not([aria-current])').forEach((a) => {
+    const l = document.createElement('link'); l.rel = 'prefetch'; l.as = 'document'; l.href = a.href; document.head.appendChild(l);
+  })));
 }

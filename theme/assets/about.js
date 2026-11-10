@@ -28,6 +28,11 @@ const fitArc = (svg) => {
   svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
   svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
   svg.querySelectorAll('path').forEach((pa) => pa.setAttribute('d', `M0 ${h} Q${w / 2} ${-h} ${w} ${h}`));
+  // The dot moves evenly left to right; the trail is drawn by distance along the curve. This table gives the share of
+  // the curve's length that lies before each position, so the trail always ends exactly under the dot.
+  const N = 120, len = [0];
+  for (let i = 1; i <= N; i++) { const a = (i - 1) / N, b = i / N; len.push(len[i - 1] + Math.hypot(w * (b - a), h * ((1 - 2 * b) ** 2 - (1 - 2 * a) ** 2))); }
+  svg.btsLen = (p) => { const x = Math.min(1, Math.max(0, p)) * N, i = Math.min(N - 1, Math.floor(x)); return (len[i] + (len[i + 1] - len[i]) * (x - i)) / len[N]; };
 };
 
 const init = (root) => {
@@ -70,7 +75,7 @@ const init = (root) => {
       beats.forEach((b, i) => b.classList.toggle('is-on', i === beat));
       if (more) more.tabIndex = beat === 1 ? 0 : -1;
       marks.forEach((m) => m.classList.toggle('is-on', t >= Number(m.dataset.at)));
-      if (trail) trail.style.strokeDashoffset = (1 - p).toFixed(4);
+      if (trail) trail.style.strokeDashoffset = (1 - (trail.ownerSVGElement.btsLen ? trail.ownerSVGElement.btsLen(p) : p)).toFixed(4);
       // The clock counts in five-minute steps; its line changes with the part of the day.
       const mins = Math.round((t * 60) / 5) * 5, hh = (6 + Math.floor(mins / 60)) % 24, mm = mins % 60;
       const hhmm = String(hh).padStart(2, '0') + String(mm).padStart(2, '0');

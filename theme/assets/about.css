@@ -11,7 +11,7 @@
   --s: clamp(170px, 30vw, 440px);
   position: relative; margin-block-start: calc(-1 * var(--header-h)); color: var(--c-ink);
 }
-.ab-sky.is-live { block-size: 280svh; }
+.ab-sky.is-live { block-size: 220svh; }
 .ab-sky__stage { position: relative; overflow: clip; isolation: isolate; min-block-size: 100svh; background: var(--sky); transition: color .5s; }
 .ab-sky.is-live .ab-sky__stage { position: sticky; inset-block-start: 0; block-size: 100svh; min-block-size: 0; }
 .ab-sky[data-dark] .ab-sky__stage { color: #ffffff; }
@@ -47,9 +47,10 @@
 .ab-sky__title .w { display: inline-block; overflow: hidden; vertical-align: top; padding-block: .14em .24em; margin-block: -.14em -.24em; }
 .ab-sky__title .w > span { display: inline-block; }
 @media (prefers-reduced-motion: no-preference) {
-  .js .ab-sky__title .w > span { translate: 0 108%; animation: ab-word .9s cubic-bezier(.2, .75, .2, 1) calc(.1s + var(--i) * .08s) forwards; }
+  /* readable on the very first frame (as on the home page, DECISIONS 281): each word only settles upward a little */
+  .js .ab-sky__title .w > span { animation: ab-word .9s cubic-bezier(.2, .75, .2, 1) calc(var(--i) * .06s) both; }
 }
-@keyframes ab-word { to { translate: 0 0; } }
+@keyframes ab-word { from { translate: 0 .14em; } }
 :lang(ar) .ab-sky__title { text-transform: none; line-height: 1.15; letter-spacing: 0; font-size: clamp(56px, min(9vw, 14svh), 170px); max-inline-size: none; }
 .ab-sky__beats { display: grid; list-style: none; margin: clamp(26px, 4.6svh, 48px) 0 0; padding: 0; max-inline-size: 30ch; }
 :lang(ar) .ab-sky__beats { margin-block-start: clamp(30px, 5.4svh, 56px); }
@@ -106,7 +107,7 @@
 
 @media (max-width: 749px) {
   .ab-sky { --s: clamp(170px, 54vw, 260px); --db: calc(var(--dock-h, 0px) + 40px); --dh: clamp(110px, 19svh, 160px); }
-  .ab-sky.is-live { block-size: 255svh; }
+  .ab-sky.is-live { block-size: 215svh; }
   /* Phones keep the full-width header bar, so the sky sits under it rather than behind it. */
   .ab-sky { margin-block-start: 0; }
   .ab-sky.is-live .ab-sky__stage { inset-block-start: var(--header-h); block-size: calc(100svh - var(--header-h)); }

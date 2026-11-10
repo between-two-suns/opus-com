@@ -1447,3 +1447,34 @@ p, li, dd, figcaption, .t-lead, .t-small { text-wrap: pretty; }
   .footer__cols > .footer__col:nth-child(2) { grid-column: 1 / -1; order: 3; }
   .footer__cols > .footer__col:nth-child(2) ul { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
 }
+
+/* ---------- Motion fixes (demo) ---------- */
+/* Home sections rise in as they are reached (set and cleared by theme.js; without it nothing is hidden) */
+.rise { opacity: 0; }
+.rise.is-risen { opacity: 1; animation: rise-in 900ms cubic-bezier(.2, .75, .2, 1) both; }
+@keyframes rise-in { from { opacity: 0; transform: translateY(36px); } to { opacity: 1; transform: none; } }
+
+/* Product pages on laptop: the "Added" card sits over the photo, not over the product's name and options */
+@media (min-width: 990px) {
+  .template-product .added { inset-block: auto 24px; inset-inline: max(var(--gutter), calc((100vw - 1240px) / 2)) auto; justify-content: flex-start; }
+  .template-product .added__card { transform-origin: bottom left; }
+  [dir='rtl'] .template-product .added__card { transform-origin: bottom right; }
+  .template-product .added.is-in .added__card { animation-name: added-rise; }
+  .template-product .added.is-out .added__card { animation-name: added-sink; }
+}
+@keyframes added-rise { from { transform: translateY(18px) scale(.96); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes added-sink { to { transform: translateY(14px) scale(.97); opacity: 0; } }
+
+/* Welcome offer on phones: a slim tab above the dock; a tap opens the full card */
+@media (max-width: 749px) {
+  .welcome.is-mini .welcome__card { inline-size: auto; max-inline-size: 100%; padding: 0; border-radius: 999px; }
+  .welcome.is-mini .welcome__card::before, .welcome.is-mini .welcome__mark { display: none; }
+  .welcome.is-mini .welcome__form { display: block; }
+  .welcome.is-mini .welcome__form > :not(.welcome__title) { display: none; }
+  .welcome.is-mini .welcome__title { display: flex; align-items: center; gap: 10px; min-block-size: 48px; padding-block: 0; padding-inline: 20px 52px; font-size: 17px; line-height: 1; white-space: nowrap; cursor: pointer; }
+  .welcome.is-mini .welcome__title::after { content: ''; inline-size: 7px; block-size: 7px; border-block-start: 2px solid currentColor; border-inline-end: 2px solid currentColor; rotate: 45deg; opacity: .7; }
+  [dir='rtl'] .welcome.is-mini .welcome__title::after { rotate: -135deg; }
+  .welcome.is-mini .welcome__close { inset-block-start: 2px; inset-inline-end: 4px; }
+  :lang(ar) .welcome.is-mini .welcome__title { font-size: 16px; }
+  body:has(.welcome.is-mini:not([hidden])) .wa-fab { opacity: 1; pointer-events: auto; }
+}

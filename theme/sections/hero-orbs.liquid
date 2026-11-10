@@ -211,6 +211,7 @@
   const fades = [row, hero.querySelector('.hh-foot'), hero.querySelector('.hh-sub'), fly].filter(Boolean);
   const dl = document.querySelector('.dayline'), track = dl && dl.querySelector('.dayline__track'), dstage = dl && dl.querySelector('.dayline__stage');
   const anchor = dl && dl.querySelector('.dayline__step[data-index="0"] .dayline__bottle'), dimg = anchor && anchor.querySelector('img');
+  const dhead = dl && dl.querySelector('.dayline__head'), small = matchMedia('(max-width: 760px)');
   if (matchMedia('(prefers-reduced-motion: reduce)').matches || !fly || !slot || !dimg || getComputedStyle(dstage).position !== 'sticky') return;
   // where the bottle is inside the flying picture (transparent margins), as fractions of its width and height
   const V = [.2514, .0462, .6921, .9495];
@@ -259,6 +260,8 @@
       else fly.style.visibility = '';
     }
     const f = clamp(1 - P * 5).toFixed(3); fades.forEach((el) => put(el, '--f', f));
+    // phones: the flying cleanser crosses the next section's heading, so the heading comes in as the bottle lands
+    if (dhead) put(dhead, 'opacity', small.matches && P < 1 ? clamp((P - .82) / .18).toFixed(3) : '');
     // the suns roll off: each turns by the distance it travels (angle = distance / radius)
     const o = io(clamp(P / .7)) * G.W * .75, turn = o / G.r * 180 / Math.PI;
     put(orbL, 'transform', o ? `translate3d(${(-o).toFixed(1)}px, 0, 0)` : ''); put(orbR, 'transform', o ? `translate3d(${o.toFixed(1)}px, 0, 0)` : '');

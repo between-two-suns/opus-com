@@ -50,7 +50,25 @@ class WelcomeOffer extends HTMLElement {
     if (store.get()) return;
     if (this.busy()) { setTimeout(() => this.tryShow(), 8000); return; }
     store.set('seen');
+    // phones: a slim tab above the dock (the full card covered close to half the screen); a tap opens the card
+    if (matchMedia('(max-width: 749px)').matches) this.mini();
     this.open();
+  }
+
+  mini() {
+    const title = this.querySelector('.welcome__title');
+    if (!title) return;
+    this.classList.add('is-mini');
+    title.setAttribute('role', 'button'); title.tabIndex = 0;
+    const grow = (e) => {
+      if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      this.classList.remove('is-mini');
+      title.removeAttribute('role'); title.removeAttribute('tabindex');
+      title.removeEventListener('click', grow); title.removeEventListener('keydown', grow);
+      this.querySelector('#WelcomeEmail')?.focus({ preventScroll: true });
+    };
+    title.addEventListener('click', grow); title.addEventListener('keydown', grow);
   }
 
   open() {
