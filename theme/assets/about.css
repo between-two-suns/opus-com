@@ -253,3 +253,20 @@
 @media (prefers-reduced-motion: reduce) {
   .ab-rt__photo, .ab-rt__pill, .ab-rt__step { transition: none; }
 }
+
+/* ---------- Motion fixes (demo): the sky uses the whole screen ---------- */
+/* Laptop: the clock is the second headline, large on the far side from the title; the suns and the arc are bigger. */
+@media (min-width: 990px) {
+  .ab-sky { --s: clamp(320px, 42vw, 640px); --dh: clamp(170px, 30svh, 300px); }
+  .ab-sky__clock { inset-inline: auto 0; inset-block-end: calc(100% + 1svh); justify-items: end; text-align: end; }
+  .ab-sky__time { font-size: clamp(120px, min(17vw, 30svh), 300px); }
+  .ab-sky__now { font-size: 14px; letter-spacing: .22em; }
+  :lang(ar) .ab-sky__now { font-size: 16px; letter-spacing: 0; }
+}
+/* Phones: a lower arc, a smaller sun and tighter copy, so the lines never sit on the arc, the dot or the sun's face. */
+@media (max-width: 749px) {
+  .ab-sky { --dh: clamp(84px, 13.5svh, 112px); --s: clamp(150px, 46vw, 220px); }
+  .ab-sky__title { font-size: min(22vw, 14svh); }
+  .ab-sky__beat { font-size: 17px; }
+  .ab-sky__more { margin-block-start: 4px; min-block-size: 40px; font-size: 14px; }
+}
