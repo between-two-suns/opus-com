@@ -268,5 +268,7 @@
   .ab-sky { --dh: clamp(84px, 13.5svh, 112px); --s: clamp(150px, 46vw, 220px); }
   .ab-sky__title { font-size: min(22vw, 14svh); }
   .ab-sky__beat { font-size: 17px; }
+  .ab-sky__beats { margin-block-start: 12px; }
+  :lang(ar) .ab-sky__beats { margin-block-start: 16px; }
   .ab-sky__more { margin-block-start: 4px; min-block-size: 40px; font-size: 14px; }
 }
