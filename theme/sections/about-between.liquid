@@ -1,0 +1,218 @@
+{%- comment -%}
+  About hero prototype C · "Between" (demo only, /pages/about?view=between).
+  The two suns are drawn live (WebGL): real spheres with the home page's surfaces, lit by a light that moves, so they
+  have a day side, a night side and dew that glints. The scroll is a journey from one sun to the other:
+    1. Today's sun fills half the screen, fully lit. The name.
+    2. We pull away into the space between; the light swings round, the sky goes to dusk.
+    3. Midnight: both suns are thin lit crescents facing each other on an ink sky: the brand mark )( made of light,
+       with the packs standing between them (the sunscreen dimmed: nights take three).
+    4. Tomorrow's sun grows to fill the other half, fully lit, and the sky is white again.
+  The scroll is smoothed (the picture glides to where you scrolled; a flick can't make it jump). No clock.
+  No WebGL or reduced motion: one still screen (the first picture, with every line). Prototype: English only.
+{%- endcomment -%}
+<style>
+.ab { --sky: #fff; position: relative; margin-block-start: calc(-1 * var(--header-h)); color: var(--c-ink); }
+.ab.is-live { block-size: 235svh; }
+.ab-stage { position: relative; min-block-size: 100svh; overflow: clip; isolation: isolate; background: var(--sky); transition: color .5s; }
+.ab.is-live .ab-stage { position: sticky; inset-block-start: 0; block-size: 100svh; min-block-size: 0; }
+.ab[data-dark] .ab-stage { color: #fff; }
+.ab-gl { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; z-index: -2; display: none; }
+.ab.is-live .ab-gl { display: block; }
+.ab-still { position: absolute; z-index: -2; inset-inline-start: -30svh; inset-block-start: 8svh; inline-size: 110svh; block-size: 110svh; object-fit: contain; }
+.ab.is-live .ab-still { display: none; }
+.ab-scene { position: absolute; margin: 0; pointer-events: none; opacity: 0; translate: 0 22px; transition: opacity .6s ease, translate .8s cubic-bezier(.2, .75, .2, 1); }
+.ab-scene.is-on { opacity: 1; translate: 0 0; pointer-events: auto; }
+.ab:not(.is-live) .ab-scene { position: relative; opacity: 1; translate: none; inset: auto; padding: 24px var(--gutter) 0 46%; text-align: start; }
+.ab:not(.is-live) .ab-scene--1 { padding-block-start: calc(var(--header-h) + 8svh); }
+.ab-eyebrow { margin: 0 0 14px; font-size: 12px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
+.ab-big { margin: 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .9; letter-spacing: -.005em; padding-block-end: .1em; text-wrap: balance; }
+.ab-sub { margin: clamp(10px, 2svh, 22px) 0 0; font-size: clamp(17px, 1.5vw, 23px); line-height: 1.34; font-weight: 520; letter-spacing: -.01em; max-inline-size: 30ch; text-wrap: balance; }
+.ab-scene--1 { inset-inline-start: 50%; inset-inline-end: var(--gutter); inset-block-start: calc(var(--header-h) + 11svh); }
+.ab-scene--1 .ab-big { font-size: clamp(72px, min(10.4vw, 21svh), 240px); }
+.ab-scene--2, .ab-scene--3 { inset-inline: var(--gutter); inset-block-start: calc(var(--header-h) + 5svh); text-align: center; display: grid; justify-items: center; }
+.ab-scene--2 .ab-big, .ab-scene--3 .ab-big { font-size: clamp(44px, min(6.4vw, 12svh), 132px); max-inline-size: 14ch; }
+.ab-scene--4 { inset-inline-start: var(--gutter); inset-inline-end: 52%; inset-block-start: calc(var(--header-h) + 11svh); }
+.ab-scene--4 .ab-big { font-size: clamp(48px, min(6.6vw, 13svh), 150px); }
+/* the packs, in the space between */
+.ab-packs { position: absolute; inset-inline: 0; inset-block-end: 12svh; block-size: clamp(170px, 31svh, 380px); margin: 0; padding: 0; list-style: none; display: flex; justify-content: center; align-items: flex-end; gap: clamp(6px, 1.2vw, 20px); pointer-events: none;
+  opacity: var(--po, 0); translate: var(--px, 0) calc((1 - var(--po, 0)) * 40px); will-change: transform, opacity; }
+.ab-pack { block-size: calc(var(--h) * 100%); aspect-ratio: 357 / 1100; transition: opacity .8s ease; }
+.ab-pack img { display: block; inline-size: 100%; block-size: 100%; object-fit: contain; object-position: bottom;
+  filter: brightness(calc(1 - var(--n, 0) * .34)) drop-shadow(calc(var(--n, 0) * -5px) 0 calc(var(--n, 0) * 7px) rgb(171 208 182 / .5)) drop-shadow(calc(var(--n, 0) * 5px) 0 calc(var(--n, 0) * 7px) rgb(171 193 233 / .55)) drop-shadow(0 16px 16px rgb(20 22 40 / .22)); }
+.ab[data-night] .ab-pack--spf { opacity: .22; }
+.ab-hint { position: absolute; inset-inline: 0; inset-block-end: calc(var(--dock-h, 0px) + 20px); margin: 0; display: none; justify-content: center; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: var(--ho, .75); pointer-events: none; }
+.ab.is-live .ab-hint { display: flex; }
+.ab-hint i { inline-size: 1.5px; block-size: 30px; background: currentColor; transform-origin: top; animation: ab-hint 1.8s ease-in-out infinite; }
+@keyframes ab-hint { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+@media (max-width: 749px) {
+  .ab { margin-block-start: 0; }
+  .ab.is-live .ab-stage { inset-block-start: var(--header-h); block-size: calc(100svh - var(--header-h)); }
+  .ab-scene--1, .ab-scene--2, .ab-scene--3, .ab-scene--4 { inset-inline: 18px; inset-block-start: clamp(22px, 5svh, 48px); text-align: center; display: grid; justify-items: center; }
+  .ab-scene--1 .ab-big { font-size: min(21vw, 14svh); }
+  .ab-scene--2 .ab-big, .ab-scene--3 .ab-big, .ab-scene--4 .ab-big { font-size: min(12.5vw, 8.4svh); max-inline-size: 12ch; }
+  .ab-sub { font-size: 16px; max-inline-size: 26ch; }
+  .ab-packs { block-size: min(25svh, 52vw); inset-block-end: calc(var(--dock-h, 0px) + 5svh); gap: 5px; }
+  .ab:not(.is-live) .ab-scene { padding-inline: 18px; text-align: center; }
+  .ab-hint { display: none !important; }
+}
+</style>
+<section class="ab" data-ab aria-labelledby="AbTitle-{{ section.id }}">
+  <div class="ab-stage">
+    <canvas class="ab-gl" aria-hidden="true" data-green="{{ 'orb-green-1200.webp' | asset_url }}" data-blue="{{ 'orb-blue-1200.webp' | asset_url }}" data-green-drops="{{ 'orb-green-drops.webp' | asset_url }}" data-blue-drops="{{ 'orb-blue-drops.webp' | asset_url }}"></canvas>
+    <img class="ab-still" src="{{ 'orb-green-1200.webp' | asset_url }}" alt="" width="1200" height="1200">
+    <div class="ab-scene ab-scene--1 is-on">
+      <p class="ab-eyebrow">About</p>
+      <h1 class="ab-big" id="AbTitle-{{ section.id }}">Between two suns</h1>
+      <p class="ab-sub">Today’s sun, and tomorrow’s.</p>
+    </div>
+    <div class="ab-scene ab-scene--2">
+      <p class="ab-big">A whole day happens to your skin</p>
+      <p class="ab-sub">The commute, the office air, the afternoon heat.</p>
+    </div>
+    <div class="ab-scene ab-scene--3">
+      <p class="ab-big">Then the night</p>
+      <p class="ab-sub">And the second half of the routine. Three steps; the sunscreen waits.</p>
+    </div>
+    <div class="ab-scene ab-scene--4">
+      <p class="ab-big">That space between is what we make skincare for</p>
+    </div>
+    <ul class="ab-packs" role="list" aria-hidden="true">
+      <li class="ab-pack" style="--h: 1"><img src="{{ 'cut-daily-reset-cleanser.webp' | asset_url }}" alt=""></li>
+      <li class="ab-pack" style="--h: .65"><img src="{{ 'cut-clarity-serum.webp' | asset_url }}" alt=""></li>
+      <li class="ab-pack" style="--h: .81"><img src="{{ 'cut-daily-barrier-moisturizing-cream.webp' | asset_url }}" alt=""></li>
+      <li class="ab-pack ab-pack--spf" style="--h: .81"><img src="{{ 'cut-daily-defense-sunscreen-spf-50.webp' | asset_url }}" alt=""></li>
+    </ul>
+    <p class="ab-hint" aria-hidden="true">Scroll<i></i></p>
+  </div>
+</section>
+<script>
+(() => {
+  const el = document.currentScript.previousElementSibling; if (!el || !el.matches('[data-ab]')) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cv = el.querySelector('.ab-gl'), gl = cv.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'high-performance' });
+  if (!gl) return;
+  const VS = 'attribute vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }';
+  const FS = `precision highp float;
+uniform vec2 uRes; uniform vec3 uSky; uniform float uNight, uTime, uDay;
+uniform vec3 uS0, uS1;          // centre x, centre y, radius (px)
+uniform vec3 uL0, uL1;          // light direction
+uniform float uRot0, uRot1;
+uniform sampler2D uT0, uT1, uD0, uD1;
+float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+float lum(vec3 c){ return dot(c, vec3(.299, .587, .114)); }
+vec4 ball(vec2 px, vec3 S, vec3 L, float rot, sampler2D T, sampler2D D, vec3 glow, out float halo){
+  vec2 d = (px - S.xy) / S.z; float r = length(d); halo = 0.;
+  float lit0 = clamp(L.z * .5 + .5, 0., 1.);
+  if (r > 1.) { float side = clamp(dot(normalize(d), normalize(L.xy + 1e-4)) * .5 + .5, 0., 1.); halo = exp(-(r - 1.) * 5.5) * mix(side * side * (1. - lit0 * .4) + .12, .55, lit0) ; return vec4(0.); }
+  float z = sqrt(1. - r * r); vec3 n = vec3(d.x, -d.y, z);
+  float c = cos(rot), s = sin(rot); vec2 q = mat2(c, -s, s, c) * d * .985;
+  vec2 uv = q * .5 + .5; vec3 alb = texture2D(T, uv).rgb;
+  // the surface's own grain catches the light where it grazes
+  float e = 1.5 / 1200.; float hx = lum(texture2D(T, uv + vec2(e, 0.)).rgb) - lum(texture2D(T, uv - vec2(e, 0.)).rgb); float hy = lum(texture2D(T, uv + vec2(0., e)).rgb) - lum(texture2D(T, uv - vec2(0., e)).rgb);
+  vec2 g = mat2(c, s, -s, c) * vec2(hx, hy);
+  vec3 nb = normalize(n + vec3(-g.x, g.y, 0.) * 3.2);
+  float nl = dot(nb, L);
+  // (the true surface decides where night begins, so no grain lights up on the dark side)
+  float diff = smoothstep(-.12, .62, nl) * smoothstep(-.3, .08, dot(n, L));
+  vec3 shade = alb * mix(vec3(.085, .095, .16), vec3(.74, .76, .82), uDay);
+  vec3 lit = alb * (1.04 + .1 * z);
+  vec3 col = mix(shade, lit, diff);
+  float drop = texture2D(D, uv).a; drop = max(drop, texture2D(D, uv).r * step(.5, texture2D(D, uv).a));
+  vec3 h = normalize(L + vec3(0., 0., 1.)); float sp = pow(max(dot(nb, h), 0.), 70.);
+  col += sp * (.1 + 1.3 * drop) * diff;
+  col += pow(1. - z, 3.) * diff * .22;                                   // lit rim
+  col += glow * pow(1. - z, 5.) * (1. - diff) * .18 * (1. - uDay);       // a breath of colour on the night side's edge
+  float a = smoothstep(1., 1. - 2.2 / S.z, r);
+  return vec4(col, a);
+}
+void main(){
+  vec2 px = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y);
+  vec3 col = uSky;
+  // stars
+  vec2 gp = px / 46.; vec2 id = floor(gp); float st = hash(id); vec2 sp = fract(gp) - .5 - (vec2(hash(id + 3.1), hash(id + 7.7)) - .5) * .7;
+  float star = smoothstep(.055, 0., length(sp)) * step(.86, st) * (.55 + .45 * sin(uTime * 1.3 + st * 40.));
+  col += star * uNight * .9;
+  float h0, h1;
+  vec4 b0 = ball(px, uS0, uL0, uRot0, uT0, uD0, vec3(.67, .82, .71), h0);
+  vec4 b1 = ball(px, uS1, uL1, uRot1, uT1, uD1, vec3(.67, .76, .91), h1);
+  col += vec3(.67, .82, .71) * h0 * mix(.5, .16, uDay) * (1. - uDay * .5);
+  col += vec3(.67, .76, .91) * h1 * mix(.5, .16, uDay) * (1. - uDay * .5);
+  col = mix(col, b0.rgb, b0.a); col = mix(col, b1.rgb, b1.a);
+  col += (hash(px + fract(uTime) * 91.7) - .5) * .022;
+  gl_FragColor = vec4(col, 1.);
+}`;
+  const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) { console.warn('about-between shader', gl.getShaderInfoLog(o)); return null; } return o; };
+  const vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS); if (!vs || !fs) return;
+  const pr = gl.createProgram(); gl.attachShader(pr, vs); gl.attachShader(pr, fs); gl.linkProgram(pr); if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return; gl.useProgram(pr);
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = {}; ['uRes', 'uSky', 'uNight', 'uTime', 'uDay', 'uS0', 'uS1', 'uL0', 'uL1', 'uRot0', 'uRot1', 'uT0', 'uT1', 'uD0', 'uD1'].forEach((k) => { U[k] = gl.getUniformLocation(pr, k); });
+  let pending = 4;
+  const tex = (unit, url, name) => {
+    const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([180, 200, 200, 0]));
+    const im = new Image(); im.crossOrigin = 'anonymous';
+    im.onload = () => { gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      if (!--pending) go(); };
+    im.onerror = () => { if (!--pending) go(); };
+    im.src = url; gl.uniform1i(U[name], unit);
+  };
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const io = (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+  const mix = (a, b, k) => a + (b - a) * k;
+  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
+  const SKY = [[0, '#ffffff'], [.16, '#ffffff'], [.3, '#ecdfef'], [.4, '#4f4a74'], [.47, '#1b1e34'], [.56, '#1b1e34'], [.66, '#445d6a'], [.78, '#d8eae3'], [.88, '#ffffff'], [1, '#ffffff']].map(([t, h]) => [t, hex(h)]);
+  const sky = (p) => { let i = 1; while (i < SKY.length - 1 && p > SKY[i][0]) i++; const [t0, a] = SKY[i - 1], [t1, b] = SKY[i], k = clamp((p - t0) / (t1 - t0)); return a.map((v, j) => mix(v, b[j], k)); };
+  const stage = el.querySelector('.ab-stage'), scenes = [...el.querySelectorAll('.ab-scene')], packs = el.querySelector('.ab-packs');
+  let W = 0, H = 0, dpr = 1, K = null;
+  const size = () => {
+    dpr = Math.min(devicePixelRatio || 1, innerWidth < 750 ? 2 : 1.5);
+    W = stage.clientWidth; H = stage.clientHeight; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); gl.viewport(0, 0, cv.width, cv.height);
+    const phone = W < 750, Rm = phone ? Math.min(W * .3, H * .2) : Math.min(H * .33, W * .2);
+    // today's sun: near and full → a crescent beside the space between → gone
+    K = phone
+      ? { a: [W * .5, H * 1.02, H * .62], m: [W / 2 - Rm * 1.6, H * .43, Rm], z: [-Rm * 1.4, H * .3, Rm * .7], Rm }
+      : { a: [W * .17, H * .56, H * .98], m: [W / 2 - Rm * 1.75, H * .56, Rm], z: [-Rm * 1.6, H * .5, Rm * .7], Rm };
+    if (!phone) packs.style.insetBlockEnd = Math.max(0, H - (K.m[1] + Rm * 1.02)) + 'px';
+  };
+  const path = (p) => { const k = p < .5 ? io(p / .5) : io((p - .5) / .5), a = p < .5 ? K.a : K.m, b = p < .5 ? K.m : K.z; return [mix(a[0], b[0], k), mix(a[1], b[1], k), mix(a[2], b[2], k)]; };
+  // where the light on today's sun comes from: the front (full) → round the far side (a crescent toward the space between) → behind (dark)
+  const lightA = (p) => { const th = (p < .5 ? mix(18, 118, io(p / .5)) : mix(118, 158, io((p - .5) / .5))) * Math.PI / 180; const v = [Math.sin(th), .22, Math.cos(th)], n = Math.hypot(...v); return v.map((x) => x / n); };
+  let p = 0, target = 0, on = false, raf = 0, t0 = performance.now(), scene = 0;
+  const read = () => { const r = el.getBoundingClientRect(), run = r.height - innerHeight; target = run > 0 ? clamp(-r.top / run) : 0; };
+  const frame = (now) => {
+    raf = 0; read();
+    p += (target - p) * .085; if (Math.abs(target - p) < .0004) p = target;
+    const c = sky(p), L = c[0] * .2126 + c[1] * .7152 + c[2] * .0722, night = clamp((.6 - L) / .45);
+    const A = path(p), B0 = path(1 - p), B = [W - B0[0], B0[1], B0[2]], la = lightA(p), lb0 = lightA(1 - p), lb = [-lb0[0], lb0[1], lb0[2]];
+    gl.uniform2f(U.uRes, cv.width, cv.height); gl.uniform3f(U.uSky, c[0], c[1], c[2]); gl.uniform1f(U.uNight, night); gl.uniform1f(U.uDay, clamp((L - .2) / .7)); gl.uniform1f(U.uTime, (now - t0) / 1000);
+    gl.uniform3f(U.uS0, A[0] * dpr, A[1] * dpr, A[2] * dpr); gl.uniform3f(U.uS1, B[0] * dpr, B[1] * dpr, B[2] * dpr);
+    gl.uniform3f(U.uL0, la[0], la[1], la[2]); gl.uniform3f(U.uL1, lb[0], lb[1], lb[2]);
+    gl.uniform1f(U.uRot0, (A[0] - K.a[0]) / K.a[2] * 1.4 + (now - t0) / 60000); gl.uniform1f(U.uRot1, (B[0] - (W - K.a[0])) / K.a[2] * 1.4 - (now - t0) / 60000);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    stage.style.setProperty('--sky', `rgb(${c.map((v) => Math.round(v * 255)).join(',')})`);
+    el.toggleAttribute('data-dark', L < .5); el.toggleAttribute('data-night', p > .4 && p < .62);
+    const s = p < .18 ? 0 : p < .205 ? -1 : p < .41 ? 1 : p < .435 ? -1 : p < .64 ? 2 : p < .7 ? -1 : 3;
+    if (s !== scene) { scene = s; scenes.forEach((x, i) => x.classList.toggle('is-on', i === s)); }
+    const po = clamp((p - .24) / .12); packs.style.setProperty('--po', po.toFixed(3)); packs.style.setProperty('--n', night.toFixed(3));
+    packs.style.setProperty('--px', (W < 750 ? 0 : -io(clamp((p - .7) / .26)) * W * .24).toFixed(1) + 'px');
+    stage.style.setProperty('--ho', clamp(.75 - p * 12).toFixed(2));
+    if (on || Math.abs(target - p) > .0004) raf = requestAnimationFrame(frame);
+  };
+  const ask = () => { if (!raf) raf = requestAnimationFrame(frame); };
+  const go = () => {
+    el.classList.add('is-live'); size(); read(); p = target; ask();
+    new IntersectionObserver(([e]) => { on = e.isIntersecting; if (on) ask(); }).observe(el);
+    addEventListener('scroll', ask, { passive: true }); addEventListener('resize', () => { size(); ask(); });
+  };
+  tex(0, cv.dataset.green, 'uT0'); tex(1, cv.dataset.blue, 'uT1'); tex(2, cv.dataset.greenDrops, 'uD0'); tex(3, cv.dataset.blueDrops, 'uD1');
+})();
+</script>
+
+{% schema %}
+{
+  "name": "About · between (3D)",
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}
