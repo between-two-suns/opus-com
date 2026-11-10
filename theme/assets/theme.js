@@ -914,7 +914,7 @@ window.addEventListener('pagereveal', (e) => {
   document.addEventListener('touchcancel', end);
 }
 
-/* ---------- Motion fixes (demo) ---------- */
+/* ---------- Motion fixes (DECISIONS 290–291) ---------- */
 {
   const idle = (fn) => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 1200));
   const loaded = (fn) => (document.readyState === 'complete' ? fn() : addEventListener('load', fn, { once: true }));

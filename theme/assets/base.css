@@ -1448,7 +1448,11 @@ p, li, dd, figcaption, .t-lead, .t-small { text-wrap: pretty; }
   .footer__cols > .footer__col:nth-child(2) ul { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
 }
 
+<<<<<<< HEAD
 /* ---------- Motion fixes (demo) ---------- */
+=======
+/* ---------- Motion fixes (DECISIONS 290–291) ---------- */
+>>>>>>> opus-build
 /* Home sections rise in as they are reached (set and cleared by theme.js; without it nothing is hidden) */
 .rise { opacity: 0; }
 .rise.is-risen { opacity: 1; animation: rise-in 900ms cubic-bezier(.2, .75, .2, 1) both; }

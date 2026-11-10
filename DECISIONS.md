@@ -1255,3 +1255,5 @@ Each entry: decision · why · reversibility. Newest last.
     - Checked on the demo theme with a headless browser, 1440 and iPhone 13 sizes, English: failed add (simulated 422) returns the pack, trail-to-dot 0–1 px, welcome tab 48 px tall. Not checked: Arabic, Safari, real phones.
     - Not done: second taps during a throw and the instant price swap on the buy button (code-only remarks, not confirmed on screen).
 
+291. **Owner: "all the fixes are good except the about hero ... Push all the other fixes to staging except the about."** On staging now: the add-to-bag fixes, the home hand-off heading on phones, home sections rising in, the welcome tab on phones, menu pictures fetched early and product steps prefetched (4 files: assets/base.css, assets/theme.js, assets/welcome-offer.js, sections/hero-orbs.liquid). The About hero changes of 290 stay on the demo theme and branch `claude/motion-fixes-demo` only; staging's About is as it was. Owner on the About hero: the idea is good, the execution is not; too long, and the clock's numbers run too fast on laptop. Next: new concepts for it.
+
