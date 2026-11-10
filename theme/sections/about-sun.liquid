@@ -1,0 +1,178 @@
+{%- comment -%}
+  About hero prototype A · "Drag the sun" (demo only, /pages/about?view=sun).
+  One screen, nothing pinned. The four packs stand on a horizon; one sun crosses the sky. The visitor drags sideways
+  to move the sun (or it plays one day by itself when the page opens). The light is the interaction: the packs'
+  shadows swing and lengthen with the sun, the sky goes white → lilac → ink → mint. When today's sun has set the
+  sunscreen steps back and three packs stay: the night routine. Then tomorrow's sun rises and all four return.
+  The clock shows five fixed times only, each rolling once. Reduced motion: a still morning; dragging still works.
+  Prototype: English copy is written here, not yet in the locale files.
+{%- endcomment -%}
+<style>
+.as { --sky: #fff; --floor: #f3f4f6; --n: 0; position: relative; margin-block-start: calc(-1 * var(--header-h)); block-size: 100svh; min-block-size: 560px; overflow: clip; isolation: isolate;
+  background: var(--sky); color: var(--c-ink); touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: grab; }
+.as.is-drag { cursor: grabbing; }
+.as[data-dark] { color: #fff; }
+.as-stars { position: absolute; inset: 0 0 26% 0; z-index: -3; opacity: var(--n); pointer-events: none;
+  background-image: radial-gradient(1.4px 1.4px at 9% 24%, #fff 99%, transparent), radial-gradient(1px 1px at 21% 58%, #fff 99%, transparent), radial-gradient(1.6px 1.6px at 33% 14%, #fff 99%, transparent),
+    radial-gradient(1px 1px at 44% 40%, #fff 99%, transparent), radial-gradient(1.3px 1.3px at 57% 20%, #fff 99%, transparent), radial-gradient(1px 1px at 66% 52%, #fff 99%, transparent),
+    radial-gradient(1.5px 1.5px at 78% 12%, #fff 99%, transparent), radial-gradient(1px 1px at 88% 36%, #fff 99%, transparent), radial-gradient(1.2px 1.2px at 95% 62%, #fff 99%, transparent), radial-gradient(1px 1px at 4% 70%, #fff 99%, transparent); }
+/* the suns: the home page's spheres, each with a soft glow; they pass behind the floor */
+.as-sun { position: absolute; z-index: -2; left: 0; top: 0; inline-size: var(--sd); aspect-ratio: 1; will-change: transform; pointer-events: none; visibility: hidden; }
+.as.is-ready .as-sun { visibility: visible; }
+.as-sun::before { content: ''; position: absolute; inset: -55%; border-radius: 50%; background: radial-gradient(closest-side, rgb(var(--c) / .55), rgb(var(--c) / .16) 52%, transparent 74%); }
+.as-sun img { position: relative; display: block; inline-size: 100%; block-size: 100%; }
+.as-sun i { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 50% 30%, rgb(255 255 255 / .34), rgb(255 255 255 / .08) 30%, transparent 52%, rgb(30 40 55 / .16) 100%); }
+.as-sun--a { --c: 171 208 182; } .as-sun--b { --c: 171 193 233; }
+.as { --sd: clamp(190px, 34svh, 420px); }
+/* the floor: the sun sets behind it, the shadows fall on it */
+.as-floor { position: absolute; inset: auto 0 0 0; block-size: 26%; z-index: -1; background: var(--floor); }
+.as-floor::before { content: ''; position: absolute; inset: 0 0 auto 0; block-size: 1.5px; background: currentColor; opacity: .14; }
+.as-copy { position: relative; padding-block-start: calc(var(--header-h) + clamp(22px, 5svh, 56px)); padding-inline: var(--gutter); display: grid; justify-items: start; pointer-events: none; }
+.as-eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
+.as-eyebrow svg { block-size: 14px; inline-size: auto; }
+.as-title { margin: 12px 0 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .9; letter-spacing: -.005em; font-size: clamp(56px, min(8.4vw, 15svh), 170px); max-inline-size: 8.2ch; padding-block-end: .1em; }
+.as-lines { display: grid; margin: clamp(18px, 3svh, 32px) 0 0; padding: 0; list-style: none; max-inline-size: 27ch; }
+.as-lines li { grid-area: 1 / 1; font-size: clamp(17px, 1.5vw, 23px); line-height: 1.32; font-weight: 520; letter-spacing: -.01em; opacity: 0; translate: 0 10px; transition: opacity .55s ease, translate .65s cubic-bezier(.2, .75, .2, 1); text-wrap: pretty; }
+.as-lines li.is-on { opacity: 1; translate: 0 0; }
+/* the clock: five fixed times, each rolling once */
+.as-clock { position: absolute; inset-inline-end: var(--gutter); inset-block-start: calc(var(--header-h) + clamp(22px, 5svh, 56px)); display: grid; justify-items: end; gap: 6px; text-align: end; pointer-events: none; }
+.as-time { display: grid; overflow: hidden; font-family: var(--font-display); font-weight: 700; line-height: 1; font-size: clamp(54px, min(7vw, 13svh), 132px); font-variant-numeric: tabular-nums; direction: ltr; padding-block: .04em .1em; }
+.as-time span { grid-area: 1 / 1; transition: translate .7s cubic-bezier(.2, .75, .2, 1), opacity .5s ease; translate: 0 105%; opacity: 0; }
+.as-time span.is-on { translate: 0 0; opacity: 1; }
+.as-time span.is-off { translate: 0 -105%; opacity: 0; }
+.as-now { font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .82; min-block-size: 1.3em; }
+/* the packs stand a little below the horizon line, each with a cast shadow (the same picture, laid on the floor) */
+.as-packs { position: absolute; inset-inline: 0; inset-block-end: 13%; block-size: clamp(190px, 46svh, 520px); margin: 0; padding: 0; list-style: none; display: flex; justify-content: center; align-items: flex-end; gap: clamp(8px, 1.5vw, 26px); pointer-events: none; }
+@media (min-width: 750px) { .as-packs { padding-inline-start: 10vw; } }
+.as-pack { position: relative; block-size: calc(var(--h) * 100%); aspect-ratio: 357 / 1100; transition: opacity .8s ease, translate .9s cubic-bezier(.2, .75, .2, 1), filter .8s ease; }
+.as-pack img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: contain; object-position: bottom; }
+.as-pack .as-sh { transform-origin: 50% 100%; filter: brightness(0) blur(var(--blur, 5px)); opacity: var(--so, 0); will-change: transform, opacity; }
+.as-pack .as-im { animation: as-up 1s cubic-bezier(.2, .75, .2, 1) both; animation-delay: calc(.25s + var(--i) * .09s); }
+@keyframes as-up { from { opacity: 0; transform: translateY(40px); } }
+.as-pack .as-im { filter: brightness(calc(1 - var(--n) * .3)) saturate(calc(1 - var(--n) * .2)); }
+/* night: the sunscreen steps back; three steps stay */
+.as[data-night] .as-pack--spf { opacity: .16; translate: 0 10px; }
+.as-hint { position: absolute; inset-inline: 0; inset-block-end: calc(var(--dock-h, 0px) + clamp(14px, 3svh, 30px)); margin: 0; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; pointer-events: none; opacity: 0; transition: opacity .6s ease; }
+.as.is-idle .as-hint { opacity: .8; }
+.as-hint svg { inline-size: 34px; block-size: 12px; animation: as-nudge 1.8s ease-in-out infinite; }
+@keyframes as-nudge { 50% { transform: translateX(8px); } }
+.as-range { position: absolute; inline-size: 1px; block-size: 1px; opacity: 0; pointer-events: none; }
+.as-range:focus-visible ~ .as-hint { opacity: 1; outline: 2px solid currentColor; outline-offset: 6px; }
+@media (max-width: 749px) {
+  .as { margin-block-start: 0; block-size: calc(100svh - var(--header-h)); --sd: clamp(130px, 40vw, 210px); }
+  .as-copy { padding-block-start: clamp(18px, 3.4svh, 34px); }
+  .as-title { font-size: min(19vw, 11.5svh); }
+  .as-lines { max-inline-size: 30ch; margin-block-start: 12px; } .as-lines li { font-size: 15px; line-height: 1.3; }
+  .as-clock { inset-block-start: clamp(18px, 3.4svh, 34px); }
+  .as-time { font-size: min(13vw, 8svh); } .as-now { font-size: 11px; letter-spacing: .14em; max-inline-size: 12ch; }
+  .as-packs { block-size: min(30svh, 70vw); inset-block-end: calc(var(--dock-h, 0px) + 9%); gap: 6px; }
+  .as-floor { block-size: calc(var(--dock-h, 0px) + 20%); }
+  .as-stars { inset-block-end: calc(var(--dock-h, 0px) + 20%); }
+}
+@media (prefers-reduced-motion: reduce) { .as-pack .as-im, .as-hint svg { animation: none; } .as-lines li, .as-time span, .as-pack { transition: none; } }
+</style>
+<section class="as" data-as aria-labelledby="AsTitle-{{ section.id }}">
+  <span class="as-stars" aria-hidden="true"></span>
+  <span class="as-sun as-sun--a" aria-hidden="true"><img src="{{ 'orb-green-900.webp' | asset_url }}" alt="" width="900" height="900"><i></i></span>
+  <span class="as-sun as-sun--b" aria-hidden="true"><img src="{{ 'orb-blue-900.webp' | asset_url }}" alt="" width="900" height="900"><i></i></span>
+  <div class="as-floor" aria-hidden="true"></div>
+  <ul class="as-packs" role="list" aria-hidden="true">
+    <li class="as-pack" style="--h: 1; --i: 0"><img class="as-sh" src="{{ 'cut-daily-reset-cleanser.webp' | asset_url }}" alt=""><img class="as-im" src="{{ 'cut-daily-reset-cleanser.webp' | asset_url }}" alt=""></li>
+    <li class="as-pack" style="--h: .65; --i: 1"><img class="as-sh" src="{{ 'cut-clarity-serum.webp' | asset_url }}" alt=""><img class="as-im" src="{{ 'cut-clarity-serum.webp' | asset_url }}" alt=""></li>
+    <li class="as-pack" style="--h: .81; --i: 2"><img class="as-sh" src="{{ 'cut-daily-barrier-moisturizing-cream.webp' | asset_url }}" alt=""><img class="as-im" src="{{ 'cut-daily-barrier-moisturizing-cream.webp' | asset_url }}" alt=""></li>
+    <li class="as-pack as-pack--spf" style="--h: .81; --i: 3"><img class="as-sh" src="{{ 'cut-daily-defense-sunscreen-spf-50.webp' | asset_url }}" alt=""><img class="as-im" src="{{ 'cut-daily-defense-sunscreen-spf-50.webp' | asset_url }}" alt=""></li>
+  </ul>
+  <div class="as-copy">
+    <p class="as-eyebrow"><svg viewBox="0 0 501 547" aria-hidden="true" focusable="false"><path fill="currentColor" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/><path fill="currentColor" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>About</p>
+    <h1 class="as-title" id="AsTitle-{{ section.id }}">Between two suns</h1>
+    <ol class="as-lines" role="list">
+      <li class="is-on">Two suns: today’s, and tomorrow’s.</li>
+      <li>Between them, a whole day happens to your skin. The commute, the office air, the afternoon heat.</li>
+      <li>Then the night, and the second half of the routine. Three steps; the sunscreen waits.</li>
+      <li>That space between two days is what we make skincare for.</li>
+    </ol>
+  </div>
+  <div class="as-clock" aria-hidden="true">
+    <span class="as-time"><span class="is-on">06:00</span><span>13:00</span><span>18:00</span><span>22:00</span><span>06:00</span></span>
+    <span class="as-now" data-now>Today’s sun</span>
+  </div>
+  <input class="as-range" type="range" min="0" max="100" value="0" step="1" aria-label="Time of day: move the sun">
+  <p class="as-hint" aria-hidden="true"><svg viewBox="0 0 34 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h31M27 1l5 5-5 5"/></svg>Drag the sun</p>
+</section>
+<script>
+(() => {
+  const el = document.currentScript.previousElementSibling; if (!el || !el.matches('[data-as]')) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sunA = el.querySelector('.as-sun--a'), sunB = el.querySelector('.as-sun--b');
+  const packs = [...el.querySelectorAll('.as-pack')], lines = [...el.querySelectorAll('.as-lines li')];
+  const times = [...el.querySelectorAll('.as-time span')], nowEl = el.querySelector('[data-now]'), range = el.querySelector('.as-range');
+  const NOW = ['Today’s sun', 'Out in the day', 'Evening', 'Night · three steps', 'Tomorrow’s sun'];
+  // the day, 0–1: today's sun is up until DAY, then night, then tomorrow's sun rises from DAWN
+  const DAY = .54, DAWN = .84;
+  const STOPS = [[0, '#eef6f1'], [.06, '#ffffff'], [.36, '#ffffff'], [.46, '#efe3ef'], [.52, '#bca7c9'], [.58, '#3d3b5e'], [.64, '#22263d'], [.8, '#22263d'], [.87, '#4a6470'], [.94, '#d3e8e1'], [1, '#f1f8f4']]
+    .map(([t, h]) => [t, [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))]);
+  const sky = (t) => { let i = 1; while (i < STOPS.length - 1 && t > STOPS[i][0]) i++; const [t0, a] = STOPS[i - 1], [t1, b] = STOPS[i], k = Math.min(1, Math.max(0, (t - t0) / (t1 - t0))); return a.map((v, j) => v + (b[j] - v) * k); };
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  let G = null, t = 0, phase = -1, line = -1;
+  const measure = () => {
+    const r = el.getBoundingClientRect(), fl = el.querySelector('.as-floor').getBoundingClientRect(), row = el.querySelector('.as-packs').getBoundingClientRect();
+    const sd = sunA.offsetWidth;
+    G = { W: r.width, H: r.height, hor: fl.top - r.top, stand: row.bottom - r.top, sd, arc: Math.max(120, (fl.top - r.top) - sd * .62 - (innerWidth < 750 ? r.height * .2 : r.height * .12)),
+      p: packs.map((p) => { const b = p.getBoundingClientRect(); return { x: b.left - r.left + b.width / 2, h: b.height }; }), floorH: r.bottom - row.bottom + (row.bottom - fl.top) };
+  };
+  const place = (sun, x, y, on) => { sun.style.transform = `translate3d(${(x - G.sd / 2).toFixed(1)}px, ${(y - G.sd / 2).toFixed(1)}px, 0)`; sun.style.opacity = on ? 1 : 0; };
+  const render = () => {
+    if (!G) measure();
+    const c = sky(t), L = (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) / 255, dark = L < .5;
+    const fl = dark ? c.map((v) => v * .86) : c.map((v) => v + (32 - v) * .045);
+    el.style.setProperty('--sky', `rgb(${c.map(Math.round).join(',')})`); el.style.setProperty('--floor', `rgb(${fl.map(Math.round).join(',')})`);
+    const n = clamp((.62 - L) / .4); el.style.setProperty('--n', n.toFixed(3));
+    el.toggleAttribute('data-dark', dark); el.toggleAttribute('data-night', t > DAY - .02 && t < DAWN + .03);
+    // where the light is
+    let sx = 0, sy = G.hor + G.sd, up = false;
+    if (t <= DAY) { const u = t / DAY; sx = G.W * (.06 + .88 * u); sy = G.hor + G.sd * .32 - Math.sin(Math.PI * (.04 + .92 * u)) * G.arc; up = true; place(sunA, sx, sy, true); place(sunB, G.W * .94, G.hor + G.sd, false); }
+    else if (t >= DAWN) { const u = (t - DAWN) / (1 - DAWN); sx = G.W * (.94 - .2 * u); sy = G.hor + G.sd * .32 - Math.sin(Math.PI * (.04 + .34 * u)) * G.arc; up = true; place(sunB, sx, sy, true); place(sunA, G.W + G.sd, G.hor + G.sd, false); }
+    else { place(sunA, G.W * .94, G.hor + G.sd, false); place(sunB, G.W * .94, G.hor + G.sd, false); }
+    // each pack's shadow: away from the sun, long when it is low
+    const e = up ? clamp((G.hor - sy) / G.arc) : 0;
+    G.p.forEach((p, i) => {
+      const sh = packs[i].firstElementChild;
+      const len = Math.min(.2 + .5 * Math.pow(1 - e, 1.6), (G.floorH * .92) / p.h);
+      const ang = clamp(Math.atan2(p.x - sx, (G.stand - sy) + p.h * .35) * 180 / Math.PI * 1.15, -62, 62);
+      sh.style.transform = `skewX(${ang.toFixed(2)}deg) scaleY(${(-len).toFixed(3)})`;
+      sh.style.setProperty('--so', (up ? .3 * clamp(e * 5) * (1 - n) : 0).toFixed(3));
+      sh.style.setProperty('--blur', (3 + 7 * (1 - e)).toFixed(1) + 'px');
+    });
+    const ph = t < .1 ? 0 : t < .4 ? 1 : t < DAY ? 2 : t < DAWN ? 3 : 4;
+    if (ph !== phase) { times.forEach((s, i) => { s.classList.toggle('is-on', i === ph); s.classList.toggle('is-off', i < ph); }); nowEl.textContent = NOW[ph]; phase = ph; }
+    const ln = t < .1 ? 0 : t < DAY - .02 ? 1 : t < DAWN + .04 ? 2 : 3;
+    if (ln !== line) { lines.forEach((li, i) => li.classList.toggle('is-on', i === ln)); line = ln; }
+    range.value = Math.round(t * 100);
+  };
+  let raf = 0; const ask = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; render(); }); };
+  const set = (v) => { t = clamp(v); ask(); };
+  // one day plays by itself; any touch takes over
+  let play = 0;
+  const stop = () => { if (play) { cancelAnimationFrame(play); play = 0; } };
+  const run = (from, to, ms, done) => { stop(); let t0 = 0; const step = (now) => { if (!t0) t0 = now; const k = clamp((now - t0) / ms); set(from + (to - from) * k); if (k < 1) play = requestAnimationFrame(step); else { play = 0; done && done(); } }; play = requestAnimationFrame(step); };
+  const idle = () => el.classList.add('is-idle');
+  // dragging sideways moves the sun; up and down still scrolls the page
+  let x0 = null, tAt = 0;
+  el.addEventListener('pointerdown', (e) => { if (e.target.closest('a, button')) return; x0 = e.clientX; tAt = t; stop(); el.classList.add('is-drag'); el.classList.remove('is-idle'); try { el.setPointerCapture(e.pointerId); } catch (err) { /* older browsers */ } });
+  el.addEventListener('pointermove', (e) => { if (x0 == null) return; set(tAt + (e.clientX - x0) / (G.W * (G.W < 750 ? 1.5 : 1.15))); });
+  const end = () => { if (x0 == null) return; x0 = null; el.classList.remove('is-drag'); };
+  el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+  range.addEventListener('input', () => { stop(); set(range.value / 100); });
+  const re = () => { G = null; ask(); };
+  addEventListener('resize', re); if (window.ResizeObserver) new ResizeObserver(re).observe(el);
+  const start = () => { measure(); el.classList.add('is-ready'); if (reduce) { set(.2); idle(); } else { set(0); setTimeout(() => run(0, 1, 11500, idle), 900); } };
+  if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "About · drag the sun",
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}
