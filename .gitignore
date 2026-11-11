@@ -5,3 +5,4 @@ tools/qa/reports/tmp/
 *.log
 tools/qa/reports/
 _source/photos/
+tools/notifications/preview/
