@@ -1,0 +1,159 @@
+{%- comment -%}
+  About hero prototype F · "Between, hour by hour" (demo only, /pages/about?view=letters).
+  The name as a picture: the word BETWEEN stands between the two suns, and each of its seven letters is a window
+  onto one moment of the day between them, in the store's own photographs (the Climate page's day): 06:00 the
+  morning routine, 08:00 the first sun, 10:00 the commute, 13:00 office air, 16:00 the afternoon heat, 20:00 humid
+  evenings, 22:00 the night routine. Hover or tap a letter and it opens into its photograph with the hour and its
+  line; the other letters squeeze aside (they are elastic) and spring back. One screen, nothing pinned, no clock
+  running, bright. The letter shapes are the display face's own outlines (as masks), so they stretch cleanly.
+  Reduced motion: the same, without movement. Prototype: English only.
+{%- endcomment -%}
+<style>
+.al { --al-B: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 777 1760%27 preserveAspectRatio=%27none%27%3E%3Cpath transform=%27translate%28-132 1760%29 scale%281 -1%29%27 d=%27M132 0V1760H513Q646 1760 725.0 1719.5Q804 1679 839.5 1591.5Q875 1504 875 1362V1308Q875 1171 839.5 1082.5Q804 994 721 959Q790 936 831.5 876.5Q873 817 891.0 731.5Q909 646 909 544V499Q908 323 868.0 212.5Q828 102 743.0 51.0Q658 0 521 0ZM400 208H495Q548 208 579.5 231.5Q611 255 625.0 310.0Q639 365 639 460V602Q639 730 614.5 788.5Q590 847 513 847H400ZM400 1048H499Q534 1048 556.0 1058.0Q578 1068 590.0 1092.5Q602 1117 606.5 1161.0Q611 1205 611 1273V1379Q611 1450 598.0 1487.0Q585 1524 558.5 1537.0Q532 1550 490 1550H400Z%27/%3E%3C/svg%3E"); --al-E: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 602 1760%27 preserveAspectRatio=%27none%27%3E%3Cpath transform=%27translate%28-132 1760%29 scale%281 -1%29%27 d=%27M132 0V1760H722V1529H400V1017H706V791H400V231H734V0Z%27/%3E%3C/svg%3E"); --al-T: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 671 1760%27 preserveAspectRatio=%27none%27%3E%3Cpath transform=%27translate%28-18 1760%29 scale%281 -1%29%27 d=%27M224 0V1528H18V1760H689V1528H491V0Z%27/%3E%3C/svg%3E"); --al-W: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 1269 1760%27 preserveAspectRatio=%27none%27%3E%3Cpath transform=%27translate%28-46 1760%29 scale%281 -1%29%27 d=%27M261 0 46 1760H286L415 506L579 1760H795L960 506L1074 1760H1315L1113 0H846L690 1170L528 0Z%27/%3E%3C/svg%3E"); --al-N: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 805 1760%27 preserveAspectRatio=%27none%27%3E%3Cpath transform=%27translate%28-132 1760%29 scale%281 -1%29%27 d=%27M132 0V1760H342L715 704L696 1184V1760H937V0H747L364 1093L379 631V0Z%27/%3E%3C/svg%3E"); position: relative; margin-block-start: calc(-1 * var(--header-h)); block-size: 100svh; min-block-size: 600px; overflow: clip; isolation: isolate; background: #fff; color: var(--c-ink);
+  --top: calc(var(--header-h) + 4svh); --rh: 62svh; --side: 9.5vw; }
+.al-sun { position: absolute; z-index: -1; inline-size: 78svh; aspect-ratio: 1; inset-block-start: calc(var(--top) + 30px + var(--rh) / 2 - 39svh); border-radius: 50%; background: rgb(var(--c)); pointer-events: none; animation: al-sun 1.5s cubic-bezier(.2, .75, .2, 1) both; }
+.al-sun img { display: block; inline-size: 100%; block-size: 100%; }
+.al-sun i { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at var(--hx) 34%, rgb(255 255 255 / .3), rgb(255 255 255 / .08) 20%, transparent 42%, rgb(30 40 55 / .07) 62%, rgb(30 40 55 / .24) 100%); }
+.al-sun--l { --c: 171 208 182; --hx: 70%; --from: -30%; --rot: -40deg; left: calc(var(--side) - 26px - 78svh); }
+.al-sun--r { --c: 171 193 233; --hx: 30%; --from: 30%; --rot: 40deg; right: calc(var(--side) - 26px - 78svh); animation-delay: .1s; }
+@keyframes al-sun { from { transform: translateX(var(--from)) rotate(var(--rot)); opacity: 0; } 30% { opacity: 1; } }
+.al-eyebrow { position: absolute; inset-inline: 0; inset-block-start: var(--top); margin: 0; text-align: center; font-size: 12px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
+.al-row { position: absolute; inset-inline: var(--side); inset-block-start: calc(var(--top) + 30px); block-size: var(--rh); margin: 0; padding: 0; list-style: none; display: flex; gap: clamp(6px, .8vw, 14px); }
+.al-p { position: relative; flex: 1 1 0; min-inline-size: 0; transition: flex-grow .85s cubic-bezier(.3, 1.15, .4, 1); animation: al-up 1s cubic-bezier(.2, .75, .2, 1) both; animation-delay: calc(.25s + var(--i) * .07s); }
+@keyframes al-up { from { opacity: 0; transform: translateY(46px); } }
+.al-row.has-open .al-p { flex-grow: .42; } .al-row.has-open .al-p.is-open { flex-grow: 6.4; }
+.al-b { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; padding: 0; border: 0; background: none; color: #fff; font: inherit; text-align: start; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.al-b:focus-visible { outline: 3px solid var(--c-ink); outline-offset: 4px; border-radius: 6px; }
+.al-ph, .al-full { position: absolute; inset: 0; background-size: cover; background-position: calc(var(--bx) + var(--par, 0) * 7%) var(--by); }
+/* the day's light passes over the word, letter by letter, from the first sun to the second */
+.al-ph { animation: al-pass 9s ease-in-out infinite; animation-delay: calc(2.2s + var(--i) * .42s); }
+@keyframes al-pass { 0%, 22%, 100% { filter: brightness(1); } 9% { filter: brightness(1.22) saturate(1.08); } }
+.al-row.has-open .al-ph { animation: none; }
+/* the letter: the photograph seen through the display face's own outline, stretched to the panel */
+.al-ph { -webkit-mask: var(--m) center / 100% 100% no-repeat; mask: var(--m) center / 100% 100% no-repeat; transition: -webkit-mask-size .9s cubic-bezier(.5, 0, .2, 1), mask-size .9s cubic-bezier(.5, 0, .2, 1), filter .5s; }
+.al-row.has-open .al-p:not(.is-open) .al-ph { filter: saturate(.75) brightness(1.04); }
+.al-p.is-open .al-ph { -webkit-mask-size: 1500% 1500%; mask-size: 1500% 1500%; }
+.al-full { border-radius: clamp(14px, 1.4vw, 24px); opacity: 0; transition: opacity .45s ease; }
+.al-p.is-open .al-full { opacity: 1; transition: opacity .45s ease .2s; }
+.al-full::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(to top, rgb(20 22 40 / .62), rgb(20 22 40 / .12) 46%, transparent 62%); }
+.al-info { position: absolute; inset-inline: clamp(16px, 2vw, 34px); inset-block-end: clamp(16px, 2.2vw, 34px); display: grid; gap: 6px; opacity: 0; translate: 0 14px; transition: opacity .3s ease, translate .3s ease; pointer-events: none; min-inline-size: 240px; }
+.al-p.is-open .al-info { opacity: 1; translate: 0 0; transition: opacity .55s ease .5s, translate .7s cubic-bezier(.2, .75, .2, 1) .5s; }
+.al-info b { font-family: var(--font-display); font-weight: 700; font-size: clamp(54px, 6.4vw, 118px); line-height: .9; font-variant-numeric: tabular-nums; }
+.al-info strong { font-size: clamp(19px, 1.9vw, 30px); line-height: 1.15; font-weight: 650; letter-spacing: -.01em; }
+.al-info span { font-size: clamp(15px, 1.3vw, 19px); line-height: 1.35; max-inline-size: 30ch; opacity: .95; }
+.al-t { position: absolute; inset-inline: 0; inset-block-start: calc(100% + 12px); text-align: center; font-size: 12px; font-weight: 700; letter-spacing: .12em; font-variant-numeric: tabular-nums; opacity: .62; transition: opacity .4s; white-space: nowrap; overflow: hidden; }
+.al-row.has-open .al-p:not(.is-open) .al-t { opacity: 0; } .al-p.is-open .al-t { opacity: 1; }
+.al-foot { position: absolute; inset-inline: var(--side); inset-block-start: calc(var(--top) + 30px + var(--rh) + 46px); display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; gap: 24px; }
+.al-end { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; opacity: .8; }
+.al-end--b { text-align: end; }
+.al-cap { margin: 0; max-inline-size: 38ch; text-align: center; font-size: clamp(17px, 1.5vw, 23px); line-height: 1.32; font-weight: 520; letter-spacing: -.01em; text-wrap: balance; }
+.al-cap a { color: inherit; font-weight: 650; text-underline-offset: 4px; white-space: nowrap; }
+@media (max-width: 749px) {
+  .al { margin-block-start: 0; block-size: calc(100svh - var(--header-h)); --top: 4svh; --rh: 47svh; --side: 14px; }
+  .al-sun { display: none; }
+  .al-row { gap: 4px; }
+  .al-row.has-open .al-p { flex-grow: .2; } .al-row.has-open .al-p.is-open { flex-grow: 9; }
+  .al-info { min-inline-size: 200px; }
+  .al-info b { font-size: 56px; } .al-info strong { font-size: 19px; } .al-info span { font-size: 14px; }
+  .al-t { font-size: 10px; letter-spacing: 0; }
+  .al-foot { grid-template-columns: 1fr 1fr; row-gap: 14px; inset-block-start: calc(var(--top) + 30px + var(--rh) + 34px); }
+  .al-cap { grid-column: 1 / -1; grid-row: 2; justify-self: center; font-size: 16px; }
+  .al-end { font-size: 11px; letter-spacing: .12em; }
+}
+@media (prefers-reduced-motion: reduce) { .al-p, .al-sun, .al-ph { animation: none; } .al-p, .al-ph, .al-full, .al-info { transition: none !important; } }
+</style>
+<section class="al" data-al aria-labelledby="AlTitle-{{ section.id }}">
+  <span class="al-sun al-sun--l" aria-hidden="true"><img src="{{ 'orb-green-900.webp' | asset_url }}" alt="" width="900" height="900"><i></i></span>
+  <span class="al-sun al-sun--r" aria-hidden="true"><img src="{{ 'orb-blue-900.webp' | asset_url }}" alt="" width="900" height="900"><i></i></span>
+  <p class="al-eyebrow">About Between Two Suns</p>
+  <h1 class="visually-hidden" id="AlTitle-{{ section.id }}">Between two suns</h1>
+  <ol class="al-row" role="list" data-row>
+    <li class="al-p" style="--i: 0; --m: var(--al-B); --bx: 32%; --by: 50%">
+      <button type="button" class="al-b" aria-expanded="false" aria-label="06:00. First sun. The morning routine: all four steps, sunscreen last.">
+        <span class="al-ph" style="background-image: url('{{ 'bts-demo-morning.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-full" style="background-image: url('{{ 'bts-demo-morning.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-info"><b>06:00</b><strong>First sun.</strong><span>The morning routine: all four steps, sunscreen last.</span></span>
+      </button>
+      <span class="al-t" aria-hidden="true">06:00</span>
+    </li>
+    <li class="al-p" style="--i: 1; --m: var(--al-E); --bx: 50%; --by: 50%">
+      <button type="button" class="al-b" aria-expanded="false" aria-label="08:00. The first sun. UV shows up every day, not just at the beach.">
+        <span class="al-ph" style="background-image: url('{{ 'bts-climate-sun-tall.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-full" style="background-image: url('{{ 'bts-climate-sun-tall.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-info"><b>08:00</b><strong>The first sun.</strong><span>UV shows up every day, not just at the beach.</span></span>
+      </button>
+      <span class="al-t" aria-hidden="true">08:00</span>
+    </li>
+    <li class="al-p" style="--i: 2; --m: var(--al-T); --bx: 50%; --by: 50%">
+      <button type="button" class="al-b" aria-expanded="false" aria-label="10:00. The commute. Fine dust settles on skin through the day.">
+        <span class="al-ph" style="background-image: url('{{ 'bts-climate-city-tall.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-full" style="background-image: url('{{ 'bts-climate-city-tall.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-info"><b>10:00</b><strong>The commute.</strong><span>Fine dust settles on skin through the day.</span></span>
+      </button>
+      <span class="al-t" aria-hidden="true">10:00</span>
+    </li>
+    <li class="al-p" style="--i: 3; --m: var(--al-W); --bx: 40%; --by: 50%">
+      <button type="button" class="al-b" aria-expanded="false" aria-label="13:00. Eight hours of office air. Cool, dry air for hours on end.">
+        <span class="al-ph" style="background-image: url('{{ 'bts-climate-ac-tall.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-full" style="background-image: url('{{ 'bts-climate-ac-tall.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-info"><b>13:00</b><strong>Eight hours of office air.</strong><span>Cool, dry air for hours on end.</span></span>
+      </button>
+      <span class="al-t" aria-hidden="true">13:00</span>
+    </li>
+    <li class="al-p" style="--i: 4; --m: var(--al-E); --bx: 50%; --by: 50%">
+      <button type="button" class="al-b" aria-expanded="false" aria-label="16:00. The afternoon heat. Sweat, oil and makeup that slides.">
+        <span class="al-ph" style="background-image: url('{{ 'bts-climate-heat-tall.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-full" style="background-image: url('{{ 'bts-climate-heat-tall.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-info"><b>16:00</b><strong>The afternoon heat.</strong><span>Sweat, oil and makeup that slides.</span></span>
+      </button>
+      <span class="al-t" aria-hidden="true">16:00</span>
+    </li>
+    <li class="al-p" style="--i: 5; --m: var(--al-E); --bx: 45%; --by: 40%">
+      <button type="button" class="al-b" aria-expanded="false" aria-label="20:00. Humid evenings. Sticky air, shiny skin.">
+        <span class="al-ph" style="background-image: url('{{ 'bts-climate-humidity-tall.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-full" style="background-image: url('{{ 'bts-climate-humidity-tall.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-info"><b>20:00</b><strong>Humid evenings.</strong><span>Sticky air, shiny skin.</span></span>
+      </button>
+      <span class="al-t" aria-hidden="true">20:00</span>
+    </li>
+    <li class="al-p" style="--i: 6; --m: var(--al-N); --bx: 60%; --by: 50%">
+      <button type="button" class="al-b" aria-expanded="false" aria-label="22:00. The night routine. Three steps. The sunscreen waits for the morning.">
+        <span class="al-ph" style="background-image: url('{{ 'bts-demo-night.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-full" style="background-image: url('{{ 'bts-demo-night.jpg' | file_img_url: '1400x' }}')"></span>
+        <span class="al-info"><b>22:00</b><strong>The night routine.</strong><span>Three steps. The sunscreen waits for the morning.</span></span>
+      </button>
+      <span class="al-t" aria-hidden="true">22:00</span>
+    </li>
+  </ol>
+  <div class="al-foot">
+    <p class="al-end">Today’s sun</p>
+    <p class="al-cap">Between two suns, a whole day happens to your skin. <span data-hint>Open a letter.</span></p>
+    <p class="al-end al-end--b">Tomorrow’s sun</p>
+  </div>
+</section>
+<script>
+(() => {
+  const el = document.currentScript.previousElementSibling; if (!el || !el.matches('[data-al]')) return;
+  const row = el.querySelector('[data-row]'), panels = [...row.children];
+  const touch = matchMedia('(hover: none)').matches;
+  const hint = el.querySelector('[data-hint]'); if (hint) hint.textContent = touch ? 'Tap a letter.' : 'Open a letter.';
+  const open = (p) => { panels.forEach((x) => { const on = x === p; x.classList.toggle('is-open', on); x.firstElementChild.setAttribute('aria-expanded', String(on)); }); row.classList.toggle('has-open', !!p); };
+  panels.forEach((p) => {
+    const b = p.firstElementChild;
+    if (!touch) { p.addEventListener('pointerenter', () => open(p)); b.addEventListener('focus', () => open(p)); }
+    b.addEventListener('click', () => open(touch && p.classList.contains('is-open') ? null : p));
+  });
+  if (!touch) row.addEventListener('pointerleave', () => { if (!row.contains(document.activeElement)) open(null); });
+  document.addEventListener('pointerdown', (e) => { if (!row.contains(e.target)) open(null); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') open(null); });
+  // the letters are windows: the pictures shift a little with the pointer
+  if (!touch && !matchMedia('(prefers-reduced-motion: reduce)').matches) el.addEventListener('pointermove', (e) => { row.style.setProperty('--par', (e.clientX / innerWidth * 2 - 1).toFixed(3)); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "About · photo letters",
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

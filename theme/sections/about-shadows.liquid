@@ -1,0 +1,135 @@
+{%- comment -%}
+  About hero prototype E · "Two suns, two shadows" (demo only, /pages/about?view=shadows).
+  White, bright, typographic; no spheres, no sky, no clock. The name stands on the page as a poster-sized block with
+  the four packs in front of it. There are two suns, so everything casts two shadows: one sage, one periwinkle (the
+  brand's two sun colours), long and soft, crossing under the letters and darkening where they overlap. The light is
+  alive: the shadows grow in when the page opens, drift slowly on their own, swing and stretch with the pointer
+  (or a finger), and as you scroll on they lengthen into the next section. Reduced motion: a still picture.
+  Prototype: English only.
+{%- endcomment -%}
+<style>
+.ah { --hx: 0; position: relative; z-index: 1; margin-block-start: calc(-1 * var(--header-h)); block-size: 100svh; min-block-size: 560px; background: #fff; color: var(--c-ink); touch-action: pan-y; clip-path: inset(0 0 -60vh 0); }
+/* the two suns' light, falling in from the top corners */
+.ah-haze { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.ah-haze::before, .ah-haze::after { content: ''; position: absolute; inline-size: 95vmax; aspect-ratio: 1; border-radius: 50%; inset-block-start: -52vmax; will-change: transform; }
+.ah-haze::before { left: -40vmax; background: radial-gradient(closest-side, rgb(160 212 178 / .62), rgb(160 212 178 / .22) 55%, transparent); transform: translateX(calc(var(--hx) * 5vw)); }
+.ah-haze::after { right: -40vmax; background: radial-gradient(closest-side, rgb(160 186 240 / .66), rgb(160 186 240 / .24) 55%, transparent); transform: translateX(calc(var(--hx) * 5vw)); }
+.ah-sh { position: absolute; left: 0; top: 0; transform-origin: 50% 100%; will-change: transform, opacity; pointer-events: none; mix-blend-mode: multiply; visibility: hidden;
+  -webkit-mask-image: linear-gradient(to top, #000 6%, rgb(0 0 0 / .5) 62%, transparent 100%); mask-image: linear-gradient(to top, #000 6%, rgb(0 0 0 / .5) 62%, transparent 100%); filter: blur(var(--bl, 5px)); }
+.ah.is-ready .ah-sh, .ah.is-ready .ah-title, .ah.is-ready .ah-packs { visibility: visible; }
+.ah-sh--a { --tint: rgb(118 190 148 / .78); } .ah-sh--b { --tint: rgb(132 160 236 / .78); }
+.ah-sh text { fill: var(--tint); }
+.ah-sh.ah-pk { display: flex; justify-content: center; align-items: flex-end; }
+.ah-pk span { display: block; block-size: calc(var(--h) * 100%); aspect-ratio: 357 / 1100; background: var(--tint); -webkit-mask: var(--m) center bottom / contain no-repeat; mask: var(--m) center bottom / contain no-repeat; }
+.ah-title { position: absolute; left: 0; top: 0; overflow: visible; visibility: hidden; }
+.ah-title text, .ah-sh text { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; }
+.ah-title text { fill: currentColor; }
+.ah-packs { position: absolute; left: 0; top: 0; margin: 0; padding: 0; list-style: none; display: flex; justify-content: center; align-items: flex-end; pointer-events: none; visibility: hidden; }
+.ah-packs li { block-size: calc(var(--h) * 100%); aspect-ratio: 357 / 1100; }
+.ah-packs img { display: block; inline-size: 100%; block-size: 100%; object-fit: contain; object-position: bottom; }
+.ah-packs, .ah-pk { gap: var(--pg, 10px); }
+.ah-eyebrow { position: absolute; inset-inline-start: var(--gutter); margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
+.ah-cap { position: absolute; inset-inline-start: 36vw; inset-block-end: calc(var(--dock-h, 0px) + clamp(18px, 4svh, 44px)); margin: 0; max-inline-size: 24ch; font-size: clamp(17px, 1.5vw, 23px); line-height: 1.32; font-weight: 520; letter-spacing: -.01em; text-wrap: balance; }
+.ah-hint { position: absolute; inset-inline-end: var(--gutter); inset-block-end: calc(var(--dock-h, 0px) + clamp(18px, 4svh, 44px)); margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .7; }
+@media (max-width: 749px) {
+  .ah { margin-block-start: 0; block-size: calc(100svh - var(--header-h)); }
+  .ah-eyebrow { inset-inline: 0; text-align: center; }
+  .ah-cap { inset-inline: 18px; max-inline-size: none; text-align: center; font-size: 15px; inset-block-end: calc(var(--dock-h, 0px) + 12px); }
+  .ah-hint { display: none; }
+}
+@media (hover: none) { .ah-hint { display: none; } }
+</style>
+<section class="ah" data-ah aria-labelledby="AhTitle-{{ section.id }}">
+  <span class="ah-haze" aria-hidden="true"></span>
+  <h1 class="visually-hidden" id="AhTitle-{{ section.id }}">Between two suns</h1>
+  <svg class="ah-sh ah-sh--a ah-ts" aria-hidden="true" focusable="false"><text>BETWEEN</text><text>TWO SUNS</text></svg>
+  <svg class="ah-sh ah-sh--b ah-ts" aria-hidden="true" focusable="false"><text>BETWEEN</text><text>TWO SUNS</text></svg>
+  <svg class="ah-title" aria-hidden="true" focusable="false"><text>BETWEEN</text><text>TWO SUNS</text></svg>
+  {%- capture masks -%}
+    <span style="--h: 1; --m: url('{{ 'cut-daily-reset-cleanser.webp' | asset_url }}')"></span><span style="--h: .65; --m: url('{{ 'cut-clarity-serum.webp' | asset_url }}')"></span><span style="--h: .81; --m: url('{{ 'cut-daily-barrier-moisturizing-cream.webp' | asset_url }}')"></span><span style="--h: .81; --m: url('{{ 'cut-daily-defense-sunscreen-spf-50.webp' | asset_url }}')"></span>
+  {%- endcapture -%}
+  <div class="ah-sh ah-sh--a ah-pk" aria-hidden="true">{{ masks }}</div>
+  <div class="ah-sh ah-sh--b ah-pk" aria-hidden="true">{{ masks }}</div>
+  <ul class="ah-packs" role="list" aria-hidden="true">
+    <li style="--h: 1"><img src="{{ 'cut-daily-reset-cleanser.webp' | asset_url }}" alt=""></li>
+    <li style="--h: .65"><img src="{{ 'cut-clarity-serum.webp' | asset_url }}" alt=""></li>
+    <li style="--h: .81"><img src="{{ 'cut-daily-barrier-moisturizing-cream.webp' | asset_url }}" alt=""></li>
+    <li style="--h: .81"><img src="{{ 'cut-daily-defense-sunscreen-spf-50.webp' | asset_url }}" alt=""></li>
+  </ul>
+  <p class="ah-eyebrow">About</p>
+  <p class="ah-cap">Two suns: today’s, and tomorrow’s. The space between them is what we make skincare for.</p>
+  <p class="ah-hint" aria-hidden="true">Move the light</p>
+</section>
+<script>
+(() => {
+  const el = document.currentScript.previousElementSibling; if (!el || !el.matches('[data-ah]')) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const title = el.querySelector('.ah-title'), tsh = [...el.querySelectorAll('.ah-ts')], psh = [...el.querySelectorAll('.ah-pk')], packs = el.querySelector('.ah-packs'), eyebrow = el.querySelector('.ah-eyebrow');
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), mix = (a, b, k) => a + (b - a) * k;
+  let G = null;
+  const measure = () => {
+    const W = el.clientWidth, H = el.clientHeight, phone = W < 750;
+    const css = getComputedStyle(document.documentElement), hdr = phone ? 0 : parseFloat(css.getPropertyValue('--header-h')) || 76;
+    const cx = document.createElement('canvas').getContext('2d'); cx.font = "700 200px 'BTS Display', 'Arial Narrow', sans-serif";
+    const cap = (cx.measureText('E').actualBoundingBoxAscent || 144) / 200, wr = cx.measureText('TWO SUNS').width / 200;
+    const top = hdr + (phone ? H * .07 : H * .06);
+    // the block is as wide as the page allows and no taller than 46% of the screen
+    let Wt = phone ? W * .9 : Math.min(W * .7, 1500), F = Wt / wr, hc = F * cap; const gap = hc * .1;
+    const maxH = phone ? H * .36 : H * .46; if (2 * hc + gap > maxH) { hc = (maxH - gap) / 2.1; F = hc / cap; Wt = F * wr; }
+    const Hb = 2 * hc + hc * .1, x = (W - Wt) / 2, y = top + (phone ? 30 : 34);
+    [title, ...tsh].forEach((svg) => {
+      svg.setAttribute('width', Wt); svg.setAttribute('height', Hb); svg.style.left = x + 'px'; svg.style.top = y + 'px';
+      [...svg.children].forEach((t, i) => { t.setAttribute('font-size', F.toFixed(2)); t.setAttribute('x', 0); t.setAttribute('y', (i ? Hb : hc).toFixed(2)); t.setAttribute('textLength', Wt.toFixed(1)); t.setAttribute('lengthAdjust', 'spacingAndGlyphs'); });
+    });
+    eyebrow.style.top = top + 'px';
+    const dock = parseFloat(css.getPropertyValue('--dock-h')) || 0;
+    const packH = phone ? Math.min(H * .2, W * .4) : H * .27, py = H - dock - (phone ? 64 : H * .06) - packH, pw = phone ? W : W * .4;
+    [packs, ...psh].forEach((p) => { p.style.width = pw + 'px'; p.style.height = packH + 'px'; p.style.top = py + 'px'; p.style.left = '0px'; p.style.setProperty('--pg', (phone ? 5 : W * .011) + 'px'); });
+    G = { W, H, phone, Hb, packH, room: H - (y + Hb) };
+  };
+  // each sun: where its shadows lean (deg) and how long they are (1 = as long as the thing is tall)
+  const S = [{ ang: 0, len: 0, a: 0, vAng: 0, vLen: 0 }, { ang: 0, len: 0, a: 0, vAng: 0, vLen: 0 }];
+  let px = 0, py = .5, has = false, t0 = performance.now(), raf = 0, seen = true, born = 0;
+  const draw = () => {
+    S.forEach((s, i) => {
+      const dir = i ? 1 : -1, o = s.a.toFixed(3), bl = (1.2 + s.len * 1.6).toFixed(1) + 'px';
+      [tsh[i], psh[i]].forEach((e, k) => { e.style.transform = `skewX(${s.ang.toFixed(2)}deg) scaleY(${(dir * s.len * (k ? 1.08 : 1)).toFixed(3)})`; e.style.opacity = o; e.style.setProperty('--bl', bl); });
+    });
+    el.style.setProperty('--hx', (S[0].ang / 50 - 1).toFixed(3));
+  };
+  const frame = (now) => {
+    raf = 0; if (!G) measure();
+    const t = (now - t0) / 1000, age = (now - born) / 1000;
+    const r = el.getBoundingClientRect(), sc = clamp(-r.top / (G.H * .9));
+    // left alone, the day drifts: one sun lowers as the other climbs; the pointer swings both and sets their height
+    const sway = has ? px * 26 : Math.sin(t * .3) * 10, lift = has ? mix(.3, -.25, py) : 0, see = Math.sin(t * .21) * .14;
+    const base = G.phone ? 42 : 54;
+    // sun 0 is in front (its shadow falls away, up the page); sun 1 is behind (its shadow falls toward you)
+    const want = [
+      { ang: base + sway, len: clamp(1.05 + lift + see, .5, 1.7), a: clamp((age - .15) / .9) },
+      { ang: base + sway, len: clamp(1.05 + lift - see + sc * 1.6, .5, 3), a: clamp((age - .7) / .9) },
+    ];
+    S.forEach((s, i) => { const w = want[i]; s.vAng = (s.vAng + (w.ang - s.ang) * .06) * .82; s.ang += s.vAng; s.vLen = (s.vLen + (w.len * w.a - s.len) * .06) * .82; s.len += s.vLen; s.a = w.a * (1 - sc * .25); });
+    draw(); if (seen) raf = requestAnimationFrame(frame);
+  };
+  const ask = () => { if (!raf) raf = requestAnimationFrame(frame); };
+  const start = () => {
+    measure(); el.classList.add('is-ready'); born = performance.now();
+    if (reduce) { S[0].ang = S[1].ang = 54; S[0].len = S[1].len = 1.05; S[0].a = S[1].a = 1; draw(); addEventListener('resize', () => { measure(); draw(); }); return; }
+    S[0].ang = S[1].ang = G.phone ? 42 : 54; ask();
+    el.addEventListener('pointermove', (e) => { const r = el.getBoundingClientRect(); px = clamp((e.clientX - r.left) / r.width * 2 - 1, -1, 1); py = clamp((e.clientY - r.top) / r.height); has = true; });
+    const off = () => { has = false; }; el.addEventListener('pointerleave', off); el.addEventListener('pointercancel', off); el.addEventListener('pointerup', (e) => { if (e.pointerType === 'touch') off(); });
+    addEventListener('resize', measure);
+    new IntersectionObserver(([e]) => { seen = e.isIntersecting; if (seen) ask(); }, { rootMargin: '0px 0px 60% 0px' }).observe(el);
+  };
+  const fonts = document.fonts && document.fonts.load ? document.fonts.load("700 100px 'BTS Display'").catch(() => {}) : Promise.resolve();
+  Promise.race([fonts, new Promise((r) => setTimeout(r, 1500))]).then(() => { if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true }); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "About · two shadows",
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}
