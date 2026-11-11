@@ -68,7 +68,7 @@ const items = (t, kind) => {
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
     ${loop}
     <tr style="border-bottom:1px solid ${C.line}">
-      <td width="64" valign="middle" style="padding:12px 0;width:64px">{% if line.image %}<img src="{{ line.image | img_url: 'compact_cropped' }}" width="56" height="56" alt="" style="display:block;width:56px;height:56px;border-radius:12px;background:${C.paper};object-fit:cover">{% endif %}</td>
+      <td width="64" valign="middle" style="padding:12px 0;width:64px">{% if line.image %}<img src="{{ line | img_url: 'compact_cropped' }}" width="56" height="56" alt="" style="display:block;width:56px;height:56px;border-radius:12px;background:${C.paper};object-fit:cover">{% endif %}</td>
       <td valign="middle" style="padding:12px ${t.dir === 'rtl' ? '0 12px 0 12px' : '12px 0 12px 12px'};font-family:${t.font};font-size:15px;line-height:1.4;color:${C.ink}"><strong>{{ line.title }}</strong><br><span style="font-size:13px;color:${C.muted}">${t.qty}: ${qty}</span></td>
       ${price}
     </tr>
@@ -92,7 +92,7 @@ const totals = (t) => `
 const cod = (t, kind) => kind === 'confirmation'
   ? `{% assign bts_cod = false %}{% for tr in transactions %}{% assign g = tr.gateway | downcase %}{% if g contains 'cash' %}{% assign bts_cod = true %}{% endif %}{% endfor %}
 {% if bts_cod %}<tr><td style="padding:16px 24px 0"><p style="margin:0;padding:14px 18px;border-radius:14px;background:#FFF1E8;font-family:${t.font};font-size:15px;line-height:1.5;color:${C.ink}">${t.cod}</p></td></tr>{% endif %}`
-  : `{% if financial_status == 'pending' %}<tr><td style="padding:16px 24px 0"><p style="margin:0;padding:14px 18px;border-radius:14px;background:#FFF1E8;font-family:${t.font};font-size:15px;line-height:1.5;color:${C.ink}">${t.cod}</p></td></tr>{% endif %}`;
+  : ''; // shipping and delivered emails don't receive the payment status, so the reminder lives in the confirmation only
 
 // each address line keeps its own direction (an English street in an Arabic email, or the reverse)
 const address = (t) => `{% if shipping_address %}<tr><td style="padding:24px 24px 0;font-family:${t.font};font-size:14px;line-height:1.55;color:${C.muted}"><strong style="color:${C.ink}">${t.to}</strong><br><span dir="auto">{{ shipping_address.name }}</span><br><span dir="auto">{{ shipping_address.address1 }}{% if shipping_address.address2 != blank %}, {{ shipping_address.address2 }}{% endif %}</span><br><span dir="auto">{{ shipping_address.city }}{% if shipping_address.province != blank %}, {{ shipping_address.province }}{% endif %}</span></td></tr>{% endif %}`;
@@ -149,7 +149,7 @@ if (process.argv.includes('--preview')) {
   const { Liquid } = await import('liquidjs');
   const engine = new Liquid();
   engine.registerFilter('money', (v) => `EGP ${(Number(v) / 100).toLocaleString('en-US')}`);
-  engine.registerFilter('img_url', (img) => img);
+  engine.registerFilter('img_url', (x) => (x && typeof x === 'object' ? x.image : x)); // Shopify takes the line item
   const PV = path.join(HERE, 'preview'); fs.mkdirSync(PV, { recursive: true });
   // sample photos come from the local preview server (node preview/server.js)
   const IMG = process.env.IMG_BASE || 'http://localhost:4321/img';

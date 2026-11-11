@@ -24,13 +24,13 @@
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
     {% for f in fulfillment.fulfillment_line_items %}{% assign line = f.line_item %}{% assign qty = f.quantity %}
     <tr style="border-bottom:1px solid #E6E7EA">
-      <td width="64" valign="middle" style="padding:12px 0;width:64px">{% if line.image %}<img src="{{ line.image | img_url: 'compact_cropped' }}" width="56" height="56" alt="" style="display:block;width:56px;height:56px;border-radius:12px;background:#F4F5F6;object-fit:cover">{% endif %}</td>
+      <td width="64" valign="middle" style="padding:12px 0;width:64px">{% if line.image %}<img src="{{ line | img_url: 'compact_cropped' }}" width="56" height="56" alt="" style="display:block;width:56px;height:56px;border-radius:12px;background:#F4F5F6;object-fit:cover">{% endif %}</td>
       <td valign="middle" style="padding:12px 12px 0 12px 12px;font-family:Figtree, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:15px;line-height:1.4;color:#20233A"><strong>{{ line.title }}</strong><br><span style="font-size:13px;color:#565A6D">Qty: {{ qty }}</span></td>
       
     </tr>
     {% endfor %}
   </table>
-</td></tr>{% if financial_status == 'pending' %}<tr><td style="padding:16px 24px 0"><p style="margin:0;padding:14px 18px;border-radius:14px;background:#FFF1E8;font-family:Figtree, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:15px;line-height:1.5;color:#20233A">Paying cash on delivery: please have {{ total_price | money }} ready when it arrives.</p></td></tr>{% endif %}
+</td></tr>
 <tr><td style="padding:32px 24px 0">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;background:#F4F5F6;border-radius:18px"><tr><td style="padding:22px 24px">
     <p style="margin:0 0 14px;font-family:Figtree, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#565A6D">How to start</p>

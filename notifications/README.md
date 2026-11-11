@@ -28,8 +28,7 @@ Six files: three emails × English (the template) and Arabic (its translation). 
   Arabic). Apple Mail / iPhone show the brand fonts; Gmail shows Arial (Tahoma in Arabic).
 - Order confirmation: items with photos, subtotal / discount / shipping / total, a cash-on-delivery reminder when the
   order is COD, the delivery address, "How to start" (morning and evening order, sunscreen last), help by reply.
-- Shipping confirmation: "Track your order" (the carrier's link, or the order page), what's in the parcel, the COD
-  reminder while payment is pending, "How to start".
+- Shipping confirmation: "Track your order" (the carrier's link, or the order page), what's in the parcel, "How to start".
 - Delivered: "How to start" first, then the items, and a button to the account page (routine and reorders).
 - No delivery-date promises, no new claims: the routine order is the FAQ's, the step names are the site's.
 - Arabic: right-to-left, order numbers and amounts kept left-to-right, gender-neutral Egyptian Arabic.

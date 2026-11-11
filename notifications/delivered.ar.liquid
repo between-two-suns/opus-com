@@ -32,7 +32,7 @@
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
     {% for f in fulfillment.fulfillment_line_items %}{% assign line = f.line_item %}{% assign qty = f.quantity %}
     <tr style="border-bottom:1px solid #E6E7EA">
-      <td width="64" valign="middle" style="padding:12px 0;width:64px">{% if line.image %}<img src="{{ line.image | img_url: 'compact_cropped' }}" width="56" height="56" alt="" style="display:block;width:56px;height:56px;border-radius:12px;background:#F4F5F6;object-fit:cover">{% endif %}</td>
+      <td width="64" valign="middle" style="padding:12px 0;width:64px">{% if line.image %}<img src="{{ line | img_url: 'compact_cropped' }}" width="56" height="56" alt="" style="display:block;width:56px;height:56px;border-radius:12px;background:#F4F5F6;object-fit:cover">{% endif %}</td>
       <td valign="middle" style="padding:12px 0 12px 0 12px;font-family:Alexandria, Tahoma, 'Segoe UI', Arial, sans-serif;font-size:15px;line-height:1.4;color:#20233A"><strong>{{ line.title }}</strong><br><span style="font-size:13px;color:#565A6D">الكمية: {{ qty }}</span></td>
       
     </tr>
