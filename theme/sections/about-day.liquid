@@ -1,0 +1,111 @@
+{%- comment -%}
+  About hero prototype H · "A day on skin" (demo only, /pages/about?view=day).
+  Direction 1 ("the sky") with a photograph behind the name. The whole screen is a close portrait of skin (the
+  store's own editorial photograph), and the day happens to it as light: a cool, minty dawn; clear bright noon; a
+  warm amber golden hour as today's sun goes down; a lilac dusk; a soft periwinkle blue hour; then tomorrow's sun
+  comes up. The sun itself is a wide bloom of light that crosses behind the name. The name is set very large in
+  white over it. It plays slowly by itself; drag sideways to move the day. One screen, nothing pinned, no packs,
+  no moving shadows, no dark sky, no clock (one word names the time of day).
+  Reduced motion: a still mid-morning. Prototype: English only.
+{%- endcomment -%}
+<style>
+.ak { position: relative; margin-block-start: calc(-1 * var(--header-h)); block-size: 100svh; min-block-size: 560px; overflow: clip; isolation: isolate; background: #c9a288; color: #fff; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.ak.is-drag { cursor: grabbing; }
+.ak-img { position: absolute; inset: -3%; z-index: -4; will-change: transform, filter; filter: brightness(var(--br, 1)) saturate(var(--sa, 1)); }
+.ak-img img { display: block; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 42% 38%; animation: ak-in 2.2s cubic-bezier(.2, .75, .2, 1) both; }
+@keyframes ak-in { from { transform: scale(1.08); } }
+.ak-wash { position: absolute; inset: 0; z-index: -3; pointer-events: none; }
+.ak-wash--soft { mix-blend-mode: soft-light; background: var(--soft, transparent); }
+.ak-wash--mul { mix-blend-mode: multiply; background: var(--mul, transparent); }
+/* the sun: a wide bloom of light that crosses behind the name */
+.ak-sun { position: absolute; z-index: -2; left: 0; top: 0; inline-size: 150vmax; aspect-ratio: 1; margin: -75vmax 0 0 -75vmax; border-radius: 50%; pointer-events: none; mix-blend-mode: screen; will-change: transform, opacity;
+  background: radial-gradient(circle, rgb(255 252 242) 0, rgb(255 250 236 / .96) 4.5%, rgb(var(--sc, 255 214 160) / .7) 9%, rgb(var(--sc, 255 214 160) / .3) 24%, rgb(var(--sc, 255 214 160) / .1) 40%, transparent 58%); }
+.ak-scrim { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(to top, rgb(40 26 22 / .34), transparent 34%), linear-gradient(to bottom, rgb(40 26 22 / .2), transparent 22%); }
+.ak-title { position: absolute; inset-inline: 0; inset-block-start: 50%; translate: 0 -52%; margin: 0; text-align: center; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .86; letter-spacing: -.005em; font-size: clamp(76px, min(17.5vw, 33svh), 380px); pointer-events: none; text-shadow: 0 2px 40px rgb(60 34 24 / .18); }
+.ak-title .w { display: inline-block; overflow: hidden; vertical-align: top; padding-block: .08em .16em; margin-block: -.08em -.16em; }
+.ak-title .w > span { display: inline-block; animation: ak-rise 1.2s cubic-bezier(.2, .75, .2, 1) both; animation-delay: calc(.15s + var(--i) * .09s); }
+@keyframes ak-rise { from { transform: translateY(.2em); opacity: .0; } }
+.ak-foot { position: absolute; inset-inline: var(--gutter); inset-block-end: calc(var(--dock-h, 0px) + clamp(18px, 4svh, 44px)); display: flex; justify-content: space-between; align-items: end; gap: 24px; pointer-events: none; }
+.ak-now { margin: 0; display: grid; gap: 8px; }
+.ak-word { display: grid; overflow: hidden; font-size: 12px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
+.ak-word span { grid-area: 1 / 1; translate: 0 110%; opacity: 0; transition: translate .7s cubic-bezier(.2, .75, .2, 1), opacity .5s ease; }
+.ak-word span.is-on { translate: 0 0; opacity: 1; } .ak-word span.is-off { translate: 0 -110%; }
+.ak-line { font-size: clamp(17px, 1.5vw, 23px); line-height: 1.32; font-weight: 520; letter-spacing: -.01em; max-inline-size: 26ch; text-wrap: balance; }
+.ak-hint { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .85; white-space: nowrap; }
+@media (max-width: 749px) {
+  .ak { margin-block-start: 0; block-size: calc(100svh - var(--header-h)); }
+  .ak-img img { object-position: 38% 30%; }
+  .ak-title { font-size: min(27vw, 19svh); translate: 0 -58%; }
+  .ak-foot { inset-inline: 18px; justify-content: center; text-align: center; inset-block-end: calc(var(--dock-h, 0px) + 14px); }
+  .ak-now { justify-items: center; } .ak-line { font-size: 16px; } .ak-hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .ak-img img, .ak-title .w > span { animation: none; } .ak-word span { transition: none; } }
+</style>
+<section class="ak" data-ak aria-labelledby="AkTitle-{{ section.id }}">
+  <div class="ak-img"><img src="{{ 'bts-editorial-skin.png' | file_img_url: '2000x' }}" alt="" fetchpriority="high"></div>
+  <span class="ak-wash ak-wash--soft" aria-hidden="true"></span>
+  <span class="ak-wash ak-wash--mul" aria-hidden="true"></span>
+  <span class="ak-sun" aria-hidden="true"></span>
+  <span class="ak-scrim" aria-hidden="true"></span>
+  <h1 class="ak-title" id="AkTitle-{{ section.id }}"><span class="w"><span style="--i: 0">Between</span></span><br><span class="w"><span style="--i: 1">Two</span></span> <span class="w"><span style="--i: 2">Suns</span></span></h1>
+  <div class="ak-foot">
+    <p class="ak-now"><span class="ak-word" aria-hidden="true"><span class="is-on">Morning</span><span>Midday</span><span>Golden hour</span><span>Dusk</span><span>Night</span><span>Tomorrow’s sun</span></span><span class="ak-line">A whole day happens to your skin between today’s sun and tomorrow’s.</span></p>
+    <p class="ak-hint" aria-hidden="true">Drag to move the day</p>
+  </div>
+</section>
+<script>
+(() => {
+  const el = document.currentScript.previousElementSibling; if (!el || !el.matches('[data-ak]')) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const img = el.querySelector('.ak-img'), sun = el.querySelector('.ak-sun'), words = [...el.querySelectorAll('.ak-word span')];
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), mix = (a, b, k) => a + (b - a) * k;
+  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  // the day's light, 0–1: [time, soft-light colour, its strength, multiply colour, its strength, brightness, saturation]
+  const KEYS = [
+    [0, '#d8f3e4', .34, '#cfd8ff', .2, 1, .96], [.1, '#fff6e8', .12, '#ffffff', 0, 1.05, 1], [.3, '#ffffff', 0, '#ffffff', 0, 1.08, 1.02],
+    [.44, '#ffc98a', .4, '#ffd9b8', .12, 1.04, 1.08], [.54, '#ff9a5c', .52, '#f4b8c8', .3, .98, 1.1], [.62, '#d9a8e8', .38, '#b9a8e6', .5, .92, .96],
+    [.72, '#9fb0f2', .32, '#8f9fe8', .6, .86, .86], [.84, '#9fb0f2', .32, '#98a8ec', .56, .87, .86], [.94, '#cfeedd', .34, '#cfd8ff', .32, .95, .92], [1, '#d8f3e4', .34, '#cfd8ff', .2, 1, .96],
+  ].map((k) => [k[0], hex(k[1]), k[2], hex(k[3]), k[4], k[5], k[6]]);
+  const WORDS = [0, .14, .4, .56, .66, .9], SET = .58;
+  let t = .05, word = -1, W = 0, H = 0, px = 0, py = 0, tx = 0, ty = 0;
+  const size = () => { W = el.clientWidth; H = el.clientHeight; };
+  const draw = () => {
+    let i = 1; while (i < KEYS.length - 1 && t > KEYS[i][0]) i++; const a = KEYS[i - 1], b = KEYS[i], k = clamp((t - a[0]) / (b[0] - a[0]));
+    const col = (x, y, al) => `rgb(${x.map((v, j) => Math.round(mix(v, y[j], k))).join(' ')} / ${al.toFixed(3)})`;
+    el.style.setProperty('--soft', col(a[1], b[1], mix(a[2], b[2], k))); el.style.setProperty('--mul', col(a[3], b[3], mix(a[4], b[4], k)));
+    el.style.setProperty('--br', mix(a[5], b[5], k).toFixed(3)); el.style.setProperty('--sa', mix(a[6], b[6], k).toFixed(3));
+    // today's sun crosses and goes down; before dawn tomorrow's glows under the edge, then rises
+    let u = -1, o = 0; if (t <= SET) { u = t / SET; o = 1; } else if (t > .9) { u = 0; o = (t - .9) / .1; }
+    if (u < 0) { sun.style.opacity = 0; } else {
+      const e = Math.sin(Math.PI * u), x = W * mix(-.06, 1.06, u), y = H * (1.1 - e * .98) + (1 - o) * H * .3;
+      sun.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${mix(1.15, .8, e).toFixed(3)})`;
+      sun.style.opacity = (o * mix(.95, .5, e) * clamp(u * 14) * clamp((1 - u) * 14)).toFixed(3);
+      sun.style.setProperty('--sc', e > .5 ? '255 232 196' : u > .5 ? '255 176 112' : '255 214 170');
+    }
+    let w = 0; while (w < WORDS.length - 1 && t >= WORDS[w + 1]) w++;
+    if (w !== word) { words.forEach((s, j) => { s.classList.toggle('is-on', j === w); s.classList.toggle('is-off', j < w); }); word = w; }
+    img.style.transform = `translate3d(${(-px * 1.2).toFixed(2)}%, ${(-py * 1).toFixed(2)}%, 0)`;
+  };
+  size();
+  if (reduce) { t = .2; draw(); addEventListener('resize', () => { size(); draw(); }); return; }
+  let raf = 0, seen = true, last = 0, hold = 0, x0 = null, tAt = 0;
+  const frame = (now) => { raf = 0; const dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
+    if (now > hold) t = (t + dt / 22) % 1; px += (tx - px) * .05; py += (ty - py) * .05; draw(); if (seen) raf = requestAnimationFrame(frame); };
+  const ask = () => { if (!raf) { last = 0; raf = requestAnimationFrame(frame); } };
+  el.addEventListener('pointerdown', (e) => { if (e.target.closest('a, button')) return; x0 = e.clientX; tAt = t; el.classList.add('is-drag'); });
+  addEventListener('pointermove', (e) => { const r = el.getBoundingClientRect(); tx = clamp((e.clientX - r.left) / r.width * 2 - 1, -1, 1); ty = clamp((e.clientY - r.top) / r.height * 2 - 1, -1, 1);
+    if (x0 != null) { t = (((tAt + (e.clientX - x0) / (W * 1.3)) % 1) + 1) % 1; hold = performance.now() + 2500; } }, { passive: true });
+  const end = () => { x0 = null; el.classList.remove('is-drag'); }; addEventListener('pointerup', end); addEventListener('pointercancel', end);
+  addEventListener('resize', size);
+  new IntersectionObserver(([e]) => { seen = e.isIntersecting; if (seen) ask(); }).observe(el);
+  el.__ak = { set: (v) => { t = v; hold = 1e15; } };
+  ask();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "About · a day on skin",
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}
