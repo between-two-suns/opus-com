@@ -1,0 +1,218 @@
+{%- comment -%}
+  About hero prototype G · "One day of light" (demo only, /pages/about?view=set).
+  A sunlit still life, rendered live (three.js). The four packs stand on a stone ledge in front of a plaster wall
+  with the name painted on it. A real light moves through one whole day: today's sun rises low and warm from one
+  side, climbs, crosses and sets on the other; the blue hour, with a warm lamp; then tomorrow's sun rises. Because
+  the light is real, so is everything it does: the packs' shadows swing across the wall and over the name, stretch
+  long at the ends of the day, palm shadows drift in the breeze, the stone and the wall warm and cool. It plays
+  slowly by itself; drag sideways to move the sun. One screen, nothing pinned, no running clock.
+  No WebGL, or reduced motion: a still picture of the morning (the packs and the name), no script.
+  Prototype: English only; three.js is loaded from cdnjs for the demo.
+{%- endcomment -%}
+<style>
+.at { position: relative; margin-block-start: calc(-1 * var(--header-h)); block-size: 100svh; min-block-size: 560px; overflow: clip; isolation: isolate; background: #efe7da; color: var(--c-ink); touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.at.is-drag { cursor: grabbing; }
+.at[data-dark] { color: #fff; }
+.at-gl { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; z-index: -1; opacity: 0; transition: opacity 1.2s ease; }
+.at.is-live .at-gl { opacity: 1; }
+.at-still { position: absolute; inset: 0; z-index: -2; display: grid; align-content: center; justify-items: center; gap: 4svh; padding-block-start: var(--header-h); transition: opacity .8s ease; }
+.at.is-live .at-still { opacity: 0; }
+.at-still h1 { margin: 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .9; font-size: clamp(64px, 11vw, 200px); text-align: center; }
+.at-still ul { margin: 0; padding: 0; list-style: none; display: flex; align-items: flex-end; gap: 12px; block-size: 30svh; }
+.at-still li { block-size: calc(var(--h) * 100%); aspect-ratio: 357 / 1100; } .at-still img { inline-size: 100%; block-size: 100%; object-fit: contain; object-position: bottom; }
+.at-eyebrow { position: absolute; inset-inline-end: var(--gutter); inset-block-start: calc(var(--header-h) + 4svh); margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; transition: color .6s; }
+.at-cap { position: absolute; inset-inline-start: var(--gutter); inset-block-end: calc(var(--dock-h, 0px) + clamp(18px, 4svh, 44px)); margin: 0; display: grid; gap: 8px; max-inline-size: 30ch; transition: color .6s; pointer-events: none; }
+.at-now { display: inline-flex; align-items: baseline; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+.at-now b { font-family: var(--font-display); font-size: 26px; letter-spacing: .03em; font-variant-numeric: tabular-nums; }
+.at-lines { display: grid; margin: 0; padding: 0; list-style: none; }
+.at-lines li { grid-area: 1 / 1; font-size: clamp(17px, 1.5vw, 23px); line-height: 1.32; font-weight: 520; letter-spacing: -.01em; opacity: 0; translate: 0 8px; transition: opacity .7s ease, translate .8s cubic-bezier(.2, .75, .2, 1); text-wrap: balance; }
+.at-lines li.is-on { opacity: 1; translate: 0 0; }
+.at-hint { position: absolute; inset-inline-end: var(--gutter); inset-block-end: calc(var(--dock-h, 0px) + clamp(18px, 4svh, 44px)); margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .75; pointer-events: none; transition: color .6s; }
+@media (max-width: 749px) {
+  .at { margin-block-start: 0; block-size: calc(100svh - var(--header-h)); }
+  .at-eyebrow { display: none; }
+  .at-cap { inset-inline: 18px; max-inline-size: none; justify-items: center; text-align: center; inset-block-end: calc(var(--dock-h, 0px) + 12px); }
+  .at-lines li { font-size: 15px; }
+  .at-hint { display: none; }
+}
+</style>
+<section class="at" data-at aria-labelledby="AtTitle-{{ section.id }}"
+  data-three="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"
+  data-packs="{{ 'cut-daily-reset-cleanser.webp' | asset_url }}|{{ 'cut-clarity-serum.webp' | asset_url }}|{{ 'cut-daily-barrier-moisturizing-cream.webp' | asset_url }}|{{ 'cut-daily-defense-sunscreen-spf-50.webp' | asset_url }}">
+  <canvas class="at-gl" aria-hidden="true"></canvas>
+  <div class="at-still">
+    <h1 id="AtTitle-{{ section.id }}">Between<br>two suns</h1>
+    <ul role="list" aria-hidden="true">
+      <li style="--h: 1"><img src="{{ 'cut-daily-reset-cleanser.webp' | asset_url }}" alt=""></li><li style="--h: .65"><img src="{{ 'cut-clarity-serum.webp' | asset_url }}" alt=""></li><li style="--h: .81"><img src="{{ 'cut-daily-barrier-moisturizing-cream.webp' | asset_url }}" alt=""></li><li style="--h: .81"><img src="{{ 'cut-daily-defense-sunscreen-spf-50.webp' | asset_url }}" alt=""></li>
+    </ul>
+  </div>
+  <p class="at-eyebrow">About</p>
+  <div class="at-cap">
+    <p class="at-now" style="margin: 0" aria-hidden="true"><b data-time>06:00</b><span data-now>Today’s sun</span></p>
+    <ol class="at-lines" role="list">
+      <li class="is-on">Two suns: today’s, and tomorrow’s.</li>
+      <li>Between them, a whole day happens to your skin.</li>
+      <li>Then the night, and the second half of the routine.</li>
+      <li>That space between is what we make skincare for.</li>
+    </ol>
+  </div>
+  <p class="at-hint" aria-hidden="true">Drag to move the sun</p>
+</section>
+<script>
+(() => {
+  const el = document.currentScript.previousElementSibling; if (!el || !el.matches('[data-at]')) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const probe = document.createElement('canvas'); if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) return;
+  const s = document.createElement('script'); s.src = el.dataset.three; s.async = true; s.onload = () => { try { boot(); } catch (e) { console.warn('about-set', e); } }; document.head.appendChild(s);
+
+  function boot() {
+    const T = window.THREE, cv = el.querySelector('.at-gl');
+    const renderer = new T.WebGLRenderer({ canvas: cv, antialias: true, powerPreference: 'high-performance' });
+    renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.VSMShadowMap;
+    renderer.toneMapping = T.ACESFilmicToneMapping; renderer.outputColorSpace = T.SRGBColorSpace;
+    const scene = new T.Scene(), cam = new T.PerspectiveCamera(28, 1, .1, 60);
+    const rnd = (() => { let a = 7; return () => ((a = (a * 16807) % 2147483647) / 2147483647); })();
+
+    /* ---- surfaces, painted in a canvas: plaster wall (with the name on it) and a travertine ledge ---- */
+    const WALL = { w: 8, h: 4, cx: 0, cy: 1 }, wallCv = document.createElement('canvas'); wallCv.width = 4096; wallCv.height = 2048;
+    const wallTex = new T.CanvasTexture(wallCv); wallTex.colorSpace = T.SRGBColorSpace; wallTex.anisotropy = 8;
+    const paintWall = (portrait) => {
+      const c = wallCv.getContext('2d'), W = wallCv.width, H = wallCv.height, u = W / WALL.w;
+      c.fillStyle = '#f7f2e9'; c.fillRect(0, 0, W, H);
+      for (let i = 0; i < 90; i++) { const x = rnd() * W, y = rnd() * H, r = 120 + rnd() * 520, g = c.createRadialGradient(x, y, 0, x, y, r); const d = rnd() > .5; g.addColorStop(0, d ? 'rgba(120,96,70,.05)' : 'rgba(255,252,246,.09)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(x - r, y - r, 2 * r, 2 * r); }
+      for (let i = 0; i < 26000; i++) { c.fillStyle = rnd() > .5 ? 'rgba(110,90,70,.05)' : 'rgba(255,255,255,.07)'; const z = .6 + rnd() * 2.4; c.fillRect(rnd() * W, rnd() * H, z, z); }
+      // the name, painted on the wall
+      const box = portrait ? { x0: -1.02, x1: 1.02, top: 1.98 } : { x0: -1.74, x1: -.02, top: 1.6 };
+      const toX = (x) => (x - (WALL.cx - WALL.w / 2)) * u, toY = (y) => (WALL.cy + WALL.h / 2 - y) * u;
+      c.fillStyle = '#20233a'; c.textBaseline = 'alphabetic';
+      let F = 400; c.font = `700 ${F}px 'BTS Display', 'Arial Narrow', sans-serif`;
+      const bw = (box.x1 - box.x0) * u; F *= bw / c.measureText('TWO SUNS').width; c.font = `700 ${F}px 'BTS Display', 'Arial Narrow', sans-serif`;
+      const cap = c.measureText('E').actualBoundingBoxAscent, gap = cap * .11;
+      ['BETWEEN', 'TWO SUNS'].forEach((t, i) => { const w = c.measureText(t).width; c.save(); c.translate(toX(box.x0), toY(box.top) + cap + i * (cap + gap)); c.scale(bw / w, 1); c.fillText(t, 0, 0); c.restore(); });
+      // paint is never perfectly even
+      c.globalCompositeOperation = 'source-atop'; for (let i = 0; i < 9000; i++) { c.fillStyle = 'rgba(247,242,233,.10)'; const z = 1 + rnd() * 2.6; c.fillRect(toX(box.x0) + rnd() * bw, toY(box.top) + rnd() * (2 * cap + gap), z, z); } c.globalCompositeOperation = 'source-over';
+      wallTex.needsUpdate = true;
+    };
+    const wall = new T.Mesh(new T.PlaneGeometry(WALL.w, WALL.h), new T.MeshStandardMaterial({ map: wallTex, roughness: .96, metalness: 0 }));
+    wall.position.set(WALL.cx, WALL.cy, -.62); wall.receiveShadow = true; scene.add(wall);
+    const stoneCv = document.createElement('canvas'); stoneCv.width = 2048; stoneCv.height = 1024;
+    { const c = stoneCv.getContext('2d'), W = 2048, H = 1024; c.fillStyle = '#e3d5bf'; c.fillRect(0, 0, W, H);
+      for (let i = 0; i < 260; i++) { const y = rnd() * H; c.strokeStyle = rnd() > .5 ? `rgba(150,120,86,${.03 + rnd() * .06})` : `rgba(255,250,240,${.04 + rnd() * .08})`; c.lineWidth = 1 + rnd() * 7; c.beginPath(); c.moveTo(0, y); for (let x = 0; x <= W; x += 128) c.lineTo(x, y + Math.sin(x / 200 + i) * 6 + (rnd() - .5) * 5); c.stroke(); }
+      for (let i = 0; i < 900; i++) { c.fillStyle = `rgba(120,96,70,${.05 + rnd() * .12})`; c.beginPath(); c.ellipse(rnd() * W, rnd() * H, 1 + rnd() * 7, .6 + rnd() * 2.2, 0, 0, 7); c.fill(); } }
+    const stoneTex = new T.CanvasTexture(stoneCv); stoneTex.colorSpace = T.SRGBColorSpace; stoneTex.anisotropy = 8;
+    const ledge = new T.Mesh(new T.BoxGeometry(8, .6, 3.2), new T.MeshStandardMaterial({ map: stoneTex, roughness: .82, metalness: 0 }));
+    ledge.position.set(0, -.3, .9); ledge.receiveShadow = true; scene.add(ledge);
+
+    /* ---- the packs: the store's own cut-outs, given a round body so the light wraps and glints ---- */
+    const packs = new T.Group(); scene.add(packs);
+    const HS = [1, .65, .81, .81], PH = .64, loader = new T.TextureLoader(); loader.setCrossOrigin('anonymous');
+    let pending = 4, ready = false;
+    el.dataset.packs.split('|').forEach((url, i) => {
+      const im = new Image(); im.crossOrigin = 'anonymous';
+      im.onload = () => {
+        const w = im.naturalWidth, h = im.naturalHeight, a = document.createElement('canvas'); a.width = w; a.height = h; const ac = a.getContext('2d'); ac.drawImage(im, 0, 0);
+        const src = ac.getImageData(0, 0, w, h).data, n = document.createElement('canvas'); n.width = w; n.height = h; const nc = n.getContext('2d'), out = nc.createImageData(w, h);
+        for (let y = 0; y < h; y++) { let l = -1, r = -1; for (let x = 0; x < w; x++) if (src[(y * w + x) * 4 + 3] > 40) { if (l < 0) l = x; r = x; }
+          for (let x = 0; x < w; x++) { const k = (y * w + x) * 4; let nx = 0; if (l >= 0 && r > l) nx = Math.max(-1, Math.min(1, ((x - l) / (r - l)) * 2 - 1)) * .94; const nz = Math.sqrt(1 - nx * nx); out.data[k] = (nx * .5 + .5) * 255; out.data[k + 1] = 128; out.data[k + 2] = (nz * .5 + .5) * 255; out.data[k + 3] = 255; } }
+        nc.putImageData(out, 0, 0);
+        const map = new T.CanvasTexture(a); map.colorSpace = T.SRGBColorSpace; map.anisotropy = 8; const nm = new T.CanvasTexture(n);
+        const ph = PH * HS[i], pw = ph * w / h;
+        const m = new T.Mesh(new T.PlaneGeometry(pw, ph), new T.MeshStandardMaterial({ map, normalMap: nm, normalScale: new T.Vector2(1.15, 1.15), alphaTest: .5, roughness: .38, metalness: 0, side: T.DoubleSide }));
+        m.castShadow = true; m.userData = { i, pw, ph }; packs.add(m);
+        // where each pack meets the stone
+        const blob = new T.Mesh(new T.PlaneGeometry(pw * 1.7, pw * .7), new T.MeshBasicMaterial({ map: blobTex, transparent: true, depthWrite: false, opacity: .5 })); blob.rotation.x = -Math.PI / 2; blob.userData = { blobOf: i }; packs.add(blob);
+        if (!--pending) { ready = true; layout(); el.classList.add('is-live'); }
+      };
+      im.src = url;
+    });
+    const blobCv = document.createElement('canvas'); blobCv.width = blobCv.height = 128; { const c = blobCv.getContext('2d'), g = c.createRadialGradient(64, 64, 4, 64, 64, 62); g.addColorStop(0, 'rgba(40,30,22,.75)'); g.addColorStop(1, 'rgba(40,30,22,0)'); c.fillStyle = g; c.fillRect(0, 0, 128, 128); }
+    const blobTex = new T.CanvasTexture(blobCv);
+
+    /* ---- palm shadows: fronds that hang between the sun and the wall, seen only as their shadows ---- */
+    const frondCv = document.createElement('canvas'); frondCv.width = frondCv.height = 512;
+    { const c = frondCv.getContext('2d'); c.translate(256, 500); c.strokeStyle = '#000'; c.fillStyle = '#000'; c.lineCap = 'round';
+      c.lineWidth = 7; c.beginPath(); c.moveTo(0, 0); c.quadraticCurveTo(-30, -250, 40, -470); c.stroke();
+      for (let i = 0; i < 26; i++) { const k = i / 25, y = -30 - k * 430, x = -30 * Math.sin(k * 2.2) + k * k * 40, len = 190 * Math.sin(Math.PI * (.12 + k * .85)) + 30;
+        [-1, 1].forEach((sd) => { c.save(); c.translate(x, y); c.rotate(sd * (1.02 - k * .5) + .12); c.beginPath(); c.moveTo(0, 0); c.quadraticCurveTo(len * .5, -9, len, 3); c.quadraticCurveTo(len * .5, 12, 0, 5); c.fill(); c.restore(); }); } }
+    const frondTex = new T.CanvasTexture(frondCv);
+    const gobo = new T.Group(); scene.add(gobo); const fronds = [];
+    [[-1.5, 1.2, 0, 2.3, .5], [-.55, 1.55, .12, 2.0, -.35], [.5, 1.35, -.1, 2.2, .2], [1.5, 1.6, .2, 1.9, -.6], [-2.3, .6, 0, 1.8, 1.1]].forEach(([x, y, z, sz, rot], i) => {
+      const m = new T.Mesh(new T.PlaneGeometry(sz, sz), new T.MeshBasicMaterial({ map: frondTex, alphaTest: .5, side: T.DoubleSide, colorWrite: false, depthWrite: false }));
+      m.position.set(x, y, z); m.rotation.z = rot; m.castShadow = true; m.userData = { rot, ph: i * 1.7 }; gobo.add(m); fronds.push(m);
+    });
+
+    /* ---- the light ---- */
+    const sun = new T.DirectionalLight(0xffffff, 3); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.radius = 7; sun.shadow.blurSamples = 14; sun.shadow.bias = -.0004;
+    const sc = sun.shadow.camera; sc.left = -3.4; sc.right = 3.4; sc.top = 3.2; sc.bottom = -1.6; sc.near = .5; sc.far = 16; scene.add(sun, sun.target);
+    const hemi = new T.HemisphereLight(0xdfe9ff, 0xe6d6bd, .9); scene.add(hemi);
+    const lamp = new T.PointLight(0xffb776, 0, 9, 1.6); lamp.position.set(2.6, 1.1, 1.6); scene.add(lamp);
+    const bounce = new T.DirectionalLight(0xfff1dc, .25); bounce.position.set(0, .6, 5); scene.add(bounce);
+
+    let W = 0, H = 0, portrait = null, focus = new T.Vector3(0, .62, 0), packX = 1;
+    const layout = () => {
+      let x = packX / packs.scale.x - packs.children.filter((m) => m.userData.pw).reduce((a, m) => a + m.userData.pw + .05, -.05) / 2;
+      [0, 1, 2, 3].forEach((i) => { const m = packs.children.find((c) => c.userData.i === i), b = packs.children.find((c) => c.userData.blobOf === i); if (!m) return; m.position.set(x + m.userData.pw / 2, m.userData.ph / 2, .3); if (b) b.position.set(m.position.x, .004, .33); x += m.userData.pw + .05; });
+    };
+    const size = () => {
+      W = el.clientWidth; H = el.clientHeight; renderer.setPixelRatio(Math.min(devicePixelRatio || 1, W < 750 ? 2 : 1.6)); renderer.setSize(W, H, false);
+      const p = W / H < .9; cam.aspect = W / H;
+      if (p) { const need = 2.3 / cam.aspect; cam.fov = 2 * Math.atan(need / 2 / 5.0) * 180 / Math.PI; focus.set(0, .47, 0); packX = 0; packs.scale.setScalar(1.45); } else { cam.fov = 28; focus.set(0, .66, 0); packX = 1.02; packs.scale.setScalar(1); }
+      cam.updateProjectionMatrix(); if (p !== portrait) { portrait = p; paintWall(p); } if (ready) layout();
+    };
+
+    /* ---- the day: 0 sunrise → .58 sunset → blue hour → 1 the next sunrise ---- */
+    const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), mix = (a, b, k) => a + (b - a) * k, sm = (a, b, v) => { const k = clamp((v - a) / (b - a)); return k * k * (3 - 2 * k); };
+    const cWarm = new T.Color(0xffb26a), cNoon = new T.Color(0xfff8ee), cSkyD = new T.Color(0xeaf0ff), cSkyN = new T.Color(0x93a2ee), cGrD = new T.Color(0xf0e6d6), cGrN = new T.Color(0x6a70b4), tmp = new T.Color();
+    const SET = .58, lines = [...el.querySelectorAll('.at-lines li')], timeEl = el.querySelector('[data-time]'), nowEl = el.querySelector('[data-now]');
+    const STORY = [[0, '06:00', 'Today’s sun', 0], [.1, '13:00', 'Out in the day', 1], [.46, '18:00', 'Evening', 1], [.6, '22:00', 'Night', 2], [.9, '06:00', 'Tomorrow’s sun', 3]];
+    let t = .03, step = -1, px = 0, py = 0;
+    const apply = (now) => {
+      const day = t < SET ? t / SET : -1, dawn = t > .9 ? (t - .9) / .1 : -1;
+      // the sun's place in the sky: low and to one side at the ends of the day, high in the middle; always a little toward us, so shadows fall on the wall
+      let a = day >= 0 ? mix(.06, .94, day) * Math.PI : dawn >= 0 ? mix(.02, .06, dawn) * Math.PI : 0;
+      const elev = Math.sin(a), up = day >= 0 ? sm(0, .05, day) * (1 - sm(.93, 1, day)) : dawn >= 0 ? sm(0, 1, dawn) * .4 : 0;
+      const dir = new T.Vector3(-Math.cos(a) * 1.05, .16 + elev * .95, .62).normalize();
+      sun.position.copy(focus).addScaledVector(dir, 7); sun.target.position.copy(focus); sun.target.updateMatrixWorld();
+      sun.color.copy(cWarm).lerp(cNoon, clamp(elev * 1.5)); sun.intensity = 4.3 * up * mix(.8, 1, elev);
+      const night = 1 - clamp(up * 3 + (day >= 0 ? 0 : 0)), nk = day >= 0 ? sm(.9, 1, day) : dawn >= 0 ? 1 - sm(0, .8, dawn) : 1;
+      hemi.color.copy(cSkyD).lerp(cSkyN, nk); hemi.groundColor.copy(cGrD).lerp(cGrN, nk); hemi.intensity = mix(1.25, 1.05, nk);
+      lamp.intensity = 2.2 * sm(.35, 1, nk); bounce.intensity = mix(.4, .22, nk);
+      renderer.toneMappingExposure = mix(1.12, 1.0, nk);
+      // the fronds hang between the sun and the wall, and move a little in the air
+      gobo.position.copy(focus).addScaledVector(dir, 2.7); gobo.lookAt(sun.position);
+      fronds.forEach((f) => { f.rotation.z = f.userData.rot + Math.sin(now / 1700 + f.userData.ph) * .07 + Math.sin(now / 610 + f.userData.ph * 2) * .02; });
+      
+      el.toggleAttribute('data-dark', nk > .8);
+      let k = 0; while (k < STORY.length - 1 && t >= STORY[k + 1][0]) k++;
+      if (k !== step) { step = k; timeEl.textContent = STORY[k][1]; nowEl.textContent = STORY[k][2]; lines.forEach((li, i) => li.classList.toggle('is-on', i === STORY[k][3])); }
+      cam.position.set(px * .16, focus.y + .02 - py * .06, portrait ? 5.0 : 4.25); cam.lookAt(focus.x + px * .05, focus.y, 0);
+    };
+    let raf = 0, seen = true, last = 0, hold = 0, tx = 0, ty = 0;
+    const frame = (now) => {
+      raf = 0; const dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
+      if (now > hold) t = (t + dt / 26) % 1;
+      px += (tx - px) * .05; py += (ty - py) * .05;
+      if (ready) { apply(now); renderer.render(scene, cam); }
+      if (seen) raf = requestAnimationFrame(frame);
+    };
+    const ask = () => { if (!raf) { last = 0; raf = requestAnimationFrame(frame); } };
+    let x0 = null, tAt = 0;
+    el.addEventListener('pointerdown', (e) => { if (e.target.closest('a, button')) return; x0 = e.clientX; tAt = t; el.classList.add('is-drag'); });
+    addEventListener('pointermove', (e) => { const r = el.getBoundingClientRect(); tx = clamp((e.clientX - r.left) / r.width * 2 - 1, -1, 1); ty = clamp((e.clientY - r.top) / r.height * 2 - 1, -1, 1);
+      if (x0 != null) { t = (((tAt + (e.clientX - x0) / (W * 1.4)) % 1) + 1) % 1; hold = performance.now() + 2500; } }, { passive: true });
+    const end = () => { x0 = null; el.classList.remove('is-drag'); }; addEventListener('pointerup', end); addEventListener('pointercancel', end);
+    addEventListener('resize', size);
+    new IntersectionObserver(([e]) => { seen = e.isIntersecting; if (seen) ask(); }).observe(el);
+    const go = () => { size(); ask(); };
+    (document.fonts && document.fonts.load ? document.fonts.load("700 100px 'BTS Display'").catch(() => {}) : Promise.resolve()).then(go);
+    el.__at = { set: (v) => { t = v; hold = 1e15; } };
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "About · one day of light",
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}
