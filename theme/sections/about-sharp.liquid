@@ -1,0 +1,123 @@
+{%- comment -%}
+  About hero prototype K · "The sky in the name" (demo only, /pages/about?view=sharp).
+  Same idea as J, rebuilt so nothing can pixelate: the name is real type (not an image), in its true proportions
+  (no stretching), as large as the screen allows, on a white page. The sky lives inside the letters as vector
+  gradients: blue at midday, orange and pink as today's sun goes down, violet dusk, a deep blue night, then dawn.
+  One sharp sun crosses behind the name, seen only through the letters. The name rises in on load. It plays slowly
+  by itself; drag sideways to move the day. One screen, nothing pinned, no packs, no shadows, no clock.
+  Reduced motion: a still midday. Prototype: English only.
+{%- endcomment -%}
+<style>
+.as2 { position: relative; margin-block-start: calc(-1 * var(--header-h)); block-size: 100svh; min-block-size: 560px; overflow: clip; background: #fff; color: var(--c-ink); touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.as2.is-drag { cursor: grabbing; }
+.as2-title { position: absolute; inset: 0; margin: 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: 1; -webkit-font-smoothing: antialiased; pointer-events: none; visibility: hidden; }
+.as2.is-ready .as2-title { visibility: visible; }
+.as2-row { position: absolute; left: 0; overflow: hidden; white-space: nowrap; }
+/* each line is a window onto the same sky: one sun, one horizon, drawn as gradients so the edges stay sharp at any size */
+.as2-l { display: block; white-space: nowrap; color: transparent; -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text; background-repeat: no-repeat;
+  background-image:
+    radial-gradient(circle at var(--sx) var(--sy), #fffdf2 0, #fffdf2 calc(var(--sr) - 1px), rgb(var(--sc) / .9) var(--sr), rgb(var(--sc) / .42) calc(var(--sr) * 1.9), rgb(var(--sc) / 0) calc(var(--sr) * 6.5)),
+    radial-gradient(ellipse 120% 70% at var(--sx) 104%, rgb(var(--sc) / var(--hg)), rgb(var(--sc) / 0) 70%),
+    linear-gradient(to bottom, var(--zen), var(--mid) 55%, var(--hor));
+  background-size: var(--bw) var(--bh); background-position: var(--bx) var(--by);
+  transform: translateY(104%); transition: transform 1.3s cubic-bezier(.16, .8, .2, 1); transition-delay: calc(.08s + var(--i) * .11s); }
+.as2.is-in .as2-l { transform: none; }
+.as2-foot { position: absolute; inset-inline: var(--gutter); inset-block-end: calc(var(--dock-h, 0px) + clamp(16px, 3.4svh, 36px)); display: flex; justify-content: space-between; align-items: end; gap: 24px; pointer-events: none; opacity: 0; transition: opacity .9s ease .9s; }
+.as2.is-in .as2-foot { opacity: 1; }
+.as2-now { margin: 0; display: grid; gap: 6px; }
+.as2-word { display: grid; overflow: hidden; font-size: 12px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
+.as2-word span { grid-area: 1 / 1; translate: 0 110%; opacity: 0; transition: translate .7s cubic-bezier(.2, .75, .2, 1), opacity .5s ease; }
+.as2-word span.is-on { translate: 0 0; opacity: 1; } .as2-word span.is-off { translate: 0 -110%; }
+.as2-line { font-size: clamp(16px, 1.4vw, 21px); line-height: 1.3; font-weight: 520; letter-spacing: -.01em; max-inline-size: 44ch; text-wrap: balance; }
+.as2-hint { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .7; white-space: nowrap; }
+@media (max-width: 749px) {
+  .as2 { margin-block-start: 0; block-size: calc(100svh - var(--header-h)); }
+  .as2-foot { inset-inline: 16px; inset-block-end: calc(var(--dock-h, 76px) + 14px); }
+  .as2-line { font-size: 15px; max-inline-size: 30ch; } .as2-hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .as2-l { transform: none; transition: none; } .as2-foot { opacity: 1; transition: none; } .as2-word span { transition: none; } }
+</style>
+<section class="as2" data-as2 aria-labelledby="As2Title-{{ section.id }}">
+  <h1 class="as2-title" id="As2Title-{{ section.id }}" aria-label="Between two suns"></h1>
+  <div class="as2-foot">
+    <p class="as2-now"><span class="as2-word" aria-hidden="true"><span class="is-on">Morning</span><span>Midday</span><span>Golden hour</span><span>Dusk</span><span>Night</span><span>Tomorrow’s sun</span></span><span class="as2-line">A whole day happens to your skin between today’s sun and tomorrow’s.</span></p>
+    <p class="as2-hint" aria-hidden="true">Drag to move the day</p>
+  </div>
+</section>
+<script>
+(() => {
+  const el = document.currentScript.previousElementSibling; if (!el || !el.matches('[data-as2]')) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const title = el.querySelector('.as2-title'), words = [...el.querySelectorAll('.as2-word span')];
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), mix = (a, b, k) => a + (b - a) * k, sm = (a, b, v) => { const k = clamp((v - a) / (b - a)); return k * k * (3 - 2 * k); };
+  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  let W = 0, H = 0, lines = [];
+  // the name in its true proportions, as large as the screen allows; the lines are evened out with letter-spacing only when the difference is small
+  const layout = () => {
+    W = el.clientWidth; H = el.clientHeight; const phone = W < 750, css = getComputedStyle(document.documentElement);
+    const hdr = phone ? 0 : parseFloat(css.getPropertyValue('--header-h')) || 76, dock = parseFloat(css.getPropertyValue('--dock-h')) || (phone ? 76 : 0);
+    const texts = phone ? ['Between', 'Two', 'Suns'] : ['Between', 'Two suns'], side = phone ? 16 : Math.max(28, W * .03);
+    const top = hdr + (phone ? 18 : H * .035), bottom = H - dock - (phone ? 112 : Math.max(104, H * .14)), gapK = .1;
+    const cx = document.createElement('canvas').getContext('2d'); cx.font = "700 400px 'BTS Display', 'Arial Narrow', sans-serif";
+    const cap = cx.measureText('E').actualBoundingBoxAscent / 400, nat = texts.map((t) => cx.measureText(t.toUpperCase()).width / 400);
+    const byH = (bottom - top) / (texts.length * cap + (texts.length - 1) * cap * gapK), byW = (W - 2 * side) / Math.max(...nat), F = Math.min(byH, byW), capH = F * cap, gap = capH * gapK;
+    const blockH = texts.length * capH + (texts.length - 1) * gap, y0 = top + Math.max(0, (bottom - top - blockH) * (phone ? .35 : .5));
+    title.textContent = ''; lines = [];
+    texts.forEach((t, i) => {
+      const row = document.createElement('span'), l = document.createElement('span'); row.className = 'as2-row'; l.className = 'as2-l'; l.textContent = t; l.style.setProperty('--i', i); row.setAttribute('aria-hidden', 'true');
+      const w = nat[i] * F, slack = (W - 2 * side) - w, n = t.length - 1, ls = slack > 0 && slack / (W - 2 * side) < .07 ? slack / n : 0;
+      // the row is exactly the capitals' height, so the mask for the rise-in hugs the letters
+      const asc = F * .5 + capH / 2, y = y0 + i * (capH + gap);
+      l.style.cssText += `font-size:${F.toFixed(2)}px;letter-spacing:${ls.toFixed(2)}px;line-height:${F.toFixed(2)}px;margin-top:${(capH - asc - F * .0).toFixed(2)}px;`;
+      row.style.cssText = `left:${side}px;top:${y.toFixed(2)}px;height:${(capH + 1).toFixed(2)}px;width:${(W - side).toFixed(2)}px;`;
+      row.appendChild(l); title.appendChild(row); lines.push({ l, x: side, y, capH });
+    });
+    // put each line's capitals exactly on its row (measured, so it is right for this font on this browser)
+    lines.forEach((o) => { const r = document.createRange(); r.selectNodeContents(o.l); const b = o.l.getBoundingClientRect(), s = el.getBoundingClientRect();
+      cx.font = `700 ${F}px 'BTS Display', 'Arial Narrow', sans-serif`; const m = cx.measureText('E'), fa = m.fontBoundingBoxAscent || F * .9, fd = m.fontBoundingBoxDescent || F * .2;
+      const base = (F - (fa + fd)) / 2 + fa; o.l.style.marginTop = (o.capH - base).toFixed(2) + 'px';
+      o.l.style.setProperty('--bw', W + 'px'); o.l.style.setProperty('--bh', H + 'px'); o.l.style.setProperty('--bx', (-o.x) + 'px'); o.l.style.setProperty('--by', (-(o.y + (o.capH - base))) + 'px'); });
+  };
+  // the day, 0–1: [time, overhead, middle, horizon, sun colour, glow on the horizon]
+  const KEYS = [
+    [0, '#6f9fe8', '#a9c4f2', '#ffb99c', '#ffb07a', .5], [.1, '#3f8ff0', '#6fb0f6', '#a9d4fb', '#ffe6bc', .2], [.3, '#2f84f0', '#58a3f5', '#93c9fa', '#fff0d0', .1],
+    [.44, '#4f84e6', '#a79ad8', '#ffb46e', '#ffa85a', .55], [.54, '#6f62d2', '#d98aa8', '#ff8259', '#ff7a45', .8], [.62, '#4547b4', '#8f6fc4', '#f08fa8', '#ff9484', .5],
+    [.74, '#1f2f8a', '#3445a8', '#5a6dd4', '#9fb0ff', .12], [.86, '#293b9a', '#4a5cbc', '#7c8ce0', '#b9c4ff', .2], [.95, '#5a86dc', '#a2b4ea', '#ffb199', '#ffac78', .5], [1, '#6f9fe8', '#a9c4f2', '#ffb99c', '#ffb07a', .5],
+  ].map((k) => [k[0], hex(k[1]), hex(k[2]), hex(k[3]), hex(k[4]), k[5]]);
+  const WORDS = [0, .14, .4, .56, .66, .9], SET = .58;
+  let t = .2, word = -1;
+  const draw = () => {
+    let i = 1; while (i < KEYS.length - 1 && t > KEYS[i][0]) i++; const a = KEYS[i - 1], b = KEYS[i], k = clamp((t - a[0]) / (b[0] - a[0]));
+    const c = (x, y) => x.map((v, j) => Math.round(mix(v, y[j], k)));
+    const zen = c(a[1], b[1]), mid = c(a[2], b[2]), hor = c(a[3], b[3]), sc = c(a[4], b[4]), hg = mix(a[5], b[5], k);
+    // today's sun crosses behind the name and goes down; tomorrow's comes up where today's began
+    let u, lift = 0; if (t <= SET) u = t / SET; else if (t > .9) { u = 0; lift = 1 - (t - .9) / .1; } else { u = 1; lift = sm(SET, SET + .04, t); }
+    const e = Math.sin(Math.PI * u), sx = W * mix(.05, .95, u), sy = H * (1.02 - e * .8) + lift * H * .2, sr = Math.max(26, Math.min(W, H) * .052) * mix(1.25, 1, e);
+    el.style.setProperty('--zen', `rgb(${zen})`); el.style.setProperty('--mid', `rgb(${mid})`); el.style.setProperty('--hor', `rgb(${hor})`); el.style.setProperty('--sc', sc.join(' ')); el.style.setProperty('--hg', hg.toFixed(3));
+    el.style.setProperty('--sx', sx.toFixed(1) + 'px'); el.style.setProperty('--sy', sy.toFixed(1) + 'px'); el.style.setProperty('--sr', sr.toFixed(1) + 'px');
+    let w = 0; while (w < WORDS.length - 1 && t >= WORDS[w + 1]) w++; if (w !== word) { words.forEach((s, j) => { s.classList.toggle('is-on', j === w); s.classList.toggle('is-off', j < w); }); word = w; }
+  };
+  const start = () => {
+    layout(); draw(); el.classList.add('is-ready'); requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('is-in')));
+    addEventListener('resize', () => { layout(); draw(); });
+    el.__as2 = { set: (v) => { t = v; hold = 1e15; draw(); } };
+    if (reduce) return;
+    let raf = 0, seen = true, last = 0, x0 = null, tAt = 0;
+    const frame = (now) => { raf = 0; const dt = Math.min(.05, (now - (last || now)) / 1000); last = now; if (now > hold) t = (t + dt / 26) % 1; draw(); if (seen) raf = requestAnimationFrame(frame); };
+    const ask = () => { if (!raf) { last = 0; raf = requestAnimationFrame(frame); } };
+    el.addEventListener('pointerdown', (e) => { if (e.target.closest('a, button')) return; x0 = e.clientX; tAt = t; el.classList.add('is-drag'); });
+    addEventListener('pointermove', (e) => { if (x0 != null) { t = (((tAt + (e.clientX - x0) / (W * 1.3)) % 1) + 1) % 1; hold = performance.now() + 2500; } }, { passive: true });
+    const end = () => { x0 = null; el.classList.remove('is-drag'); }; addEventListener('pointerup', end); addEventListener('pointercancel', end);
+    new IntersectionObserver(([e]) => { seen = e.isIntersecting; if (seen) ask(); }).observe(el); ask();
+  };
+  let hold = 0;
+  (document.fonts && document.fonts.load ? document.fonts.load("700 100px 'BTS Display'").catch(() => {}) : Promise.resolve()).then(() => { if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true }); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "About · sky in the name",
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}
