@@ -109,9 +109,9 @@ function email(kind, lang) {
 <!doctype html>
 <html lang="${lang}" dir="${t.dir}">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light only">
 <title>${k.title}</title>
-<style>@media (max-width:620px){ .bts-wrap{width:100%!important} .bts-title{font-size:44px!important} }</style>
+<style>:root{color-scheme:light only;supported-color-schemes:light only} @media (max-width:620px){ .bts-wrap{width:100%!important} .bts-title{font-size:44px!important} }</style>
 </head>
 <body style="margin:0;padding:0;background:#ffffff">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">${k.pre}</div>
@@ -137,10 +137,15 @@ ${body}
 }
 
 // Arabic: order numbers and amounts stay left-to-right inside the Arabic text ("#1042", "−EGP 75", not "1042#", "EGP 75−")
-const isolate = (html) => html.replace(/\{\{ order_name \}\}/g, '<span dir="ltr">{{ order_name }}</span>').replace(/(−?\{\{ [a-z_.]+ \| money \}\})/g, '<span dir="ltr">$1</span>');
+const isolate = (html) => html.replace(/\{\{ order_name \}\}/g, '<span dir="ltr">{{ order_name }}</span>');
+// Prices as the site shows them ("EGP 1,699", Arabic "1,699 ج.م"), not the store's email format ("LE 1,699.00")
+const amount = (v) => `{{ ${v} | money_without_currency | remove: '.00' }}`;
+const prices = (html, lang) => html.replace(/(−?)\{\{ ([a-z_.]+) \| money \}\}/g, (m, minus, v) => lang === 'ar'
+  ? `<span dir="rtl" style="unicode-bidi:isolate">${minus ? '<span dir="ltr">−</span>' : ''}${amount(v)} ج.م</span>`
+  : `${minus}EGP ${amount(v)}`);
 fs.mkdirSync(OUT, { recursive: true });
 const NAMES = { confirmation: 'order-confirmation', shipping: 'shipping-confirmation', delivered: 'delivered' };
-for (const kind of Object.keys(NAMES)) for (const lang of ['en', 'ar']) fs.writeFileSync(path.join(OUT, `${NAMES[kind]}.${lang}.liquid`), lang === 'ar' ? isolate(email(kind, lang)) : email(kind, lang));
+for (const kind of Object.keys(NAMES)) for (const lang of ['en', 'ar']) fs.writeFileSync(path.join(OUT, `${NAMES[kind]}.${lang}.liquid`), prices(lang === 'ar' ? isolate(email(kind, lang)) : email(kind, lang), lang));
 console.log('wrote', fs.readdirSync(OUT).filter((f) => f.endsWith('.liquid')).length, 'templates to', OUT);
 
 // --preview: render each template with a sample order (Liquid + Shopify's notification filters, stubbed)
@@ -148,6 +153,7 @@ if (process.argv.includes('--preview')) {
   const { Liquid } = await import('liquidjs');
   const engine = new Liquid();
   engine.registerFilter('money', (v) => `EGP ${(Number(v) / 100).toLocaleString('en-US')}`);
+  engine.registerFilter('money_without_currency', (v) => (Number(v) / 100).toLocaleString('en-US', { minimumFractionDigits: 2 }));
   engine.registerFilter('img_url', (x) => (x && typeof x === 'object' ? x.image : x)); // Shopify takes the line item
   const PV = path.join(HERE, 'preview'); fs.mkdirSync(PV, { recursive: true });
   // sample photos come from the local preview server (node preview/server.js)
