@@ -12,7 +12,7 @@ Six files: three emails × English (the template) and Arabic (its translation). 
 
 ## Install (owner's step; nothing here changes the store)
 1. **Logo:** Settings → Notifications → Customize email templates → upload `bts-email-logo.png` (this folder; the
-   official wordmark, unchanged), width 120 px. Without a logo the emails show the name as text.
+   official wordmark, unchanged), width 156 px. The wordmark (unchanged) sits on its own white tile: invisible in light mode, still readable when a mail app forces dark mode (Zoho, Gmail apps). Without a logo the emails show the name as text.
 2. **English:** open each email above → Edit code → replace everything with the `.en.liquid` file → **Preview** →
    Save. Suggested subjects:
    - Order confirmation: `We've got your order {{ order_name }}`
