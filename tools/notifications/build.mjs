@@ -69,7 +69,7 @@ const items = (t, kind) => {
     ${loop}
     <tr style="border-bottom:1px solid ${C.line}">
       <td width="64" valign="middle" style="padding:12px 0;width:64px">{% if line.image %}<img src="{{ line | img_url: 'compact_cropped' }}" width="56" height="56" alt="" style="display:block;width:56px;height:56px;border-radius:12px;background:${C.paper};object-fit:cover">{% endif %}</td>
-      <td valign="middle" style="padding:12px ${t.dir === 'rtl' ? '0 12px 0 12px' : '12px 0 12px 12px'};font-family:${t.font};font-size:15px;line-height:1.4;color:${C.ink}"><strong>{{ line.title }}</strong><br><span style="font-size:13px;color:${C.muted}">${t.qty}: ${qty}</span></td>
+      <td valign="middle" style="padding:${t.dir === 'rtl' ? '12px 12px 12px 0' : '12px 0 12px 12px'};font-family:${t.font};font-size:15px;line-height:1.4;color:${C.ink}"><strong>{{ line.title }}</strong><br><span style="font-size:13px;color:${C.muted}">${t.qty}: ${qty}</span></td>
       ${price}
     </tr>
     {% endfor %}
