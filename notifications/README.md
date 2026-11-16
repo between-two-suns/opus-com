@@ -24,8 +24,8 @@ Six files: three emails × English (the template) and Arabic (its translation). 
 4. **Test:** "Send test email" on each template, read it on a phone (Gmail and Apple Mail), then place a real test order.
 
 ## What's in them
-- Brand: white page, the four step colours as a thin band top and bottom, Antonio titles, Figtree text (Alexandria in
-  Arabic). Apple Mail / iPhone show the brand fonts; Gmail shows Arial (Tahoma in Arabic).
+- Brand: white page, the four step colours as a thin band top and bottom, tall bold titles. No outside font link (Shopify's email builder
+  fails with "Server error" on one): mail apps use their own fonts (Helvetica/Arial; Tahoma in Arabic).
 - Order confirmation: items with photos, subtotal / discount / shipping / total, a cash-on-delivery reminder when the
   order is COD, the delivery address, "How to start" (morning and evening order, sunscreen last), help by reply.
 - Shipping confirmation: "Track your order" (the carrier's link, or the order page), what's in the parcel, "How to start".
