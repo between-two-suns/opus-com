@@ -1,0 +1,154 @@
+{%- comment -%}
+  About hero prototype J · "The name is the window" (demo only, /pages/about?view=window).
+  The page is clean white. The name runs edge to edge and top to bottom, and its letters are windows onto a living
+  sky (drawn live, WebGL): blue at noon, orange and pink as today's sun goes down, a deep blue hour, then dawn;
+  clouds drift, and the sun crosses behind the letters, so it is only ever seen through the name. It plays slowly
+  by itself; drag sideways to move the day. Scrolling on, you fly through a letter until the sky fills the screen.
+  No packs, no moving shadows, no clock. No WebGL or reduced motion: the name as plain large type.
+  Prototype: English only.
+{%- endcomment -%}
+<style>
+.aw { position: relative; margin-block-start: calc(-1 * var(--header-h)); color: var(--c-ink); background: #fff; }
+.aw.is-live { block-size: 175svh; }
+.aw-stage { position: relative; min-block-size: 100svh; overflow: clip; isolation: isolate; touch-action: pan-y; }
+.aw.is-live .aw-stage { position: sticky; inset-block-start: 0; block-size: 100svh; min-block-size: 0; cursor: grab; user-select: none; -webkit-user-select: none; }
+.aw.is-drag .aw-stage { cursor: grabbing; }
+.aw-gl { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; z-index: -1; display: none; }
+.aw.is-live .aw-gl { display: block; }
+.aw-plain { margin: 0; padding: calc(var(--header-h) + 8svh) var(--gutter) 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .86; font-size: clamp(88px, 20vw, 420px); }
+.aw.is-live .aw-plain { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); padding: 0; }
+.aw-foot { position: absolute; inset-inline: var(--gutter); inset-block-end: calc(var(--dock-h, 0px) + clamp(16px, 3.4svh, 36px)); display: flex; justify-content: space-between; align-items: end; gap: 24px; pointer-events: none; opacity: var(--fo, 1); }
+.aw-now { margin: 0; display: grid; gap: 6px; }
+.aw-word { display: grid; overflow: hidden; font-size: 12px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; }
+.aw-word span { grid-area: 1 / 1; translate: 0 110%; opacity: 0; transition: translate .7s cubic-bezier(.2, .75, .2, 1), opacity .5s ease; }
+.aw-word span.is-on { translate: 0 0; opacity: 1; } .aw-word span.is-off { translate: 0 -110%; }
+.aw-line { font-size: clamp(16px, 1.4vw, 21px); line-height: 1.3; font-weight: 520; letter-spacing: -.01em; max-inline-size: 44ch; text-wrap: balance; }
+.aw-hint { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .7; white-space: nowrap; }
+@media (max-width: 749px) {
+  .aw { margin-block-start: 0; }
+  .aw.is-live .aw-stage { inset-block-start: var(--header-h); block-size: calc(100svh - var(--header-h)); }
+  .aw-foot { inset-inline: 16px; justify-content: center; text-align: center; inset-block-end: calc(var(--dock-h, 76px) + 12px); }
+  .aw-now { justify-items: center; } .aw-line { font-size: 15px; } .aw-hint { display: none; }
+}
+</style>
+<section class="aw" data-aw aria-labelledby="AwTitle-{{ section.id }}">
+  <div class="aw-stage">
+    <canvas class="aw-gl" aria-hidden="true"></canvas>
+    <h1 class="aw-plain" id="AwTitle-{{ section.id }}">Between two suns</h1>
+    <div class="aw-foot">
+      <p class="aw-now"><span class="aw-word" aria-hidden="true"><span class="is-on">Morning</span><span>Midday</span><span>Golden hour</span><span>Dusk</span><span>Night</span><span>Tomorrow’s sun</span></span><span class="aw-line">A whole day happens to your skin between today’s sun and tomorrow’s.</span></p>
+      <p class="aw-hint" aria-hidden="true">Drag to move the day · scroll to go through</p>
+    </div>
+  </div>
+</section>
+<script>
+(() => {
+  const el = document.currentScript.previousElementSibling; if (!el || !el.matches('[data-aw]')) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const stage = el.querySelector('.aw-stage'), cv = el.querySelector('.aw-gl'), gl = cv.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'high-performance' });
+  if (!gl) return;
+  const VS = 'attribute vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }';
+  const FS = `precision highp float;
+uniform vec2 uRes, uSun, uFocus; uniform float uTime, uZoom, uStars, uCloud, uSunOn;
+uniform vec3 uZen, uHor, uSunCol; uniform sampler2D uMask;
+float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f); return mix(mix(hash(i), hash(i + vec2(1., 0.)), f.x), mix(hash(i + vec2(0., 1.)), hash(i + vec2(1., 1.)), f.x), f.y); }
+float fbm(vec2 p){ float v = 0., a = .5; for (int i = 0; i < 5; i++) { v += a * noise(p); p = p * 2.03 + 11.7; a *= .5; } return v; }
+void main(){
+  vec2 uv = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y) / uRes; float asp = uRes.x / uRes.y;
+  // the sky: deep overhead, light at the horizon
+  vec3 col = mix(uZen, uHor, pow(clamp(uv.y * 1.02, 0., 1.), 1.5));
+  vec2 sd = (uv - uSun) * vec2(asp, 1.); float d = length(sd);
+  col += uSunCol * (exp(-d * 4.4) * .26 + exp(-d * 13.) * .5) * uSunOn;
+  // clouds, lit by the sun where they are near it
+  vec2 cp = vec2(uv.x * asp * 1.25 + uTime * .010, uv.y * 3.1);
+  float n = fbm(cp + fbm(cp * 1.7 + uTime * .004) * .55);
+  float dens = smoothstep(.43, .8, n) * mix(.5, 1., smoothstep(.05, .9, uv.y));
+  vec3 lit = mix(vec3(1.), uSunCol * 1.15 + .12, clamp(exp(-d * 2.2) * 1.4 * uSunOn, 0., 1.));
+  vec3 cloud = mix(lit, mix(uZen, uHor, .45) * .86, smoothstep(.56, .92, n) * .7);
+  col = mix(col, cloud, dens * uCloud);
+  // the sun itself
+  float disc = smoothstep(.062, .054, d) * uSunOn; col = mix(col, vec3(1., .985, .93), disc * (1. - dens * uCloud * .5));
+  // a few stars in the blue hour
+  vec2 gp = uv * vec2(asp, 1.) * 46., id = floor(gp); float st = hash(id);
+  col += smoothstep(.07, 0., length(fract(gp) - .5 - (vec2(hash(id + 3.1), hash(id + 7.7)) - .5) * .7)) * step(.9, st) * uStars * (1. - uv.y) * (.6 + .4 * sin(uTime * 1.4 + st * 40.));
+  col += (hash(gl_FragCoord.xy + fract(uTime) * 91.7) - .5) * .024;
+  // the name: a window. Scrolling flies through it.
+  vec2 mu = (uv - uFocus) / uZoom + uFocus; float m = 0.;
+  if (mu.x > 0. && mu.x < 1. && mu.y > 0. && mu.y < 1.) m = smoothstep(.36, .64, texture2D(uMask, mu).r);
+  // (the sky never gets as light as the page, so the letters always hold their shape)
+  float top = max(col.r, max(col.g, col.b)); col *= mix(1., .9 / max(top, .9), 1. - disc);
+  gl_FragColor = vec4(mix(vec3(1.), col, m), 1.);
+}`;
+  const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) { console.warn('about-window', gl.getShaderInfoLog(o)); return null; } return o; };
+  const vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS); if (!vs || !fs) return;
+  const pr = gl.createProgram(); gl.attachShader(pr, vs); gl.attachShader(pr, fs); gl.linkProgram(pr); if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return; gl.useProgram(pr);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = {}; ['uRes', 'uSun', 'uFocus', 'uTime', 'uZoom', 'uStars', 'uCloud', 'uSunOn', 'uZen', 'uHor', 'uSunCol', 'uMask'].forEach((k) => { U[k] = gl.getUniformLocation(pr, k); });
+  const tex = gl.createTexture(); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(U.uMask, 0); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), mix = (a, b, k) => a + (b - a) * k, sm = (a, b, v) => { const k = clamp((v - a) / (b - a)); return k * k * (3 - 2 * k); };
+  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
+  let W = 0, H = 0, dpr = 1, focus = [.5, .5];
+  // the name, drawn as large as the screen allows: every line runs edge to edge
+  const paint = () => {
+    dpr = Math.min(devicePixelRatio || 1, 2); W = stage.clientWidth; H = stage.clientHeight; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); gl.viewport(0, 0, cv.width, cv.height);
+    const phone = W < 750, css = getComputedStyle(document.documentElement), hdr = phone ? 0 : parseFloat(css.getPropertyValue('--header-h')) || 76, dock = parseFloat(css.getPropertyValue('--dock-h')) || 0;
+    const m = document.createElement('canvas'), k = Math.min(2, 2048 / W); m.width = Math.round(W * k); m.height = Math.round(H * k); const c = m.getContext('2d'); c.scale(k, k);
+    c.fillStyle = '#000'; c.fillRect(0, 0, W, H); c.fillStyle = '#fff'; c.textBaseline = 'alphabetic';
+    const lines = phone ? ['BETWEEN', 'TWO', 'SUNS'] : ['BETWEEN', 'TWO SUNS'], side = phone ? 14 : Math.max(24, W * .028);
+    const top = hdr + (phone ? 14 : H * .03), bottom = H - (phone ? (dock || 76) + 118 : dock + Math.max(96, H * .13)), gap = (phone ? .022 : .03) * H, capH = (bottom - top - gap * (lines.length - 1)) / lines.length;
+    c.font = "700 400px 'BTS Display', 'Arial Narrow', sans-serif"; const F = 400 * capH / c.measureText('E').actualBoundingBoxAscent; c.font = `700 ${F}px 'BTS Display', 'Arial Narrow', sans-serif`;
+    lines.forEach((t, i) => { const w = c.measureText(t).width; c.save(); c.translate(side, top + capH * (i + 1) + gap * i); c.scale((W - 2 * side) / w, 1); c.fillText(t, 0, 0); c.restore(); });
+    // where to fly through: the point inside a letter, near the middle of the screen, that is farthest from any edge
+    const px = c.getImageData(0, 0, m.width, m.height).data, on = (x, y) => x >= 0 && y >= 0 && x < m.width && y < m.height && px[(y * m.width + x) * 4] > 128;
+    let best = -1; for (let gy = .3; gy <= .7; gy += .02) for (let gx = .25; gx <= .75; gx += .01) { const x = Math.round(gx * m.width), y = Math.round(gy * m.height); if (!on(x, y)) continue; let r = 0; while (r < 90 && on(x + r, y) && on(x - r, y) && on(x, y + r) && on(x, y - r)) r += 3; const sc = r - (Math.abs(gx - .5) + Math.abs(gy - .5)) * 30; if (sc > best) { best = sc; focus = [gx, gy]; } }
+    gl.bindTexture(gl.TEXTURE_2D, tex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, m);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  };
+  // the day, 0–1: [time, overhead, horizon, sun colour, clouds, stars]
+  const KEYS = [
+    [0, '#7fa9ea', '#ffbfa3', '#ffb47a', .85, 0], [.1, '#4f98f0', '#a9d2fb', '#ffe9c4', .8, 0], [.3, '#3a8cf2', '#94c9fa', '#fff0d0', .72, 0],
+    [.44, '#5f8fe6', '#ffc27a', '#ffb060', .8, 0], [.54, '#7a6fd6', '#ff8f6b', '#ff7f4a', .9, 0], [.62, '#4c4fb8', '#f09ab4', '#ff9a8a', .8, .25],
+    [.74, '#27358f', '#5d6fd6', '#9fb0ff', .5, 1], [.86, '#31449f', '#7f8fe2', '#b9c4ff', .5, .8], [.95, '#6890de', '#ffb7a0', '#ffb07a', .8, .1], [1, '#7fa9ea', '#ffbfa3', '#ffb47a', .85, 0],
+  ].map((k) => [k[0], hex(k[1]), hex(k[2]), hex(k[3]), k[4], k[5]]);
+  const WORDS = [0, .14, .4, .56, .66, .9], SET = .58, words = [...el.querySelectorAll('.aw-word span')];
+  let t = .16, word = -1, z = 0, zt = 0, t0 = performance.now();
+  const draw = (now) => {
+    let i = 1; while (i < KEYS.length - 1 && t > KEYS[i][0]) i++; const a = KEYS[i - 1], b = KEYS[i], k = clamp((t - a[0]) / (b[0] - a[0])), v3 = (x, y) => x.map((q, j) => mix(q, y[j], k));
+    const zen = v3(a[1], b[1]), hor = v3(a[2], b[2]), sc = v3(a[3], b[3]);
+    let u = -1, on = 0; if (t <= SET) { u = t / SET; on = sm(0, .04, u) * (1 - sm(.96, 1, u)) + .0; } else if (t > .9) { u = 0; on = 0; }
+    const e = u < 0 ? 0 : Math.sin(Math.PI * u), sx = u < 0 ? .5 : mix(.03, .97, u), sy = u < 0 ? 1.3 : 1.04 - e * .82;
+    const glow = t > .9 ? (t - .9) / .1 : t > SET ? 1 - sm(SET, SET + .05, t) : 1;   // the horizon still glows after sunset and before sunrise
+    gl.uniform2f(U.uRes, cv.width, cv.height); gl.uniform2f(U.uSun, t > .9 ? .03 : t > SET ? .97 : sx, t > SET ? 1.08 : sy); gl.uniform2f(U.uFocus, focus[0], focus[1]);
+    gl.uniform1f(U.uTime, (now - t0) / 1000); gl.uniform1f(U.uZoom, Math.exp(z * z * 6.2)); gl.uniform1f(U.uStars, mix(a[5], b[5], k)); gl.uniform1f(U.uCloud, mix(a[4], b[4], k)); gl.uniform1f(U.uSunOn, t <= SET ? Math.max(on, .0001) : glow * .9);
+    gl.uniform3f(U.uZen, zen[0], zen[1], zen[2]); gl.uniform3f(U.uHor, hor[0], hor[1], hor[2]); gl.uniform3f(U.uSunCol, sc[0], sc[1], sc[2]);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    let w = 0; while (w < WORDS.length - 1 && t >= WORDS[w + 1]) w++; if (w !== word) { words.forEach((s, j) => { s.classList.toggle('is-on', j === w); s.classList.toggle('is-off', j < w); }); word = w; }
+    stage.style.setProperty('--fo', clamp(1 - z * 4).toFixed(3));
+  };
+  let raf = 0, seen = true, last = 0, hold = 0, x0 = null, tAt = 0;
+  const frame = (now) => { raf = 0; const dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
+    if (now > hold) t = (t + dt / 24) % 1;
+    const r = el.getBoundingClientRect(), run = r.height - innerHeight; zt = run > 0 ? clamp(-r.top / run) : 0; z += (zt - z) * .1; if (Math.abs(zt - z) < .0004) z = zt;
+    draw(now); if (seen) raf = requestAnimationFrame(frame); };
+  const ask = () => { if (!raf) { last = 0; raf = requestAnimationFrame(frame); } };
+  const go = () => {
+    el.classList.add('is-live'); paint(); ask();
+    stage.addEventListener('pointerdown', (e) => { if (e.target.closest('a, button')) return; x0 = e.clientX; tAt = t; el.classList.add('is-drag'); });
+    addEventListener('pointermove', (e) => { if (x0 != null) { t = (((tAt + (e.clientX - x0) / (W * 1.3)) % 1) + 1) % 1; hold = performance.now() + 2500; } }, { passive: true });
+    const end = () => { x0 = null; el.classList.remove('is-drag'); }; addEventListener('pointerup', end); addEventListener('pointercancel', end);
+    addEventListener('resize', paint);
+    new IntersectionObserver(([e]) => { seen = e.isIntersecting; if (seen) ask(); }).observe(el);
+    el.__aw = { set: (v) => { t = v; hold = 1e15; } };
+  };
+  (document.fonts && document.fonts.load ? document.fonts.load("700 100px 'BTS Display'").catch(() => {}) : Promise.resolve()).then(() => { if (document.readyState === 'complete') go(); else addEventListener('load', go, { once: true }); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "About · name is window",
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}
