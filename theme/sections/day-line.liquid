@@ -31,7 +31,7 @@
 
       <header class="dayline__head container">
         <p class="t-eyebrow">{{ eyebrow | escape }}</p>
-        <h2 class="dayline__title t-display-m" id="DayTitle-{{ section.id }}">{{ heading | escape }}</h2>
+        <h2 class="dayline__title t-display-m" id="DayTitle-{{ section.id }}">{{ heading | escape | replace: '. ', '.<br> ' }}</h2>
       </header>
 
       <ol class="dayline__steps" role="list">

@@ -401,6 +401,9 @@
     .js .dayline .dayline__actions .link-arrow { display: none; }
     /* the step line and name use the full width; only the button row makes room for the step dots (DECISIONS 294) */
     .js .dayline .dayline__actions { margin-inline-end: 178px; }
+    /* phones: the heading uses the full width, so a two-sentence heading takes two lines, not three (DECISIONS 295) */
+    .js .dayline .dayline__title { max-inline-size: none; font-size: min(34px, 8vw); }
+    .js .dayline:lang(ar) .dayline__title { font-size: clamp(26px, min(4.6vw, 4.6svh), 64px); }
     .js .dayline .dayline__benefit { color: var(--c-ink); font-weight: 600; max-inline-size: none; }
     /* short phone screens (in-app browsers): the pack is never taller than the room under the heading, so it can't cover it; taller phones are unchanged */
     .js .dayline .dayline__bottle { block-size: min(42svh, 400px, calc(100svh - max(206px, 25svh) - var(--dock-h, 0px) - var(--header-h) - clamp(16px, 3svh, 36px) - 110px)); }
