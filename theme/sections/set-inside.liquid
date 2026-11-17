@@ -69,7 +69,7 @@
               {%- if comp.metafields.bts.benefit != blank -%}<span class="bi__benefit">{{ comp.metafields.bts.benefit.value | escape }}</span>{%- endif -%}
               <span class="bi__meta">
                 {%- if comp.metafields.bts.size != blank -%}<span class="u-ltr">{{ comp.metafields.bts.size.value }}</span> · {% endif -%}
-                {%- if comp.metafields.bts.when_to_use != blank -%}{{ comp.metafields.bts.when_to_use.value | escape }}{%- endif -%}
+                {%- if comp.metafields.bts.when_to_use != blank -%}{% render 'bts-text', product: comp, field: 'when' %}{%- endif -%}
               </span>
               <span class="s2-inside__price">{% render 'egp', cents: comp.price %}{% if q > 1 %} × {{ q }}{% endif %}</span>
               <span class="s2-inside__view">{{ 'set2.view' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</span>

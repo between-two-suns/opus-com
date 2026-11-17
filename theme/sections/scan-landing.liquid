@@ -80,14 +80,14 @@
               <h2 class="scan__name" id="ScanName-{{ h }}">{{ p.title | escape }}</h2>
               <p class="scan__meta">
                 {%- if mf.size != blank -%}<span class="u-ltr">{{ mf.size }}</span>{%- endif -%}
-                {%- if mf.when_to_use != blank -%}<span class="scan__when">{% render 'icon', name: 'sun', class: 'icon--sm' %}{% unless s == 4 %}{% render 'icon', name: 'moon', class: 'icon--sm' %}{% endunless %}{{ mf.when_to_use }}</span>{%- endif -%}
+                {%- if mf.when_to_use != blank -%}<span class="scan__when">{% render 'icon', name: 'sun', class: 'icon--sm' %}{% unless s == 4 %}{% render 'icon', name: 'moon', class: 'icon--sm' %}{% endunless %}{% render 'bts-text', product: p, field: 'when' %}</span>{%- endif -%}
               </p>
             </div>
 
             {%- if mf.how_to_use != blank -%}
               <div class="scan__block">
                 <h3 class="scan__h">{{ 'pages.scan.how' | t }}</h3>
-                <p class="scan__how">{{ mf.how_to_use }}</p>
+                <p class="scan__how">{% render 'bts-text', product: p, field: 'how' %}</p>
                 {%- if mf.caution != blank -%}<p class="scan__caution">{% render 'icon', name: 'info', class: 'icon--sm' %}<span>{{ mf.caution }}</span></p>{%- endif -%}
               </div>
             {%- endif -%}

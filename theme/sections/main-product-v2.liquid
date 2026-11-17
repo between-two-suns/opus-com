@@ -308,7 +308,7 @@
             <div class="v2-buy__top">
               {%- render 'price', product: product, variant: variant, class: 'pdp__price' -%}
               {%- if bdef == blank and mf.size != blank -%}
-                <p class="v2-buy__facts"><span class="u-ltr">{{ mf.size }}</span>{% if mf.when_to_use != blank %} · {{ mf.when_to_use }}{% endif %}</p>
+                <p class="v2-buy__facts"><span class="u-ltr">{{ mf.size }}</span>{% if mf.when_to_use != blank %} · {% render 'bts-text', product: product, field: 'when' %}{% endif %}</p>
               {%- endif -%}
               {%- comment -%} Free delivery is said once, by the live line under the button. {%- endcomment -%}
               {%- render 'pdp-bundle', part: 'info', handle: product.handle, variant: variant, list: set_v2, ship: false -%}

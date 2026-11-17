@@ -9,7 +9,13 @@
   endcapture
   assign step = step | strip | plus: 0
   assign mf = product.metafields.bts
-  assign sentences = mf.how_to_use.value | split: '.'
+  capture how_text
+    render 'bts-text', product: product, field: 'how'
+  endcapture
+  capture when_text
+    render 'bts-text', product: product, field: 'when'
+  endcapture
+  assign sentences = how_text | split: '.'
   assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
   assign photo_a = false
   assign photo_b = false
@@ -62,7 +68,7 @@
           <p class="t-eyebrow">{{ 'pdp2.how_eyebrow' | t }}</p>
           <h2 class="t-display-m" id="V2How-{{ section.id }}">{{ 'pdp2.how_heading' | t }}</h2>
         </div>
-        {%- if mf.when_to_use != blank -%}<p class="pill v2-how__when">{% render 'icon', name: 'sun', class: 'icon--sm' %}{{ mf.when_to_use }}</p>{%- endif -%}
+        {%- if mf.when_to_use != blank -%}<p class="pill v2-how__when">{% render 'icon', name: 'sun', class: 'icon--sm' %}{{ when_text }}</p>{%- endif -%}
       </div>
       <ol class="v2-how__steps" role="list" tabindex="0" aria-labelledby="V2How-{{ section.id }}">
         {%- assign n = 0 -%}

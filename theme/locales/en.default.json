@@ -47,7 +47,7 @@
     "nav": {
       "shop": "Shop",
       "shop_all": "Shop all",
-      "routines": "Routines",
+      "routines": "Find your routine",
       "ingredients": "Ingredients",
       "climate": "Climate",
       "journal": "Journal",
@@ -68,7 +68,7 @@
     "placeholder": "Search products or ingredients",
     "popular": "Popular",
     "popular_terms": "Niacinamide, SPF, Oily skin, Cleanser, Dark spots",
-    "no_results": "No results for “{{ terms }}”.",
+    "no_results": "No results for “{{ terms }}”. Try an ingredient, a skin concern or a product name.",
     "products": "Products",
     "learn": "Learn",
     "view_all": "See all results for “{{ terms }}”",
@@ -78,7 +78,7 @@
       "other": "{{ count }} results"
     },
     "submit": "Search",
-    "empty_hint": "Try an ingredient (niacinamide), a concern (oiliness) or a step (SPF)."
+    "empty_hint": "Try an ingredient (niacinamide), a concern (oily skin) or a step (SPF)."
   },
   "footer": {
     "title": "Footer",
@@ -91,9 +91,9 @@
     },
     "links": {
       "shop_all": "Shop all",
-      "routines": "Routines",
+      "routines": "Find your routine",
       "scan": "Scan your pack",
-      "climate": "Climate-adapted",
+      "climate": "Made for life here",
       "ingredients": "Ingredients",
       "about": "About",
       "journal": "Journal",
@@ -124,37 +124,37 @@
   "concerns": {
     "label": "Skin concern",
     "all": "All",
-    "oiliness": "Oiliness",
+    "oiliness": "Excess oil",
     "dark_spots": "Dark spots",
     "dehydration": "Dehydration",
-    "barrier": "Barrier stress",
+    "barrier": "Barrier support",
     "sun": "Sun",
     "pollution": "City & pollution"
   },
   "climate": {
     "sun": {
       "name": "Sun",
-      "line": "UV shows up every day, not just at the beach."
+      "line": "Daily SPF belongs in your routine, even when the day doesn’t involve the beach."
     },
     "pollution": {
       "name": "Pollution",
-      "line": "Traffic, smog and city air — every single day."
+      "line": "Dust, pollution and the day’s buildup are part of city life. An evening cleanse washes it away."
     },
     "dust": {
       "name": "Dust",
-      "line": "Fine dust settles on skin through the day."
+      "line": "By the time you get home, your skin has been through enough. Leave the day’s buildup behind."
     },
     "humidity": {
       "name": "Humidity",
-      "line": "Sticky air, shiny skin."
+      "line": "When the air feels heavy, your skincare shouldn’t. Light textures make the routine easy to enjoy."
     },
     "heat": {
       "name": "Heat",
-      "line": "Sweat, oil and makeup that slides."
+      "line": "The hotter the day, the less you want to feel on your face. Keep it simple and don’t skip SPF."
     },
     "ac": {
       "name": "Air-con",
-      "line": "Cool, dry air for hours on end."
+      "line": "Indoor air can feel dry, even when it’s hot outside. Keep moisture in your routine."
     },
     "change": {
       "name": "Change",
@@ -162,7 +162,7 @@
     },
     "everyday": {
       "name": "Everyday",
-      "line": "Ordinary days need good skincare too."
+      "line": "Ordinary days deserve good skincare too."
     }
   },
   "sections": {
@@ -283,9 +283,9 @@
       "caption": "Label artwork from the brand. If anything differs, the pack in your hand is the reference."
     },
     "bundles": {
-      "eyebrow": "Sets",
-      "heading": "Routines, ready to go.",
-      "text": "Fixed-price sets of the four steps. The saving is against buying the same products separately.",
+      "eyebrow": "Ready-made sets",
+      "heading": "Better together. And for less.",
+      "text": "Every set is full-size and fixed-price, and saves you money compared with buying the same products separately.",
       "count": "{{ count }} steps",
       "pack": "Pack of {{ count }}",
       "was": "Was",
@@ -318,8 +318,8 @@
     },
     "builder": {
       "eyebrow": "Build your own",
-      "heading": "Or pick your own steps.",
-      "text": "Tap the steps you want. They line up in the order you use them, and the total updates as you go.",
+      "heading": "Or choose your own steps.",
+      "text": "Choose the steps you want. We’ll put them in routine order and update your total as you go.",
       "shelf": "Your routine shelf",
       "choose": "Choose your steps",
       "presets": "Quick picks",
@@ -351,14 +351,14 @@
       "eyebrow": "Skincare for life between two suns",
       "line_1": "Made for the",
       "line_2": "space between.",
-      "subcopy": "Your skin has a lot to keep up with. Four everyday essentials help control oil, even skin tone, hydrate and protect.",
+      "subcopy": "Your skin has a lot to keep up with. Four essentials for less shine, more even-looking tone, lighter moisture and protection you’ll actually want to wear.",
       "cta_primary": "Shop the Full Ritual",
       "cta_secondary": "Pick my steps",
       "cta_find": "Find your routine"
     },
     "ingredient_heroes": {
       "eyebrow": "What’s inside",
-      "heading": "The ingredients matter. What they do for you matters more.",
+      "heading": "What’s inside matters. What it does matters more.",
       "link": "Explore the ingredients"
     },
     "editorial_band": {
@@ -494,7 +494,8 @@
       "s2": "Treat",
       "s3": "Moisturize",
       "s4": "Protect"
-    }
+    },
+    "shop_short": "Shop the {{ name }}"
   },
   "collection": {
     "eyebrow": "Shop",
@@ -503,8 +504,8 @@
     "showing": "Showing {{ count }} products",
     "empty": "No products here yet.",
     "routine_card_title": "Not sure where to start?",
-    "routine_card_text": "Answer one question about your day and we’ll build your routine.",
-    "routine_card_cta": "Open the forecast",
+    "routine_card_text": "Three quick questions. A routine that makes sense for your skin.",
+    "routine_card_cta": "Find your routine",
     "sort": "Sort",
     "sets_heading": "Sets: the routine, for less.",
     "sets_builder": "Build your own",
@@ -512,11 +513,11 @@
   },
   "cart": {
     "added": "Added to your bag",
-    "error": "Something went wrong. Please try again.",
+    "error": "We couldn’t update your bag. Please try again.",
     "count_label": "Bag ({{ count }})",
     "title": "Your bag",
     "empty_title": "Your bag is empty",
-    "empty_text": "Start with one step or add the whole routine.",
+    "empty_text": "Start with one essential or find a routine that works for you.",
     "shop_routine": "Shop the routine",
     "routine_progress": "Your routine",
     "decrease": "Decrease quantity of {{ product }}",
@@ -543,8 +544,8 @@
     "tier_reached": "You’re saving {{ pct }}% on your routine",
     "tier_items": "{{ count }} items",
     "tier_items_plus": "{{ count }}+ items",
-    "ship_remaining": "{{ amount }} away from free delivery",
-    "ship_unlocked": "Free standard delivery unlocked",
+    "ship_remaining": "You’re {{ amount }} away from free standard delivery",
+    "ship_unlocked": "You’ve unlocked free standard delivery",
     "ship_label": "Progress to free delivery",
     "added_short": "Added",
     "routine_count": "{{ count }} of 4 steps",
@@ -601,11 +602,11 @@
     "scan": {
       "eyebrow": "You scanned a Between Two Suns pack",
       "heading": "Which one is in your hand?",
-      "text": "Tap yours for how to use it, what comes next, and an easy reorder.",
+      "text": "Tap yours for how to use it, what comes next and an easy reorder.",
       "how": "How to use",
       "complete": "Complete your routine",
       "complete_set": "Add the other three steps as {{ set }}.",
-      "complete_text": "Add the other three steps and you have the full routine.",
+      "complete_text": "Add the other three steps and your routine is complete.",
       "complete_cta": "Add all three · {{ price }}",
       "again": "Running low?",
       "again_cta": "Buy again · {{ price }}",
@@ -623,7 +624,7 @@
       "full_lists": "Full ingredient lists",
       "full_lists_text": "Every product’s INCI, exactly as printed on the pack.",
       "key_heading": "Key ingredients",
-      "key_text": "The ingredients each formula is built around, and what they do.",
+      "key_text": "The ingredients each formula is built around, and what they do for your skin.",
       "az_heading": "Every ingredient, A–Z",
       "az_text": "All {{ count }} ingredients across the four products, by INCI name, with what each one does in the formula.",
       "filter_products": "Show ingredients in",
@@ -678,12 +679,12 @@
   },
   "errors": {
     "404_title": "This page went out in the sun.",
-    "404_text": "We couldn’t find what you were looking for. Try the routine, or search.",
+    "404_text": "We couldn’t find what you were looking for. Try exploring the routine or searching for a product.",
     "404_cta": "Shop the routine"
   },
   "password": {
     "heading": "Opening soon",
-    "text": "Climate-adapted skincare, made in Egypt. Leave your email and we’ll tell you first.",
+    "text": "Skincare for life between two suns, made in Egypt. Leave your email and we’ll tell you first.",
     "login": "Enter with password",
     "password": "Password",
     "enter": "Enter",
@@ -763,7 +764,7 @@
       },
       "reapply": {
         "q": "How often should I reapply sunscreen?",
-        "a": "The pack direction is to reapply every 2 hours."
+        "a": "Every 2 hours, as the pack directs, to keep your protection going."
       },
       "inci": {
         "q": "Where can I see the full ingredient list?",
@@ -807,7 +808,7 @@
       },
       "spf_last": {
         "q": "Where does sunscreen go in my routine?",
-        "a": "Last, every morning: after the moisturizer. The pack direction is to reapply every 2 hours."
+        "a": "Last, every morning, after your moisturizer. Reapply every 2 hours, as the pack directs."
       },
       "set_full_size": {
         "q": "Are the products in a set full-size?",
@@ -912,33 +913,33 @@
   "page_presets": {
     "routines": {
       "eyebrow": "Routine finder",
-      "heading": "Your routine, your climate",
-      "text": "Four steps, colour-coded and in order. Tell the forecast what today looks like — or add the full morning or evening routine in one tap."
+      "heading": "Three questions. Your routine.",
+      "text": "Tell us a little about your skin and what you’d like to work on. We’ll suggest the steps that fit and show you how to use them together."
     },
     "ingredients": {
       "eyebrow": "Ingredients",
       "heading": "What’s inside, and what it does.",
-      "text": "Start with what each formula is for. Then, if you want the detail, every ingredient, exactly as printed on the pack."
+      "text": "Every ingredient has a reason to be here. Start with what each formula does for you; the full list is below, exactly as printed on the pack."
     },
     "climate": {
-      "eyebrow": "Climate-adapted skincare",
-      "heading": "Made for the space between",
-      "text": "Climate-adapted skincare. Made for sun, pollution, changing environments & everyday skin."
+      "eyebrow": "Made for life here",
+      "heading": "A day between two suns.",
+      "text": "Your day can take you from morning sun to city streets, cool offices and humid evenings. Here’s how to keep your skin comfortable through it all."
     },
     "about": {
       "eyebrow": "About",
-      "heading": "Between two suns",
-      "text": "Skin doesn’t live in one climate. Between morning sun and afternoon sun, street heat and office air-con, it’s constantly adapting. We make skincare for that space in between."
+      "heading": "From the first sun to the second.",
+      "text": "Your day doesn’t happen in one place or one kind of weather. Taking care of your skin shouldn’t mean planning your day around it. Skincare for the life you’re already living."
     },
     "faq": {
       "eyebrow": "Help",
       "heading": "Ask us anything.",
-      "text": "Search, or pick a topic. Answers come from the pack and from how the store actually works."
+      "text": "Search, or pick a topic. Clear answers about your skin, your routine and your order."
     },
     "contact": {
       "eyebrow": "Contact",
-      "heading": "Talk to us",
-      "text": "Questions about a product, an order or your routine? Send a message and we’ll reply by email."
+      "heading": "Talk to us.",
+      "text": "Questions about your skin, your order or anything in between? We’d love to hear from you, and we reply by email."
     },
     "scan": {
       "eyebrow": "You scanned a Between Two Suns pack",
@@ -946,9 +947,9 @@
       "text": "Tap your product for how to use it, where it sits in your routine, and the full ingredient list."
     },
     "sets": {
-      "eyebrow": "Sets & routines",
-      "heading": "Pick a set. Or build your own.",
-      "text": "Fixed-price sets of the four steps, each saving against buying separately. Or choose only the steps you need."
+      "eyebrow": "Your routine, your way",
+      "heading": "The right steps. All in one place.",
+      "text": "A full routine or just the essentials. Choose a ready-made set, see exactly what’s inside and save compared with buying each product separately."
     }
   },
   "stories": {
@@ -1004,11 +1005,11 @@
     "desc": {
       "the-clear-protect-trio": "Less excess oil. More clarity. Daily SPF.",
       "the-full-ritual": "The whole routine, already sorted.",
-      "clear-protect-duo": "Two focused steps for tone and protection.",
+      "clear-protect-duo": "Even tone, protected. The two-step morning.",
       "the-night-ritual": "Wash off the day. Keep the good stuff.",
       "the-core-duo": "Clean first. Then clarity.",
       "spf-stock-up": "Your daily SPF. And your backup.",
-      "serum-stock-up": "Keep the clarity going."
+      "serum-stock-up": "One to use, one on the shelf."
     },
     "badges": {
       "bts_pick": "Our pick",
@@ -1019,7 +1020,7 @@
     "save_short": "Save {{ amount }}",
     "ships_free": "Ships free",
     "upgrade": "Add {{ product }} for {{ amount }} more and get free delivery",
-    "upgrade_cta": "Upgrade to {{ bundle }}",
+    "upgrade_cta": "Switch to {{ bundle }}",
     "match": "Your picks make {{ bundle }}",
     "qty_limit": "Maximum {{ count }} per order",
     "complete_heading": "Complete the routine",
@@ -1177,7 +1178,7 @@
   },
   "bundle_inside": {
     "eyebrow": "Inside the set",
-    "heading": "{{ count }} full-size products, one order to use them.",
+    "heading": "{{ count }} full-size products, in the order you use them.",
     "order_heading": "How to use it",
     "morning": "Morning",
     "night": "Night",
@@ -1185,32 +1186,32 @@
     "saving_heading": "The saving, worked out",
     "separately": "Bought separately",
     "who": {
-      "the-full-ritual": "For starting from scratch: the complete morning and night routine in one box.",
-      "the-clear-protect-trio": "For starting with three: cleanse, treat and protect. Want all four? The Full Ritual costs less than adding the cream later.",
-      "the-night-ritual": "For evenings: cleanse, treat, moisturize. Sunscreen waits for the morning.",
-      "clear-protect-duo": "For oil and sun: the serum, and the SPF that finishes every morning.",
-      "the-core-duo": "The two-step start: cleanse, then treat.",
-      "spf-stock-up": "Already on our SPF? Two tubes, so the morning step never runs out.",
-      "serum-stock-up": "Already on the serum? Two bottles, so it never runs out."
+      "the-full-ritual": "Four full-size products covering Cleanse, Treat, Moisturize and Protect. Everything together, in the order you use it.",
+      "the-clear-protect-trio": "Cleanse, target oiliness and uneven-looking tone, then finish your morning with sunscreen. Want all four? The Full Ritual costs less than adding the cream later.",
+      "the-night-ritual": "Cleanse away the day’s buildup, follow with Clarity Serum and finish with Daily Barrier Moisturizing Cream. Sunscreen waits for the morning.",
+      "clear-protect-duo": "Pair Clarity Serum with Daily Defense Sunscreen SPF 50+ for a focused morning: even-looking tone, protected.",
+      "the-core-duo": "A fresh-feeling cleanse, then Clarity Serum to help control oil and even skin tone. The first two steps of your routine, together.",
+      "spf-stock-up": "Two full-size Daily Defense sunscreens, so there’s another ready when you need it.",
+      "serum-stock-up": "Two full-size Clarity Serums: one to use, one on the shelf."
     },
     "others_eyebrow": "Compare",
     "others_heading": "Other sets"
   },
   "climate_story": {
-    "eyebrow": "Climate-adapted skincare",
+    "eyebrow": "Made for life here",
     "title": "A day between two suns.",
-    "lede": "Our region doesn’t do one kind of weather. Here is an ordinary day, hour by hour, and the steps that answer each part of it.",
-    "helps": "What answers it",
+    "lede": "Your day can take you from morning sun to city streets, cool offices and humid evenings. Here’s an ordinary day, hour by hour, and the steps that keep your skin comfortable through it.",
+    "helps": "What helps",
     "chapters": {
-      "sun": "The first sun.",
-      "city": "The commute.",
-      "ac": "Eight hours of office air.",
+      "sun": "Morning sun.",
+      "city": "City streets.",
+      "ac": "Hours in AC.",
       "heat": "The afternoon heat.",
       "humidity": "Humid evenings."
     },
     "end_eyebrow": "Then tomorrow",
-    "end_heading": "One routine for the whole day.",
-    "end_text": "Four light steps, morning and night. Sunscreen is the last step every morning.",
+    "end_heading": "One routine. Whatever the day brings.",
+    "end_text": "Keep the essentials simple: cleanse, treat, moisturize and protect. Sunscreen is the last step every morning.",
     "agenda": "The day at a glance"
   },
   "bundle_offer": {
@@ -1224,14 +1225,14 @@
     "count": "Based on {{ count }} reviews"
   },
   "skin_check": {
-    "eyebrow": "Skin check",
-    "title": "Find your steps in 30 seconds",
-    "intro": "Four quick questions. Then your routine, step by step: what each product does for your skin, and the ingredients behind it.",
+    "eyebrow": "Find your routine",
+    "title": "Your routine, in 30 seconds.",
+    "intro": "Four quick questions. Then your routine, step by step: what each product does for your skin, and why we chose it.",
     "no_js": "The skin check needs JavaScript.",
-    "start": "Start",
+    "start": "Let’s find my routine",
     "next": "Next",
     "back": "Back",
-    "see": "See my suggestions",
+    "see": "Show my routine",
     "progress": "{{ n }} of {{ total }}",
     "choose_any": "Choose any, or none.",
     "q": {
@@ -1260,14 +1261,14 @@
       "acne_yes": "Often",
       "acne_yes_d": "Acne-prone",
       "concerns_oil": "Excess oil and shine",
-      "concerns_tone": "Uneven tone",
+      "concerns_tone": "Uneven-looking tone",
       "concerns_marks": "Dark spots and post-blemish marks",
       "concerns_dehydration": "Dehydration",
       "concerns_dehydration_d": "Tight or dull, even if oily",
       "concerns_barrier": "Barrier support",
       "concerns_spf": "Daily sun protection"
     },
-    "result_title": "Your routine",
+    "result_title": "Here’s where we’d start.",
     "also": "Also worth considering",
     "when_am": "Morning",
     "when_both": "Morning and night",
@@ -1276,7 +1277,7 @@
     "add_one": "Add to bag",
     "add_set": "Add {{ set }}",
     "add_separately": "Add them separately",
-    "set_title": "Same products as a set",
+    "set_title": "Same products, as a set",
     "set_text": "{{ set }} holds exactly these products: {{ price }} instead of {{ singles }}.",
     "nothing": "Choose at least one",
     "reasons": {
@@ -1308,7 +1309,7 @@
     "disclaimer": "Suggestions are based on our ingredients, not a diagnosis, and can't guarantee how your skin will react. Patch test anything new. Not a medical treatment.",
     "cta_sets": "Not sure which set? Take the 30-second quiz",
     "cta_product": "Not sure it suits your skin? Find your routine in 30 seconds",
-    "result_text": "In the order you use them. Each step shows what it does for your skin and why.",
+    "result_text": "In the order you use them. Each step shows what it does for your skin and why we chose it.",
     "for_label": "Helps with",
     "chips": {
       "oil": "Excess oil",
@@ -1415,7 +1416,7 @@
       "one": "{{ rating }} across the products inside ({{ count }} review)",
       "other": "{{ rating }} across the products inside ({{ count }} reviews)"
     },
-    "delivery_dates": "Arrives {{ main }} in Cairo & Giza, {{ other }} elsewhere"
+    "delivery_dates": "Usually arrives {{ main }} in Cairo & Giza, {{ other }} elsewhere"
   },
   "set2": {
     "facts": "{{ count }} full-size products · {{ when }}",
@@ -1480,7 +1481,7 @@
     "rules_heading": "What we won’t do.",
     "rules": {
       "r1_h": "Invent numbers.",
-      "r1": "If a percentage isn’t on the pack, it isn’t on this site.",
+      "r1": "Every number on this site comes from the formula or the pack. No made-up results.",
       "r2_h": "Fake reviews.",
       "r2": "No made-up stars or quotes. Reviews show up when real customers write them.",
       "r3_h": "Rush you.",
@@ -1492,14 +1493,14 @@
     },
     "founder_eyebrow": "Why we started",
     "close_heading": "Until the next sun.",
-    "close_text": "Not sure where to start? Answer a few questions and we’ll suggest a routine.",
+    "close_text": "Not sure where to start? Answer a few quick questions and we’ll suggest a routine.",
     "close_cta": "Find your routine",
     "close_cta2": "Shop {{ name }}",
     "clock_day": "Out in the day",
     "clock_eve": "Evening",
     "clock_sleep": "While you sleep",
     "climate_link": "See the day hour by hour",
-    "meta_description": "Climate-adapted skincare made in Egypt for the space between two days: four steps, morning and night, with every ingredient listed as printed on the pack."
+    "meta_description": "Skincare made in Egypt for life between two suns: four steps, morning and night, with every ingredient listed as printed on the pack."
   },
   "finder": {
     "eyebrow": "Find your routine",
@@ -1516,7 +1517,7 @@
     "breakouts": "Breakout-prone",
     "sensitive": "Sensitive",
     "save": "You save {{ amount }}",
-    "gentle": "For sensitive skin: start one new product every few days and patch test each one first. If your skin is broken or irritated right now, let it settle before you begin.",
+    "gentle": "If your skin is sensitive, introduce new products one at a time and patch test each one first. If your skin is broken or irritated right now, let it settle before you begin.",
     "more_rx": "Using prescription skincare or acne medication",
     "more_none": "None of these",
     "choose_any": "Choose any that apply.",
@@ -1581,7 +1582,7 @@
     }
   },
   "contact2": {
-    "title": "Talk to us",
+    "title": "Talk to us.",
     "lede": "Pick a topic and write to us. We reply by email within one working day.",
     "faq_link": "All questions and answers",
     "order_no": "Order number (optional)",
@@ -1593,7 +1594,7 @@
     "routine_cta": "Find your routine in 30 seconds",
     "creators_text": "Creator applications have their own short form on the Creators page, so they reach the right person.",
     "creators_cta": "Apply on the Creators page",
-    "done_title": "Thanks, we've got it.",
+    "done_title": "Thanks, we’ve got it.",
     "done_text": "We'll reply by email within one working day (Sunday to Thursday, 9:00–18:00 Egypt time).",
     "done_shop": "Shop the sets",
     "done_finder": "Find your routine in 30 seconds"
@@ -1659,8 +1660,8 @@
   },
   "account_page": {
     "eyebrow": "Account",
-    "title": "Sign in or create your account",
-    "lead": "No password to remember. We email you a 6‑digit code, and you’re in.",
+    "title": "Sign in or create your account.",
+    "lead": "No password to remember. We email you a 6-digit code to sign in.",
     "continue": "Continue",
     "how_1": "Your email",
     "how_2": "Your code",
@@ -1706,22 +1707,30 @@
       "daily-reset-cleanser": {
         "headline": "Clean skin. Not that tight, stripped feeling.",
         "lead": "That just-washed feeling should be fresh, not tight. Daily Reset removes excess oil and the day’s buildup while helping your skin stay hydrated.",
-        "ingredients": "Zinc PCA + Centella"
+        "ingredients": "Zinc PCA + Centella",
+        "how": "Apply 1–2 pumps to wet skin, morning and night. Gently massage over the face, then rinse. Follow with serum.",
+        "when": "AM + PM"
       },
       "clarity-serum": {
         "headline": "Less shine. More even-looking skin.",
         "lead": "Excess oil and uneven tone don’t need two separate routines. One lightweight serum helps control oil, even skin tone and hydrate.",
-        "ingredients": "5% Niacinamide + 3% Tranexamic Acid"
+        "ingredients": "5% Niacinamide + 3% Tranexamic Acid",
+        "how": "Apply a few drops to cleansed face and neck, morning and night. Gently smooth until absorbed. Follow with moisturizer.",
+        "when": "AM + PM"
       },
       "daily-barrier-moisturizing-cream": {
         "headline": "Your skin needs moisture. Not the extra weight.",
         "lead": "Oily skin needs moisture, too. Lightweight hydration that helps strengthen your barrier and control excess oil, without the heavy feeling.",
-        "ingredients": "Ceramides + Zinc PCA"
+        "ingredients": "Ceramides + Zinc PCA",
+        "how": "Apply 1–2 pumps to clean, dry skin, morning and night. Use after serum. Follow with sunscreen in the morning.",
+        "when": "AM + PM"
       },
       "daily-defense-sunscreen-spf-50": {
         "headline": "Sun protection without the sunscreen feeling.",
         "lead": "You know SPF matters. You just don’t want to feel it all day. SPF 50+ in a lightweight, fast-absorbing formula with an invisible finish.",
-        "ingredients": "UVA + UVB Filters"
+        "ingredients": "UVA + UVB Filters",
+        "how": "Smooth it evenly over your face and neck every morning, as the last step in your routine. Reapply every 2 hours to keep your protection going.",
+        "when": "AM — reapply every 2 hours"
       }
     }
   }

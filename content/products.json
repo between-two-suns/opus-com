@@ -35,7 +35,7 @@
    "size": "200 mL",
    "when": {
     "en": "AM + PM",
-    "ar": "الصبح وبالليل"
+    "ar": "صباحاً ومساءً"
    },
    "badges": [
     {
@@ -75,7 +75,7 @@
    },
    "how_to_use": {
     "en": "Apply 1–2 pumps to wet skin, morning and night. Gently massage over the face, then rinse. Follow with serum.",
-    "ar": "حطّي 1–2 ضغطة على بشرة مبلولة، الصبح وبالليل. دلّكيه على وشك واشطفيه كويس. وبعده استخدمي السيروم."
+    "ar": "يوضع 1–2 ضغطة على بشرة مبللة صباحاً ومساءً. يُوزع على الوجه ثم يُشطف جيداً. يُستخدم قبل السيروم."
    },
    "key_ingredients": [
     "zinc-pca",
@@ -146,7 +146,7 @@
    "size": "30 mL",
    "when": {
     "en": "AM + PM",
-    "ar": "الصبح وبالليل"
+    "ar": "صباحاً ومساءً"
    },
    "badges": [],
    "features": [],
@@ -161,7 +161,7 @@
    },
    "how_to_use": {
     "en": "Apply a few drops to cleansed face and neck, morning and night. Gently smooth until absorbed. Follow with moisturizer.",
-    "ar": "حطّي كام نقطة على وشك ورقبتك بعد ما تنظّفي بشرتك وتنشّفيها، الصبح وبالليل. وزّعيه بلطف لحد ما يتشرّب. وبعده حطّي المرطّب."
+    "ar": "يوضع السيروم على كامل الوجه والرقبة بعد تنظيف البشرة وتجفيفها، صباحاً ومساءً. يُوزّع بلطف حتى يمتص. ثم يوضع المرطب."
    },
    "key_ingredients": [
     "niacinamide",
@@ -233,7 +233,7 @@
    "size": "50 g",
    "when": {
     "en": "AM + PM",
-    "ar": "الصبح وبالليل"
+    "ar": "صباحاً ومساءً"
    },
    "badges": [
     {
@@ -274,7 +274,7 @@
    "description_note": "AR pack text reads 'للحماية البشرة'; corrected to 'لحماية البشرة' for web. Flag for pack reprint.",
    "how_to_use": {
     "en": "Apply 1–2 pumps to clean, dry skin, morning and night. Use after serum. Follow with sunscreen in the morning.",
-    "ar": "حطّي 1–2 ضغطة على بشرة نضيفة وناشفة، الصبح وبالليل. استخدميه بعد السيروم. وفي الصبح، حطّي بعده واقي الشمس."
+    "ar": "يوضع 1–2 ضغطة على بشرة نظيفة وجافة صباحاً ومساءً. يُستخدم بعد السيروم. يُستخدم قبل واقي الشمس في الصباح."
    },
    "key_ingredients": [
     "ceramides",
@@ -347,7 +347,7 @@
    "size": "50 g",
    "when": {
     "en": "AM — reapply every 2 hours",
-    "ar": "الصبح · جدّديه كل ساعتين"
+    "ar": "صباحاً — يُعاد وضعه كل ساعتين"
    },
    "badges": [
     {
@@ -386,8 +386,8 @@
     "ar": "واقي شمس يومي يحتوي على النياسيناميد، البانثينول والبيسابولول. يوفر حماية واسعة من أشعة UVA وUVB، ويرطب البشرة ويتركها منتعشة ومحمية، بتركيبة خفيفة وغير دهنية لا تترك أثراً أبيض على البشرة."
    },
    "how_to_use": {
-    "en": "Smooth it evenly over your face and neck every morning, as the last step in your routine. Reapply every 2 hours to keep your protection going.",
-    "ar": "وزّعي كمية كافية على وشك ورقبتك كل صبح، كآخر خطوة في روتينك. وجدّديه كل ساعتين عشان حمايتك تفضل مستمرة."
+    "en": "Apply evenly to face and neck every morning as the last step in your routine. Reapply every 2 hours.",
+    "ar": "يوضع بكمية كافية على الوجه والرقبة صباحاً كآخر خطوة في الروتين اليومي. يُعاد وضعه كل ساعتين."
    },
    "key_ingredients": [
     "uv-filters",

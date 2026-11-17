@@ -1,0 +1,20 @@
+{%- comment -%}
+  A product's directions in the site's voice (DECISIONS 296): the copy master's wording from the locales
+  (copy.products.<handle>.how / .when) when it exists, otherwise the pack field from the product
+  (bts.how_to_use / bts.when_to_use). Keeps the product records untouched. Params: product, field ('how' | 'when')
+{%- endcomment -%}
+{%- liquid
+  if field == 'how'
+    assign bt_pack = product.metafields.bts.how_to_use.value
+  else
+    assign bt_pack = product.metafields.bts.when_to_use.value
+  endif
+  if bt_pack != blank
+    assign bt_key = 'copy.products.' | append: product.handle | append: '.' | append: field
+    assign bt_out = bt_key | t
+    if bt_out contains 'ranslation missing'
+      assign bt_out = bt_pack
+    endif
+    echo bt_out
+  endif
+-%}

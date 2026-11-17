@@ -22,14 +22,10 @@ Edit copy here first, then in the theme locales.
 ## Rollout status
 | Area | Status |
 |---|---|
-| Home (all sections), Clarity Serum page head, shared buttons and labels, footer sign-up | Built locally (demo), awaiting owner approval |
-| Other three product page heads | Built (same template), awaiting approval |
-| Sets page, Shop all body, Routine finder, Climate, Ingredients, About | Not started |
-| Navigation, bag, search, account, contact, errors | Partly (shared buttons and labels); rest not started |
-| FAQ page, Shipping, Returns | Home FAQ answers done; rest not started |
-| SEO titles and descriptions | Not started |
-| Arabic emails to feminine | Not started |
-| Product records in Shopify (step labels, how to use) | Changed in content/products.json; Shopify fields to update at rollout |
+| Every theme page (home, shop, sets, product and set pages, quiz, finder, climate, ingredients, about, contact, FAQ, help, bag, search, account, 404, creators) | Done in the theme (DECISIONS 296); to deploy to the new staging Version 1.2 |
+| Arabic order emails | Regenerated; Arabic translations to re-register in Shopify |
+| Page titles, SEO titles and descriptions, serum Arabic step label, ingredient glossary descriptions | Need Shopify (store data), after the connection is signed in again |
+| Native read-aloud with 3–5 target customers | Owner, after staging |
 
 ---
 

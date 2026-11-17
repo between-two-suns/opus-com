@@ -80,7 +80,10 @@
               if photo == false
                 assign photo = comp.featured_media.preview_image
               endif
-              assign how = comp.metafields.bts.how_to_use.value | split: '.' | first | strip
+              capture how
+                render 'bts-text', product: comp, field: 'how'
+              endcapture
+              assign how = how | split: '.' | first | strip
             -%}
             <li class="s2-day__step" data-step="{{ si }}" style="--k: {{ n }}">
               <a class="s2-day__link" href="{{ comp.url }}">
