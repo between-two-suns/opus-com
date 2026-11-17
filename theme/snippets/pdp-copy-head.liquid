@@ -1,0 +1,22 @@
+{%- comment -%}
+  Product page head for single products: the copy master's headline and short lead (what it does for her), then the
+  key ingredients (DECISIONS 294). Copy lives in locales under copy.products.<handle>; the ingredients fall back to
+  the bts.hero_ingredients metafield. Params: product
+{%- endcomment -%}
+{%- liquid
+  assign copy_key = 'copy.products.' | append: product.handle
+  assign head_key = copy_key | append: '.headline'
+  assign lead_key = copy_key | append: '.lead'
+  assign ing_key = copy_key | append: '.ingredients'
+  assign copy_head = head_key | t
+  assign copy_lead = lead_key | t
+  assign copy_ing = ing_key | t
+  if copy_ing contains 'ranslation missing'
+    assign copy_ing = product.metafields.bts.hero_ingredients.value
+  endif
+-%}
+{%- unless copy_head contains 'ranslation missing' -%}
+  <p class="v2-benefit v2-benefit--single">{{ copy_head }}</p>
+  {%- unless copy_lead contains 'ranslation missing' -%}<p class="v2-lead">{{ copy_lead }}</p>{%- endunless -%}
+{%- endunless -%}
+{%- if copy_ing != blank -%}<p class="pill pdp__hero-ing">{{ copy_ing }}</p>{%- endif -%}

@@ -399,8 +399,9 @@
     .js .dayline .dayline__nav { inset-block-start: auto; inset-block-end: calc(max(18px, 2.6svh) + var(--dock-h, 0px) + 6px); }
     .js .dayline .dayline__dot { inline-size: 40px; block-size: 40px; font-size: 13px; }
     .js .dayline .dayline__actions .link-arrow { display: none; }
-    .js .dayline .dayline__info { inset-inline-end: calc(var(--gutter) + 178px); }
-    .js .dayline .dayline__benefit { display: none; }
+    /* the step line and name use the full width; only the button row makes room for the step dots (DECISIONS 294) */
+    .js .dayline .dayline__actions { margin-inline-end: 178px; }
+    .js .dayline .dayline__benefit { color: var(--c-ink); font-weight: 600; max-inline-size: none; }
     /* short phone screens (in-app browsers): the pack is never taller than the room under the heading, so it can't cover it; taller phones are unchanged */
     .js .dayline .dayline__bottle { block-size: min(42svh, 400px, calc(100svh - max(206px, 25svh) - var(--dock-h, 0px) - var(--header-h) - clamp(16px, 3svh, 36px) - 110px)); }
   }
@@ -454,6 +455,8 @@ climate-switch.is-entered .cs__line:not([hidden]) { animation: cs-in 420ms var(-
 @media (min-width: 990px) {
   .cs__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); grid-template-rows: 1fr auto auto auto 1fr; grid-template-areas: '. stage' 'head stage' 'switch stage' 'read stage' '. stage'; column-gap: clamp(32px, 5vw, 80px); row-gap: 24px; }
   .cs__head { grid-area: head; align-self: end; }
+  /* the Arabic heading runs to two lines; slightly closer rows keep the column inside the photo's height (DECISIONS 294) */
+  .cs:lang(ar) .cs__inner { row-gap: 20px; }
   .cs__switch { grid-area: switch; max-inline-size: 520px; }
   .cs__stage { grid-area: stage; aspect-ratio: 5 / 6; max-block-size: 680px; inline-size: 100%; justify-self: end; }
   .cs__read { grid-area: read; align-self: start; }

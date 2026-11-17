@@ -55,13 +55,7 @@
         "q3": {
           "type": "qa",
           "settings": {
-            "preset": "delivery_free"
-          }
-        },
-        "q4": {
-          "type": "qa",
-          "settings": {
-            "preset": "made"
+            "preset": "climate"
           }
         }
       },
@@ -69,8 +63,7 @@
         "q0",
         "q1",
         "q2",
-        "q3",
-        "q4"
+        "q3"
       ],
       "settings": {
         "compact": true,

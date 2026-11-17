@@ -6,7 +6,7 @@
 {%- liquid
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = 'sections.bundles.heading' | t | replace: '&amp;', '&'
+    assign heading = 'sections.bundles_feature.heading' | t | replace: '&amp;', '&'
   endif
   assign text = section.settings.text
   if text == blank
@@ -19,12 +19,12 @@
   <div class="container">
     <div class="section-head">
       <div class="section-head__text">
-        <p class="t-eyebrow">{{ 'sections.bundles.eyebrow' | t }}</p>
+        <p class="t-eyebrow">{{ 'sections.bundles_feature.eyebrow' | t }}</p>
         <h2 class="t-display-l" id="SetsxTitle-{{ section.id }}">{{ heading | escape }}</h2>
       </div>
       <div class="setsx__aside">
         <p class="t-lead t-muted">{{ text | escape }}</p>
-        <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'sections.bundles.see_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+        <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'sections.bundles_feature.cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
       </div>
     </div>
 

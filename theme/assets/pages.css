@@ -382,7 +382,8 @@
   .page-hero:not(.page-hero--media) :is(.page-hero__copy, .page-hero__inner):has(> .page-hero__text) > .page-hero__text { grid-column: 2; grid-row: 2; margin: 0; }
   .page-hero:not(.page-hero--media) :is(.page-hero__copy, .page-hero__inner):has(> .page-hero__text) > :not(.t-eyebrow, h1, .page-hero__text) { grid-column: 2; grid-row: 3; align-self: start; }
   /* only a title and its text: the text sits on the title's last line */
-  .page-hero:not(.page-hero--media) :is(.page-hero__copy, .page-hero__inner):has(> .page-hero__text):not(:has(> :not(.t-eyebrow, h1, .page-hero__text))) > .page-hero__text { grid-row: 2 / span 2; align-self: end; padding-block-end: .5em; }
+  .page-hero:not(.page-hero--media) :is(.page-hero__copy, .page-hero__inner):has(> .page-hero__text):not(:has(> :not(.t-eyebrow, h1, .page-hero__text))) > .page-hero__text { grid-row: 1 / span 3; align-self: end; padding-block-end: .5em; }
+  /* (it may rise beside the eyebrow too, so a three-line text never pushes the eyebrow away from a one-line title, DECISIONS 294) */
 }
 
 /* v3 shop: four products, then a sets rail. */

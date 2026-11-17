@@ -1,6 +1,6 @@
 {{ 'home.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  Full-bleed editorial photo with one line and one link (default: to the Climate page).
+  Full-bleed editorial photo with one line and one link (default: to the About page; the copy is the brand story, DECISIONS 294).
   The photo defaults to the brand's walking shot in Files, on phones too (cropped around her); an optional phone photo can be set in the editor.
 {%- endcomment -%}
 {%- liquid
@@ -26,7 +26,7 @@
   endif
   assign link = section.settings.link
   if link == blank
-    assign link = routes.root_url | append: '/pages/climate' | replace: '//', '/'
+    assign link = routes.root_url | append: '/pages/about' | replace: '//', '/'
   endif
 -%}
 <section class="eb" aria-labelledby="EbTitle-{{ section.id }}">

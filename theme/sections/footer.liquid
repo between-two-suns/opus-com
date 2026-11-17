@@ -19,6 +19,37 @@
   if news_text == blank
     assign news_text = 'newsletter.text' | t | replace: '&amp;', '&'
   endif
+  comment
+    The footer sign-up reveals the welcome code too (welcome-offer.js), so when that card can show on this page the
+    footer names the offer and its terms (DECISIONS 294). Same conditions as snippets/welcome-offer.liquid.
+  endcomment
+  assign news_offer = settings.welcome_enable
+  if settings.welcome_code == blank
+    assign news_offer = false
+  endif
+  case template.name
+    when 'cart', 'password', 'gift_card', 'customers/account', 'customers/order', 'customers/addresses'
+      assign news_offer = false
+  endcase
+  if template.suffix == 'account' or customer and customer.accepts_marketing
+    assign news_offer = false
+  endif
+  if news_offer and section.settings.newsletter_heading == blank and section.settings.newsletter_text == blank
+    assign offer_amt_cents = settings.welcome_amount | default: 0 | times: 100
+    assign offer_min_cents = settings.welcome_min | default: 0 | times: 100
+    capture offer_amt
+      render 'egp', cents: offer_amt_cents
+    endcapture
+    capture offer_min
+      render 'egp', cents: offer_min_cents
+    endcapture
+    assign offer_amt = offer_amt | strip
+    assign offer_min = offer_min | strip
+    assign news_heading = 'newsletter.offer_heading' | t
+    assign news_text = 'newsletter.offer_text' | t: amount: offer_amt
+  else
+    assign news_offer = false
+  endif
 -%}
 <footer class="site-footer" aria-labelledby="FooterTitle">
   <h2 class="visually-hidden" id="FooterTitle">{{ 'footer.title' | t }}</h2>
@@ -94,7 +125,7 @@
         {%- form 'customer', id: 'FooterNewsletter', class: 'footer__form' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
           {%- if form.posted_successfully? -%}
-            <p class="form-status form-status--success" role="status" tabindex="-1"{% unless settings.welcome_enable %} autofocus{% endunless %}>{{ 'newsletter.success' | t }}</p>
+            <p class="form-status form-status--success" role="status" tabindex="-1"{% unless settings.welcome_enable %} autofocus{% endunless %}>{% if news_offer %}{{ 'newsletter.offer_success' | t }}{% else %}{{ 'newsletter.success' | t }}{% endif %}</p>
           {%- else -%}
             <div class="inline-form">
               <div class="field">
@@ -109,12 +140,12 @@
                   {% if form.errors %}aria-invalid="true" aria-describedby="FooterNewsletterError"{% endif %}
                 >
               </div>
-              <button type="submit" class="btn">{{ 'newsletter.submit' | t }}</button>
+              <button type="submit" class="btn">{% if news_offer %}{{ 'newsletter.offer_submit' | t: amount: offer_amt }}{% else %}{{ 'newsletter.submit' | t }}{% endif %}</button>
             </div>
             {%- if form.errors -%}
               <p class="field__error" id="FooterNewsletterError">{% render 'icon', name: 'alert', class: 'icon--sm' %}{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
             {%- endif -%}
-            <p class="t-xs footer__soft">{{ 'newsletter.consent' | t }}</p>
+            <p class="t-xs footer__soft">{% if news_offer %}{{ 'welcome.terms' | t: minimum: offer_min }} {% endif %}{{ 'newsletter.consent' | t }}</p>
           {%- endif -%}
         {%- endform -%}
       </div>

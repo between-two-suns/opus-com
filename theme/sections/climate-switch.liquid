@@ -143,7 +143,7 @@
 
     <div class="cs__read" aria-live="polite">
       {%- for c in conditions -%}
-        {%- if c == 'city' -%}{%- assign line_key = 'climate.dust.line' -%}{%- else -%}{%- assign line_key = 'climate.' | append: c | append: '.line' -%}{%- endif -%}
+        {%- assign line_key = 'sections.climate_switch.lines.' | append: c -%}
         <p class="cs__line" data-c="{{ c }}"{% unless forloop.first %} hidden{% endunless %}>{{ line_key | t }}</p>
       {%- endfor -%}
       <ul class="cs__keys" role="list">

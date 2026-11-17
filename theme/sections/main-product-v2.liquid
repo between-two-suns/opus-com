@@ -13,7 +13,6 @@
   endcapture
   assign step = step | strip | plus: 0
   assign mf = product.metafields.bts
-  assign step_label = mf.step_label.value
   assign inci_hint = 'product.inci_hint' | t | replace: '&amp;', '&'
   assign variant = product.selected_or_first_available_variant
   assign coming_soon = false
@@ -253,7 +252,8 @@
       <div class="pdp__info">
         <div class="pdp__head v2-head">
           {%- if step > 0 -%}
-            <p class="step-tag pdp__step">{{ 'product.step' | t: number: step }}{% if step_label != blank %} · {{ step_label }}{% endif %}</p>
+            {%- assign step_key = 'product.step_name.s' | append: step -%}
+            <p class="step-tag pdp__step">{{ 'product.step' | t: number: step }} · {{ step_key | t }}</p>
           {%- endif -%}
           <h1 class="pdp__title v2-title">{{ pdp_title | escape }}</h1>
           {%- render 'jdgm-badge', product: product -%}
@@ -285,8 +285,8 @@
             {%- endif -%}
           {%- elsif bdef != blank -%}
             {%- if benefit != blank -%}<p class="v2-benefit">{{ benefit }}</p>{%- endif -%}
-          {%- elsif mf.hero_ingredients != blank -%}
-            <p class="pill pdp__hero-ing">{{ mf.hero_ingredients }}</p>
+          {%- else -%}
+            {%- render 'pdp-copy-head', product: product -%}
           {%- endif -%}
           {%- if bdef == blank -%}
             {%- capture who -%}{% render 'pdp2-concerns', step: step %}{%- endcapture -%}

@@ -73,14 +73,17 @@
     "learn": "Learn",
     "view_all": "See all results for “{{ terms }}”",
     "results_count": "{{ count }} results for “{{ terms }}”",
-    "found": {"one": "1 result", "other": "{{ count }} results"},
+    "found": {
+      "one": "1 result",
+      "other": "{{ count }} results"
+    },
     "submit": "Search",
     "empty_hint": "Try an ingredient (niacinamide), a concern (oiliness) or a step (SPF)."
   },
   "footer": {
     "title": "Footer",
     "tagline": "fresh skin. always.",
-    "description": "Climate-adapted skincare. Made for sun, pollution, changing environments & everyday skin.",
+    "description": "Made in Egypt for the days that don’t slow down. Four essentials to cleanse, treat, moisturize and protect, from the first sun to the second.",
     "headings": {
       "shop": "Shop",
       "learn": "Learn",
@@ -112,7 +115,11 @@
     "success": "You’re in. Watch your inbox.",
     "email_label": "Email address",
     "submit": "Sign up",
-    "consent": "By signing up you agree to receive emails from Between Two Suns. Unsubscribe any time."
+    "consent": "By signing up you agree to receive emails from Between Two Suns. Unsubscribe any time.",
+    "offer_heading": "Something good for your first order.",
+    "offer_text": "Get {{ amount }} off your first order, plus skincare advice, new launches and the occasional note worth opening.",
+    "offer_submit": "Get {{ amount }} off",
+    "offer_success": "You’re in. Your welcome offer is ready."
   },
   "concerns": {
     "label": "Skin concern",
@@ -176,19 +183,25 @@
       "heading": "What’s your skin dealing with?"
     },
     "routine": {
-      "eyebrow": "The routine",
-      "heading": "Four steps. Every climate.",
-      "text": "Cleanse, treat, moisturize, protect. Each step has its colour — and its place in your day.",
+      "eyebrow": "The everyday routine",
+      "heading": "Less to figure out. More to feel good about.",
+      "text": "Good skincare shouldn’t take over your day. Four steps, each with a purpose: a comfortable cleanse, a little more clarity, moisture without the weight and protection you’ll actually want to wear.",
       "bundle_title": "The full routine · {{ count }} steps",
       "bundle_note": "All four in one tap. The price shown is the sum of each product.",
       "bundle_cta": "Add the full routine",
-      "nav": "Go to routine step"
+      "nav": "Go to routine step",
+      "lines": {
+        "1": "Clean skin. Not that tight, stripped feeling.",
+        "2": "Less shine. More even-looking skin.",
+        "3": "Your skin needs moisture. Not the extra weight.",
+        "4": "Sun protection without the sunscreen feeling."
+      }
     },
     "climate": {
-      "eyebrow": "Climate-adapted",
+      "eyebrow": "Made for life here",
       "heading": "Your skin doesn’t live in one climate.",
       "text": "Morning sun, a dusty commute, eight hours of air-con, a humid evening. Between Two Suns is skincare made for all of it — not just summer.",
-      "link": "Why climate-adapted"
+      "link": "Discover why climate matters"
     },
     "forecast": {
       "eyebrow": "Routine finder",
@@ -317,9 +330,16 @@
       "cta": "Add my routine"
     },
     "climate_switch": {
-      "heading": "What’s today like?",
-      "label": "Today’s conditions",
-      "cta": "Add these {{ count }} steps"
+      "heading": "Your skin goes through a lot in one day.",
+      "label": "Pick a condition",
+      "cta": "Add these {{ count }} steps",
+      "lines": {
+        "sun": "Sun protection isn’t just for beach days.",
+        "city": "Leave the day’s buildup behind.",
+        "humidity": "When the air feels heavy, your skincare shouldn’t.",
+        "ac": "Your skin can feel dry even when it’s hot outside.",
+        "heat": "The hotter the day, the less you want to feel on your face."
+      }
     },
     "facts_band": {
       "steps": "steps, one routine",
@@ -328,23 +348,24 @@
       "egypt": "Made in Egypt, for the climate we live in"
     },
     "hero_panels": {
-      "eyebrow": "Climate-adapted skincare · For our region",
+      "eyebrow": "Skincare for life between two suns",
       "line_1": "Made for the",
       "line_2": "space between.",
-      "subcopy": "Morning sun, office AC, city dust, humid nights. Four light steps made for our climate.",
+      "subcopy": "Your skin has a lot to keep up with. Four everyday essentials help control oil, even skin tone, hydrate and protect.",
       "cta_primary": "Shop the Full Ritual",
-      "cta_secondary": "Pick my steps"
+      "cta_secondary": "Pick my steps",
+      "cta_find": "Find your routine"
     },
     "ingredient_heroes": {
       "eyebrow": "What’s inside",
-      "heading": "Four jobs, four formulas.",
-      "link": "All ingredients, explained"
+      "heading": "The ingredients matter. What they do for you matters more.",
+      "link": "Explore the ingredients"
     },
     "editorial_band": {
-      "eyebrow": "The climate",
+      "eyebrow": "Why Between Two Suns exists",
       "heading": "From the first sun to the second.",
-      "text": "Heat, office AC, city dust, humid evenings. See how each step handles a real day in our climate.",
-      "cta": "See the climate"
+      "text": "Your day doesn’t happen in one place or one kind of weather. And taking care of your skin shouldn’t mean planning your day around it. Skincare for the life you’re already living.",
+      "cta": "Get to know us"
     },
     "hero_play": {
       "hint": "Grab one. Fling it.",
@@ -388,10 +409,13 @@
       "lineup": "The routine"
     },
     "bundles_feature": {
-      "text": "Your whole routine in one box. Sets cost less than buying each step on its own.",
+      "text": "Not sure what goes together? We’ve done that part. Pick a ready-made set and save compared with buying each product separately.",
       "save": "Save {{ amount }}",
       "hero_eyebrow": "Morning and night",
-      "mate_eyebrow": "For your evenings"
+      "mate_eyebrow": "For your evenings",
+      "eyebrow": "Better together",
+      "heading": "Your routine, without the guesswork.",
+      "cta": "Shop the sets"
     }
   },
   "product": {
@@ -464,6 +488,12 @@
       "s2": "Clarity",
       "s3": "Barrier",
       "s4": "Defense"
+    },
+    "step_name": {
+      "s1": "Cleanse",
+      "s2": "Treat",
+      "s3": "Moisturize",
+      "s4": "Protect"
     }
   },
   "collection": {
@@ -477,7 +507,8 @@
     "routine_card_cta": "Open the forecast",
     "sort": "Sort",
     "sets_heading": "Sets: the routine, for less.",
-    "sets_builder": "Build your own"
+    "sets_builder": "Build your own",
+    "lead": "Four everyday essentials. Cleanse, Treat, Moisturize and Protect. Start with one step, or bring the routine together."
   },
   "cart": {
     "added": "Added to your bag",
@@ -720,11 +751,11 @@
     "shop": "Start shopping"
   },
   "faq": {
-    "heading": "Questions, answered",
+    "heading": "Questions, answered.",
     "items": {
       "order": {
-        "q": "In what order do I use the routine?",
-        "a": "Cleanser, then Clarity Serum, then Daily Barrier Moisturizing Cream — morning and night. In the morning, finish with Daily Defense Sunscreen SPF 50+ as the last step."
+        "q": "What order should I use them in?",
+        "a": "Morning: Cleanse → Treat → Moisturize → Protect. Evening: Cleanse → Treat → Moisturize."
       },
       "am_pm": {
         "q": "Can I use the products morning and night?",
@@ -747,8 +778,8 @@
         "a": "In Egypt. They are manufactured by Integrated Cosmetics Industries for Nuu Group for Cosmetics."
       },
       "climate": {
-        "q": "What does “climate-adapted” mean?",
-        "a": "Skincare designed around the conditions skin actually lives in — sun, pollution, dust, humidity, heat, air-con and constant change — with light textures and a simple four-step routine."
+        "q": "What does climate-adapted mean?",
+        "a": "Our skincare was developed with everyday life in Egypt in mind: sun, heat, humidity, city pollution and hours in air-conditioning. The focus is on useful benefits and textures that feel comfortable in real life."
       },
       "fragrance": {
         "q": "Are the products fragrance-free?",
@@ -787,12 +818,12 @@
         "a": "Against buying the same products separately at today’s prices. The set price is the price you pay; it is shown before you add it to your bag."
       },
       "start_where": {
-        "q": "Which set should I start with?",
-        "a": "Starting from nothing: The Full Ritual, all four steps for morning and night. Want to start smaller: the Clear & Protect Trio. Oil and sun: the Clear & Protect Duo. Or pick single steps on the Sets page."
+        "q": "Which products should I start with?",
+        "a": "Start with what your skin needs. Cleanser, moisturizer and daily sunscreen make a good foundation for most routines. Add Clarity Serum if excess oil and uneven-looking tone are things you’d like to work on."
       },
       "all_four": {
-        "q": "Do I need all four steps?",
-        "a": "No. Start with the steps you need and add the rest when you want. Used together they go in order: cleanser, serum, moisturizer, then sunscreen as the last step in the morning."
+        "q": "Do I need all four products?",
+        "a": "No. Each product works as its own step. The Full Ritual brings all four together if you’d like the complete routine."
       },
       "delivery_free": {
         "q": "Is delivery free?",
@@ -971,13 +1002,13 @@
       "serum-stock-up": "Serum Stock-Up"
     },
     "desc": {
-      "the-clear-protect-trio": "Leaves skin fresh and even, finished with SPF 50+.",
-      "the-full-ritual": "Controls oil, evens tone, protects with SPF 50+.",
-      "clear-protect-duo": "Evens tone and protects it with SPF 50+.",
-      "the-night-ritual": "Controls oil and strengthens your skin barrier.",
-      "the-core-duo": "Removes oil, then keeps it under control.",
-      "spf-stock-up": "Invisible, lightweight SPF 50+, with a spare.",
-      "serum-stock-up": "Controls oil and evens tone, with a spare."
+      "the-clear-protect-trio": "Less excess oil. More clarity. Daily SPF.",
+      "the-full-ritual": "The whole routine, already sorted.",
+      "clear-protect-duo": "Two focused steps for tone and protection.",
+      "the-night-ritual": "Wash off the day. Keep the good stuff.",
+      "the-core-duo": "Clean first. Then clarity.",
+      "spf-stock-up": "Your daily SPF. And your backup.",
+      "serum-stock-up": "Keep the clarity going."
     },
     "badges": {
       "bts_pick": "Our pick",
@@ -1669,5 +1700,29 @@
   },
   "date_formats": {
     "account_date": "%-d %b %Y"
+  },
+  "copy": {
+    "products": {
+      "daily-reset-cleanser": {
+        "headline": "Clean skin. Not that tight, stripped feeling.",
+        "lead": "That just-washed feeling should be fresh, not tight. Daily Reset removes excess oil and the day’s buildup while helping your skin stay hydrated.",
+        "ingredients": "Zinc PCA + Centella"
+      },
+      "clarity-serum": {
+        "headline": "Less shine. More even-looking skin.",
+        "lead": "Excess oil and uneven tone don’t need two separate routines. One lightweight serum helps control oil, even skin tone and hydrate.",
+        "ingredients": "5% Niacinamide + 3% Tranexamic Acid"
+      },
+      "daily-barrier-moisturizing-cream": {
+        "headline": "Your skin needs moisture. Not the extra weight.",
+        "lead": "Oily skin needs moisture, too. Lightweight hydration that helps strengthen your barrier and control excess oil, without the heavy feeling.",
+        "ingredients": "Ceramides + Zinc PCA"
+      },
+      "daily-defense-sunscreen-spf-50": {
+        "headline": "Sun protection without the sunscreen feeling.",
+        "lead": "You know SPF matters. You just don’t want to feel it all day. SPF 50+ in a lightweight, fast-absorbing formula with an invisible finish.",
+        "ingredients": "UVA + UVB Filters"
+      }
+    }
   }
 }

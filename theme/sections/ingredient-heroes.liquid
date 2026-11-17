@@ -44,6 +44,11 @@
               assign lead = benefit | split: '. ' | first | remove: '.'
               assign rest = benefit | remove_first: lead | remove_first: '.' | strip
               assign hero = product.metafields.bts.hero_ingredients.value
+              assign hero_key = 'copy.products.' | append: product.handle | append: '.ingredients'
+              assign hero_copy = hero_key | t
+              unless hero_copy contains 'ranslation missing'
+                assign hero = hero_copy
+              endunless
             -%}
             <li class="ih__card" data-step="{{ s }}">
               <a class="ih__link" href="{{ product.url }}">

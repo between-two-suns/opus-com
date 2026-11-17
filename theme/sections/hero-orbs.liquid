@@ -127,7 +127,7 @@
 :lang(ar) .hh-title .hh-w { overflow: visible; padding: 0; margin: 0; }
 :lang(ar) .hh-title .hh-w > span { animation-name: hh-fade; }
 @keyframes hh-fade { from { transform: translateY(.14em); } }
-@media (max-width: 760px) { :lang(ar) .hh-title { font-size: 12vw; max-width: none; } :lang(ar) .hh-title br.hh-d { display: inline; } }
+@media (max-width: 760px) { :lang(ar) .hh-title { font-size: 9.2vw; max-width: none; white-space: nowrap; } :lang(ar) .hh-title br.hh-d { display: inline; } }
 :lang(ar) .hh-eyebrow, :lang(ar) .hh-lab, :lang(ar) .hh-btn { letter-spacing: 0; }
 @media (prefers-reduced-motion: reduce) {
   .hh-title .hh-w > span, .hh-b img, .hh-b::before, .ho-o, .ho-p, .ho-spin, .ho-g { animation: none; }
@@ -157,7 +157,7 @@
     <p class="hh-sub">{{ 'sections.hero_panels.subcopy' | t }}</p>
     <div class="hh-foot">
       <a class="hh-btn hh-btn--main" href="{{ full.url | default: all_url }}">{{ 'sections.hero_suns.cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm' %}</a>
-      <a class="hh-btn hh-btn--ghost" href="{{ all_url }}">{{ 'sections.hero_routine.cta_all' | t }}</a>
+      {%- if settings.skin_check_page != blank and settings.skin_check_page.url != blank -%}<a class="hh-btn hh-btn--ghost" href="{{ settings.skin_check_page.url }}">{{ 'sections.hero_panels.cta_find' | t }}</a>{%- else -%}<a class="hh-btn hh-btn--ghost" href="{{ all_url }}">{{ 'sections.hero_routine.cta_all' | t }}</a>{%- endif -%}
     </div>
     <ul class="hh-row" role="list" aria-label="{{ 'sections.hero_routine.lineup' | t }}">
       {%- for h in handles -%}

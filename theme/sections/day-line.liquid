@@ -47,11 +47,12 @@
                   assign coming_soon = true
                 endif
                 assign cutout = product.metafields.bts.cutout.value
-                assign label = product.metafields.bts.step_label.value
                 assign uid = section.id | append: '-' | append: product.id
               -%}
               <li class="dayline__step{% if n == 0 %} is-active{% endif %}" data-step="{{ s }}" style="--i: {{ n }}" data-index="{{ n }}">
-                <span class="dayline__word" aria-hidden="true">{{ label | default: product.title | escape }}</span>
+                {%- comment -%} the big word behind the pack is graphic, so it keeps the brand word (Reset, Clarity…); the step tag uses the routine word (DECISIONS 294) {%- endcomment -%}
+                {%- assign word_key = 'product.stage_word.s' | append: s -%}
+                <span class="dayline__word" aria-hidden="true">{{ word_key | t }}</span>
                 <a class="dayline__bottle" href="{{ product.url }}" tabindex="-1" aria-hidden="true" data-cursor="{{ 'general.view' | t }}">
                   {%- if cutout -%}
                     {{ cutout | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 990px) 30vw, 60vw', alt: '' }}
@@ -60,11 +61,11 @@
                   {%- endif -%}
                 </a>
                 <div class="dayline__info">
-                  <p class="step-tag">{{ 'product.step' | t: number: s }}{% if label != blank %} · {{ label | escape }}{% endif %}</p>
+                  {%- assign step_key = 'product.step_name.s' | append: s -%}
+                  <p class="step-tag">{{ 'product.step' | t: number: s }} · {{ step_key | t }}</p>
                   <h3 class="dayline__name" id="DayName-{{ uid }}"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
-                  {%- if product.metafields.bts.benefit != blank -%}
-                    <p class="dayline__benefit">{{ product.metafields.bts.benefit }}</p>
-                  {%- endif -%}
+                  {%- assign line_key = 'sections.routine.lines.' | append: s -%}
+                  <p class="dayline__benefit">{{ line_key | t }}</p>
                   <p class="dayline__price">
                     {%- render 'price', product: product, variant: v -%}
                     {%- if product.metafields.bts.size != blank -%}<span class="t-muted u-ltr"> · {{ product.metafields.bts.size }}</span>{%- endif -%}
