@@ -2,7 +2,7 @@
 
 > New session? Read **CLAUDE.md** first (handover: rules, copy system, next steps).
 
-_Updated: 2026-11-09_
+_Updated: 2026-11-17_
 
 ## Current build state
 Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, with store content (metafields, metaobjects, pages, Arabic translations) wired up. QA on the local preview is green. Real-storefront visual verification is still outstanding: the build sandbox cannot reach `*.myshopify.com`.
@@ -10,6 +10,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 | | |
 |---|---|
 | **Staging preview URL** | https://qfj1gi-c9.myshopify.com/?preview_theme_id=167112540418 (store password required; or Online Store → Themes → "BTS Store — Version 1.1 (fixes, in progress)" → Preview) |
+| **Version 1.2 (new copy)** | `BTS Store — Version 1.2 (new copy)` · `gid://shopify/OnlineStoreTheme/168818671874` · UNPUBLISHED · preview https://qfj1gi-c9.myshopify.com/?preview_theme_id=168818671874 (duplicate of 1.1 + the new copy, DECISIONS 298). All new work goes here. |
 | Theme | `BTS Store — Version 1.1 (fixes, in progress)` (was "BTS Opus — staging") · `gid://shopify/OnlineStoreTheme/167112540418` · UNPUBLISHED |
 | Live theme | Horizon (MAIN): **untouched** (store-level: Arabic published 2026-10-18 with owner approval) · `templates/index.json` MD5 `c828067cbc7ea00ac09f4927419385ce` (2026-10-18) |
 | Repo / branch | `between-two-suns/opus-com` · `opus-build` |
@@ -18,6 +19,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 ## Restore points (revert here if needed)
 | Date | Shopify theme (unpublished, untouched copy) | Git commit on `opus-build` |
 |---|---|---|
+| 2026-11-17, **BTS Store — Version 1.1**: the approved site before the new copy (kept as is; Version 1.2 is the copy of it with the new text) | `BTS Store — Version 1.1 (fixes, in progress)` · `gid://shopify/OnlineStoreTheme/167112540418` | `e50a3b8` |
 | 2026-10-26, **BTS Store — Version 1.0**: the site as audited, before the audit fixes | `BTS Store — Version 1.0` · `gid://shopify/OnlineStoreTheme/167875215618` (248 files, copied from staging) | `099ed58` |
 | 2026-10-18, before shipping the orbs hero + routine module | `snapshot 2026-10-18 before orbs ship` · `gid://shopify/OnlineStoreTheme/167562281218` | `1d0f79a` |
 | 2026-10-16, v3 rated 7 by owner, before loop 5 | `BTS Opus — snapshot 2026-10-16 (v3, rated 7, before loop 5)` · `gid://shopify/OnlineStoreTheme/167493992706` | `42678d6` |
@@ -30,7 +32,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 To revert the site: in Shopify, preview or rename that snapshot theme (or copy its files back to staging); in code, `git checkout 5e78baf -- theme/`. Never published.
 
 ## Version 1.1 (in progress on staging, from 2026-10-26)
-- **Copy (2026-11-17, DECISIONS 294–296):** the owner's copy master is the source of truth (content/copy-master.md). The whole theme is now in the new voice (EN + feminine Egyptian Arabic) and committed. **Restore point: commit `e50a3b8`; staging Version 1.1 (167112540418) stays untouched.** Next: once the Shopify connection is signed in again, duplicate staging as "BTS Store — Version 1.2 (new copy)", deploy there, then the store-side items (page titles, SEO, serum Arabic step label, glossary descriptions, Arabic email translations). After that: the owner's native read-aloud with 3–5 target customers.
+- **Copy (2026-11-17, DECISIONS 294–296):** the owner's copy master is the source of truth (content/copy-master.md). The whole theme is now in the new voice (EN + feminine Egyptian Arabic) and committed. **Restore point: commit `e50a3b8`; staging Version 1.1 (167112540418) stays untouched.** **Done (DECISIONS 298):** Version 1.2 (168818671874) created by duplicating 1.1, the 22 changed files deployed and checksum-verified. Next: owner reviews the 1.2 preview; then the store-side items (page titles, SEO, serum Arabic step label, glossary descriptions, Arabic email translations). After that: the owner's native read-aloud with 3–5 target customers.
 - Audit: `BETWEEN TWO SUNS · 10/10 audit` (Claude doc) — scorecard, what repeats, the big moves, conversion, page by page, order of work.
 - Round 1 fixes shipped to staging (DECISIONS 209): real set names in build-your-own, no empty reviews line, page headings (skin check, Routines), Creators email-only, Journal link hidden until a story, no Arabic font on English pages.
 - Round 2 speed shipped to staging (DECISIONS 210): Home 5.0 → 3.0 s, Ingredients 5.3 → 2.5 s, Sets 3.7 → 2.6 s, Climate 4.3 → 3.5 s, The Full Ritual 2.8 → 1.9 s (strict slow-4G phone test). Still over 2.5 s: Home, Arabic home, Climate, Routines. Options: one sphere on the home hero on phones, a lighter first climate photo, the single-sun Routines hero.
@@ -183,7 +185,7 @@ Applied from the owner's Pricing & Offers PDF (sizes: SPF and moisturizer in gm;
 ## Deploy procedure (repeatable)
 1. `cd theme && zip -qr ../bts-opus.zip assets config layout locales sections snippets templates`
 2. Admin GraphQL `stagedUploadsCreate` (resource `FILE`, `application/zip`) → POST the zip to the returned target.
-3. Either `themeCreate(source: resourceUrl, role: UNPUBLISHED)` for a fresh theme, or `themeFilesUpsert` on theme `167112540418` for updates. **Never publish without owner approval.**
+3. Either `themeCreate(source: resourceUrl, role: UNPUBLISHED)` for a fresh theme, or `themeFilesUpsert` on theme `168818671874` (Version 1.2) for updates; 1.1 (167112540418) stays untouched. **Never publish without owner approval.**
 4. Large files: `stagedUploadsCreate` (FILE, `text/css` etc.) → POST the file → `themeFilesUpsert` with body `{type: URL, value: resourceUrl}` (processed async; the mutation returns an empty list).
 5. Verify: query `theme.files(filenames: …) { checksumMd5 }` and compare with local `md5sum`; it must match byte for byte. JSON templates and `settings_data.json` get Shopify's header comment on save, so compare those by content.
 6. Upsert sections/snippets **before** templates that reference new sections or block types and wait for that job to finish; a template sent in a parallel batch is rejected silently (empty result, no userError).

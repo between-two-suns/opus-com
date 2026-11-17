@@ -4,7 +4,7 @@ You are continuing a long-running build. This file is the handover: who the owne
 what was done and why, and exactly what to do next. **DECISIONS.md** (numbered log, newest at the bottom) and **STATUS.md**
 (current state, restore points, launch checklist) hold the detail; this file tells you how to use them.
 
-**Next DECISIONS entry number: 298.** Add one entry per round of work and keep STATUS.md current.
+**Next DECISIONS entry number: 299.** Add one entry per round of work and keep STATUS.md current.
 
 ---
 
@@ -24,6 +24,8 @@ what was done and why, and exactly what to do next. **DECISIONS.md** (numbered l
   - Staging: **"BTS Store — Version 1.1 (fixes, in progress)", 167112540418.** The current approved site. **Leave it
     untouched now** (it is the fallback for the new copy, see §6).
   - Snapshot: **Version 1.0, 167875215618.** Never edit it, and never change Files it uses (orb-green.png, orb-blue.png).
+  - **Version 1.2 (new copy), 168818671874.** Duplicate of 1.1 with the new copy (DECISIONS 298). This is where new
+    work goes now.
   - Demo theme from another session: 168509309186 (motion fixes demo, branch `claude/motion-fixes-demo`).
 - **Branch:** commit and push to `opus-build` only. No pull requests. Another session also pushes here, so always
   `git pull --rebase origin opus-build` before pushing, and check staging checksums before overwriting a file.
@@ -112,7 +114,7 @@ the six owner-approved line swaps are in, layout is checked, all QA passes. Revi
 
 **Owner's instruction:** keep Version 1.1 as it is and put the new text on a **new** unpublished theme.
 
-### Step 1 — create Version 1.2 (needs the Shopify connector working)
+### Step 1 — create Version 1.2 — DONE (DECISIONS 298): theme 168818671874, files verified. Owner to review.
 - Best: duplicate 167112540418 so admin-made settings come along. If the API has no duplicate mutation, ask the owner to
   do it in admin (Online Store → Themes → Version 1.1 → ⋯ → Duplicate), then rename it to
   **"BTS Store — Version 1.2 (new copy)"** and give you its id. Do not use `themeCreate` from the repo zip unless the
