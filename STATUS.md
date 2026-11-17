@@ -1,5 +1,7 @@
 # STATUS — Between Two Suns (Opus build)
 
+> New session? Read **CLAUDE.md** first (handover: rules, copy system, next steps).
+
 _Updated: 2026-11-09_
 
 ## Current build state
