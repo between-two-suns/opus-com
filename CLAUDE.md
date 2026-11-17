@@ -4,7 +4,7 @@ You are continuing a long-running build. This file is the handover: who the owne
 what was done and why, and exactly what to do next. **DECISIONS.md** (numbered log, newest at the bottom) and **STATUS.md**
 (current state, restore points, launch checklist) hold the detail; this file tells you how to use them.
 
-**Next DECISIONS entry number: 300.** Add one entry per round of work and keep STATUS.md current.
+**Next DECISIONS entry number: 301.** Add one entry per round of work and keep STATUS.md current.
 
 ---
 
@@ -130,7 +130,7 @@ the six owner-approved line swaps are in, layout is checked, all QA passes. Revi
   themeFilesUpsert with URL bodies → job { done } → compare checksumMd5 with local md5). themeFilesDelete is blocked.
 - Verify on the new theme's preview link (phone, EN and AR), then send the owner the link. Check live index MD5.
 
-### Step 2 — store-side copy (Shopify data, not theme)
+### Step 2 — store-side copy — DONE except the serum step label and home SEO (DECISIONS 300)
 - **Arabic order emails:** regenerate with `node tools/notifications/build.mjs` (already done; files in
   `notifications/*.ar.liquid`) and re-register the Arabic translations with `translationsRegister` (resource =
   EmailTemplate, locale `ar`, keys `title` / `body_html`, with the current `translatableContentDigest`). EmailTemplate ids:
