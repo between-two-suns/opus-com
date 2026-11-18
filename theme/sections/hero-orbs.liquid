@@ -108,8 +108,8 @@
 /* the line-up stands in front of the last line of the headline and takes the height that is left */
 .hh-stage .hh-row { position: relative; z-index: 2; flex: 1 1 0; min-height: 0; width: 100%; margin: clamp(14px, 3vh, 34px) 0 0; padding: 0; list-style: none;
   display: flex; justify-content: center; align-items: flex-end; gap: clamp(10px, 1.6vw, 28px); }
-.hh-b { position: relative; box-sizing: border-box; height: calc(var(--h) * (100% - 26px) + 26px); padding-bottom: 26px; display: flex; flex-direction: column; align-items: center; will-change: transform; }
-.hh-b a { display: block; height: 100%; }
+.hh-b { --lh: max(40px, 6.2vh); position: relative; box-sizing: border-box; height: calc(var(--h) * (100% - var(--lh)) + var(--lh)); display: flex; flex-direction: column; align-items: center; will-change: transform; }
+.hh-b a { display: block; height: calc(100% - var(--lh)); }
 .hh-b img { display: block; height: 100%; width: auto; filter: drop-shadow(0 18px 18px rgba(32, 35, 58, .2)); transition: transform .5s cubic-bezier(.2,.75,.2,1); animation: hh-up 1s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(.7s + var(--i) * .1s); }
 /* the packs land in routine order, 01 to 04, with a soft settle */
 @keyframes hh-up { from { opacity: 0; transform: translateY(44px); } 62% { opacity: 1; transform: translateY(-5px); } }
@@ -120,18 +120,21 @@
   background: radial-gradient(closest-side, color-mix(in srgb, var(--sku) 55%, transparent), transparent); filter: blur(6px); opacity: calc(var(--f) * .9); animation: hh-pool .8s ease both; animation-delay: calc(.9s + var(--i) * .1s); }
 @keyframes hh-pool { from { opacity: 0; } }
 .js .hh-row:not(.is-ready) .hh-b::before { animation-play-state: paused; }
-.hh-lab { position: absolute; bottom: 0; opacity: var(--f); white-space: nowrap; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgb(28 30 48 / .72); }
+/* the label sits in the column, so a column is never narrower than its label (no overlap on mid-size screens) */
+.hh-lab { height: var(--lh); display: flex; align-items: flex-end; justify-content: center; opacity: var(--f); white-space: nowrap; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgb(28 30 48 / .72); }
 .hh-lab b { font-family: var(--font-display); font-size: 13px; letter-spacing: .04em; margin-inline-end: 6px; color: var(--c-ink); }
 .hh-foot { position: relative; z-index: 3; margin-top: clamp(16px, 3vh, 32px); display: flex; gap: 10px; justify-content: center; }
 .hh-sub { display: none; }
 /* desktop: a poster grid — caption bottom left, the line-up in front of the headline, actions bottom right */
 @media (min-width: 990px) and (min-aspect-ratio: 1/1) {
   .hh-stage .hh-row { margin-top: clamp(6px, 1.2vh, 14px); }
-  .hh-sub { display: block; position: absolute; z-index: 3; inset-inline-start: 4.5vw; bottom: clamp(24px, 5vh, 52px); max-width: 30ch; font-size: 15px; line-height: 1.5; color: rgb(28 30 48 / .78); opacity: var(--f); }
+  .hh-sub { display: block; position: absolute; z-index: 3; inset-inline-start: 4.5vw; bottom: clamp(24px, 5vh, 52px); max-width: min(30ch, calc(45.5vw - 30vh - 24px)); font-size: 15px; line-height: 1.5; color: rgb(28 30 48 / .78); opacity: var(--f); }
   .hh-foot { position: absolute; inset-inline-end: 4.5vw; bottom: clamp(24px, 5vh, 52px); margin: 0; flex-direction: column; align-items: stretch; opacity: var(--f); }
   .hh-foot .hh-btn { justify-content: center; }
   .hh-stage { padding-bottom: clamp(20px, 4vh, 44px); }
 }
+/* near-square screens: the line-up is tall and wide, so the caption has no room beside it */
+@media (min-width: 990px) and (min-aspect-ratio: 1/1) and (max-aspect-ratio: 5/4) { .hh-sub { display: none; } .hh-foot { position: relative; inset: auto; flex-direction: row; justify-content: center; margin-top: clamp(16px, 3vh, 32px); } }
 .hh-btn { display: inline-flex; align-items: center; gap: 12px; padding: 17px 30px; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; transition: transform .3s cubic-bezier(.2,.75,.2,1); }
 .hh-btn--main { background: #8FC4A2; color: var(--c-ink); } .hh-btn--ghost { color: var(--c-ink); box-shadow: inset 0 0 0 1.5px rgb(28 30 48 / .55); }
 .hh-btn:hover { transform: translateY(-2px); }
@@ -154,10 +157,12 @@
   .hh-eyebrow { font-size: 12px; letter-spacing: .2em; white-space: nowrap; }
   /* never wider than the screen: the four packs together are about 1.12 × their height */
   .hh-stage .hh-row { gap: 6px; margin-top: auto; padding-top: clamp(12px, 2.4vh, 22px); max-height: calc((100vw - 52px) / 1.12 + 24px); }
-  .hh-lab { display: none; } .hh-b { padding-bottom: 12px; height: calc(var(--h) * (100% - 12px) + 12px); }
+  .hh-lab { display: none; } .hh-b { padding-bottom: 12px; height: calc(var(--h) * (100% - 12px) + 12px); } .hh-b a { height: 100%; }
   .hh-btn { padding: 14px 18px; font-size: 12px; letter-spacing: .1em; gap: 8px; }
 }
 @media (min-width: 700px) and (max-aspect-ratio: 4/5) { .hh-stage { --fs: 11.4vw; } }
+/* mid-size screens: a tighter label keeps the line-up from growing into the caption and the buttons */
+@media (min-width: 761px) and (max-width: 1279px) { .hh-lab { font-size: 11px; letter-spacing: .08em; } .hh-lab b { font-size: 12px; margin-inline-end: 4px; } }
 /* small phones: the eyebrow stays on one line */
 @media (max-width: 379px) { .hh-eyebrow { letter-spacing: .12em; gap: 8px; } }
 :lang(ar) .hh-title { text-transform: none; line-height: 1.18; letter-spacing: 0; font-size: calc(var(--fs) * .795); }
