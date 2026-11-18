@@ -31,19 +31,19 @@
           {%- endfor -%}
         </span>
         <span class="acct-out__claim">
-          <span class="acct-out__title">{{ 'customer.perks_title' | t }}</span>
+          <span class="acct-out__title">{% if section.settings.t_customer_perks_title != blank %}{{ section.settings.t_customer_perks_title }}{% else %}{{ 'customer.perks_title' | t }}{% endif %}</span>
           <span class="acct-out__perks">
-            <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_reorder' | t }}</span>
-            <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_track' | t }}</span>
-            <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_address' | t }}</span>
+            <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{% if section.settings.t_account_page_perk_reorder != blank %}{{ section.settings.t_account_page_perk_reorder }}{% else %}{{ 'account_page.perk_reorder' | t }}{% endif %}</span>
+            <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{% if section.settings.t_account_page_perk_track != blank %}{{ section.settings.t_account_page_perk_track }}{% else %}{{ 'account_page.perk_track' | t }}{% endif %}</span>
+            <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{% if section.settings.t_account_page_perk_address != blank %}{{ section.settings.t_account_page_perk_address }}{% else %}{{ 'account_page.perk_address' | t }}{% endif %}</span>
           </span>
         </span>
       </div>
 
       <div class="acct-out__panel">
-        <p class="t-eyebrow t-muted">{{ 'account_page.eyebrow' | t }}</p>
-        <h1 class="acct-out__h">{{ 'account_page.title' | t }}</h1>
-        <p class="acct-out__lead">{{ 'account_page.lead' | t }}</p>
+        <p class="t-eyebrow t-muted">{% if section.settings.t_account_page_eyebrow != blank %}{{ section.settings.t_account_page_eyebrow }}{% else %}{{ 'account_page.eyebrow' | t }}{% endif %}</p>
+        <h1 class="acct-out__h">{% if section.settings.t_account_page_title != blank %}{{ section.settings.t_account_page_title }}{% else %}{{ 'account_page.title' | t }}{% endif %}</h1>
+        <p class="acct-out__lead">{% if section.settings.t_account_page_lead != blank %}{{ section.settings.t_account_page_lead }}{% else %}{{ 'account_page.lead' | t }}{% endif %}</p>
         <form class="acct-out__form" action="{{ login_action }}" method="get">
           {%- assign has_return = false -%}
           {%- for pair in login_query -%}
@@ -52,20 +52,20 @@
             {%- if kv.first != 'login_hint' and kv.first != blank -%}<input type="hidden" name="{{ kv.first | url_decode | escape }}" value="{{ kv.last | url_decode | escape }}">{%- endif -%}
           {%- endfor -%}
           {%- unless has_return -%}<input type="hidden" name="return_to" value="{{ request.path | escape }}">{%- endunless -%}
-          <label class="acct-out__label" for="AcctEmail">{{ 'customer.email' | t }}</label>
+          <label class="acct-out__label" for="AcctEmail">{% if section.settings.t_customer_email != blank %}{{ section.settings.t_customer_email }}{% else %}{{ 'customer.email' | t }}{% endif %}</label>
           <div class="acct-out__row">
             <input id="AcctEmail" class="acct-out__input" type="email" name="login_hint" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" required placeholder="name@email.com" dir="ltr">
-            <button type="submit" class="btn btn--primary acct-out__go">{{ 'account_page.continue' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+            <button type="submit" class="btn btn--primary acct-out__go">{% if section.settings.t_account_page_continue != blank %}{{ section.settings.t_account_page_continue }}{% else %}{{ 'account_page.continue' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
           </div>
         </form>
-        <p class="acct-out__how">{{ 'account_page.how_1' | t }}{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}{{ 'account_page.how_2' | t }}{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}{{ 'account_page.how_3' | t }}</p>
+        <p class="acct-out__how">{% if section.settings.t_account_page_how_1 != blank %}{{ section.settings.t_account_page_how_1 }}{% else %}{{ 'account_page.how_1' | t }}{% endif %}{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}{% if section.settings.t_account_page_how_2 != blank %}{{ section.settings.t_account_page_how_2 }}{% else %}{{ 'account_page.how_2' | t }}{% endif %}{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}{% if section.settings.t_account_page_how_3 != blank %}{{ section.settings.t_account_page_how_3 }}{% else %}{{ 'account_page.how_3' | t }}{% endif %}</p>
         {%- comment -%} On phones the benefits sit here, under the form, instead of crowding the picture {%- endcomment -%}
         <span class="acct-out__perks acct-out__perks--panel">
-          <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_reorder' | t }}</span>
-          <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_track' | t }}</span>
-          <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.perk_address' | t }}</span>
+          <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{% if section.settings.t_account_page_perk_reorder != blank %}{{ section.settings.t_account_page_perk_reorder }}{% else %}{{ 'account_page.perk_reorder' | t }}{% endif %}</span>
+          <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{% if section.settings.t_account_page_perk_track != blank %}{{ section.settings.t_account_page_perk_track }}{% else %}{{ 'account_page.perk_track' | t }}{% endif %}</span>
+          <span>{% render 'icon', name: 'check', class: 'icon--sm' %}{% if section.settings.t_account_page_perk_address != blank %}{{ section.settings.t_account_page_perk_address }}{% else %}{{ 'account_page.perk_address' | t }}{% endif %}</span>
         </span>
-        <p class="acct-out__new">{{ 'account_page.new_here' | t }}</p>
+        <p class="acct-out__new">{% if section.settings.t_account_page_new_here != blank %}{{ section.settings.t_account_page_new_here }}{% else %}{{ 'account_page.new_here' | t }}{% endif %}</p>
         <p class="acct-out__legal t-muted">{{ 'account_page.legal_html' | t: privacy: '/policies/privacy-policy' }}</p>
       </div>
     </div>
@@ -93,9 +93,9 @@
 
       <header class="acct-in__head">
         <div class="container acct-in__head-inner">
-          <p class="t-eyebrow t-muted">{{ 'account_page.eyebrow' | t }}</p>
-          <h1 class="acct-in__h">{% if customer.first_name != blank %}{{ 'account_page.hello_name' | t: name: customer.first_name }}{% else %}{{ 'account_page.hello' | t }}{% endif %}</h1>
-          <p class="acct-in__who"><span dir="ltr">{{ customer.email }}</span> · <a href="{{ routes.account_logout_url }}">{{ 'account_page.sign_out' | t }}</a></p>
+          <p class="t-eyebrow t-muted">{% if section.settings.t_account_page_eyebrow != blank %}{{ section.settings.t_account_page_eyebrow }}{% else %}{{ 'account_page.eyebrow' | t }}{% endif %}</p>
+          <h1 class="acct-in__h">{% if customer.first_name != blank %}{{ 'account_page.hello_name' | t: name: customer.first_name }}{% else %}{% if section.settings.t_account_page_hello != blank %}{{ section.settings.t_account_page_hello }}{% else %}{{ 'account_page.hello' | t }}{% endif %}{% endif %}</h1>
+          <p class="acct-in__who"><span dir="ltr">{{ customer.email }}</span> · <a href="{{ routes.account_logout_url }}">{% if section.settings.t_account_page_sign_out != blank %}{{ section.settings.t_account_page_sign_out }}{% else %}{{ 'account_page.sign_out' | t }}{% endif %}</a></p>
         </div>
       </header>
 
@@ -106,7 +106,7 @@
           {%- for h in step_handles -%}{%- assign sn = forloop.index | append: '' -%}{%- if owned contains sn -%}{%- assign have = have | plus: 1 -%}{%- endif -%}{%- endfor -%}
           <article class="acct-card acct-routine">
             <div class="acct-card__top">
-              <h2 class="acct-card__h">{{ 'account_page.routine' | t }}</h2>
+              <h2 class="acct-card__h">{% if section.settings.t_account_page_routine != blank %}{{ section.settings.t_account_page_routine }}{% else %}{{ 'account_page.routine' | t }}{% endif %}</h2>
               <p class="acct-routine__count">{{ 'account_page.routine_count' | t: have: have }}</p>
             </div>
             <ol class="acct-routine__steps" role="list">
@@ -119,12 +119,12 @@
                   <span class="acct-step__num">0{{ forloop.index }}</span>
                   <span class="acct-step__name">{{ product.metafields.bts.step_label.value | default: product.title | escape }}</span>
                   {%- if got -%}
-                    <span class="acct-step__state">{% render 'icon', name: 'check', class: 'icon--sm' %}{{ 'account_page.in_routine' | t }}</span>
+                    <span class="acct-step__state">{% render 'icon', name: 'check', class: 'icon--sm' %}{% if section.settings.t_account_page_in_routine != blank %}{{ section.settings.t_account_page_in_routine }}{% else %}{{ 'account_page.in_routine' | t }}{% endif %}</span>
                   {%- else -%}
                     <product-form class="acct-step__add" data-product-title="{{ product.title | escape }}">
                       <form method="post" action="{{ routes.cart_add_url }}">
                         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                        <button type="submit" class="acct-step__btn">{% render 'icon', name: 'plus', class: 'icon--sm' %}{{ 'account_page.add' | t }} · {% render 'egp', cents: product.price %}</button>
+                        <button type="submit" class="acct-step__btn">{% render 'icon', name: 'plus', class: 'icon--sm' %}{% if section.settings.t_account_page_add != blank %}{{ section.settings.t_account_page_add }}{% else %}{{ 'account_page.add' | t }}{% endif %} · {% render 'egp', cents: product.price %}</button>
                         <p class="visually-hidden" data-form-error role="alert" hidden></p>
                       </form>
                     </product-form>
@@ -133,10 +133,10 @@
               {%- endfor -%}
             </ol>
             {%- if have == 4 -%}
-              <p class="acct-routine__note">{{ 'account_page.routine_full' | t }}</p>
+              <p class="acct-routine__note">{% if section.settings.t_account_page_routine_full != blank %}{{ section.settings.t_account_page_routine_full }}{% else %}{{ 'account_page.routine_full' | t }}{% endif %}</p>
             {%- elsif have == 0 -%}
               {%- assign ritual = all_products['the-full-ritual'] -%}
-              {%- if ritual.id -%}<a class="acct-routine__ritual" href="{{ ritual.url }}"><span class="pick-chip">{{ 'shop_menu.pick' | t }}</span> {{ ritual.title | escape }} · {% render 'egp', cents: ritual.price %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>{%- endif -%}
+              {%- if ritual.id -%}<a class="acct-routine__ritual" href="{{ ritual.url }}"><span class="pick-chip">{% if section.settings.t_shop_menu_pick != blank %}{{ section.settings.t_shop_menu_pick }}{% else %}{{ 'shop_menu.pick' | t }}{% endif %}</span> {{ ritual.title | escape }} · {% render 'egp', cents: ritual.price %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>{%- endif -%}
             {%- endif -%}
           </article>
 
@@ -145,7 +145,7 @@
           {%- if last -%}
             <article class="acct-card acct-reorder">
               <div class="acct-card__top">
-                <h2 class="acct-card__h">{{ 'account_page.reorder' | t }}</h2>
+                <h2 class="acct-card__h">{% if section.settings.t_account_page_reorder != blank %}{{ section.settings.t_account_page_reorder }}{% else %}{{ 'account_page.reorder' | t }}{% endif %}</h2>
                 <p class="t-muted acct-reorder__from">{{ 'account_page.reorder_from' | t: name: last.name }}</p>
               </div>
               <div class="acct-reorder__body">
@@ -166,7 +166,7 @@
                         <input type="hidden" name="items[][quantity]" value="{{ li.quantity }}">
                       {%- endif -%}
                     {%- endfor -%}
-                    <button type="submit" class="btn btn--primary">{{ 'account_page.add_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+                    <button type="submit" class="btn btn--primary">{% if section.settings.t_account_page_add_all != blank %}{{ section.settings.t_account_page_add_all }}{% else %}{{ 'account_page.add_all' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
                     <p class="t-small" data-form-error role="alert" hidden></p>
                   </form>
                 </product-form>
@@ -177,8 +177,8 @@
           {%- comment -%} Orders: each opens Shopify's order page (status and tracking) {%- endcomment -%}
           <article class="acct-card acct-orders">
             <div class="acct-card__top">
-              <h2 class="acct-card__h">{{ 'account_page.orders' | t }}</h2>
-              {%- if customer.orders_count > 0 -%}<a class="acct-card__more" href="{{ acct_base }}/orders">{{ 'account_page.all_orders' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>{%- endif -%}
+              <h2 class="acct-card__h">{% if section.settings.t_account_page_orders != blank %}{{ section.settings.t_account_page_orders }}{% else %}{{ 'account_page.orders' | t }}{% endif %}</h2>
+              {%- if customer.orders_count > 0 -%}<a class="acct-card__more" href="{{ acct_base }}/orders">{% if section.settings.t_account_page_all_orders != blank %}{{ section.settings.t_account_page_all_orders }}{% else %}{{ 'account_page.all_orders' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>{%- endif -%}
             </div>
             {%- if customer.orders.size > 0 -%}
               <ul class="acct-orders__list" role="list">
@@ -197,13 +197,13 @@
                       </span>
                       {%- comment -%} The customer's words, not the shop's: being prepared, partly shipped, shipped, cancelled {%- endcomment -%}
                       {%- if order.cancelled -%}
-                        <span class="acct-order__status is-off">{{ 'account_page.status_cancelled' | t }}</span>
+                        <span class="acct-order__status is-off">{% if section.settings.t_account_page_status_cancelled != blank %}{{ section.settings.t_account_page_status_cancelled }}{% else %}{{ 'account_page.status_cancelled' | t }}{% endif %}</span>
                       {%- elsif order.fulfillment_status == 'fulfilled' -%}
-                        <span class="acct-order__status is-done">{{ 'account_page.status_shipped' | t }}</span>
+                        <span class="acct-order__status is-done">{% if section.settings.t_account_page_status_shipped != blank %}{{ section.settings.t_account_page_status_shipped }}{% else %}{{ 'account_page.status_shipped' | t }}{% endif %}</span>
                       {%- elsif order.fulfillment_status == 'partial' -%}
-                        <span class="acct-order__status">{{ 'account_page.status_partial' | t }}</span>
+                        <span class="acct-order__status">{% if section.settings.t_account_page_status_partial != blank %}{{ section.settings.t_account_page_status_partial }}{% else %}{{ 'account_page.status_partial' | t }}{% endif %}</span>
                       {%- else -%}
-                        <span class="acct-order__status">{{ 'account_page.status_preparing' | t }}</span>
+                        <span class="acct-order__status">{% if section.settings.t_account_page_status_preparing != blank %}{{ section.settings.t_account_page_status_preparing }}{% else %}{{ 'account_page.status_preparing' | t }}{% endif %}</span>
                       {%- endif -%}
                       <span class="acct-order__total">{% render 'egp', cents: order.total_price %}</span>
                       {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip acct-order__go' %}
@@ -213,8 +213,8 @@
               </ul>
             {%- else -%}
               <div class="acct-empty">
-                <p>{{ 'account_page.no_orders' | t }}</p>
-                <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.shop_routine' | t }}</a>
+                <p>{% if section.settings.t_account_page_no_orders != blank %}{{ section.settings.t_account_page_no_orders }}{% else %}{{ 'account_page.no_orders' | t }}{% endif %}</p>
+                <a class="btn" href="{{ routes.all_products_collection_url }}">{% if section.settings.t_cart_shop_routine != blank %}{{ section.settings.t_cart_shop_routine }}{% else %}{{ 'cart.shop_routine' | t }}{% endif %}</a>
               </div>
             {%- endif -%}
           </article>
@@ -222,19 +222,19 @@
 
         <aside class="acct-in__side">
           <article class="acct-card acct-details">
-            <h2 class="acct-card__h">{{ 'account_page.details' | t }}</h2>
+            <h2 class="acct-card__h">{% if section.settings.t_account_page_details != blank %}{{ section.settings.t_account_page_details }}{% else %}{{ 'account_page.details' | t }}{% endif %}</h2>
             <dl class="acct-details__list">
-              {%- if customer.name != blank -%}<div><dt>{{ 'account_page.name' | t }}</dt><dd>{{ customer.name | escape }}</dd></div>{%- endif -%}
-              <div><dt>{{ 'customer.email' | t }}</dt><dd dir="ltr">{{ customer.email | escape }}</dd></div>
-              <div><dt>{{ 'account_page.address' | t }}</dt><dd>{% if customer.default_address %}{{ customer.default_address.summary | escape }}{% else %}<span class="t-muted">{{ 'account_page.no_address' | t }}</span>{% endif %}</dd></div>
+              {%- if customer.name != blank -%}<div><dt>{% if section.settings.t_account_page_name != blank %}{{ section.settings.t_account_page_name }}{% else %}{{ 'account_page.name' | t }}{% endif %}</dt><dd>{{ customer.name | escape }}</dd></div>{%- endif -%}
+              <div><dt>{% if section.settings.t_customer_email != blank %}{{ section.settings.t_customer_email }}{% else %}{{ 'customer.email' | t }}{% endif %}</dt><dd dir="ltr">{{ customer.email | escape }}</dd></div>
+              <div><dt>{% if section.settings.t_account_page_address != blank %}{{ section.settings.t_account_page_address }}{% else %}{{ 'account_page.address' | t }}{% endif %}</dt><dd>{% if customer.default_address %}{{ customer.default_address.summary | escape }}{% else %}<span class="t-muted">{% if section.settings.t_account_page_no_address != blank %}{{ section.settings.t_account_page_no_address }}{% else %}{{ 'account_page.no_address' | t }}{% endif %}</span>{% endif %}</dd></div>
             </dl>
-            <a class="acct-card__more" href="{{ acct_base }}/profile">{{ 'account_page.edit' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <a class="acct-card__more" href="{{ acct_base }}/profile">{% if section.settings.t_account_page_edit != blank %}{{ section.settings.t_account_page_edit }}{% else %}{{ 'account_page.edit' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
           </article>
           <article class="acct-card acct-help">
-            <h2 class="acct-card__h">{{ 'account_page.help' | t }}</h2>
-            <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{{ 'account_page.help_contact' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-            <a href="{{ routes.root_url | append: '/pages/returns' | replace: '//', '/' }}">{{ 'account_page.help_returns' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
-            <a href="{{ routes.root_url | append: '/pages/shipping' | replace: '//', '/' }}">{{ 'account_page.help_delivery' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <h2 class="acct-card__h">{% if section.settings.t_account_page_help != blank %}{{ section.settings.t_account_page_help }}{% else %}{{ 'account_page.help' | t }}{% endif %}</h2>
+            <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{% if section.settings.t_account_page_help_contact != blank %}{{ section.settings.t_account_page_help_contact }}{% else %}{{ 'account_page.help_contact' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <a href="{{ routes.root_url | append: '/pages/returns' | replace: '//', '/' }}">{% if section.settings.t_account_page_help_returns != blank %}{{ section.settings.t_account_page_help_returns }}{% else %}{{ 'account_page.help_returns' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <a href="{{ routes.root_url | append: '/pages/shipping' | replace: '//', '/' }}">{% if section.settings.t_account_page_help_delivery != blank %}{{ section.settings.t_account_page_help_delivery }}{% else %}{{ 'account_page.help_delivery' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
           </article>
         </aside>
       </div>
@@ -246,6 +246,249 @@
 {
   "name": "Account",
   "tag": "div",
-  "settings": []
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_customer_perks_title",
+      "label": "Customer · Title",
+      "info": "Now: “Your routine, remembered.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_perk_reorder",
+      "label": "Account page · Perk reorder",
+      "info": "Now: “Reorder your routine in one tap”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_perk_track",
+      "label": "Account page · Perk track",
+      "info": "Now: “Track every order”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_perk_address",
+      "label": "Account page · Perk address",
+      "info": "Now: “Your address saved for next time”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_eyebrow",
+      "label": "Account page · Small line above the heading",
+      "info": "Now: “Account”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_title",
+      "label": "Account page · Title",
+      "info": "Now: “Sign in or create your account.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_lead",
+      "label": "Account page · Paragraph",
+      "info": "Now: “No password to remember. We email you a 6-digit code to sign in.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_customer_email",
+      "label": "Customer · Email",
+      "info": "Now: “Email”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_continue",
+      "label": "Account page · Continue",
+      "info": "Now: “Continue”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_how_1",
+      "label": "Account page · How 1",
+      "info": "Now: “Your email”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_how_2",
+      "label": "Account page · How 2",
+      "info": "Now: “Your code”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_how_3",
+      "label": "Account page · How 3",
+      "info": "Now: “You’re in”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_new_here",
+      "label": "Account page · New here",
+      "info": "Now: “New here? The same step creates your account, free.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_hello",
+      "label": "Account page · Hello",
+      "info": "Now: “Hello.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_sign_out",
+      "label": "Account page · Sign out",
+      "info": "Now: “Sign out”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_routine",
+      "label": "Account page · Routine",
+      "info": "Now: “Your routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_in_routine",
+      "label": "Account page · In routine",
+      "info": "Now: “In your routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_add",
+      "label": "Account page · Add",
+      "info": "Now: “Add”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_routine_full",
+      "label": "Account page · Routine full",
+      "info": "Now: “All four steps. Running low on one? Reorder below or from its page.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_shop_menu_pick",
+      "label": "Shop menu · Pick",
+      "info": "Now: “Our pick”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_reorder",
+      "label": "Account page · Reorder",
+      "info": "Now: “Reorder”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_add_all",
+      "label": "Account page · Add all",
+      "info": "Now: “Add it all to your bag”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_orders",
+      "label": "Account page · Orders",
+      "info": "Now: “Orders”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_all_orders",
+      "label": "Account page · All orders",
+      "info": "Now: “All orders”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_status_cancelled",
+      "label": "Account page · Status cancelled",
+      "info": "Now: “Cancelled”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_status_shipped",
+      "label": "Account page · Status shipped",
+      "info": "Now: “Shipped”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_status_partial",
+      "label": "Account page · Status partial",
+      "info": "Now: “Partly shipped”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_status_preparing",
+      "label": "Account page · Status preparing",
+      "info": "Now: “Being prepared”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_no_orders",
+      "label": "Account page · No orders",
+      "info": "Now: “No orders yet.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_shop_routine",
+      "label": "Cart · Shop routine",
+      "info": "Now: “Shop the routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_details",
+      "label": "Account page · Details",
+      "info": "Now: “Your details”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_name",
+      "label": "Account page · Name",
+      "info": "Now: “Name”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_address",
+      "label": "Account page · Address",
+      "info": "Now: “Delivery address”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_no_address",
+      "label": "Account page · No address",
+      "info": "Now: “Saved at your first checkout”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_edit",
+      "label": "Account page · Edit",
+      "info": "Now: “Edit profile & addresses”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_help",
+      "label": "Account page · Help",
+      "info": "Now: “Need a hand?”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_help_contact",
+      "label": "Account page · Help contact",
+      "info": "Now: “Contact us”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_help_returns",
+      "label": "Account page · Help returns",
+      "info": "Now: “Returns”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_account_page_help_delivery",
+      "label": "Account page · Help delivery",
+      "info": "Now: “Delivery”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
 }
 {% endschema %}

@@ -7,15 +7,15 @@
 <section class="section section--tight cart-page" aria-labelledby="CartTitle">
   <div class="container">
     <header class="cart-page__head">
-      <h1 class="cart-page__title" id="CartTitle">{{ 'cart.title' | t }}{% if cart.item_count > 0 %} <span class="cart-page__n">({{ cart.item_count }})</span>{% endif %}</h1>
-      <a class="link-arrow cart-page__continue" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+      <h1 class="cart-page__title" id="CartTitle">{% if section.settings.t_cart_title != blank %}{{ section.settings.t_cart_title }}{% else %}{{ 'cart.title' | t }}{% endif %}{% if cart.item_count > 0 %} <span class="cart-page__n">({{ cart.item_count }})</span>{% endif %}</h1>
+      <a class="link-arrow cart-page__continue" href="{{ routes.all_products_collection_url }}">{% if section.settings.t_cart_continue != blank %}{{ section.settings.t_cart_continue }}{% else %}{{ 'cart.continue' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
     </header>
     {%- if cart.item_count == 0 -%}
       <div class="cart-page__empty">
         <div class="cart-empty">
-          <p class="t-lead">{{ 'cart.empty_title' | t }}</p>
-          <p class="t-muted">{{ 'cart.empty_text' | t }}</p>
-          <a class="btn" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'cart.shop_routine' | t }}</a>
+          <p class="t-lead">{% if section.settings.t_cart_empty_title != blank %}{{ section.settings.t_cart_empty_title }}{% else %}{{ 'cart.empty_title' | t }}{% endif %}</p>
+          <p class="t-muted">{% if section.settings.t_cart_empty_text != blank %}{{ section.settings.t_cart_empty_text }}{% else %}{{ 'cart.empty_text' | t }}{% endif %}</p>
+          <a class="btn" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{% if section.settings.t_cart_shop_routine != blank %}{{ section.settings.t_cart_shop_routine }}{% else %}{{ 'cart.shop_routine' | t }}{% endif %}</a>
         </div>
         {%- render 'cart-routine-board' -%}
       </div>
@@ -30,7 +30,7 @@
             {%- endfor -%}
           </ul>
         </div>
-        <aside class="cart-page__summary" aria-label="{{ 'cart.summary' | t }}">
+        <aside class="cart-page__summary" aria-label="{% if section.settings.t_cart_summary != blank %}{{ section.settings.t_cart_summary }}{% else %}{{ 'cart.summary' | t }}{% endif %}">
           {%- render 'cart-incentives' -%}
           <div class="cart-totals">
             {%- assign cp_saved = cart.original_total_price | minus: cart.total_price -%}
@@ -44,23 +44,23 @@
               <div class="cart-totals__row cart-totals__row--deal"><span>{{ discount.title | escape }}</span><span>−{% render 'egp', cents: discount.total_allocated_amount %}</span></div>
             {%- endfor -%}
             {%- if cp_saved > 0 -%}
-              <div class="cart-totals__row cart-totals__row--deal"><span>{{ 'cart.you_save' | t }}</span><span>{% render 'egp', cents: cp_saved %}</span></div>
+              <div class="cart-totals__row cart-totals__row--deal"><span>{% if section.settings.t_cart_you_save != blank %}{{ section.settings.t_cart_you_save }}{% else %}{{ 'cart.you_save' | t }}{% endif %}</span><span>{% render 'egp', cents: cp_saved %}</span></div>
             {%- endif -%}
             <p class="cart-note-line">{% render 'cart-ship-note' %}</p>
           </div>
           <details class="cart-note"{% if cart.note != blank %} open{% endif %}>
-            <summary>{% render 'icon', name: 'chat', class: 'icon--sm' %}<span>{{ 'cart.add_note' | t }}</span>{% render 'icon', name: 'plus', class: 'icon--sm cart-note__plus' %}</summary>
-            <label class="visually-hidden" for="CartNote">{{ 'cart.note' | t }}</label>
-            <textarea id="CartNote" name="note" form="CartForm" rows="3" placeholder="{{ 'cart.note_placeholder' | t }}">{{ cart.note }}</textarea>
+            <summary>{% render 'icon', name: 'chat', class: 'icon--sm' %}<span>{% if section.settings.t_cart_add_note != blank %}{{ section.settings.t_cart_add_note }}{% else %}{{ 'cart.add_note' | t }}{% endif %}</span>{% render 'icon', name: 'plus', class: 'icon--sm cart-note__plus' %}</summary>
+            <label class="visually-hidden" for="CartNote">{% if section.settings.t_cart_note != blank %}{{ section.settings.t_cart_note }}{% else %}{{ 'cart.note' | t }}{% endif %}</label>
+            <textarea id="CartNote" name="note" form="CartForm" rows="3" placeholder="{% if section.settings.t_cart_note_placeholder != blank %}{{ section.settings.t_cart_note_placeholder }}{% else %}{{ 'cart.note_placeholder' | t }}{% endif %}">{{ cart.note }}</textarea>
           </details>
-          <noscript><button type="submit" name="update" form="CartForm" class="btn btn--secondary btn--full">{{ 'cart.update' | t }}</button></noscript>
+          <noscript><button type="submit" name="update" form="CartForm" class="btn btn--secondary btn--full">{% if section.settings.t_cart_update != blank %}{{ section.settings.t_cart_update }}{% else %}{{ 'cart.update' | t }}{% endif %}</button></noscript>
           <button type="submit" name="checkout" form="CartForm" class="btn btn--checkout">
-            <span class="btn--checkout__label">{% render 'icon', name: 'lock', class: 'icon--sm' %}{{ 'cart.checkout' | t }}</span>
+            <span class="btn--checkout__label">{% render 'icon', name: 'lock', class: 'icon--sm' %}{% if section.settings.t_cart_checkout != blank %}{{ section.settings.t_cart_checkout }}{% else %}{{ 'cart.checkout' | t }}{% endif %}</span>
             <span class="btn--checkout__total">{% render 'egp', cents: cart.total_price %}</span>
           </button>
           <ul class="cart-assure" role="list">
-            {%- if settings.show_cod -%}<li>{% render 'icon', name: 'cash', class: 'icon--sm' %}{{ 'cart.cod_available' | t }}</li>{%- endif -%}
-            <li>{% render 'icon', name: 'lock', class: 'icon--sm' %}{{ 'cart.secure' | t }}</li>
+            {%- if settings.show_cod -%}<li>{% render 'icon', name: 'cash', class: 'icon--sm' %}{% if section.settings.t_cart_cod_available != blank %}{{ section.settings.t_cart_cod_available }}{% else %}{{ 'cart.cod_available' | t }}{% endif %}</li>{%- endif -%}
+            <li>{% render 'icon', name: 'lock', class: 'icon--sm' %}{% if section.settings.t_cart_secure != blank %}{{ section.settings.t_cart_secure }}{% else %}{{ 'cart.secure' | t }}{% endif %}</li>
             {%- if settings.returns_note != blank -%}<li>{% render 'icon', name: 'refresh', class: 'icon--sm' %}{{ settings.returns_note | escape }}</li>{%- endif -%}
           </ul>
           {%- render 'payment-icons' -%}
@@ -68,8 +68,8 @@
       </div>
       {%- comment -%} Phones: total and checkout stay in reach {%- endcomment -%}
       <div class="cart-page__bar" aria-hidden="true">
-        <div><span class="cart-page__bar-label">{{ 'cart.subtotal' | t }}</span><span class="cart-page__bar-total">{% render 'egp', cents: cart.total_price %}</span></div>
-        <button type="submit" name="checkout" form="CartForm" class="btn btn--checkout btn--checkout-bar" tabindex="-1">{% render 'icon', name: 'lock', class: 'icon--sm' %}{{ 'cart.checkout' | t }}</button>
+        <div><span class="cart-page__bar-label">{% if section.settings.t_cart_subtotal != blank %}{{ section.settings.t_cart_subtotal }}{% else %}{{ 'cart.subtotal' | t }}{% endif %}</span><span class="cart-page__bar-total">{% render 'egp', cents: cart.total_price %}</span></div>
+        <button type="submit" name="checkout" form="CartForm" class="btn btn--checkout btn--checkout-bar" tabindex="-1">{% render 'icon', name: 'lock', class: 'icon--sm' %}{% if section.settings.t_cart_checkout != blank %}{{ section.settings.t_cart_checkout }}{% else %}{{ 'cart.checkout' | t }}{% endif %}</button>
       </div>
     {%- endif -%}
   </div>
@@ -84,5 +84,107 @@
 </script>
 
 {% schema %}
-{ "name": "t:sections.main_cart.name", "settings": [] }
+{
+  "name": "t:sections.main_cart.name",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_cart_title",
+      "label": "Title",
+      "info": "Now: “Your bag”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_continue",
+      "label": "Continue",
+      "info": "Now: “Continue shopping”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_empty_title",
+      "label": "Title",
+      "info": "Now: “Your bag is empty”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_empty_text",
+      "label": "Paragraph",
+      "info": "Now: “Start with one essential or find a routine that works for you.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_shop_routine",
+      "label": "Shop routine",
+      "info": "Now: “Shop the routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_summary",
+      "label": "Summary",
+      "info": "Now: “Order summary”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_you_save",
+      "label": "You save",
+      "info": "Now: “You save”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_add_note",
+      "label": "Note",
+      "info": "Now: “Add a note to your order”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_note",
+      "label": "Note",
+      "info": "Now: “Order note”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_note_placeholder",
+      "label": "Note",
+      "info": "Now: “Delivery instructions, a gift message…”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_update",
+      "label": "Update",
+      "info": "Now: “Update”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_checkout",
+      "label": "Checkout",
+      "info": "Now: “Check out”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_cod_available",
+      "label": "Cod available",
+      "info": "Now: “Cash on delivery available at checkout.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_secure",
+      "label": "Secure",
+      "info": "Now: “Secure checkout”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_cart_subtotal",
+      "label": "Subtotal",
+      "info": "Now: “Subtotal”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
+}
 {% endschema %}

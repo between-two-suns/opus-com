@@ -24,7 +24,8 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 ## Editor audit (2026-11-18, owner: "anyone can edit anything, for all pages")
 - 18 settings-group / section names show as "Name" (placeholder strings in locales/en.default.schema.json).
 - Of 63 sections in use, ~40 have no editable text at all (copy lives in locales; e.g. the home hero has 0 settings,
-  product page head 0, routine finder 46 locked strings). Plan proposed to the owner; waiting for a go-ahead.
+  product page head 0, routine finder 46 locked strings). DONE on Version 1.2 (DECISIONS 303–306): every page's text is
+  editable, empty = built-in EN/AR; per-product "Website ·" fields in Products. Tools: tools/editor/*.py.
 
 ## Restore points (revert here if needed)
 | Date | Shopify theme (unpublished, untouched copy) | Git commit on `opus-build` |

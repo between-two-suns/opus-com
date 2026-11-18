@@ -3,16 +3,16 @@
   <div class="container">
     {%- comment -%} A utility page: the word searched is the title, the count sits under it (DECISIONS 286) {%- endcomment -%}
     {%- if search.performed -%}
-      <p class="t-eyebrow">{{ 'search.title' | t }}</p>
+      <p class="t-eyebrow">{% if section.settings.t_search_title != blank %}{{ section.settings.t_search_title }}{% else %}{{ 'search.title' | t }}{% endif %}</p>
       <h1 class="search-page__title" id="SearchTitle"><span class="visually-hidden">{{ 'search.results_count' | t: count: search.results_count, terms: search.terms }}</span><span aria-hidden="true">{{ search.terms | escape }}</span></h1>
       <p class="search-page__count t-muted" aria-hidden="true">{{ 'search.found' | t: count: search.results_count }}</p>
     {%- else -%}
-      <h1 class="search-page__title" id="SearchTitle">{{ 'search.title' | t }}</h1>
+      <h1 class="search-page__title" id="SearchTitle">{% if section.settings.t_search_title != blank %}{{ section.settings.t_search_title }}{% else %}{{ 'search.title' | t }}{% endif %}</h1>
     {%- endif -%}
     <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
-      <label class="visually-hidden" for="SearchPageInput">{{ 'search.label' | t }}</label>
-      <input id="SearchPageInput" class="search-modal__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'search.placeholder' | t }}" autocomplete="off">
-      <button type="submit" class="btn">{% render 'icon', name: 'search', class: 'icon--sm' %} {{ 'search.submit' | t }}</button>
+      <label class="visually-hidden" for="SearchPageInput">{% if section.settings.t_search_label != blank %}{{ section.settings.t_search_label }}{% else %}{{ 'search.label' | t }}{% endif %}</label>
+      <input id="SearchPageInput" class="search-modal__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{% if section.settings.t_search_placeholder != blank %}{{ section.settings.t_search_placeholder }}{% else %}{{ 'search.placeholder' | t }}{% endif %}" autocomplete="off">
+      <button type="submit" class="btn">{% render 'icon', name: 'search', class: 'icon--sm' %} {% if section.settings.t_search_submit != blank %}{{ section.settings.t_search_submit }}{% else %}{{ 'search.submit' | t }}{% endif %}</button>
     </form>
 
     {%- if search.performed and search.results_count > 0 -%}
@@ -43,10 +43,10 @@
         <section class="collection__sets search-page__sets" aria-labelledby="SearchSets">
           <div class="section-head">
             <div class="section-head__text">
-              <p class="t-eyebrow">{{ 'sections.bundles.eyebrow' | t }}</p>
-              <h2 class="t-display-m" id="SearchSets">{{ 'collection.sets_heading' | t }}</h2>
+              <p class="t-eyebrow">{% if section.settings.t_sections_bundles_eyebrow != blank %}{{ section.settings.t_sections_bundles_eyebrow }}{% else %}{{ 'sections.bundles.eyebrow' | t }}{% endif %}</p>
+              <h2 class="t-display-m" id="SearchSets">{% if section.settings.t_collection_sets_heading != blank %}{{ section.settings.t_collection_sets_heading }}{% else %}{{ 'collection.sets_heading' | t }}{% endif %}</h2>
             </div>
-            <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'collection.sets_builder' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <a class="link-arrow" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{% if section.settings.t_collection_sets_builder != blank %}{{ section.settings.t_collection_sets_builder }}{% else %}{{ 'collection.sets_builder' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
           </div>
           <ul class="sets-rail" role="list">{{ sets_html }}</ul>
         </section>
@@ -61,7 +61,7 @@
     {%- else -%}
       <div class="empty-state">
         {%- if search.performed -%}<p class="t-lead">{{ 'search.no_results' | t: terms: search.terms }}</p>{%- endif -%}
-        <p class="t-muted">{{ 'search.empty_hint' | t }}</p>
+        <p class="t-muted">{% if section.settings.t_search_empty_hint != blank %}{{ section.settings.t_search_empty_hint }}{% else %}{{ 'search.empty_hint' | t }}{% endif %}</p>
         <div class="cluster">
           {%- assign terms = 'search.popular_terms' | t | split: ',' -%}
           {%- for term in terms -%}
@@ -83,5 +83,65 @@
 </section>
 
 {% schema %}
-{ "name": "t:sections.main_search.name", "settings": [] }
+{
+  "name": "t:sections.main_search.name",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_search_title",
+      "label": "Search · Title",
+      "info": "Now: “Search”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_search_label",
+      "label": "Search · Label",
+      "info": "Now: “Search the store”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_search_placeholder",
+      "label": "Search · Box hint text",
+      "info": "Now: “Search products or ingredients”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_search_submit",
+      "label": "Search · Submit",
+      "info": "Now: “Search”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_sections_bundles_eyebrow",
+      "label": "Bundles · Small line above the heading",
+      "info": "Now: “Ready-made sets”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_collection_sets_heading",
+      "label": "Collection · Heading",
+      "info": "Now: “Sets: the routine, for less.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_collection_sets_builder",
+      "label": "Collection · Sets builder",
+      "info": "Now: “Build your own”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_search_empty_hint",
+      "label": "Search · Empty hint",
+      "info": "Now: “Try an ingredient (niacinamide), a concern (oily skin) or a step (SPF).”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
+}
 {% endschema %}

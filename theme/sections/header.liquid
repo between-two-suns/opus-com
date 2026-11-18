@@ -38,10 +38,10 @@
                 </li>
               {%- endfor -%}
             {%- else -%}
-              <li class="site-nav__item"><a class="site-nav__link" href="{{ routes.all_products_collection_url }}" aria-expanded="false" aria-controls="MegaShop" data-mega-toggle>{{ 'header.nav.shop' | t }} {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}</a></li>
-              <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'header.nav.sets' | t }}</a></li>
-              <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{{ 'header.nav.climate' | t }}</a></li>
-              <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }}</a></li>
+              <li class="site-nav__item"><a class="site-nav__link" href="{{ routes.all_products_collection_url }}" aria-expanded="false" aria-controls="MegaShop" data-mega-toggle>{% if section.settings.t_header_nav_shop != blank %}{{ section.settings.t_header_nav_shop }}{% else %}{{ 'header.nav.shop' | t }}{% endif %} {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}</a></li>
+              <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{% if section.settings.t_header_nav_sets != blank %}{{ section.settings.t_header_nav_sets }}{% else %}{{ 'header.nav.sets' | t }}{% endif %}</a></li>
+              <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{% if section.settings.t_header_nav_climate != blank %}{{ section.settings.t_header_nav_climate }}{% else %}{{ 'header.nav.climate' | t }}{% endif %}</a></li>
+              <li><a class="site-nav__link" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{% if section.settings.t_header_nav_ingredients != blank %}{{ section.settings.t_header_nav_ingredients }}{% else %}{{ 'header.nav.ingredients' | t }}{% endif %}</a></li>
             {%- endif -%}
           </ul>
         </nav>
@@ -60,14 +60,14 @@
           aria-haspopup="dialog"
         >
           {% render 'icon', name: 'search' %}
-          <span class="visually-hidden">{{ 'header.search' | t }}</span>
+          <span class="visually-hidden">{% if section.settings.t_header_search != blank %}{{ section.settings.t_header_search }}{% else %}{{ 'header.search' | t }}{% endif %}</span>
         </a>
         <span class="header-lang">{% render 'language-switch', form_id: 'HeaderLang' %}</span>
         {%- if shop.customer_accounts_enabled -%}
           {%- comment -%} Our account page: sign-in when signed out, the customer's home when signed in (DECISIONS 273, 275) {%- endcomment -%}
           <a href="{{ routes.root_url | append: '/pages/account' | replace: '//', '/' }}" class="header-icon header-hide-mobile">
             {% render 'icon', name: 'account' %}
-            <span class="visually-hidden">{% if customer %}{{ 'header.account' | t }}{% else %}{{ 'header.log_in' | t }}{% endif %}</span>
+            <span class="visually-hidden">{% if customer %}{% if section.settings.t_header_account != blank %}{{ section.settings.t_header_account }}{% else %}{{ 'header.account' | t }}{% endif %}{% else %}{% if section.settings.t_header_log_in != blank %}{{ section.settings.t_header_log_in }}{% else %}{{ 'header.log_in' | t }}{% endif %}{% endif %}</span>
           </a>
         {%- endif -%}
         <a
@@ -92,34 +92,34 @@
         {%- comment -%} Editorial (DECISIONS 268–270): the four names large; pointing at a product shows its photo, at a set its page's first picture {%- endcomment -%}
         <div class="dm-b">
           <div class="dm-b__names">
-            <p class="t-eyebrow t-muted">{{ 'shop_menu.mega_routine' | t }}</p>
+            <p class="t-eyebrow t-muted">{% if section.settings.t_shop_menu_mega_routine != blank %}{{ section.settings.t_shop_menu_mega_routine }}{% else %}{{ 'shop_menu.mega_routine' | t }}{% endif %}</p>
             <ol class="dm-names" role="list">
               {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
                 {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}{%- assign step = step | strip -%}
                 <li><a class="dm-name" href="{{ product.url }}" data-step="{{ step }}" data-i="{{ forloop.index }}"><span class="step-num">0{{ step }}</span><span class="dm-name__t">{{ product.title | escape }}</span></a></li>
               {%- endfor -%}
             </ol>
-            <a class="btn btn--primary btn--small dm-all" href="{{ routes.all_products_collection_url }}">{{ 'shop_menu.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <a class="btn btn--primary btn--small dm-all" href="{{ routes.all_products_collection_url }}">{% if section.settings.t_shop_menu_shop_all != blank %}{{ section.settings.t_shop_menu_shop_all }}{% else %}{{ 'shop_menu.shop_all' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
           </div>
           <div class="dm-b__side">
-            <p class="t-eyebrow t-muted">{{ 'shop_menu.mega_sets' | t }}</p>
+            <p class="t-eyebrow t-muted">{% if section.settings.t_shop_menu_mega_sets != blank %}{{ section.settings.t_shop_menu_mega_sets }}{% else %}{{ 'shop_menu.mega_sets' | t }}{% endif %}</p>
             <ul class="dm-links" role="list">
               {%- assign set_handles = 'the-full-ritual,the-night-ritual,the-clear-protect-trio' | split: ',' -%}
               {%- for sh in set_handles -%}{%- assign product = all_products[sh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
                 <li><a class="dm-set" href="{{ product.url }}" data-i="{{ forloop.index | plus: 4 }}">{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</a></li>
               {%- endfor -%}
             </ul>
-            <p class="t-eyebrow t-muted">{{ 'shop_menu.mega_more' | t }}</p>
+            <p class="t-eyebrow t-muted">{% if section.settings.t_shop_menu_mega_more != blank %}{{ section.settings.t_shop_menu_mega_more }}{% else %}{{ 'shop_menu.mega_more' | t }}{% endif %}</p>
             <ul class="dm-links" role="list">
-              <li><a href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }}</a></li>
-              <li><a href="{{ routes.root_url | append: '/pages/creators' | replace: '//', '/' }}">{{ 'footer.links.creators' | t }}</a></li>
+              <li><a href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{% if section.settings.t_header_nav_ingredients != blank %}{{ section.settings.t_header_nav_ingredients }}{% else %}{{ 'header.nav.ingredients' | t }}{% endif %}</a></li>
+              <li><a href="{{ routes.root_url | append: '/pages/creators' | replace: '//', '/' }}">{% if section.settings.t_footer_links_creators != blank %}{{ section.settings.t_footer_links_creators }}{% else %}{{ 'footer.links.creators' | t }}{% endif %}</a></li>
             </ul>
           </div>
           <div class="dm-view" aria-hidden="true">
             {%- comment -%} first: what shows before pointing at anything (The Full Ritual) {%- endcomment -%}
             {%- assign product = all_products['the-full-ritual'] -%}
             {%- if product.id -%}
-              <span class="dm-fig dm-fig--rest">{% render 'mega-set-stage', handle: 'the-full-ritual' %}<span class="dm-fig__cap"><span class="pick-chip">{{ 'shop_menu.pick' | t }}</span>{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
+              <span class="dm-fig dm-fig--rest">{% render 'mega-set-stage', handle: 'the-full-ritual' %}<span class="dm-fig__cap"><span class="pick-chip">{% if section.settings.t_shop_menu_pick != blank %}{{ section.settings.t_shop_menu_pick }}{% else %}{{ 'shop_menu.pick' | t }}{% endif %}</span>{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
             {%- endif -%}
             {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
               {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}{%- assign step = step | strip -%}
@@ -158,7 +158,7 @@
     {%- endcomment -%}
     <nav class="pmenu" aria-label="{{ 'header.primary_nav' | t }}">
       <details class="pmenu__shop" open>
-        <summary class="menu-drawer__link">{% if menu.links.size > 0 %}{{ menu.links.first.title | escape }}{% else %}{{ 'header.nav.shop' | t }}{% endif %} {% render 'icon', name: 'chevron-down', class: 'pmenu__chev' %}</summary>
+        <summary class="menu-drawer__link">{% if menu.links.size > 0 %}{{ menu.links.first.title | escape }}{% else %}{% if section.settings.t_header_nav_shop != blank %}{{ section.settings.t_header_nav_shop }}{% else %}{{ 'header.nav.shop' | t }}{% endif %}{% endif %} {% render 'icon', name: 'chevron-down', class: 'pmenu__chev' %}</summary>
         <div class="pmenu__panel">
           <div class="pmenu__row">
             {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
@@ -179,11 +179,11 @@
           {%- if ritual.id -%}
             <a class="ritual-card" href="{{ ritual.url }}">
               {%- if ritual.featured_media -%}{{ ritual.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100,200', sizes: '88px', alt: '' }}{%- endif -%}
-              <span><span class="pick-chip">{{ 'shop_menu.pick' | t }}</span><strong>{{ ritual.title | escape }}</strong><em>{{ 'shop_menu.all_four' | t }}</em></span>
+              <span><span class="pick-chip">{% if section.settings.t_shop_menu_pick != blank %}{{ section.settings.t_shop_menu_pick }}{% else %}{{ 'shop_menu.pick' | t }}{% endif %}</span><strong>{{ ritual.title | escape }}</strong><em>{% if section.settings.t_shop_menu_all_four != blank %}{{ section.settings.t_shop_menu_all_four }}{% else %}{{ 'shop_menu.all_four' | t }}{% endif %}</em></span>
               <span class="ritual-card__price">{% render 'price', product: ritual %}</span>
             </a>
           {%- endif -%}
-          <a class="pmenu__all" href="{{ routes.all_products_collection_url }}">{{ 'shop_menu.shop_all' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <a class="pmenu__all" href="{{ routes.all_products_collection_url }}">{% if section.settings.t_shop_menu_shop_all != blank %}{{ section.settings.t_shop_menu_shop_all }}{% else %}{{ 'shop_menu.shop_all' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
         </div>
       </details>
       {%- if menu.links.size > 0 -%}
@@ -191,19 +191,19 @@
           <a class="menu-drawer__link" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
         {%- endfor -%}
       {%- else -%}
-        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{{ 'header.nav.sets' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
-        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{{ 'header.nav.routines' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
-        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{{ 'header.nav.climate' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
-        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{{ 'header.nav.ingredients' | t }} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
+        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/sets' | replace: '//', '/' }}">{% if section.settings.t_header_nav_sets != blank %}{{ section.settings.t_header_nav_sets }}{% else %}{{ 'header.nav.sets' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
+        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/routines' | replace: '//', '/' }}">{% if section.settings.t_header_nav_routines != blank %}{{ section.settings.t_header_nav_routines }}{% else %}{{ 'header.nav.routines' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
+        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{% if section.settings.t_header_nav_climate != blank %}{{ section.settings.t_header_nav_climate }}{% else %}{{ 'header.nav.climate' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
+        <a class="menu-drawer__link" href="{{ routes.root_url | append: '/pages/ingredients' | replace: '//', '/' }}">{% if section.settings.t_header_nav_ingredients != blank %}{{ section.settings.t_header_nav_ingredients }}{% else %}{{ 'header.nav.ingredients' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--flip' %}</a>
       {%- endif -%}
     </nav>
     <div class="menu-drawer__secondary">
       {%- if shop.customer_accounts_enabled -%}
-        <a href="{{ routes.root_url | append: '/pages/account' | replace: '//', '/' }}">{% render 'icon', name: 'account', class: 'icon--sm' %}&nbsp;{% if customer %}{{ 'header.account' | t }}{% else %}{{ 'header.log_in' | t }}{% endif %}</a>
+        <a href="{{ routes.root_url | append: '/pages/account' | replace: '//', '/' }}">{% render 'icon', name: 'account', class: 'icon--sm' %}&nbsp;{% if customer %}{% if section.settings.t_header_account != blank %}{{ section.settings.t_header_account }}{% else %}{{ 'header.account' | t }}{% endif %}{% else %}{% if section.settings.t_header_log_in != blank %}{{ section.settings.t_header_log_in }}{% else %}{{ 'header.log_in' | t }}{% endif %}{% endif %}</a>
       {%- endif -%}
-      <a href="{{ routes.root_url | append: '/pages/faq' | replace: '//', '/' }}">{{ 'header.nav.faq' | t }}</a>
-      <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{{ 'header.nav.contact' | t }}</a>
-      <a href="{{ routes.root_url | append: '/pages/creators' | replace: '//', '/' }}">{{ 'footer.links.creators' | t }}</a>
+      <a href="{{ routes.root_url | append: '/pages/faq' | replace: '//', '/' }}">{% if section.settings.t_header_nav_faq != blank %}{{ section.settings.t_header_nav_faq }}{% else %}{{ 'header.nav.faq' | t }}{% endif %}</a>
+      <a href="{{ routes.root_url | append: '/pages/contact' | replace: '//', '/' }}">{% if section.settings.t_header_nav_contact != blank %}{{ section.settings.t_header_nav_contact }}{% else %}{{ 'header.nav.contact' | t }}{% endif %}</a>
+      <a href="{{ routes.root_url | append: '/pages/creators' | replace: '//', '/' }}">{% if section.settings.t_footer_links_creators != blank %}{{ section.settings.t_footer_links_creators }}{% else %}{{ 'footer.links.creators' | t }}{% endif %}</a>
       {% render 'language-switch', form_id: 'DrawerLang', class: 'chip', show_label: true %}
     </div>
   </div>
@@ -213,17 +213,17 @@
 <dialog class="search-modal" id="SearchModal" aria-labelledby="SearchModalTitle">
   <div class="search-modal__panel">
     <div class="container search-modal__inner">
-      <h2 class="visually-hidden" id="SearchModalTitle">{{ 'search.title' | t }}</h2>
+      <h2 class="visually-hidden" id="SearchModalTitle">{% if section.settings.t_search_title != blank %}{{ section.settings.t_search_title }}{% else %}{{ 'search.title' | t }}{% endif %}</h2>
       <predictive-search data-url="{{ routes.predictive_search_url }}">
         <form action="{{ routes.search_url }}" method="get" role="search" class="search-modal__form">
-          <label class="visually-hidden" for="SearchModalInput">{{ 'search.label' | t }}</label>
+          <label class="visually-hidden" for="SearchModalInput">{% if section.settings.t_search_label != blank %}{{ section.settings.t_search_label }}{% else %}{{ 'search.label' | t }}{% endif %}</label>
           {% render 'icon', name: 'search', class: 'icon--lg' %}
           <input
             id="SearchModalInput"
             class="search-modal__input"
             type="search"
             name="q"
-            placeholder="{{ 'search.placeholder' | t }}"
+            placeholder="{% if section.settings.t_search_placeholder != blank %}{{ section.settings.t_search_placeholder }}{% else %}{{ 'search.placeholder' | t }}{% endif %}"
             autocomplete="off"
             autocapitalize="off"
             spellcheck="false"
@@ -239,7 +239,7 @@
           </button>
         </form>
         <div class="search-modal__suggest" data-suggestions>
-          <p class="t-eyebrow t-muted">{{ 'search.popular' | t }}</p>
+          <p class="t-eyebrow t-muted">{% if section.settings.t_search_popular != blank %}{{ section.settings.t_search_popular }}{% else %}{{ 'search.popular' | t }}{% endif %}</p>
           <div class="cluster u-mt-s">
             {%- assign terms = 'search.popular_terms' | t | split: ',' -%}
             {%- for term in terms -%}
@@ -259,6 +259,10 @@
   "class": "header-section",
   "settings": [
     {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "label": "t:sections.header.menu",
@@ -275,6 +279,136 @@
       "type": "collection",
       "id": "mega_collection",
       "label": "t:sections.header.mega_collection"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_header_nav_shop",
+      "label": "Header nav · Shop",
+      "info": "Now: “Shop”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_header_nav_sets",
+      "label": "Header nav · Sets",
+      "info": "Now: “Sets”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_header_nav_climate",
+      "label": "Header nav · Climate",
+      "info": "Now: “Climate”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_header_nav_ingredients",
+      "label": "Header nav · Ingredients",
+      "info": "Now: “Ingredients”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_header_search",
+      "label": "Header · Search",
+      "info": "Now: “Search”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_header_account",
+      "label": "Header · Account",
+      "info": "Now: “Account”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_header_log_in",
+      "label": "Header · Log in",
+      "info": "Now: “Log in”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_shop_menu_mega_routine",
+      "label": "Shop menu · Mega routine",
+      "info": "Now: “The routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_shop_menu_shop_all",
+      "label": "Shop menu · Shop all",
+      "info": "Now: “Shop all products”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_shop_menu_mega_sets",
+      "label": "Shop menu · Mega sets",
+      "info": "Now: “Sets”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_shop_menu_mega_more",
+      "label": "Shop menu · Mega more",
+      "info": "Now: “More”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_footer_links_creators",
+      "label": "Footer links · Creators",
+      "info": "Now: “Creators”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_shop_menu_pick",
+      "label": "Shop menu · Pick",
+      "info": "Now: “Our pick”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_shop_menu_all_four",
+      "label": "Shop menu · All four",
+      "info": "Now: “All four steps, morning + night”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_header_nav_routines",
+      "label": "Header nav · Routines",
+      "info": "Now: “Find your routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_header_nav_faq",
+      "label": "Header nav · Faq",
+      "info": "Now: “FAQ”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_header_nav_contact",
+      "label": "Header nav · Contact",
+      "info": "Now: “Contact”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_search_title",
+      "label": "Search · Title",
+      "info": "Now: “Search”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_search_label",
+      "label": "Search · Label",
+      "info": "Now: “Search the store”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_search_placeholder",
+      "label": "Search · Box hint text",
+      "info": "Now: “Search products or ingredients”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_search_popular",
+      "label": "Search · Popular",
+      "info": "Now: “Popular”. Leave empty to keep it (English and Arabic)."
     }
   ]
 }

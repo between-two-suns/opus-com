@@ -3,7 +3,7 @@
 <div class="page-hero page-hero--compact">
   <div class="suns" aria-hidden="true"><span class="sun sun--warm page-hero__sun-a"></span><span class="sun sun--cool page-hero__sun-b"></span></div>
   <div class="container page-hero__inner">
-    <p class="t-eyebrow">{{ 'sections.journal.eyebrow' | t }}</p>
+    <p class="t-eyebrow">{% if section.settings.t_sections_journal_eyebrow != blank %}{{ section.settings.t_sections_journal_eyebrow }}{% else %}{{ 'sections.journal.eyebrow' | t }}{% endif %}</p>
     <h1 class="t-display-l">{{ blog.title | escape }}</h1>
   </div>
 </div>
@@ -18,12 +18,36 @@
         </ul>
         {%- if paginate.pages > 1 -%}{% render 'pagination', paginate: paginate %}{%- endif -%}
       {%- else -%}
-        <div class="empty-state"><p class="t-lead">{{ 'blog.empty' | t }}</p></div>
+        <div class="empty-state"><p class="t-lead">{% if section.settings.t_blog_empty != blank %}{{ section.settings.t_blog_empty }}{% else %}{{ 'blog.empty' | t }}{% endif %}</p></div>
       {%- endif -%}
     {%- endpaginate -%}
   </div>
 </section>
 
 {% schema %}
-{ "name": "t:sections.main_blog.name", "settings": [] }
+{
+  "name": "t:sections.main_blog.name",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_sections_journal_eyebrow",
+      "label": "Journal · Small line above the heading",
+      "info": "Now: “Journal”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_blog_empty",
+      "label": "Blog · Empty",
+      "info": "Now: “Stories are coming soon.”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
+}
 {% endschema %}
