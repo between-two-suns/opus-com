@@ -275,6 +275,11 @@
   /* sets have no step tabs: the picture sticks under the header only, so it never sits lower than the title (DECISIONS 276) */
   .pdp--v2[data-step='0'] .pdp__gallery { inset-block-start: calc(var(--header-h) + 16px); }
   .pdp--v2 .pdp__gallery .gallery__slide { block-size: min(125cqw, var(--v2-stage-h, max(400px, calc(100svh - 250px)))); }
+  /* the frame is always 4:5, the shape of the photos: as tall as the screen allows, and 0.8 × that wide (DECISIONS 308) */
+  .pdp--v2 .pdp__gallery { inline-size: min(100%, calc(var(--v2-stage-h, max(400px, calc(100svh - 250px))) * .8)); justify-self: center; }
+  /* set pages: their photos are square, so their frame is square (the packs run almost edge to edge) */
+  .pdp--v2[data-step='0'] .pdp__gallery { inline-size: min(100%, var(--v2-stage-h, max(400px, calc(100svh - 250px)))); }
+  .pdp--v2[data-step='0'] .pdp__gallery .gallery__slide { block-size: min(100cqw, var(--v2-stage-h, max(400px, calc(100svh - 250px)))); }
   .pdp--v2 .pdp__gallery.is-fitted .gallery__slide { transition: block-size 420ms cubic-bezier(.22, .8, .24, 1); }
 }
 @media (min-width: 990px) and (prefers-reduced-motion: reduce) {
