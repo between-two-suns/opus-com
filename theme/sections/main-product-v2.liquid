@@ -203,10 +203,11 @@
             {%- assign pos_s = media.position | append: '' -%}
             {%- if pos_s != pos -%}{%- continue -%}{%- endif -%}
             {%- assign slide = slide | plus: 1 -%}
-            <div class="gallery__slide{% if media.preview_image.src contains '.png' %} gallery__slide--png{% endif %}" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
+            <div class="gallery__slide{% if media.preview_image.src contains '.png' %} gallery__slide--png{% elsif media.media_type == 'image' %} gallery__slide--photo{% endif %}" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide, count: media_count }}" data-slide>
               {%- case media.media_type -%}
                 {%- when 'image' -%}
                   {{ media | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200,1400', sizes: '(min-width: 990px) 46vw, 92vw', alt: media.alt | default: product.title }}
+                  {%- unless media.preview_image.src contains '.png' -%}{{ media | image_url: width: 360 | image_tag: loading: 'lazy', class: 'gallery__fill', alt: '', aria-hidden: 'true' }}{%- endunless -%}
                 {%- when 'video' -%}
                   {{ media | video_tag: controls: true, muted: true, playsinline: true, preload: 'none', image_size: '1200x' }}
                 {%- when 'external_video' -%}

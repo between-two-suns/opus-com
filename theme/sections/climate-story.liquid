@@ -99,7 +99,7 @@
       <div class="cst__media" aria-hidden="true">
         {%- if wide or tall -%}
           <picture>
-            {%- if tall -%}<source media="(max-width: 749px)" srcset="{{ tall | image_url: width: 560, height: 1120, crop: 'center' }} 560w, {{ tall | image_url: width: 780, height: 1560, crop: 'center' }} 780w, {{ tall | image_url: width: 960, height: 1920, crop: 'center' }} 960w" sizes="100vw">{%- endif -%}
+            {%- if tall -%}<source media="(max-aspect-ratio: 1/1)" srcset="{{ tall | image_url: width: 560, height: 1120, crop: 'center' }} 560w, {{ tall | image_url: width: 780, height: 1560, crop: 'center' }} 780w, {{ tall | image_url: width: 960, height: 1920, crop: 'center' }} 960w" sizes="100vw">{%- endif -%}
             {%- liquid
               assign base = wide
               unless wide

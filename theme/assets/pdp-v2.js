@@ -209,3 +209,24 @@ document.querySelector('.v2-rev__box')?.addEventListener('toggle', (e) => { if (
 customElements.whenDefined('media-gallery').then(() => {
   document.querySelectorAll('.pdp--v2 media-gallery').forEach(initGallery);
 });
+
+/* Gallery photos on laptops (DECISIONS 308): feather the photo's own edges into its blurred background, at the exact
+   place the photo ends inside the frame (it changes with the screen and each photo's shape). */
+(() => {
+  const desk = matchMedia('(min-width: 990px)');
+  const fit = (img) => {
+    const slide = img.parentElement; if (!slide) return;
+    if (!desk.matches || !img.naturalWidth) { img.style.removeProperty('--fmx'); img.style.removeProperty('--fmy'); return; }
+    const W = slide.clientWidth, H = slide.clientHeight; if (!W || !H) return;
+    const r = img.naturalWidth / img.naturalHeight, f = 3.5;
+    const ex = Math.max(0, (1 - (H * r) / W) / 2) * 100, ey = Math.max(0, (1 - W / r / H) / 2) * 100;
+    const g = (dir, e) => e > 0.5 ? `linear-gradient(${dir}, transparent ${e}%, #000 ${e + f}%, #000 ${100 - e - f}%, transparent ${100 - e}%)` : 'linear-gradient(#000, #000)';
+    img.style.setProperty('--fmx', g('90deg', ex)); img.style.setProperty('--fmy', g('180deg', ey));
+  };
+  const all = () => document.querySelectorAll('.pdp__gallery .gallery__slide--photo > img:not(.gallery__fill)').forEach(fit);
+  document.querySelectorAll('.pdp__gallery .gallery__slide--photo > img:not(.gallery__fill)').forEach((img) => {
+    if (img.complete) fit(img); else img.addEventListener('load', () => fit(img), { once: true });
+    if ('ResizeObserver' in window) new ResizeObserver(() => fit(img)).observe(img.parentElement);
+  });
+  desk.addEventListener('change', all);
+})();

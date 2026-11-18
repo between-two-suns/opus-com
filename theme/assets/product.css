@@ -208,6 +208,17 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
 @media (max-width: 989px) {
   .gallery__slide { aspect-ratio: 1 / 1; }
 }
+/* Laptop and desktop gallery (DECISIONS 308): the frame follows the screen height, so a photo rarely has its shape.
+   The photo sits whole (never cropped) and the room left beside it is its own background carried on: a soft, blurred
+   copy of the same photo, with the photo's edges feathered into it so there is no seam. Phones keep the full-bleed
+   square crop, which suits these photos better there. */
+.pdp__gallery .gallery__slide.gallery__slide--photo > img.gallery__fill { display: none; }
+@media (min-width: 990px) {
+  .pdp__gallery .gallery__slide.gallery__slide--photo > img.gallery__fill { display: block; inset: -8%; inline-size: 116%; block-size: 116%; object-fit: cover; z-index: -1; filter: blur(30px) saturate(1.05); transform: translateZ(0); }
+  .pdp__gallery .gallery__slide.gallery__slide--photo > img:not(.gallery__fill) { object-fit: contain;
+    -webkit-mask-image: var(--fmx, none), var(--fmy, none); mask-image: var(--fmx, none), var(--fmy, none);
+    -webkit-mask-composite: source-in; mask-composite: intersect; }
+}
 .routine-strip__offers { display: grid; gap: 12px; margin-block-start: clamp(20px, 3vw, 32px); }
 /* Bundle product page: the packs on a two-colour stage */
 .gallery__slide--bundle { background: radial-gradient(70% 60% at 50% 40%, rgba(255, 255, 255, .85), transparent 70%), linear-gradient(160deg, color-mix(in srgb, var(--a) 32%, #fff), color-mix(in srgb, var(--b) 30%, #fff)); display: flex; align-items: flex-end; justify-content: center; }
