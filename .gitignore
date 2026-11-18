@@ -6,3 +6,4 @@ tools/qa/reports/tmp/
 tools/qa/reports/
 _source/photos/
 tools/notifications/preview/
+__pycache__/

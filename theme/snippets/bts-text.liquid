@@ -15,6 +15,11 @@
     if bt_out contains 'ranslation missing'
       assign bt_out = bt_pack
     endif
+    if field == 'how' and product.metafields.bts.page_how != blank
+      assign bt_out = product.metafields.bts.page_how.value
+    elsif field == 'when' and product.metafields.bts.page_when != blank
+      assign bt_out = product.metafields.bts.page_when.value
+    endif
     echo bt_out
   endif
 -%}

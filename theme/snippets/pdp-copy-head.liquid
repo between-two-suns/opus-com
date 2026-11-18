@@ -14,6 +14,18 @@
   if copy_ing contains 'ranslation missing'
     assign copy_ing = product.metafields.bts.hero_ingredients.value
   endif
+  comment
+    Owner overrides, edited on the product in admin (DECISIONS 304): Website · Headline / Short intro / Key-ingredient pill.
+  endcomment
+  if product.metafields.bts.page_headline != blank
+    assign copy_head = product.metafields.bts.page_headline.value
+  endif
+  if product.metafields.bts.page_lead != blank
+    assign copy_lead = product.metafields.bts.page_lead.value
+  endif
+  if product.metafields.bts.page_ingredients != blank
+    assign copy_ing = product.metafields.bts.page_ingredients.value
+  endif
 -%}
 {%- unless copy_head contains 'ranslation missing' -%}
   <p class="v2-benefit v2-benefit--single">{{ copy_head }}</p>
