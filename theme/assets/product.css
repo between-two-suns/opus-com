@@ -19,7 +19,8 @@
 .gallery__track::-webkit-scrollbar { display: none; }
 .gallery__track:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 3px; }
 .gallery__slide { position: relative; aspect-ratio: 4 / 5; scroll-snap-align: start; background: var(--c-paper); overflow: hidden; isolation: isolate; }
-.gallery__slide > img, .gallery__slide > video, .gallery__slide > svg { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.gallery__slide > picture { display: contents; }
+.gallery__slide > img, .gallery__slide > picture > img, .gallery__slide > video, .gallery__slide > svg { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
 .gallery__slide--studio { background: radial-gradient(80% 60% at 50% 40%, color-mix(in srgb, var(--sku) 30%, #fff), color-mix(in srgb, var(--sku) 34%, var(--c-daylight)) 70%); }
 .gallery__slide--studio .gallery__cutout { position: absolute; inset: 8% 10% 6%; inline-size: 80%; block-size: 86%; object-fit: contain; filter: drop-shadow(0 30px 34px rgba(32, 35, 58, 0.22)); transition: transform 500ms var(--ease-out); }
 .gallery__slide--studio.is-tilting .gallery__cutout { transform: perspective(900px) rotateY(calc(var(--tx) * 10deg)) rotateX(calc(var(--ty) * -6deg)) translateY(-6px); }
@@ -208,11 +209,12 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
 @media (max-width: 989px) {
   .gallery__slide { aspect-ratio: 1 / 1; }
 }
-/* Laptop and desktop gallery (DECISIONS 308): photos fill the frame edge to edge (owner: "they would look better if
-   the photo took up the whole space"). The frame takes the photos' own 4:5 shape (see pdp-v2.css), so filling it costs
-   almost nothing at the edges. Packs on transparent backgrounds keep sitting whole on their tint. */
+/* Laptop and desktop gallery (DECISIONS 310): photos fill the frame edge to edge. The frame is wider than the photos,
+   so each photo has a widened copy in Files (<photo>-4x3.jpg: the same photo with its background extended at the
+   sides, see snippets/gallery-photo); the frame then crops only a little, top and bottom. Packs on transparent
+   backgrounds keep sitting whole on their tint. */
 @media (min-width: 990px) {
-  .pdp__gallery .gallery__track .gallery__slide.gallery__slide--photo > img { object-fit: cover; object-position: 50% 40%; }
+  .pdp__gallery .gallery__track .gallery__slide:is(.gallery__slide--photo, .gallery__slide--studio-photo) > :is(img, picture > img) { object-fit: cover; object-position: 50% 45%; }
 }
 .routine-strip__offers { display: grid; gap: 12px; margin-block-start: clamp(20px, 3vw, 32px); }
 /* Bundle product page: the packs on a two-colour stage */

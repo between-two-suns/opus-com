@@ -3,6 +3,7 @@
   colour bands, one per product, from the studio photos (the same language as the home hero).
   Params: product (the set), sizes, loading ('lazy'), class, priority (true: eager + fetched first, for a page's first card),
   phone_crop (true: on phones the photo is cut to the card's 4:3 frame on Shopify's side, so hidden pixels aren't downloaded)
+  wide (true: on laptops use the widened copy bts-<handle>-4x3.jpg from Files when there is one; DECISIONS 310)
   Set cards show every photo at 4:3 (DECISIONS 239); a square photo is placed by the set's focus (snippets/bundle-def).
 {%- endcomment -%}
 {%- liquid
@@ -17,6 +18,14 @@
   assign sv_photo = images[sv_key]
   if sv_photo == blank
     assign sv_photo = false
+  endif
+  assign sv_wide = false
+  if wide and sv_photo and phone_crop != true
+    assign sv_wkey = 'bts-' | append: product.handle | append: '-4x3.jpg'
+    assign sv_wide = images[sv_wkey]
+    if sv_wide.width == blank
+      assign sv_wide = false
+    endif
   endif
   assign sv_loading = loading | default: 'lazy'
   assign sv_sizes = sizes | default: '(min-width: 990px) 33vw, 86vw'
@@ -35,12 +44,14 @@
     -%}
     <picture><source media="(max-width: 749px)" srcset="{% for w in sv_ws %}{% assign hh = w | times: 3 | divided_by: 4 %}{{ sv_photo | image_url: width: w, height: hh, crop: 'region', crop_left: 0, crop_top: sv_top, crop_width: sv_photo.width, crop_height: sv_ch }} {{ w }}w{% unless forloop.last %}, {% endunless %}{% endfor %}" sizes="86vw">
   {%- endif -%}
+  {%- if sv_wide -%}<picture><source media="(min-width: 990px)" srcset="{% assign sv_wws = '800,1000,1200,1600,2000' | split: ',' %}{% for w in sv_wws %}{{ sv_wide | image_url: width: w }} {{ w }}w{% unless forloop.last %}, {% endunless %}{% endfor %}" sizes="60vw">{%- endif -%}
   {%- if priority -%}
     {{ sv_photo | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400,600,700,800,1000,1200', sizes: sv_sizes, alt: '', class: 'set-visual set-visual--photo', style: sv_pos }}
   {%- else -%}
     {{ sv_photo | image_url: width: 1200 | image_tag: loading: sv_loading, widths: '400,600,700,800,1000,1200', sizes: sv_sizes, alt: '', class: 'set-visual set-visual--photo', style: sv_pos }}
   {%- endif -%}
   {%- if phone_crop -%}</picture>{%- endif -%}
+  {%- if sv_wide -%}</picture>{%- endif -%}
 {%- else -%}
   <span class="set-visual set-visual--bands {{ class }}" style="--n: {{ sv_steps.size }}" aria-hidden="true">
     {%- for st in sv_steps -%}

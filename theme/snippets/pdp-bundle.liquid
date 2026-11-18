@@ -22,7 +22,7 @@
 <div class="gallery__slide gallery__slide--set" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: g1, count: count }}" data-slide>
   {%- comment -%} After the packs stage (offset) this photo is the second slide: it waits until the first screen is in (DECISIONS 210) {%- endcomment -%}
   {%- if offset -%}{%- assign bg_load = 'lazy' -%}{%- else -%}{%- assign bg_load = 'eager' -%}{%- endif -%}
-  {%- render 'set-visual', product: product, loading: bg_load, sizes: '(min-width: 990px) 46vw, 92vw' -%}
+  {%- render 'set-visual', product: product, loading: bg_load, sizes: '(min-width: 990px) 46vw, 92vw', wide: true -%}
 </div>
 {%- assign buniq = bundle_steps | uniq -%}
 {%- for st in buniq -%}
@@ -32,7 +32,7 @@
   {%- assign studio = images[ck] -%}{%- if studio == blank -%}{%- assign studio = comp.featured_media -%}{%- endif -%}
   {%- assign slide_n = forloop.index | plus: 1 | plus: g0 -%}
   <div class="gallery__slide gallery__slide--studio-photo" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: slide_n, count: count }}" data-slide data-step="{{ si }}">
-    {%- if studio -%}{{ studio | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1400', sizes: '(min-width: 990px) 46vw, 92vw', alt: comp.title }}{%- endif -%}
+    {%- if studio -%}{%- render 'gallery-photo', image: studio, alt: comp.title -%}{%- endif -%}
   </div>
 {%- endfor -%}
 {%- else -%}
