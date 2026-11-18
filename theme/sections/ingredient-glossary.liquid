@@ -3,30 +3,30 @@
   assign entries = shop.metaobjects.bts_ingredient.values
   assign source = section.settings.collection | default: collections.all
 -%}
-<section class="section glossary{% if section.settings.reference %} glossary--ref{% endif %}" aria-label="{{ 'header.nav.ingredients' | t }}">
+<section class="section glossary{% if section.settings.reference %} glossary--ref{% endif %}" aria-label="{% if section.settings.t_header_nav_ingredients != blank %}{{ section.settings.t_header_nav_ingredients }}{% else %}{{ 'header.nav.ingredients' | t }}{% endif %}">
   <div class="container">
     {%- if section.settings.reference -%}
       <div class="glossary__ref-head">
-        <p class="t-eyebrow">{{ 'pages.ingredients.ref_eyebrow' | t }}</p>
-        <h2 class="t-display-m">{{ 'pages.ingredients.ref_heading' | t }}</h2>
-        <p class="t-lead t-muted">{{ 'pages.ingredients.ref_text' | t }}</p>
+        <p class="t-eyebrow">{% if section.settings.t_pages_ingredients_ref_eyebrow != blank %}{{ section.settings.t_pages_ingredients_ref_eyebrow }}{% else %}{{ 'pages.ingredients.ref_eyebrow' | t }}{% endif %}</p>
+        <h2 class="t-display-m">{% if section.settings.t_pages_ingredients_ref_heading != blank %}{{ section.settings.t_pages_ingredients_ref_heading }}{% else %}{{ 'pages.ingredients.ref_heading' | t }}{% endif %}</h2>
+        <p class="t-lead t-muted">{% if section.settings.t_pages_ingredients_ref_text != blank %}{{ section.settings.t_pages_ingredients_ref_text }}{% else %}{{ 'pages.ingredients.ref_text' | t }}{% endif %}</p>
       </div>
       <details class="glossary__ref" id="all-ingredients-ref">
-        <summary class="btn btn--secondary glossary__ref-btn"><span data-closed>{{ 'pages.ingredients.ref_open' | t }}</span><span data-open>{{ 'pages.ingredients.ref_close' | t }}</span>{% render 'icon', name: 'chevron-down', class: 'icon--sm' %}</summary>
+        <summary class="btn btn--secondary glossary__ref-btn"><span data-closed>{% if section.settings.t_pages_ingredients_ref_open != blank %}{{ section.settings.t_pages_ingredients_ref_open }}{% else %}{{ 'pages.ingredients.ref_open' | t }}{% endif %}</span><span data-open>{% if section.settings.t_pages_ingredients_ref_close != blank %}{{ section.settings.t_pages_ingredients_ref_close }}{% else %}{{ 'pages.ingredients.ref_close' | t }}{% endif %}</span>{% render 'icon', name: 'chevron-down', class: 'icon--sm' %}</summary>
     {%- else -%}
-    <nav class="glossary__jump" aria-label="{{ 'pages.ingredients.jump_label' | t }}">
+    <nav class="glossary__jump" aria-label="{% if section.settings.t_pages_ingredients_jump_label != blank %}{{ section.settings.t_pages_ingredients_jump_label }}{% else %}{{ 'pages.ingredients.jump_label' | t }}{% endif %}">
       <ul class="cluster" role="list">
-        {%- if entries.size > 0 -%}<li><a class="chip" href="#key-ingredients">{{ 'pages.ingredients.key_heading' | t }}</a></li>{%- endif -%}
-        <li><a class="chip" href="#all-ingredients">{{ 'pages.ingredients.az_heading' | t }}</a></li>
-        <li><a class="chip" href="#full-lists">{{ 'pages.ingredients.full_lists' | t }}</a></li>
+        {%- if entries.size > 0 -%}<li><a class="chip" href="#key-ingredients">{% if section.settings.t_pages_ingredients_key_heading != blank %}{{ section.settings.t_pages_ingredients_key_heading }}{% else %}{{ 'pages.ingredients.key_heading' | t }}{% endif %}</a></li>{%- endif -%}
+        <li><a class="chip" href="#all-ingredients">{% if section.settings.t_pages_ingredients_az_heading != blank %}{{ section.settings.t_pages_ingredients_az_heading }}{% else %}{{ 'pages.ingredients.az_heading' | t }}{% endif %}</a></li>
+        <li><a class="chip" href="#full-lists">{% if section.settings.t_pages_ingredients_full_lists != blank %}{{ section.settings.t_pages_ingredients_full_lists }}{% else %}{{ 'pages.ingredients.full_lists' | t }}{% endif %}</a></li>
       </ul>
     </nav>
     {%- endif -%}
     {%- if entries.size > 0 and section.settings.reference != true -%}
       <div class="glossary__block" id="key-ingredients">
         <div class="glossary__head">
-          <h2 class="t-display-m">{{ 'pages.ingredients.key_heading' | t }}</h2>
-          <p class="t-muted">{{ 'pages.ingredients.key_text' | t }}</p>
+          <h2 class="t-display-m">{% if section.settings.t_pages_ingredients_key_heading != blank %}{{ section.settings.t_pages_ingredients_key_heading }}{% else %}{{ 'pages.ingredients.key_heading' | t }}{% endif %}</h2>
+          <p class="t-muted">{% if section.settings.t_pages_ingredients_key_text != blank %}{{ section.settings.t_pages_ingredients_key_text }}{% else %}{{ 'pages.ingredients.key_text' | t }}{% endif %}</p>
         </div>
         <ul class="glossary__grid" role="list">
           {%- for entry in entries -%}
@@ -38,10 +38,10 @@
                 {%- endfor -%}
               </div>
               <h3 class="glossary__name">{{ entry.name.value | escape }}</h3>
-              <p class="glossary__inci"><span class="t-muted">{{ 'pages.ingredients.inci_label' | t }}:</span> <span lang="en" dir="ltr">{{ entry.inci.value | escape }}</span></p>
+              <p class="glossary__inci"><span class="t-muted">{% if section.settings.t_pages_ingredients_inci_label != blank %}{{ section.settings.t_pages_ingredients_inci_label }}{% else %}{{ 'pages.ingredients.inci_label' | t }}{% endif %}:</span> <span lang="en" dir="ltr">{{ entry.inci.value | escape }}</span></p>
               <p>{{ entry.role.value | escape }}</p>
               {%- if entry.products.value.size > 0 -%}
-                <p class="t-small"><span class="t-muted">{{ 'pages.ingredients.in_products' | t }}:</span>
+                <p class="t-small"><span class="t-muted">{% if section.settings.t_pages_ingredients_in_products != blank %}{{ section.settings.t_pages_ingredients_in_products }}{% else %}{{ 'pages.ingredients.in_products' | t }}{% endif %}:</span>
                   {% for p in entry.products.value -%}<a href="{{ p.url }}">{{ p.title | escape }}</a>{% unless forloop.last %}, {% endunless %}{%- endfor %}
                 </p>
               {%- endif -%}
@@ -69,10 +69,10 @@
                 {%- assign inci_d = e.inci.value | downcase -%}
                 {%- if common != blank and common_d != inci_d -%}<p class="dict__common">{{ common | escape }}</p>{%- endif -%}
               </div>
-              <p class="dict__group"><span class="visually-hidden">{{ 'pages.ingredients.function_label' | t }}: </span><span class="pill pill--quiet">{{ group_key | t }}</span></p>
+              <p class="dict__group"><span class="visually-hidden">{% if section.settings.t_pages_ingredients_function_label != blank %}{{ section.settings.t_pages_ingredients_function_label }}{% else %}{{ 'pages.ingredients.function_label' | t }}{% endif %}: </span><span class="pill pill--quiet">{{ group_key | t }}</span></p>
               <p class="dict__desc">{{ e.description.value | escape }}</p>
               <div class="dict__in">
-                <span class="visually-hidden">{{ 'pages.ingredients.in_products' | t }}:</span>
+                <span class="visually-hidden">{% if section.settings.t_pages_ingredients_in_products != blank %}{{ section.settings.t_pages_ingredients_in_products }}{% else %}{{ 'pages.ingredients.in_products' | t }}{% endif %}:</span>
                 <ul class="dict__products" role="list">
                   {%- for p in e.products.value -%}
                     {%- capture step -%}{% render 'product-step', product: p %}{%- endcapture -%}
@@ -81,7 +81,7 @@
                 </ul>
                 {%- assign key = e.key_ingredient.value -%}
                 {%- if key -%}
-                  <a class="dict__key" href="#ing-{{ key.system.handle | default: key.handle }}">{{ 'pages.ingredients.key_link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+                  <a class="dict__key" href="#ing-{{ key.system.handle | default: key.handle }}">{% if section.settings.t_pages_ingredients_key_link != blank %}{{ section.settings.t_pages_ingredients_key_link }}{% else %}{{ 'pages.ingredients.key_link' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
                 {%- endif -%}
               </div>
             </li>¶
@@ -91,17 +91,17 @@
 
         <div class="glossary__block dict" id="all-ingredients">
           <div class="glossary__head">
-            <h2 class="t-display-m">{{ 'pages.ingredients.az_heading' | t }}</h2>
+            <h2 class="t-display-m">{% if section.settings.t_pages_ingredients_az_heading != blank %}{{ section.settings.t_pages_ingredients_az_heading }}{% else %}{{ 'pages.ingredients.az_heading' | t }}{% endif %}</h2>
             <p class="t-muted">{{ 'pages.ingredients.az_text' | t: count: all.size }}</p>
           </div>
 
           <ingredient-filter class="dict__filter js-only">
             <label class="field">
-              <span class="field__label">{{ 'pages.ingredients.search_label' | t }}</span>
-              <input type="search" placeholder="{{ 'pages.ingredients.search_placeholder' | t }}" data-filter-input autocomplete="off">
+              <span class="field__label">{% if section.settings.t_pages_ingredients_search_label != blank %}{{ section.settings.t_pages_ingredients_search_label }}{% else %}{{ 'pages.ingredients.search_label' | t }}{% endif %}</span>
+              <input type="search" placeholder="{% if section.settings.t_pages_ingredients_search_placeholder != blank %}{{ section.settings.t_pages_ingredients_search_placeholder }}{% else %}{{ 'pages.ingredients.search_placeholder' | t }}{% endif %}" data-filter-input autocomplete="off">
             </label>
-            <div class="cluster dict__chips" role="group" aria-label="{{ 'pages.ingredients.filter_products' | t }}">
-              <button type="button" class="chip" data-product="" aria-pressed="true">{{ 'pages.ingredients.filter_all' | t }}</button>
+            <div class="cluster dict__chips" role="group" aria-label="{% if section.settings.t_pages_ingredients_filter_products != blank %}{{ section.settings.t_pages_ingredients_filter_products }}{% else %}{{ 'pages.ingredients.filter_products' | t }}{% endif %}">
+              <button type="button" class="chip" data-product="" aria-pressed="true">{% if section.settings.t_pages_ingredients_filter_all != blank %}{{ section.settings.t_pages_ingredients_filter_all }}{% else %}{{ 'pages.ingredients.filter_all' | t }}{% endif %}</button>
               {%- for s in (1..4) -%}
                 {%- for p in source.products limit: 12 -%}
                   {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
@@ -122,15 +122,15 @@
               {%- if parts.size > 1 -%}{{ parts.last }}{%- endif -%}
             {%- endfor -%}
           </ol>
-          <p class="t-muted dict__empty" data-filter-empty hidden>{{ 'pages.ingredients.no_results' | t }}</p>
-          <p class="t-xs t-muted dict__note">{{ 'pages.ingredients.groups_note' | t }}</p>
+          <p class="t-muted dict__empty" data-filter-empty hidden>{% if section.settings.t_pages_ingredients_no_results != blank %}{{ section.settings.t_pages_ingredients_no_results }}{% else %}{{ 'pages.ingredients.no_results' | t }}{% endif %}</p>
+          <p class="t-xs t-muted dict__note">{% if section.settings.t_pages_ingredients_groups_note != blank %}{{ section.settings.t_pages_ingredients_groups_note }}{% else %}{{ 'pages.ingredients.groups_note' | t }}{% endif %}</p>
         </div>
       {%- endif -%}
     {%- endpaginate -%}
 
     <div class="glossary__inci-all" id="full-lists">
-      <h2 class="t-display-m">{{ 'pages.ingredients.full_lists' | t }}</h2>
-      <p class="t-muted">{{ 'pages.ingredients.full_lists_text' | t }}</p>
+      <h2 class="t-display-m">{% if section.settings.t_pages_ingredients_full_lists != blank %}{{ section.settings.t_pages_ingredients_full_lists }}{% else %}{{ 'pages.ingredients.full_lists' | t }}{% endif %}</h2>
+      <p class="t-muted">{% if section.settings.t_pages_ingredients_full_lists_text != blank %}{{ section.settings.t_pages_ingredients_full_lists_text }}{% else %}{{ 'pages.ingredients.full_lists_text' | t }}{% endif %}</p>
       {%- for s in (1..4) -%}
         {%- for p in source.products limit: 12 -%}
           {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
@@ -140,7 +140,7 @@
               <summary><span><span class="step-tag">{{ 'product.step' | t: number: s }}</span><br>{{ p.title | escape }}</span><span class="accordion__icon" aria-hidden="true"></span></summary>
               <div class="accordion__content">
                 {%- render 'inci-links', inci: p.metafields.bts.inci.value, base: '' -%}
-                <a class="link-arrow" href="{{ p.url }}">{{ 'product.view_full' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+                <a class="link-arrow" href="{{ p.url }}">{% if section.settings.t_product_view_full != blank %}{{ section.settings.t_product_view_full }}{% else %}{{ 'product.view_full' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
               </div>
             </details>
             {%- break -%}
@@ -203,10 +203,172 @@
 {
   "name": "t:sections.glossary.name",
   "settings": [
-    { "type": "paragraph", "content": "t:sections.ingredients.info" },
-    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" },
-    { "type": "checkbox", "id": "reference", "label": "t:sections.glossary.reference", "default": false }
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.ingredients.info"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.routine.collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "reference",
+      "label": "t:sections.glossary.reference",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_header_nav_ingredients",
+      "label": "Header nav · Ingredients",
+      "info": "Now: “Ingredients”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_ref_eyebrow",
+      "label": "Ingredients · Small line above the heading",
+      "info": "Now: “Nothing hidden”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_ref_heading",
+      "label": "Ingredients · Heading",
+      "info": "Now: “Every ingredient, A to Z.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_pages_ingredients_ref_text",
+      "label": "Ingredients · Paragraph",
+      "info": "Now: “All of them, by their label (INCI) name, with what each one is there to do and which products contain it.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_ref_open",
+      "label": "Ingredients · Ref open",
+      "info": "Now: “Open the full list”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_ref_close",
+      "label": "Ingredients · Ref close",
+      "info": "Now: “Close the list”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_jump_label",
+      "label": "Ingredients · Label",
+      "info": "Now: “On this page”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_key_heading",
+      "label": "Ingredients · Heading",
+      "info": "Now: “Key ingredients”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_az_heading",
+      "label": "Ingredients · Heading",
+      "info": "Now: “Every ingredient, A–Z”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_full_lists",
+      "label": "Ingredients · Full lists",
+      "info": "Now: “Full ingredient lists”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_key_text",
+      "label": "Ingredients · Paragraph",
+      "info": "Now: “The ingredients each formula is built around, and what they do for your skin.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_inci_label",
+      "label": "Ingredients · Label",
+      "info": "Now: “INCI name”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_in_products",
+      "label": "Ingredients · In products",
+      "info": "Now: “Found in”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_function_label",
+      "label": "Ingredients · Label",
+      "info": "Now: “Function”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_key_link",
+      "label": "Ingredients · Link text",
+      "info": "Now: “Key ingredient”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_search_label",
+      "label": "Ingredients · Label",
+      "info": "Now: “Filter ingredients”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_search_placeholder",
+      "label": "Ingredients · Box hint text",
+      "info": "Now: “Type an ingredient”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_filter_products",
+      "label": "Ingredients · Filter products",
+      "info": "Now: “Show ingredients in”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_filter_all",
+      "label": "Ingredients · Filter all",
+      "info": "Now: “All products”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_no_results",
+      "label": "Ingredients · No results",
+      "info": "Now: “No ingredient matches that search.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_groups_note",
+      "label": "Ingredients · Note",
+      "info": "Now: “Functions follow the categories of the EU CosIng cosmetic ingredient database.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_full_lists_text",
+      "label": "Ingredients · Paragraph",
+      "info": "Now: “Every product’s INCI, exactly as printed on the pack.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_product_view_full",
+      "label": "Product · View full",
+      "info": "Now: “View full details”. Leave empty to keep it (English and Arabic)."
+    }
   ],
-  "presets": [{ "name": "t:sections.glossary.name" }]
+  "presets": [
+    {
+      "name": "t:sections.glossary.name"
+    }
+  ]
 }
 {% endschema %}

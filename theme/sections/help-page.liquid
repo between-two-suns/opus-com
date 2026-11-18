@@ -30,18 +30,18 @@
 -%}
 <section class="help" data-kind="{{ kind }}">
   <div class="container help__head">
-    <p class="t-eyebrow">{{ 'help.eyebrow' | t }}</p>
+    <p class="t-eyebrow">{% if section.settings.t_help_eyebrow != blank %}{{ section.settings.t_help_eyebrow }}{% else %}{{ 'help.eyebrow' | t }}{% endif %}</p>
     <h1 class="t-display-l help__title">{{ page.title | escape }}</h1>
     {%- if kind == 'shipping' -%}
-      <p class="t-lead help__lead">{{ 'help.shipping.lead' | t }}</p>
+      <p class="t-lead help__lead">{% if section.settings.t_help_shipping_lead != blank %}{{ section.settings.t_help_shipping_lead }}{% else %}{{ 'help.shipping.lead' | t }}{% endif %}</p>
     {%- elsif kind == 'returns' -%}
-      <p class="t-lead help__lead">{{ 'help.returns.lead' | t }}</p>
+      <p class="t-lead help__lead">{% if section.settings.t_help_returns_lead != blank %}{{ section.settings.t_help_returns_lead }}{% else %}{{ 'help.returns.lead' | t }}{% endif %}</p>
     {%- endif -%}
-    <nav class="help__tabs" aria-label="{{ 'help.nav' | t }}">
-      <a href="{{ root }}/pages/shipping"{% if kind == 'shipping' %} aria-current="page"{% endif %}>{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'footer.links.shipping' | t }}</a>
-      <a href="{{ root }}/pages/returns"{% if kind == 'returns' %} aria-current="page"{% endif %}>{% render 'icon', name: 'refresh', class: 'icon--sm' %}{{ 'footer.links.returns' | t }}</a>
-      <a href="{{ root }}/pages/faq">{% render 'icon', name: 'info', class: 'icon--sm' %}{{ 'footer.links.faq' | t }}</a>
-      <a href="{{ root }}/pages/contact">{% render 'icon', name: 'mail', class: 'icon--sm' %}{{ 'footer.links.contact' | t }}</a>
+    <nav class="help__tabs" aria-label="{% if section.settings.t_help_nav != blank %}{{ section.settings.t_help_nav }}{% else %}{{ 'help.nav' | t }}{% endif %}">
+      <a href="{{ root }}/pages/shipping"{% if kind == 'shipping' %} aria-current="page"{% endif %}>{% render 'icon', name: 'truck', class: 'icon--sm' %}{% if section.settings.t_footer_links_shipping != blank %}{{ section.settings.t_footer_links_shipping }}{% else %}{{ 'footer.links.shipping' | t }}{% endif %}</a>
+      <a href="{{ root }}/pages/returns"{% if kind == 'returns' %} aria-current="page"{% endif %}>{% render 'icon', name: 'refresh', class: 'icon--sm' %}{% if section.settings.t_footer_links_returns != blank %}{{ section.settings.t_footer_links_returns }}{% else %}{{ 'footer.links.returns' | t }}{% endif %}</a>
+      <a href="{{ root }}/pages/faq">{% render 'icon', name: 'info', class: 'icon--sm' %}{% if section.settings.t_footer_links_faq != blank %}{{ section.settings.t_footer_links_faq }}{% else %}{{ 'footer.links.faq' | t }}{% endif %}</a>
+      <a href="{{ root }}/pages/contact">{% render 'icon', name: 'mail', class: 'icon--sm' %}{% if section.settings.t_footer_links_contact != blank %}{{ section.settings.t_footer_links_contact }}{% else %}{{ 'footer.links.contact' | t }}{% endif %}</a>
     </nav>
   </div>
 
@@ -49,23 +49,23 @@
     <div class="container">
       <ul class="help__facts" role="list">
         {%- if kind == 'shipping' -%}
-          <li class="help__fact" data-step="1">{% render 'icon', name: 'truck' %}<strong>{{ 'help.shipping.f1' | t }}</strong><span>{{ 'help.shipping.f1_sub' | t: amount: free_from }}</span></li>
+          <li class="help__fact" data-step="1">{% render 'icon', name: 'truck' %}<strong>{% if section.settings.t_help_shipping_f1 != blank %}{{ section.settings.t_help_shipping_f1 }}{% else %}{{ 'help.shipping.f1' | t }}{% endif %}</strong><span>{{ 'help.shipping.f1_sub' | t: amount: free_from }}</span></li>
           <li class="help__fact" data-step="2">{% render 'icon', name: 'city' %}<strong>{{ 'help.shipping.f2' | t: days: days_main }}</strong><span>{{ 'help.shipping.f2_sub' | t: days: days_other }}</span></li>
           {%- if settings.show_cod -%}
-            <li class="help__fact" data-step="4">{% render 'icon', name: 'cash' %}<strong>{{ 'help.shipping.f3_cod' | t }}</strong><span>{{ 'help.shipping.f3_cod_sub' | t }}</span></li>
+            <li class="help__fact" data-step="4">{% render 'icon', name: 'cash' %}<strong>{% if section.settings.t_help_shipping_f3_cod != blank %}{{ section.settings.t_help_shipping_f3_cod }}{% else %}{{ 'help.shipping.f3_cod' | t }}{% endif %}</strong><span>{% if section.settings.t_help_shipping_f3_cod_sub != blank %}{{ section.settings.t_help_shipping_f3_cod_sub }}{% else %}{{ 'help.shipping.f3_cod_sub' | t }}{% endif %}</span></li>
           {%- else -%}
-            <li class="help__fact" data-step="4">{% render 'icon', name: 'refresh' %}<strong>{{ 'help.shipping.f3_dmg' | t }}</strong><span>{{ 'help.shipping.f3_dmg_sub' | t }}</span></li>
+            <li class="help__fact" data-step="4">{% render 'icon', name: 'refresh' %}<strong>{% if section.settings.t_help_shipping_f3_dmg != blank %}{{ section.settings.t_help_shipping_f3_dmg }}{% else %}{{ 'help.shipping.f3_dmg' | t }}{% endif %}</strong><span>{% if section.settings.t_help_shipping_f3_dmg_sub != blank %}{{ section.settings.t_help_shipping_f3_dmg_sub }}{% else %}{{ 'help.shipping.f3_dmg_sub' | t }}{% endif %}</span></li>
           {%- endif -%}
         {%- else -%}
-          <li class="help__fact" data-step="1">{% render 'icon', name: 'refresh' %}<strong>{{ 'help.returns.f1' | t }}</strong><span>{{ 'help.returns.f1_sub' | t }}</span></li>
-          <li class="help__fact" data-step="2">{% render 'icon', name: 'check' %}<strong>{{ 'help.returns.f2' | t }}</strong><span>{{ 'help.returns.f2_sub' | t }}</span></li>
-          <li class="help__fact" data-step="4">{% render 'icon', name: 'cash' %}<strong>{{ 'help.returns.f3' | t }}</strong><span>{{ 'help.returns.f3_sub' | t }}</span></li>
+          <li class="help__fact" data-step="1">{% render 'icon', name: 'refresh' %}<strong>{% if section.settings.t_help_returns_f1 != blank %}{{ section.settings.t_help_returns_f1 }}{% else %}{{ 'help.returns.f1' | t }}{% endif %}</strong><span>{% if section.settings.t_help_returns_f1_sub != blank %}{{ section.settings.t_help_returns_f1_sub }}{% else %}{{ 'help.returns.f1_sub' | t }}{% endif %}</span></li>
+          <li class="help__fact" data-step="2">{% render 'icon', name: 'check' %}<strong>{% if section.settings.t_help_returns_f2 != blank %}{{ section.settings.t_help_returns_f2 }}{% else %}{{ 'help.returns.f2' | t }}{% endif %}</strong><span>{% if section.settings.t_help_returns_f2_sub != blank %}{{ section.settings.t_help_returns_f2_sub }}{% else %}{{ 'help.returns.f2_sub' | t }}{% endif %}</span></li>
+          <li class="help__fact" data-step="4">{% render 'icon', name: 'cash' %}<strong>{% if section.settings.t_help_returns_f3 != blank %}{{ section.settings.t_help_returns_f3 }}{% else %}{{ 'help.returns.f3' | t }}{% endif %}</strong><span>{% if section.settings.t_help_returns_f3_sub != blank %}{{ section.settings.t_help_returns_f3_sub }}{% else %}{{ 'help.returns.f3_sub' | t }}{% endif %}</span></li>
         {%- endif -%}
       </ul>
 
       {%- if kind == 'returns' -%}
       <div class="help__how">
-        <h2 class="t-display-m">{{ 'help.how' | t }}</h2>
+        <h2 class="t-display-m">{% if section.settings.t_help_how != blank %}{{ section.settings.t_help_how }}{% else %}{{ 'help.how' | t }}{% endif %}</h2>
         <ol class="help__steps" role="list">
           {%- for n in (1..3) -%}
             {%- assign sk = 'help.' | append: kind | append: '.s' | append: n -%}
@@ -85,8 +85,8 @@
 
   <div class="container help__body">
     {%- if parts.size > 1 -%}
-      <nav class="help__toc" aria-label="{{ 'help.toc' | t }}">
-        <p class="t-eyebrow">{{ 'help.toc' | t }}</p>
+      <nav class="help__toc" aria-label="{% if section.settings.t_help_toc != blank %}{{ section.settings.t_help_toc }}{% else %}{{ 'help.toc' | t }}{% endif %}">
+        <p class="t-eyebrow">{% if section.settings.t_help_toc != blank %}{{ section.settings.t_help_toc }}{% else %}{{ 'help.toc' | t }}{% endif %}</p>
         <ol role="list">
           {%- for part in parts offset: 1 -%}
             {%- assign head = part | split: '</h2>' | first | strip_html | strip -%}
@@ -114,6 +114,141 @@
 {% schema %}
 {
   "name": "Help page",
-  "settings": []
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_help_eyebrow",
+      "label": "Help · Small line above the heading",
+      "info": "Now: “Help”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_shipping_lead",
+      "label": "Help shipping · Paragraph",
+      "info": "Now: “What delivery costs, how long it takes and how to track it.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_returns_lead",
+      "label": "Help returns · Paragraph",
+      "info": "Now: “How to return something, and how your refund reaches you.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_nav",
+      "label": "Help · Nav",
+      "info": "Now: “Help pages”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_footer_links_shipping",
+      "label": "Footer links · Shipping",
+      "info": "Now: “Shipping”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_footer_links_returns",
+      "label": "Footer links · Returns",
+      "info": "Now: “Returns”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_footer_links_faq",
+      "label": "Footer links · Faq",
+      "info": "Now: “FAQ”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_footer_links_contact",
+      "label": "Footer links · Contact",
+      "info": "Now: “Contact”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_shipping_f1",
+      "label": "Help shipping · F1",
+      "info": "Now: “Free delivery”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_shipping_f3_cod",
+      "label": "Help shipping · F3 cod",
+      "info": "Now: “Cash on delivery”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_shipping_f3_cod_sub",
+      "label": "Help shipping · Paragraph",
+      "info": "Now: “No extra charge”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_shipping_f3_dmg",
+      "label": "Help shipping · F3 dmg",
+      "info": "Now: “Damaged or wrong?”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_shipping_f3_dmg_sub",
+      "label": "Help shipping · Paragraph",
+      "info": "Now: “We replace or refund it, with no shipping cost to you”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_returns_f1",
+      "label": "Help returns · F1",
+      "info": "Now: “14 days”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_returns_f1_sub",
+      "label": "Help returns · Paragraph",
+      "info": "Now: “To return unopened products in their original sealed packaging”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_returns_f2",
+      "label": "Help returns · F2",
+      "info": "Now: “No cost to you”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_returns_f2_sub",
+      "label": "Help returns · Paragraph",
+      "info": "Now: “For damaged, defective or wrong products”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_returns_f3",
+      "label": "Help returns · F3",
+      "info": "Now: “Your refund”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_returns_f3_sub",
+      "label": "Help returns · Paragraph",
+      "info": "Now: “Back to your card. Cash orders: by InstaPay or another way we agree”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_how",
+      "label": "Help · How",
+      "info": "Now: “How it works”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_help_toc",
+      "label": "Help · Toc",
+      "info": "Now: “On this page”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
 }
 {% endschema %}

@@ -19,13 +19,13 @@
       {%- render 'about-orb', tone: 'blue', side: 'end', class: 'ab-sky__sun ab-sky__sun--b', sizes: '(min-width: 750px) 30vw, 54vw' -%}
     </div>
     <div class="container ab-sky__copy">
-      <p class="t-eyebrow">{{ 'about2.eyebrow' | t }}</p>
+      <p class="t-eyebrow">{% if section.settings.t_about2_eyebrow != blank %}{{ section.settings.t_about2_eyebrow }}{% else %}{{ 'about2.eyebrow' | t }}{% endif %}</p>
       {%- assign title_words = 'about2.title' | t | split: ' ' -%}
       <h1 class="ab-sky__title" id="AbSky-{{ section.id }}">{% for w in title_words %}<span class="w" style="--i: {{ forloop.index0 }}"><span>{{ w }}</span></span>{% unless forloop.last %}{{ ' ' }}{% endunless %}{% endfor %}</h1>
       <ol class="ab-sky__beats" role="list">
         {%- for i in (1..4) -%}
           {%- assign bk = 'about2.b' | append: i -%}
-          <li class="ab-sky__beat" data-beat="{{ i }}">{{ bk | t }}{% if i == 2 %} <a class="ab-sky__more" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{{ 'about2.climate_link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>{% endif %}</li>
+          <li class="ab-sky__beat" data-beat="{{ i }}">{{ bk | t }}{% if i == 2 %} <a class="ab-sky__more" href="{{ routes.root_url | append: '/pages/climate' | replace: '//', '/' }}">{% if section.settings.t_about2_climate_link != blank %}{{ section.settings.t_about2_climate_link }}{% else %}{{ 'about2.climate_link' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>{% endif %}</li>
         {%- endfor -%}
       </ol>
     </div>
@@ -37,17 +37,17 @@
       <span class="ab-sky__mark" data-at="1" style="--x: {{ 1.0 | divided_by: 24 }}">{% render 'icon', name: 'sun', class: 'icon--sm' %}</span>
       <span class="ab-sky__mark" data-at="16" style="--x: {{ 16.0 | divided_by: 24 }}">{% render 'icon', name: 'moon', class: 'icon--sm' %}</span>
       <span class="ab-sky__dot"></span>
-      <span class="ab-sky__end ab-sky__end--a">{{ 'about2.sun_a' | t }}</span>
-      <span class="ab-sky__end ab-sky__end--b">{{ 'about2.sun_b' | t }}</span>
+      <span class="ab-sky__end ab-sky__end--a">{% if section.settings.t_about2_sun_a != blank %}{{ section.settings.t_about2_sun_a }}{% else %}{{ 'about2.sun_a' | t }}{% endif %}</span>
+      <span class="ab-sky__end ab-sky__end--b">{% if section.settings.t_about2_sun_b != blank %}{{ section.settings.t_about2_sun_b }}{% else %}{{ 'about2.sun_b' | t }}{% endif %}</span>
       <span class="ab-sky__clock">
         <span class="ab-sky__time" data-time><span>0</span><span>6</span><span class="ab-sky__colon">:</span><span>0</span><span>0</span></span>
-        <span class="ab-sky__now" data-now>{{ 'about2.am' | t }}</span>
+        <span class="ab-sky__now" data-now>{% if section.settings.t_about2_am != blank %}{{ section.settings.t_about2_am }}{% else %}{{ 'about2.am' | t }}{% endif %}</span>
       </span>
       <template data-labels>
-        <span>{{ 'about2.am' | t }}</span><span>{{ 'about2.clock_day' | t }}</span><span>{{ 'about2.clock_eve' | t }}</span><span>{{ 'about2.pm' | t }}</span><span>{{ 'about2.clock_sleep' | t }}</span><span>{{ 'about2.sun_b' | t }}</span>
+        <span>{% if section.settings.t_about2_am != blank %}{{ section.settings.t_about2_am }}{% else %}{{ 'about2.am' | t }}{% endif %}</span><span>{% if section.settings.t_about2_clock_day != blank %}{{ section.settings.t_about2_clock_day }}{% else %}{{ 'about2.clock_day' | t }}{% endif %}</span><span>{% if section.settings.t_about2_clock_eve != blank %}{{ section.settings.t_about2_clock_eve }}{% else %}{{ 'about2.clock_eve' | t }}{% endif %}</span><span>{% if section.settings.t_about2_pm != blank %}{{ section.settings.t_about2_pm }}{% else %}{{ 'about2.pm' | t }}{% endif %}</span><span>{% if section.settings.t_about2_clock_sleep != blank %}{{ section.settings.t_about2_clock_sleep }}{% else %}{{ 'about2.clock_sleep' | t }}{% endif %}</span><span>{% if section.settings.t_about2_sun_b != blank %}{{ section.settings.t_about2_sun_b }}{% else %}{{ 'about2.sun_b' | t }}{% endif %}</span>
       </template>
     </div>
-    <p class="ab-sky__hint" aria-hidden="true">{{ 'about2.scroll' | t }}<span class="ab-sky__hint-line"></span></p>
+    <p class="ab-sky__hint" aria-hidden="true">{% if section.settings.t_about2_scroll != blank %}{{ section.settings.t_about2_scroll }}{% else %}{{ 'about2.scroll' | t }}{% endif %}<span class="ab-sky__hint-line"></span></p>
   </div>
 </section>
 {%- comment -%} Scroll mode is set before the first paint, so the page doesn't shift when about.js arrives. (The space between the title's words is printed with {{ ' ' }}: Shopify drops a block that holds only whitespace.) {%- endcomment -%}
@@ -57,6 +57,80 @@
 {% schema %}
 {
   "name": "About · two suns",
-  "enabled_on": { "templates": ["page"] }
+  "enabled_on": {
+    "templates": [
+      "page"
+    ]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_about2_eyebrow",
+      "label": "Small line above the heading",
+      "info": "Now: “About”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_climate_link",
+      "label": "Link text",
+      "info": "Now: “See the day hour by hour”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_sun_a",
+      "label": "Answer",
+      "info": "Now: “Today’s sun”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_sun_b",
+      "label": "Sun b",
+      "info": "Now: “Tomorrow’s sun”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_am",
+      "label": "Am",
+      "info": "Now: “Morning routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_clock_day",
+      "label": "Clock day",
+      "info": "Now: “Out in the day”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_clock_eve",
+      "label": "Clock eve",
+      "info": "Now: “Evening”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_pm",
+      "label": "Pm",
+      "info": "Now: “Night routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_clock_sleep",
+      "label": "Clock sleep",
+      "info": "Now: “While you sleep”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_scroll",
+      "label": "Scroll",
+      "info": "Now: “Scroll”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
 }
 {% endschema %}

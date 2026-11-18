@@ -16,8 +16,8 @@
 <section class="section scan" aria-labelledby="ScanTitle-{{ section.id }}">
   <div class="container">
     <header class="scan__head">
-      <p class="t-eyebrow">{{ 'pages.scan.eyebrow' | t }}</p>
-      <h1 class="t-display-m" id="ScanTitle-{{ section.id }}">{{ 'pages.scan.heading' | t }}</h1>
+      <p class="t-eyebrow">{% if section.settings.t_pages_scan_eyebrow != blank %}{{ section.settings.t_pages_scan_eyebrow }}{% else %}{{ 'pages.scan.eyebrow' | t }}{% endif %}</p>
+      <h1 class="t-display-m" id="ScanTitle-{{ section.id }}">{% if section.settings.t_pages_scan_heading != blank %}{{ section.settings.t_pages_scan_heading }}{% else %}{{ 'pages.scan.heading' | t }}{% endif %}</h1>
     </header>
 
     <scan-picker class="scan__picker">
@@ -36,7 +36,7 @@
           </li>
         {%- endfor -%}
       </ul>
-      <p class="scan__hint t-small t-muted" data-scan-hint>{{ 'pages.scan.text' | t }}</p>
+      <p class="scan__hint t-small t-muted" data-scan-hint>{% if section.settings.t_pages_scan_text != blank %}{{ section.settings.t_pages_scan_text }}{% else %}{{ 'pages.scan.text' | t }}{% endif %}</p>
 
       {%- for h in handles -%}
         {%- assign p = all_products[h] -%}
@@ -86,7 +86,7 @@
 
             {%- if mf.how_to_use != blank -%}
               <div class="scan__block">
-                <h3 class="scan__h">{{ 'pages.scan.how' | t }}</h3>
+                <h3 class="scan__h">{% if section.settings.t_pages_scan_how != blank %}{{ section.settings.t_pages_scan_how }}{% else %}{{ 'pages.scan.how' | t }}{% endif %}</h3>
                 <p class="scan__how">{% render 'bts-text', product: p, field: 'how' %}</p>
                 {%- if mf.caution != blank -%}<p class="scan__caution">{% render 'icon', name: 'info', class: 'icon--sm' %}<span>{{ mf.caution }}</span></p>{%- endif -%}
               </div>
@@ -94,7 +94,7 @@
 
             {%- if rest_ok -%}
               <div class="scan__offer">
-                <h3 class="scan__h">{{ 'pages.scan.complete' | t }}</h3>
+                <h3 class="scan__h">{% if section.settings.t_pages_scan_complete != blank %}{{ section.settings.t_pages_scan_complete }}{% else %}{{ 'pages.scan.complete' | t }}{% endif %}</h3>
                 <div class="scan__offer-row">
                   <span class="scan__trio" aria-hidden="true">
                     {%- for n in (1..4) -%}{%- unless n == s -%}{%- capture osrc -%}{%- render 'cut-src', handle: handles[forloop.index0], width: 140 -%}{%- endcapture -%}<img src="{{ osrc | strip }}" alt="" width="140" height="431" loading="lazy">{%- endunless -%}{%- endfor -%}
@@ -108,10 +108,10 @@
                       {%- assign offer_price = mv.price -%}
                       {%- if mv.compare_at_price > mv.price -%}{%- assign bsave = mv.compare_at_price | minus: mv.price -%}{%- capture bsave_m -%}{% render 'egp', cents: bsave %}{%- endcapture -%}<p class="scan__save">{{ 'bundles.save_vs' | t: amount: bsave_m }}</p>{%- endif -%}
                     {%- else -%}
-                      <p>{{ 'pages.scan.complete_text' | t }}</p>
+                      <p>{% if section.settings.t_pages_scan_complete_text != blank %}{{ section.settings.t_pages_scan_complete_text }}{% else %}{{ 'pages.scan.complete_text' | t }}{% endif %}</p>
                       {%- assign offer_price = rest_sum -%}
                     {%- endif -%}
-                    {%- if threshold > 0 and offer_price >= threshold -%}<p class="ship-badge">{% render 'icon', name: 'truck', class: 'icon--sm' %}{{ 'bundles.ships_free' | t }}</p>{%- endif -%}
+                    {%- if threshold > 0 and offer_price >= threshold -%}<p class="ship-badge">{% render 'icon', name: 'truck', class: 'icon--sm' %}{% if section.settings.t_bundles_ships_free != blank %}{{ section.settings.t_bundles_ships_free }}{% else %}{{ 'bundles.ships_free' | t }}{% endif %}</p>{%- endif -%}
                   </div>
                 </div>
                 {%- capture offer_m -%}{% render 'egp', cents: offer_price %}{%- endcapture -%}
@@ -131,7 +131,7 @@
 
             {%- if v.available -%}
               <div class="scan__block scan__again">
-                <h3 class="scan__h">{{ 'pages.scan.again' | t }}</h3>
+                <h3 class="scan__h">{% if section.settings.t_pages_scan_again != blank %}{{ section.settings.t_pages_scan_again }}{% else %}{{ 'pages.scan.again' | t }}{% endif %}</h3>
                 {%- capture one_m -%}{% render 'egp', cents: v.price %}{%- endcapture -%}
                 <div class="scan__again-row">
                   <product-form>
@@ -159,13 +159,13 @@
 
             {%- if mf.inci.value != blank -%}
               <details class="scan__inci">
-                <summary>{{ 'pages.scan.inci' | t }}<span class="accordion__icon" aria-hidden="true"></span></summary>
+                <summary>{% if section.settings.t_pages_scan_inci != blank %}{{ section.settings.t_pages_scan_inci }}{% else %}{{ 'pages.scan.inci' | t }}{% endif %}<span class="accordion__icon" aria-hidden="true"></span></summary>
                 {%- render 'inci-links', inci: mf.inci.value, base: glossary_url -%}
               </details>
             {%- endif -%}
 
             <div class="scan__links">
-              <a class="scan__link" href="{{ p.url }}">{{ 'pages.scan.open' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+              <a class="scan__link" href="{{ p.url }}">{% if section.settings.t_pages_scan_open != blank %}{{ section.settings.t_pages_scan_open }}{% else %}{{ 'pages.scan.open' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
             </div>
           </div>
         </article>
@@ -207,6 +207,75 @@
 {% schema %}
 {
   "name": "t:sections.scan.name",
-  "settings": []
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_pages_scan_eyebrow",
+      "label": "Scan · Small line above the heading",
+      "info": "Now: “You scanned a Between Two Suns pack”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_scan_heading",
+      "label": "Scan · Heading",
+      "info": "Now: “Which one is in your hand?”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_scan_text",
+      "label": "Scan · Paragraph",
+      "info": "Now: “Tap yours for how to use it, what comes next and an easy reorder.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_scan_how",
+      "label": "Scan · How",
+      "info": "Now: “How to use”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_scan_complete",
+      "label": "Scan · Complete",
+      "info": "Now: “Complete your routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_scan_complete_text",
+      "label": "Scan · Paragraph",
+      "info": "Now: “Add the other three steps and your routine is complete.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_bundles_ships_free",
+      "label": "Bundles · Ships free",
+      "info": "Now: “Ships free”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_scan_again",
+      "label": "Scan · Again",
+      "info": "Now: “Running low?”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_scan_inci",
+      "label": "Scan · Inci",
+      "info": "Now: “Full ingredients”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_scan_open",
+      "label": "Scan · Open",
+      "info": "Now: “See the full product page”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
 }
 {% endschema %}

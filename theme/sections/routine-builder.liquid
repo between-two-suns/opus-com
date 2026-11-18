@@ -15,10 +15,10 @@
   <div class="container">
     <div class="section-head">
       <div class="section-head__text">
-        <p class="t-eyebrow">{{ 'sections.builder.eyebrow' | t }}</p>
+        <p class="t-eyebrow">{% if section.settings.t_sections_builder_eyebrow != blank %}{{ section.settings.t_sections_builder_eyebrow }}{% else %}{{ 'sections.builder.eyebrow' | t }}{% endif %}</p>
         <h2 class="t-display-m" id="BuilderTitle-{{ section.id }}">{{ heading | escape }}</h2>
       </div>
-      <p class="t-lead t-muted bundles__text">{{ 'sections.builder.text' | t }}</p>
+      <p class="t-lead t-muted bundles__text">{% if section.settings.t_sections_builder_text != blank %}{{ section.settings.t_sections_builder_text }}{% else %}{{ 'sections.builder.text' | t }}{% endif %}</p>
     </div>
 
     <routine-builder
@@ -29,7 +29,7 @@
       data-t4="{{ settings.tier_4_pct | default: 0 }}"
       data-coming-soon="{% if settings.zero_price_coming_soon %}true{% endif %}"
       data-str-count="{{ 'sections.builder.count' | t: count: '__N__'  }}"
-      data-str-empty="{{ 'sections.builder.empty' | t }}"
+      data-str-empty="{% if section.settings.t_sections_builder_empty != blank %}{{ section.settings.t_sections_builder_empty }}{% else %}{{ 'sections.builder.empty' | t }}{% endif %}"
       data-str-next="{{ 'cart.tier_next' | t: count: '__N__', pct: '__P__'  }}"
       data-str-saving="{{ 'cart.tier_reached' | t: pct: '__P__'  }}"
       data-str-added="{{ 'sections.builder.added_step' | t: product: '__X__'  }}"
@@ -38,7 +38,7 @@
       <div class="builder__stage grain" data-stage style="--fill: 0">
         <span class="builder__sun builder__sun--warm" aria-hidden="true"></span>
         <span class="builder__sun builder__sun--cool" aria-hidden="true"></span>
-        <ol class="builder__shelf" role="list" aria-label="{{ 'sections.builder.shelf' | t }}">
+        <ol class="builder__shelf" role="list" aria-label="{% if section.settings.t_sections_builder_shelf != blank %}{{ section.settings.t_sections_builder_shelf }}{% else %}{{ 'sections.builder.shelf' | t }}{% endif %}">
           {%- for s in (1..4) -%}
             {%- for product in source.products limit: 12 -%}
               {%- capture ps -%}{% render 'product-step', product: product %}{%- endcapture -%}
@@ -65,7 +65,7 @@
 
       <div class="builder__panel">
         <fieldset class="builder__choices">
-          <legend class="t-subheading">{{ 'sections.builder.choose' | t }}</legend>
+          <legend class="t-subheading">{% if section.settings.t_sections_builder_choose != blank %}{{ section.settings.t_sections_builder_choose }}{% else %}{{ 'sections.builder.choose' | t }}{% endif %}</legend>
           {%- for s in (1..4) -%}
             {%- for product in source.products limit: 12 -%}
               {%- capture ps -%}{% render 'product-step', product: product %}{%- endcapture -%}
@@ -98,7 +98,7 @@
           {%- endfor -%}
         </fieldset>
 
-        <div class="builder__presets" role="group" aria-label="{{ 'sections.builder.presets' | t }}">
+        <div class="builder__presets" role="group" aria-label="{% if section.settings.t_sections_builder_presets != blank %}{{ section.settings.t_sections_builder_presets }}{% else %}{{ 'sections.builder.presets' | t }}{% endif %}">
           {%- comment -%} Shortcuts are the real sets (DECISIONS 209), named as their products, so picking one gets that set's price {%- endcomment -%}
           {%- assign bp_handles = 'the-full-ritual,the-night-ritual,the-clear-protect-trio,clear-protect-duo,the-core-duo' | split: ',' -%}
           {%- for bh in bp_handles -%}
@@ -110,7 +110,7 @@
         </div>
 
         <div class="builder__summary">
-          <p class="builder__count t-small" data-count aria-live="polite">{{ 'sections.builder.empty' | t }}</p>
+          <p class="builder__count t-small" data-count aria-live="polite">{% if section.settings.t_sections_builder_empty != blank %}{{ section.settings.t_sections_builder_empty }}{% else %}{{ 'sections.builder.empty' | t }}{% endif %}</p>
           <ol class="builder__meter" role="list" aria-hidden="true">
             {%- for n in (1..4) -%}<li data-step="{{ n }}"></li>{%- endfor -%}
           </ol>
@@ -118,7 +118,7 @@
           <product-form class="builder__form">
             <form method="post" action="{{ routes.cart_add_url }}">
               <button type="submit" class="btn btn--full" data-cta data-magnetic disabled>
-                <span class="btn__label">{{ 'sections.builder.cta' | t }}</span>
+                <span class="btn__label">{% if section.settings.t_sections_builder_cta != blank %}{{ section.settings.t_sections_builder_cta }}{% else %}{{ 'sections.builder.cta' | t }}{% endif %}</span>
                 <span class="btn__sep" aria-hidden="true" data-total-sep hidden>·</span>
                 <span class="btn__price" data-total></span>
                 <s class="builder__was" data-was hidden></s>
@@ -138,9 +138,72 @@
 {
   "name": "t:sections.builder.name",
   "settings": [
-    { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" },
-    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" }
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:general_schema.heading",
+      "info": "t:general_schema.bilingual_fallback"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.routine.collection"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_sections_builder_eyebrow",
+      "label": "Small line above the heading",
+      "info": "Now: “Build your own”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_sections_builder_text",
+      "label": "Paragraph",
+      "info": "Now: “Choose the steps you want. We’ll put them in routine order and update your total as you go.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_sections_builder_empty",
+      "label": "Empty",
+      "info": "Now: “Pick a step to start”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_sections_builder_shelf",
+      "label": "Shelf",
+      "info": "Now: “Your routine shelf”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_sections_builder_choose",
+      "label": "Choose",
+      "info": "Now: “Choose your steps”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_sections_builder_presets",
+      "label": "Presets",
+      "info": "Now: “Quick picks”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_sections_builder_cta",
+      "label": "Button text",
+      "info": "Now: “Add my routine”. Leave empty to keep it (English and Arabic)."
+    }
   ],
-  "presets": [{ "name": "t:sections.builder.name" }]
+  "presets": [
+    {
+      "name": "t:sections.builder.name"
+    }
+  ]
 }
 {% endschema %}

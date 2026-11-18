@@ -18,9 +18,9 @@
       </figure>
     {%- endif -%}
     <div class="ab-made__copy">
-      <p class="t-eyebrow">{{ 'about2.made_eyebrow' | t }}</p>
-      <h2 class="t-display-m" id="AbMade-{{ section.id }}">{{ 'about2.made_heading' | t }}</h2>
-      <p class="t-lead ab-made__text">{{ 'about2.made_text' | t }}</p>
+      <p class="t-eyebrow">{% if section.settings.t_about2_made_eyebrow != blank %}{{ section.settings.t_about2_made_eyebrow }}{% else %}{{ 'about2.made_eyebrow' | t }}{% endif %}</p>
+      <h2 class="t-display-m" id="AbMade-{{ section.id }}">{% if section.settings.t_about2_made_heading != blank %}{{ section.settings.t_about2_made_heading }}{% else %}{{ 'about2.made_heading' | t }}{% endif %}</h2>
+      <p class="t-lead ab-made__text">{% if section.settings.t_about2_made_text != blank %}{{ section.settings.t_about2_made_text }}{% else %}{{ 'about2.made_text' | t }}{% endif %}</p>
       <dl class="ab-made__facts">
         {%- for f in facts -%}
           {%- assign fk = 'about2.' | append: f | append: '_k' -%}
@@ -28,7 +28,7 @@
           <div class="ab-made__fact"><dt>{{ fk | t }}</dt><dd>{{ fv | t }}</dd></div>
         {%- endfor -%}
       </dl>
-      <a class="link-arrow" href="{{ glossary_url }}">{{ 'about2.made_link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+      <a class="link-arrow" href="{{ glossary_url }}">{% if section.settings.t_about2_made_link != blank %}{{ section.settings.t_about2_made_link }}{% else %}{{ 'about2.made_link' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
     </div>
   </div>
 </section>
@@ -36,9 +36,49 @@
 {% schema %}
 {
   "name": "About · made in Egypt",
-  "enabled_on": { "templates": ["page"] },
+  "enabled_on": {
+    "templates": [
+      "page"
+    ]
+  },
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Photo" }
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photo"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_about2_made_eyebrow",
+      "label": "Small line above the heading",
+      "info": "Now: “Made in Egypt”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_made_heading",
+      "label": "Heading",
+      "info": "Now: “From here, for skin that lives here.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_about2_made_text",
+      "label": "Paragraph",
+      "info": "Now: “Between Two Suns is made in Egypt, for the weather we know: strong sun, dust, air-con and humid evenings, sometimes all in one day.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_made_link",
+      "label": "Link text",
+      "info": "Now: “Read every ingredient”. Leave empty to keep it (English and Arabic)."
+    }
   ]
 }
 {% endschema %}

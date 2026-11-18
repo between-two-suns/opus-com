@@ -48,3 +48,48 @@ def apply(name, fields, header='Text', relabel=None, note=True):
     m2 = re.search(r'({%-?\s*schema\s*-?%})(.*?)({%-?\s*endschema\s*-?%})', src2, re.S)
     save(p, src2, m2, s)
     print(name, 'added', [a['id'] for a in added])
+
+# ---- auto mode: every plain {{ 'key' | t }} in a section becomes a setting (label from the key's role, hint = current English)
+EN = None
+def en_value(key):
+    global EN
+    if EN is None: EN = json.load(open(os.path.join(ROOT, 'locales', 'en.default.json')))
+    o = EN
+    for x in key.split('.'):
+        if not isinstance(o, dict) or x not in o: return None
+        o = o[x]
+    return o if isinstance(o, str) else None
+
+ROLE = [('eyebrow', 'Small line above the heading'), ('kicker', 'Small line above the heading'), ('heading', 'Heading'),
+        ('title', 'Title'), ('h1', 'Heading'), ('h2', 'Heading'), ('lead', 'Paragraph'), ('sub', 'Paragraph'), ('text', 'Paragraph'),
+        ('body', 'Paragraph'), ('intro', 'Paragraph'), ('note', 'Note'), ('cta', 'Button text'), ('button', 'Button text'),
+        ('btn', 'Button text'), ('link', 'Link text'), ('label', 'Label'), ('placeholder', 'Box hint text'), ('q', 'Question'), ('a', 'Answer')]
+SKIP = ('accessibility.', 'general.close', 'general.view', 'product.sold_out', 'product.coming_soon', 'product.add_to_cart')
+
+def nice(key):
+    parts = key.split('.')
+    last = parts[-1]
+    lab = None
+    for k, v in ROLE:
+        if last == k or last.startswith(k + '_') or last.endswith('_' + k): lab = v; break
+    group = ' '.join(p.replace('_', ' ') for p in parts[-3:-1] if p not in ('sections', 'pages')).strip()
+    if lab is None: lab = last.replace('_', ' ').capitalize()
+    return (group.capitalize() + ' · ' + lab) if group else lab
+
+def auto(name, skip=(), header='Text'):
+    p, src, m, s = load(name)
+    body = src[:m.start()]
+    keys = []
+    for k in re.findall(r"\{\{\s*'([a-z0-9_.]+)'\s*\|\s*t\s*\}\}", body):
+        if k not in keys and not k.startswith(SKIP) and k not in skip and en_value(k): keys.append(k)
+    fields = []
+    groups = {'.'.join(k.split('.')[:-1]) for k in keys}
+    used = {x.get('id') for x in s.get('settings', [])}
+    for k in keys:
+        sid = 't_' + re.sub(r'[^a-z0-9]+', '_', '_'.join(k.split('.')[-3:]))[:46]
+        if sid in used: continue
+        v = en_value(k); v = re.sub(r'<[^>]+>', '', v)
+        typ = 'textarea' if len(v) > 90 else 'text'
+        lab = nice(k) if len(groups) > 1 else nice(k).split(' · ')[-1]
+        fields.append((k, sid, lab[:80], typ, 'Now: “' + (v if len(v) < 140 else v[:137] + '…') + '”. Leave empty to keep it (English and Arabic).'))
+    apply(name, fields, header=header)

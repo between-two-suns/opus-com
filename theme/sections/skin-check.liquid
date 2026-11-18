@@ -61,19 +61,19 @@
     <div class="skc__card">
       {%- comment -%} Intro {%- endcomment -%}
       <div class="skc__screen skc__intro" data-screen="intro">
-        <p class="t-eyebrow">{{ 'skin_check.eyebrow' | t }}</p>
+        <p class="t-eyebrow">{% if section.settings.t_skin_check_eyebrow != blank %}{{ section.settings.t_skin_check_eyebrow }}{% else %}{{ 'skin_check.eyebrow' | t }}{% endif %}</p>
         {%- assign skc_h = 'h2' -%}{%- if template.name == 'page' -%}{%- assign skc_h = 'h1' -%}{%- endif -%}
         <{{ skc_h }} class="t-display-m" id="SkcTitle-{{ section.id }}">{{ heading | escape }}</{{ skc_h }}>
-        <p class="t-lead t-muted">{{ 'skin_check.intro' | t }}</p>
-        <noscript><p class="t-small">{{ 'skin_check.no_js' | t }} <a href="{{ routes.all_products_collection_url }}">{{ 'skin_check.browse' | t }}</a></p></noscript>
-        <button type="button" class="btn skc__start" data-skc-start>{{ 'skin_check.start' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
-        <p class="t-xs t-muted skc__disclaimer">{{ 'skin_check.disclaimer' | t }}</p>
+        <p class="t-lead t-muted">{% if section.settings.t_skin_check_intro != blank %}{{ section.settings.t_skin_check_intro }}{% else %}{{ 'skin_check.intro' | t }}{% endif %}</p>
+        <noscript><p class="t-small">{% if section.settings.t_skin_check_no_js != blank %}{{ section.settings.t_skin_check_no_js }}{% else %}{{ 'skin_check.no_js' | t }}{% endif %} <a href="{{ routes.all_products_collection_url }}">{% if section.settings.t_skin_check_browse != blank %}{{ section.settings.t_skin_check_browse }}{% else %}{{ 'skin_check.browse' | t }}{% endif %}</a></p></noscript>
+        <button type="button" class="btn skc__start" data-skc-start>{% if section.settings.t_skin_check_start != blank %}{{ section.settings.t_skin_check_start }}{% else %}{{ 'skin_check.start' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+        <p class="t-xs t-muted skc__disclaimer">{% if section.settings.t_skin_check_disclaimer != blank %}{{ section.settings.t_skin_check_disclaimer }}{% else %}{{ 'skin_check.disclaimer' | t }}{% endif %}</p>
       </div>
 
       {%- comment -%} Questions: one per screen. Single-choice screens move on after a tap; keyboard users use Next. {%- endcomment -%}
       <form class="skc__form" data-skc-form hidden>
         <div class="skc__bar">
-          <button type="button" class="skc__back" data-skc-back>{% render 'icon', name: 'arrow', class: 'icon--sm' %}<span>{{ 'skin_check.back' | t }}</span></button>
+          <button type="button" class="skc__back" data-skc-back>{% render 'icon', name: 'arrow', class: 'icon--sm' %}<span>{% if section.settings.t_skin_check_back != blank %}{{ section.settings.t_skin_check_back }}{% else %}{{ 'skin_check.back' | t }}{% endif %}</span></button>
           <p class="skc__progress t-xs" aria-live="polite" data-skc-progress></p>
           <span class="skc__meter" aria-hidden="true"><span data-skc-meter></span></span>
         </div>
@@ -101,7 +101,7 @@
           -%}
           <fieldset class="skc__screen skc__q" data-screen="{{ q }}" data-index="{{ forloop.index }}" hidden>
             <legend class="t-display-s skc__legend">{{ qk | t }}</legend>
-            {%- if multi -%}<p class="t-small t-muted skc__hint">{{ 'skin_check.choose_any' | t }}</p>{%- endif -%}
+            {%- if multi -%}<p class="t-small t-muted skc__hint">{% if section.settings.t_skin_check_choose_any != blank %}{{ section.settings.t_skin_check_choose_any }}{% else %}{{ 'skin_check.choose_any' | t }}{% endif %}</p>{%- endif -%}
             <div class="skc__opts">
               {%- for o in opts -%}
                 {%- assign ok = 'skin_check.a.' | append: q | append: '_' | append: o -%}
@@ -118,7 +118,7 @@
               {%- endfor -%}
             </div>
             <button type="button" class="btn skc__next" data-skc-next{% unless multi %} disabled{% endunless %}>
-              {%- if forloop.last -%}{{ 'skin_check.see' | t }}{%- else -%}{{ 'skin_check.next' | t }}{%- endif -%}
+              {%- if forloop.last -%}{% if section.settings.t_skin_check_see != blank %}{{ section.settings.t_skin_check_see }}{% else %}{{ 'skin_check.see' | t }}{% endif %}{%- else -%}{% if section.settings.t_skin_check_next != blank %}{{ section.settings.t_skin_check_next }}{% else %}{{ 'skin_check.next' | t }}{% endif %}{%- endif -%}
               {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}
             </button>
           </fieldset>
@@ -127,14 +127,14 @@
 
       {%- comment -%} Results {%- endcomment -%}
       <div class="skc__screen skc__result" data-screen="result" hidden tabindex="-1">
-        <p class="t-eyebrow">{{ 'skin_check.eyebrow' | t }}</p>
-        <h2 class="t-display-s skc__result-title">{{ 'skin_check.result_title' | t }}</h2>
+        <p class="t-eyebrow">{% if section.settings.t_skin_check_eyebrow != blank %}{{ section.settings.t_skin_check_eyebrow }}{% else %}{{ 'skin_check.eyebrow' | t }}{% endif %}</p>
+        <h2 class="t-display-s skc__result-title">{% if section.settings.t_skin_check_result_title != blank %}{{ section.settings.t_skin_check_result_title }}{% else %}{{ 'skin_check.result_title' | t }}{% endif %}</h2>
         <ul class="skc__profile cluster" role="list" data-skc-profile></ul>
-        <p class="t-small t-muted skc__result-text">{{ 'skin_check.result_text' | t }}</p>
+        <p class="t-small t-muted skc__result-text">{% if section.settings.t_skin_check_result_text != blank %}{{ section.settings.t_skin_check_result_text }}{% else %}{{ 'skin_check.result_text' | t }}{% endif %}</p>
 
         <ul class="skc__list" role="list" data-skc-list></ul>
         <div class="skc__complete" data-skc-complete hidden>
-          <p class="skc__complete-title">{{ 'skin_check.complete_title' | t }}</p>
+          <p class="skc__complete-title">{% if section.settings.t_skin_check_complete_title != blank %}{{ section.settings.t_skin_check_complete_title }}{% else %}{{ 'skin_check.complete_title' | t }}{% endif %}</p>
           <div class="skc__complete-row">
             <span class="skc__thumb" aria-hidden="true"><img data-skc-complete-img alt="" width="120" height="380" loading="lazy"></span>
             <p class="skc__complete-benefit"><span class="skc__name" data-skc-complete-name></span><span data-skc-complete-benefit></span></p>
@@ -143,18 +143,18 @@
           <button type="button" class="btn btn--secondary btn--small" data-skc-complete-btn><span class="btn__label"></span></button>
         </div>
         <div class="skc__also" data-skc-also-wrap hidden>
-          <h3 class="skc__subhead t-xs">{{ 'skin_check.also' | t }}</h3>
+          <h3 class="skc__subhead t-xs">{% if section.settings.t_skin_check_also != blank %}{{ section.settings.t_skin_check_also }}{% else %}{{ 'skin_check.also' | t }}{% endif %}</h3>
           <ul class="skc__list skc__list--also" role="list" data-skc-also></ul>
         </div>
 
         <div class="skc__set" data-skc-set hidden>
-          <p class="skc__set-title">{{ 'skin_check.set_title' | t }}</p>
+          <p class="skc__set-title">{% if section.settings.t_skin_check_set_title != blank %}{{ section.settings.t_skin_check_set_title }}{% else %}{{ 'skin_check.set_title' | t }}{% endif %}</p>
           <p class="t-small" data-skc-set-text></p>
         </div>
 
         <product-form class="skc__buy">
           <form method="post" action="{{ routes.cart_add_url }}" novalidate>
-            <p class="skc__total"><span class="t-muted">{{ 'skin_check.total' | t }}</span> <strong data-skc-total></strong></p>
+            <p class="skc__total"><span class="t-muted">{% if section.settings.t_skin_check_total != blank %}{{ section.settings.t_skin_check_total }}{% else %}{{ 'skin_check.total' | t }}{% endif %}</span> <strong data-skc-total></strong></p>
             <div class="skc__actions">
               <button type="submit" class="btn" data-skc-add></button>
               <button type="submit" class="btn btn--secondary" data-skc-add-singles hidden></button>
@@ -164,20 +164,20 @@
         </product-form>
 
         <div class="skc__links">
-          <button type="button" class="link-arrow" data-skc-change>{{ 'skin_check.change' | t }}</button>
-          <button type="button" class="link-arrow" data-skc-restart>{{ 'skin_check.restart' | t }}</button>
+          <button type="button" class="link-arrow" data-skc-change>{% if section.settings.t_skin_check_change != blank %}{{ section.settings.t_skin_check_change }}{% else %}{{ 'skin_check.change' | t }}{% endif %}</button>
+          <button type="button" class="link-arrow" data-skc-restart>{% if section.settings.t_skin_check_restart != blank %}{{ section.settings.t_skin_check_restart }}{% else %}{{ 'skin_check.restart' | t }}{% endif %}</button>
         </div>
-        <p class="t-xs t-muted skc__disclaimer">{{ 'skin_check.disclaimer' | t }}</p>
+        <p class="t-xs t-muted skc__disclaimer">{% if section.settings.t_skin_check_disclaimer != blank %}{{ section.settings.t_skin_check_disclaimer }}{% else %}{{ 'skin_check.disclaimer' | t }}{% endif %}</p>
       </div>
 
       {%- comment -%} Guidance instead of a routine (highly reactive or irritated skin) {%- endcomment -%}
       <div class="skc__screen skc__guide" data-screen="guidance" hidden tabindex="-1">
         <span class="skc__guide-ico" aria-hidden="true">{% render 'icon', name: 'info' %}</span>
-        <h2 class="t-display-s">{{ 'skin_check.guidance_title' | t }}</h2>
-        <p class="t-body-l">{{ 'skin_check.guidance_text' | t }}</p>
+        <h2 class="t-display-s">{% if section.settings.t_skin_check_guidance_title != blank %}{{ section.settings.t_skin_check_guidance_title }}{% else %}{{ 'skin_check.guidance_title' | t }}{% endif %}</h2>
+        <p class="t-body-l">{% if section.settings.t_skin_check_guidance_text != blank %}{{ section.settings.t_skin_check_guidance_text }}{% else %}{{ 'skin_check.guidance_text' | t }}{% endif %}</p>
         <div class="skc__links">
-          <button type="button" class="link-arrow" data-skc-change>{{ 'skin_check.change' | t }}</button>
-          <a class="link-arrow" href="{{ routes.all_products_collection_url }}">{{ 'skin_check.browse' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <button type="button" class="link-arrow" data-skc-change>{% if section.settings.t_skin_check_change != blank %}{{ section.settings.t_skin_check_change }}{% else %}{{ 'skin_check.change' | t }}{% endif %}</button>
+          <a class="link-arrow" href="{{ routes.all_products_collection_url }}">{% if section.settings.t_skin_check_browse != blank %}{{ section.settings.t_skin_check_browse }}{% else %}{{ 'skin_check.browse' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
         </div>
       </div>
     </div>
@@ -189,9 +189,149 @@
 {
   "name": "t:sections.skin_check.name",
   "settings": [
-    { "type": "paragraph", "content": "t:sections.skin_check.info" },
-    { "type": "text", "id": "heading", "label": "t:general_schema.heading", "info": "t:general_schema.bilingual_fallback" }
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.skin_check.info"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:general_schema.heading",
+      "info": "t:general_schema.bilingual_fallback"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_eyebrow",
+      "label": "Small line above the heading",
+      "info": "Now: “Find your routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_skin_check_intro",
+      "label": "Paragraph",
+      "info": "Now: “Four quick questions. Then your routine, step by step: what each product does for your skin, and why we chose it.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_no_js",
+      "label": "No js",
+      "info": "Now: “The skin check needs JavaScript.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_browse",
+      "label": "Browse",
+      "info": "Now: “Browse the products”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_start",
+      "label": "Start",
+      "info": "Now: “Let’s find my routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_skin_check_disclaimer",
+      "label": "Disclaimer",
+      "info": "Now: “Suggestions are based on our ingredients, not a diagnosis, and can't guarantee how your skin will react. Patch test anything new. Not a m…”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_back",
+      "label": "Back",
+      "info": "Now: “Back”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_choose_any",
+      "label": "Choose any",
+      "info": "Now: “Choose any, or none.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_see",
+      "label": "See",
+      "info": "Now: “Show my routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_next",
+      "label": "Next",
+      "info": "Now: “Next”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_result_title",
+      "label": "Title",
+      "info": "Now: “Here’s where we’d start.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_result_text",
+      "label": "Paragraph",
+      "info": "Now: “In the order you use them. Each step shows what it does for your skin and why we chose it.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_complete_title",
+      "label": "Title",
+      "info": "Now: “Complete your routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_also",
+      "label": "Also",
+      "info": "Now: “Also worth considering”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_set_title",
+      "label": "Title",
+      "info": "Now: “Same products, as a set”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_total",
+      "label": "Total",
+      "info": "Now: “Total”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_change",
+      "label": "Change",
+      "info": "Now: “Change answers”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_restart",
+      "label": "Restart",
+      "info": "Now: “Start again”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_guidance_title",
+      "label": "Title",
+      "info": "Now: “Let's go gently”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_skin_check_guidance_text",
+      "label": "Paragraph",
+      "info": "Now: “Your skin sounds irritated right now, so we won't suggest a routine. Please speak to a dermatologist or pharmacist first, and come back o…”. Leave empty to keep it (English and Arabic)."
+    }
   ],
-  "presets": [{ "name": "t:sections.skin_check.name" }]
+  "presets": [
+    {
+      "name": "t:sections.skin_check.name"
+    }
+  ]
 }
 {% endschema %}

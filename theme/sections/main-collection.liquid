@@ -10,12 +10,12 @@
 <section class="collection" aria-labelledby="CollectionTitle">
   <div class="page-hero page-hero--compact">
     <div class="container page-hero__inner">
-      <p class="t-eyebrow">{{ 'collection.eyebrow' | t }}</p>
+      <p class="t-eyebrow">{% if section.settings.t_collection_eyebrow != blank %}{{ section.settings.t_collection_eyebrow }}{% else %}{{ 'collection.eyebrow' | t }}{% endif %}</p>
       <h1 class="t-display-l" id="CollectionTitle">{{ collection.title | escape }}</h1>
       {%- if collection.description != blank -%}
         <div class="t-lead page-hero__text rte">{{ collection.description }}</div>
       {%- else -%}
-        <p class="t-lead page-hero__text">{{ 'collection.lead' | t }}</p>
+        <p class="t-lead page-hero__text">{% if section.settings.t_collection_lead != blank %}{{ section.settings.t_collection_lead }}{% else %}{{ 'collection.lead' | t }}{% endif %}</p>
       {%- endif -%}
     </div>
   </div>
@@ -24,9 +24,9 @@
     {%- paginate collection.products by 24 -%}
       {%- if collection.products.size > 0 -%}
         <concern-filter class="collection__filter" data-grid="CollectionGrid">
-          <p class="t-eyebrow t-muted" id="ConcernFilterLabel">{{ 'collection.filter_label' | t }}</p>
+          <p class="t-eyebrow t-muted" id="ConcernFilterLabel">{% if section.settings.t_collection_filter_label != blank %}{{ section.settings.t_collection_filter_label }}{% else %}{{ 'collection.filter_label' | t }}{% endif %}</p>
           <div class="cluster" role="group" aria-labelledby="ConcernFilterLabel">
-            <a class="chip" href="{{ collection.url }}" data-concern="" aria-current="true">{{ 'concerns.all' | t }}</a>
+            <a class="chip" href="{{ collection.url }}" data-concern="" aria-current="true">{% if section.settings.t_concerns_all != blank %}{{ section.settings.t_concerns_all }}{% else %}{{ 'concerns.all' | t }}{% endif %}</a>
             {%- for id in concern_ids -%}
               {%- assign key = 'concerns.' | append: id -%}
               <a class="chip" href="{{ collection.url }}?concern={{ id }}" data-concern="{{ id }}" aria-current="false">{{ key | t }}</a>
@@ -63,10 +63,10 @@
           <section class="collection__sets" aria-labelledby="CollectionSets">
             <div class="section-head">
               <div class="section-head__text">
-                <p class="t-eyebrow">{{ 'sections.bundles.eyebrow' | t }}</p>
-                <h2 class="t-display-m" id="CollectionSets">{{ 'collection.sets_heading' | t }}</h2>
+                <p class="t-eyebrow">{% if section.settings.t_sections_bundles_eyebrow != blank %}{{ section.settings.t_sections_bundles_eyebrow }}{% else %}{{ 'sections.bundles.eyebrow' | t }}{% endif %}</p>
+                <h2 class="t-display-m" id="CollectionSets">{% if section.settings.t_collection_sets_heading != blank %}{{ section.settings.t_collection_sets_heading }}{% else %}{{ 'collection.sets_heading' | t }}{% endif %}</h2>
               </div>
-              <a class="link-arrow" href="{{ root }}/pages/sets">{{ 'collection.sets_builder' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+              <a class="link-arrow" href="{{ root }}/pages/sets">{% if section.settings.t_collection_sets_builder != blank %}{{ section.settings.t_collection_sets_builder }}{% else %}{{ 'collection.sets_builder' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
             </div>
             <ul class="sets-rail" role="list">{{ sets_html }}</ul>
           </section>
@@ -74,10 +74,10 @@
 
         <aside class="collection__cta" aria-labelledby="CollectionCta">
           <div>
-            <h2 class="t-heading" id="CollectionCta">{{ 'collection.routine_card_title' | t }}</h2>
-            <p class="t-muted">{{ 'collection.routine_card_text' | t }}</p>
+            <h2 class="t-heading" id="CollectionCta">{% if section.settings.t_collection_routine_card_title != blank %}{{ section.settings.t_collection_routine_card_title }}{% else %}{{ 'collection.routine_card_title' | t }}{% endif %}</h2>
+            <p class="t-muted">{% if section.settings.t_collection_routine_card_text != blank %}{{ section.settings.t_collection_routine_card_text }}{% else %}{{ 'collection.routine_card_text' | t }}{% endif %}</p>
           </div>
-          <a class="btn" href="{{ root }}/pages/routines">{{ 'collection.routine_card_cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <a class="btn" href="{{ root }}/pages/routines">{% if section.settings.t_collection_routine_card_cta != blank %}{{ section.settings.t_collection_routine_card_cta }}{% else %}{{ 'collection.routine_card_cta' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
         </aside>
 
         {%- if paginate.pages > 1 -%}
@@ -85,8 +85,8 @@
         {%- endif -%}
       {%- else -%}
         <div class="empty-state">
-          <p class="t-display-s">{{ 'collection.empty' | t }}</p>
-          <a class="btn" href="{{ routes.root_url }}">{{ 'general.back_home' | t }}</a>
+          <p class="t-display-s">{% if section.settings.t_collection_empty != blank %}{{ section.settings.t_collection_empty }}{% else %}{{ 'collection.empty' | t }}{% endif %}</p>
+          <a class="btn" href="{{ routes.root_url }}">{% if section.settings.t_general_back_home != blank %}{{ section.settings.t_general_back_home }}{% else %}{{ 'general.back_home' | t }}{% endif %}</a>
         </div>
       {%- endif -%}
     {%- endpaginate -%}
@@ -96,6 +96,87 @@
 {% schema %}
 {
   "name": "t:sections.main_collection.name",
-  "settings": []
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_collection_eyebrow",
+      "label": "Collection · Small line above the heading",
+      "info": "Now: “Shop”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_collection_lead",
+      "label": "Collection · Paragraph",
+      "info": "Now: “Four everyday essentials. Cleanse, Treat, Moisturize and Protect. Start with one step, or bring the routine together.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_collection_filter_label",
+      "label": "Collection · Label",
+      "info": "Now: “Filter by concern”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_concerns_all",
+      "label": "Concerns · All",
+      "info": "Now: “All”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_sections_bundles_eyebrow",
+      "label": "Bundles · Small line above the heading",
+      "info": "Now: “Ready-made sets”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_collection_sets_heading",
+      "label": "Collection · Heading",
+      "info": "Now: “Sets: the routine, for less.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_collection_sets_builder",
+      "label": "Collection · Sets builder",
+      "info": "Now: “Build your own”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_collection_routine_card_title",
+      "label": "Collection · Title",
+      "info": "Now: “Not sure where to start?”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_collection_routine_card_text",
+      "label": "Collection · Paragraph",
+      "info": "Now: “Three quick questions. A routine that makes sense for your skin.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_collection_routine_card_cta",
+      "label": "Collection · Button text",
+      "info": "Now: “Find your routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_collection_empty",
+      "label": "Collection · Empty",
+      "info": "Now: “No products here yet.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_general_back_home",
+      "label": "General · Back home",
+      "info": "Now: “Back to home”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
 }
 {% endschema %}

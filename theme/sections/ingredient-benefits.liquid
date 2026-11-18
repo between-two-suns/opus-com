@@ -7,9 +7,9 @@
 {%- liquid
   assign source = section.settings.collection | default: collections.all
 -%}
-<section class="section ibn" aria-label="{{ 'pages.ingredients.benefits_label' | t }}">
+<section class="section ibn" aria-label="{% if section.settings.t_pages_ingredients_benefits_label != blank %}{{ section.settings.t_pages_ingredients_benefits_label }}{% else %}{{ 'pages.ingredients.benefits_label' | t }}{% endif %}">
   <div class="container">
-    <nav class="ibn__jump" aria-label="{{ 'pages.ingredients.jump_label' | t }}">
+    <nav class="ibn__jump" aria-label="{% if section.settings.t_pages_ingredients_jump_label != blank %}{{ section.settings.t_pages_ingredients_jump_label }}{% else %}{{ 'pages.ingredients.jump_label' | t }}{% endif %}">
       <ul class="cluster" role="list">
         {%- for s in (1..4) -%}
           {%- for p in source.products limit: 12 -%}
@@ -57,7 +57,7 @@
               <h2 class="ibn__lead" id="IbnH-{{ s }}">{{ lead | escape }}.</h2>
               {%- if rest != blank -%}<p class="ibn__rest">{{ rest | escape }}</p>{%- endif -%}
               {%- if kis.size > 0 -%}
-                <p class="ibn__built">{{ 'pages.ingredients.built_around' | t }}</p>
+                <p class="ibn__built">{% if section.settings.t_pages_ingredients_built_around != blank %}{{ section.settings.t_pages_ingredients_built_around }}{% else %}{{ 'pages.ingredients.built_around' | t }}{% endif %}</p>
                 <ul class="ibn__ings" role="list">
                   {%- for ki in kis -%}
                     <li><span class="ibn__ing-name">{{ ki.name.value | escape }}</span><span class="ibn__ing-role">{{ ki.role.value | escape }}</span></li>
@@ -81,9 +81,46 @@
 {
   "name": "t:sections.ingredient_benefits.name",
   "settings": [
-    { "type": "paragraph", "content": "t:sections.ingredient_benefits.info" },
-    { "type": "collection", "id": "collection", "label": "t:sections.hero.collection" }
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.ingredient_benefits.info"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.hero.collection"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_benefits_label",
+      "label": "Label",
+      "info": "Now: “What each formula does for your skin”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_jump_label",
+      "label": "Label",
+      "info": "Now: “On this page”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_ingredients_built_around",
+      "label": "Built around",
+      "info": "Now: “What does it”. Leave empty to keep it (English and Arabic)."
+    }
   ],
-  "presets": [{ "name": "t:sections.ingredient_benefits.name" }]
+  "presets": [
+    {
+      "name": "t:sections.ingredient_benefits.name"
+    }
+  ]
 }
 {% endschema %}

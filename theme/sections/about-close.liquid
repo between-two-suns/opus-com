@@ -14,11 +14,11 @@
 <section class="ab-close" aria-labelledby="AbClose-{{ section.id }}">
   {%- render 'about-orb', tone: 'blue', side: 'top', class: 'ab-close__sun ab-orb--top', sizes: '(min-width: 750px) 56vw, 300px' -%}
   <div class="container ab-close__inner">
-    <h2 class="ab-close__title" id="AbClose-{{ section.id }}">{{ 'about2.close_heading' | t }}</h2>
-    <p class="t-lead ab-close__text">{{ 'about2.close_text' | t }}</p>
+    <h2 class="ab-close__title" id="AbClose-{{ section.id }}">{% if section.settings.t_about2_close_heading != blank %}{{ section.settings.t_about2_close_heading }}{% else %}{{ 'about2.close_heading' | t }}{% endif %}</h2>
+    <p class="t-lead ab-close__text">{% if section.settings.t_about2_close_text != blank %}{{ section.settings.t_about2_close_text }}{% else %}{{ 'about2.close_text' | t }}{% endif %}</p>
     <div class="ab-close__ctas">
       {%- if sk != blank and sk.url != blank -%}
-        <a class="btn" href="{{ sk.url }}">{{ 'about2.close_cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+        <a class="btn" href="{{ sk.url }}">{% if section.settings.t_about2_close_cta != blank %}{{ section.settings.t_about2_close_cta }}{% else %}{{ 'about2.close_cta' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
       {%- endif -%}
       {%- if set.id -%}
         <a class="btn btn--secondary" href="{{ set.url }}">{{ 'about2.close_cta2' | t: name: set_name }}</a>
@@ -30,6 +30,38 @@
 {% schema %}
 {
   "name": "About · close",
-  "enabled_on": { "templates": ["page"] }
+  "enabled_on": {
+    "templates": [
+      "page"
+    ]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_about2_close_heading",
+      "label": "Heading",
+      "info": "Now: “Until the next sun.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_close_text",
+      "label": "Paragraph",
+      "info": "Now: “Not sure where to start? Answer a few quick questions and we’ll suggest a routine.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_close_cta",
+      "label": "Button text",
+      "info": "Now: “Find your routine”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
 }
 {% endschema %}

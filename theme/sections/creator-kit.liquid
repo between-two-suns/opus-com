@@ -34,40 +34,40 @@
 <section class="kit">
   <div class="container kit__inner">
     <div>
-      <p class="t-eyebrow">{{ 'creators.eyebrow' | t }}</p>
-      <h1 class="t-display-l kit__title">{{ 'creator_kit.title' | t }}</h1>
-      <p class="t-lead">{{ 'creator_kit.intro' | t }}</p>
+      <p class="t-eyebrow">{% if section.settings.t_creators_eyebrow != blank %}{{ section.settings.t_creators_eyebrow }}{% else %}{{ 'creators.eyebrow' | t }}{% endif %}</p>
+      <h1 class="t-display-l kit__title">{% if section.settings.t_creator_kit_title != blank %}{{ section.settings.t_creator_kit_title }}{% else %}{{ 'creator_kit.title' | t }}{% endif %}</h1>
+      <p class="t-lead">{% if section.settings.t_creator_kit_intro != blank %}{{ section.settings.t_creator_kit_intro }}{% else %}{{ 'creator_kit.intro' | t }}{% endif %}</p>
     </div>
 
     <div class="kit__block kit__block--ink">
-      <h2 class="kit__h">{{ 'creator_kit.film_heading' | t }}</h2>
-      <p>{{ 'creator_kit.film_text' | t }}</p>
+      <h2 class="kit__h">{% if section.settings.t_creator_kit_film_heading != blank %}{{ section.settings.t_creator_kit_film_heading }}{% else %}{{ 'creator_kit.film_heading' | t }}{% endif %}</h2>
+      <p>{% if section.settings.t_creator_kit_film_text != blank %}{{ section.settings.t_creator_kit_film_text }}{% else %}{{ 'creator_kit.film_text' | t }}{% endif %}</p>
       <ul class="kit__list" role="list">
         {%- for k in film -%}{%- assign fk = 'creators.ideas.' | append: k -%}<li>{% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}<span>{{ fk | t }}</span></li>{%- endfor -%}
       </ul>
       <dl class="kit__pair">
-        <div><dt>{{ 'creator_kit.hashtag_label' | t }}</dt><dd dir="ltr">#BetweenTwoSuns</dd></div>
+        <div><dt>{% if section.settings.t_creator_kit_hashtag_label != blank %}{{ section.settings.t_creator_kit_hashtag_label }}{% else %}{{ 'creator_kit.hashtag_label' | t }}{% endif %}</dt><dd dir="ltr">#BetweenTwoSuns</dd></div>
       </dl>
     </div>
 
     <div class="kit__block">
-      <h2 class="kit__h">{{ 'creator_kit.send_heading' | t }}</h2>
-      <p>{{ 'creator_kit.send_text' | t }}</p>
+      <h2 class="kit__h">{% if section.settings.t_creator_kit_send_heading != blank %}{{ section.settings.t_creator_kit_send_heading }}{% else %}{{ 'creator_kit.send_heading' | t }}{% endif %}</h2>
+      <p>{% if section.settings.t_creator_kit_send_text != blank %}{{ section.settings.t_creator_kit_send_text }}{% else %}{{ 'creator_kit.send_text' | t }}{% endif %}</p>
       <ul class="kit__list" role="list">
         {%- for n in (1..6) -%}{%- assign k = 'creator_kit.send.s' | append: n -%}<li>{% render 'icon', name: 'check', class: 'icon--sm' %}<span>{{ k | t }}</span></li>{%- endfor -%}
       </ul>
     </div>
 
     <div class="kit__block">
-      <h2 class="kit__h">{{ 'creator_kit.earn_heading' | t }}</h2>
+      <h2 class="kit__h">{% if section.settings.t_creator_kit_earn_heading != blank %}{{ section.settings.t_creator_kit_earn_heading }}{% else %}{{ 'creator_kit.earn_heading' | t }}{% endif %}</h2>
       <ul class="kit__list" role="list">
         {%- for n in (1..5) -%}{%- assign k = 'creator_kit.earn.e' | append: n -%}<li>{% render 'icon', name: 'check', class: 'icon--sm' %}<span>{{ k | t }}</span></li>{%- endfor -%}
       </ul>
     </div>
 
     <div class="kit__block">
-      <h2 class="kit__h">{{ 'creator_kit.say_heading' | t }}</h2>
-      <p>{{ 'creator_kit.say_text' | t }}</p>
+      <h2 class="kit__h">{% if section.settings.t_creator_kit_say_heading != blank %}{{ section.settings.t_creator_kit_say_heading }}{% else %}{{ 'creator_kit.say_heading' | t }}{% endif %}</h2>
+      <p>{% if section.settings.t_creator_kit_say_text != blank %}{{ section.settings.t_creator_kit_say_text }}{% else %}{{ 'creator_kit.say_text' | t }}{% endif %}</p>
       <ul class="kit__products" role="list">
         {%- for h in handles -%}
           {%- assign p = all_products[h] -%}
@@ -75,26 +75,26 @@
           <li class="kit__product" style="--sku: var(--c-step-{{ forloop.index }})">
             <img src="{{ img | strip }}" alt="" width="140" height="431" loading="lazy">
             <div><strong>{{ p.title | escape }}</strong>
-              <span>{%- if p.metafields.bts.benefit != blank -%}{{ p.metafields.bts.benefit.value | escape }} · {% endif -%}{%- if forloop.last -%}{{ 'creator_kit.when_am' | t }}{%- else -%}{{ 'creator_kit.when_both' | t }}{%- endif -%}</span></div>
+              <span>{%- if p.metafields.bts.benefit != blank -%}{{ p.metafields.bts.benefit.value | escape }} · {% endif -%}{%- if forloop.last -%}{% if section.settings.t_creator_kit_when_am != blank %}{{ section.settings.t_creator_kit_when_am }}{% else %}{{ 'creator_kit.when_am' | t }}{% endif %}{%- else -%}{% if section.settings.t_creator_kit_when_both != blank %}{{ section.settings.t_creator_kit_when_both }}{% else %}{{ 'creator_kit.when_both' | t }}{% endif %}{%- endif -%}</span></div>
           </li>
         {%- endfor -%}
       </ul>
-      <h2 class="kit__h">{{ 'creator_kit.avoid_heading' | t }}</h2>
+      <h2 class="kit__h">{% if section.settings.t_creator_kit_avoid_heading != blank %}{{ section.settings.t_creator_kit_avoid_heading }}{% else %}{{ 'creator_kit.avoid_heading' | t }}{% endif %}</h2>
       <ul class="kit__list" role="list">
         {%- for n in (1..5) -%}{%- assign k = 'creator_kit.avoid.a' | append: n -%}<li>{% render 'icon', name: 'close', class: 'icon--sm' %}<span>{{ k | t }}</span></li>{%- endfor -%}
       </ul>
     </div>
 
     <div class="kit__block">
-      <h2 class="kit__h">{{ 'creator_kit.rules_heading' | t }}</h2>
+      <h2 class="kit__h">{% if section.settings.t_creator_kit_rules_heading != blank %}{{ section.settings.t_creator_kit_rules_heading }}{% else %}{{ 'creator_kit.rules_heading' | t }}{% endif %}</h2>
       <ul class="kit__list" role="list">
         {%- for n in (1..4) -%}{%- assign k = 'creators.rules.r' | append: n -%}<li>{% render 'icon', name: 'check', class: 'icon--sm' %}<span>{{ k | t }}</span></li>{%- endfor -%}
       </ul>
     </div>
 
     <div class="kit__block">
-      <h2 class="kit__h">{{ 'creator_kit.questions_heading' | t }}</h2>
-      <p>{{ 'creator_kit.questions_text' | t }}</p>
+      <h2 class="kit__h">{% if section.settings.t_creator_kit_questions_heading != blank %}{{ section.settings.t_creator_kit_questions_heading }}{% else %}{{ 'creator_kit.questions_heading' | t }}{% endif %}</h2>
+      <p>{% if section.settings.t_creator_kit_questions_text != blank %}{{ section.settings.t_creator_kit_questions_text }}{% else %}{{ 'creator_kit.questions_text' | t }}{% endif %}</p>
     </div>
   </div>
 </section>
@@ -102,6 +102,117 @@
 {% schema %}
 {
   "name": "Creator kit",
-  "settings": []
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_creators_eyebrow",
+      "label": "Creators · Small line above the heading",
+      "info": "Now: “Creators”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_title",
+      "label": "Creator kit · Title",
+      "info": "Now: “Creator kit”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_creator_kit_intro",
+      "label": "Creator kit · Paragraph",
+      "info": "Now: “Everything you need to make something with us. This page is just for our creators, so please keep the link to yourself.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_film_heading",
+      "label": "Creator kit · Heading",
+      "info": "Now: “What to film”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_creator_kit_film_text",
+      "label": "Creator kit · Paragraph",
+      "info": "Now: “Real, simple formats work best. Film in natural light, show the products in your hands, and say what you really think.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_hashtag_label",
+      "label": "Creator kit · Label",
+      "info": "Now: “Hashtag”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_send_heading",
+      "label": "Creator kit · Heading",
+      "info": "Now: “Sending us your post”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_creator_kit_send_text",
+      "label": "Creator kit · Paragraph",
+      "info": "Now: “Your best posts can appear on our website with your name and handle. We always ask your permission in writing first.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_earn_heading",
+      "label": "Creator kit · Heading",
+      "info": "Now: “Your code and what you earn”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_say_heading",
+      "label": "Creator kit · Heading",
+      "info": "Now: “What to say”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_say_text",
+      "label": "Creator kit · Paragraph",
+      "info": "Now: “How it feels, the texture, how it fits your day, and what the pack itself says:”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_when_am",
+      "label": "Creator kit · When am",
+      "info": "Now: “Every morning”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_when_both",
+      "label": "Creator kit · When both",
+      "info": "Now: “Morning and night”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_avoid_heading",
+      "label": "Creator kit · Heading",
+      "info": "Now: “What not to say”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_rules_heading",
+      "label": "Creator kit · Heading",
+      "info": "Now: “The few rules”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_questions_heading",
+      "label": "Creator kit · Heading",
+      "info": "Now: “Questions?”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creator_kit_questions_text",
+      "label": "Creator kit · Paragraph",
+      "info": "Now: “Reply to the email we sent you when you were accepted. We’re happy to help.”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
 }
 {% endschema %}

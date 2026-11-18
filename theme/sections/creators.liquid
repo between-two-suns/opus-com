@@ -35,8 +35,8 @@
         <h1 class="t-display-l cr-hero__title" id="CrTitle-{{ section.id }}">{{ heading | escape }}</h1>
         <p class="t-lead">{{ text | escape }}</p>
         <div class="cluster cr-hero__ctas">
-          <a class="btn" href="#CreatorApply" data-magnetic>{{ 'creators.cta' | t }}</a>
-          <a class="link-arrow" href="#CrHow-{{ section.id }}">{{ 'creators.how_link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <a class="btn" href="#CreatorApply" data-magnetic>{% if section.settings.t_creators_cta != blank %}{{ section.settings.t_creators_cta }}{% else %}{{ 'creators.cta' | t }}{% endif %}</a>
+          <a class="link-arrow" href="#CrHow-{{ section.id }}">{% if section.settings.t_creators_how_link != blank %}{{ section.settings.t_creators_how_link }}{% else %}{{ 'creators.how_link' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
         </div>
       </div>
       <ul class="cr-reels" role="list" aria-hidden="true">
@@ -71,8 +71,8 @@
     <div class="container">
       <div class="section-head">
         <div class="section-head__text">
-          <p class="t-eyebrow">{{ 'creators.how_eyebrow' | t }}</p>
-          <h2 class="t-display-m" id="CrHowTitle-{{ section.id }}">{{ 'creators.how_heading' | t }}</h2>
+          <p class="t-eyebrow">{% if section.settings.t_creators_how_eyebrow != blank %}{{ section.settings.t_creators_how_eyebrow }}{% else %}{{ 'creators.how_eyebrow' | t }}{% endif %}</p>
+          <h2 class="t-display-m" id="CrHowTitle-{{ section.id }}">{% if section.settings.t_creators_how_heading != blank %}{{ section.settings.t_creators_how_heading }}{% else %}{{ 'creators.how_heading' | t }}{% endif %}</h2>
         </div>
       </div>
       <ol class="cr-line" role="list">
@@ -88,7 +88,7 @@
         {%- endfor -%}
       </ol>
       <div class="cr-grow">
-        <h3 class="cr-grow__title">{{ 'creators.grow_heading' | t }}</h3>
+        <h3 class="cr-grow__title">{% if section.settings.t_creators_grow_heading != blank %}{{ section.settings.t_creators_grow_heading }}{% else %}{{ 'creators.grow_heading' | t }}{% endif %}</h3>
         <ul class="cr-grow__list" role="list">
           {%- for g in grows -%}
             {%- assign parts = g | split: ':' -%}
@@ -106,9 +106,9 @@
     <div class="container">
       <div class="section-head">
         <div class="section-head__text">
-          <p class="t-eyebrow">{{ 'creators.ideas_eyebrow' | t }}</p>
-          <h2 class="t-display-m" id="CrIdeas-{{ section.id }}">{{ 'creators.ideas_heading' | t }}</h2>
-          <p class="t-lead">{{ 'creators.ideas_text' | t }}</p>
+          <p class="t-eyebrow">{% if section.settings.t_creators_ideas_eyebrow != blank %}{{ section.settings.t_creators_ideas_eyebrow }}{% else %}{{ 'creators.ideas_eyebrow' | t }}{% endif %}</p>
+          <h2 class="t-display-m" id="CrIdeas-{{ section.id }}">{% if section.settings.t_creators_ideas_heading != blank %}{{ section.settings.t_creators_ideas_heading }}{% else %}{{ 'creators.ideas_heading' | t }}{% endif %}</h2>
+          <p class="t-lead">{% if section.settings.t_creators_ideas_text != blank %}{{ section.settings.t_creators_ideas_text }}{% else %}{{ 'creators.ideas_text' | t }}{% endif %}</p>
         </div>
       </div>
     </div>
@@ -127,7 +127,7 @@
     </ul>
     <div class="container">
       <div class="cr-rules">
-        <h3 class="cr-rules__title">{{ 'creators.rules_heading' | t }}</h3>
+        <h3 class="cr-rules__title">{% if section.settings.t_creators_rules_heading != blank %}{{ section.settings.t_creators_rules_heading }}{% else %}{{ 'creators.rules_heading' | t }}{% endif %}</h3>
         <ul class="cr-rules__list" role="list">
           {%- for n in (1..4) -%}
             {%- assign rk = 'creators.rules.r' | append: n -%}
@@ -140,8 +140,8 @@
 
   {%- comment -%} Phones: once the hero has scrolled away, a pinned Apply bar until the form is in view {%- endcomment -%}
   <div class="cr-bar" data-cr-bar>
-    <a class="btn" href="#CreatorApply">{{ 'creators.cta' | t }}</a>
-    <span class="cr-bar__note">{{ 'creators.bar_note' | t }}</span>
+    <a class="btn" href="#CreatorApply">{% if section.settings.t_creators_cta != blank %}{{ section.settings.t_creators_cta }}{% else %}{{ 'creators.cta' | t }}{% endif %}</a>
+    <span class="cr-bar__note">{% if section.settings.t_creators_bar_note != blank %}{{ section.settings.t_creators_bar_note }}{% else %}{{ 'creators.bar_note' | t }}{% endif %}</span>
   </div>
 </div>
 
@@ -149,11 +149,98 @@
 {
   "name": "t:sections.creators.name",
   "settings": [
-    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
-    { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
-    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
-    { "type": "textarea", "id": "text", "label": "t:general_schema.text" }
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "paragraph",
+      "content": "t:general_schema.bilingual_fallback"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:general_schema.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:general_schema.heading"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "t:general_schema.text"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_creators_cta",
+      "label": "Button text",
+      "info": "Now: “Apply to join”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creators_how_link",
+      "label": "Link text",
+      "info": "Now: “How it works”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creators_how_eyebrow",
+      "label": "Small line above the heading",
+      "info": "Now: “How it works”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creators_how_heading",
+      "label": "Heading",
+      "info": "Now: “From application to your first post”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creators_grow_heading",
+      "label": "Heading",
+      "info": "Now: “The more you create, the more you get”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creators_ideas_eyebrow",
+      "label": "Small line above the heading",
+      "info": "Now: “What we love”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creators_ideas_heading",
+      "label": "Heading",
+      "info": "Now: “Simple ideas, real skin”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creators_ideas_text",
+      "label": "Paragraph",
+      "info": "Now: “No studio needed. Film your real routine, on a real day.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creators_rules_heading",
+      "label": "Heading",
+      "info": "Now: “The few rules”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_creators_bar_note",
+      "label": "Note",
+      "info": "Now: “We reply within 7 days”. Leave empty to keep it (English and Arabic)."
+    }
   ],
-  "presets": [{ "name": "t:sections.creators.name" }]
+  "presets": [
+    {
+      "name": "t:sections.creators.name"
+    }
+  ]
 }
 {% endschema %}

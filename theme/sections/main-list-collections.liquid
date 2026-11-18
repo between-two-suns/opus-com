@@ -1,7 +1,7 @@
 {{ 'pages.css' | asset_url | stylesheet_tag }}
 <section class="section section--tight">
   <div class="container">
-    <h1 class="t-display-l">{{ 'collection.eyebrow' | t }}</h1>
+    <h1 class="t-display-l">{% if section.settings.t_collection_eyebrow != blank %}{{ section.settings.t_collection_eyebrow }}{% else %}{{ 'collection.eyebrow' | t }}{% endif %}</h1>
     <ul class="journal__grid u-mt-m" role="list" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">
       {%- for collection in collections -%}
         <li>
@@ -16,5 +16,23 @@
 </section>
 
 {% schema %}
-{ "name": "t:sections.main_list_collections.name", "settings": [] }
+{
+  "name": "t:sections.main_list_collections.name",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_collection_eyebrow",
+      "label": "Small line above the heading",
+      "info": "Now: “Shop”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
+}
 {% endschema %}

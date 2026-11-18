@@ -8,8 +8,8 @@
 <section class="section ab-rules" aria-labelledby="AbRules-{{ section.id }}">
   <div class="container">
     <div class="ab-rules__head">
-      <p class="t-eyebrow">{{ 'about2.rules_eyebrow' | t }}</p>
-      <h2 class="t-display-m" id="AbRules-{{ section.id }}">{{ 'about2.rules_heading' | t }}</h2>
+      <p class="t-eyebrow">{% if section.settings.t_about2_rules_eyebrow != blank %}{{ section.settings.t_about2_rules_eyebrow }}{% else %}{{ 'about2.rules_eyebrow' | t }}{% endif %}</p>
+      <h2 class="t-display-m" id="AbRules-{{ section.id }}">{% if section.settings.t_about2_rules_heading != blank %}{{ section.settings.t_about2_rules_heading }}{% else %}{{ 'about2.rules_heading' | t }}{% endif %}</h2>
     </div>
     <ol class="ab-rules__list" role="list">
       {%- for i in (1..5) -%}
@@ -28,6 +28,32 @@
 {% schema %}
 {
   "name": "About · our rules",
-  "enabled_on": { "templates": ["page"] }
+  "enabled_on": {
+    "templates": [
+      "page"
+    ]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_about2_rules_eyebrow",
+      "label": "Small line above the heading",
+      "info": "Now: “Our rules”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_rules_heading",
+      "label": "Heading",
+      "info": "Now: “What we won’t do.”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
 }
 {% endschema %}

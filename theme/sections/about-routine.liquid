@@ -17,9 +17,9 @@
   <div class="container">
     <div class="ab-rt__head">
       <div class="ab-rt__intro">
-        <p class="t-eyebrow">{{ 'about2.routine_eyebrow' | t }}</p>
-        <h2 class="t-display-m" id="AbRt-{{ section.id }}">{{ 'about2.routine_heading' | t }}</h2>
-        <p class="t-lead ab-rt__lede">{{ 'about2.routine_text' | t }}</p>
+        <p class="t-eyebrow">{% if section.settings.t_about2_routine_eyebrow != blank %}{{ section.settings.t_about2_routine_eyebrow }}{% else %}{{ 'about2.routine_eyebrow' | t }}{% endif %}</p>
+        <h2 class="t-display-m" id="AbRt-{{ section.id }}">{% if section.settings.t_about2_routine_heading != blank %}{{ section.settings.t_about2_routine_heading }}{% else %}{{ 'about2.routine_heading' | t }}{% endif %}</h2>
+        <p class="t-lead ab-rt__lede">{% if section.settings.t_about2_routine_text != blank %}{{ section.settings.t_about2_routine_text }}{% else %}{{ 'about2.routine_text' | t }}{% endif %}</p>
       </div>
     </div>
 
@@ -38,20 +38,70 @@
               <span class="ab-rt__name">{{ p.title | escape }}</span>
               {%- if p.metafields.bts.benefit != blank -%}<span class="ab-rt__benefit">{{ p.metafields.bts.benefit.value | escape }}</span>{%- endif -%}
               <span class="ab-rt__when">
-                {%- if i == 4 -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}{{ 'about2.am_only' | t }}{%- else -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}{% render 'icon', name: 'moon', class: 'icon--sm' %}{{ 'about2.am_pm' | t }}{%- endif -%}
+                {%- if i == 4 -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}{% if section.settings.t_about2_am_only != blank %}{{ section.settings.t_about2_am_only }}{% else %}{{ 'about2.am_only' | t }}{% endif %}{%- else -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}{% render 'icon', name: 'moon', class: 'icon--sm' %}{% if section.settings.t_about2_am_pm != blank %}{{ section.settings.t_about2_am_pm }}{% else %}{{ 'about2.am_pm' | t }}{% endif %}{%- endif -%}
               </span>
             </span>
           </a>
         </li>
       {%- endfor -%}
     </ol>
-    <a class="link-arrow ab-rt__more" href="{{ sets_url }}">{{ 'about2.sets_link' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+    <a class="link-arrow ab-rt__more" href="{{ sets_url }}">{% if section.settings.t_about2_sets_link != blank %}{{ section.settings.t_about2_sets_link }}{% else %}{{ 'about2.sets_link' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
   </div>
 </section>
 
 {% schema %}
 {
   "name": "About · routine",
-  "enabled_on": { "templates": ["page"] }
+  "enabled_on": {
+    "templates": [
+      "page"
+    ]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_about2_routine_eyebrow",
+      "label": "Small line above the heading",
+      "info": "Now: “The routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_routine_heading",
+      "label": "Heading",
+      "info": "Now: “A routine, not a cabinet.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_about2_routine_text",
+      "label": "Paragraph",
+      "info": "Now: “Four products, one job each, used in the same order every time. Mornings take all four. Nights take three, without the sunscreen.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_am_only",
+      "label": "Am only",
+      "info": "Now: “Mornings only”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_am_pm",
+      "label": "Am pm",
+      "info": "Now: “Morning and night”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_sets_link",
+      "label": "Link text",
+      "info": "Now: “Find your set”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
 }
 {% endschema %}

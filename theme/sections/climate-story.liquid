@@ -18,12 +18,12 @@
   <header class="cst__intro">
     <div class="container cst__intro-inner">
       <div class="cst__intro-copy">
-        <p class="t-eyebrow">{{ 'climate_story.eyebrow' | t }}</p>
-        <h1 class="cst__title">{{ 'climate_story.title' | t }}</h1>
-        <p class="t-lead cst__lede">{{ 'climate_story.lede' | t }}</p>
+        <p class="t-eyebrow">{% if section.settings.t_climate_story_eyebrow != blank %}{{ section.settings.t_climate_story_eyebrow }}{% else %}{{ 'climate_story.eyebrow' | t }}{% endif %}</p>
+        <h1 class="cst__title">{% if section.settings.t_climate_story_title != blank %}{{ section.settings.t_climate_story_title }}{% else %}{{ 'climate_story.title' | t }}{% endif %}</h1>
+        <p class="t-lead cst__lede">{% if section.settings.t_climate_story_lede != blank %}{{ section.settings.t_climate_story_lede }}{% else %}{{ 'climate_story.lede' | t }}{% endif %}</p>
       </div>
-      <nav class="cst__agenda" aria-label="{{ 'climate_story.agenda' | t }}">
-        <p class="t-eyebrow cst__agenda-title">{{ 'climate_story.agenda' | t }}</p>
+      <nav class="cst__agenda" aria-label="{% if section.settings.t_climate_story_agenda != blank %}{{ section.settings.t_climate_story_agenda }}{% else %}{{ 'climate_story.agenda' | t }}{% endif %}">
+        <p class="t-eyebrow cst__agenda-title">{% if section.settings.t_climate_story_agenda != blank %}{{ section.settings.t_climate_story_agenda }}{% else %}{{ 'climate_story.agenda' | t }}{% endif %}</p>
         <ol class="cst__agenda-list" role="list">
           {%- for raw in chapters -%}
             {%- liquid
@@ -123,7 +123,7 @@
           <p class="cst__cond">{% render 'icon', name: ic, class: 'icon--sm' %}{{ ck | t }}</p>
           <h2 class="cst__h" id="CstH-{{ section.id }}-{{ forloop.index }}">{{ hk | t }}</h2>
           <p class="cst__line">{{ line_key | t }}</p>
-          <p class="cst__helps t-eyebrow">{{ 'climate_story.helps' | t }}</p>
+          <p class="cst__helps t-eyebrow">{% if section.settings.t_climate_story_helps != blank %}{{ section.settings.t_climate_story_helps }}{% else %}{{ 'climate_story.helps' | t }}{% endif %}</p>
           <ul class="cst__steps" role="list">
             {%- for st in steps -%}
               {%- assign si = st | plus: 0 -%}
@@ -150,14 +150,14 @@
   <section class="cst__end" aria-labelledby="CstEnd-{{ section.id }}">
     <div class="container cst__end-inner">
       <div class="cst__end-copy">
-        <p class="t-eyebrow">{{ 'climate_story.end_eyebrow' | t }}</p>
-        <h2 class="t-display-m" id="CstEnd-{{ section.id }}">{{ 'climate_story.end_heading' | t }}</h2>
-        <p class="t-lead t-muted">{{ 'climate_story.end_text' | t }}</p>
+        <p class="t-eyebrow">{% if section.settings.t_climate_story_end_eyebrow != blank %}{{ section.settings.t_climate_story_end_eyebrow }}{% else %}{{ 'climate_story.end_eyebrow' | t }}{% endif %}</p>
+        <h2 class="t-display-m" id="CstEnd-{{ section.id }}">{% if section.settings.t_climate_story_end_heading != blank %}{{ section.settings.t_climate_story_end_heading }}{% else %}{{ 'climate_story.end_heading' | t }}{% endif %}</h2>
+        <p class="t-lead t-muted">{% if section.settings.t_climate_story_end_text != blank %}{{ section.settings.t_climate_story_end_text }}{% else %}{{ 'climate_story.end_text' | t }}{% endif %}</p>
         <div class="cluster cst__end-ctas">
           {%- if set -%}
-            <a class="btn" href="{{ set.url }}"><span>{{ 'sections.hero_panels.cta_primary' | t }}</span><span class="btn__sep" aria-hidden="true">·</span><span class="btn__price">{% render 'egp', cents: set.price %}</span></a>
+            <a class="btn" href="{{ set.url }}"><span>{% if section.settings.t_sections_hero_panels_cta_primary != blank %}{{ section.settings.t_sections_hero_panels_cta_primary }}{% else %}{{ 'sections.hero_panels.cta_primary' | t }}{% endif %}</span><span class="btn__sep" aria-hidden="true">·</span><span class="btn__price">{% render 'egp', cents: set.price %}</span></a>
           {%- endif -%}
-          <a class="link-arrow" href="{{ root }}/pages/sets">{{ 'sections.hero_panels.cta_secondary' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+          <a class="link-arrow" href="{{ root }}/pages/sets">{% if section.settings.t_sections_hero_panels_cta_secondary != blank %}{{ section.settings.t_sections_hero_panels_cta_secondary }}{% else %}{{ 'sections.hero_panels.cta_secondary' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
         </div>
       </div>
       <ol class="cst__end-steps" role="list">
@@ -197,9 +197,88 @@
 {
   "name": "t:sections.climate_story.name",
   "settings": [
-    { "type": "paragraph", "content": "t:sections.climate_story.info" },
-    { "type": "product", "id": "set", "label": "t:sections.hero_panels.set" }
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.climate_story.info"
+    },
+    {
+      "type": "product",
+      "id": "set",
+      "label": "t:sections.hero_panels.set"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_climate_story_eyebrow",
+      "label": "Climate story · Small line above the heading",
+      "info": "Now: “Made for life here”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_climate_story_title",
+      "label": "Climate story · Title",
+      "info": "Now: “A day between two suns.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_climate_story_lede",
+      "label": "Climate story · Lede",
+      "info": "Now: “Your day can take you from morning sun to city streets, cool offices and humid evenings. Here’s an ordinary day, hour by hour, and the st…”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_climate_story_agenda",
+      "label": "Climate story · Agenda",
+      "info": "Now: “The day at a glance”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_climate_story_helps",
+      "label": "Climate story · Helps",
+      "info": "Now: “What helps”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_climate_story_end_eyebrow",
+      "label": "Climate story · Small line above the heading",
+      "info": "Now: “Then tomorrow”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_climate_story_end_heading",
+      "label": "Climate story · Heading",
+      "info": "Now: “One routine. Whatever the day brings.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_climate_story_end_text",
+      "label": "Climate story · Paragraph",
+      "info": "Now: “Keep the essentials simple: cleanse, treat, moisturize and protect. Sunscreen is the last step every morning.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_sections_hero_panels_cta_primary",
+      "label": "Hero panels · Button text",
+      "info": "Now: “Shop the Full Ritual”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_sections_hero_panels_cta_secondary",
+      "label": "Hero panels · Button text",
+      "info": "Now: “Pick my steps”. Leave empty to keep it (English and Arabic)."
+    }
   ],
-  "presets": [{ "name": "t:sections.climate_story.name" }]
+  "presets": [
+    {
+      "name": "t:sections.climate_story.name"
+    }
+  ]
 }
 {% endschema %}

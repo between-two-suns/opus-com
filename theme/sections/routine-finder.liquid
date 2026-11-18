@@ -310,19 +310,19 @@ html.rf-open .dock { display: none; }
       <span class="rf-mini" aria-hidden="true">
         {%- for h in handles -%}{%- capture mi -%}{%- render 'cut-src', handle: h, width: 140 -%}{%- endcapture -%}<img src="{{ mi | strip }}" alt="" width="140" height="431" data-step="{{ forloop.index }}" data-state="core" style="--h: {{ hs[forloop.index0] }}" loading="lazy">{%- endfor -%}
       </span>
-      <button type="button" class="rf-back" data-rf-back hidden>{% render 'icon', name: 'arrow', class: 'icon--sm' %}{{ 'skin_check.back' | t }}</button>
+      <button type="button" class="rf-back" data-rf-back hidden>{% render 'icon', name: 'arrow', class: 'icon--sm' %}{% if section.settings.t_skin_check_back != blank %}{{ section.settings.t_skin_check_back }}{% else %}{{ 'skin_check.back' | t }}{% endif %}</button>
       <button type="button" class="rf-close" data-rf-close aria-label="{{ 'general.close' | t | escape }}" hidden>{% render 'icon', name: 'close' %}</button>
     </div>
 
     <div class="rf-screen is-in" data-screen="intro">
-      <p class="t-eyebrow" style="--i: 0">{{ 'finder.eyebrow' | t }}</p>
-      <h1 class="rf-title" id="RfTitle-{{ section.id }}" style="--i: 1">{{ 'finder.title' | t }}</h1>
-      <p class="rf-lede" style="--i: 2">{{ 'finder.intro' | t }}</p>
+      <p class="t-eyebrow" style="--i: 0">{% if section.settings.t_finder_eyebrow != blank %}{{ section.settings.t_finder_eyebrow }}{% else %}{{ 'finder.eyebrow' | t }}{% endif %}</p>
+      <h1 class="rf-title" id="RfTitle-{{ section.id }}" style="--i: 1">{% if section.settings.t_finder_title != blank %}{{ section.settings.t_finder_title }}{% else %}{{ 'finder.title' | t }}{% endif %}</h1>
+      <p class="rf-lede" style="--i: 2">{% if section.settings.t_finder_intro != blank %}{{ section.settings.t_finder_intro }}{% else %}{{ 'finder.intro' | t }}{% endif %}</p>
       <div class="rf-row" style="--i: 3">
-        <button type="button" class="rf-btn" data-rf-start>{{ 'skin_check.start' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
-        <button type="button" class="rf-skip" data-rf-skip>{{ 'finder.skip' | t }}</button>
+        <button type="button" class="rf-btn" data-rf-start>{% if section.settings.t_skin_check_start != blank %}{{ section.settings.t_skin_check_start }}{% else %}{{ 'skin_check.start' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+        <button type="button" class="rf-skip" data-rf-skip>{% if section.settings.t_finder_skip != blank %}{{ section.settings.t_finder_skip }}{% else %}{{ 'finder.skip' | t }}{% endif %}</button>
       </div>
-      <noscript><p class="rf-small"><a href="{{ sets_url }}">{{ 'about2.sets_link' | t }}</a> · <a href="{{ routes.all_products_collection_url }}">{{ 'skin_check.browse' | t }}</a></p></noscript>
+      <noscript><p class="rf-small"><a href="{{ sets_url }}">{% if section.settings.t_about2_sets_link != blank %}{{ section.settings.t_about2_sets_link }}{% else %}{{ 'about2.sets_link' | t }}{% endif %}</a> · <a href="{{ routes.all_products_collection_url }}">{% if section.settings.t_skin_check_browse != blank %}{{ section.settings.t_skin_check_browse }}{% else %}{{ 'skin_check.browse' | t }}{% endif %}</a></p></noscript>
     </div>
 
     <form data-rf-form novalidate>
@@ -346,7 +346,7 @@ html.rf-open .dock { display: none; }
         -%}
         <fieldset class="rf-screen rf-q{% if multi %} rf-q--multi{% endif %}{% if q == 'concerns' %} rf-q--grid{% endif %}" data-screen="{{ q }}" hidden>
           <legend style="--i: 0">{{ qk | t }}</legend>
-          {%- if q == 'concerns' -%}<p class="rf-hint" style="--i: 1">{{ 'skin_check.choose_any' | t }}</p>{%- elsif multi -%}<p class="rf-hint" style="--i: 1">{{ 'finder.choose_any' | t }}</p>{%- endif -%}
+          {%- if q == 'concerns' -%}<p class="rf-hint" style="--i: 1">{% if section.settings.t_skin_check_choose_any != blank %}{{ section.settings.t_skin_check_choose_any }}{% else %}{{ 'skin_check.choose_any' | t }}{% endif %}</p>{%- elsif multi -%}<p class="rf-hint" style="--i: 1">{% if section.settings.t_finder_choose_any != blank %}{{ section.settings.t_finder_choose_any }}{% else %}{{ 'finder.choose_any' | t }}{% endif %}</p>{%- endif -%}
           <div class="rf-opts" style="--i: 1">
             {%- for o in opts -%}
               {%- assign ok = ak | append: o -%}
@@ -361,10 +361,10 @@ html.rf-open .dock { display: none; }
           </div>
           <div class="rf-foot" style="--i: 2">
             <div class="rf-nav">
-              <button type="button" class="rf-prev" data-rf-prev>{% render 'icon', name: 'arrow', class: 'icon--sm' %}{{ 'skin_check.back' | t }}</button>
-              <button type="button" class="rf-btn" data-rf-next{% unless multi %} disabled{% endunless %}>{{ 'skin_check.next' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+              <button type="button" class="rf-prev" data-rf-prev>{% render 'icon', name: 'arrow', class: 'icon--sm' %}{% if section.settings.t_skin_check_back != blank %}{{ section.settings.t_skin_check_back }}{% else %}{{ 'skin_check.back' | t }}{% endif %}</button>
+              <button type="button" class="rf-btn" data-rf-next{% unless multi %} disabled{% endunless %}>{% if section.settings.t_skin_check_next != blank %}{{ section.settings.t_skin_check_next }}{% else %}{{ 'skin_check.next' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
             </div>
-            <button type="button" class="rf-skip rf-skip--small" data-rf-skip>{{ 'finder.skip' | t }}</button>
+            <button type="button" class="rf-skip rf-skip--small" data-rf-skip>{% if section.settings.t_finder_skip != blank %}{{ section.settings.t_finder_skip }}{% else %}{{ 'finder.skip' | t }}{% endif %}</button>
           </div>
         </fieldset>
       {%- endfor -%}
@@ -372,24 +372,24 @@ html.rf-open .dock { display: none; }
 
     <div class="rf-screen" data-screen="result" hidden tabindex="-1">
       <div class="rf-hero" aria-hidden="true" data-rf-hero></div>
-      <p class="rf-eyebrow" style="--i: 0" data-rf-eyebrow>{{ 'skin_check.result_title' | t }}</p>
+      <p class="rf-eyebrow" style="--i: 0" data-rf-eyebrow>{% if section.settings.t_skin_check_result_title != blank %}{{ section.settings.t_skin_check_result_title }}{% else %}{{ 'skin_check.result_title' | t }}{% endif %}</p>
       <h2 class="rf-name" style="--i: 1" data-rf-name></h2>
       <p class="rf-for" style="--i: 1" data-rf-for data-label="{{ 'finder.made_for' | t | escape }}" data-helps="{{ 'skin_check.for_label' | t | escape }}" hidden></p>
       <p class="rf-why" style="--i: 2" data-rf-why></p>
       <ul class="rf-steps" role="list" style="--i: 2" data-rf-steps></ul>
-      <p class="rf-sub" style="--i: 3" data-rf-also-title hidden>{{ 'skin_check.also' | t }}</p>
+      <p class="rf-sub" style="--i: 3" data-rf-also-title hidden>{% if section.settings.t_skin_check_also != blank %}{{ section.settings.t_skin_check_also }}{% else %}{{ 'skin_check.also' | t }}{% endif %}</p>
       <ul class="rf-steps" role="list" style="--i: 3" data-rf-also></ul>
       <button type="button" class="rf-ghost rf-complete" style="--i: 3" data-rf-complete hidden></button>
       <details class="rf-before" style="--i: 4" data-rf-before hidden>
-        <summary>{{ 'finder.before' | t }}</summary>
+        <summary>{% if section.settings.t_finder_before != blank %}{{ section.settings.t_finder_before }}{% else %}{{ 'finder.before' | t }}{% endif %}</summary>
         <ul role="list">
-          <li data-rf-note="sensitive" hidden>{{ 'finder.gentle' | t }}</li>
-          <li data-rf-note="rx" hidden>{{ 'finder.rx_note' | t }}</li>
+          <li data-rf-note="sensitive" hidden>{% if section.settings.t_finder_gentle != blank %}{{ section.settings.t_finder_gentle }}{% else %}{{ 'finder.gentle' | t }}{% endif %}</li>
+          <li data-rf-note="rx" hidden>{% if section.settings.t_finder_rx_note != blank %}{{ section.settings.t_finder_rx_note }}{% else %}{{ 'finder.rx_note' | t }}{% endif %}</li>
         </ul>
       </details>
       <product-form class="rf-buy" style="--i: 4">
         <form method="post" action="{{ routes.cart_add_url }}" id="RfBuy-{{ section.id }}" novalidate>
-          <p class="rf-total"><span>{{ 'skin_check.total' | t }}</span><strong data-rf-total></strong><s data-rf-was></s><span class="rf-save" data-rf-save></span></p>
+          <p class="rf-total"><span>{% if section.settings.t_skin_check_total != blank %}{{ section.settings.t_skin_check_total }}{% else %}{{ 'skin_check.total' | t }}{% endif %}</span><strong data-rf-total></strong><s data-rf-was></s><span class="rf-save" data-rf-save></span></p>
           <div class="rf-row rf-cta">
             <button type="submit" class="rf-btn" data-rf-add><span class="btn__label"></span><span class="rf-btn__price" data-rf-btnprice></span></button>
           </div>
@@ -397,11 +397,11 @@ html.rf-open .dock { display: none; }
         </form>
       </product-form>
       <div class="rf-links" style="--i: 5">
-        <button type="submit" form="RfBuy-{{ section.id }}" class="rf-ghost" data-rf-singles hidden>{{ 'skin_check.add_separately' | t }}</button>
-        <button type="button" class="rf-ghost" data-rf-change>{{ 'skin_check.change' | t }}</button>
-        <button type="button" class="rf-ghost" data-rf-restart>{{ 'skin_check.restart' | t }}</button>
+        <button type="submit" form="RfBuy-{{ section.id }}" class="rf-ghost" data-rf-singles hidden>{% if section.settings.t_skin_check_add_separately != blank %}{{ section.settings.t_skin_check_add_separately }}{% else %}{{ 'skin_check.add_separately' | t }}{% endif %}</button>
+        <button type="button" class="rf-ghost" data-rf-change>{% if section.settings.t_skin_check_change != blank %}{{ section.settings.t_skin_check_change }}{% else %}{{ 'skin_check.change' | t }}{% endif %}</button>
+        <button type="button" class="rf-ghost" data-rf-restart>{% if section.settings.t_skin_check_restart != blank %}{{ section.settings.t_skin_check_restart }}{% else %}{{ 'skin_check.restart' | t }}{% endif %}</button>
       </div>
-      <p class="rf-small" style="--i: 5">{{ 'skin_check.disclaimer' | t }}</p>
+      <p class="rf-small" style="--i: 5">{% if section.settings.t_skin_check_disclaimer != blank %}{{ section.settings.t_skin_check_disclaimer }}{% else %}{{ 'skin_check.disclaimer' | t }}{% endif %}</p>
     </div>
   </div>
 
@@ -432,6 +432,141 @@ html.rf-open .dock { display: none; }
   "name": "Routine finder",
   "tag": "div",
   "class": "section-hero",
-  "settings": []
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_back",
+      "label": "Skin check · Back",
+      "info": "Now: “Back”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_finder_eyebrow",
+      "label": "Finder · Small line above the heading",
+      "info": "Now: “Find your routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_finder_title",
+      "label": "Finder · Title",
+      "info": "Now: “Three questions. Your routine.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_finder_intro",
+      "label": "Finder · Paragraph",
+      "info": "Now: “Three quick questions. Then your routine, with what each step does for your skin.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_start",
+      "label": "Skin check · Start",
+      "info": "Now: “Let’s find my routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_finder_skip",
+      "label": "Finder · Skip",
+      "info": "Now: “Just show me the full routine”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_about2_sets_link",
+      "label": "About2 · Link text",
+      "info": "Now: “Find your set”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_browse",
+      "label": "Skin check · Browse",
+      "info": "Now: “Browse the products”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_choose_any",
+      "label": "Skin check · Choose any",
+      "info": "Now: “Choose any, or none.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_finder_choose_any",
+      "label": "Finder · Choose any",
+      "info": "Now: “Choose any that apply.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_next",
+      "label": "Skin check · Next",
+      "info": "Now: “Next”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_result_title",
+      "label": "Skin check · Title",
+      "info": "Now: “Here’s where we’d start.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_also",
+      "label": "Skin check · Also",
+      "info": "Now: “Also worth considering”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_finder_before",
+      "label": "Finder · Before",
+      "info": "Now: “Before you start”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_finder_gentle",
+      "label": "Finder · Gentle",
+      "info": "Now: “If your skin is sensitive, introduce new products one at a time and patch test each one first. If your skin is broken or irritated right …”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_finder_rx_note",
+      "label": "Finder · Note",
+      "info": "Now: “Using prescription skincare or acne medication: check with your dermatologist before adding these, and introduce them one at a time.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_total",
+      "label": "Skin check · Total",
+      "info": "Now: “Total”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_add_separately",
+      "label": "Skin check · Add separately",
+      "info": "Now: “Add them separately”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_change",
+      "label": "Skin check · Change",
+      "info": "Now: “Change answers”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_skin_check_restart",
+      "label": "Skin check · Restart",
+      "info": "Now: “Start again”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_skin_check_disclaimer",
+      "label": "Skin check · Disclaimer",
+      "info": "Now: “Suggestions are based on our ingredients, not a diagnosis, and can't guarantee how your skin will react. Patch test anything new. Not a m…”. Leave empty to keep it (English and Arabic)."
+    }
+  ]
 }
 {% endschema %}

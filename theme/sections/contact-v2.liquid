@@ -46,15 +46,15 @@
 <section class="cx" aria-labelledby="CxTitle-{{ section.id }}">
   <div class="container cx__grid">
     <div class="cx__intro">
-      <p class="t-eyebrow">{{ 'page_presets.contact.eyebrow' | t }}</p>
-      <h1 class="t-display-l" id="CxTitle-{{ section.id }}">{{ 'contact2.title' | t }}</h1>
-      <p class="t-lead">{{ 'contact2.lede' | t }}</p>
+      <p class="t-eyebrow">{% if section.settings.t_page_presets_contact_eyebrow != blank %}{{ section.settings.t_page_presets_contact_eyebrow }}{% else %}{{ 'page_presets.contact.eyebrow' | t }}{% endif %}</p>
+      <h1 class="t-display-l" id="CxTitle-{{ section.id }}">{% if section.settings.t_contact2_title != blank %}{{ section.settings.t_contact2_title }}{% else %}{{ 'contact2.title' | t }}{% endif %}</h1>
+      <p class="t-lead">{% if section.settings.t_contact2_lede != blank %}{{ section.settings.t_contact2_lede }}{% else %}{{ 'contact2.lede' | t }}{% endif %}</p>
       <ul class="cx__facts" role="list">
         {%- if email != blank -%}
           <li class="cx__fact">{% render 'icon', name: 'mail', class: 'icon--sm' %}<span><a href="mailto:{{ email }}">{{ email }}</a></span></li>
         {%- endif -%}
-        <li class="cx__fact">{% render 'icon', name: 'refresh', class: 'icon--sm' %}<span>{{ 'pages.contact.way_hours' | t }}</span></li>
-        <li class="cx__fact cx__fact--link">{% render 'icon', name: 'search', class: 'icon--sm' %}<a href="{{ root }}/pages/faq">{{ 'contact2.faq_link' | t }}</a></li>
+        <li class="cx__fact">{% render 'icon', name: 'refresh', class: 'icon--sm' %}<span>{% if section.settings.t_pages_contact_way_hours != blank %}{{ section.settings.t_pages_contact_way_hours }}{% else %}{{ 'pages.contact.way_hours' | t }}{% endif %}</span></li>
+        <li class="cx__fact cx__fact--link">{% render 'icon', name: 'search', class: 'icon--sm' %}<a href="{{ root }}/pages/faq">{% if section.settings.t_contact2_faq_link != blank %}{{ section.settings.t_contact2_faq_link }}{% else %}{{ 'contact2.faq_link' | t }}{% endif %}</a></li>
       </ul>
     </div>
 
@@ -63,10 +63,10 @@
         {%- if form.posted_successfully? -%}
           <div class="cx__done" role="status" tabindex="-1" data-cx-done>
             <span class="ct__done-mark" aria-hidden="true"></span>
-            <p class="cx__done-title">{{ 'contact2.done_title' | t }}</p>
-            <p>{{ 'contact2.done_text' | t }}</p>
+            <p class="cx__done-title">{% if section.settings.t_contact2_done_title != blank %}{{ section.settings.t_contact2_done_title }}{% else %}{{ 'contact2.done_title' | t }}{% endif %}</p>
+            <p>{% if section.settings.t_contact2_done_text != blank %}{{ section.settings.t_contact2_done_text }}{% else %}{{ 'contact2.done_text' | t }}{% endif %}</p>
             <div class="cx__done-links">
-              <a class="btn" href="{{ root }}/pages/sets">{{ 'contact2.done_shop' | t }}</a>
+              <a class="btn" href="{{ root }}/pages/sets">{% if section.settings.t_contact2_done_shop != blank %}{{ section.settings.t_contact2_done_shop }}{% else %}{{ 'contact2.done_shop' | t }}{% endif %}</a>
               {%- render 'skin-check-link', key: 'contact2.done_finder' -%}
             </div>
           </div>
@@ -82,7 +82,7 @@
           {%- endif -%}
 
           <fieldset class="cx__topics">
-            <legend class="cx__label">{{ 'pages.contact.topic' | t }}</legend>
+            <legend class="cx__label">{% if section.settings.t_pages_contact_topic != blank %}{{ section.settings.t_pages_contact_topic }}{% else %}{{ 'pages.contact.topic' | t }}{% endif %}</legend>
             <div class="cluster">
               {%- for tp in topics -%}
                 {%- assign tk = 'pages.contact.topics.' | append: tp -%}
@@ -93,19 +93,19 @@
 
           <div class="cx__panel" data-panel="order">
             <div class="field">
-              <label for="Cx-order">{{ 'contact2.order_no' | t }}</label>
+              <label for="Cx-order">{% if section.settings.t_contact2_order_no != blank %}{{ section.settings.t_contact2_order_no }}{% else %}{{ 'contact2.order_no' | t }}{% endif %}</label>
               <input id="Cx-order" type="text" name="contact[Order number]" placeholder="#1001" autocomplete="off" dir="ltr" inputmode="text">
-              <p class="t-xs t-muted">{{ 'contact2.order_find' | t }}{%- if shop.customer_accounts_enabled -%}{{ ' ' }}<a href="{{ routes.root_url | append: '/pages/account' | replace: '//', '/' }}">{{ 'contact2.order_link' | t }}</a>{%- endif -%}</p>
+              <p class="t-xs t-muted">{% if section.settings.t_contact2_order_find != blank %}{{ section.settings.t_contact2_order_find }}{% else %}{{ 'contact2.order_find' | t }}{% endif %}{%- if shop.customer_accounts_enabled -%}{{ ' ' }}<a href="{{ routes.root_url | append: '/pages/account' | replace: '//', '/' }}">{% if section.settings.t_contact2_order_link != blank %}{{ section.settings.t_contact2_order_link }}{% else %}{{ 'contact2.order_link' | t }}{% endif %}</a>{%- endif -%}</p>
             </div>
             <div class="cx__answers">
-              <p class="cx__label">{{ 'contact2.answers' | t }}</p>
+              <p class="cx__label">{% if section.settings.t_contact2_answers != blank %}{{ section.settings.t_contact2_answers }}{% else %}{{ 'contact2.answers' | t }}{% endif %}</p>
               {{ qa_order }}
             </div>
           </div>
 
           <div class="cx__panel" data-panel="product">
             <fieldset class="cx__topics">
-              <legend class="cx__label">{{ 'contact2.which' | t }}</legend>
+              <legend class="cx__label">{% if section.settings.t_contact2_which != blank %}{{ section.settings.t_contact2_which }}{% else %}{{ 'contact2.which' | t }}{% endif %}</legend>
               <div class="cluster">
                 {%- for h in handles -%}
                   {%- assign p = all_products[h] -%}
@@ -116,48 +116,48 @@
               </div>
             </fieldset>
             <div class="cx__answers">
-              <p class="cx__label">{{ 'contact2.answers' | t }}</p>
+              <p class="cx__label">{% if section.settings.t_contact2_answers != blank %}{{ section.settings.t_contact2_answers }}{% else %}{{ 'contact2.answers' | t }}{% endif %}</p>
               <details class="cx__qa"><summary>{{ 'faq.items.skin_type.q' | t }}</summary><p>{{ 'faq.items.skin_type.a' | t }}</p></details>
               <details class="cx__qa"><summary>{{ 'faq.items.sensitive.q' | t }}</summary><p>{{ 'faq.items.sensitive.a' | t }}</p></details>
             </div>
           </div>
 
           <div class="cx__panel" data-panel="routine">
-            <p>{{ 'contact2.routine_text' | t }}</p>
+            <p>{% if section.settings.t_contact2_routine_text != blank %}{{ section.settings.t_contact2_routine_text }}{% else %}{{ 'contact2.routine_text' | t }}{% endif %}</p>
             {%- render 'skin-check-link', key: 'contact2.routine_cta' -%}
             <div class="cx__answers">
-              <p class="cx__label">{{ 'contact2.answers' | t }}</p>
+              <p class="cx__label">{% if section.settings.t_contact2_answers != blank %}{{ section.settings.t_contact2_answers }}{% else %}{{ 'contact2.answers' | t }}{% endif %}</p>
               <details class="cx__qa"><summary>{{ 'faq.items.order.q' | t }}</summary><p>{{ 'faq.items.order.a' | t }}</p></details>
               <details class="cx__qa"><summary>{{ 'faq.items.all_four.q' | t }}</summary><p>{{ 'faq.items.all_four.a' | t }}</p></details>
             </div>
           </div>
 
           <div class="cx__panel cx__panel--creators" data-panel="creators">
-            <p>{{ 'contact2.creators_text' | t }}</p>
-            <a class="btn" href="{{ root }}/pages/creators#CreatorApply">{{ 'contact2.creators_cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+            <p>{% if section.settings.t_contact2_creators_text != blank %}{{ section.settings.t_contact2_creators_text }}{% else %}{{ 'contact2.creators_text' | t }}{% endif %}</p>
+            <a class="btn" href="{{ root }}/pages/creators#CreatorApply">{% if section.settings.t_contact2_creators_cta != blank %}{{ section.settings.t_contact2_creators_cta }}{% else %}{{ 'contact2.creators_cta' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
           </div>
 
           <div class="cx__fields">
             <div class="cx__row">
               <div class="field">
-                <label for="Cx-name">{{ 'pages.contact.name' | t }}</label>
+                <label for="Cx-name">{% if section.settings.t_pages_contact_name != blank %}{{ section.settings.t_pages_contact_name }}{% else %}{{ 'pages.contact.name' | t }}{% endif %}</label>
                 <input id="Cx-name" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}">
               </div>
               <div class="field">
-                <label for="Cx-email">{{ 'pages.contact.email' | t }} <span class="t-muted">({{ 'pages.contact.required' | t }})</span></label>
+                <label for="Cx-email">{% if section.settings.t_pages_contact_email != blank %}{{ section.settings.t_pages_contact_email }}{% else %}{{ 'pages.contact.email' | t }}{% endif %} <span class="t-muted">({% if section.settings.t_pages_contact_required != blank %}{{ section.settings.t_pages_contact_required }}{% else %}{{ 'pages.contact.required' | t }}{% endif %})</span></label>
                 <input id="Cx-email" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}"{% if form.errors contains 'email' %} aria-invalid="true"{% endif %}>
               </div>
             </div>
             <div class="field">
-              <label for="Cx-phone">{{ 'pages.contact.phone' | t }}</label>
+              <label for="Cx-phone">{% if section.settings.t_pages_contact_phone != blank %}{{ section.settings.t_pages_contact_phone }}{% else %}{{ 'pages.contact.phone' | t }}{% endif %}</label>
               <input id="Cx-phone" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}" dir="ltr">
             </div>
             <div class="field">
-              <label for="Cx-body">{{ 'pages.contact.message' | t }}</label>
-              <textarea id="Cx-body" name="contact[body]" rows="5" placeholder="{{ 'pages.contact.message_ph' | t }}">{{ form.body }}</textarea>
+              <label for="Cx-body">{% if section.settings.t_pages_contact_message != blank %}{{ section.settings.t_pages_contact_message }}{% else %}{{ 'pages.contact.message' | t }}{% endif %}</label>
+              <textarea id="Cx-body" name="contact[body]" rows="5" placeholder="{% if section.settings.t_pages_contact_message_ph != blank %}{{ section.settings.t_pages_contact_message_ph }}{% else %}{{ 'pages.contact.message_ph' | t }}{% endif %}">{{ form.body }}</textarea>
             </div>
-            <button type="submit" class="btn btn--full">{{ 'pages.contact.send' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
-            <p class="t-xs t-muted">{{ 'pages.contact.note' | t }}</p>
+            <button type="submit" class="btn btn--full">{% if section.settings.t_pages_contact_send != blank %}{{ section.settings.t_pages_contact_send }}{% else %}{{ 'pages.contact.send' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+            <p class="t-xs t-muted">{% if section.settings.t_pages_contact_note != blank %}{{ section.settings.t_pages_contact_note }}{% else %}{{ 'pages.contact.note' | t }}{% endif %}</p>
           </div>
         {%- endif -%}
       {%- endform -%}
@@ -177,7 +177,170 @@
 {
   "name": "t:sections.contact.name",
   "settings": [
-    { "type": "text", "id": "email", "label": "t:sections.contact.email", "default": "hello@betweentwosuns.co" }
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "t:sections.contact.email",
+      "default": "hello@betweentwosuns.co"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "t_page_presets_contact_eyebrow",
+      "label": "Page presets contact · Small line above the heading",
+      "info": "Now: “Contact”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_title",
+      "label": "Contact2 · Title",
+      "info": "Now: “Talk to us.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_lede",
+      "label": "Contact2 · Lede",
+      "info": "Now: “Pick a topic and write to us. We reply by email within one working day.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_contact_way_hours",
+      "label": "Contact · Way hours",
+      "info": "Now: “Sunday to Thursday, 9:00–18:00 Egypt time”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_faq_link",
+      "label": "Contact2 · Link text",
+      "info": "Now: “All questions and answers”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_done_title",
+      "label": "Contact2 · Title",
+      "info": "Now: “Thanks, we’ve got it.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_done_text",
+      "label": "Contact2 · Paragraph",
+      "info": "Now: “We'll reply by email within one working day (Sunday to Thursday, 9:00–18:00 Egypt time).”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_done_shop",
+      "label": "Contact2 · Done shop",
+      "info": "Now: “Shop the sets”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_contact_topic",
+      "label": "Contact · Topic",
+      "info": "Now: “What is it about?”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_order_no",
+      "label": "Contact2 · Order no",
+      "info": "Now: “Order number (optional)”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_order_find",
+      "label": "Contact2 · Order find",
+      "info": "Now: “It's in your order confirmation email.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_order_link",
+      "label": "Contact2 · Link text",
+      "info": "Now: “Or see your orders.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_answers",
+      "label": "Contact2 · Answers",
+      "info": "Now: “Quick answers”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_which",
+      "label": "Contact2 · Which",
+      "info": "Now: “Which product? (optional)”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_contact2_routine_text",
+      "label": "Contact2 · Paragraph",
+      "info": "Now: “Not sure which steps you need? The routine finder suggests them for your skin. Or write to us below.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "textarea",
+      "id": "t_contact2_creators_text",
+      "label": "Contact2 · Paragraph",
+      "info": "Now: “Creator applications have their own short form on the Creators page, so they reach the right person.”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_contact2_creators_cta",
+      "label": "Contact2 · Button text",
+      "info": "Now: “Apply on the Creators page”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_contact_name",
+      "label": "Contact · Name",
+      "info": "Now: “Name”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_contact_email",
+      "label": "Contact · Email",
+      "info": "Now: “Email”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_contact_required",
+      "label": "Contact · Required",
+      "info": "Now: “Required”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_contact_phone",
+      "label": "Contact · Phone",
+      "info": "Now: “Phone (optional)”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_contact_message",
+      "label": "Contact · Message",
+      "info": "Now: “Message”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_contact_message_ph",
+      "label": "Contact · Message ph",
+      "info": "Now: “Tell us a little about it…”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_contact_send",
+      "label": "Contact · Send",
+      "info": "Now: “Send message”. Leave empty to keep it (English and Arabic)."
+    },
+    {
+      "type": "text",
+      "id": "t_pages_contact_note",
+      "label": "Contact · Note",
+      "info": "Now: “We only use your details to reply.”. Leave empty to keep it (English and Arabic)."
+    }
   ]
 }
 {% endschema %}

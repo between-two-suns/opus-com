@@ -48,28 +48,84 @@
   "name": "t:sections.page_hero.name",
   "settings": [
     {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
       "type": "select",
       "id": "preset",
       "label": "t:sections.page_hero.preset",
       "options": [
-        { "value": "none", "label": "Page title" },
-        { "value": "routines", "label": "Routines" },
-        { "value": "ingredients", "label": "Ingredients" },
-        { "value": "climate", "label": "Climate" },
-        { "value": "about", "label": "About" },
-        { "value": "faq", "label": "FAQ" },
-        { "value": "contact", "label": "Contact" },
-        { "value": "scan", "label": "Scan" },
-        { "value": "sets", "label": "Sets" }
+        {
+          "value": "none",
+          "label": "Page title"
+        },
+        {
+          "value": "routines",
+          "label": "Routines"
+        },
+        {
+          "value": "ingredients",
+          "label": "Ingredients"
+        },
+        {
+          "value": "climate",
+          "label": "Climate"
+        },
+        {
+          "value": "about",
+          "label": "About"
+        },
+        {
+          "value": "faq",
+          "label": "FAQ"
+        },
+        {
+          "value": "contact",
+          "label": "Contact"
+        },
+        {
+          "value": "scan",
+          "label": "Scan"
+        },
+        {
+          "value": "sets",
+          "label": "Sets"
+        }
       ],
       "default": "none"
     },
-    { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
-    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
-    { "type": "textarea", "id": "text", "label": "t:general_schema.text" },
-    { "type": "image_picker", "id": "image", "label": "t:sections.page_hero.image" },
-    { "type": "checkbox", "id": "compact", "label": "t:sections.page_hero.compact", "default": false }
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:general_schema.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:general_schema.heading"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "t:general_schema.text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.page_hero.image"
+    },
+    {
+      "type": "checkbox",
+      "id": "compact",
+      "label": "t:sections.page_hero.compact",
+      "default": false
+    }
   ],
-  "presets": [{ "name": "t:sections.page_hero.name" }]
+  "presets": [
+    {
+      "name": "t:sections.page_hero.name"
+    }
+  ]
 }
 {% endschema %}

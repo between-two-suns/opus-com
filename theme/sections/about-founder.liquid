@@ -26,13 +26,43 @@
 {% schema %}
 {
   "name": "About · founder note",
-  "enabled_on": { "templates": ["page"] },
+  "enabled_on": {
+    "templates": [
+      "page"
+    ]
+  },
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Leave empty for “Why we started”." },
-    { "type": "richtext", "id": "text", "label": "Note", "info": "The section stays hidden until this is filled in." },
-    { "type": "text", "id": "name", "label": "Name" },
-    { "type": "text", "id": "role", "label": "Role" },
-    { "type": "image_picker", "id": "image", "label": "Photo" }
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "info": "Leave empty for “Why we started”."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Note",
+      "info": "The section stays hidden until this is filled in."
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Name"
+    },
+    {
+      "type": "text",
+      "id": "role",
+      "label": "Role"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photo"
+    }
   ]
 }
 {% endschema %}
