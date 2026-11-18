@@ -65,7 +65,7 @@
                   <p class="step-tag">{{ 'product.step' | t: number: s }} · {{ step_key | t }}</p>
                   <h3 class="dayline__name" id="DayName-{{ uid }}"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
                   {%- assign line_key = 'sections.routine.lines.' | append: s -%}
-                  <p class="dayline__benefit">{{ line_key | t }}</p>
+                  <p class="dayline__benefit">{%- assign line_set = 'line_' | append: s -%}{% if section.settings[line_set] != blank %}{{ section.settings[line_set] }}{% else %}{{ line_key | t }}{% endif %}</p>
                   <p class="dayline__price">
                     {%- render 'price', product: product, variant: v -%}
                     {%- if product.metafields.bts.size != blank -%}<span class="t-muted u-ltr"> · {{ product.metafields.bts.size }}</span>{%- endif -%}
@@ -112,12 +112,70 @@
 {
   "name": "t:sections.dayline.name",
   "settings": [
-    { "type": "paragraph", "content": "t:general_schema.bilingual_fallback" },
-    { "type": "text", "id": "eyebrow", "label": "t:general_schema.eyebrow" },
-    { "type": "text", "id": "heading", "label": "t:general_schema.heading" },
-    { "type": "collection", "id": "collection", "label": "t:sections.routine.collection" },
-    { "type": "checkbox", "id": "show_bundle", "label": "t:sections.routine.show_bundle", "default": true }
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "paragraph",
+      "content": "t:general_schema.bilingual_fallback"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small line above the heading",
+      "info": "Leave empty to keep the built-in English and Arabic text."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Leave empty to keep the built-in English and Arabic text."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Products shown"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bundle",
+      "label": "Show “add the full routine” box",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "line_1",
+      "label": "Line under step 1 (cleanser)",
+      "info": "Leave empty to keep the built-in English and Arabic text."
+    },
+    {
+      "type": "text",
+      "id": "line_2",
+      "label": "Line under step 2 (serum)",
+      "info": "Leave empty to keep the built-in English and Arabic text."
+    },
+    {
+      "type": "text",
+      "id": "line_3",
+      "label": "Line under step 3 (moisturizer)",
+      "info": "Leave empty to keep the built-in English and Arabic text."
+    },
+    {
+      "type": "text",
+      "id": "line_4",
+      "label": "Line under step 4 (sunscreen)",
+      "info": "Leave empty to keep the built-in English and Arabic text."
+    }
   ],
-  "presets": [{ "name": "t:sections.dayline.name" }]
+  "presets": [
+    {
+      "name": "t:sections.dayline.name"
+    }
+  ]
 }
 {% endschema %}

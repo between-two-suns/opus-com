@@ -16,8 +16,45 @@
 {%- liquid
   assign full = all_products['the-full-ritual']
   assign all_url = routes.collections_url | append: '/all'
-  assign line_1 = 'sections.hero_panels.line_1' | t | replace: '&amp;', '&'
-  assign line_2 = 'sections.hero_panels.line_2' | t | replace: '&amp;', '&'
+  assign line_1 = section.settings.line_1
+  if line_1 == blank
+    assign line_1 = 'sections.hero_panels.line_1' | t | replace: '&amp;', '&'
+  endif
+  assign line_2 = section.settings.line_2
+  if line_2 == blank
+    assign line_2 = 'sections.hero_panels.line_2' | t | replace: '&amp;', '&'
+  endif
+  assign eyebrow = section.settings.eyebrow | default: false
+  unless eyebrow
+    assign eyebrow = 'sections.hero_panels.eyebrow' | t
+  endunless
+  assign sub = section.settings.text | default: false
+  unless sub
+    assign sub = 'sections.hero_panels.subcopy' | t
+  endunless
+  assign btn1 = section.settings.button_1 | default: false
+  unless btn1
+    assign btn1 = 'sections.hero_suns.cta' | t
+  endunless
+  assign btn1_url = section.settings.button_1_link | default: full.url | default: all_url
+  assign btn2_url = section.settings.button_2_link
+  assign btn2 = section.settings.button_2 | default: false
+  if btn2_url == blank
+    if settings.skin_check_page != blank and settings.skin_check_page.url != blank
+      assign btn2_url = settings.skin_check_page.url
+      unless btn2
+        assign btn2 = 'sections.hero_panels.cta_find' | t
+      endunless
+    else
+      assign btn2_url = all_url
+      unless btn2
+        assign btn2 = 'sections.hero_routine.cta_all' | t
+      endunless
+    endif
+  endif
+  unless btn2
+    assign btn2 = 'sections.hero_panels.cta_find' | t
+  endunless
   assign w1 = line_1 | split: ' '
   assign w2 = line_2 | split: ' '
   assign handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
@@ -147,17 +184,17 @@
       </span></span>
     </div>
     <div class="hh-copy">
-      <p class="hh-eyebrow"><svg viewBox="0 0 501 547" aria-hidden="true" focusable="false"><path fill="currentColor" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/><path fill="currentColor" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>{{ 'sections.hero_panels.eyebrow' | t }}</p>
+      <p class="hh-eyebrow"><svg viewBox="0 0 501 547" aria-hidden="true" focusable="false"><path fill="currentColor" d="M2.66924 0.000534727C13.8978 -0.0776124 39.3353 8.4295 50.0693 12.562C114.374 37.317 161.913 86.5377 189.447 149.42C222.326 223.262 224.551 307.181 195.63 382.669C169.731 448.998 122.891 498.719 57.8246 527.266C50.9638 530.162 10.5353 546.188 6.16675 540.003C6.92711 537.615 15.4177 533.15 18.0182 531.551C30.9838 523.498 43.1447 514.212 54.3322 503.821C179.437 386.891 178.378 158.888 54.6155 41.6992C44.6109 32.2678 33.7982 23.7363 22.3013 16.2048C19.3235 14.2527 0.603598 3.34994 0 2.08782C0.691623 0.563537 0.721794 0.963506 2.66924 0.000534727Z"/><path fill="currentColor" d="M485.418 540.727C480.323 539.813 474.472 538.204 469.48 536.683C404.162 517.048 349.518 471.926 317.896 411.514C280.569 341.252 275.216 259.053 298.519 183.413C318.991 116.957 361.294 57.7036 423.579 24.8168C443.344 14.348 464.402 6.52641 486.21 1.5537C488.907 0.960578 499.257 -1.65223 500.343 1.60242C498.945 4.48993 493.684 7.08592 490.864 8.67457C476.842 16.5752 464.296 25.8703 452.206 36.5702C432.023 54.3842 414.677 75.1723 400.767 98.2165C355.36 172.084 341.72 271.124 362.152 354.995C381.198 433.175 420.724 493.087 489.395 535.312C491.257 536.374 493.389 537.263 494.398 539.062L494.341 540.198C492.035 542.156 488.17 541.287 485.418 540.727Z"/></svg>{{ eyebrow }}</p>
       <h1 class="hh-title" id="HhTitle-{{ section.id }}">
         {%- for w in w1 -%}{% unless forloop.first %}{{ ' ' }}{% endunless %}<span class="hh-w"><span style="--i: {{ forloop.index0 }}">{{ w }}</span></span>{%- endfor -%}
         <br class="hh-d">{{ ' ' }}
         {%- for w in w2 -%}{% unless forloop.first %}{{ ' ' }}{% endunless %}<span class="hh-w"><span style="--i: {{ forloop.index0 | plus: w1.size }}">{{ w }}</span></span>{%- endfor -%}
       </h1>
     </div>
-    <p class="hh-sub">{{ 'sections.hero_panels.subcopy' | t }}</p>
+    <p class="hh-sub">{{ sub }}</p>
     <div class="hh-foot">
-      <a class="hh-btn hh-btn--main" href="{{ full.url | default: all_url }}">{{ 'sections.hero_suns.cta' | t }} {% render 'icon', name: 'arrow', class: 'icon--sm' %}</a>
-      {%- if settings.skin_check_page != blank and settings.skin_check_page.url != blank -%}<a class="hh-btn hh-btn--ghost" href="{{ settings.skin_check_page.url }}">{{ 'sections.hero_panels.cta_find' | t }}</a>{%- else -%}<a class="hh-btn hh-btn--ghost" href="{{ all_url }}">{{ 'sections.hero_routine.cta_all' | t }}</a>{%- endif -%}
+      <a class="hh-btn hh-btn--main" href="{{ btn1_url }}">{{ btn1 }} {% render 'icon', name: 'arrow', class: 'icon--sm' %}</a>
+      <a class="hh-btn hh-btn--ghost" href="{{ btn2_url }}">{{ btn2 }}</a>
     </div>
     <ul class="hh-row" role="list" aria-label="{{ 'sections.hero_routine.lineup' | t }}">
       {%- for h in handles -%}
@@ -305,6 +342,67 @@
   "name": "Hero: two suns",
   "tag": "div",
   "class": "section-hero",
-  "settings": []
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it. Then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small line above the headline",
+      "info": "Leave empty to keep the built-in English and Arabic text."
+    },
+    {
+      "type": "text",
+      "id": "line_1",
+      "label": "Headline, line 1",
+      "info": "Built-in: “Made for the”. Leave empty to keep the built-in English and Arabic text."
+    },
+    {
+      "type": "text",
+      "id": "line_2",
+      "label": "Headline, line 2",
+      "info": "Built-in: “space between.”"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Paragraph (laptop only)",
+      "info": "Shown at the bottom left on laptops. Leave empty to keep the built-in English and Arabic text."
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_1",
+      "label": "Main button text",
+      "info": "Built-in: “Shop the routine”."
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Main button link",
+      "info": "Empty: The Full Ritual."
+    },
+    {
+      "type": "text",
+      "id": "button_2",
+      "label": "Second button text",
+      "info": "Built-in: “Find your routine”."
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Second button link",
+      "info": "Empty: the routine finder page (Theme settings → Routine finder), or Shop all."
+    }
+  ]
 }
 {% endschema %}

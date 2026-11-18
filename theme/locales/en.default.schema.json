@@ -28,7 +28,7 @@
     },
     "contact": {
       "email": "Email",
-      "name": "Name"
+      "name": "Contact page"
     },
     "facts": {
       "block": "Block",
@@ -100,32 +100,32 @@
       "name": "Journal teaser"
     },
     "main_404": {
-      "name": "Name"
+      "name": "Page not found (404)"
     },
     "main_article": {
-      "name": "Name"
+      "name": "Journal article"
     },
     "main_blog": {
-      "name": "Name"
+      "name": "Journal list"
     },
     "main_cart": {
-      "name": "Name"
+      "name": "Bag"
     },
     "main_collection": {
-      "name": "Name"
+      "name": "Shop: product grid"
     },
     "main_customer": {
-      "name": "Name",
+      "name": "Account",
       "view": "View"
     },
     "main_list_collections": {
-      "name": "Name"
+      "name": "All collections"
     },
     "main_page": {
-      "name": "Name"
+      "name": "Page text"
     },
     "main_password": {
-      "name": "Name"
+      "name": "Password page"
     },
     "main_product": {
       "accordion_content": "Accordion content",
@@ -144,7 +144,7 @@
       "open": "Open"
     },
     "main_search": {
-      "name": "Name"
+      "name": "Search results"
     },
     "newsletter": {
       "name": "Newsletter"
@@ -293,13 +293,13 @@
       "favicon": "Favicon",
       "logo_height": "Logo height",
       "logo_note": "The logo is the exact supplied Between Two Suns vector (assets/bts-wordmark.svg). Replace that file only with a new approved master.",
-      "name": "Name"
+      "name": "Brand"
     },
     "colors": {
       "base_header": "Base header",
       "daylight": "Daylight",
       "ink": "Ink",
-      "name": "Name",
+      "name": "Colours",
       "sku_header": "Sku header",
       "sku_note": "Each routine step has one colour. Colours follow the product (step 01–04 tag or bts.step metafield), never decoration.",
       "step_1": "Step 1",
@@ -313,7 +313,7 @@
       "cod_info": "Turn on only once Cash on Delivery is configured as a payment method.",
       "dynamic_checkout": "Dynamic checkout",
       "factual_info": "Only add statements that are true and configured.",
-      "name": "Name",
+      "name": "Shop & delivery",
       "payment_icons": "Payment icons",
       "payment_icons_info": "Shows only the payment methods actually enabled in Shopify.",
       "payment_icons_hide": "Hide these payment icons",
@@ -327,16 +327,16 @@
       "zero_price_info": "Pre-launch safety: products priced at 0.00 show “Price coming soon” and cannot be added to the bag."
     },
     "motion": {
-      "name": "Name",
+      "name": "Motion",
       "signature": "Signature",
       "signature_info": "Scroll-linked hero motion. Always disabled for visitors who prefer reduced motion."
     },
     "search": {
-      "name": "Name",
+      "name": "Search",
       "predictive": "Predictive"
     },
     "social": {
-      "name": "Name"
+      "name": "Social links"
     },
     "offers": {
       "name": "Offers & bundles",
