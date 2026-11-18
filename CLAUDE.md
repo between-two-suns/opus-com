@@ -101,6 +101,8 @@ what was done and why, and exactly what to do next. **DECISIONS.md** (numbered l
   - `node qa/spacing.mjs` and `LOC=/ar node qa/spacing.mjs` → 186/186 each
   - `node qa/finish.mjs` → 0 failures (names too close to pictures, text under 12px, cut shadows, text near card edges)
   - `node qa/layout-sweep.mjs` → no output (sideways scroll, wrapped buttons, long phone headings, overflow)
+- The Shopify connector's `theme_screenshot` / `theme_bash` read a stale cached copy of the theme: never use them to
+  verify a fresh upload (DECISIONS 304). Use Admin API checksums/bodies, the local preview, or STORE_PW + a real fetch.
 - Screenshots: reveal animations can leave headings half-drawn in shots; scroll with the mouse wheel and wait before
   shooting (see `qa/copy-shots.mjs`). Hide `.dock` and `[data-preview-badge]` in review shots.
 - Design tokens are in `theme/assets/base.css :root` (`--fs-*`, `--sp-*`, `--stack` 14px, `--section-y`). The global
