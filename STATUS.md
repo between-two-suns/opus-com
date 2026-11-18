@@ -16,6 +16,16 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 | Repo / branch | `between-two-suns/opus-com` · `opus-build` |
 | Last commit | see `git log -1 origin/opus-build` (pushed; GitHub access restored) |
 
+## Later (owner parked, 2026-11-18)
+- Arabic read-aloud test with 3–5 target customers (home + one product page); then rewrite what makes them pause.
+- ICI confirmations: claims sheet, "lasts about" figures, shipping/returns text, founder quote, cash-order refund method.
+- Optional: re-save the home SEO title with "in Egypt" (Online Store → Preferences).
+
+## Editor audit (2026-11-18, owner: "anyone can edit anything, for all pages")
+- 18 settings-group / section names show as "Name" (placeholder strings in locales/en.default.schema.json).
+- Of 63 sections in use, ~40 have no editable text at all (copy lives in locales; e.g. the home hero has 0 settings,
+  product page head 0, routine finder 46 locked strings). Plan proposed to the owner; waiting for a go-ahead.
+
 ## Restore points (revert here if needed)
 | Date | Shopify theme (unpublished, untouched copy) | Git commit on `opus-build` |
 |---|---|---|
