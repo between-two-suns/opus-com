@@ -1,5 +1,5 @@
 {%- comment -%}
-  The set page's first picture (snippets/set2-stage), small, for the laptop Shop menu: the packs at their
+  The packs side by side, small: the set compare cards (and the laptop Shop menu for a set without its own photo): the packs at their
   true relative sizes on the set's colour gradient, each with its step number and name drawn out above it.
   Params: handle (the set)
 {%- endcomment -%}
@@ -9,13 +9,18 @@
   endcapture
   assign dss_units = dss_def | strip | split: '|' | first | split: ',' | uniq
   assign dss_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
-  assign dss_tints = ''
-  for st in dss_units
-    assign dss_tints = dss_tints | append: ', var(--c-step-' | append: st | append: '-tint)'
-  endfor
-  if dss_units.size == 1
-    assign dss_tints = dss_tints | append: dss_tints
-  endif
+  comment
+    The set's own look (snippets/set-look, DECISIONS 315): its two colours and their textures, as on its page's first photo
+  endcomment
+  assign dss_first = dss_units | first
+  assign dss_last = dss_units | last
+  capture dss_look
+    render 'set-look', handle: handle, first: dss_first, last: dss_last
+  endcapture
+  assign dss_look = dss_look | strip | split: ','
+  assign dss_tex = ',texture-foam.svg,texture-drops.svg,texture-cream.svg,texture-sand.svg' | split: ','
+  assign dss_ta = dss_look[0] | plus: 0
+  assign dss_tb = dss_look[1] | plus: 0
   assign dss_max = '.65'
   if dss_units contains '3' or dss_units contains '4'
     assign dss_max = '.81'
@@ -24,7 +29,9 @@
     assign dss_max = '1'
   endif
 -%}
-<span class="dm-stage" style="--g: linear-gradient(105deg{{ dss_tints }}); --n: {{ dss_units.size }}; --smax: {{ dss_max }}">
+<span class="dm-stage" style="--a: var(--c-step-{{ dss_look[0] }}); --b: var(--c-step-{{ dss_look[1] }}); --n: {{ dss_units.size }}; --smax: {{ dss_max }}">
+  <span class="dm-stage__tex dm-stage__tex--a" aria-hidden="true" style="--tex: url('{{ dss_tex[dss_ta] | asset_url }}')"></span>
+  {%- if dss_ta != dss_tb -%}<span class="dm-stage__tex dm-stage__tex--b" aria-hidden="true" style="--tex: url('{{ dss_tex[dss_tb] | asset_url }}')"></span>{%- endif -%}
   {%- for st in dss_units -%}
     {%- assign si = st | plus: 0 -%}{%- assign comp = all_products[dss_handles[si]] -%}
     <span class="dm-pk" data-step="{{ si }}">

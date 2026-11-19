@@ -1,0 +1,11 @@
+{%- comment -%}
+  The laptop Shop menu's picture for a set: the set's own photo from Files (bts-<handle>.jpg) when there is one, the same
+  photo as on its page (owner, DECISIONS 315); otherwise the packs side by side (snippets/mega-set-stage). Params: handle
+{%- endcomment -%}
+{%- assign msf_key = 'bts-' | append: handle | append: '.jpg' -%}
+{%- assign msf = images[msf_key] -%}
+{%- if msf.width != blank -%}
+  {{ msf | image_url: width: 900 | image_tag: loading: 'lazy', widths: '450,600,900', sizes: '(min-width: 990px) 30vw, 1px', alt: '', class: 'dm-fig__photo' }}
+{%- else -%}
+  {%- render 'mega-set-stage', handle: handle -%}
+{%- endif -%}

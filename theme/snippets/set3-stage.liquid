@@ -16,24 +16,10 @@
   if word contains 'ranslation missing'
     assign word = ''
   endif
-  comment
-    Each set's look (owner, DECISIONS 314): background from one step's colour to a neighbouring one, and the big word in a
-    colour of its own, so the sets don't all read green. "bg-from,bg-to,word" as step numbers.
-  endcomment
-  case product.handle
-    when 'the-full-ritual'
-      assign look = '1,2,1'
-    when 'the-night-ritual'
-      assign look = '2,3,3'
-    when 'the-clear-protect-trio'
-      assign look = '1,2,2'
-    when 'clear-protect-duo'
-      assign look = '4,3,2'
-    when 'the-core-duo'
-      assign look = '2,1,1'
-    else
-      assign look = first | append: ',' | append: last | append: ',' | append: first
-  endcase
+  capture look
+    render 'set-look', handle: product.handle, first: first, last: last
+  endcapture
+  assign look = look | strip
   assign look = look | split: ','
   assign ta = look[0] | plus: 0
   assign tb = look[1] | plus: 0

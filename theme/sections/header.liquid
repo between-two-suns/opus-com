@@ -119,7 +119,7 @@
             {%- comment -%} first: what shows before pointing at anything (The Full Ritual) {%- endcomment -%}
             {%- assign product = all_products['the-full-ritual'] -%}
             {%- if product.id -%}
-              <span class="dm-fig dm-fig--rest">{% render 'mega-set-stage', handle: 'the-full-ritual' %}<span class="dm-fig__cap"><span class="pick-chip">{% if section.settings.t_shop_menu_pick != blank %}{{ section.settings.t_shop_menu_pick }}{% else %}{{ 'shop_menu.pick' | t }}{% endif %}</span>{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
+              <span class="dm-fig dm-fig--rest">{% render 'mega-set-fig', handle: 'the-full-ritual' %}<span class="dm-fig__cap"><span class="pick-chip">{% if section.settings.t_shop_menu_pick != blank %}{{ section.settings.t_shop_menu_pick }}{% else %}{{ 'shop_menu.pick' | t }}{% endif %}</span>{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
             {%- endif -%}
             {%- for mh in mega_handles -%}{%- assign product = all_products[mh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
               {%- capture step -%}{% render 'product-step', product: product %}{%- endcapture -%}{%- assign step = step | strip -%}
@@ -130,7 +130,7 @@
               </span>
             {%- endfor -%}
             {%- for sh in set_handles -%}{%- assign product = all_products[sh] -%}{%- unless product.id -%}{%- continue -%}{%- endunless -%}
-              <span class="dm-fig" data-i="{{ forloop.index | plus: 4 }}">{% render 'mega-set-stage', handle: sh %}<span class="dm-fig__cap">{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
+              <span class="dm-fig" data-i="{{ forloop.index | plus: 4 }}">{% render 'mega-set-fig', handle: sh %}<span class="dm-fig__cap">{{ product.title | escape }}{%- render 'price', product: product, class: 'dm-price' -%}</span></span>
             {%- endfor -%}
           </div>
         </div>

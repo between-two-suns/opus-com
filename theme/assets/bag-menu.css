@@ -97,7 +97,15 @@
 .dm-b:has([data-i='7']:is(:hover, :focus-visible)) .dm-fig[data-i='7'] { opacity: 1; }
 .dm-b:has(.dm-name:is(:hover, :focus-visible)) .dm-fig > img { scale: 1; }
 /* a set: its page's first picture (snippets/mega-set-stage), packs at true relative sizes with their step drawn out above */
-.dm-stage { position: absolute; inset: 0; display: flex; justify-content: center; align-items: stretch; gap: 4%; padding: 9% 6% 21%; background: var(--g); }
+.dm-stage { position: absolute; inset: 0; isolation: isolate; display: flex; justify-content: center; align-items: stretch; gap: 4%; padding: 9% 6% 21%; background: radial-gradient(70% 60% at 55% 55%, rgba(255, 255, 255, .5), transparent 70%), linear-gradient(115deg, color-mix(in srgb, var(--a) 26%, #fff) 10%, color-mix(in srgb, var(--b) 30%, #fff) 90%); }
+/* the set's two textures, fading into each other (DECISIONS 315) */
+.dm-stage__tex { position: absolute; inset: 0; z-index: -1; background: var(--tex) center / cover no-repeat; opacity: .8; pointer-events: none; }
+.dm-stage__tex--a:has(+ .dm-stage__tex--b) { -webkit-mask-image: linear-gradient(105deg, #000 35%, transparent 70%); mask-image: linear-gradient(105deg, #000 35%, transparent 70%); }
+.dm-stage__tex--b { -webkit-mask-image: linear-gradient(105deg, transparent 35%, #000 70%); mask-image: linear-gradient(105deg, transparent 35%, #000 70%); }
+.dm-pk[data-step] .dm-pk__line::after { background: var(--c-step-1); }
+.dm-pk[data-step='2'] .dm-pk__line::after { background: var(--c-step-2); }
+.dm-pk[data-step='3'] .dm-pk__line::after { background: var(--c-step-3); }
+.dm-pk[data-step='4'] .dm-pk__line::after { background: var(--c-step-4); }
 .dm-pk { flex: 0 1 calc(88% / max(var(--n), 3)); display: flex; flex-direction: column; align-items: center; min-inline-size: 0; --s: 1; }
 .dm-pk[data-step='2'] { --s: .65; }
 .dm-pk[data-step='3'], .dm-pk[data-step='4'] { --s: .81; }

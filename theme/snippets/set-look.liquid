@@ -1,0 +1,12 @@
+{%- comment -%}
+  A set's look, shared by its page's first photo (snippets/set3-stage) and the small packs picture on the compare cards
+  (snippets/mega-set-stage): "bg-from,bg-to,word" as step numbers (owner, DECISIONS 314–315). Params: handle, first, last
+{%- endcomment -%}
+{%- case handle -%}
+  {%- when 'the-full-ritual' -%}1,2,1
+  {%- when 'the-night-ritual' -%}2,3,3
+  {%- when 'the-clear-protect-trio' -%}1,2,2
+  {%- when 'clear-protect-duo' -%}4,3,2
+  {%- when 'the-core-duo' -%}2,1,1
+  {%- else -%}{{ first }},{{ last }},{{ first }}
+{%- endcase -%}

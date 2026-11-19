@@ -34,5 +34,7 @@
 .v2-set-rating strong { color: var(--c-ink); font-weight: 700; }
 
 /* 5 · the packs picture on the set cards: room at the top for the Ships free / Daily Essential badges */
-.bundle__stage .dm-stage { padding: 15% 6% 5%; }
+.bundle__stage .dm-stage { padding: 13% 5% 4%; gap: 3%; }
+/* compare cards: bigger packs (DECISIONS 315) */
+.bundle__stage .dm-pk__img { block-size: calc(var(--s) / var(--smax, 1) * 80%); }
 .bundle__stage .dm-pk__img { block-size: calc(var(--s) / var(--smax, 1) * 80%); }
