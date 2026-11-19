@@ -434,10 +434,10 @@
 .pdp-tabs--set .is-out .pdp-tabs__link { cursor: default; }
 /* Set pages: the first photo in the single products' style (DECISIONS 313): the set's big word in its colours, the packs
    grouped and tilted, the steps as callouts */
-.pdp--v2 .pdp__gallery .gallery__slide.s3-stage { overflow: hidden; isolation: isolate; background: radial-gradient(90% 75% at 62% 45%, color-mix(in srgb, var(--b) 16%, #fff), transparent 70%), linear-gradient(105deg, color-mix(in srgb, var(--a) 30%, var(--c-daylight)), color-mix(in srgb, var(--b) 30%, var(--c-daylight))); }
-.s3-stage .gallery__texture { opacity: .55; }
-.s3-stage .s3-stage__word { color: oklch(from var(--a) .62 calc(c * 1.25) h); }
-@supports not (color: oklch(from red l c h)) { .s3-stage .s3-stage__word { color: color-mix(in srgb, var(--a) 75%, var(--c-ink)); } }
+.pdp--v2 .pdp__gallery .gallery__slide.s3-stage { overflow: hidden; isolation: isolate; background: radial-gradient(70% 60% at 62% 48%, rgba(255, 255, 255, .55), transparent 70%), linear-gradient(115deg, color-mix(in srgb, var(--a) 26%, #fff) 10%, color-mix(in srgb, var(--b) 30%, #fff) 90%); }
+.s3-stage .gallery__texture { opacity: .4; }
+.s3-stage .s3-stage__word { color: oklch(from var(--w) .62 calc(c * 1.25) h); }
+@supports not (color: oklch(from red l c h)) { .s3-stage .s3-stage__word { color: color-mix(in srgb, var(--w) 75%, var(--c-ink)); } }
 .s3-stage__packs { position: absolute; z-index: 1; inset-block: 17% 7%; inset-inline: 33% 3%; gap: 0; display: flex; align-items: flex-end; justify-content: center; list-style: none; margin: 0; padding: 0; }
 .s3-pack { --s: 1; position: relative; flex: 0 1 auto; display: flex; align-items: flex-end; block-size: calc(var(--s) / var(--smax, 1) * 100%); margin-inline: calc(-5% / var(--n)); z-index: 1; }
 .s3-pack[data-step='2'] { z-index: 4; }
@@ -452,7 +452,7 @@
 [dir='rtl'] .s3-pack__img { rotate: 6deg; }
 [dir='rtl'] .s3-pack:nth-child(even) .s3-pack__img { rotate: -4deg; }
 .s3-pack__link:hover .s3-pack__img { translate: 0 -8px; }
-.s3-stage__callouts { inline-size: 40%; }
-.s3-stage .callouts__text { max-inline-size: none; }
+.s3-stage .s3-stage__callouts { inline-size: 27%; }
+.s3-stage .s3-stage__callouts .callouts__text { max-inline-size: none; }
 :lang(ar) .s3-stage .s3-stage__word { inset-block-start: 13%; }
 @media (max-width: 989px) { .s3-stage__packs { inset-block: 26% 8%; inset-inline: 30% 4%; } }

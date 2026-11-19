@@ -16,7 +16,27 @@
   if word contains 'ranslation missing'
     assign word = ''
   endif
-  assign tex = textures[first]
+  comment
+    Each set's look (owner, DECISIONS 314): background from one step's colour to a neighbouring one, and the big word in a
+    colour of its own, so the sets don't all read green. "bg-from,bg-to,word" as step numbers.
+  endcomment
+  case product.handle
+    when 'the-full-ritual'
+      assign look = '1,2,2'
+    when 'the-night-ritual'
+      assign look = '2,3,3'
+    when 'the-clear-protect-trio'
+      assign look = '1,2,4'
+    when 'clear-protect-duo'
+      assign look = '4,3,2'
+    when 'the-core-duo'
+      assign look = '2,1,1'
+    else
+      assign look = first | append: ',' | append: last | append: ',' | append: first
+  endcase
+  assign look = look | split: ','
+  assign ti = look[2] | plus: 0
+  assign tex = textures[ti]
   assign smax = '.65'
   if units contains '3' or units contains '4'
     assign smax = '.81'
@@ -25,15 +45,29 @@
     assign smax = '1'
   endif
 -%}
-<div class="gallery__slide s3-stage" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: 1, count: count }}" data-slide style="--a: var(--c-step-{{ first }}); --b: var(--c-step-{{ last }}); --n: {{ units.size }}; --smax: {{ smax }}">
+<div class="gallery__slide s3-stage" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: 1, count: count }}" data-slide style="--a: var(--c-step-{{ look[0] }}); --b: var(--c-step-{{ look[1] }}); --at: var(--c-step-{{ look[0] }}-tint); --bt: var(--c-step-{{ look[1] }}-tint); --w: var(--c-step-{{ look[2] }}); --n: {{ units.size }}; --smax: {{ smax }}">
   <span class="gallery__texture" aria-hidden="true" style="--tex: url('{{ tex | asset_url }}')"></span>
   {%- if word != blank -%}<span class="gallery__word s3-stage__word" aria-hidden="true" style="--len: {{ word | size }}">{{ word | escape }}</span>{%- endif -%}
+  {%- comment -%} A stock-up is one product twice: its callouts are the pack's own benefit words, as on its product page; other sets name their steps {%- endcomment -%}
+  {%- assign only = all_products[step_handles[first]] -%}
   <ul class="callouts s3-stage__callouts" role="list" aria-hidden="true">
-    {%- for st in uniq -%}
-      {%- assign si = st | plus: 0 -%}
-      {%- assign nk = 'product.step_name.s' | append: si -%}
-      <li class="callouts__item" style="--k: {{ forloop.index0 }}; --sku-deep: var(--c-step-{{ si }})"><span class="callouts__text">0{{ si }} {{ nk | t }}</span><span class="callouts__line"></span></li>
-    {%- endfor -%}
+    {%- if uniq.size == 1 and only.metafields.bts.benefit != blank -%}
+      {%- assign bens = only.metafields.bts.benefit | split: '.' -%}
+      {%- assign shown = 0 -%}
+      {%- for c in bens -%}
+        {%- assign c = c | strip -%}
+        {%- if c != blank and shown < 3 -%}
+          <li class="callouts__item" style="--k: {{ shown }}; --sku-deep: var(--c-step-{{ first }})"><span class="callouts__text">{{ c }}</span><span class="callouts__line"></span></li>
+          {%- assign shown = shown | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for st in uniq -%}
+        {%- assign si = st | plus: 0 -%}
+        {%- assign nk = 'product.step_name.s' | append: si -%}
+        <li class="callouts__item" style="--k: {{ forloop.index0 }}; --sku-deep: var(--c-step-{{ si }})"><span class="callouts__text">0{{ si }} {{ nk | t }}</span><span class="callouts__line"></span></li>
+      {%- endfor -%}
+    {%- endif -%}
   </ul>
   <ul class="s3-stage__packs" role="list">
     {%- assign shown = '' -%}
