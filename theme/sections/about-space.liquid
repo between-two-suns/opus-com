@@ -1,0 +1,92 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About hero, "the space between" round 2 (DECISIONS 319, demo). The two suns are the frame: today's and tomorrow's,
+  almost touching, each carrying its name. The only thing between them is the space, the brand's )( shape made by
+  the two circles themselves (nothing is drawn), and in it, a glimpse of the day. Scrolling, today's sun sets and
+  tomorrow's rises, the space opens to the whole screen, the golden light goes to dusk, and the brand's line lands in
+  the middle. On laptops the space leans a little toward the pointer. Phones turn it on its side: today's sun above,
+  tomorrow's below. Arabic mirrors (today's sun on the right).
+  Without JS or with reduced motion: the first frame, still, with the line under it.
+{%- endcomment -%}
+{%- liquid
+  assign img = section.settings.image | default: images['bts-climate-humidity-wide.jpg']
+  assign img_m = section.settings.image_mobile | default: images['bts-climate-humidity-tall.jpg']
+  if section.settings.t_title != blank
+    assign title = section.settings.t_title
+  else
+    assign title = 'about2.btw_title' | t
+  endif
+  if section.settings.t_sun_a != blank
+    assign sun_a = section.settings.t_sun_a
+  else
+    assign sun_a = 'about2.sun_a' | t
+  endif
+  if section.settings.t_sun_b != blank
+    assign sun_b = section.settings.t_sun_b
+  else
+    assign sun_b = 'about2.sun_b' | t
+  endif
+  if section.settings.t_lead != blank
+    assign lead = section.settings.t_lead
+  else
+    assign lead = 'about2.b4' | t
+  endif
+  assign alt = img.alt | default: ''
+  if alt == blank
+    assign alt = 'about2.btw_alt' | t
+  endif
+-%}
+<section class="ab-sp" data-ab-sp aria-labelledby="AbSp-{{ section.id }}">
+  <h1 class="visually-hidden" id="AbSp-{{ section.id }}">{{ title }}</h1>
+  <div class="ab-sp__stage">
+    <div class="ab-sp__day">
+      {%- if img != blank and img.width != blank -%}
+        <picture>
+          {%- if img_m != blank and img_m.width != blank -%}
+            <source media="(max-width: 749px)" srcset="{{ img_m | image_url: width: 600 }} 600w, {{ img_m | image_url: width: 900 }} 900w, {{ img_m | image_url: width: 1200 }} 1200w" sizes="100vw">
+          {%- endif -%}
+          {{ img | image_url: width: 2400 | image_tag: widths: '900,1200,1600,2000,2400', sizes: '100vw', class: 'ab-sp__img', alt: alt, loading: 'eager', fetchpriority: 'high' }}
+        </picture>
+      {%- endif -%}
+      <span class="ab-sp__gold" aria-hidden="true"></span>
+      <span class="ab-sp__dusk" aria-hidden="true"></span>
+    </div>
+
+    <div class="ab-sp__sun ab-sp__sun--a" aria-hidden="true">
+      {%- render 'about-orb', tone: 'green', side: 'start', class: 'ab-sp__orb', sizes: '(min-width: 750px) 62vw, 125vw', priority: true -%}
+      <span class="ab-sp__word">{{ sun_a }}</span>
+    </div>
+    <div class="ab-sp__sun ab-sp__sun--b" aria-hidden="true">
+      {%- render 'about-orb', tone: 'blue', side: 'end', class: 'ab-sp__orb', sizes: '(min-width: 750px) 62vw, 125vw' -%}
+      <span class="ab-sp__word">{{ sun_b }}</span>
+    </div>
+
+    <p class="t-eyebrow ab-sp__eyebrow">{% if section.settings.t_eyebrow != blank %}{{ section.settings.t_eyebrow }}{% else %}{{ 'about2.eyebrow' | t }}{% endif %}</p>
+    <p class="ab-sp__lead">{{ lead }}</p>
+    <p class="ab-sp__cap" aria-hidden="true">{% if section.settings.t_caption != blank %}{{ section.settings.t_caption }}{% else %}{{ 'about2.btw_caption' | t }}{% endif %}</p>
+    <p class="ab-sp__hint" aria-hidden="true">{{ 'about2.scroll' | t }}<span class="ab-sp__hint-line"></span></p>
+  </div>
+</section>
+{%- comment -%} Scroll mode is set before the first paint, so nothing shifts when the script arrives. {%- endcomment -%}
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.currentScript.previousElementSibling.classList.add('is-live');</script>
+<script src="{{ 'about-space.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "About · the space between",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "paragraph", "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English." },
+    { "type": "header", "content": "Photo (the day between the suns)" },
+    { "type": "image_picker", "id": "image", "label": "Photo (laptops and tablets)", "info": "Wide photo, at least 2400 px. Empty = the Alexandria balcony at dusk." },
+    { "type": "image_picker", "id": "image_mobile", "label": "Photo (phones)", "info": "Tall photo (4:5). Empty = the tall Alexandria balcony photo." },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "t_eyebrow", "label": "Small line at the top", "info": "Now: “About”. Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_sun_a", "label": "Word on today's sun", "info": "Now: “Today’s sun”. Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_sun_b", "label": "Word on tomorrow's sun", "info": "Now: “Tomorrow’s sun”. Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_lead", "label": "Line that lands in the middle", "info": "Now: “That space between two days is what we make skincare for.” Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_title", "label": "Page heading (for search engines and screen readers)", "info": "Now: “Two suns: today’s, and tomorrow’s.” Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_caption", "label": "Photo caption", "info": "Now: “Alexandria, after sunset”. Leave empty to keep it (English and Arabic)." }
+  ]
+}
+{% endschema %}
