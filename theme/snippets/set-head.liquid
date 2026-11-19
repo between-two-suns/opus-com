@@ -1,0 +1,29 @@
+{%- comment -%}
+  Set pages, the head in the product pages' pattern (DECISIONS 311): part 'eyebrow' = the short line above the title
+  ("Set · 4 full-size products"); part 'head' = the set's headline (bundles.desc.<handle>) and the when-pill
+  ("Morning + night" / "Add sunscreen in the morning"), where single products show their ingredient pill.
+  Params: part, count (eyebrow), product, steps (array of step strings), kind (the bundle-def string)
+{%- endcomment -%}
+{%- if part == 'eyebrow' -%}
+  <p class="step-tag pdp__step">{{ 'set2.eyebrow' | t: count: count }}</p>
+{%- else -%}
+  {%- liquid
+    assign set_when = 'set2.when_am' | t
+    for st in steps
+      if st != '4'
+        assign set_when = 'set2.when_ampm' | t
+      endif
+    endfor
+    comment
+      a routine set without the sunscreen says so (The Night Ritual, The Core Duo); stock-ups don't
+    endcomment
+    assign set_kind = kind | split: '|' | last
+    unless steps contains '4' or set_kind == 'stock'
+      assign set_when = 'set2.when_nospf' | t
+    endunless
+    assign set_head_key = 'bundles.desc.' | append: product.handle
+    assign set_head = set_head_key | t
+  -%}
+  {%- unless set_head contains 'ranslation missing' -%}<p class="v2-benefit v2-benefit--single">{{ set_head }}</p>{%- endunless -%}
+  <p class="pill pdp__hero-ing">{{ set_when }}</p>
+{%- endif -%}

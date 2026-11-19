@@ -214,7 +214,7 @@ html.has-open-dialog .sticky-atc { transform: translateY(110%); }
    sides, see snippets/gallery-photo); the frame then crops only a little, top and bottom. Packs on transparent
    backgrounds keep sitting whole on their tint. */
 @media (min-width: 990px) {
-  .pdp__gallery .gallery__track .gallery__slide:is(.gallery__slide--photo, .gallery__slide--studio-photo) > :is(img, picture > img) { object-fit: cover; object-position: 50% 45%; }
+  .pdp__gallery .gallery__track .gallery__slide:is(.gallery__slide--photo, .gallery__slide--studio-photo) > :is(img, picture > img) { object-fit: cover; object-position: var(--gp-x, 50%) 45%; }
 }
 .routine-strip__offers { display: grid; gap: 12px; margin-block-start: clamp(20px, 3vw, 32px); }
 /* Bundle product page: the packs on a two-colour stage */
