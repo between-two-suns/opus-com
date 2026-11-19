@@ -27,7 +27,8 @@
       {%- for h in rows -%}
         {%- assign sp = all_products[h] -%}
         {%- if sp.id == blank or h == product.handle -%}{%- continue -%}{%- endif -%}
-        {%- render 'bundle-card', product: sp, stage: true -%}
+        {%- comment -%} Every set here now has its own photo (DECISIONS 315): the cards show it; the coloured step list under the name does the comparing {%- endcomment -%}
+        {%- render 'bundle-card', product: sp -%}
       {%- endfor -%}
     </ul>
   </div>
