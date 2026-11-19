@@ -467,11 +467,15 @@
 .s2-ing__in { flex: none; flex-direction: column; gap: 4px; }
 .s2-ing__words { display: grid; gap: 2px; min-inline-size: 0; }
 .s2-ing__name { white-space: normal; }
-.s2-ing__what { white-space: normal; font-size: 15px; font-weight: 550; color: color-mix(in srgb, var(--c-ink) 72%, transparent); }
+.s2-ing__words .s2-ing__what { white-space: normal; font-size: 17px; font-weight: 700; line-height: 1.25; color: var(--c-ink); text-wrap: balance; }
+.s2-ing__words .s2-ing__name { white-space: normal; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-muted); }
+:lang(ar) .s2-ing__words .s2-ing__name { font-size: 13px; letter-spacing: 0; text-transform: none; }
+.s2-ing__words { gap: 5px; }
+.s2-ing__link { padding: 16px 20px; align-items: center; }
 @media (max-width: 989px) { .s2-ing__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 749px) {
   .s2-ing__list { grid-template-columns: minmax(0, 1fr); gap: 6px; }
   .s2-ing__link { padding: 10px 14px; gap: 12px; border-radius: 14px; }
-  .s2-ing__words { gap: 0; }
-  .s2-ing__what { font-size: 14px; }
+  .s2-ing__words { gap: 3px; }
+  .s2-ing__words .s2-ing__what { font-size: 15.5px; }
 }

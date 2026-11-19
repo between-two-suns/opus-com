@@ -84,8 +84,8 @@
                 <span class="s2-ing__dot" data-step="{{ st }}" title="{{ comp.title | escape }}"><span class="visually-hidden">{{ comp.title | escape }}{% unless forloop.last %}, {% endunless %}</span></span>
               {%- endfor -%}
             </span>
-            <span class="s2-ing__words"><span class="s2-ing__name">{{ found.name.value | escape }}</span>
-            {%- if what != blank -%}<span class="s2-ing__what">{{ what }}</span>{%- endif -%}</span>
+            {%- comment -%} The benefit leads; the ingredient is the small label under it (owner: "benefit led", DECISIONS 317) {%- endcomment -%}
+            <span class="s2-ing__words">{%- if what != blank -%}<span class="s2-ing__what">{{ what }}</span>{%- endif -%}<span class="s2-ing__name">{{ found.name.value | escape }}</span></span>
           </a>
         </li>
       {%- endfor -%}
