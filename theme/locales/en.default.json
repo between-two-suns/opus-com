@@ -1442,7 +1442,16 @@
     "yes": "Included",
     "no": "Not included",
     "when_nospf": "Add sunscreen in the morning",
-    "eyebrow": "Set · {{ count }} full-size products"
+    "eyebrow": "Set · {{ count }} full-size products",
+    "stage_word": {
+      "the-full-ritual": "Ritual",
+      "the-night-ritual": "Night",
+      "the-clear-protect-trio": "Trio",
+      "clear-protect-duo": "Duo",
+      "the-core-duo": "Core",
+      "spf-stock-up": "Stock-up",
+      "serum-stock-up": "Stock-up"
+    }
   },
   "about2": {
     "eyebrow": "About",

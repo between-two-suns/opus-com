@@ -1,0 +1,61 @@
+{%- comment -%}
+  Set pages: the first photo in the single products' style (DECISIONS 313). The set's big word behind (set2.stage_word.<handle>,
+  in the set's colours, like RESET behind the cleanser), the packs grouped and tilted at their true relative sizes, and the
+  callouts on the start side naming each step, with a dot in the step's colour. Tapping a pack still goes to its card in
+  "Inside the set" (#set-item-N). Uses the existing pack cutouts; nothing is redrawn.
+  Params: product (the set), units (its steps, repeats included), count (slides, for the label)
+{%- endcomment -%}
+{%- liquid
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign textures = ',texture-foam.svg,texture-drops.svg,texture-cream.svg,texture-sand.svg' | split: ','
+  assign uniq = units | uniq
+  assign first = uniq | first | plus: 0
+  assign last = uniq | last | plus: 0
+  assign word_key = 'set2.stage_word.' | append: product.handle
+  assign word = word_key | t
+  if word contains 'ranslation missing'
+    assign word = ''
+  endif
+  assign tex = textures[first]
+  assign smax = '.65'
+  if units contains '3' or units contains '4'
+    assign smax = '.81'
+  endif
+  if units contains '1'
+    assign smax = '1'
+  endif
+-%}
+<div class="gallery__slide s3-stage" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: 1, count: count }}" data-slide style="--a: var(--c-step-{{ first }}); --b: var(--c-step-{{ last }}); --n: {{ units.size }}; --smax: {{ smax }}">
+  <span class="gallery__texture" aria-hidden="true" style="--tex: url('{{ tex | asset_url }}')"></span>
+  {%- if word != blank -%}<span class="gallery__word s3-stage__word" aria-hidden="true" style="--len: {{ word | size }}">{{ word | escape }}</span>{%- endif -%}
+  <ul class="callouts s3-stage__callouts" role="list" aria-hidden="true">
+    {%- for st in uniq -%}
+      {%- assign si = st | plus: 0 -%}
+      {%- assign nk = 'product.step_name.s' | append: si -%}
+      <li class="callouts__item" style="--k: {{ forloop.index0 }}; --sku-deep: var(--c-step-{{ si }})"><span class="callouts__text">0{{ si }} {{ nk | t }}</span><span class="callouts__line"></span></li>
+    {%- endfor -%}
+  </ul>
+  <ul class="s3-stage__packs" role="list">
+    {%- assign shown = '' -%}
+    {%- for st in units -%}
+      {%- liquid
+        assign si = st | plus: 0
+        assign comp = all_products[step_handles[si]]
+        assign dup = false
+        if shown contains st
+          assign dup = true
+        endif
+        assign shown = shown | append: st
+      -%}
+      <li class="s3-pack" data-step="{{ si }}" style="--k: {{ forloop.index0 }}">
+        {%- unless dup -%}
+          <a class="s3-pack__link" href="#set-item-{{ si }}" aria-label="{{ 'set2.stage_go' | t: name: comp.title }}">
+            {%- render 'cut-img', handle: comp.handle, sizes: '(min-width: 990px) 14vw, 30vw', widths: '120,180,240,360,480', loading: 'eager', class: 's3-pack__img', priority: true -%}
+          </a>
+        {%- else -%}
+          <span class="s3-pack__link" aria-hidden="true">{%- render 'cut-img', handle: comp.handle, sizes: '(min-width: 990px) 14vw, 30vw', widths: '120,180,240,360,480', loading: 'eager', class: 's3-pack__img' -%}</span>
+        {%- endunless -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>

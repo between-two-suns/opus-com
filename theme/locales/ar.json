@@ -1442,7 +1442,16 @@
     "yes": "ضمن المجموعة",
     "no": "غير موجود",
     "when_nospf": "ضيفي واقي الشمس الصبح",
-    "eyebrow": "مجموعة · {{ count }} منتجات بالحجم الكامل"
+    "eyebrow": "مجموعة · {{ count }} منتجات بالحجم الكامل",
+    "stage_word": {
+      "the-full-ritual": "روتين",
+      "the-night-ritual": "الليل",
+      "the-clear-protect-trio": "ثلاثي",
+      "clear-protect-duo": "ثنائي",
+      "the-core-duo": "أساسي",
+      "spf-stock-up": "احتياطي",
+      "serum-stock-up": "احتياطي"
+    }
   },
   "about2": {
     "eyebrow": "حكايتنا",
