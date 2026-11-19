@@ -22,11 +22,11 @@
   endcomment
   case product.handle
     when 'the-full-ritual'
-      assign look = '1,2,2'
+      assign look = '1,2,1'
     when 'the-night-ritual'
       assign look = '2,3,3'
     when 'the-clear-protect-trio'
-      assign look = '1,2,4'
+      assign look = '1,2,2'
     when 'clear-protect-duo'
       assign look = '4,3,2'
     when 'the-core-duo'
@@ -35,8 +35,10 @@
       assign look = first | append: ',' | append: last | append: ',' | append: first
   endcase
   assign look = look | split: ','
-  assign ti = look[2] | plus: 0
-  assign tex = textures[ti]
+  assign ta = look[0] | plus: 0
+  assign tb = look[1] | plus: 0
+  assign tex_a = textures[ta]
+  assign tex_b = textures[tb]
   assign smax = '.65'
   if units contains '3' or units contains '4'
     assign smax = '.81'
@@ -46,7 +48,9 @@
   endif
 -%}
 <div class="gallery__slide s3-stage" role="group" aria-roledescription="slide" aria-label="{{ 'accessibility.slide_n' | t: index: 1, count: count }}" data-slide style="--a: var(--c-step-{{ look[0] }}); --b: var(--c-step-{{ look[1] }}); --at: var(--c-step-{{ look[0] }}-tint); --bt: var(--c-step-{{ look[1] }}-tint); --w: var(--c-step-{{ look[2] }}); --n: {{ units.size }}; --smax: {{ smax }}">
-  <span class="gallery__texture" aria-hidden="true" style="--tex: url('{{ tex | asset_url }}')"></span>
+  {%- comment -%} The two colours' own textures (bubbles, drops, cream, sand), each fading out towards the other side {%- endcomment -%}
+  <span class="gallery__texture s3-stage__tex s3-stage__tex--a" aria-hidden="true" style="--tex: url('{{ tex_a | asset_url }}')"></span>
+  {%- if tex_b != tex_a -%}<span class="gallery__texture s3-stage__tex s3-stage__tex--b" aria-hidden="true" style="--tex: url('{{ tex_b | asset_url }}')"></span>{%- endif -%}
   {%- if word != blank -%}<span class="gallery__word s3-stage__word" aria-hidden="true" style="--len: {{ word | size }}">{{ word | escape }}</span>{%- endif -%}
   {%- comment -%} A stock-up is one product twice: its callouts are the pack's own benefit words, as on its product page; other sets name their steps {%- endcomment -%}
   {%- assign only = all_products[step_handles[first]] -%}

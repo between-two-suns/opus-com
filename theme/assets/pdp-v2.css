@@ -435,7 +435,11 @@
 /* Set pages: the first photo in the single products' style (DECISIONS 313): the set's big word in its colours, the packs
    grouped and tilted, the steps as callouts */
 .pdp--v2 .pdp__gallery .gallery__slide.s3-stage { overflow: hidden; isolation: isolate; background: radial-gradient(70% 60% at 62% 48%, rgba(255, 255, 255, .55), transparent 70%), linear-gradient(115deg, color-mix(in srgb, var(--a) 26%, #fff) 10%, color-mix(in srgb, var(--b) 30%, #fff) 90%); }
-.s3-stage .gallery__texture { opacity: .4; }
+.s3-stage .s3-stage__tex { opacity: .85; }
+.s3-stage .s3-stage__tex--a:has(+ .s3-stage__tex--b) { -webkit-mask-image: linear-gradient(105deg, #000 35%, transparent 70%); mask-image: linear-gradient(105deg, #000 35%, transparent 70%); }
+.s3-stage .s3-stage__tex--b { -webkit-mask-image: linear-gradient(105deg, transparent 35%, #000 70%); mask-image: linear-gradient(105deg, transparent 35%, #000 70%); }
+[dir='rtl'] .s3-stage .s3-stage__tex--a:has(+ .s3-stage__tex--b) { -webkit-mask-image: linear-gradient(-105deg, #000 35%, transparent 70%); mask-image: linear-gradient(-105deg, #000 35%, transparent 70%); }
+[dir='rtl'] .s3-stage .s3-stage__tex--b { -webkit-mask-image: linear-gradient(-105deg, transparent 35%, #000 70%); mask-image: linear-gradient(-105deg, transparent 35%, #000 70%); }
 .s3-stage .s3-stage__word { color: oklch(from var(--w) .62 calc(c * 1.25) h); }
 @supports not (color: oklch(from red l c h)) { .s3-stage .s3-stage__word { color: color-mix(in srgb, var(--w) 75%, var(--c-ink)); } }
 .s3-stage__packs { position: absolute; z-index: 1; inset-block: 17% 7%; inset-inline: 33% 3%; gap: 0; display: flex; align-items: flex-end; justify-content: center; list-style: none; margin: 0; padding: 0; }
