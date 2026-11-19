@@ -1478,3 +1478,15 @@ p, li, dd, figcaption, .t-lead, .t-small { text-wrap: pretty; }
   :lang(ar) .welcome.is-mini .welcome__title { font-size: 16px; }
   body:has(.welcome.is-mini:not([hidden])) .wa-fab { opacity: 1; pointer-events: auto; }
 }
+
+/* Safari: a drop-shadow on an image inside (or as) a moving/fading layer is drawn in the layer's rectangle, so the shadow
+   shows a box edge while it animates (owner's videos, DECISIONS 316: set packs on hover, the home day-line packs while
+   scrolling). Giving every shadowed image its own layer for good makes Safari size that layer to include the shadow.
+   Safari only (hanging-punctuation is a Safari-only property); other browsers are unchanged. */
+@supports (hanging-punctuation: first) {
+  .acct-out__cut, .acct-step__cut, .dm-pk__cut, .setsx-pack img, .bundle__pack img, .builder__bottle img, .cr-reel__media img,
+  .hero__img, .lab__bottle img, .dayline__bottle img, .cs__bottle img, .story__media .story__img--cutout, .story__media .story__pack,
+  .scan__pick-media img, .scan__trio img, .scan__pack img, .v2-opt__packs img, .v2-how__pack img, .v2-pair__visual .v2-pair__cut,
+  .s2-pack__img, .s3-pack__img, .gallery__slide--studio .gallery__cutout, .routine-strip__media .routine-strip__pack, .creel__icon svg,
+  .hh-b img, .hh-fly img, .rf-hero img { will-change: transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+}
