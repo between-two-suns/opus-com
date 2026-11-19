@@ -460,3 +460,18 @@
 .s3-stage .s3-stage__callouts .callouts__text { max-inline-size: none; }
 :lang(ar) .s3-stage .s3-stage__word { inset-block-start: 13%; }
 @media (max-width: 989px) { .s3-stage__packs { inset-block: 26% 8%; inset-inline: 30% 4%; } }
+
+/* Set page key ingredients as a tidy list (DECISIONS 317): name, and under it what it does for her; 3 columns on laptops */
+.s2-ing__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.s2-ing__link { display: flex; align-items: center; gap: 14px; block-size: 100%; padding: 14px 18px; border-radius: 18px; }
+.s2-ing__in { flex: none; flex-direction: column; gap: 4px; }
+.s2-ing__words { display: grid; gap: 2px; min-inline-size: 0; }
+.s2-ing__name { white-space: normal; }
+.s2-ing__what { white-space: normal; font-size: 15px; font-weight: 550; color: color-mix(in srgb, var(--c-ink) 72%, transparent); }
+@media (max-width: 989px) { .s2-ing__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 749px) {
+  .s2-ing__list { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .s2-ing__link { padding: 10px 14px; gap: 12px; border-radius: 14px; }
+  .s2-ing__words { gap: 0; }
+  .s2-ing__what { font-size: 14px; }
+}

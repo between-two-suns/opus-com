@@ -60,8 +60,15 @@
             endfor
           endfor
           assign in_steps = in_steps | remove_first: ',' | split: ','
-          assign what_key = 'pdp2.ing.' | append: h | append: '.what'
+          comment
+            What it does for her (set2.ing_ben.<handle>, DECISIONS 317); the product pages keep "what it is" next to their benefit tick
+          endcomment
+          assign what_key = 'set2.ing_ben.' | append: h
           assign what = what_key | t
+          if what contains 'ranslation missing'
+            assign what_key = 'pdp2.ing.' | append: h | append: '.what'
+            assign what = what_key | t
+          endif
           if what contains 'ranslation missing'
             assign what = ''
           endif
@@ -77,8 +84,8 @@
                 <span class="s2-ing__dot" data-step="{{ st }}" title="{{ comp.title | escape }}"><span class="visually-hidden">{{ comp.title | escape }}{% unless forloop.last %}, {% endunless %}</span></span>
               {%- endfor -%}
             </span>
-            <span class="s2-ing__name">{{ found.name.value | escape }}</span>
-            {%- if what != blank -%}<span class="s2-ing__what">{{ what }}</span>{%- endif -%}
+            <span class="s2-ing__words"><span class="s2-ing__name">{{ found.name.value | escape }}</span>
+            {%- if what != blank -%}<span class="s2-ing__what">{{ what }}</span>{%- endif -%}</span>
           </a>
         </li>
       {%- endfor -%}
