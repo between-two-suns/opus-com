@@ -1,0 +1,30 @@
+{%- comment -%}
+  The routine bar (01–04) at the top of product and set pages. Product pages: each step links to its product. Set pages
+  (set_v2): the steps inside are coloured and scroll to their card in "Inside the set"; steps not inside are greyed
+  text (DECISIONS 311, 313). Params: product, set_v2, set_steps (array of step strings)
+{%- endcomment -%}
+    {%- assign tab_source = settings.routine_collection | default: collections.all -%}
+    {%- comment -%} Routine tabs: at the top on phones and desktop; on desktop they stay pinned under the header through the buy section. {%- endcomment -%}
+    {%- comment -%} Sets show the same bar, the steps inside marked, so the picture sits at the same size and place as on the product pages (DECISIONS 311). {%- endcomment -%}
+      <nav class="pdp-tabs pdp-tabs--top{% if set_v2 %} pdp-tabs--set{% endif %}" aria-label="{{ 'product.routine_tabs' | t }}">
+        <ol class="pdp-tabs__list" role="list">
+          {%- for s in (1..4) -%}
+            {%- for p in tab_source.products limit: 12 -%}
+              {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
+              {%- assign ps = ps | strip | plus: 0 -%}
+              {%- if ps == s -%}
+                {%- assign s_str = s | append: '' -%}
+                <li class="pdp-tabs__item{% if set_v2 %}{% if set_steps contains s_str %} is-in{% else %} is-out{% endif %}{% endif %}" data-step="{{ s }}">
+                  {%- comment -%} On a set the bar stays on the page: a step inside scrolls to its card in "Inside the set", a step not inside is plain text (DECISIONS 313). {%- endcomment -%}
+                  {%- if set_v2 -%}{%- if set_steps contains s_str -%}{%- assign tab_href = '#set-item-' | append: s -%}{%- else -%}{%- assign tab_href = '' -%}{%- endif -%}{%- else -%}{%- assign tab_href = p.url -%}{%- endif -%}
+                  {%- if tab_href != blank -%}<a class="pdp-tabs__link" href="{{ tab_href }}"{% if p.id == product.id %} aria-current="page"{% endif %}>{%- else -%}<span class="pdp-tabs__link">{%- endif -%}
+                    <span class="pdp-tabs__num">0{{ s }}</span>
+                    <span class="pdp-tabs__name">{{ p.metafields.bts.step_label.value | default: p.title | escape }}</span>
+                  {%- if tab_href != blank -%}</a>{%- else -%}</span>{%- endif -%}
+                </li>
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </ol>
+      </nav>

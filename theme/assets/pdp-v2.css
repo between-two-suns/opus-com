@@ -428,3 +428,7 @@
 .pdp-tabs--set .is-in .pdp-tabs__link { color: var(--c-ink); }
 .pdp-tabs--set .is-in .pdp-tabs__link::after { background: var(--sku); }
 .pdp-tabs--set .is-out .pdp-tabs__link { opacity: .45; }
+/* Set pages: the packs-stage thumbnail shows the set's packs side by side (DECISIONS 313) */
+.v2-thumb--packs { display: flex; align-items: flex-end; justify-content: center; gap: 1px; padding: 6px 4px; background: linear-gradient(105deg, var(--c-step-1-tint), var(--c-step-3-tint)); }
+.v2-thumb--packs .v2-thumb__pack { inline-size: auto; block-size: 80%; object-fit: contain; min-inline-size: 0; flex: 0 1 auto; }
+.pdp-tabs--set .is-out .pdp-tabs__link { cursor: default; }

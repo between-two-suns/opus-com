@@ -135,31 +135,7 @@
 
 <div class="pdp pdp--v2" data-step="{{ step }}" data-tone="sku" data-product-title="{{ pdp_title | escape }}">
   <div class="container">
-    {%- assign tab_source = settings.routine_collection | default: collections.all -%}
-    {%- comment -%} Routine tabs: at the top on phones and desktop; on desktop they stay pinned under the header through the buy section. {%- endcomment -%}
-    {%- comment -%} Sets show the same bar, the steps inside marked, so the picture sits at the same size and place as on the product pages (DECISIONS 311). {%- endcomment -%}
-    {%- if step > 0 or set_v2 -%}
-      <nav class="pdp-tabs pdp-tabs--top{% if set_v2 %} pdp-tabs--set{% endif %}" aria-label="{{ 'product.routine_tabs' | t }}">
-        <ol class="pdp-tabs__list" role="list">
-          {%- for s in (1..4) -%}
-            {%- for p in tab_source.products limit: 12 -%}
-              {%- capture ps -%}{% render 'product-step', product: p %}{%- endcapture -%}
-              {%- assign ps = ps | strip | plus: 0 -%}
-              {%- if ps == s -%}
-                {%- assign s_str = s | append: '' -%}
-                <li class="pdp-tabs__item{% if set_v2 %}{% if set_steps contains s_str %} is-in{% else %} is-out{% endif %}{% endif %}" data-step="{{ s }}">
-                  <a class="pdp-tabs__link" href="{{ p.url }}"{% if p.id == product.id %} aria-current="page"{% endif %}>
-                    <span class="pdp-tabs__num">0{{ s }}</span>
-                    <span class="pdp-tabs__name">{{ p.metafields.bts.step_label.value | default: p.title | escape }}</span>
-                  </a>
-                </li>
-                {%- break -%}
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endfor -%}
-        </ol>
-      </nav>
-    {%- endif -%}
+    {%- if step > 0 or set_v2 -%}{%- render 'pdp-tabs', product: product, set_v2: set_v2, set_steps: set_steps -%}{%- endif -%}
 
     <div class="pdp__grid">
       {%- comment -%} Gallery: identical to the live page (studio stage + callouts), plus thumbnails on desktop. {%- endcomment -%}
@@ -247,6 +223,8 @@
               {%- endfor -%}
               {%- endfor -%}
             </div>
+          {%- elsif set_v2 -%}
+            {%- render 'set-thumbs', product: product, units: set_units, stage: true -%}
           {%- endif -%}
         {%- endif -%}
       </media-gallery>

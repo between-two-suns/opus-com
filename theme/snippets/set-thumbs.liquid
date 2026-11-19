@@ -1,0 +1,37 @@
+{%- comment -%}
+  Set pages: the photo strip under the picture, like the single products' (DECISIONS 313), in the gallery's order
+  (snippets/pdp-bundle part 'gallery'): the packs stage (when set2 is on), the set photo, then each product's studio photo.
+  Params: product (the set), units (its steps, repeats included), stage (true when the packs stage is the first slide)
+{%- endcomment -%}
+{%- liquid
+  assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+  assign t = 0
+  assign uniq = units | uniq
+-%}
+<div class="v2-thumbs" aria-hidden="true">
+  {%- if stage -%}
+    <button type="button" class="v2-thumb v2-thumb--packs" data-thumb="0" tabindex="-1">
+      {%- for st in uniq -%}
+        {%- assign si = st | plus: 0 -%}
+        {%- render 'cut-img', handle: step_handles[si], sizes: '20px', widths: '60', loading: 'lazy', class: 'v2-thumb__pack' -%}
+      {%- endfor -%}
+    </button>
+    {%- assign t = 1 -%}
+  {%- endif -%}
+  {%- assign sk = 'bts-' | append: product.handle | append: '.jpg' -%}
+  {%- assign sp = images[sk] -%}
+  <button type="button" class="v2-thumb" data-thumb="{{ t }}" tabindex="-1">
+    {%- if sp.width != blank -%}{{ sp | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '64px', alt: '' }}{%- endif -%}
+  </button>
+  {%- assign t = t | plus: 1 -%}
+  {%- for st in uniq -%}
+    {%- assign si = st | plus: 0 -%}
+    {%- assign comp = all_products[step_handles[si]] -%}
+    {%- assign ck = 'bts-' | append: comp.handle | append: '-studio.jpg' -%}
+    {%- assign studio = images[ck] -%}{%- if studio.width == blank -%}{%- assign studio = comp.featured_media -%}{%- endif -%}
+    <button type="button" class="v2-thumb" data-thumb="{{ t }}" data-step="{{ si }}" tabindex="-1">
+      {%- if studio -%}{{ studio | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '64px', alt: '' }}{%- endif -%}
+    </button>
+    {%- assign t = t | plus: 1 -%}
+  {%- endfor -%}
+</div>
