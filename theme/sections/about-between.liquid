@@ -1,0 +1,67 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About hero, "the space between" (DECISIONS 317, demo). The name, shown rather than spelled out: today's sun on one
+  side, tomorrow's on the other, and between them a tall window onto a real evening in Alexandria (the space between
+  two days). One scroll moment: the suns part, the window opens to the full screen, the title turns light over the
+  dusk sky. About one screen of scroll, then the page moves on. Mirrors in Arabic (today's sun on the right).
+  Without JS or with reduced motion: the first frame, still (title, line, the window between the suns).
+{%- endcomment -%}
+{%- liquid
+  assign img = section.settings.image | default: images['bts-climate-humidity-wide.jpg']
+  assign img_m = section.settings.image_mobile | default: images['bts-climate-humidity-tall.jpg']
+  if section.settings.t_title != blank
+    assign title = section.settings.t_title
+  else
+    assign title = 'about2.btw_title' | t
+  endif
+  assign title_words = title | split: ' '
+  assign alt = img.alt | default: ''
+  if alt == blank
+    assign alt = 'about2.btw_alt' | t
+  endif
+-%}
+<section class="ab-btw" data-ab-btw aria-labelledby="AbBtw-{{ section.id }}">
+  <div class="ab-btw__stage">
+    <div class="ab-btw__frame">
+      {%- if img != blank and img.width != blank -%}
+        <picture>
+          {%- if img_m != blank and img_m.width != blank -%}
+            <source media="(max-width: 749px)" srcset="{{ img_m | image_url: width: 600 }} 600w, {{ img_m | image_url: width: 900 }} 900w, {{ img_m | image_url: width: 1200 }} 1200w" sizes="100vw">
+          {%- endif -%}
+          {{ img | image_url: width: 2400 | image_tag: widths: '900,1200,1600,2000,2400', sizes: '100vw', class: 'ab-btw__img', alt: alt, loading: 'eager', fetchpriority: 'high' }}
+        </picture>
+      {%- endif -%}
+      <span class="ab-btw__scrim" aria-hidden="true"></span>
+      <p class="ab-btw__cap" aria-hidden="true">{% if section.settings.t_caption != blank %}{{ section.settings.t_caption }}{% else %}{{ 'about2.btw_caption' | t }}{% endif %}</p>
+    </div>
+    {%- render 'about-orb', tone: 'green', side: 'start', class: 'ab-btw__sun ab-btw__sun--a', sizes: '(min-width: 750px) 34vw, 56vw' -%}
+    {%- render 'about-orb', tone: 'blue', side: 'end', class: 'ab-btw__sun ab-btw__sun--b', sizes: '(min-width: 750px) 34vw, 56vw' -%}
+    <div class="container ab-btw__copy">
+      <p class="t-eyebrow">{% if section.settings.t_eyebrow != blank %}{{ section.settings.t_eyebrow }}{% else %}{{ 'about2.eyebrow' | t }}{% endif %}</p>
+      <h1 class="ab-btw__title" id="AbBtw-{{ section.id }}">{% for w in title_words %}<span class="w" style="--i: {{ forloop.index0 }}"><span>{{ w }}</span></span>{% unless forloop.last %}{{ ' ' }}{% endunless %}{% endfor %}</h1>
+      <p class="ab-btw__lead">{% if section.settings.t_lead != blank %}{{ section.settings.t_lead }}{% else %}{{ 'about2.b4' | t }}{% endif %}</p>
+    </div>
+    <p class="ab-btw__hint" aria-hidden="true">{{ 'about2.scroll' | t }}<span class="ab-btw__hint-line"></span></p>
+  </div>
+</section>
+{%- comment -%} Scroll mode is set before the first paint, so nothing shifts when the script arrives. {%- endcomment -%}
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.currentScript.previousElementSibling.classList.add('is-live');</script>
+<script src="{{ 'about-between.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "About · between two suns",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "paragraph", "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English." },
+    { "type": "header", "content": "Photo" },
+    { "type": "image_picker", "id": "image", "label": "Photo (laptops and tablets)", "info": "Wide photo, at least 2400 px. Empty = the Alexandria balcony at dusk." },
+    { "type": "image_picker", "id": "image_mobile", "label": "Photo (phones)", "info": "Tall photo (4:5). Empty = the tall Alexandria balcony photo." },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "t_eyebrow", "label": "Small line above the heading", "info": "Now: “About”. Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_title", "label": "Heading", "info": "Now: “Two suns: today’s, and tomorrow’s.” Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_lead", "label": "Paragraph", "info": "Now: “That space between two days is what we make skincare for.” Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_caption", "label": "Photo caption", "info": "Now: “Alexandria, after sunset”. Leave empty to keep it (English and Arabic)." }
+  ]
+}
+{% endschema %}
