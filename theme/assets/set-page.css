@@ -25,10 +25,7 @@
   .pdp-break--set[style*='--n: 1'] { grid-template-columns: minmax(0, 1fr); }
   .pdp-break--set[style*='--n: 1'] .pdp-break__panel { aspect-ratio: 4 / 3; }
 }
-/* 3 · "Best for" on sets: one tidy line of words, not two rows of chips */
-.pdp--v2[data-step='0'] .v2-who__list { gap: 4px 0; }
-.pdp--v2[data-step='0'] .v2-who__list li { min-block-size: 0; padding: 0; background: none; font-size: 15px; font-weight: 600; }
-.pdp--v2[data-step='0'] .v2-who__list li:not(:last-child)::after { content: '·'; margin-inline: 8px; color: var(--c-muted); }
+/* 3 · "Best for" on sets: the same pills as the product pages (DECISIONS 311) */
 
 /* 4 · stars on sets: the rating of the products inside */
 .v2-set-rating { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 2px 0 0; font-size: 14.5px; color: var(--c-muted); }

@@ -91,7 +91,7 @@ function buildData(locale, cart) {
       url: `${prefix}/products/${p.handle}?variant=${p.variantId}`, featured_media: null,
     };
     // Same gallery order as the store (cleanser has no back shot: the old label print was detached).
-    const order = ['front.png', 'studio.jpg', 'application.jpg', 'texture.jpg', 'detail.png', 'detail-open.png', 'angle.png', p.handle === 'daily-reset-cleanser' ? '' : 'back.png', 'in-hand.jpg', 'application-2.jpg'].map((k) => `bts-${p.handle}-${k}`).filter(hasPhoto);
+    const order = ['front.png', 'studio.jpg', 'application.jpg', 'texture.jpg', 'detail.png', 'detail-open.png', 'angle.png', 'back.png', 'in-hand.jpg', 'application-2.jpg'].map((k) => `bts-${p.handle}-${k}`).filter(hasPhoto);
     const pics = order.length ? order.map((n) => new ImageDrop(photoObj(n, p.title))) : [new ImageDrop(p.photo)];
     if (order.length) p.metafields.bts.cutout = photoObj(order[0]);
     const photo = pics[0];

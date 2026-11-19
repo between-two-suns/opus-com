@@ -1441,7 +1441,8 @@
     "cmp_view": "View",
     "yes": "Included",
     "no": "Not included",
-    "when_nospf": "Add sunscreen in the morning"
+    "when_nospf": "Add sunscreen in the morning",
+    "eyebrow": "Set · {{ count }} full-size products"
   },
   "about2": {
     "eyebrow": "About",

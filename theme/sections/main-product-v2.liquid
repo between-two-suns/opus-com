@@ -256,12 +256,7 @@
           {%- if step > 0 -%}
             {%- assign step_key = 'product.step_name.s' | append: step -%}
             <p class="step-tag pdp__step">{{ 'product.step' | t: number: step }} · {{ step_key | t }}</p>
-          {%- endif -%}
-          <h1 class="pdp__title v2-title">{{ pdp_title | escape }}</h1>
-          {%- render 'jdgm-badge', product: product -%}
-          {%- render 'set-rating', steps: set_steps -%}
-          {%- comment -%} Single products: the photo's callouts carry the pack benefit, so the head names the key ingredients and who it's for. Sets: one quiet facts line, then who it's for (DECISIONS 229). {%- endcomment -%}
-          {%- if set_v2 -%}
+          {%- elsif set_v2 -%}
             {%- liquid
               assign set_when = 'set2.when_am' | t
               for st in set_steps
@@ -277,7 +272,16 @@
                 assign set_when = 'set2.when_nospf' | t
               endunless
             -%}
-            <p class="v2-set-facts">{{ 'set2.facts' | t: count: set_units.size, when: set_when }}</p>
+            <p class="step-tag pdp__step">{{ 'set2.eyebrow' | t: count: set_units.size }}</p>
+          {%- endif -%}
+          <h1 class="pdp__title v2-title">{{ pdp_title | escape }}</h1>
+          {%- render 'jdgm-badge', product: product -%}
+          {%- render 'set-rating', steps: set_steps -%}
+          {%- comment -%} Single products: the photo's callouts carry the pack benefit, so the head names the key ingredients and who it's for. Sets: one quiet facts line, then who it's for (DECISIONS 229). {%- endcomment -%}
+          {%- if set_v2 -%}
+            {%- assign set_head_key = 'bundles.desc.' | append: product.handle -%}{%- assign set_head = set_head_key | t -%}
+            {%- unless set_head contains 'ranslation missing' -%}<p class="v2-benefit v2-benefit--single">{{ set_head }}</p>{%- endunless -%}
+            <p class="pill pdp__hero-ing">{{ set_when }}</p>
             {%- capture who -%}{% render 'pdp2-concerns', steps: set_steps_csv %}{%- endcapture -%}
             {%- if who != blank -%}
               <div class="v2-who">
