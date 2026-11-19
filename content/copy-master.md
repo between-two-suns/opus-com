@@ -19,6 +19,22 @@ Edit copy here first, then in the theme locales.
 - Sign-up terms are the full real terms (Stock-Up exclusion and no combining included).
 - Lines that didn't fit the design were shortened in the theme (hero body to one sentence, set and step bodies moved to product and set pages). The exact on-site wording is in theme/locales; where it differs from this file, the theme wording was chosen to fit and keeps the same benefit.
 
+## Set pages: key ingredients (owner, 2026-11-19, DECISIONS 317)
+Ingredient benefits are stated as what each ingredient is known to do ("helps", "the look of"); no medical words.
+Heading: **Everything your skin needs. One routine.** / **كل اللي بشرتك محتاجاه، في روتين واحد**
+| Ingredient | EN | AR |
+|---|---|---|
+| Zinc PCA | Keeps shine in check | يقلّل اللمعة |
+| Niacinamide | Refines the look of pores | يحسّن مظهر المسام |
+| Tranexamic Acid | Fades the look of dark spots | يخفّف مظهر البقع الداكنة |
+| Hyaluronic Acid | Bouncy, hydrated skin | بشرة مرطّبة ومشدودة |
+| Ceramides | Locks moisture in | يحبس الترطيب جوّه البشرة |
+| UVA + UVB filters | Guards against sun spots & early ageing | يحمي من بقع الشمس وعلامات التقدّم في السن |
+| Panthenol | Softer, smoother skin | بشرة أنعم وأملس |
+| Centella | Calms stressed skin | يهدّي البشرة المجهدة |
+| Bisabolol | Keeps skin comfortable in the heat | يخلّي البشرة مرتاحة في الحر |
+Product pages keep "what it is" next to the name (their benefit tick and explanation sit under it).
+
 ## Rollout status
 | Area | Status |
 |---|---|
