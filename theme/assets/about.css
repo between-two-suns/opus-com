@@ -329,3 +329,112 @@
   .ab-btw__img { object-position: 74% 40%; }
   .ab-btw__hint { display: none !important; }
 }
+
+/* ---------- About hero, round 2: "the space between" (DECISIONS 319, demo) ----------
+   Two big suns frame the screen, almost touching; the gap between the circles (the brand's )( shape, made by the
+   circles themselves) is the only window onto the day. --p (0 → 1, from about-space.js) sets today's sun and raises
+   tomorrow's while the gap opens to the whole screen; --mx (-1 → 1) leans the gap toward the pointer on laptops.
+   Geometry is in container units of the stage, so the suns, the words and the clip stay locked together. */
+.ab-sp {
+  --p: 0; --mx: 0;
+  position: relative; margin-block-start: calc(-1 * var(--header-h)); background: var(--c-daylight, #fff); color: var(--c-ink);
+}
+.ab-sp.is-live { block-size: 230svh; }
+.ab-sp__stage {
+  position: relative; overflow: clip; isolation: isolate; block-size: 100svh; container-type: size;
+  --D: min(135cqh, 64cqw); --g0: 5cqw; --cx: calc(50cqw + var(--mx) * 1.4cqw); --cy: 50cqh;
+  --g: calc(var(--g0) + var(--p) * (100cqw + var(--D) * .9));
+  --xl: calc(var(--cx) - var(--g) / 2 - var(--D)); --xr: calc(var(--cx) + var(--g) / 2);
+}
+.ab-sp.is-live .ab-sp__stage { position: sticky; inset-block-start: 0; }
+
+/* The day: only the band between the two suns' centres shows; the suns (opaque) cover the rest of it. */
+.ab-sp__day {
+  position: absolute; inset: 0; z-index: 0; background: #2a2f4a;
+  clip-path: inset(0 max(0px, calc(100cqw - var(--cx) - var(--g) / 2 - var(--D) / 2)) 0 max(0px, calc(var(--cx) - var(--g) / 2 - var(--D) / 2)));
+}
+.ab-sp__day picture, .ab-sp__img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; }
+.ab-sp__img { object-fit: cover; object-position: 40% 45%; transform: scale(calc(1.12 - .12 * var(--p))); }
+/* Golden hour while today's sun is still up, then dusk; the dusk layer also carries the line. */
+.ab-sp__gold { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; opacity: clamp(0, calc(1 - var(--p) * 1.6), 1);
+  background: radial-gradient(90% 80% at 50% 70%, rgb(255 190 110 / .95), rgb(255 140 80 / .7) 60%, rgb(240 120 90 / .5)); }
+.ab-sp__dusk { position: absolute; inset: 0; pointer-events: none; opacity: clamp(0, calc((var(--p) - .45) * 2.4), 1);
+  background: radial-gradient(70% 60% at 50% 52%, rgb(16 18 36 / .5), rgb(16 18 36 / .2) 70%, transparent), linear-gradient(to bottom, rgb(16 18 36 / .35), transparent 30%, transparent 70%, rgb(16 18 36 / .5)); }
+
+/* The suns. Today's sets (sinks), tomorrow's rises; each carries its name on the side that faces the space. */
+.ab-sp__sun { position: absolute; z-index: 1; inline-size: var(--D); aspect-ratio: 1; inset-inline-start: auto; left: var(--x); top: calc(var(--cy) - var(--D) / 2 + var(--dy)); }
+.ab-sp__sun--a { --x: var(--xl); --dy: calc(var(--p) * 30cqh); --side: -1; }
+.ab-sp__sun--b { --x: var(--xr); --dy: calc(var(--p) * -30cqh); --side: 1; }
+[dir='rtl'] .ab-sp__sun--a { --x: var(--xr); --side: 1; }
+[dir='rtl'] .ab-sp__sun--b { --x: var(--xl); --side: -1; }
+.ab-sp__orb { inset: 0; inline-size: 100%; --spin: calc(var(--p) * 40deg * var(--side)); }
+.ab-sp__word {
+  position: absolute; inset-block-start: 50%; translate: 0 -50%; max-inline-size: 6.5ch; color: var(--c-ink);
+  font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .9; letter-spacing: -.005em;
+  font-size: calc(var(--D) * .1); opacity: clamp(0, calc(1 - var(--p) * 2.2), 1);
+}
+/* the word sits toward the space: left sun → right-aligned near its right edge, and the mirror for the right sun */
+.ab-sp__sun--a .ab-sp__word { right: 9%; text-align: right; }
+.ab-sp__sun--b .ab-sp__word { left: 9%; text-align: left; }
+[dir='rtl'] .ab-sp__sun--a .ab-sp__word { right: auto; left: 9%; text-align: left; }
+[dir='rtl'] .ab-sp__sun--b .ab-sp__word { left: auto; right: 9%; text-align: right; }
+:lang(ar) .ab-sp__word { text-transform: none; line-height: 1.15; letter-spacing: 0; font-size: calc(var(--D) * .085); max-inline-size: 5.5em; }
+
+.ab-sp__eyebrow { position: absolute; z-index: 2; inset-block-start: calc(var(--header-h) + 18px); left: var(--cx); translate: -50% 0; margin: 0; color: #fff; text-shadow: 0 1px 10px rgb(0 0 0 / .35); white-space: nowrap; }
+.ab-sp__lead {
+  position: absolute; z-index: 2; inset-block-start: 50%; left: var(--cx); translate: -50% calc(-50% + (1 - var(--lo, 1)) * 18px); margin: 0;
+  inline-size: min(20ch, calc(100cqw - 2 * var(--gutter))); text-align: center; color: #fff; text-wrap: balance;
+  font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .95; font-size: clamp(40px, min(6.4cqw, 10cqh), 120px);
+  --lo: clamp(0, calc((var(--p) - .5) * 3.2), 1); opacity: var(--lo); text-shadow: 0 2px 30px rgb(10 12 30 / .35);
+}
+:lang(ar) .ab-sp__lead { text-transform: none; line-height: 1.25; font-size: clamp(32px, min(4.6cqw, 7.4cqh), 88px); inline-size: min(16em, calc(100cqw - 2 * var(--gutter))); }
+.ab-sp__cap {
+  position: absolute; z-index: 2; inset-inline-end: var(--gutter); inset-block-end: calc(var(--dock-h, 0px) + 24px); margin: 0; color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: clamp(0, calc((var(--p) - .8) * 5), 1);
+}
+:lang(ar) .ab-sp__cap { letter-spacing: 0; font-size: 14px; text-transform: none; }
+.ab-sp__hint {
+  position: absolute; z-index: 2; inset-block-end: calc(var(--dock-h, 0px) + 22px); left: var(--cx); translate: -50% 0; margin: 0; display: none; flex-direction: column; align-items: center; gap: 8px;
+  color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: clamp(0, calc(.8 - var(--p) * 6), .8);
+}
+.ab-sp.is-live .ab-sp__hint { display: flex; }
+:lang(ar) .ab-sp__hint { letter-spacing: 0; font-size: 13px; }
+.ab-sp__hint-line { inline-size: 1.5px; block-size: 28px; background: currentColor; transform-origin: top; animation: ab-hint 1.8s var(--ease-in-out) infinite; }
+
+/* Arrival: the two suns roll in from the sides and settle almost touching; the space and its words follow. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .ab-sp.is-live .ab-sp__sun { animation: ab-sp-in 1.3s cubic-bezier(.2, .8, .2, 1) .05s both; }
+  .js .ab-sp.is-live .ab-sp__word, .js .ab-sp.is-live .ab-sp__eyebrow { animation: ab-sp-fade .8s ease .75s both; }
+}
+@keyframes ab-sp-in { from { translate: calc(var(--side) * 34cqw) 0; } }
+@keyframes ab-sp-fade { from { opacity: 0; } }
+
+/* Phones: the same idea on its side. Today's sun above, tomorrow's below, the space a band across the middle. */
+@media (max-width: 749px) {
+  .ab-sp { margin-block-start: 0; }
+  .ab-sp.is-live { block-size: 210svh; }
+  .ab-sp__stage {
+    block-size: calc(100svh - var(--header-h));
+    --D: min(150cqw, 66cqh); --g0: 4.5cqh; --cx: 50cqw; --cyy: 50cqh;
+    --g: calc(var(--g0) + var(--p) * (100cqh + var(--D) * .9));
+    --yt: calc(var(--cyy) - var(--g) / 2 - var(--D)); --yb: calc(var(--cyy) + var(--g) / 2);
+  }
+  .ab-sp.is-live .ab-sp__stage { inset-block-start: var(--header-h); }
+  .ab-sp__day { clip-path: inset(max(0px, calc(var(--cyy) - var(--g) / 2 - var(--D) / 2)) 0 max(0px, calc(100cqh - var(--cyy) - var(--g) / 2 - var(--D) / 2)) 0); }
+  .ab-sp__img { object-position: 70% 40%; }
+  .ab-sp__sun { left: calc(50cqw - var(--D) / 2 + var(--dx)); top: var(--y); }
+  .ab-sp__sun--a, [dir='rtl'] .ab-sp__sun--a { --y: var(--yt); --dx: calc(var(--p) * -24cqw); --side: -1; }
+  .ab-sp__sun--b, [dir='rtl'] .ab-sp__sun--b { --y: var(--yb); --dx: calc(var(--p) * 24cqw); --side: 1; }
+  .ab-sp__word, .ab-sp__sun--a .ab-sp__word, .ab-sp__sun--b .ab-sp__word,
+  [dir='rtl'] .ab-sp__sun--a .ab-sp__word, [dir='rtl'] .ab-sp__sun--b .ab-sp__word {
+    left: 50%; right: auto; translate: -50% 0; text-align: center; inset-block-start: auto; max-inline-size: 8ch; font-size: calc(var(--D) * .095);
+  }
+  :lang(ar) .ab-sp__word { font-size: calc(var(--D) * .08); }
+  .ab-sp__sun--a .ab-sp__word { inset-block-end: 9%; }
+  .ab-sp__sun--b .ab-sp__word { inset-block-start: 9%; }
+  .ab-sp__eyebrow { color: var(--c-ink); text-shadow: none; inset-block-start: 16px; }
+  .ab-sp__hint { color: var(--c-ink); }
+  .ab-sp__lead { font-size: min(11cqw, 7cqh); }
+  :lang(ar) .ab-sp__lead { font-size: min(8.6cqw, 5.6cqh); }
+  @keyframes ab-sp-in { from { translate: 0 calc(var(--side) * 40cqh); } }
+}
