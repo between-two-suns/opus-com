@@ -76,7 +76,7 @@
   </div>
 </section>
 {%- comment -%} Scroll mode is set before the first paint, so nothing shifts when the script arrives. {%- endcomment -%}
-<script>(function(s){var h=document.querySelector('.shopify-section:has(> .site-header-wrap)')||document.querySelector('.site-header-wrap');if(h)s.style.setProperty('--hdr',h.offsetHeight+'px');if(window.CSS&&CSS.supports('animation-timeline','view()')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)s.classList.add('is-live');})(document.currentScript.previousElementSibling);</script>
+<script>(function(s){var h=document.querySelector('.shopify-section:has(> .site-header-wrap)')||document.querySelector('.site-header-wrap');if(h)s.style.setProperty('--hdr',h.offsetHeight+'px');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)s.classList.add(window.CSS&&CSS.supports('animation-timeline','view()')?'is-live':'is-js');})(document.currentScript.previousElementSibling);</script>
 <script src="{{ 'about-space.js' | asset_url }}" type="module" defer></script>
 
 {% schema %}
