@@ -1,8 +1,8 @@
 {{ 'about.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  About, made in Egypt (DECISIONS 321, demo). The place first: a warm Cairo apartment edge to edge with "From here, for skin that
-  lives here." set huge across its foot. Then the four checkable facts set like the back of a pack: a ruled label
-  panel, small caps keys, plain values. (The climate list stays on the Climate page, per the copy master.)
+  About, made in Egypt (DECISIONS 328, demo). The home page's photo band, same build: a full-width photo with a white
+  card holding the eyebrow, the heading, the four facts anyone can check (as quiet label / value rows) and one button.
+  Phones: the photo, then the card overlapping its foot.
 {%- endcomment -%}
 {%- liquid
   assign img = section.settings.image | default: images['bts-scene-home-city.jpg']
@@ -15,23 +15,23 @@
 -%}
 <section class="ab-here" aria-labelledby="AbHere-{{ section.id }}">
   <div class="ab-here__media">
-    {%- if img != blank -%}
-      {{ img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600,900,1200,1600,2000,2400', sizes: '100vw', alt: alt, class: 'ab-here__img' }}
+    {%- if img != blank and img.width != blank -%}
+      {{ img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '800,1200,1600,2000,2400', sizes: '100vw', alt: alt, class: 'ab-here__img' }}
     {%- endif -%}
-    <div class="container ab-here__over">
-      <p class="t-eyebrow">{% if section.settings.t_about2_made_eyebrow != blank %}{{ section.settings.t_about2_made_eyebrow }}{% else %}{{ 'about2.made_eyebrow' | t }}{% endif %}</p>
-      <h2 class="ab-big ab-here__title" id="AbHere-{{ section.id }}">{% if section.settings.t_about2_made_heading != blank %}{{ section.settings.t_about2_made_heading }}{% else %}{{ 'about2.made_heading' | t }}{% endif %}</h2>
-    </div>
   </div>
-  <div class="container ab-here__body">
-    <dl class="ab-here__label">
-      {%- for f in facts -%}
-        {%- assign fk = 'about2.' | append: f | append: '_k' -%}
-        {%- assign fv = 'about2.' | append: f | append: '_v' -%}
-        <div class="ab-here__fact"><dt>{{ fk | t }}</dt><dd>{{ fv | t }}</dd></div>
-      {%- endfor -%}
-    </dl>
-    <a class="link-arrow ab-here__link" href="{{ glossary_url }}">{% if section.settings.t_about2_made_link != blank %}{{ section.settings.t_about2_made_link }}{% else %}{{ 'about2.made_link' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+  <div class="container ab-here__inner">
+    <div class="ab-here__card">
+      <p class="t-eyebrow">{% if section.settings.t_about2_made_eyebrow != blank %}{{ section.settings.t_about2_made_eyebrow }}{% else %}{{ 'about2.made_eyebrow' | t }}{% endif %}</p>
+      <h2 class="t-display-m" id="AbHere-{{ section.id }}">{% if section.settings.t_about2_made_heading != blank %}{{ section.settings.t_about2_made_heading }}{% else %}{{ 'about2.made_heading' | t }}{% endif %}</h2>
+      <dl class="ab-here__facts">
+        {%- for f in facts -%}
+          {%- assign fk = 'about2.' | append: f | append: '_k' -%}
+          {%- assign fv = 'about2.' | append: f | append: '_v' -%}
+          <div class="ab-here__fact"><dt>{{ fk | t }}</dt><dd>{{ fv | t }}</dd></div>
+        {%- endfor -%}
+      </dl>
+      <a class="btn" href="{{ glossary_url }}">{% if section.settings.t_about2_made_link != blank %}{{ section.settings.t_about2_made_link }}{% else %}{{ 'about2.made_link' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+    </div>
   </div>
 </section>
 
@@ -41,10 +41,10 @@
   "enabled_on": { "templates": ["page"] },
   "settings": [
     { "type": "paragraph", "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English." },
-    { "type": "image_picker", "id": "image", "label": "Photo", "info": "Wide or square photo, at least 2000 px. Empty = warm light in a city apartment. Real factory or Cairo photos can go here later." },
+    { "type": "image_picker", "id": "image", "label": "Photo", "info": "Wide photo, at least 2000 px. Empty = warm light in a city apartment. Real factory or Cairo photos can go here later." },
     { "type": "text", "id": "t_about2_made_eyebrow", "label": "Small line above the heading", "info": "Now: “Made in Egypt”. Leave empty to keep it (English and Arabic)." },
     { "type": "text", "id": "t_about2_made_heading", "label": "Heading", "info": "Now: “From here, for skin that lives here.” Leave empty to keep it (English and Arabic)." },
-    { "type": "text", "id": "t_about2_made_link", "label": "Link text", "info": "Now: “Read every ingredient”. Leave empty to keep it (English and Arabic)." }
+    { "type": "text", "id": "t_about2_made_link", "label": "Button text", "info": "Now: “Read every ingredient”. Leave empty to keep it (English and Arabic)." }
   ]
 }
 {% endschema %}
