@@ -330,74 +330,52 @@
   .ab-btw__hint { display: none !important; }
 }
 
-/* ---------- About hero: "the space between" (DECISIONS 319–322, demo) ----------
-   Two suns frame the screen, side by side on every size; the gap between them (the brand's )( shape, made by the two
-   circles) is full of their light, and the heading sits across it. --p (0 → 1, straight from the scroll) settles the
-   light to show the evening, sets today's sun along an arc, raises tomorrow's into the corner, parts the heading and
-   forms the line. Performance: everything that moves per frame is transform or opacity (no layout, no clip, no blend
-   modes, no filters), so it keeps up with the scroll on Safari and phones. */
-.ab-sp { --p: 0; --mx: 0; position: relative; margin-block-start: calc(-1 * var(--hdr, var(--header-h))); background: var(--c-daylight, #fff); color: var(--c-ink); }
-.ab-sp.is-live { block-size: 190svh; }
+/* ---------- About hero: "the space between" (DECISIONS 319–325, demo) ----------
+   Two suns frame the screen side by side; the gap between them (the brand's )( shape, made by the two circles) is full
+   of their light, with the heading across it. Scrolling: the light settles to show the evening, today's sun sets out
+   of view, tomorrow's rises small into the corner as the moon (laptops) or both simply part (phones), and the line
+   forms. The motion is native scroll-driven CSS animation on one named timeline (the section's own scroll range),
+   transform and opacity only, so the browser runs it on the compositor, frame-perfect with the scroll, no script.
+   Browsers without scroll-driven animation (and reduced motion) get the opening frame, still. */
+.ab-sp { position: relative; margin-block-start: calc(-1 * var(--hdr, var(--header-h))); background: var(--c-daylight, #fff); color: var(--c-ink); view-timeline: --absp block; }
 .ab-sp__stage {
   position: relative; overflow: clip; isolation: isolate; block-size: 100svh; container-type: size;
-  --D: min(135cqh, 64cqw); --g0: 5cqw; --cx: calc(50cqw + var(--mx) * 1.4cqw); --cy: calc(50cqh + var(--hdr, var(--header-h)) / 2);
-  --tax: 30cqw; --tbx: 31cqw; --tay: 96cqh; --tby: 34cqh;
-  /* tomorrow's sun becomes the moon: it shrinks to --sm of its size and rises to (--mxc, --myc) */
-  --pq: calc(1 - (1 - var(--p)) * (1 - var(--p)));
-  --sm: .12; --mxc: 98.5cqw; --myc: calc(var(--hdr, var(--header-h)) + 10cqh); --M: calc(var(--D) * var(--sm));
-  --bx0: calc(var(--cx) + var(--g0) / 2); --bxm: calc(var(--mxc) - var(--M) / 2);
-  --by0: calc(var(--cy) - var(--D) / 2); --bym: calc(var(--myc) - var(--M) / 2);
-  --p2: calc(var(--p) * var(--p));
-  --xl: calc(var(--cx) - var(--g0) / 2 - var(--D) - var(--p) * var(--tax)); --xr: calc(var(--cx) + var(--g0) / 2 + var(--p) * var(--tbx));
+  --H: var(--hdr, var(--header-h));
+  --D: min(135cqh, 64cqw); --g0: 5cqw; --cx: 50cqw; --cy: calc(50cqh + var(--H) / 2);
+  /* today's sun: from its place left of the gap, down along an arc and out of view */
+  --a-x0: calc(var(--cx) - var(--g0) / 2 - var(--D)); --a-x1: calc(var(--a-x0) - 30cqw);
+  --a-y0: calc(var(--cy) - var(--D) / 2); --a-ym: calc(var(--a-y0) + 33cqh); --a-y1: calc(var(--a-y0) + 114cqh);
+  /* tomorrow's sun: rises to the top-right edge of the sky at 12% of its size: the moon */
+  --sm: .12; --M: calc(var(--D) * var(--sm));
+  --b-x0: calc(var(--cx) + var(--g0) / 2); --b-x1: calc(98.5cqw - var(--M) / 2);
+  --b-y0: calc(var(--cy) - var(--D) / 2); --b-y1: calc(var(--H) + 10cqh - var(--M) / 2); --b-s1: var(--sm);
 }
 [dir='rtl'] .ab-sp__stage {
-  --xl: calc(var(--cx) - var(--g0) / 2 - var(--D) - var(--p) * var(--tbx)); --xr: calc(var(--cx) + var(--g0) / 2 + var(--p) * var(--tax));
-  /* the photo isn't mirrored, so the moon always rises over its sky (the right) */
-  --bx0: calc(var(--cx) - var(--g0) / 2 - var(--D));
+  --a-x0: calc(var(--cx) + var(--g0) / 2); --a-x1: calc(var(--a-x0) + 30cqw);
+  --b-x0: calc(var(--cx) - var(--g0) / 2 - var(--D)); /* the photo isn't mirrored: the moon still rises over its sky (right) */
 }
-.ab-sp.is-live .ab-sp__stage { position: sticky; inset-block-start: 0; }
 
-/* The day sits under everything; at rest it is fully covered by the suns' light. */
 .ab-sp__day { position: absolute; inset: 0; z-index: 0; background: #2a2f4a; }
 .ab-sp__day picture, .ab-sp__img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; }
-.ab-sp__img { object-fit: cover; object-position: 40% 45%; transform: scale(calc(1.12 - .12 * var(--p))); }
-.ab-sp__wash { position: absolute; inset: 0; pointer-events: none; opacity: clamp(0, calc(1 - (var(--p) - .04) * 2.8), 1);
-  background: radial-gradient(42% 62% at 50% 50%, #fffdf6, #fff1d2 45%, #ffdca6 80%, #f8c98c); }
-.ab-sp__amber { position: absolute; inset: 0; pointer-events: none; opacity: clamp(0, calc(min(var(--p) * 3 - .3, 1.9 - var(--p) * 2.4) * .4), .4);
-  background: linear-gradient(to top, rgb(242 160 80 / .7), rgb(247 200 140 / .35) 60%, transparent); }
-.ab-sp__dusk { position: absolute; inset: 0; pointer-events: none; opacity: clamp(0, calc((var(--p) - .5) * 2.4), 1);
+.ab-sp__img { object-fit: cover; object-position: 40% 45%; transform: scale(1.12); }
+.ab-sp__wash { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(42% 62% at 50% 50%, #fffdf6, #fff1d2 45%, #ffdca6 80%, #f8c98c); }
+.ab-sp__amber { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: linear-gradient(to top, rgb(242 160 80 / .7), rgb(247 200 140 / .35) 60%, transparent); }
+.ab-sp__dusk { position: absolute; inset: 0; pointer-events: none; opacity: 0;
   background: radial-gradient(70% 60% at 50% 50%, rgb(16 18 36 / .52), rgb(16 18 36 / .22) 70%, transparent), linear-gradient(to bottom, rgb(16 18 36 / .3), transparent 30%, transparent 70%, rgb(16 18 36 / .5)); }
 
-/* The suns: placed by transform only. Today's sets (down and out), tomorrow's rises into the far corner. */
 .ab-sp__sun { position: absolute; z-index: 1; inset: 0 auto auto 0; inline-size: var(--D); aspect-ratio: 1; will-change: transform; }
-.ab-sp__sun--a { --side: -1; transform: translate3d(var(--xl), calc(var(--cy) - var(--D) / 2 + var(--p) * 18cqh + var(--p2) * var(--tay)), 0); }
-.ab-sp__sun--a { opacity: clamp(0, calc((1 - var(--p)) * 3.4), 1); }
-.ab-sp__sun--b, [dir='rtl'] .ab-sp__sun--b { transform-origin: 0 0;
-  transform: translate3d(calc(var(--bx0) + (var(--bxm) - var(--bx0)) * var(--pq)), calc(var(--by0) + (var(--bym) - var(--by0)) * var(--pq)), 0) scale(calc(1 - (1 - var(--sm)) * var(--pq))); }
-.ab-sp__sun--b { --side: 1; }
-[dir='rtl'] .ab-sp__sun--a { --side: 1; transform: translate3d(var(--xr), calc(var(--cy) - var(--D) / 2 + var(--p) * 18cqh + var(--p2) * var(--tay)), 0); }
+.ab-sp__sun--a { --side: -1; transform: translate3d(var(--a-x0), var(--a-y0), 0); }
+.ab-sp__sun--b { --side: 1; transform-origin: 0 0; transform: translate3d(var(--b-x0), var(--b-y0), 0); }
+[dir='rtl'] .ab-sp__sun--a { --side: 1; }
 [dir='rtl'] .ab-sp__sun--b { --side: -1; }
 .ab-sp__orb { inset: 0; inline-size: 100%; }
 .ab-sp__orb::before { display: none; }
-/* today's sun dims as it sets: a dark veil over it, opacity only */
-.ab-sp__sun--a::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: rgb(30 34 60); opacity: calc(var(--p) * .24); pointer-events: none; }
+.ab-sp__sun-in { position: absolute; inset: 0; display: block; }
 .ab-sp__halo { position: absolute; inset: -26%; border-radius: 50%; pointer-events: none; }
-.ab-sp__sun--a .ab-sp__halo { opacity: calc(1 - var(--p) * .6); background: radial-gradient(closest-side, transparent 64%, rgb(255 236 190 / .6) 65.6%, rgb(255 228 180 / .22) 73%, transparent 86%); }
-.ab-sp__sun--b .ab-sp__halo { opacity: clamp(0, calc(1 - var(--p) * 1.6), 1); background: radial-gradient(closest-side, transparent 64%, rgb(232 240 255 / .6) 65.6%, rgb(214 226 252 / .22) 73%, transparent 86%); }
-.ab-sp__label {
-  position: absolute; inset-block-end: 23%; font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; color: var(--c-ink);
-  opacity: clamp(0, calc(.75 - var(--p) * 4), .75);
-}
-.ab-sp__sun--a .ab-sp__label { right: 22%; }
-.ab-sp__sun--b .ab-sp__label { left: 22%; }
-[dir='rtl'] .ab-sp__sun--a .ab-sp__label { right: auto; left: 22%; }
-[dir='rtl'] .ab-sp__sun--b .ab-sp__label { left: auto; right: 22%; }
-:lang(ar) .ab-sp__label { letter-spacing: 0; font-size: 14px; text-transform: none; }
-
-/* The moon: as tomorrow's sun rises small into the corner, a pale glowing disc takes over its surface, so what ends
-   up in the sky is a moon (partly off the edge), not a blue ball. Fixed styles; only its opacity follows the scroll. */
+.ab-sp__sun--a .ab-sp__halo { background: radial-gradient(closest-side, transparent 64%, rgb(255 236 190 / .6) 65.6%, rgb(255 228 180 / .22) 73%, transparent 86%); }
+.ab-sp__sun--b .ab-sp__halo { background: radial-gradient(closest-side, transparent 64%, rgb(232 240 255 / .6) 65.6%, rgb(214 226 252 / .22) 73%, transparent 86%); }
 .ab-sp__moon {
-  position: absolute; inset: 0; border-radius: 50%; pointer-events: none; opacity: clamp(0, calc((var(--p) - .3) * 2.2), .92);
+  position: absolute; inset: 0; border-radius: 50%; pointer-events: none; opacity: 0; will-change: opacity;
   background:
     radial-gradient(circle at 36% 42%, rgb(170 176 192 / .2) 0 4%, transparent 17%),
     radial-gradient(circle at 57% 30%, rgb(168 174 190 / .16) 0 3%, transparent 13%),
@@ -405,59 +383,114 @@
     radial-gradient(circle at 70% 52%, rgb(184 190 204 / .12) 0 3%, transparent 12%),
     radial-gradient(circle at 26% 64%, rgb(180 186 200 / .1) 0 2%, transparent 10%),
     radial-gradient(circle at 40% 36%, #fffdf6 0%, #f4f2ea 52%, #dddcd5 90%, #cbccd1 100%);
-  box-shadow:
-    inset calc(var(--D) * -.07) calc(var(--D) * -.04) calc(var(--D) * .12) rgb(110 120 150 / .38),
-    0 0 calc(var(--D) * .14) calc(var(--D) * .015) rgb(255 246 226 / .32),
-    0 0 calc(var(--D) * .55) calc(var(--D) * .08) rgb(190 204 240 / .16);
-  filter: blur(calc(var(--D) * .0035));
+  box-shadow: inset calc(var(--D) * -.07) calc(var(--D) * -.04) calc(var(--D) * .12) rgb(110 120 150 / .38), 0 0 calc(var(--D) * .14) calc(var(--D) * .015) rgb(255 246 226 / .32);
 }
-.ab-sp__sun--b .ab-sp__orb { opacity: clamp(0, calc(1 - (var(--p) - .32) * 2.6), 1); }
+.ab-sp__label { position: absolute; inset-block-end: 23%; font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; color: var(--c-ink); opacity: .75; }
+.ab-sp__sun--a .ab-sp__label { right: 22%; }
+.ab-sp__sun--b .ab-sp__label { left: 22%; }
+[dir='rtl'] .ab-sp__sun--a .ab-sp__label { right: auto; left: 22%; }
+[dir='rtl'] .ab-sp__sun--b .ab-sp__label { left: auto; right: 22%; }
+:lang(ar) .ab-sp__label { letter-spacing: 0; font-size: 14px; text-transform: none; }
 
-/* Type */
-.ab-sp__eyebrow { position: absolute; z-index: 2; inset-block-start: calc(var(--hdr, var(--header-h)) + clamp(14px, 3cqh, 30px)); left: 50%; translate: -50% 0; margin: 0; white-space: nowrap; opacity: clamp(0, calc(1 - var(--p) * 4), 1); }
+.ab-sp__eyebrow { position: absolute; z-index: 2; inset-block-start: calc(var(--H) + clamp(14px, 3cqh, 30px)); left: 50%; translate: -50% 0; margin: 0; white-space: nowrap; }
 .ab-sp__title {
   position: absolute; z-index: 2; inset-block-start: var(--cy); left: var(--cx); translate: -50% -50%; margin: 0; inline-size: min(15ch, calc(100cqw - 2 * var(--gutter)));
   text-align: center; text-wrap: balance; font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
   font-size: clamp(48px, min(6.6cqw, 10.5cqh), 128px); line-height: .92; letter-spacing: -.005em; pointer-events: none;
 }
 .ab-sp__title .w { display: inline-block; }
-.ab-sp__title .w > span { display: inline-block; transform: translate3d(calc(var(--wd, 0) * var(--p) * 9cqw), calc(var(--wy, 0) * var(--p) * 12cqh), 0); opacity: clamp(0, calc(1 - var(--p) * 4.4), 1); }
+.ab-sp__title .w > span { display: inline-block; }
 :lang(ar) .ab-sp__title { text-transform: none; line-height: 1.2; letter-spacing: 0; font-size: clamp(38px, min(5cqw, 7.6cqh), 92px); inline-size: min(18ch, calc(100cqw - 2 * var(--gutter))); }
 .ab-sp__lead { position: absolute; z-index: 2; inset-block-start: var(--cy); left: 50%; translate: -50% -50%; margin: 0; display: grid; justify-items: center; gap: clamp(14px, 2.4cqh, 26px);
-  inline-size: calc(100cqw - 2 * var(--gutter)); text-align: center; color: #fff; pointer-events: none; }
+  inline-size: calc(100cqw - 2 * var(--gutter)); text-align: center; color: #fff; pointer-events: none; opacity: 0; }
 .ab-sp__line { max-inline-size: 17ch; text-wrap: balance; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; font-size: clamp(40px, min(6cqw, 9.4cqh), 112px); text-shadow: 0 2px 30px rgb(10 12 30 / .35); }
-.ab-sp__line .w { display: inline-block; --o: clamp(0, calc((var(--p) - .56 - var(--i) * .018) * 7), 1); opacity: var(--o); transform: translate3d(0, calc((1 - var(--o)) * .4em), 0); }
-.ab-sp__mark { inline-size: 26px; block-size: 28px; background: #fff; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; opacity: clamp(0, calc((var(--p) - .52) * 6), .9); }
+.ab-sp__line .w { display: inline; }
+.ab-sp__mark { inline-size: 26px; block-size: 28px; background: #fff; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; opacity: .9; }
 :lang(ar) .ab-sp__line { text-transform: none; line-height: 1.3; font-size: clamp(32px, min(4.4cqw, 7cqh), 84px); max-inline-size: 15em; }
 .ab-sp__hint {
   position: absolute; z-index: 2; inset-block-end: calc(var(--dock-h, 0px) + 22px); left: 50%; translate: -50% 0; margin: 0; display: none; flex-direction: column; align-items: center; gap: 8px;
-  font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: clamp(0, calc(.7 - var(--p) * 6), .7);
+  font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .7;
 }
-.ab-sp.is-live .ab-sp__hint { display: flex; }
 :lang(ar) .ab-sp__hint { letter-spacing: 0; font-size: 13px; }
 .ab-sp__hint-line { inline-size: 1.5px; block-size: 28px; background: currentColor; transform-origin: top; animation: ab-hint 1.8s var(--ease-in-out) infinite; }
+/* The header's frosted blur would be redrawn over the moving suns every frame; on this page it is a plain, nearly
+   opaque bar instead (looks the same, costs nothing). */
+.site-header { -webkit-backdrop-filter: none; backdrop-filter: none; }
+@media (min-width: 990px) { .site-header { background: color-mix(in srgb, #fff 90%, transparent); } }
 
-/* Arrival: the light is there from the first frame; the suns slide in and settle; the heading fades up. */
-@media (prefers-reduced-motion: no-preference) {
-  .js .ab-sp.is-live .ab-sp__sun { animation: ab-sp-in 1.3s cubic-bezier(.16, .84, .2, 1) both; }
-  .js .ab-sp.is-live .ab-sp__title { animation: ab-sp-up .9s cubic-bezier(.2, .75, .2, 1) .55s both; }
-  .js .ab-sp.is-live .ab-sp__label, .js .ab-sp.is-live .ab-sp__eyebrow, .js .ab-sp.is-live .ab-sp__hint { animation: ab-sp-fade .8s ease 1s both; }
+/* The scroll story, on the section's own timeline. Ranges are exact distances from the moment the section's top enters
+   the bottom of the screen ("cover"): --r0 = its top reaches the top of the screen (story starts), --rl = the scroll the
+   story takes (92% of the pinned run: section height minus one screen). */
+.ab-sp { --r0: 100svh; --rl: 82.8svh; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .ab-sp.is-live { block-size: 190svh; }
+    .ab-sp.is-live .ab-sp__stage { position: sticky; inset-block-start: 0; }
+    .ab-sp.is-live .ab-sp__hint { display: flex; }
+    .ab-sp.is-live :is(.ab-sp__img, .ab-sp__wash, .ab-sp__amber, .ab-sp__dusk, .ab-sp__sun, .ab-sp__halo, .ab-sp__moon, .ab-sp__sun--b .ab-sp__orb,
+      .ab-sp__label, .ab-sp__eyebrow, .ab-sp__hint, .ab-sp__title .w > span, .ab-sp__lead) {
+      animation-timeline: --absp; animation-fill-mode: both; animation-timing-function: linear;
+      animation-range: cover var(--r0) cover calc(var(--r0) + var(--rl));
+    }
+    .ab-sp.is-live .ab-sp__img { animation-name: ab-sp-img; }
+    .ab-sp.is-live .ab-sp__wash { animation-name: ab-sp-wash; }
+    .ab-sp.is-live .ab-sp__amber { animation-name: ab-sp-amber; }
+    .ab-sp.is-live .ab-sp__dusk { animation-name: ab-sp-dusk; }
+    .ab-sp.is-live .ab-sp__sun--a { animation-name: ab-sp-a; animation-timing-function: ease-in-out; }
+    .ab-sp.is-live .ab-sp__sun--b { animation-name: ab-sp-b; animation-timing-function: cubic-bezier(.33, .6, .45, 1); }
+    .ab-sp.is-live .ab-sp__halo { animation-name: ab-sp-halo; }
+    .ab-sp.is-live .ab-sp__moon { animation-name: ab-sp-moon; }
+    .ab-sp.is-live .ab-sp__sun--b .ab-sp__orb { animation-name: ab-sp-orb; }
+    .ab-sp.is-live :is(.ab-sp__label, .ab-sp__eyebrow, .ab-sp__hint) { animation-name: ab-sp-out; animation-range: cover var(--r0) cover calc(var(--r0) + var(--rl) * .18); }
+    .ab-sp.is-live .ab-sp__title .w > span { animation-name: ab-sp-part; animation-range: cover var(--r0) cover calc(var(--r0) + var(--rl) * .24); }
+    .ab-sp.is-live .ab-sp__lead { animation-name: ab-sp-line; animation-range: cover calc(var(--r0) + var(--rl) * .5) cover calc(var(--r0) + var(--rl) * .72); }
+  }
 }
-/* (these animate translate/filter, which the scroll doesn't drive, so the scroll keeps control of transform/opacity) */
+@keyframes ab-sp-img { to { transform: none; } }
+@keyframes ab-sp-wash { 0%, 4% { opacity: 1; } 40%, 100% { opacity: 0; } }
+@keyframes ab-sp-amber { 0%, 10% { opacity: 0; } 35% { opacity: .4; } 75%, 100% { opacity: 0; } }
+@keyframes ab-sp-dusk { 0%, 50% { opacity: 0; } 92%, 100% { opacity: 1; } }
+@keyframes ab-sp-a {
+  0% { transform: translate3d(var(--a-x0), var(--a-y0), 0); opacity: 1; }
+  50% { transform: translate3d(calc((var(--a-x0) + var(--a-x1)) / 2), var(--a-ym), 0); }
+  70% { opacity: 1; }
+  100% { transform: translate3d(var(--a-x1), var(--a-y1), 0); opacity: 0; }
+}
+@keyframes ab-sp-b { to { transform: translate3d(var(--b-x1), var(--b-y1), 0) scale(var(--b-s1)); } }
+@keyframes ab-sp-halo { to { opacity: 0; } }
+@keyframes ab-sp-moon { 0%, 30% { opacity: 0; } 75%, 100% { opacity: .92; } }
+@keyframes ab-sp-orb { 0%, 32% { opacity: 1; } 70%, 100% { opacity: 0; } }
+@keyframes ab-sp-out { to { opacity: 0; } }
+@keyframes ab-sp-part { to { transform: translate3d(calc(var(--wd, 0) * 9cqw), calc(var(--wy, 0) * 12cqh), 0); opacity: 0; } }
+@keyframes ab-sp-line { from { opacity: 0; transform: translate3d(0, 18px, 0); } to { opacity: 1; transform: none; } }
+
+/* Arrival (time-based, once): the light is there from the first frame; the suns slide in; the heading fades up.
+   It animates translate/filter, which the scroll story doesn't use, so the two never fight. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .ab-sp.is-live .ab-sp__sun-in { animation: ab-sp-in 1.3s cubic-bezier(.16, .84, .2, 1) both; }
+  .js .ab-sp.is-live .ab-sp__title { animation: ab-sp-up .9s cubic-bezier(.2, .75, .2, 1) .55s both; }
+}
 @keyframes ab-sp-in { from { translate: calc(var(--side) * 30cqw) 0; } }
 @keyframes ab-sp-up { from { filter: opacity(0); translate: -50% calc(-50% + 24px); } }
-@keyframes ab-sp-fade { from { filter: opacity(0); } }
 
-/* Phones: the same side-by-side suns, larger than the screen, so the space is a tall )( down the middle. */
+/* Phones: the solid header bar stays; the suns sit side by side, larger than the screen, and simply part sideways. */
 @media (max-width: 749px) {
   .ab-sp { margin-block-start: 0; }
-  .ab-sp.is-live { block-size: 180svh; }
-  .ab-sp__stage { block-size: calc(100svh - var(--hdr, var(--header-h))); --D: max(150cqw, 112cqh); --g0: 7cqw; --cx: 50cqw; --cy: 50cqh; --tax: 50cqw; --tay: 100cqh;
-    --sm: .5; --mxc: 140cqw; --myc: -50cqh; }
+  .ab-sp__stage {
+    block-size: calc(100svh - var(--H)); --D: max(150cqw, 112cqh); --g0: 7cqw; --cy: 50cqh;
+    --a-x1: calc(var(--a-x0) - 62cqw); --a-ym: var(--a-y0); --a-y1: var(--a-y0);
+    --b-x1: calc(var(--b-x0) + 62cqw); --b-y1: var(--b-y0); --b-s1: 1;
+  }
+  [dir='rtl'] .ab-sp__stage { --a-x1: calc(var(--a-x0) + 62cqw); --b-x1: calc(var(--b-x0) - 62cqw); }
   .ab-sp__moon { display: none; }
-  .ab-sp__sun--b .ab-sp__orb { opacity: 1; }
-  [dir='rtl'] .ab-sp__stage { --bxm: calc(-1 * var(--M) - 10cqw); }
-  .ab-sp.is-live .ab-sp__stage { inset-block-start: var(--hdr, var(--header-h)); }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .ab-sp.is-live { block-size: 180svh; --rl: 73.6svh; }
+      .ab-sp.is-live .ab-sp__stage { inset-block-start: var(--H); }
+      .ab-sp.is-live .ab-sp__sun--b .ab-sp__orb { animation-name: none; }
+      .ab-sp.is-live .ab-sp__sun--a, .ab-sp.is-live .ab-sp__sun--b { animation-timing-function: ease-in; }
+    }
+  }
   .ab-sp__eyebrow { inset-block-start: 16px; }
   .ab-sp__img { object-position: 70% 40%; }
   .ab-sp__sun--a .ab-sp__label { right: 5%; inset-block-end: 30%; }
