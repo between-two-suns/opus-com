@@ -336,15 +336,15 @@
    light to show the evening, sets today's sun along an arc, raises tomorrow's into the corner, parts the heading and
    forms the line. Performance: everything that moves per frame is transform or opacity (no layout, no clip, no blend
    modes, no filters), so it keeps up with the scroll on Safari and phones. */
-.ab-sp { --p: 0; --mx: 0; position: relative; margin-block-start: calc(-1 * var(--header-h)); background: var(--c-daylight, #fff); color: var(--c-ink); }
+.ab-sp { --p: 0; --mx: 0; position: relative; margin-block-start: calc(-1 * var(--hdr, var(--header-h))); background: var(--c-daylight, #fff); color: var(--c-ink); }
 .ab-sp.is-live { block-size: 190svh; }
 .ab-sp__stage {
   position: relative; overflow: clip; isolation: isolate; block-size: 100svh; container-type: size;
-  --D: min(135cqh, 64cqw); --g0: 5cqw; --cx: calc(50cqw + var(--mx) * 1.4cqw); --cy: calc(50cqh + var(--header-h) / 2);
+  --D: min(135cqh, 64cqw); --g0: 5cqw; --cx: calc(50cqw + var(--mx) * 1.4cqw); --cy: calc(50cqh + var(--hdr, var(--header-h)) / 2);
   --tax: 30cqw; --tbx: 31cqw; --tay: 96cqh; --tby: 34cqh;
   /* tomorrow's sun becomes the moon: it shrinks to --sm of its size and rises to (--mxc, --myc) */
   --pq: calc(1 - (1 - var(--p)) * (1 - var(--p)));
-  --sm: .2; --mxc: 80cqw; --myc: calc(var(--header-h) + 16cqh); --M: calc(var(--D) * var(--sm));
+  --sm: .12; --mxc: 98.5cqw; --myc: calc(var(--hdr, var(--header-h)) + 10cqh); --M: calc(var(--D) * var(--sm));
   --bx0: calc(var(--cx) + var(--g0) / 2); --bxm: calc(var(--mxc) - var(--M) / 2);
   --by0: calc(var(--cy) - var(--D) / 2); --bym: calc(var(--myc) - var(--M) / 2);
   --p2: calc(var(--p) * var(--p));
@@ -383,7 +383,7 @@
 .ab-sp__sun--a::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: rgb(30 34 60); opacity: calc(var(--p) * .24); pointer-events: none; }
 .ab-sp__halo { position: absolute; inset: -26%; border-radius: 50%; pointer-events: none; }
 .ab-sp__sun--a .ab-sp__halo { opacity: calc(1 - var(--p) * .6); background: radial-gradient(closest-side, transparent 64%, rgb(255 236 190 / .6) 65.6%, rgb(255 228 180 / .22) 73%, transparent 86%); }
-.ab-sp__sun--b .ab-sp__halo { opacity: 1; background: radial-gradient(closest-side, transparent 64%, rgb(232 240 255 / .6) 65.6%, rgb(214 226 252 / .22) 73%, transparent 86%); }
+.ab-sp__sun--b .ab-sp__halo { opacity: clamp(0, calc(1 - var(--p) * 1.6), 1); background: radial-gradient(closest-side, transparent 64%, rgb(232 240 255 / .6) 65.6%, rgb(214 226 252 / .22) 73%, transparent 86%); }
 .ab-sp__label {
   position: absolute; inset-block-end: 23%; font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; color: var(--c-ink);
   opacity: clamp(0, calc(.75 - var(--p) * 4), .75);
@@ -394,8 +394,27 @@
 [dir='rtl'] .ab-sp__sun--b .ab-sp__label { left: auto; right: 22%; }
 :lang(ar) .ab-sp__label { letter-spacing: 0; font-size: 14px; text-transform: none; }
 
+/* The moon: as tomorrow's sun rises small into the corner, a pale glowing disc takes over its surface, so what ends
+   up in the sky is a moon (partly off the edge), not a blue ball. Fixed styles; only its opacity follows the scroll. */
+.ab-sp__moon {
+  position: absolute; inset: 0; border-radius: 50%; pointer-events: none; opacity: clamp(0, calc((var(--p) - .3) * 2.2), .92);
+  background:
+    radial-gradient(circle at 36% 42%, rgb(170 176 192 / .2) 0 4%, transparent 17%),
+    radial-gradient(circle at 57% 30%, rgb(168 174 190 / .16) 0 3%, transparent 13%),
+    radial-gradient(circle at 50% 63%, rgb(176 182 198 / .17) 0 6%, transparent 22%),
+    radial-gradient(circle at 70% 52%, rgb(184 190 204 / .12) 0 3%, transparent 12%),
+    radial-gradient(circle at 26% 64%, rgb(180 186 200 / .1) 0 2%, transparent 10%),
+    radial-gradient(circle at 40% 36%, #fffdf6 0%, #f4f2ea 52%, #dddcd5 90%, #cbccd1 100%);
+  box-shadow:
+    inset calc(var(--D) * -.07) calc(var(--D) * -.04) calc(var(--D) * .12) rgb(110 120 150 / .38),
+    0 0 calc(var(--D) * .14) calc(var(--D) * .015) rgb(255 246 226 / .32),
+    0 0 calc(var(--D) * .55) calc(var(--D) * .08) rgb(190 204 240 / .16);
+  filter: blur(calc(var(--D) * .0035));
+}
+.ab-sp__sun--b .ab-sp__orb { opacity: clamp(0, calc(1 - (var(--p) - .32) * 2.6), 1); }
+
 /* Type */
-.ab-sp__eyebrow { position: absolute; z-index: 2; inset-block-start: calc(var(--header-h) + clamp(14px, 3cqh, 30px)); left: 50%; translate: -50% 0; margin: 0; white-space: nowrap; opacity: clamp(0, calc(1 - var(--p) * 4), 1); }
+.ab-sp__eyebrow { position: absolute; z-index: 2; inset-block-start: calc(var(--hdr, var(--header-h)) + clamp(14px, 3cqh, 30px)); left: 50%; translate: -50% 0; margin: 0; white-space: nowrap; opacity: clamp(0, calc(1 - var(--p) * 4), 1); }
 .ab-sp__title {
   position: absolute; z-index: 2; inset-block-start: var(--cy); left: var(--cx); translate: -50% -50%; margin: 0; inline-size: min(15ch, calc(100cqw - 2 * var(--gutter)));
   text-align: center; text-wrap: balance; font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
@@ -433,9 +452,12 @@
 @media (max-width: 749px) {
   .ab-sp { margin-block-start: 0; }
   .ab-sp.is-live { block-size: 180svh; }
-  .ab-sp__stage { block-size: calc(100svh - var(--header-h)); --D: max(150cqw, 112cqh); --g0: 7cqw; --cx: 50cqw; --cy: 50cqh; --tax: 50cqw; --tay: 100cqh;
-    --sm: .11; --mxc: 84cqw; --myc: 8cqh; }
-  .ab-sp.is-live .ab-sp__stage { inset-block-start: var(--header-h); }
+  .ab-sp__stage { block-size: calc(100svh - var(--hdr, var(--header-h))); --D: max(150cqw, 112cqh); --g0: 7cqw; --cx: 50cqw; --cy: 50cqh; --tax: 50cqw; --tay: 100cqh;
+    --sm: .5; --mxc: 140cqw; --myc: -50cqh; }
+  .ab-sp__moon { display: none; }
+  .ab-sp__sun--b .ab-sp__orb { opacity: 1; }
+  [dir='rtl'] .ab-sp__stage { --bxm: calc(-1 * var(--M) - 10cqw); }
+  .ab-sp.is-live .ab-sp__stage { inset-block-start: var(--hdr, var(--header-h)); }
   .ab-sp__eyebrow { inset-block-start: 16px; }
   .ab-sp__img { object-position: 70% 40%; }
   .ab-sp__sun--a .ab-sp__label { right: 5%; inset-block-end: 30%; }

@@ -24,7 +24,11 @@ const init = (root) => {
       });
     };
     let top = 0, run = 1, raf = 0, last = -1, mx = 0, tx = 0;
+    // The real header height (the floating pill on laptops is shorter than --header-h): the hero tucks under exactly
+    // the header, never under the announcement bar above it.
+    const hdr = document.querySelector('.shopify-section:has(> .site-header-wrap)') || document.querySelector('.site-header-wrap');
     const measure = () => {
+      if (hdr) el.style.setProperty('--hdr', `${hdr.offsetHeight}px`);
       const r = el.getBoundingClientRect();
       top = r.top + scrollY;
       run = Math.max(1, el.offsetHeight - stage.offsetHeight);
