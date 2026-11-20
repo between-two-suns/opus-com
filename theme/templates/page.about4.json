@@ -1,10 +1,10 @@
 {
   "sections": {
     "sky": { "type": "about-space", "settings": {} },
-    "routine": { "type": "about-routine", "settings": {} },
-    "made": { "type": "about-made", "settings": {} },
+    "routine": { "type": "about-shelf", "settings": {} },
+    "made": { "type": "about-here", "settings": {} },
     "founder": { "type": "about-founder", "settings": {} },
-    "rules": { "type": "about-rules", "settings": {} },
+    "rules": { "type": "about-manifesto", "settings": {} },
     "close": { "type": "about-close", "settings": {} }
   },
   "order": ["sky", "routine", "made", "founder", "rules", "close"]
