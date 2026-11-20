@@ -330,111 +330,129 @@
   .ab-btw__hint { display: none !important; }
 }
 
-/* ---------- About hero, round 2: "the space between" (DECISIONS 319, demo) ----------
-   Two big suns frame the screen, almost touching; the gap between the circles (the brand's )( shape, made by the
-   circles themselves) is the only window onto the day. --p (0 → 1, from about-space.js) sets today's sun and raises
-   tomorrow's while the gap opens to the whole screen; --mx (-1 → 1) leans the gap toward the pointer on laptops.
-   Geometry is in container units of the stage, so the suns, the words and the clip stay locked together. */
-.ab-sp {
-  --p: 0; --mx: 0;
-  position: relative; margin-block-start: calc(-1 * var(--header-h)); background: var(--c-daylight, #fff); color: var(--c-ink);
-}
-.ab-sp.is-live { block-size: 230svh; }
+/* ---------- About hero: "the space between" (DECISIONS 319–320, demo) ----------
+   Two suns frame the screen; the gap the circles leave is the only window onto the day, and at rest it is full of
+   their light. --p (0 → 1, eased and smoothed in about-space.js): the light settles, today's sun sinks along an arc and
+   dims, tomorrow's rises into the corner, the heading parts, the line forms. --mx leans the space toward the pointer.
+   All geometry is in the stage's container units, so suns, light, clip and type stay locked together. */
+.ab-sp { --p: 0; --mx: 0; position: relative; margin-block-start: calc(-1 * var(--header-h)); background: var(--c-daylight, #fff); color: var(--c-ink); }
+.ab-sp.is-live { block-size: 240svh; }
 .ab-sp__stage {
   position: relative; overflow: clip; isolation: isolate; block-size: 100svh; container-type: size;
   --D: min(135cqh, 64cqw); --g0: 5cqw; --cx: calc(50cqw + var(--mx) * 1.4cqw); --cy: 50cqh;
-  --g: calc(var(--g0) + var(--p) * (100cqw + var(--D) * .9));
-  --xl: calc(var(--cx) - var(--g) / 2 - var(--D)); --xr: calc(var(--cx) + var(--g) / 2);
+  --p2: calc(var(--p) * var(--p));
+  /* half-gaps: today's sun travels further (it leaves), tomorrow's stops in the corner */
+  --ha: calc(var(--g0) / 2 + var(--p) * 26cqw); --hb: calc(var(--g0) / 2 + var(--p) * 31cqw);
+  --xl: calc(var(--cx) - var(--ha) - var(--D)); --xr: calc(var(--cx) + var(--hb));
+  --ya: calc(var(--p) * 18cqh + var(--p2) * 62cqh); --yb: calc(var(--p) * -34cqh);
 }
+[dir='rtl'] .ab-sp__stage { --xl: calc(var(--cx) - var(--hb) - var(--D)); --xr: calc(var(--cx) + var(--ha)); }
 .ab-sp.is-live .ab-sp__stage { position: sticky; inset-block-start: 0; }
 
-/* The day: only the band between the two suns' centres shows; the suns (opaque) cover the rest of it. */
-.ab-sp__day {
-  position: absolute; inset: 0; z-index: 0; background: #2a2f4a;
-  clip-path: inset(0 max(0px, calc(100cqw - var(--cx) - var(--g) / 2 - var(--D) / 2)) 0 max(0px, calc(var(--cx) - var(--g) / 2 - var(--D) / 2)));
-}
+/* The day: only the band between the suns' centres; the opaque suns cover the rest. */
+.ab-sp__day { position: absolute; inset: 0; z-index: 0; background: #2a2f4a;
+  clip-path: inset(0 max(0px, calc(100cqw - var(--xr) - var(--D) / 2)) 0 max(0px, calc(var(--xl) + var(--D) / 2))); }
 .ab-sp__day picture, .ab-sp__img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; }
-.ab-sp__img { object-fit: cover; object-position: 40% 45%; transform: scale(calc(1.12 - .12 * var(--p))); }
-/* Golden hour while today's sun is still up, then dusk; the dusk layer also carries the line. */
-.ab-sp__gold { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; opacity: clamp(0, calc(1 - var(--p) * 1.6), 1);
-  background: radial-gradient(90% 80% at 50% 70%, rgb(255 190 110 / .95), rgb(255 140 80 / .7) 60%, rgb(240 120 90 / .5)); }
-.ab-sp__dusk { position: absolute; inset: 0; pointer-events: none; opacity: clamp(0, calc((var(--p) - .45) * 2.4), 1);
-  background: radial-gradient(70% 60% at 50% 52%, rgb(16 18 36 / .5), rgb(16 18 36 / .2) 70%, transparent), linear-gradient(to bottom, rgb(16 18 36 / .35), transparent 30%, transparent 70%, rgb(16 18 36 / .5)); }
+.ab-sp__img { object-fit: cover; object-position: 40% 45%; transform: scale(calc(1.16 - .16 * var(--p))); }
+/* At rest the space is the suns' light (warm, slightly brighter toward today's sun); it settles to show the evening. */
+.ab-sp__wash { position: absolute; inset: 0; pointer-events: none; opacity: clamp(0, calc(.96 - var(--p) * 2.6), .96);
+  background: radial-gradient(40% 60% at 50% 50%, #fffdf6, #fff1d2 45%, #ffdca6 80%, #f8c98c); }
+/* Golden hour in the middle of the scroll, then blue dusk. */
+.ab-sp__amber { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply;
+  opacity: clamp(0, calc(min(var(--p) * 3 - .3, 1.9 - var(--p) * 2.4)), .55); background: linear-gradient(to top, #f2b36d, #f7d1a0 60%, #fbe6cc); }
+.ab-sp__dusk { position: absolute; inset: 0; pointer-events: none; opacity: clamp(0, calc((var(--p) - .5) * 2.4), 1);
+  background: radial-gradient(70% 60% at 50% 50%, rgb(16 18 36 / .52), rgb(16 18 36 / .22) 70%, transparent), linear-gradient(to bottom, rgb(16 18 36 / .3), transparent 30%, transparent 70%, rgb(16 18 36 / .5)); }
 
-/* The suns. Today's sets (sinks), tomorrow's rises; each carries its name on the side that faces the space. */
-.ab-sp__sun { position: absolute; z-index: 1; inline-size: var(--D); aspect-ratio: 1; inset-inline-start: auto; left: var(--x); top: calc(var(--cy) - var(--D) / 2 + var(--dy)); }
-.ab-sp__sun--a { --x: var(--xl); --dy: calc(var(--p) * 30cqh); --side: -1; }
-.ab-sp__sun--b { --x: var(--xr); --dy: calc(var(--p) * -30cqh); --side: 1; }
+/* The suns: light, not discs. A wide halo spills onto the page and into the space; today's dims as it sets. */
+.ab-sp__sun { position: absolute; z-index: 1; inline-size: var(--D); aspect-ratio: 1; left: var(--x); top: calc(var(--cy) - var(--D) / 2 + var(--y)); }
+.ab-sp__sun--a { --x: var(--xl); --y: var(--ya); --side: -1; }
+.ab-sp__sun--b { --x: var(--xr); --y: var(--yb); --side: 1; }
 [dir='rtl'] .ab-sp__sun--a { --x: var(--xr); --side: 1; }
 [dir='rtl'] .ab-sp__sun--b { --x: var(--xl); --side: -1; }
-.ab-sp__orb { inset: 0; inline-size: 100%; --spin: calc(var(--p) * 40deg * var(--side)); }
-.ab-sp__word {
-  position: absolute; inset-block-start: 50%; translate: 0 -50%; max-inline-size: 6.5ch; color: var(--c-ink);
-  font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .9; letter-spacing: -.005em;
-  font-size: calc(var(--D) * .1); opacity: clamp(0, calc(1 - var(--p) * 2.2), 1);
+.ab-sp__orb { inset: 0; inline-size: 100%; --spin: calc(var(--p) * 50deg * var(--side)); }
+.ab-sp__orb::before { display: none; }
+.ab-sp__sun--a .ab-sp__orb { filter: brightness(calc(1 - var(--p) * .22)) saturate(calc(1 + var(--p) * .15)); }
+.ab-sp__halo { position: absolute; inset: -26%; border-radius: 50%; pointer-events: none; mix-blend-mode: screen; }
+.ab-sp__sun--a .ab-sp__halo { opacity: calc(.9 - var(--p) * .5); background: radial-gradient(closest-side, transparent 64%, rgb(255 238 196 / .7) 65.5%, rgb(255 230 186 / .3) 72%, rgb(255 230 186 / .08) 84%, transparent); }
+.ab-sp__sun--b .ab-sp__halo { opacity: calc(.7 - var(--p) * .3); background: radial-gradient(closest-side, transparent 64%, rgb(230 238 255 / .7) 65.5%, rgb(214 226 252 / .3) 72%, rgb(214 226 252 / .08) 84%, transparent); }
+.ab-sp__label {
+  position: absolute; inset-block-end: 23%; font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; color: var(--c-ink);
+  opacity: clamp(0, calc(.75 - var(--p) * 4), .75);
 }
-/* the word sits toward the space: left sun → right-aligned near its right edge, and the mirror for the right sun */
-.ab-sp__sun--a .ab-sp__word { right: 9%; text-align: right; }
-.ab-sp__sun--b .ab-sp__word { left: 9%; text-align: left; }
-[dir='rtl'] .ab-sp__sun--a .ab-sp__word { right: auto; left: 9%; text-align: left; }
-[dir='rtl'] .ab-sp__sun--b .ab-sp__word { left: auto; right: 9%; text-align: right; }
-:lang(ar) .ab-sp__word { text-transform: none; line-height: 1.15; letter-spacing: 0; font-size: calc(var(--D) * .085); max-inline-size: 5.5em; }
+.ab-sp__sun--a .ab-sp__label { right: 22%; }
+.ab-sp__sun--b .ab-sp__label { left: 22%; }
+[dir='rtl'] .ab-sp__sun--a .ab-sp__label { right: auto; left: 22%; }
+[dir='rtl'] .ab-sp__sun--b .ab-sp__label { left: auto; right: 22%; }
+:lang(ar) .ab-sp__label { letter-spacing: 0; font-size: 14px; text-transform: none; }
 
-.ab-sp__eyebrow { position: absolute; z-index: 2; inset-block-start: calc(var(--header-h) + 18px); left: var(--cx); translate: -50% 0; margin: 0; color: #fff; text-shadow: 0 1px 10px rgb(0 0 0 / .35); white-space: nowrap; }
-.ab-sp__lead {
-  position: absolute; z-index: 2; inset-block-start: 50%; left: var(--cx); translate: -50% calc(-50% + (1 - var(--lo, 1)) * 18px); margin: 0;
-  inline-size: min(20ch, calc(100cqw - 2 * var(--gutter))); text-align: center; color: #fff; text-wrap: balance;
-  font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .95; font-size: clamp(40px, min(6.4cqw, 10cqh), 120px);
-  --lo: clamp(0, calc((var(--p) - .5) * 3.2), 1); opacity: var(--lo); text-shadow: 0 2px 30px rgb(10 12 30 / .35);
+/* Type. The heading sits across the space at rest and parts with the suns; the line forms under the mark. */
+.ab-sp__eyebrow { position: absolute; z-index: 2; inset-block-start: calc(var(--header-h) + 18px); left: var(--cx); translate: -50% 0; margin: 0; white-space: nowrap; opacity: clamp(0, calc(1 - var(--p) * 4), 1); }
+.ab-sp__title {
+  position: absolute; z-index: 2; inset-block-start: var(--cy); left: var(--cx); translate: -50% -50%; margin: 0; inline-size: min(15ch, calc(100cqw - 2 * var(--gutter)));
+  text-align: center; text-wrap: balance; font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
+  font-size: clamp(48px, min(6.6cqw, 10.5cqh), 128px); line-height: .92; letter-spacing: -.005em; pointer-events: none;
 }
-:lang(ar) .ab-sp__lead { text-transform: none; line-height: 1.25; font-size: clamp(32px, min(4.6cqw, 7.4cqh), 88px); inline-size: min(16em, calc(100cqw - 2 * var(--gutter))); }
+.ab-sp__title .w { display: inline-block; overflow: hidden; vertical-align: top; padding-block: .14em .24em; margin-block: -.14em -.24em; }
+.ab-sp__title .w > span { display: inline-block; translate: calc(var(--wd, 0) * var(--p) * 9cqw) calc(var(--wy, 0) * var(--p) * 12cqh); opacity: clamp(0, calc(1 - var(--p) * 4.4), 1); filter: blur(calc(var(--p) * 22px)); }
+:lang(ar) .ab-sp__title { text-transform: none; line-height: 1.2; letter-spacing: 0; font-size: clamp(38px, min(5cqw, 7.6cqh), 92px); inline-size: min(18ch, calc(100cqw - 2 * var(--gutter))); }
+.ab-sp__lead {
+  position: absolute; z-index: 2; inset-block-start: 50%; left: var(--cx); translate: -50% -50%; margin: 0; display: grid; justify-items: center; gap: clamp(14px, 2.4cqh, 26px);
+  inline-size: calc(100cqw - 2 * var(--gutter)); text-align: center; color: #fff; pointer-events: none;
+}
+.ab-sp__line { max-inline-size: 17ch; text-wrap: balance; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; font-size: clamp(40px, min(6cqw, 9.4cqh), 112px); text-shadow: 0 2px 30px rgb(10 12 30 / .35); }
+.ab-sp__line .w { display: inline-block; --o: clamp(0, calc((var(--p) - .56 - var(--i) * .018) * 7), 1); opacity: var(--o); translate: 0 calc((1 - var(--o)) * .4em); filter: blur(calc((1 - var(--o)) * 6px)); }
+.ab-sp__mark { inline-size: 26px; block-size: 28px; background: #fff; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; opacity: clamp(0, calc((var(--p) - .52) * 6), .9); }
+:lang(ar) .ab-sp__line { text-transform: none; line-height: 1.3; font-size: clamp(32px, min(4.4cqw, 7cqh), 84px); }
+:lang(ar) .ab-sp__line { max-inline-size: 15em; }
 .ab-sp__cap {
-  position: absolute; z-index: 2; inset-inline-end: var(--gutter); inset-block-end: calc(var(--dock-h, 0px) + 24px); margin: 0; color: #fff;
-  font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: clamp(0, calc((var(--p) - .8) * 5), 1);
+  position: absolute; z-index: 2; inset-inline-start: var(--gutter); inset-block-end: calc(var(--dock-h, 0px) + 24px); margin: 0; color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: clamp(0, calc((var(--p) - .82) * 6), .85);
 }
 :lang(ar) .ab-sp__cap { letter-spacing: 0; font-size: 14px; text-transform: none; }
 .ab-sp__hint {
   position: absolute; z-index: 2; inset-block-end: calc(var(--dock-h, 0px) + 22px); left: var(--cx); translate: -50% 0; margin: 0; display: none; flex-direction: column; align-items: center; gap: 8px;
-  color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: clamp(0, calc(.8 - var(--p) * 6), .8);
+  font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: clamp(0, calc(.7 - var(--p) * 6), .7);
 }
 .ab-sp.is-live .ab-sp__hint { display: flex; }
 :lang(ar) .ab-sp__hint { letter-spacing: 0; font-size: 13px; }
 .ab-sp__hint-line { inline-size: 1.5px; block-size: 28px; background: currentColor; transform-origin: top; animation: ab-hint 1.8s var(--ease-in-out) infinite; }
 
-/* Arrival: the two suns roll in from the sides and settle almost touching; the space and its words follow. */
+/* Arrival: the suns roll in and settle almost touching, then the light fills the space and the heading rises. */
 @media (prefers-reduced-motion: no-preference) {
-  .js .ab-sp.is-live .ab-sp__sun { animation: ab-sp-in 1.3s cubic-bezier(.2, .8, .2, 1) .05s both; }
-  .js .ab-sp.is-live .ab-sp__word, .js .ab-sp.is-live .ab-sp__eyebrow { animation: ab-sp-fade .8s ease .75s both; }
+  .js .ab-sp.is-live .ab-sp__sun { animation: ab-sp-in 1.4s cubic-bezier(.16, .84, .2, 1) both; }
+  .js .ab-sp.is-live .ab-sp__wash { animation: ab-sp-fade 1.1s ease .5s both; }
+  .js .ab-sp.is-live .ab-sp__title .w > span { animation: ab-sp-rise .95s cubic-bezier(.2, .75, .2, 1) calc(.75s + var(--i) * .07s) both; }
+  .js .ab-sp.is-live .ab-sp__label, .js .ab-sp.is-live .ab-sp__eyebrow { animation: ab-sp-fade .8s ease 1.2s both; }
 }
-@keyframes ab-sp-in { from { translate: calc(var(--side) * 34cqw) 0; } }
-@keyframes ab-sp-fade { from { opacity: 0; } }
+@keyframes ab-sp-in { from { translate: calc(var(--side) * 36cqw) 0; } }
+/* (these animate filter/transform, not opacity/translate, so the scroll can keep driving those) */
+@keyframes ab-sp-fade { from { filter: opacity(0); } }
+@keyframes ab-sp-rise { from { transform: translateY(110%); } }
 
-/* Phones: the same idea on its side. Today's sun above, tomorrow's below, the space a band across the middle. */
+/* Phones: on its side. Today's sun above, tomorrow's below; the space is a band of light across the middle. */
 @media (max-width: 749px) {
   .ab-sp { margin-block-start: 0; }
-  .ab-sp.is-live { block-size: 210svh; }
+  .ab-sp.is-live { block-size: 220svh; }
   .ab-sp__stage {
     block-size: calc(100svh - var(--header-h));
-    --D: min(150cqw, 66cqh); --g0: 4.5cqh; --cx: 50cqw; --cyy: 50cqh;
-    --g: calc(var(--g0) + var(--p) * (100cqh + var(--D) * .9));
-    --yt: calc(var(--cyy) - var(--g) / 2 - var(--D)); --yb: calc(var(--cyy) + var(--g) / 2);
+    --D: min(150cqw, 66cqh); --g0: 6cqh; --cx: 50cqw; --cy: 50cqh;
+    --ha: calc(var(--g0) / 2 + var(--p) * 30cqh); --hb: calc(var(--g0) / 2 + var(--p) * 30cqh);
+    --yt: calc(var(--cy) - var(--ha) - var(--D)); --yb2: calc(var(--cy) + var(--hb));
   }
   .ab-sp.is-live .ab-sp__stage { inset-block-start: var(--header-h); }
-  .ab-sp__day { clip-path: inset(max(0px, calc(var(--cyy) - var(--g) / 2 - var(--D) / 2)) 0 max(0px, calc(100cqh - var(--cyy) - var(--g) / 2 - var(--D) / 2)) 0); }
+  .ab-sp__day { clip-path: inset(max(0px, calc(var(--yt) + var(--D) / 2)) 0 max(0px, calc(100cqh - var(--yb2) - var(--D) / 2)) 0); }
   .ab-sp__img { object-position: 70% 40%; }
-  .ab-sp__sun { left: calc(50cqw - var(--D) / 2 + var(--dx)); top: var(--y); }
-  .ab-sp__sun--a, [dir='rtl'] .ab-sp__sun--a { --y: var(--yt); --dx: calc(var(--p) * -24cqw); --side: -1; }
-  .ab-sp__sun--b, [dir='rtl'] .ab-sp__sun--b { --y: var(--yb); --dx: calc(var(--p) * 24cqw); --side: 1; }
-  .ab-sp__word, .ab-sp__sun--a .ab-sp__word, .ab-sp__sun--b .ab-sp__word,
-  [dir='rtl'] .ab-sp__sun--a .ab-sp__word, [dir='rtl'] .ab-sp__sun--b .ab-sp__word {
-    left: 50%; right: auto; translate: -50% 0; text-align: center; inset-block-start: auto; max-inline-size: 8ch; font-size: calc(var(--D) * .095);
-  }
-  :lang(ar) .ab-sp__word { font-size: calc(var(--D) * .08); }
-  .ab-sp__sun--a .ab-sp__word { inset-block-end: 9%; }
-  .ab-sp__sun--b .ab-sp__word { inset-block-start: 9%; }
-  .ab-sp__eyebrow { color: var(--c-ink); text-shadow: none; inset-block-start: 16px; }
-  .ab-sp__hint { color: var(--c-ink); }
-  .ab-sp__lead { font-size: min(11cqw, 7cqh); }
-  :lang(ar) .ab-sp__lead { font-size: min(8.6cqw, 5.6cqh); }
+  .ab-sp__sun, [dir='rtl'] .ab-sp__sun { left: calc(50cqw - var(--D) / 2 + var(--dx)); top: var(--ty); }
+  .ab-sp__sun--a, [dir='rtl'] .ab-sp__sun--a { --ty: calc(var(--yt) - var(--p2) * 30cqh); --dx: calc(var(--p) * -40cqw); --side: -1; }
+  .ab-sp__sun--b, [dir='rtl'] .ab-sp__sun--b { --ty: calc(var(--yb2) + var(--p2) * 4cqh); --dx: calc(var(--p) * 44cqw); --side: 1; }
+  .ab-sp__label, .ab-sp__sun--a .ab-sp__label, .ab-sp__sun--b .ab-sp__label, [dir='rtl'] .ab-sp__sun--a .ab-sp__label, [dir='rtl'] .ab-sp__sun--b .ab-sp__label { left: 50%; right: auto; translate: -50% 0; }
+  .ab-sp__sun--a .ab-sp__label { inset-block: 46% auto; }
+  .ab-sp__sun--b .ab-sp__label { inset-block: auto 46%; }
+  .ab-sp__eyebrow { inset-block-start: 16px; }
+  .ab-sp__hint { display: none !important; }
+  .ab-sp__title { font-size: min(12.4cqw, 7.6cqh); inline-size: calc(100cqw - 2 * var(--gutter)); }
+  :lang(ar) .ab-sp__title { font-size: min(9.6cqw, 6cqh); }
+  .ab-sp__line { font-size: min(11cqw, 7cqh); }
+  :lang(ar) .ab-sp__line { font-size: min(8.4cqw, 5.4cqh); }
   @keyframes ab-sp-in { from { translate: 0 calc(var(--side) * 40cqh); } }
 }
