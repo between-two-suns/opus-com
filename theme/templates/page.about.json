@@ -1,11 +1,11 @@
 {
   "sections": {
-    "sky": { "type": "about-sky", "settings": {} },
-    "routine": { "type": "about-routine", "settings": {} },
-    "made": { "type": "about-made", "settings": {} },
+    "sky": { "type": "about-space", "settings": {} },
+    "routine": { "type": "about-shelf", "settings": { "look": "texture" } },
+    "made": { "type": "about-here", "settings": {} },
     "founder": { "type": "about-founder", "settings": {} },
-    "rules": { "type": "about-rules", "settings": {} },
-    "close": { "type": "about-close", "settings": {} }
+    "rules": { "type": "about-manifesto", "settings": {} },
+    "close": { "type": "about-close", "settings": { "copy_v2": true } }
   },
   "order": ["sky", "routine", "made", "founder", "rules", "close"]
 }
