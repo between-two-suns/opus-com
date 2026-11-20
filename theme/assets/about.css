@@ -330,51 +330,50 @@
   .ab-btw__hint { display: none !important; }
 }
 
-/* ---------- About hero: "the space between" (DECISIONS 319–320, demo) ----------
-   Two suns frame the screen; the gap the circles leave is the only window onto the day, and at rest it is full of
-   their light. --p (0 → 1, eased and smoothed in about-space.js): the light settles, today's sun sinks along an arc and
-   dims, tomorrow's rises into the corner, the heading parts, the line forms. --mx leans the space toward the pointer.
-   All geometry is in the stage's container units, so suns, light, clip and type stay locked together. */
-.ab-sp { --p: 0; --mx: 0; position: relative; margin-block-start: calc(-1 * var(--header-h)); background: var(--c-daylight, #fff); color: var(--c-ink); }
-.ab-sp.is-live { block-size: 240svh; }
+/* ---------- About hero: "the space between" (DECISIONS 319–322, demo) ----------
+   Two suns frame the screen, side by side on every size; the gap between them (the brand's )( shape, made by the two
+   circles) is full of their light, and the heading sits across it. --p (0 → 1, straight from the scroll) settles the
+   light to show the evening, sets today's sun along an arc, raises tomorrow's into the corner, parts the heading and
+   forms the line. Performance: everything that moves per frame is transform or opacity (no layout, no clip, no blend
+   modes, no filters), so it keeps up with the scroll on Safari and phones. */
+.ab-sp { --p: 0; --mx: 0; position: relative; background: var(--c-daylight, #fff); color: var(--c-ink); }
+.ab-sp.is-live { block-size: 190svh; }
 .ab-sp__stage {
-  position: relative; overflow: clip; isolation: isolate; block-size: 100svh; container-type: size;
+  position: relative; overflow: clip; isolation: isolate; block-size: calc(100svh - var(--header-h)); container-type: size;
   --D: min(135cqh, 64cqw); --g0: 5cqw; --cx: calc(50cqw + var(--mx) * 1.4cqw); --cy: 50cqh;
+  --tax: 26cqw; --tbx: 31cqw; --tay: 62cqh; --tby: 34cqh;
   --p2: calc(var(--p) * var(--p));
-  /* half-gaps: today's sun travels further (it leaves), tomorrow's stops in the corner */
-  --ha: calc(var(--g0) / 2 + var(--p) * 26cqw); --hb: calc(var(--g0) / 2 + var(--p) * 31cqw);
-  --xl: calc(var(--cx) - var(--ha) - var(--D)); --xr: calc(var(--cx) + var(--hb));
-  --ya: calc(var(--p) * 18cqh + var(--p2) * 62cqh); --yb: calc(var(--p) * -34cqh);
+  --xl: calc(var(--cx) - var(--g0) / 2 - var(--D) - var(--p) * var(--tax)); --xr: calc(var(--cx) + var(--g0) / 2 + var(--p) * var(--tbx));
 }
-[dir='rtl'] .ab-sp__stage { --xl: calc(var(--cx) - var(--hb) - var(--D)); --xr: calc(var(--cx) + var(--ha)); }
-.ab-sp.is-live .ab-sp__stage { position: sticky; inset-block-start: 0; }
+[dir='rtl'] .ab-sp__stage {
+  --xl: calc(var(--cx) - var(--g0) / 2 - var(--D) - var(--p) * var(--tbx)); --xr: calc(var(--cx) + var(--g0) / 2 + var(--p) * var(--tax));
+}
+.ab-sp.is-live .ab-sp__stage { position: sticky; inset-block-start: var(--header-h); }
 
-/* The day: only the band between the suns' centres; the opaque suns cover the rest. */
-.ab-sp__day { position: absolute; inset: 0; z-index: 0; background: #2a2f4a;
-  clip-path: inset(0 max(0px, calc(100cqw - var(--xr) - var(--D) / 2)) 0 max(0px, calc(var(--xl) + var(--D) / 2))); }
+/* The day sits under everything; at rest it is fully covered by the suns' light. */
+.ab-sp__day { position: absolute; inset: 0; z-index: 0; background: #2a2f4a; }
 .ab-sp__day picture, .ab-sp__img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; }
-.ab-sp__img { object-fit: cover; object-position: 40% 45%; transform: scale(calc(1.16 - .16 * var(--p))); }
-/* At rest the space is the suns' light (warm, slightly brighter toward today's sun); it settles to show the evening. */
-.ab-sp__wash { position: absolute; inset: 0; pointer-events: none; opacity: clamp(0, calc(.96 - var(--p) * 2.6), .96);
-  background: radial-gradient(40% 60% at 50% 50%, #fffdf6, #fff1d2 45%, #ffdca6 80%, #f8c98c); }
-/* Golden hour in the middle of the scroll, then blue dusk. */
-.ab-sp__amber { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply;
-  opacity: clamp(0, calc(min(var(--p) * 3 - .3, 1.9 - var(--p) * 2.4)), .55); background: linear-gradient(to top, #f2b36d, #f7d1a0 60%, #fbe6cc); }
+.ab-sp__img { object-fit: cover; object-position: 40% 45%; transform: scale(calc(1.12 - .12 * var(--p))); }
+.ab-sp__wash { position: absolute; inset: 0; pointer-events: none; opacity: clamp(0, calc(1 - (var(--p) - .04) * 2.8), 1);
+  background: radial-gradient(42% 62% at 50% 50%, #fffdf6, #fff1d2 45%, #ffdca6 80%, #f8c98c); }
+.ab-sp__amber { position: absolute; inset: 0; pointer-events: none; opacity: clamp(0, calc(min(var(--p) * 3 - .3, 1.9 - var(--p) * 2.4) * .4), .4);
+  background: linear-gradient(to top, rgb(242 160 80 / .7), rgb(247 200 140 / .35) 60%, transparent); }
 .ab-sp__dusk { position: absolute; inset: 0; pointer-events: none; opacity: clamp(0, calc((var(--p) - .5) * 2.4), 1);
   background: radial-gradient(70% 60% at 50% 50%, rgb(16 18 36 / .52), rgb(16 18 36 / .22) 70%, transparent), linear-gradient(to bottom, rgb(16 18 36 / .3), transparent 30%, transparent 70%, rgb(16 18 36 / .5)); }
 
-/* The suns: light, not discs. A wide halo spills onto the page and into the space; today's dims as it sets. */
-.ab-sp__sun { position: absolute; z-index: 1; inline-size: var(--D); aspect-ratio: 1; left: var(--x); top: calc(var(--cy) - var(--D) / 2 + var(--y)); }
-.ab-sp__sun--a { --x: var(--xl); --y: var(--ya); --side: -1; }
-.ab-sp__sun--b { --x: var(--xr); --y: var(--yb); --side: 1; }
-[dir='rtl'] .ab-sp__sun--a { --x: var(--xr); --side: 1; }
-[dir='rtl'] .ab-sp__sun--b { --x: var(--xl); --side: -1; }
-.ab-sp__orb { inset: 0; inline-size: 100%; --spin: calc(var(--p) * 50deg * var(--side)); }
+/* The suns: placed by transform only. Today's sets (down and out), tomorrow's rises into the far corner. */
+.ab-sp__sun { position: absolute; z-index: 1; inset: 0 auto auto 0; inline-size: var(--D); aspect-ratio: 1; will-change: transform; }
+.ab-sp__sun--a { --side: -1; transform: translate3d(var(--xl), calc(var(--cy) - var(--D) / 2 + var(--p) * 18cqh + var(--p2) * var(--tay)), 0); }
+.ab-sp__sun--b { --side: 1; transform: translate3d(var(--xr), calc(var(--cy) - var(--D) / 2 - var(--p) * var(--tby)), 0); }
+[dir='rtl'] .ab-sp__sun--a { --side: 1; transform: translate3d(var(--xr), calc(var(--cy) - var(--D) / 2 + var(--p) * 18cqh + var(--p2) * var(--tay)), 0); }
+[dir='rtl'] .ab-sp__sun--b { --side: -1; transform: translate3d(var(--xl), calc(var(--cy) - var(--D) / 2 - var(--p) * var(--tby)), 0); }
+.ab-sp__orb { inset: 0; inline-size: 100%; }
 .ab-sp__orb::before { display: none; }
-.ab-sp__sun--a .ab-sp__orb { filter: brightness(calc(1 - var(--p) * .22)) saturate(calc(1 + var(--p) * .15)); }
-.ab-sp__halo { position: absolute; inset: -26%; border-radius: 50%; pointer-events: none; mix-blend-mode: screen; }
-.ab-sp__sun--a .ab-sp__halo { opacity: calc(.9 - var(--p) * .5); background: radial-gradient(closest-side, transparent 64%, rgb(255 238 196 / .7) 65.5%, rgb(255 230 186 / .3) 72%, rgb(255 230 186 / .08) 84%, transparent); }
-.ab-sp__sun--b .ab-sp__halo { opacity: calc(.7 - var(--p) * .3); background: radial-gradient(closest-side, transparent 64%, rgb(230 238 255 / .7) 65.5%, rgb(214 226 252 / .3) 72%, rgb(214 226 252 / .08) 84%, transparent); }
+/* today's sun dims as it sets: a dark veil over it, opacity only */
+.ab-sp__sun--a::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: rgb(30 34 60); opacity: calc(var(--p) * .24); pointer-events: none; }
+.ab-sp__halo { position: absolute; inset: -26%; border-radius: 50%; pointer-events: none; }
+.ab-sp__sun--a .ab-sp__halo { opacity: calc(1 - var(--p) * .6); background: radial-gradient(closest-side, transparent 64%, rgb(255 236 190 / .6) 65.6%, rgb(255 228 180 / .22) 73%, transparent 86%); }
+.ab-sp__sun--b .ab-sp__halo { opacity: calc(1 - var(--p) * .5); background: radial-gradient(closest-side, transparent 64%, rgb(232 240 255 / .6) 65.6%, rgb(214 226 252 / .22) 73%, transparent 86%); }
 .ab-sp__label {
   position: absolute; inset-block-end: 23%; font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; color: var(--c-ink);
   opacity: clamp(0, calc(.75 - var(--p) * 4), .75);
@@ -385,76 +384,56 @@
 [dir='rtl'] .ab-sp__sun--b .ab-sp__label { left: auto; right: 22%; }
 :lang(ar) .ab-sp__label { letter-spacing: 0; font-size: 14px; text-transform: none; }
 
-/* Type. The heading sits across the space at rest and parts with the suns; the line forms under the mark. */
-.ab-sp__eyebrow { position: absolute; z-index: 2; inset-block-start: calc(var(--header-h) + 18px); left: var(--cx); translate: -50% 0; margin: 0; white-space: nowrap; opacity: clamp(0, calc(1 - var(--p) * 4), 1); }
+/* Type */
+.ab-sp__eyebrow { position: absolute; z-index: 2; inset-block-start: clamp(16px, 3.4cqh, 32px); left: 50%; translate: -50% 0; margin: 0; white-space: nowrap; opacity: clamp(0, calc(1 - var(--p) * 4), 1); }
 .ab-sp__title {
   position: absolute; z-index: 2; inset-block-start: var(--cy); left: var(--cx); translate: -50% -50%; margin: 0; inline-size: min(15ch, calc(100cqw - 2 * var(--gutter)));
   text-align: center; text-wrap: balance; font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
   font-size: clamp(48px, min(6.6cqw, 10.5cqh), 128px); line-height: .92; letter-spacing: -.005em; pointer-events: none;
 }
-.ab-sp__title .w { display: inline-block; overflow: hidden; vertical-align: top; padding-block: .14em .24em; margin-block: -.14em -.24em; }
-.ab-sp__title .w > span { display: inline-block; translate: calc(var(--wd, 0) * var(--p) * 9cqw) calc(var(--wy, 0) * var(--p) * 12cqh); opacity: clamp(0, calc(1 - var(--p) * 4.4), 1); filter: blur(calc(var(--p) * 22px)); }
+.ab-sp__title .w { display: inline-block; }
+.ab-sp__title .w > span { display: inline-block; transform: translate3d(calc(var(--wd, 0) * var(--p) * 9cqw), calc(var(--wy, 0) * var(--p) * 12cqh), 0); opacity: clamp(0, calc(1 - var(--p) * 4.4), 1); }
 :lang(ar) .ab-sp__title { text-transform: none; line-height: 1.2; letter-spacing: 0; font-size: clamp(38px, min(5cqw, 7.6cqh), 92px); inline-size: min(18ch, calc(100cqw - 2 * var(--gutter))); }
-.ab-sp__lead {
-  position: absolute; z-index: 2; inset-block-start: 50%; left: var(--cx); translate: -50% -50%; margin: 0; display: grid; justify-items: center; gap: clamp(14px, 2.4cqh, 26px);
-  inline-size: calc(100cqw - 2 * var(--gutter)); text-align: center; color: #fff; pointer-events: none;
-}
+.ab-sp__lead { position: absolute; z-index: 2; inset-block-start: 50%; left: 50%; translate: -50% -50%; margin: 0; display: grid; justify-items: center; gap: clamp(14px, 2.4cqh, 26px);
+  inline-size: calc(100cqw - 2 * var(--gutter)); text-align: center; color: #fff; pointer-events: none; }
 .ab-sp__line { max-inline-size: 17ch; text-wrap: balance; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; font-size: clamp(40px, min(6cqw, 9.4cqh), 112px); text-shadow: 0 2px 30px rgb(10 12 30 / .35); }
-.ab-sp__line .w { display: inline-block; --o: clamp(0, calc((var(--p) - .56 - var(--i) * .018) * 7), 1); opacity: var(--o); translate: 0 calc((1 - var(--o)) * .4em); filter: blur(calc((1 - var(--o)) * 6px)); }
+.ab-sp__line .w { display: inline-block; --o: clamp(0, calc((var(--p) - .56 - var(--i) * .018) * 7), 1); opacity: var(--o); transform: translate3d(0, calc((1 - var(--o)) * .4em), 0); }
 .ab-sp__mark { inline-size: 26px; block-size: 28px; background: #fff; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; opacity: clamp(0, calc((var(--p) - .52) * 6), .9); }
-:lang(ar) .ab-sp__line { text-transform: none; line-height: 1.3; font-size: clamp(32px, min(4.4cqw, 7cqh), 84px); }
-:lang(ar) .ab-sp__line { max-inline-size: 15em; }
-.ab-sp__cap {
-  position: absolute; z-index: 2; inset-inline-start: var(--gutter); inset-block-end: calc(var(--dock-h, 0px) + 24px); margin: 0; color: #fff;
-  font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: clamp(0, calc((var(--p) - .82) * 6), .85);
-}
-:lang(ar) .ab-sp__cap { letter-spacing: 0; font-size: 14px; text-transform: none; }
+:lang(ar) .ab-sp__line { text-transform: none; line-height: 1.3; font-size: clamp(32px, min(4.4cqw, 7cqh), 84px); max-inline-size: 15em; }
 .ab-sp__hint {
-  position: absolute; z-index: 2; inset-block-end: calc(var(--dock-h, 0px) + 22px); left: var(--cx); translate: -50% 0; margin: 0; display: none; flex-direction: column; align-items: center; gap: 8px;
+  position: absolute; z-index: 2; inset-block-end: calc(var(--dock-h, 0px) + 22px); left: 50%; translate: -50% 0; margin: 0; display: none; flex-direction: column; align-items: center; gap: 8px;
   font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: clamp(0, calc(.7 - var(--p) * 6), .7);
 }
 .ab-sp.is-live .ab-sp__hint { display: flex; }
 :lang(ar) .ab-sp__hint { letter-spacing: 0; font-size: 13px; }
 .ab-sp__hint-line { inline-size: 1.5px; block-size: 28px; background: currentColor; transform-origin: top; animation: ab-hint 1.8s var(--ease-in-out) infinite; }
 
-/* Arrival: the suns roll in and settle almost touching, then the light fills the space and the heading rises. */
+/* Arrival: the light is there from the first frame; the suns slide in and settle; the heading fades up. */
 @media (prefers-reduced-motion: no-preference) {
-  .js .ab-sp.is-live .ab-sp__sun { animation: ab-sp-in 1.4s cubic-bezier(.16, .84, .2, 1) both; }
-  .js .ab-sp.is-live .ab-sp__wash { animation: ab-sp-fade 1.1s ease .5s both; }
-  .js .ab-sp.is-live .ab-sp__title .w > span { animation: ab-sp-rise .95s cubic-bezier(.2, .75, .2, 1) calc(.75s + var(--i) * .07s) both; }
-  .js .ab-sp.is-live .ab-sp__label, .js .ab-sp.is-live .ab-sp__eyebrow { animation: ab-sp-fade .8s ease 1.2s both; }
+  .js .ab-sp.is-live .ab-sp__sun { animation: ab-sp-in 1.3s cubic-bezier(.16, .84, .2, 1) both; }
+  .js .ab-sp.is-live .ab-sp__title { animation: ab-sp-up .9s cubic-bezier(.2, .75, .2, 1) .55s both; }
+  .js .ab-sp.is-live .ab-sp__label, .js .ab-sp.is-live .ab-sp__eyebrow, .js .ab-sp.is-live .ab-sp__hint { animation: ab-sp-fade .8s ease 1s both; }
 }
-@keyframes ab-sp-in { from { translate: calc(var(--side) * 36cqw) 0; } }
-/* (these animate filter/transform, not opacity/translate, so the scroll can keep driving those) */
+/* (these animate translate/filter, which the scroll doesn't drive, so the scroll keeps control of transform/opacity) */
+@keyframes ab-sp-in { from { translate: calc(var(--side) * 30cqw) 0; } }
+@keyframes ab-sp-up { from { filter: opacity(0); translate: -50% calc(-50% + 24px); } }
 @keyframes ab-sp-fade { from { filter: opacity(0); } }
-@keyframes ab-sp-rise { from { transform: translateY(110%); } }
 
-/* Phones: on its side. Today's sun above, tomorrow's below; the space is a band of light across the middle. */
+/* Phones: the same side-by-side suns, larger than the screen, so the space is a tall )( down the middle. */
 @media (max-width: 749px) {
-  .ab-sp { margin-block-start: 0; }
-  .ab-sp.is-live { block-size: 220svh; }
-  .ab-sp__stage {
-    block-size: calc(100svh - var(--header-h));
-    --D: min(150cqw, 66cqh); --g0: 6cqh; --cx: 50cqw; --cy: 50cqh;
-    --ha: calc(var(--g0) / 2 + var(--p) * 30cqh); --hb: calc(var(--g0) / 2 + var(--p) * 30cqh);
-    --yt: calc(var(--cy) - var(--ha) - var(--D)); --yb2: calc(var(--cy) + var(--hb));
-  }
-  .ab-sp.is-live .ab-sp__stage { inset-block-start: var(--header-h); }
-  .ab-sp__day { clip-path: inset(max(0px, calc(var(--yt) + var(--D) / 2)) 0 max(0px, calc(100cqh - var(--yb2) - var(--D) / 2)) 0); }
+  .ab-sp.is-live { block-size: 180svh; }
+  .ab-sp__stage { --D: max(150cqw, 112cqh); --g0: 7cqw; --cx: 50cqw; --tax: 46cqw; --tbx: 52cqw; --tay: 52cqh; --tby: 30cqh; }
   .ab-sp__img { object-position: 70% 40%; }
-  .ab-sp__sun, [dir='rtl'] .ab-sp__sun { left: calc(50cqw - var(--D) / 2 + var(--dx)); top: var(--ty); }
-  .ab-sp__sun--a, [dir='rtl'] .ab-sp__sun--a { --ty: calc(var(--yt) - var(--p2) * 30cqh); --dx: calc(var(--p) * -40cqw); --side: -1; }
-  .ab-sp__sun--b, [dir='rtl'] .ab-sp__sun--b { --ty: calc(var(--yb2) + var(--p2) * 4cqh); --dx: calc(var(--p) * 44cqw); --side: 1; }
-  .ab-sp__label, .ab-sp__sun--a .ab-sp__label, .ab-sp__sun--b .ab-sp__label, [dir='rtl'] .ab-sp__sun--a .ab-sp__label, [dir='rtl'] .ab-sp__sun--b .ab-sp__label { left: 50%; right: auto; translate: -50% 0; }
-  .ab-sp__sun--a .ab-sp__label { inset-block: 46% auto; }
-  .ab-sp__sun--b .ab-sp__label { inset-block: auto 46%; }
-  .ab-sp__eyebrow { inset-block-start: 16px; }
-  .ab-sp__hint { display: none !important; }
-  .ab-sp__title { font-size: min(12.4cqw, 7.6cqh); inline-size: calc(100cqw - 2 * var(--gutter)); }
-  :lang(ar) .ab-sp__title { font-size: min(9.6cqw, 6cqh); }
+  .ab-sp__sun--a .ab-sp__label { right: 5%; inset-block-end: 30%; }
+  .ab-sp__sun--b .ab-sp__label { left: 5%; inset-block-end: 30%; }
+  [dir='rtl'] .ab-sp__sun--a .ab-sp__label { right: auto; left: 5%; }
+  [dir='rtl'] .ab-sp__sun--b .ab-sp__label { left: auto; right: 5%; }
+  .ab-sp__label { font-size: 12px; letter-spacing: .12em; }
+  .ab-sp__title { font-size: min(13cqw, 8cqh); inline-size: calc(100cqw - 2 * var(--gutter)); }
+  :lang(ar) .ab-sp__title { font-size: min(10cqw, 6.2cqh); }
   .ab-sp__line { font-size: min(11cqw, 7cqh); }
   :lang(ar) .ab-sp__line { font-size: min(8.4cqw, 5.4cqh); }
-  @keyframes ab-sp-in { from { translate: 0 calc(var(--side) * 40cqh); } }
+  .ab-sp__hint { display: none !important; }
 }
 
 /* ==========================================================================
