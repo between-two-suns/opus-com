@@ -52,15 +52,19 @@
     </div>
 
     <div class="ab-sp__sun ab-sp__sun--a" aria-hidden="true">
-      <span class="ab-sp__halo"></span>
-      {%- render 'about-orb', tone: 'green', side: 'start', class: 'ab-sp__orb', sizes: '(min-width: 750px) 64vw, 150vw', priority: true -%}
-      <span class="ab-sp__label">{{ sun_a }}</span>
+      <span class="ab-sp__sun-in">
+        <span class="ab-sp__halo"></span>
+        {%- render 'about-orb', tone: 'green', side: 'start', class: 'ab-sp__orb', sizes: '(min-width: 750px) 64vw, 150vw', priority: true -%}
+        <span class="ab-sp__label">{{ sun_a }}</span>
+      </span>
     </div>
     <div class="ab-sp__sun ab-sp__sun--b" aria-hidden="true">
-      <span class="ab-sp__halo"></span>
-      {%- render 'about-orb', tone: 'blue', side: 'end', class: 'ab-sp__orb', sizes: '(min-width: 750px) 64vw, 150vw' -%}
-      <span class="ab-sp__moon"></span>
-      <span class="ab-sp__label">{{ sun_b }}</span>
+      <span class="ab-sp__sun-in">
+        <span class="ab-sp__halo"></span>
+        {%- render 'about-orb', tone: 'blue', side: 'end', class: 'ab-sp__orb', sizes: '(min-width: 750px) 64vw, 150vw' -%}
+        <span class="ab-sp__moon"></span>
+        <span class="ab-sp__label">{{ sun_b }}</span>
+      </span>
     </div>
 
     <p class="t-eyebrow ab-sp__eyebrow">{% if section.settings.t_eyebrow != blank %}{{ section.settings.t_eyebrow }}{% else %}{{ 'about2.eyebrow' | t }}{% endif %}</p>
@@ -72,7 +76,7 @@
   </div>
 </section>
 {%- comment -%} Scroll mode is set before the first paint, so nothing shifts when the script arrives. {%- endcomment -%}
-<script>(function(s){var h=document.querySelector('.shopify-section:has(> .site-header-wrap)')||document.querySelector('.site-header-wrap');if(h)s.style.setProperty('--hdr',h.offsetHeight+'px');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)s.classList.add('is-live');})(document.currentScript.previousElementSibling);</script>
+<script>(function(s){var h=document.querySelector('.shopify-section:has(> .site-header-wrap)')||document.querySelector('.site-header-wrap');if(h)s.style.setProperty('--hdr',h.offsetHeight+'px');if(window.CSS&&CSS.supports('animation-timeline','view()')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)s.classList.add('is-live');})(document.currentScript.previousElementSibling);</script>
 <script src="{{ 'about-space.js' | asset_url }}" type="module" defer></script>
 
 {% schema %}
