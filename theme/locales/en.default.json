@@ -1526,7 +1526,9 @@
     "btw_caption": "Alexandria, after sunset",
     "btw_alt": "A woman with a cup of coffee on a balcony over the Alexandria corniche at dusk.",
     "sp_title": "Every sun sets.",
-    "sp_line": "And every morning, it comes back new."
+    "sp_line": "And every morning, it comes back new.",
+    "sh_am": "Mornings: all four",
+    "sh_pm": "Nights: the first three"
   },
   "finder": {
     "eyebrow": "Find your routine",

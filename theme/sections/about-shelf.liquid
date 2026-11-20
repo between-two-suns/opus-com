@@ -1,66 +1,66 @@
 {{ 'about.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  About, the routine as a colour chart (DECISIONS 321, demo). "A routine, not a cabinet." set as big as the close,
-  then the whole range in one picture: four columns in the step colours, edge to edge, each pack standing at its
-  true size on the ground with its brand word (Reset, Clarity, Barrier, Defense) huge and upright behind it, and
-  under it the number, the step and when it's used. The sunscreen column fades at its foot ("Mornings only").
-  Each column opens its product. Phones: the same four columns, narrower (the packs still fit at true size).
+  About, the routine (DECISIONS 328, demo). In the site's own language (like the home page's sections): eyebrow and a
+  sentence-case heading with its intro beside it, then one rounded card in the four step colours where the whole range
+  stands on one shelf at true sizes, each step named under its pack, and a quiet morning / night line at the foot.
+  Each pack opens its product.
 {%- endcomment -%}
 {%- liquid
   assign step_handles = ',daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
   assign pack_h = ',1,.65,.81,.81' | split: ','
   assign sets_url = routes.root_url | append: '/pages/sets' | replace: '//', '/'
 -%}
-<section class="ab-sh" aria-labelledby="AbSh-{{ section.id }}">
-  <div class="container ab-sh__head">
-    <p class="t-eyebrow">{% if section.settings.t_about2_routine_eyebrow != blank %}{{ section.settings.t_about2_routine_eyebrow }}{% else %}{{ 'about2.routine_eyebrow' | t }}{% endif %}</p>
-    <h2 class="ab-big reveal" id="AbSh-{{ section.id }}">{% if section.settings.t_about2_routine_heading != blank %}{{ section.settings.t_about2_routine_heading }}{% else %}{{ 'about2.routine_heading' | t }}{% endif %}</h2>
-    <p class="t-lead ab-sh__lede">{% if section.settings.t_about2_routine_text != blank %}{{ section.settings.t_about2_routine_text }}{% else %}{{ 'about2.routine_text' | t }}{% endif %}</p>
-  </div>
+<section class="section ab-sh" aria-labelledby="AbSh-{{ section.id }}">
+  <div class="container">
+    <div class="section-head ab-sh__head">
+      <div class="section-head__text">
+        <p class="t-eyebrow">{% if section.settings.t_about2_routine_eyebrow != blank %}{{ section.settings.t_about2_routine_eyebrow }}{% else %}{{ 'about2.routine_eyebrow' | t }}{% endif %}</p>
+        <h2 class="t-display-m" id="AbSh-{{ section.id }}">{% if section.settings.t_about2_routine_heading != blank %}{{ section.settings.t_about2_routine_heading }}{% else %}{{ 'about2.routine_heading' | t }}{% endif %}</h2>
+      </div>
+      <div class="ab-sh__aside">
+        <p class="t-lead t-muted">{% if section.settings.t_about2_routine_text != blank %}{{ section.settings.t_about2_routine_text }}{% else %}{{ 'about2.routine_text' | t }}{% endif %}</p>
+        <a class="link-arrow" href="{{ sets_url }}">{% if section.settings.t_about2_sets_link != blank %}{{ section.settings.t_about2_sets_link }}{% else %}{{ 'about2.sets_link' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+      </div>
+    </div>
 
-  <ol class="ab-sh__chart" role="list">
-    {%- for i in (1..4) -%}
-      {%- assign p = all_products[step_handles[i]] -%}
-      {%- unless p.id -%}{%- continue -%}{%- endunless -%}
-      {%- assign wk = 'product.stage_word.s' | append: i -%}
-      {%- assign nk = 'product.step_name.s' | append: i -%}
-      {%- assign step_name = nk | t -%}
-      {%- if step_name contains 'ranslation missing' -%}{%- assign step_name = p.metafields.bts.step_label.value | default: p.title -%}{%- endif -%}
-      <li class="ab-sh__col{% if i == 4 %} is-am{% endif %}" data-step="{{ i }}">
-        <a class="ab-sh__link" href="{{ p.url }}">
-          <span class="ab-sh__word" aria-hidden="true">{{ wk | t }}</span>
-          <span class="ab-sh__pack" style="--h: {{ pack_h[i] }}" aria-hidden="true">
-            {%- render 'cut-img', handle: p.handle, sizes: '(min-width: 990px) 170px, 22vw', widths: '180,240,360,480', class: 'ab-sh__img' -%}
-          </span>
-          <span class="ab-sh__meta">
-            <span class="ab-sh__num" aria-hidden="true">0{{ i }}</span>
-            <span class="ab-sh__step">{{ step_name | escape }}</span>
-            <span class="ab-sh__name">{{ p.title | escape }}</span>
-            <span class="ab-sh__when">
-              {%- if i == 4 -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}<span class="ab-sh__when-t">{% if section.settings.t_about2_am_only != blank %}{{ section.settings.t_about2_am_only }}{% else %}{{ 'about2.am_only' | t }}{% endif %}</span>
-              {%- else -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}{% render 'icon', name: 'moon', class: 'icon--sm' %}<span class="ab-sh__when-t">{% if section.settings.t_about2_am_pm != blank %}{{ section.settings.t_about2_am_pm }}{% else %}{{ 'about2.am_pm' | t }}{% endif %}</span>{%- endif -%}
-            </span>
-          </span>
-        </a>
-      </li>
-    {%- endfor -%}
-  </ol>
-  <div class="container ab-sh__foot">
-    <a class="link-arrow" href="{{ sets_url }}">{% if section.settings.t_about2_sets_link != blank %}{{ section.settings.t_about2_sets_link }}{% else %}{{ 'about2.sets_link' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
+    <div class="ab-sh__card">
+      <ol class="ab-sh__shelf" role="list">
+        {%- for i in (1..4) -%}
+          {%- assign p = all_products[step_handles[i]] -%}
+          {%- unless p.id -%}{%- continue -%}{%- endunless -%}
+          {%- assign nk = 'product.step_name.s' | append: i -%}
+          {%- assign step_name = nk | t -%}
+          {%- if step_name contains 'ranslation missing' -%}{%- assign step_name = p.metafields.bts.step_label.value | default: p.title -%}{%- endif -%}
+          <li class="ab-sh__item" data-step="{{ i }}">
+            <a class="ab-sh__link" href="{{ p.url }}">
+              <span class="ab-sh__pack" style="--h: {{ pack_h[i] }}" aria-hidden="true">
+                {%- render 'cut-img', handle: p.handle, sizes: '(min-width: 990px) 150px, 18vw', widths: '120,180,240,360,480', class: 'ab-sh__img' -%}
+              </span>
+              <span class="ab-sh__cap">
+                <span class="ab-sh__step"><span class="ab-sh__dot" aria-hidden="true"></span><span class="ab-sh__num">0{{ i }}</span><span class="ab-sh__sep" aria-hidden="true">·</span><span>{{ step_name | escape }}</span></span>
+                <span class="ab-sh__name">{{ p.title | escape }}</span>
+              </span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ol>
+      <p class="ab-sh__when">
+        <span>{% render 'icon', name: 'sun', class: 'icon--sm' %} {{ 'about2.sh_am' | t }}</span>
+        <span>{% render 'icon', name: 'moon', class: 'icon--sm' %} {{ 'about2.sh_pm' | t }}</span>
+      </p>
+    </div>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "About · routine chart",
+  "name": "About · routine",
   "enabled_on": { "templates": ["page"] },
   "settings": [
     { "type": "paragraph", "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English." },
     { "type": "text", "id": "t_about2_routine_eyebrow", "label": "Small line above the heading", "info": "Now: “The routine”. Leave empty to keep it (English and Arabic)." },
     { "type": "text", "id": "t_about2_routine_heading", "label": "Heading", "info": "Now: “A routine, not a cabinet.” Leave empty to keep it (English and Arabic)." },
     { "type": "textarea", "id": "t_about2_routine_text", "label": "Paragraph", "info": "Now: “Four products, one job each…”. Leave empty to keep it (English and Arabic)." },
-    { "type": "text", "id": "t_about2_am_pm", "label": "When (first three)", "info": "Now: “Morning and night”. Leave empty to keep it (English and Arabic)." },
-    { "type": "text", "id": "t_about2_am_only", "label": "When (sunscreen)", "info": "Now: “Mornings only”. Leave empty to keep it (English and Arabic)." },
     { "type": "text", "id": "t_about2_sets_link", "label": "Link text", "info": "Now: “Find your set”. Leave empty to keep it (English and Arabic)." }
   ]
 }
