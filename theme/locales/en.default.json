@@ -1531,7 +1531,14 @@
     "sh_pm": "Nights: the first three",
     "sh_off": "Not tonight",
     "stamp": "Made in Egypt · Cairo · ",
-    "sh_comma": ","
+    "sh_comma": ",",
+    "v2_routine_text": "More products don’t automatically mean better skincare. We believe in clear steps, purposeful formulas and knowing why you’re using what you’re using.",
+    "v2_p1": "We won’t promise overnight transformations.",
+    "v2_p2": "We won’t make up reviews, numbers or results.",
+    "v2_p3": "We won’t tell you that you need every product.",
+    "v2_p4": "We won’t make skincare harder to understand than it needs to be.",
+    "v2_close_text": "We believe good skincare should make everyday life easier, not more complicated. That’s why we focus on useful steps, considered formulas and products that feel good to use.",
+    "v2_close_line": "Made for the days you actually have."
   },
   "finder": {
     "eyebrow": "Find your routine",

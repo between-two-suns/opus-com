@@ -2017,7 +2017,7 @@ Principle 4 — AR
 
 مش هنصعّب عليكي فهم منتجات العناية بالبشرة.
 
-Closing heading — EN
+Closing heading — EN (owner 2026-11-20: the site keeps “Until the next sun.” / «لحد الشمس الجاية.» as the About close, completing the hero “Every sun sets… it comes back new”; the line below stays as the option)
 
 MADE FOR EVERYTHING IN BETWEEN.
 
