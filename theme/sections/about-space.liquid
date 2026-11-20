@@ -13,7 +13,7 @@
   if section.settings.t_title != blank
     assign title = section.settings.t_title
   else
-    assign title = 'about2.btw_title' | t
+    assign title = 'about2.sp_title' | t
   endif
   if section.settings.t_sun_a != blank
     assign sun_a = section.settings.t_sun_a
@@ -28,7 +28,7 @@
   if section.settings.t_lead != blank
     assign lead = section.settings.t_lead
   else
-    assign lead = 'about2.b4' | t
+    assign lead = 'about2.sp_line' | t
   endif
   assign alt = img.alt | default: ''
   if alt == blank
@@ -71,7 +71,7 @@
     {%- assign title_words = title | split: ' ' -%}
     <h1 class="ab-sp__title" id="AbSp-{{ section.id }}">{% for w in title_words %}<span class="w" style="--i: {{ forloop.index0 }}"><span>{{ w }}</span></span>{% unless forloop.last %}{{ ' ' }}{% endunless %}{% endfor %}</h1>
     {%- assign lead_words = lead | split: ' ' -%}
-    <p class="ab-sp__lead"><span class="ab-sp__mark" aria-hidden="true"></span><span class="ab-sp__line">{% for w in lead_words %}<span class="w" style="--i: {{ forloop.index0 }}">{{ w }}</span>{% unless forloop.last %}{{ ' ' }}{% endunless %}{% endfor %}</span></p>
+    <p class="ab-sp__lead"><span class="ab-sp__mark" aria-hidden="true"></span><span class="ab-sp__line">{% for w in lead_words %}<span class="w" style="--i: {{ forloop.index0 }}">{{ w }}</span>{% unless forloop.last %}{{ ' ' }}{% endunless %}{% endfor %}</span><span class="ab-sp__tag">{% if section.settings.t_tagline != blank %}{{ section.settings.t_tagline }}{% else %}{{ 'footer.tagline' | t }}{% endif %}</span></p>
     <p class="ab-sp__hint" aria-hidden="true">{{ 'about2.scroll' | t }}<span class="ab-sp__hint-line"></span></p>
   </div>
 </section>
@@ -92,8 +92,9 @@
     { "type": "text", "id": "t_eyebrow", "label": "Small line at the top", "info": "Now: “About”. Leave empty to keep it (English and Arabic)." },
     { "type": "text", "id": "t_sun_a", "label": "Label on today's sun", "info": "Now: “Today’s sun”. Leave empty to keep it (English and Arabic)." },
     { "type": "text", "id": "t_sun_b", "label": "Label on tomorrow's sun", "info": "Now: “Tomorrow’s sun”. Leave empty to keep it (English and Arabic)." },
-    { "type": "text", "id": "t_lead", "label": "Line that lands in the middle", "info": "Now: “That space between two days is what we make skincare for.” Leave empty to keep it (English and Arabic)." },
-    { "type": "text", "id": "t_title", "label": "Heading", "info": "Now: “Two suns: today’s, and tomorrow’s.” Leave empty to keep it (English and Arabic)." }
+    { "type": "text", "id": "t_lead", "label": "Line that lands over the evening", "info": "Now: “And every morning, it comes back new.” Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_tagline", "label": "Small line under it", "info": "Now: “fresh skin. always.” (the tagline). Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_title", "label": "Heading", "info": "Now: “Every sun sets.” Leave empty to keep it (English and Arabic)." }
   ]
 }
 {% endschema %}
