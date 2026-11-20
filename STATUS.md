@@ -11,7 +11,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 |---|---|
 | **Staging preview URL** | https://qfj1gi-c9.myshopify.com/?preview_theme_id=167112540418 (store password required; or Online Store → Themes → "BTS Store — Version 1.1 (fixes, in progress)" → Preview) |
 | **Version 1.2 (new copy)** | `BTS Store — Version 1.2 (new copy)` · `gid://shopify/OnlineStoreTheme/168818671874` · UNPUBLISHED · preview https://qfj1gi-c9.myshopify.com/?preview_theme_id=168818671874 (duplicate of 1.1 + the new copy, DECISIONS 298). All new work goes here. |
-| **About hero demos (DECISIONS 318–319)** | Version 1.2 only: round 2 (recommended) at `/pages/about?view=about4`, round 1 at `/pages/about?view=about3` (and `/ar/pages/about?view=about3`). Real About page unchanged until the owner says yes; then point `page.about.json`'s first section at `about-between`. Review: review/about-hero/. |
+| **About hero demos (DECISIONS 318–320)** | Version 1.2 only: round 3 (recommended) at `/pages/about?view=about4`, round 1 at `/pages/about?view=about3` (and `/ar/pages/about?view=about3`). Real About page unchanged until the owner says yes; then point `page.about.json`'s first section at `about-between`. Review: review/about-hero/. |
 | Theme | `BTS Store — Version 1.1 (fixes, in progress)` (was "BTS Opus — staging") · `gid://shopify/OnlineStoreTheme/167112540418` · UNPUBLISHED |
 | Live theme | Horizon (MAIN): **untouched** (store-level: Arabic published 2026-10-18 with owner approval) · `templates/index.json` MD5 `c828067cbc7ea00ac09f4927419385ce` (2026-10-18) |
 | Repo / branch | `between-two-suns/opus-com` · `opus-build` |
