@@ -1,12 +1,11 @@
 {{ 'about.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  About hero, "the space between" round 2 (DECISIONS 319, demo). The two suns are the frame: today's and tomorrow's,
-  almost touching, each carrying its name. The only thing between them is the space, the brand's )( shape made by
-  the two circles themselves (nothing is drawn), and in it, a glimpse of the day. Scrolling, today's sun sets and
-  tomorrow's rises, the space opens to the whole screen, the golden light goes to dusk, and the brand's line lands in
-  the middle. On laptops the space leans a little toward the pointer. Phones turn it on its side: today's sun above,
-  tomorrow's below. Arabic mirrors (today's sun on the right).
-  Without JS or with reduced motion: the first frame, still, with the line under it.
+  About hero, "the space between" (DECISIONS 319–320, demo). Two suns frame the screen, almost touching; the gap the
+  circles leave (the brand's )( shape, made by the circles themselves, nothing drawn) is filled with their light, and
+  the heading sits across it. Scrolling: the light settles and the evening shows through, today's sun sinks along an
+  arc and dims, tomorrow's rises to wait in the corner, the heading parts with them, and the brand's line forms word by
+  word under the mark. Laptops: the space leans a little toward the pointer. Phones: the same idea on its side.
+  Arabic mirrors. Without JS or with reduced motion: the opening frame, still.
 {%- endcomment -%}
 {%- liquid
   assign img = section.settings.image | default: images['bts-climate-humidity-wide.jpg']
@@ -37,7 +36,6 @@
   endif
 -%}
 <section class="ab-sp" data-ab-sp aria-labelledby="AbSp-{{ section.id }}">
-  <h1 class="visually-hidden" id="AbSp-{{ section.id }}">{{ title }}</h1>
   <div class="ab-sp__stage">
     <div class="ab-sp__day">
       {%- if img != blank and img.width != blank -%}
@@ -48,21 +46,27 @@
           {{ img | image_url: width: 2400 | image_tag: widths: '900,1200,1600,2000,2400', sizes: '100vw', class: 'ab-sp__img', alt: alt, loading: 'eager', fetchpriority: 'high' }}
         </picture>
       {%- endif -%}
-      <span class="ab-sp__gold" aria-hidden="true"></span>
+      <span class="ab-sp__amber" aria-hidden="true"></span>
       <span class="ab-sp__dusk" aria-hidden="true"></span>
+      <span class="ab-sp__wash" aria-hidden="true"></span>
     </div>
 
     <div class="ab-sp__sun ab-sp__sun--a" aria-hidden="true">
-      {%- render 'about-orb', tone: 'green', side: 'start', class: 'ab-sp__orb', sizes: '(min-width: 750px) 62vw, 125vw', priority: true -%}
-      <span class="ab-sp__word">{{ sun_a }}</span>
+      <span class="ab-sp__halo"></span>
+      {%- render 'about-orb', tone: 'green', side: 'start', class: 'ab-sp__orb', sizes: '(min-width: 750px) 64vw, 150vw', priority: true -%}
+      <span class="ab-sp__label">{{ sun_a }}</span>
     </div>
     <div class="ab-sp__sun ab-sp__sun--b" aria-hidden="true">
-      {%- render 'about-orb', tone: 'blue', side: 'end', class: 'ab-sp__orb', sizes: '(min-width: 750px) 62vw, 125vw' -%}
-      <span class="ab-sp__word">{{ sun_b }}</span>
+      <span class="ab-sp__halo"></span>
+      {%- render 'about-orb', tone: 'blue', side: 'end', class: 'ab-sp__orb', sizes: '(min-width: 750px) 64vw, 150vw' -%}
+      <span class="ab-sp__label">{{ sun_b }}</span>
     </div>
 
     <p class="t-eyebrow ab-sp__eyebrow">{% if section.settings.t_eyebrow != blank %}{{ section.settings.t_eyebrow }}{% else %}{{ 'about2.eyebrow' | t }}{% endif %}</p>
-    <p class="ab-sp__lead">{{ lead }}</p>
+    {%- assign title_words = title | split: ' ' -%}
+    <h1 class="ab-sp__title" id="AbSp-{{ section.id }}">{% for w in title_words %}<span class="w" style="--i: {{ forloop.index0 }}"><span>{{ w }}</span></span>{% unless forloop.last %}{{ ' ' }}{% endunless %}{% endfor %}</h1>
+    {%- assign lead_words = lead | split: ' ' -%}
+    <p class="ab-sp__lead"><span class="ab-sp__mark" aria-hidden="true"></span><span class="ab-sp__line">{% for w in lead_words %}<span class="w" style="--i: {{ forloop.index0 }}">{{ w }}</span>{% unless forloop.last %}{{ ' ' }}{% endunless %}{% endfor %}</span></p>
     <p class="ab-sp__cap" aria-hidden="true">{% if section.settings.t_caption != blank %}{{ section.settings.t_caption }}{% else %}{{ 'about2.btw_caption' | t }}{% endif %}</p>
     <p class="ab-sp__hint" aria-hidden="true">{{ 'about2.scroll' | t }}<span class="ab-sp__hint-line"></span></p>
   </div>
@@ -82,10 +86,10 @@
     { "type": "image_picker", "id": "image_mobile", "label": "Photo (phones)", "info": "Tall photo (4:5). Empty = the tall Alexandria balcony photo." },
     { "type": "header", "content": "Text" },
     { "type": "text", "id": "t_eyebrow", "label": "Small line at the top", "info": "Now: “About”. Leave empty to keep it (English and Arabic)." },
-    { "type": "text", "id": "t_sun_a", "label": "Word on today's sun", "info": "Now: “Today’s sun”. Leave empty to keep it (English and Arabic)." },
-    { "type": "text", "id": "t_sun_b", "label": "Word on tomorrow's sun", "info": "Now: “Tomorrow’s sun”. Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_sun_a", "label": "Label on today's sun", "info": "Now: “Today’s sun”. Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_sun_b", "label": "Label on tomorrow's sun", "info": "Now: “Tomorrow’s sun”. Leave empty to keep it (English and Arabic)." },
     { "type": "text", "id": "t_lead", "label": "Line that lands in the middle", "info": "Now: “That space between two days is what we make skincare for.” Leave empty to keep it (English and Arabic)." },
-    { "type": "text", "id": "t_title", "label": "Page heading (for search engines and screen readers)", "info": "Now: “Two suns: today’s, and tomorrow’s.” Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_title", "label": "Heading", "info": "Now: “Two suns: today’s, and tomorrow’s.” Leave empty to keep it (English and Arabic)." },
     { "type": "text", "id": "t_caption", "label": "Photo caption", "info": "Now: “Alexandria, after sunset”. Leave empty to keep it (English and Arabic)." }
   ]
 }
