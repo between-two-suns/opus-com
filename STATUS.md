@@ -11,7 +11,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 |---|---|
 | **Staging preview URL** | https://qfj1gi-c9.myshopify.com/?preview_theme_id=167112540418 (store password required; or Online Store → Themes → "BTS Store — Version 1.1 (fixes, in progress)" → Preview) |
 | **Version 1.2 (new copy)** | `BTS Store — Version 1.2 (new copy)` · `gid://shopify/OnlineStoreTheme/168818671874` · UNPUBLISHED · preview https://qfj1gi-c9.myshopify.com/?preview_theme_id=168818671874 (duplicate of 1.1 + the new copy, DECISIONS 298). All new work goes here. |
-| **About page demo (DECISIONS 318–321)** | Version 1.2 only: whole new About (hero round 3 + new routine chart, Made in Egypt, rules manifesto; close unchanged) at `/pages/about?view=about4`, round 1 at `/pages/about?view=about3` (and `/ar/pages/about?view=about3`). Real About page unchanged until the owner says yes; then point `page.about.json`'s first section at `about-between`. Review: review/about-hero/. |
+| **About page (DECISIONS 318–332)** | New About page is live on Version 1.2's `/pages/about` (hero "Every sun sets.", texture routine, Made in Egypt + postmark, the master's principles, close). Demo templates page.about3–6 to delete before launch. |
 | Theme | `BTS Store — Version 1.1 (fixes, in progress)` (was "BTS Opus — staging") · `gid://shopify/OnlineStoreTheme/167112540418` · UNPUBLISHED |
 | Live theme | Horizon (MAIN): **untouched** (store-level: Arabic published 2026-10-18 with owner approval) · `templates/index.json` MD5 `c828067cbc7ea00ac09f4927419385ce` (2026-10-18) |
 | Repo / branch | `between-two-suns/opus-com` · `opus-build` |
