@@ -523,47 +523,55 @@
    white card, the FAQ's two-column list. One idea per section; no new interactions.
    ========================================================================== */
 
-/* ---------- The routine: morning and night in one card ---------- */
+/* ---------- The routine (DECISIONS 330): two looks, picked in the editor ---------- */
 .ab-sh__head { align-items: end; }
 .ab-sh__aside { display: grid; gap: 14px; justify-items: start; max-inline-size: 440px; }
-.ab-sh__card { display: grid; grid-template-columns: 1fr 1fr; border-radius: var(--radius-l); overflow: hidden; isolation: isolate; box-shadow: 0 30px 60px -40px rgb(32 35 58 / .45); }
-.ab-sh__half { position: relative; overflow: hidden; isolation: isolate; display: grid; grid-template-rows: auto 1fr; gap: clamp(18px, 2.4vw, 30px); padding: clamp(22px, 3vw, 40px) clamp(14px, 2.4vw, 36px) clamp(20px, 2.6vw, 32px); }
-.ab-sh__half--am { color: var(--c-ink); background: radial-gradient(70% 90% at 85% 0%, #fff6dd, transparent 70%), linear-gradient(180deg, #fff0cf 0%, #ffe3b6 55%, #f9d29a 100%); }
-.ab-sh__half--pm { color: #fff; background: radial-gradient(60% 80% at 15% 0%, rgb(171 193 233 / .28), transparent 70%), linear-gradient(180deg, #2c3152 0%, #22263d 60%, #1b1e32 100%); }
-.ab-sh__sky-sun { inset-block-start: -38%; inset-inline-end: -10%; inline-size: clamp(130px, 17vw, 240px); z-index: -1; }
-.ab-sh__moon { position: absolute; z-index: -1; inset-block-start: clamp(16px, 2.4vw, 30px); inset-inline-end: clamp(18px, 3vw, 40px); inline-size: clamp(34px, 4vw, 54px); aspect-ratio: 1; border-radius: 50%;
-  background: radial-gradient(circle at 40% 36%, #fffdf6 0%, #f1efe6 55%, #d8d8d2 100%); box-shadow: 0 0 30px 6px rgb(230 236 255 / .25), inset -6px -4px 10px rgb(110 120 150 / .35); }
-.ab-sh__stars { position: absolute; inset: 0; z-index: -1; opacity: .8;
-  background-image: radial-gradient(1.2px 1.2px at 12% 22%, #fff 99%, transparent), radial-gradient(1px 1px at 28% 12%, #fff 99%, transparent), radial-gradient(1.4px 1.4px at 46% 30%, #fff 99%, transparent),
-    radial-gradient(1px 1px at 61% 16%, #fff 99%, transparent), radial-gradient(1.2px 1.2px at 74% 34%, #fff 99%, transparent), radial-gradient(1px 1px at 38% 44%, #fff 99%, transparent),
-    radial-gradient(1px 1px at 8% 48%, #fff 99%, transparent), radial-gradient(1.3px 1.3px at 56% 52%, #fff 99%, transparent), radial-gradient(1px 1px at 20% 8%, #fff 99%, transparent); }
-.ab-sh__when { margin: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-:lang(ar) .ab-sh__when { letter-spacing: 0; font-size: 15px; }
-.ab-sh__shelf[role='list'] { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(6px, 1.2vw, 18px); align-self: end; }
-.ab-sh__item[data-step='1'] { --k: var(--c-step-1); } .ab-sh__item[data-step='2'] { --k: var(--c-step-2); }
-.ab-sh__item[data-step='3'] { --k: var(--c-step-3); } .ab-sh__item[data-step='4'] { --k: var(--c-step-4); }
-.ab-sh__item { display: grid; }
-.ab-sh__link { display: grid; justify-items: center; gap: 12px; color: inherit; text-decoration: none; text-align: center; }
-.ab-sh__item.is-off { justify-items: center; gap: 12px; text-align: center; }
-.ab-sh__pack { --H: clamp(150px, 19vw, 270px); block-size: var(--H); inline-size: 100%; display: flex; align-items: flex-end; justify-content: center; position: relative; border-block-end: 2px solid var(--k); }
-.ab-sh__img { display: block; block-size: calc(var(--H) * var(--h)); inline-size: auto; filter: drop-shadow(0 14px 16px rgb(20 22 40 / .18)); transition: translate .5s var(--ease-out); }
-.ab-sh__half--pm .ab-sh__img { filter: drop-shadow(0 14px 18px rgb(0 0 0 / .4)) brightness(.92); }
-.ab-sh__link:hover .ab-sh__img { translate: 0 -6px; }
-.ab-sh__pack--off { border-block-end-style: dashed; border-block-end-color: rgb(255 255 255 / .35); }
-.ab-sh__ghost { display: block; inline-size: calc(var(--H) * var(--h) * .31); block-size: calc(var(--H) * var(--h)); border: 1.5px dashed rgb(255 255 255 / .35); border-radius: 10px 10px 8px 8px; }
-.ab-sh__cap { display: grid; gap: 4px; justify-items: center; }
-.ab-sh__step { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-:lang(ar) .ab-sh__step { letter-spacing: 0; font-size: 13px; }
-.ab-sh__dot { inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--k); }
-.ab-sh__off { font-size: 12px; font-weight: 600; opacity: .6; }
-.ab-sh__half--pm .ab-sh__item.is-off .ab-sh__step { opacity: .5; }
+.ab-sh__step-1, [data-step='1'] { --k: var(--c-step-1); } [data-step='2'] { --k: var(--c-step-2); }
+[data-step='3'] { --k: var(--c-step-3); } [data-step='4'] { --k: var(--c-step-4); }
+
+/* A · Texture panels: the four textures, tall, side by side; huge number, the verb, the pack at the foot. */
+.ab-sh__tex[role='list'] { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(8px, 1vw, 14px); }
+.ab-sh__panel { position: relative; border-radius: var(--radius-l); overflow: hidden; isolation: isolate; aspect-ratio: 3 / 4.6; background: var(--sku-tint, #eee); }
+.ab-sh__panel[data-step='1'] { background: var(--c-step-1-tint); } .ab-sh__panel[data-step='2'] { background: var(--c-step-2-tint); }
+.ab-sh__panel[data-step='3'] { background: var(--c-step-3-tint); } .ab-sh__panel[data-step='4'] { background: var(--c-step-4-tint); }
+.ab-sh__plink { position: absolute; inset: 0; display: block; color: var(--c-ink); text-decoration: none; }
+.ab-sh__photo { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; z-index: -2; transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+.ab-sh__plink::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgb(255 255 255 / .72), rgb(255 255 255 / .2) 34%, transparent 52%); }
+.ab-sh__plink:hover .ab-sh__photo { transform: scale(1.06); }
+.ab-sh__pnum { position: absolute; inset-block-start: clamp(10px, 1.4vw, 18px); inset-inline-start: clamp(14px, 1.6vw, 22px); font-family: var(--font-display); font-weight: 700; line-height: .85;
+  font-size: clamp(56px, 7vw, 120px); color: rgb(255 255 255 / .92); text-shadow: 0 2px 24px rgb(20 22 40 / .12); }
+.ab-sh__pfoot { position: absolute; inset-inline: clamp(14px, 1.6vw, 22px); inset-block-end: clamp(14px, 1.6vw, 22px); display: grid; gap: 4px; padding-inline-end: 34%; }
+.ab-sh__pverb { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .9; font-size: clamp(28px, 2.8vw, 46px); }
+:lang(ar) .ab-sh__pverb { text-transform: none; line-height: 1.25; font-size: clamp(24px, 2.4vw, 38px); }
+.ab-sh__pname { font-size: 13px; font-weight: 650; line-height: 1.3; }
+.ab-sh__pwhen { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--c-muted); margin-block-start: 2px; }
+.ab-sh__ppack { position: absolute; inset-block-end: clamp(10px, 1.2vw, 16px); inset-inline-end: clamp(10px, 1.2vw, 16px); block-size: calc(clamp(110px, 14vw, 200px) * var(--h)); display: block; transition: translate .6s var(--ease-out); }
+.ab-sh__ppack-img { display: block; block-size: 100%; inline-size: auto; filter: drop-shadow(0 12px 14px rgb(20 22 40 / .22)); }
+.ab-sh__plink:hover .ab-sh__ppack { translate: 0 -8px; }
 @media (max-width: 749px) {
-  .ab-sh__card { grid-template-columns: 1fr; }
-  .ab-sh__pack { --H: 150px; }
-  .ab-sh__step { flex-direction: column; gap: 4px; letter-spacing: .06em; }
-  .ab-sh__sep { display: none; }
-  .ab-sh__nm { font-size: 11px; }
-  .ab-sh__sky-sun { inline-size: 140px; inset-block-start: -50%; }
+  .ab-sh__tex[role='list'] { grid-template-columns: 1fr 1fr; }
+  .ab-sh__panel { aspect-ratio: 3 / 4.4; border-radius: 20px; }
+  .ab-sh__pnum { font-size: 52px; }
+  .ab-sh__pverb { font-size: 24px; }
+  :lang(ar) .ab-sh__pverb { font-size: 21px; }
+  .ab-sh__pname { display: none; }
+  .ab-sh__pfoot { padding-inline-end: 30%; }
+  .ab-sh__ppack { block-size: calc(104px * var(--h)); }
+}
+
+/* B · The routine as one sentence: the four steps set huge in their colours, each pack inline after its word. */
+.ab-sh__sentence { margin: 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: 1.02; letter-spacing: -.005em;
+  font-size: clamp(56px, 9.6vw, 176px); text-wrap: balance; }
+:lang(ar) .ab-sh__sentence { text-transform: none; line-height: 1.35; font-size: clamp(44px, 7vw, 124px); }
+.ab-sh__w { color: color-mix(in srgb, var(--k) 78%, var(--c-ink)); text-decoration: none; white-space: nowrap; }
+.ab-sh__inline { display: inline-block; block-size: calc(1.55em * var(--h)); vertical-align: -.12em; margin-inline: .06em .14em; transition: translate .5s var(--ease-out), rotate .5s var(--ease-out); }
+.ab-sh__inline-img { display: block; block-size: 100%; inline-size: auto; filter: drop-shadow(0 .06em .08em rgb(20 22 40 / .2)); }
+.ab-sh__w:hover .ab-sh__inline { translate: 0 -.08em; rotate: -6deg; }
+.ab-sh__note { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: clamp(22px, 3vw, 40px) 0 0; font-size: 15px; font-weight: 600; color: var(--c-muted); }
+.ab-sh__note-gap { inline-size: 18px; }
+@media (max-width: 749px) {
+  .ab-sh__sentence { font-size: 15.5vw; line-height: 1.04; }
+  :lang(ar) .ab-sh__sentence { font-size: 12vw; }
 }
 
 /* ---------- Made in Egypt: the home page's photo band ---------- */

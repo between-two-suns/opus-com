@@ -22,49 +22,42 @@
       </div>
     </div>
 
-    <div class="ab-sh__card">
-      {%- for half in (1..2) -%}
-        {%- if half == 1 -%}{%- assign mode = 'am' -%}{%- else -%}{%- assign mode = 'pm' -%}{%- endif -%}
-        <div class="ab-sh__half ab-sh__half--{{ mode }}">
-          {%- if mode == 'am' -%}
-            {%- render 'about-orb', tone: 'green', side: 'end', class: 'ab-sh__sky-sun', sizes: '240px' -%}
-          {%- else -%}
-            <span class="ab-sh__stars" aria-hidden="true"></span>
-            <span class="ab-sh__moon" aria-hidden="true"></span>
-          {%- endif -%}
-          <p class="ab-sh__when">
-            {%- if mode == 'am' -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}<span>{{ 'about2.sh_am' | t }}</span>
-            {%- else -%}{% render 'icon', name: 'moon', class: 'icon--sm' %}<span>{{ 'about2.sh_pm' | t }}</span>{%- endif -%}
-          </p>
-          <ol class="ab-sh__shelf" role="list">
-            {%- for i in (1..4) -%}
-              {%- assign p = all_products[step_handles[i]] -%}
-              {%- unless p.id -%}{%- continue -%}{%- endunless -%}
-              {%- assign nk = 'product.step_name.s' | append: i -%}
-              {%- assign step_name = nk | t -%}
-              {%- if step_name contains 'ranslation missing' -%}{%- assign step_name = p.metafields.bts.step_label.value | default: p.title -%}{%- endif -%}
-              {%- if mode == 'pm' and i == 4 -%}
-                <li class="ab-sh__item is-off" data-step="4">
-                  <span class="ab-sh__pack ab-sh__pack--off" style="--h: {{ pack_h[i] }}"><span class="ab-sh__ghost" aria-hidden="true"></span></span>
-                  <span class="ab-sh__cap"><span class="ab-sh__step"><span class="ab-sh__num">0{{ i }}</span></span><span class="ab-sh__off">{{ 'about2.sh_off' | t }}</span></span>
-                </li>
-              {%- else -%}
-                <li class="ab-sh__item" data-step="{{ i }}">
-                  <a class="ab-sh__link" href="{{ p.url }}">
-                    <span class="ab-sh__pack" style="--h: {{ pack_h[i] }}" aria-hidden="true">
-                      {%- render 'cut-img', handle: p.handle, sizes: '(min-width: 990px) 110px, 16vw', widths: '120,180,240,360', class: 'ab-sh__img' -%}
-                    </span>
-                    <span class="ab-sh__cap">
-                      <span class="ab-sh__step"><span class="ab-sh__dot" aria-hidden="true"></span><span class="ab-sh__num">0{{ i }}</span><span class="ab-sh__sep" aria-hidden="true">·</span><span class="ab-sh__nm">{{ step_name | escape }}</span></span>
-                    </span>
-                  </a>
-                </li>
+    {%- assign look = section.settings.look | default: 'texture' -%}
+    {%- if look == 'sentence' -%}
+      <p class="ab-sh__sentence">
+        {%- for i in (1..4) -%}
+          {%- assign p = all_products[step_handles[i]] -%}
+          {%- unless p.id -%}{%- continue -%}{%- endunless -%}
+          {%- assign nk = 'product.step_name.s' | append: i -%}
+          <a class="ab-sh__w" data-step="{{ i }}" href="{{ p.url }}"><span class="ab-sh__word">{{ nk | t }}{% unless forloop.last %}{{ 'about2.sh_comma' | t }}{% else %}.{% endunless %}</span><span class="ab-sh__inline" style="--h: {{ pack_h[i] }}" aria-hidden="true">{%- render 'cut-img', handle: p.handle, sizes: '120px', widths: '120,180,240', class: 'ab-sh__inline-img' -%}</span></a>{% unless forloop.last %}{{ ' ' }}{% endunless %}
+        {%- endfor -%}
+      </p>
+      <p class="ab-sh__note">{% render 'icon', name: 'sun', class: 'icon--sm' %} <span>{{ 'about2.sh_am' | t }}</span> <span class="ab-sh__note-gap" aria-hidden="true"></span> {% render 'icon', name: 'moon', class: 'icon--sm' %} <span>{{ 'about2.sh_pm' | t }}</span></p>
+    {%- else -%}
+      <ol class="ab-sh__tex" role="list">
+        {%- for i in (1..4) -%}
+          {%- assign p = all_products[step_handles[i]] -%}
+          {%- unless p.id -%}{%- continue -%}{%- endunless -%}
+          {%- assign nk = 'product.step_name.s' | append: i -%}
+          {%- assign tk = 'bts-' | append: p.handle | append: '-texture.jpg' -%}
+          {%- assign timg = images[tk] -%}
+          <li class="ab-sh__panel" data-step="{{ i }}">
+            <a class="ab-sh__plink" href="{{ p.url }}">
+              {%- if timg != blank and timg.width != blank -%}
+                {{ timg | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,600,800,1000', sizes: '(min-width: 750px) 25vw, 50vw', alt: '', class: 'ab-sh__photo' }}
               {%- endif -%}
-            {%- endfor -%}
-          </ol>
-        </div>
-      {%- endfor -%}
-    </div>
+              <span class="ab-sh__pnum" aria-hidden="true">0{{ i }}</span>
+              <span class="ab-sh__pfoot">
+                <span class="ab-sh__pverb">{{ nk | t }}</span>
+                <span class="ab-sh__pname">{{ p.title | escape }}</span>
+                <span class="ab-sh__pwhen">{%- if i == 4 -%}{% render 'icon', name: 'sun', class: 'icon--sm' %} {{ 'about2.am_only' | t }}{%- else -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}{% render 'icon', name: 'moon', class: 'icon--sm' %} {{ 'about2.am_pm' | t }}{%- endif -%}</span>
+              </span>
+              <span class="ab-sh__ppack" style="--h: {{ pack_h[i] }}" aria-hidden="true">{%- render 'cut-img', handle: p.handle, sizes: '120px', widths: '120,180,240', class: 'ab-sh__ppack-img' -%}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
   </div>
 </section>
 
@@ -77,6 +70,7 @@
     { "type": "text", "id": "t_about2_routine_eyebrow", "label": "Small line above the heading", "info": "Now: “The routine”. Leave empty to keep it (English and Arabic)." },
     { "type": "text", "id": "t_about2_routine_heading", "label": "Heading", "info": "Now: “A routine, not a cabinet.” Leave empty to keep it (English and Arabic)." },
     { "type": "textarea", "id": "t_about2_routine_text", "label": "Paragraph", "info": "Now: “Four products, one job each…”. Leave empty to keep it (English and Arabic)." },
+    { "type": "select", "id": "look", "label": "Look", "default": "texture", "options": [ { "value": "texture", "label": "Texture panels" }, { "value": "sentence", "label": "The routine as one sentence" } ] },
     { "type": "text", "id": "t_about2_sets_link", "label": "Link text", "info": "Now: “Find your set”. Leave empty to keep it (English and Arabic)." }
   ]
 }
