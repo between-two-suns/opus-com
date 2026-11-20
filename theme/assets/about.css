@@ -336,19 +336,26 @@
    light to show the evening, sets today's sun along an arc, raises tomorrow's into the corner, parts the heading and
    forms the line. Performance: everything that moves per frame is transform or opacity (no layout, no clip, no blend
    modes, no filters), so it keeps up with the scroll on Safari and phones. */
-.ab-sp { --p: 0; --mx: 0; position: relative; background: var(--c-daylight, #fff); color: var(--c-ink); }
+.ab-sp { --p: 0; --mx: 0; position: relative; margin-block-start: calc(-1 * var(--header-h)); background: var(--c-daylight, #fff); color: var(--c-ink); }
 .ab-sp.is-live { block-size: 190svh; }
 .ab-sp__stage {
-  position: relative; overflow: clip; isolation: isolate; block-size: calc(100svh - var(--header-h)); container-type: size;
-  --D: min(135cqh, 64cqw); --g0: 5cqw; --cx: calc(50cqw + var(--mx) * 1.4cqw); --cy: 50cqh;
-  --tax: 26cqw; --tbx: 31cqw; --tay: 62cqh; --tby: 34cqh;
+  position: relative; overflow: clip; isolation: isolate; block-size: 100svh; container-type: size;
+  --D: min(135cqh, 64cqw); --g0: 5cqw; --cx: calc(50cqw + var(--mx) * 1.4cqw); --cy: calc(50cqh + var(--header-h) / 2);
+  --tax: 30cqw; --tbx: 31cqw; --tay: 96cqh; --tby: 34cqh;
+  /* tomorrow's sun becomes the moon: it shrinks to --sm of its size and rises to (--mxc, --myc) */
+  --pq: calc(1 - (1 - var(--p)) * (1 - var(--p)));
+  --sm: .2; --mxc: 80cqw; --myc: calc(var(--header-h) + 16cqh); --M: calc(var(--D) * var(--sm));
+  --bx0: calc(var(--cx) + var(--g0) / 2); --bxm: calc(var(--mxc) - var(--M) / 2);
+  --by0: calc(var(--cy) - var(--D) / 2); --bym: calc(var(--myc) - var(--M) / 2);
   --p2: calc(var(--p) * var(--p));
   --xl: calc(var(--cx) - var(--g0) / 2 - var(--D) - var(--p) * var(--tax)); --xr: calc(var(--cx) + var(--g0) / 2 + var(--p) * var(--tbx));
 }
 [dir='rtl'] .ab-sp__stage {
   --xl: calc(var(--cx) - var(--g0) / 2 - var(--D) - var(--p) * var(--tbx)); --xr: calc(var(--cx) + var(--g0) / 2 + var(--p) * var(--tax));
+  /* the photo isn't mirrored, so the moon always rises over its sky (the right) */
+  --bx0: calc(var(--cx) - var(--g0) / 2 - var(--D));
 }
-.ab-sp.is-live .ab-sp__stage { position: sticky; inset-block-start: var(--header-h); }
+.ab-sp.is-live .ab-sp__stage { position: sticky; inset-block-start: 0; }
 
 /* The day sits under everything; at rest it is fully covered by the suns' light. */
 .ab-sp__day { position: absolute; inset: 0; z-index: 0; background: #2a2f4a; }
@@ -364,16 +371,19 @@
 /* The suns: placed by transform only. Today's sets (down and out), tomorrow's rises into the far corner. */
 .ab-sp__sun { position: absolute; z-index: 1; inset: 0 auto auto 0; inline-size: var(--D); aspect-ratio: 1; will-change: transform; }
 .ab-sp__sun--a { --side: -1; transform: translate3d(var(--xl), calc(var(--cy) - var(--D) / 2 + var(--p) * 18cqh + var(--p2) * var(--tay)), 0); }
-.ab-sp__sun--b { --side: 1; transform: translate3d(var(--xr), calc(var(--cy) - var(--D) / 2 - var(--p) * var(--tby)), 0); }
+.ab-sp__sun--a { opacity: clamp(0, calc((1 - var(--p)) * 3.4), 1); }
+.ab-sp__sun--b, [dir='rtl'] .ab-sp__sun--b { transform-origin: 0 0;
+  transform: translate3d(calc(var(--bx0) + (var(--bxm) - var(--bx0)) * var(--pq)), calc(var(--by0) + (var(--bym) - var(--by0)) * var(--pq)), 0) scale(calc(1 - (1 - var(--sm)) * var(--pq))); }
+.ab-sp__sun--b { --side: 1; }
 [dir='rtl'] .ab-sp__sun--a { --side: 1; transform: translate3d(var(--xr), calc(var(--cy) - var(--D) / 2 + var(--p) * 18cqh + var(--p2) * var(--tay)), 0); }
-[dir='rtl'] .ab-sp__sun--b { --side: -1; transform: translate3d(var(--xl), calc(var(--cy) - var(--D) / 2 - var(--p) * var(--tby)), 0); }
+[dir='rtl'] .ab-sp__sun--b { --side: -1; }
 .ab-sp__orb { inset: 0; inline-size: 100%; }
 .ab-sp__orb::before { display: none; }
 /* today's sun dims as it sets: a dark veil over it, opacity only */
 .ab-sp__sun--a::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: rgb(30 34 60); opacity: calc(var(--p) * .24); pointer-events: none; }
 .ab-sp__halo { position: absolute; inset: -26%; border-radius: 50%; pointer-events: none; }
 .ab-sp__sun--a .ab-sp__halo { opacity: calc(1 - var(--p) * .6); background: radial-gradient(closest-side, transparent 64%, rgb(255 236 190 / .6) 65.6%, rgb(255 228 180 / .22) 73%, transparent 86%); }
-.ab-sp__sun--b .ab-sp__halo { opacity: calc(1 - var(--p) * .5); background: radial-gradient(closest-side, transparent 64%, rgb(232 240 255 / .6) 65.6%, rgb(214 226 252 / .22) 73%, transparent 86%); }
+.ab-sp__sun--b .ab-sp__halo { opacity: 1; background: radial-gradient(closest-side, transparent 64%, rgb(232 240 255 / .6) 65.6%, rgb(214 226 252 / .22) 73%, transparent 86%); }
 .ab-sp__label {
   position: absolute; inset-block-end: 23%; font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; color: var(--c-ink);
   opacity: clamp(0, calc(.75 - var(--p) * 4), .75);
@@ -385,7 +395,7 @@
 :lang(ar) .ab-sp__label { letter-spacing: 0; font-size: 14px; text-transform: none; }
 
 /* Type */
-.ab-sp__eyebrow { position: absolute; z-index: 2; inset-block-start: clamp(16px, 3.4cqh, 32px); left: 50%; translate: -50% 0; margin: 0; white-space: nowrap; opacity: clamp(0, calc(1 - var(--p) * 4), 1); }
+.ab-sp__eyebrow { position: absolute; z-index: 2; inset-block-start: calc(var(--header-h) + clamp(14px, 3cqh, 30px)); left: 50%; translate: -50% 0; margin: 0; white-space: nowrap; opacity: clamp(0, calc(1 - var(--p) * 4), 1); }
 .ab-sp__title {
   position: absolute; z-index: 2; inset-block-start: var(--cy); left: var(--cx); translate: -50% -50%; margin: 0; inline-size: min(15ch, calc(100cqw - 2 * var(--gutter)));
   text-align: center; text-wrap: balance; font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
@@ -394,7 +404,7 @@
 .ab-sp__title .w { display: inline-block; }
 .ab-sp__title .w > span { display: inline-block; transform: translate3d(calc(var(--wd, 0) * var(--p) * 9cqw), calc(var(--wy, 0) * var(--p) * 12cqh), 0); opacity: clamp(0, calc(1 - var(--p) * 4.4), 1); }
 :lang(ar) .ab-sp__title { text-transform: none; line-height: 1.2; letter-spacing: 0; font-size: clamp(38px, min(5cqw, 7.6cqh), 92px); inline-size: min(18ch, calc(100cqw - 2 * var(--gutter))); }
-.ab-sp__lead { position: absolute; z-index: 2; inset-block-start: 50%; left: 50%; translate: -50% -50%; margin: 0; display: grid; justify-items: center; gap: clamp(14px, 2.4cqh, 26px);
+.ab-sp__lead { position: absolute; z-index: 2; inset-block-start: var(--cy); left: 50%; translate: -50% -50%; margin: 0; display: grid; justify-items: center; gap: clamp(14px, 2.4cqh, 26px);
   inline-size: calc(100cqw - 2 * var(--gutter)); text-align: center; color: #fff; pointer-events: none; }
 .ab-sp__line { max-inline-size: 17ch; text-wrap: balance; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: .96; font-size: clamp(40px, min(6cqw, 9.4cqh), 112px); text-shadow: 0 2px 30px rgb(10 12 30 / .35); }
 .ab-sp__line .w { display: inline-block; --o: clamp(0, calc((var(--p) - .56 - var(--i) * .018) * 7), 1); opacity: var(--o); transform: translate3d(0, calc((1 - var(--o)) * .4em), 0); }
@@ -421,8 +431,12 @@
 
 /* Phones: the same side-by-side suns, larger than the screen, so the space is a tall )( down the middle. */
 @media (max-width: 749px) {
+  .ab-sp { margin-block-start: 0; }
   .ab-sp.is-live { block-size: 180svh; }
-  .ab-sp__stage { --D: max(150cqw, 112cqh); --g0: 7cqw; --cx: 50cqw; --tax: 46cqw; --tbx: 52cqw; --tay: 52cqh; --tby: 30cqh; }
+  .ab-sp__stage { block-size: calc(100svh - var(--header-h)); --D: max(150cqw, 112cqh); --g0: 7cqw; --cx: 50cqw; --cy: 50cqh; --tax: 50cqw; --tay: 100cqh;
+    --sm: .11; --mxc: 84cqw; --myc: 8cqh; }
+  .ab-sp.is-live .ab-sp__stage { inset-block-start: var(--header-h); }
+  .ab-sp__eyebrow { inset-block-start: 16px; }
   .ab-sp__img { object-position: 70% 40%; }
   .ab-sp__sun--a .ab-sp__label { right: 5%; inset-block-end: 30%; }
   .ab-sp__sun--b .ab-sp__label { left: 5%; inset-block-end: 30%; }
