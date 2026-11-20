@@ -1943,13 +1943,23 @@ The entries above are the final voice model for these highlighted ingredients. T
 
 20. ABOUT PAGE
 
-Opening — EN
+Opening — EN (owner's choice 2026-11-20, concept C "Every sunset is a promise"; replaces "Two suns: today’s, and tomorrow’s.")
 
-TWO SUNS: TODAY’S, AND TOMORROW’S.
+EVERY SUN SETS.
 
 Opening — AR
 
-شمس النهارده، وشمس بكرة.
+كل شمس بتغيب.
+
+Hero closing line (lands over the evening as the suns part) — EN
+
+AND EVERY MORNING, IT COMES BACK NEW.
+
+Hero closing line — AR
+
+وكل صبح بترجع من جديد.
+
+Under it: the tagline, fresh skin. always. / بشرة منتعشة. دايمًا.
 
 Brand philosophy — EN
 
