@@ -1,0 +1,38 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About, our rules as a manifesto (DECISIONS 321, demo). "What we won't do." then each rule in display type, struck
+  through by a line in a step colour (green, blue, lilac, orange, then tomorrow's periwinkle), with one plain line of
+  why under it. The strike is drawn as the rule comes into view (CSS only, where the browser supports scroll-driven
+  animation; otherwise it is simply there). It's the brand saying no, in its own colours.
+{%- endcomment -%}
+<section class="ab-mf" aria-labelledby="AbMf-{{ section.id }}">
+  <div class="container">
+    <div class="ab-mf__head">
+      <p class="t-eyebrow">{% if section.settings.t_about2_rules_eyebrow != blank %}{{ section.settings.t_about2_rules_eyebrow }}{% else %}{{ 'about2.rules_eyebrow' | t }}{% endif %}</p>
+      <h2 class="ab-big reveal" id="AbMf-{{ section.id }}">{% if section.settings.t_about2_rules_heading != blank %}{{ section.settings.t_about2_rules_heading }}{% else %}{{ 'about2.rules_heading' | t }}{% endif %}</h2>
+    </div>
+    <ol class="ab-mf__list" role="list">
+      {%- for i in (1..5) -%}
+        {%- assign hk = 'about2.rules.r' | append: i | append: '_h' -%}
+        {%- assign tk = 'about2.rules.r' | append: i -%}
+        <li class="ab-mf__item" data-k="{{ i }}">
+          <span class="ab-mf__n" aria-hidden="true">0{{ i }}</span>
+          <p class="ab-mf__rule"><s class="ab-mf__s">{{ hk | t }}</s></p>
+          <p class="ab-mf__why">{{ tk | t }}</p>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About · our rules",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "paragraph", "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English." },
+    { "type": "text", "id": "t_about2_rules_eyebrow", "label": "Small line above the heading", "info": "Now: “Our rules”. Leave empty to keep it (English and Arabic)." },
+    { "type": "text", "id": "t_about2_rules_heading", "label": "Heading", "info": "Now: “What we won’t do.” Leave empty to keep it (English and Arabic)." }
+  ]
+}
+{% endschema %}
