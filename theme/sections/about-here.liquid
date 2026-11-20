@@ -1,6 +1,7 @@
 {{ 'about.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  About, made in Egypt (DECISIONS 328, demo). The home page's photo band, same build: a full-width photo with a white
+  About, made in Egypt (DECISIONS 328–329, demo). The home page's photo band, same build, with a postmark: a round stamp
+  ("Made in Egypt · Cairo" around the brand mark) turning slowly on the photo. Below: a full-width photo with a white
   card holding the eyebrow, the heading, the four facts anyone can check (as quiet label / value rows) and one button.
   Phones: the photo, then the card overlapping its foot.
 {%- endcomment -%}
@@ -19,6 +20,16 @@
       {{ img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '800,1200,1600,2000,2400', sizes: '100vw', alt: alt, class: 'ab-here__img' }}
     {%- endif -%}
   </div>
+  {%- assign stamp = 'about2.stamp' | t -%}
+  <span class="ab-here__stamp" aria-hidden="true">
+    <svg viewBox="0 0 200 200" class="ab-here__ring" focusable="false">
+      <defs><path id="AbStamp-{{ section.id }}" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+      <circle cx="100" cy="100" r="96" class="ab-here__ring-line"/>
+      <circle cx="100" cy="100" r="60" class="ab-here__ring-line"/>
+      <text class="ab-here__ring-text"><textPath href="#AbStamp-{{ section.id }}" textLength="488" lengthAdjust="spacing">{{ stamp }}{{ stamp }}</textPath></text>
+    </svg>
+    <span class="ab-here__stamp-mark"></span>
+  </span>
   <div class="container ab-here__inner">
     <div class="ab-here__card">
       <p class="t-eyebrow">{% if section.settings.t_about2_made_eyebrow != blank %}{{ section.settings.t_about2_made_eyebrow }}{% else %}{{ 'about2.made_eyebrow' | t }}{% endif %}</p>

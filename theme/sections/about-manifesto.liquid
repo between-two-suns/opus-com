@@ -25,6 +25,8 @@
     </ol>
   </div>
 </section>
+{%- comment -%} Each rule is crossed out as it scrolls into view (all browsers; without JS, or with reduced motion, the lines are simply there). {%- endcomment -%}
+<script>(function(s){if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;s.classList.add('is-armed');var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -30% 0px'});s.querySelectorAll('.ab-mf__item').forEach(function(i){io.observe(i);});})(document.currentScript.previousElementSibling);</script>
 
 {% schema %}
 {
