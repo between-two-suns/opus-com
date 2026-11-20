@@ -15,7 +15,14 @@
   {%- render 'about-orb', tone: 'blue', side: 'top', class: 'ab-close__sun ab-orb--top', sizes: '(min-width: 750px) 56vw, 300px' -%}
   <div class="container ab-close__inner">
     <h2 class="ab-close__title" id="AbClose-{{ section.id }}">{% if section.settings.t_about2_close_heading != blank %}{{ section.settings.t_about2_close_heading }}{% else %}{{ 'about2.close_heading' | t }}{% endif %}</h2>
-    <p class="t-lead ab-close__text">{% if section.settings.t_about2_close_text != blank %}{{ section.settings.t_about2_close_text }}{% else %}{{ 'about2.close_text' | t }}{% endif %}</p>
+    {%- if section.settings.t_about2_close_text != blank -%}
+      <p class="t-lead ab-close__text">{{ section.settings.t_about2_close_text }}</p>
+    {%- elsif section.settings.copy_v2 -%}
+      <p class="t-lead ab-close__text">{{ 'about2.v2_close_text' | t }}</p>
+      <p class="ab-close__line">{{ 'about2.v2_close_line' | t }}</p>
+    {%- else -%}
+      <p class="t-lead ab-close__text">{{ 'about2.close_text' | t }}</p>
+    {%- endif -%}
     <div class="ab-close__ctas">
       {%- if sk != blank and sk.url != blank -%}
         <a class="btn" href="{{ sk.url }}">{% if section.settings.t_about2_close_cta != blank %}{{ section.settings.t_about2_close_cta }}{% else %}{{ 'about2.close_cta' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
@@ -36,6 +43,7 @@
     ]
   },
   "settings": [
+    { "type": "checkbox", "id": "copy_v2", "label": "Use the copy master text", "default": false, "info": "On: the copy master's closing paragraph and line (“Made for the days you actually have.”)." },
     {
       "type": "paragraph",
       "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."

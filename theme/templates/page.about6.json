@@ -5,7 +5,7 @@
     "made": { "type": "about-here", "settings": {} },
     "founder": { "type": "about-founder", "settings": {} },
     "rules": { "type": "about-manifesto", "settings": {} },
-    "close": { "type": "about-close", "settings": {} }
+    "close": { "type": "about-close", "settings": { "copy_v2": true } }
   },
   "order": ["sky", "routine", "made", "founder", "rules", "close"]
 }

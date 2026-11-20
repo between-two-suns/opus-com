@@ -1,8 +1,7 @@
 {{ 'about.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  About, our rules (DECISIONS 328, demo). Laid out like the site's FAQ: the heading on one side (sticky on laptops), the
-  rules as a ruled list on the other. Each rule is set in the section's sans, crossed through by a thin line in its step
-  colour (it's what we won't do), with one plain line of why under it.
+  About, our rules (DECISIONS 331, demo). The copy master's four principles ("We won't…"), laid out like the site's FAQ:
+  heading on one side (sticky on laptops), the principles as a ruled, numbered list, each number in its step colour.
 {%- endcomment -%}
 <section class="section ab-mf" aria-labelledby="AbMf-{{ section.id }}">
   <div class="container ab-mf__grid">
@@ -11,22 +10,16 @@
       <h2 class="t-display-m" id="AbMf-{{ section.id }}">{% if section.settings.t_about2_rules_heading != blank %}{{ section.settings.t_about2_rules_heading }}{% else %}{{ 'about2.rules_heading' | t }}{% endif %}</h2>
     </div>
     <ol class="ab-mf__list" role="list">
-      {%- for i in (1..5) -%}
-        {%- assign hk = 'about2.rules.r' | append: i | append: '_h' -%}
-        {%- assign tk = 'about2.rules.r' | append: i -%}
+      {%- for i in (1..4) -%}
+        {%- assign pk = 'about2.v2_p' | append: i -%}
         <li class="ab-mf__item" data-k="{{ i }}">
-          <span class="ab-mf__n" aria-hidden="true">0{{ i }}</span>
-          <div class="ab-mf__body">
-            <p class="ab-mf__rule"><s class="ab-mf__s">{{ hk | t }}</s></p>
-            <p class="ab-mf__why">{{ tk | t }}</p>
-          </div>
+          <span class="ab-mf__n" aria-hidden="true"><span class="ab-mf__dot"></span>0{{ i }}</span>
+          <p class="ab-mf__rule">{{ pk | t }}</p>
         </li>
       {%- endfor -%}
     </ol>
   </div>
 </section>
-{%- comment -%} Each rule is crossed out as it scrolls into view (all browsers; without JS, or with reduced motion, the lines are simply there). {%- endcomment -%}
-<script>(function(s){if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;s.classList.add('is-armed');var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -30% 0px'});s.querySelectorAll('.ab-mf__item').forEach(function(i){io.observe(i);});})(document.currentScript.previousElementSibling);</script>
 
 {% schema %}
 {
