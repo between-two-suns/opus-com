@@ -422,28 +422,40 @@
    the bottom of the screen ("cover"): --r0 = its top reaches the top of the screen (story starts), --rl = the scroll the
    story takes (92% of the pinned run: section height minus one screen). */
 .ab-sp { --r0: 100svh; --rl: 82.8svh; }
+/* Two ways to drive it, same keyframes:
+   .is-live: browsers with scroll-driven animation (Chrome, Edge, Safari 26+): the browser ties them to the scroll itself.
+   .is-js: other browsers (older Safari): the animations sit paused and about-space.js sets their position each frame
+   (Web Animations currentTime; no style variables), so they still follow the scroll smoothly. */
+@media (prefers-reduced-motion: no-preference) {
+  .ab-sp:is(.is-live, .is-js) { block-size: 190svh; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__stage { position: sticky; inset-block-start: 0; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__hint { display: flex; }
+  .ab-sp:is(.is-live, .is-js) :is(.ab-sp__img, .ab-sp__wash, .ab-sp__amber, .ab-sp__dusk, .ab-sp__sun, .ab-sp__halo, .ab-sp__moon, .ab-sp__sun--b .ab-sp__orb,
+    .ab-sp__label, .ab-sp__eyebrow, .ab-sp__hint, .ab-sp__title .w > span, .ab-sp__lead) { animation-fill-mode: both; animation-timing-function: linear; }
+  .ab-sp.is-js :is(.ab-sp__img, .ab-sp__wash, .ab-sp__amber, .ab-sp__dusk, .ab-sp__sun, .ab-sp__halo, .ab-sp__moon, .ab-sp__sun--b .ab-sp__orb,
+    .ab-sp__label, .ab-sp__eyebrow, .ab-sp__hint, .ab-sp__title .w > span, .ab-sp__lead) { animation-duration: 1000ms; animation-play-state: paused; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__img { animation-name: ab-sp-img; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__wash { animation-name: ab-sp-wash; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__amber { animation-name: ab-sp-amber; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__dusk { animation-name: ab-sp-dusk; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__sun--a { animation-name: ab-sp-a; animation-timing-function: ease-in-out; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__sun--b { animation-name: ab-sp-b; animation-timing-function: cubic-bezier(.33, .6, .45, 1); }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__halo { animation-name: ab-sp-halo; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__moon { animation-name: ab-sp-moon; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__sun--b .ab-sp__orb { animation-name: ab-sp-orb; }
+  .ab-sp:is(.is-live, .is-js) :is(.ab-sp__label, .ab-sp__eyebrow, .ab-sp__hint) { animation-name: ab-sp-out; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__title .w > span { animation-name: ab-sp-part; }
+  .ab-sp:is(.is-live, .is-js) .ab-sp__lead { animation-name: ab-sp-line; }
+}
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .ab-sp.is-live { block-size: 190svh; }
-    .ab-sp.is-live .ab-sp__stage { position: sticky; inset-block-start: 0; }
-    .ab-sp.is-live .ab-sp__hint { display: flex; }
     .ab-sp.is-live :is(.ab-sp__img, .ab-sp__wash, .ab-sp__amber, .ab-sp__dusk, .ab-sp__sun, .ab-sp__halo, .ab-sp__moon, .ab-sp__sun--b .ab-sp__orb,
       .ab-sp__label, .ab-sp__eyebrow, .ab-sp__hint, .ab-sp__title .w > span, .ab-sp__lead) {
-      animation-timeline: --absp; animation-fill-mode: both; animation-timing-function: linear;
-      animation-range: cover var(--r0) cover calc(var(--r0) + var(--rl));
+      animation-timeline: --absp; animation-range: cover var(--r0) cover calc(var(--r0) + var(--rl));
     }
-    .ab-sp.is-live .ab-sp__img { animation-name: ab-sp-img; }
-    .ab-sp.is-live .ab-sp__wash { animation-name: ab-sp-wash; }
-    .ab-sp.is-live .ab-sp__amber { animation-name: ab-sp-amber; }
-    .ab-sp.is-live .ab-sp__dusk { animation-name: ab-sp-dusk; }
-    .ab-sp.is-live .ab-sp__sun--a { animation-name: ab-sp-a; animation-timing-function: ease-in-out; }
-    .ab-sp.is-live .ab-sp__sun--b { animation-name: ab-sp-b; animation-timing-function: cubic-bezier(.33, .6, .45, 1); }
-    .ab-sp.is-live .ab-sp__halo { animation-name: ab-sp-halo; }
-    .ab-sp.is-live .ab-sp__moon { animation-name: ab-sp-moon; }
-    .ab-sp.is-live .ab-sp__sun--b .ab-sp__orb { animation-name: ab-sp-orb; }
-    .ab-sp.is-live :is(.ab-sp__label, .ab-sp__eyebrow, .ab-sp__hint) { animation-name: ab-sp-out; animation-range: cover var(--r0) cover calc(var(--r0) + var(--rl) * .18); }
-    .ab-sp.is-live .ab-sp__title .w > span { animation-name: ab-sp-part; animation-range: cover var(--r0) cover calc(var(--r0) + var(--rl) * .24); }
-    .ab-sp.is-live .ab-sp__lead { animation-name: ab-sp-line; animation-range: cover calc(var(--r0) + var(--rl) * .5) cover calc(var(--r0) + var(--rl) * .72); }
+    .ab-sp.is-live :is(.ab-sp__label, .ab-sp__eyebrow, .ab-sp__hint) { animation-range: cover var(--r0) cover calc(var(--r0) + var(--rl) * .18); }
+    .ab-sp.is-live .ab-sp__title .w > span { animation-range: cover var(--r0) cover calc(var(--r0) + var(--rl) * .24); }
+    .ab-sp.is-live .ab-sp__lead { animation-range: cover calc(var(--r0) + var(--rl) * .5) cover calc(var(--r0) + var(--rl) * .72); }
   }
 }
 @keyframes ab-sp-img { to { transform: none; } }
@@ -467,8 +479,8 @@
 /* Arrival (time-based, once): the light is there from the first frame; the suns slide in; the heading fades up.
    It animates translate/filter, which the scroll story doesn't use, so the two never fight. */
 @media (prefers-reduced-motion: no-preference) {
-  .js .ab-sp.is-live .ab-sp__sun-in { animation: ab-sp-in 1.3s cubic-bezier(.16, .84, .2, 1) both; }
-  .js .ab-sp.is-live .ab-sp__title { animation: ab-sp-up .9s cubic-bezier(.2, .75, .2, 1) .55s both; }
+  .js .ab-sp:is(.is-live, .is-js) .ab-sp__sun-in { animation: ab-sp-in 1.3s cubic-bezier(.16, .84, .2, 1) both; }
+  .js .ab-sp:is(.is-live, .is-js) .ab-sp__title { animation: ab-sp-up .9s cubic-bezier(.2, .75, .2, 1) .55s both; }
 }
 @keyframes ab-sp-in { from { translate: calc(var(--side) * 30cqw) 0; } }
 @keyframes ab-sp-up { from { filter: opacity(0); translate: -50% calc(-50% + 24px); } }
@@ -483,13 +495,11 @@
   }
   [dir='rtl'] .ab-sp__stage { --a-x1: calc(var(--a-x0) + 62cqw); --b-x1: calc(var(--b-x0) - 62cqw); }
   .ab-sp__moon { display: none; }
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .ab-sp.is-live { block-size: 180svh; --rl: 73.6svh; }
-      .ab-sp.is-live .ab-sp__stage { inset-block-start: var(--H); }
-      .ab-sp.is-live .ab-sp__sun--b .ab-sp__orb { animation-name: none; }
-      .ab-sp.is-live .ab-sp__sun--a, .ab-sp.is-live .ab-sp__sun--b { animation-timing-function: ease-in; }
-    }
+  @media (prefers-reduced-motion: no-preference) {
+    .ab-sp:is(.is-live, .is-js) { block-size: 180svh; --rl: 73.6svh; }
+    .ab-sp:is(.is-live, .is-js) .ab-sp__stage { inset-block-start: var(--H); }
+    .ab-sp:is(.is-live, .is-js) .ab-sp__sun--b .ab-sp__orb { animation-name: none; }
+    .ab-sp:is(.is-live, .is-js) :is(.ab-sp__sun--a, .ab-sp__sun--b) { animation-timing-function: ease-in; }
   }
   .ab-sp__eyebrow { inset-block-start: 16px; }
   .ab-sp__img { object-position: 70% 40%; }
