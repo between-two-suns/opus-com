@@ -409,13 +409,13 @@
       "lineup": "The routine"
     },
     "bundles_feature": {
-      "text": "Not sure what goes together? We’ve done that part. Pick a ready-made set and save compared with buying each product separately.",
+      "text": "Your skincare essentials, thoughtfully paired. Find a routine that works for you — for less than buying separately.",
       "save": "Save {{ amount }}",
       "hero_eyebrow": "Morning and night",
       "mate_eyebrow": "For your evenings",
-      "eyebrow": "Better together",
-      "heading": "Your routine, without the guesswork.",
-      "cta": "Shop the sets"
+      "eyebrow": "The routine, sorted",
+      "heading": "Good skin days start with a good routine.",
+      "cta": "Explore the sets"
     }
   },
   "product": {
