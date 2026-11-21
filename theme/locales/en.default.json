@@ -509,8 +509,7 @@
     "sort": "Sort",
     "sets_heading": "Sets: the routine, for less.",
     "sets_builder": "Build your own",
-    "lead": "Four everyday essentials. Cleanse, Treat, Moisturize and Protect. Start with one step, or bring the routine together.",
-    "all_title": "Find what your skin needs."
+    "lead": "Four everyday essentials. Cleanse, Treat, Moisturize and Protect. Start with one step, or bring the routine together."
   },
   "cart": {
     "added": "Added to your bag",
@@ -935,7 +934,7 @@
     "faq": {
       "eyebrow": "Help",
       "heading": "Ask us anything.",
-      "text": "From finding your routine to understanding delivery and returns, we’re here to make things clearer."
+      "text": "Search, or pick a topic. Clear answers about your skin, your routine and your order."
     },
     "contact": {
       "eyebrow": "Contact",
@@ -1654,7 +1653,7 @@
     "toc": "On this page",
     "how": "How it works",
     "shipping": {
-      "lead": "Here’s what to expect when you order from us.",
+      "lead": "What delivery costs, how long it takes and how to track it.",
       "f1": "Free delivery",
       "f1_sub": "On orders of {{ amount }} or more, in standard areas",
       "f2": "{{ days }} business days",
@@ -1665,7 +1664,7 @@
       "f3_dmg_sub": "We replace or refund it, with no shipping cost to you"
     },
     "returns": {
-      "lead": "Need to return something? Here’s how it works.",
+      "lead": "How to return something, and how your refund reaches you.",
       "f1": "14 days",
       "f1_sub": "To return unopened products in their original sealed packaging",
       "f2": "No cost to you",
