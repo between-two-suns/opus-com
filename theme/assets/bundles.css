@@ -210,29 +210,19 @@
 .sets-rail, .bundles__grid { padding-block-end: var(--sp-12) !important; margin-block-end: calc(-1 * var(--sp-12)) !important; }
 @media (min-width: 750px) { .bundles__grid { padding-block-end: 0 !important; margin-block-end: 0 !important; } }
 /* Two big set cards side by side on laptops (home "sets" section, the first two on the Sets page; DECISIONS 338).
-   The photo is a little shorter (3:2) and the body uses both halves: name across the top; the line and the four steps
-   on one side; price, saving and button on the other, both sitting on the card's bottom line so two cards match. */
-.bundle__steps { display: none; }
+   The photo is a little shorter (3:2) and the body uses both halves: name across the top; the line and the product
+   list on one side; price and button on the other, on the card's bottom line so two cards match. Same type as the
+   other set cards (owner: keep them uniform). */
 @media (min-width: 1100px) {
   :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)) .bundle__stage { aspect-ratio: 3 / 2; }
   :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)) .bundle__body {
     display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 260px); grid-template-rows: auto auto 1fr;
-    grid-template-areas: 'name name' 'desc buy' 'steps buy'; column-gap: clamp(24px, 3vw, 48px); row-gap: 12px; padding: 22px 28px 28px;
+    grid-template-areas: 'name name' 'desc buy' 'items buy'; column-gap: clamp(24px, 3vw, 48px); row-gap: 10px; padding: 20px 28px 28px;
   }
   :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)) .bundle__name { grid-area: name; }
-  :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)) .bundle__desc { grid-area: desc; font-size: 17px; line-height: 1.45; color: var(--c-ink); }
-  :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)) .bundle__items { display: none; }
-  :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)) .bundle__steps {
-    grid-area: steps; align-self: end; display: grid; grid-template-columns: repeat(2, max-content); gap: 8px; list-style: none; margin: 0; padding: 0;
-  }
-  .bundle__step { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px 7px 11px; border-radius: 999px; font-size: 13px; font-weight: 650; color: var(--c-ink);
-    background: color-mix(in srgb, var(--sku) 38%, #fff); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sku) 55%, transparent); }
-  .bundle__step-n { font-variant-numeric: tabular-nums; opacity: .6; }
-  .bundle__step.is-off { background: transparent; color: color-mix(in srgb, var(--c-ink) 38%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-ink) 14%, transparent); }
+  :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)) .bundle__desc { grid-area: desc; }
+  :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)) .bundle__items { grid-area: items; align-self: start; }
   :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)) .bundle__buy { grid-area: buy; align-self: end; margin: 0; padding: 0; }
-  :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)) .bundle__price .bundle__save {
-    justify-self: start; margin-block-start: 6px; padding: 4px 11px; border-radius: 999px; font-size: 13px; background: color-mix(in srgb, var(--c-success) 13%, #fff);
-  }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)) .set-visual { transition: transform .9s var(--ease-out); }
     :is(.setsx__grid > .bundle, .bundles__grid > .bundle:nth-child(-n+2)):hover .set-visual { transform: scale(1.035); }

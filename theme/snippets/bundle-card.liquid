@@ -86,16 +86,6 @@
         <li data-step="{{ s }}"><span class="bundle__dot" aria-hidden="true"></span>{% if qty > 1 %}{{ qty }} × {% endif %}{{ comp.title | escape }}</li>
       {%- endfor -%}
     </ul>
-    {%- comment -%} Laptop big cards (DECISIONS 338): the contents as the site's four steps, the ones in this set in their colour, the rest faint, so what's missing shows at a glance. Hidden for screen readers: the list above says the same. {%- endcomment -%}
-    <ol class="bundle__steps" role="list" aria-hidden="true">
-      {%- for s in (1..4) -%}
-        {%- assign sk = s | append: '' -%}
-        {%- assign qty = 0 -%}
-        {%- for x in steps -%}{%- if x == sk -%}{%- assign qty = qty | plus: 1 -%}{%- endif -%}{%- endfor -%}
-        {%- assign nk = 'product.step_name.s' | append: s -%}
-        <li class="bundle__step{% if qty == 0 %} is-off{% endif %}" data-step="{{ s }}"><span class="bundle__step-n">0{{ s }}</span> {{ nk | t }}{% if qty > 1 %} ×{{ qty }}{% endif %}</li>
-      {%- endfor -%}
-    </ol>
     <div class="bundle__buy">
       <div class="bundle__price">
         <span class="bundle__now">{% render 'egp', cents: v.price %}</span>
