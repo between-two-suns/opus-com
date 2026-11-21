@@ -209,3 +209,19 @@
 /* Swipe rows: the scroller keeps room for the cards' shadows, so nothing is sliced off under a card */
 .sets-rail, .bundles__grid { padding-block-end: var(--sp-12) !important; margin-block-end: calc(-1 * var(--sp-12)) !important; }
 @media (min-width: 750px) { .bundles__grid { padding-block-end: 0 !important; margin-block-end: 0 !important; } }
+/* Two big set cards side by side on laptops (home "sets" section, the first two on the Sets page): the photo was
+   4:3 and the text sat in a narrow left column, leaving the card tall and half empty. Now the photo is a little
+   shorter and the body uses both halves: name, line and contents on one side, price and button on the other. */
+@media (min-width: 1100px) {
+  .setsx__grid > .bundle .bundle__stage,
+  .bundles__grid > .bundle:nth-child(-n+2) .bundle__stage { aspect-ratio: 3 / 2; }
+  .setsx__grid > .bundle .bundle__body,
+  .bundles__grid > .bundle:nth-child(-n+2) .bundle__body {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 260px); column-gap: clamp(24px, 3vw, 48px); row-gap: 10px;
+    grid-template-areas: 'name name' 'desc buy' 'items buy'; align-content: start; padding: 20px 28px 28px;
+  }
+  .setsx__grid > .bundle .bundle__name, .bundles__grid > .bundle:nth-child(-n+2) .bundle__name { grid-area: name; }
+  .setsx__grid > .bundle .bundle__desc, .bundles__grid > .bundle:nth-child(-n+2) .bundle__desc { grid-area: desc; }
+  .setsx__grid > .bundle .bundle__items, .bundles__grid > .bundle:nth-child(-n+2) .bundle__items { grid-area: items; }
+  .setsx__grid > .bundle .bundle__buy, .bundles__grid > .bundle:nth-child(-n+2) .bundle__buy { grid-area: buy; align-self: end; margin: 0; padding: 0; }
+}
