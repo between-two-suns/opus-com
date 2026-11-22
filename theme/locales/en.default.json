@@ -1178,7 +1178,7 @@
   },
   "bundle_inside": {
     "eyebrow": "Inside the set",
-    "heading": "{{ count }} full-size products, in the order you use them.",
+    "heading": "{{ count }} full-size products.",
     "order_heading": "How to use it",
     "morning": "Morning",
     "night": "Night",
@@ -1423,9 +1423,9 @@
     "when_ampm": "Morning + night",
     "when_am": "Morning",
     "stage_go": "Go to {{ name }} in this set",
-    "full_size": "Every product is the same full size sold on its own.",
+    "full_size": "Every product is the same size sold on its own.",
     "view": "View product",
-    "day_eyebrow": "Your day",
+    "day_eyebrow": "How to use it",
     "day_heading": "Your day with {{ name }}",
     "day_toggle": "Time of day",
     "not_in_set": "Not in this set",
@@ -1462,7 +1462,9 @@
       "panthenol": "Softer, smoother skin",
       "centella-asiatica": "Calms stressed skin",
       "bisabolol": "Keeps skin comfortable in the heat"
-    }
+    },
+    "tex_eyebrow": "The textures",
+    "tex_heading": "How each step feels."
   },
   "about2": {
     "eyebrow": "About",

@@ -38,3 +38,9 @@
 /* compare cards: bigger packs (DECISIONS 315) */
 .bundle__stage .dm-pk__img { block-size: calc(var(--s) / var(--smax, 1) * 80%); }
 .bundle__stage .dm-pk__img { block-size: calc(var(--s) / var(--smax, 1) * 80%); }
+
+/* Set textures title + texture words (DECISIONS 344) */
+.set-tex__head { display: grid; gap: var(--stack); padding-block: var(--section-y) clamp(20px, 3vw, 36px); }
+.set-tex__head > * { margin: 0; }
+.pdp-break__tex { display: block; margin-block-start: 4px; font-style: normal; font-size: 14px; font-weight: 500; letter-spacing: 0; text-transform: none; opacity: .92; }
+:lang(ar) .pdp-break__tex { font-size: 14px; }

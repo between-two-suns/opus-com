@@ -24,7 +24,12 @@
     endif
     assign tex_sizes = '(min-width: 750px) ' | append: tex_vw | append: 'vw, ' | append: tex_ph
   -%}
-  <section class="pdp-break pdp-break--set" style="--n: {{ units.size }}" aria-label="{{ 'product.texture' | t }}">
+  {%- comment -%} Owner (DECISIONS 344): the strip gets a title and each panel its texture (the pack's texture words, product data), so it says how each step feels instead of repeating the steps. {%- endcomment -%}
+  <div class="container set-tex__head">
+    <p class="t-eyebrow">{{ 'set2.tex_eyebrow' | t }}</p>
+    <h2 class="t-display-m" id="SetTex-{{ section.id }}">{{ 'set2.tex_heading' | t }}</h2>
+  </div>
+  <section class="pdp-break pdp-break--set" style="--n: {{ units.size }}" aria-labelledby="SetTex-{{ section.id }}">
     {%- for st in units -%}
       {%- assign si = st | plus: 0 -%}
       {%- assign comp = all_products[step_handles[si]] -%}
@@ -32,7 +37,7 @@
       {%- assign tp = images[tk] -%}
       <div class="pdp-break__panel" data-step="{{ si }}">
         {%- if tp != blank -%}{{ tp | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1400,2000', sizes: tex_sizes, alt: '', class: 'pdp-break__img' }}{%- endif -%}
-        <p class="pdp-break__label"><span>0{{ si }}</span>{{ comp.metafields.bts.step_label.value | default: comp.title | escape }}</p>
+        <p class="pdp-break__label"><span>0{{ si }}</span>{{ comp.metafields.bts.step_label.value | default: comp.title | escape }}{%- if comp.metafields.bts.texture != blank -%}<em class="pdp-break__tex">{{ comp.metafields.bts.texture.value | escape }}</em>{%- endif -%}</p>
       </div>
     {%- endfor -%}
   </section>
