@@ -678,3 +678,5 @@ main h1.search-page__title { margin: 0; font-family: var(--font-display); font-w
 .cart-page__empty .routine-board__step:not(.is-on) .routine-board__num { color: #fff; opacity: 1; text-shadow: 0 1px 10px rgba(32, 35, 58, .25); }
 .cart-empty .t-lead { font-size: var(--fs-5); font-weight: 700; margin: 0 0 var(--sp-1); }
 .cart-empty .btn { margin-block-start: var(--sp-4); }
+/* Shop all's Arabic heading wraps to two lines on phones; the default 1.32 left the dots of the two lines touching (DECISIONS 345) */
+:lang(ar) .collection .page-hero h1 { line-height: 1.5; }
