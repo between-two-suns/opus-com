@@ -17,7 +17,7 @@
         when '3'
           assign keys = keys | append: ',barrier,dehydration,oil'
         when '4'
-          assign keys = keys | append: ',spf'
+          assign keys = keys | append: ',spf,dehydration'
       endcase
     endfor
     assign keys = keys | remove_first: ',' | split: ',' | uniq
@@ -30,7 +30,7 @@
       when 3
         assign keys = 'barrier,dehydration,oil'
       when 4
-        assign keys = 'spf'
+        assign keys = 'spf,dehydration'
       else
         assign keys = ''
     endcase

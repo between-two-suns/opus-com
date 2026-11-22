@@ -157,8 +157,12 @@
                 {%- assign stage_word = stage_key | t -%}
                 <span class="gallery__word" aria-hidden="true" style="--len: {{ stage_word | size }}">{{ stage_word | escape }}</span>
               {%- endif -%}
-              {%- if mf.benefit != blank -%}
-                {%- assign callouts = mf.benefit | split: '.' -%}
+              {%- comment -%} Site wording for the photo's labels when the theme has one (copy.products.<handle>.callouts), else the pack line from the product record (DECISIONS 342). {%- endcomment -%}
+              {%- assign callout_key = 'copy.products.' | append: product.handle | append: '.callouts' -%}
+              {%- assign callout_src = callout_key | t -%}
+              {%- if callout_src contains 'ranslation missing' -%}{%- assign callout_src = mf.benefit.value -%}{%- endif -%}
+              {%- if callout_src != blank -%}
+                {%- assign callouts = callout_src | split: '.' -%}
                 <ul class="callouts" role="list" aria-hidden="true">
                   {%- assign shown = 0 -%}
                   {%- for c in callouts -%}
