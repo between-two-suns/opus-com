@@ -479,3 +479,6 @@
   .s2-ing__words { gap: 3px; }
   .s2-ing__words .s2-ing__what { font-size: 15.5px; }
 }
+/* Owner (2026-11-22): less air between "Best for" and "Choose how to buy". The buy panel's top padding was 18px on top
+   of the 20px column gap; 4px keeps the panel's edge and brings the choices up to the head (≈24px). DECISIONS 339. */
+.pdp--v2 .pdp__buy.v2-buy { padding-block-start: 4px; }
