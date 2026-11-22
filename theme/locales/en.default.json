@@ -150,7 +150,7 @@
     },
     "heat": {
       "name": "Heat",
-      "line": "When the heat is on, the last thing you want is heavy skincare. Keep it light, and reapply SPF every 2 hours."
+      "line": "When the sun is at its strongest, the last thing you want is heavy skincare. Keep it light, and reapply SPF every 2 hours."
     },
     "ac": {
       "name": "Air-con",
@@ -1207,13 +1207,14 @@
       "sun": "Morning sun.",
       "city": "City streets.",
       "ac": "Hours in AC.",
-      "heat": "The afternoon heat.",
+      "heat": "Afternoon sun.",
       "humidity": "Humid evenings."
     },
     "end_eyebrow": "Then tomorrow",
     "end_heading": "One routine. Whatever the day brings.",
     "end_text": "Keep it simple: cleanse, treat, moisturize and protect. Sunscreen is the last step every morning.",
-    "agenda": "The day at a glance"
+    "agenda": "The day at a glance",
+    "heat_tag": "Strong sun"
   },
   "bundle_offer": {
     "complete": "Complete the routine",

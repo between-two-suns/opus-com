@@ -34,11 +34,14 @@
                 when 'humidity'
                   assign aic = 'drop'
                 when 'heat'
-                  assign aic = 'thermo'
+                  assign aic = 'sun'
                 else
                   assign aic = c[0]
               endcase
               assign ack = 'sections.forecast.conditions.' | append: c[0]
+              if c[0] == 'heat'
+                assign ack = 'climate_story.heat_tag'
+              endif
               assign ahk = 'climate_story.chapters.' | append: c[0]
             -%}
             <li>
@@ -86,13 +89,19 @@
           assign ic = 'drop'
           assign line_key = 'climate.humidity.line'
         when 'heat'
-          assign ic = 'thermo'
+          comment
+            Owner (DECISIONS 349): on this page the 16:00 moment is the afternoon sun, so the day runs between two suns. The home page's Heat tab is unchanged.
+          endcomment
+          assign ic = 'sun'
           assign line_key = 'climate.heat.line'
         else
           assign ic = cond
           assign line_key = 'climate.' | append: cond | append: '.line'
       endcase
       assign ck = 'sections.forecast.conditions.' | append: cond
+      if cond == 'heat'
+        assign ck = 'climate_story.heat_tag'
+      endif
       assign hk = 'climate_story.chapters.' | append: cond
     -%}
     <section class="cst__ch" id="Cst-{{ section.id }}-{{ forloop.index }}" data-i="{{ forloop.index0 }}" aria-labelledby="CstH-{{ section.id }}-{{ forloop.index }}">
