@@ -1383,7 +1383,7 @@
       },
       "panthenol": {
         "what": "Pro-vitamin B5",
-        "why": "Vitamin B5 that helps your skin hold on to water, so it feels soft after washing, not tight."
+        "why": "Vitamin B5 that helps your skin hold on to moisture, so it stays soft and comfortable."
       },
       "centella-asiatica": {
         "what": "Plant extract",
@@ -1395,11 +1395,11 @@
       },
       "uv-filters": {
         "what": "Sunscreen filters",
-        "why": "UVB rays are the main cause of sunburn; UVA rays reach deeper and contribute to dark spots and visible ageing. That’s why sunscreen matters every day, even when it’s cloudy."
+        "why": "UVB is the main cause of sunburn, while UVA reaches deeper into the skin and contributes to dark spots and visible ageing."
       },
       "bisabolol": {
         "what": "From chamomile",
-        "why": "A component of chamomile, used in comforting formulas for skin that spends the day in sun and heat."
+        "why": "A soothing ingredient found in chamomile that helps keep skin feeling calm and comfortable."
       }
     },
     "no_reviews": "No reviews yet",
@@ -1764,11 +1764,12 @@
         "when": "AM + PM"
       },
       "daily-defense-sunscreen-spf-50": {
-        "headline": "Sun protection without the sunscreen feeling.",
-        "lead": "You know SPF matters. You just don’t want to feel it all day. SPF 50+ in a lightweight, fast-absorbing formula with an invisible finish.",
+        "headline": "Lightweight, fast-absorbing SPF with an invisible finish.",
+        "lead": "You know SPF matters, but you don’t want to feel it all day. This SPF 50+ helps protect against sunburn, sun spots and early signs of ageing. Use it every morning as the last step in your routine.",
         "ingredients": "UVA + UVB Filters",
         "how": "Smooth it evenly over your face and neck every morning, as the last step in your routine. Reapply every 2 hours to keep your protection going.",
-        "when": "AM — reapply every 2 hours"
+        "when": "AM — reapply every 2 hours",
+        "callouts": "Invisible. Lightweight. Fast-absorbing."
       }
     }
   }
