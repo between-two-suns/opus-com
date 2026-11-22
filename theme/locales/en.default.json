@@ -134,7 +134,7 @@
   "climate": {
     "sun": {
       "name": "Sun",
-      "line": "Daily SPF belongs in your routine, even when the day doesn’t involve the beach."
+      "line": "You need SPF every day, not just at the beach."
     },
     "pollution": {
       "name": "Pollution",
@@ -142,7 +142,7 @@
     },
     "dust": {
       "name": "Dust",
-      "line": "By the time you get home, your skin has been through enough. Leave the day’s buildup behind."
+      "line": "By the time you get home, your skin has been through enough. Wash away the day’s buildup, then moisturize."
     },
     "humidity": {
       "name": "Humidity",
@@ -150,11 +150,11 @@
     },
     "heat": {
       "name": "Heat",
-      "line": "The hotter the day, the less you want to feel on your face. Keep it simple and don’t skip SPF."
+      "line": "When the heat is on, the last thing you want is heavy skincare. Keep it light, and reapply SPF every 2 hours."
     },
     "ac": {
       "name": "Air-con",
-      "line": "Indoor air can feel dry, even when it’s hot outside. Keep moisture in your routine."
+      "line": "Air-conditioning can leave your skin feeling dry, too. Keep moisture in your routine."
     },
     "change": {
       "name": "Change",
@@ -1212,7 +1212,7 @@
     },
     "end_eyebrow": "Then tomorrow",
     "end_heading": "One routine. Whatever the day brings.",
-    "end_text": "Keep the essentials simple: cleanse, treat, moisturize and protect. Sunscreen is the last step every morning.",
+    "end_text": "Keep it simple: cleanse, treat, moisturize and protect. Sunscreen is the last step every morning.",
     "agenda": "The day at a glance"
   },
   "bundle_offer": {
