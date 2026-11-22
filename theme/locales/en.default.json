@@ -504,12 +504,13 @@
     "showing": "Showing {{ count }} products",
     "empty": "No products here yet.",
     "routine_card_title": "Not sure where to start?",
-    "routine_card_text": "Three quick questions. A routine that makes sense for your skin.",
+    "routine_card_text": "Answer three quick questions and we’ll suggest a routine for your skin.",
     "routine_card_cta": "Find your routine",
     "sort": "Sort",
-    "sets_heading": "Sets: the routine, for less.",
+    "sets_heading": "Your routine, for less.",
     "sets_builder": "Build your own",
-    "lead": "Four everyday essentials. Cleanse, Treat, Moisturize and Protect. Start with one step, or bring the routine together."
+    "lead": "Four steps: cleanse, treat, moisturize and protect. Start with the one your skin needs most, or get the whole routine.",
+    "all_title": "Find what your skin needs."
   },
   "cart": {
     "added": "Added to your bag",
@@ -1008,7 +1009,7 @@
       "clear-protect-duo": "Treat and protect, every morning.",
       "the-night-ritual": "Cleanse, treat and moisturize before bed.",
       "the-core-duo": "Cleanse and treat, morning and night.",
-      "spf-stock-up": "Your daily SPF. And your backup.",
+      "spf-stock-up": "Your daily SPF, with a spare ready.",
       "serum-stock-up": "One to use, one on the shelf."
     },
     "badges": {
