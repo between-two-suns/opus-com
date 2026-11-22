@@ -825,7 +825,7 @@
       },
       "all_four": {
         "q": "Do I need all four products?",
-        "a": "No. Each product works as its own step. The Full Ritual brings all four together if you’d like the complete routine."
+        "a": "Not necessarily. You can start with one product or build your routine step by step. All four are designed to work together if you want the complete routine."
       },
       "delivery_free": {
         "q": "Is delivery free?",
@@ -842,7 +842,7 @@
       },
       "inci_what": {
         "q": "What is INCI?",
-        "a": "The International Nomenclature of Cosmetic Ingredients: the standard names used on cosmetic labels, so an ingredient list reads the same in every country."
+        "a": "INCI stands for International Nomenclature of Cosmetic Ingredients. It’s the standardized naming system used to identify ingredients on cosmetic labels, making ingredient lists easier to understand and compare."
       },
       "ingredients_order": {
         "q": "Why is water (Aqua) listed first?",
@@ -871,7 +871,7 @@
       },
       "sensitive": {
         "q": "Are the products suitable for sensitive skin?",
-        "a": "Some of our formulas include ingredients commonly used for hydration and barrier support, such as ceramides, panthenol, glycerin and centella asiatica. Sensitivity varies from person to person, so we can't promise every product will suit all sensitive skin. Introduce one product at a time and patch test first: apply a little to a small area, such as the inner arm, and wait at least 24 hours."
+        "a": "Skin sensitivity varies, so we can’t guarantee every product will suit everyone. If your skin is sensitive, introduce one product at a time and patch test first: apply a little to the inner arm and wait 24 hours before using it on your face."
       },
       "shelf_life": {
         "q": "How long do the products last once opened?"
@@ -881,7 +881,7 @@
       },
       "pregnancy": {
         "q": "Can I use the products during pregnancy or breastfeeding?",
-        "a": "We don't describe any of our products as pregnancy-safe. Please consult your doctor or a healthcare professional before using them during pregnancy or breastfeeding, especially before starting the Clarity Serum."
+        "a": "If you’re pregnant or breastfeeding, check with your healthcare professional before introducing new skincare products, especially products containing active ingredients such as Clarity Serum."
       },
       "cr_box": {
         "q": "What will you send me?",
@@ -908,7 +908,7 @@
       "orders": "Orders & delivery",
       "other": "More"
     },
-    "help_title": "Still stuck?",
+    "help_title": "Still have a question?",
     "help_text": "Send us a message and we’ll reply by email."
   },
   "page_presets": {
