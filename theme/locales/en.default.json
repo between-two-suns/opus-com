@@ -284,7 +284,7 @@
     },
     "bundles": {
       "eyebrow": "Ready-made sets",
-      "heading": "Better together. And for less.",
+      "heading": "Choose your set.",
       "text": "Every set is full-size and fixed-price, and saves you money compared with buying the same products separately.",
       "count": "{{ count }} steps",
       "pack": "Pack of {{ count }}",
@@ -949,7 +949,7 @@
     "sets": {
       "eyebrow": "Your routine, your way",
       "heading": "The right steps. All in one place.",
-      "text": "A full routine or just the essentials. Choose a ready-made set, see exactly what’s inside and save compared with buying each product separately."
+      "text": "Pick a ready-made set for morning, night or both. Each one has the steps you need, for less than buying them separately."
     }
   },
   "stories": {
@@ -1005,9 +1005,9 @@
     "desc": {
       "the-clear-protect-trio": "Cleanse, treat and protect, every morning.",
       "the-full-ritual": "Everything for morning and night.",
-      "clear-protect-duo": "Even tone, protected. The two-step morning.",
+      "clear-protect-duo": "Treat and protect, every morning.",
       "the-night-ritual": "Cleanse, treat and moisturize before bed.",
-      "the-core-duo": "Clean first. Then clarity.",
+      "the-core-duo": "Cleanse and treat, morning and night.",
       "spf-stock-up": "Your daily SPF. And your backup.",
       "serum-stock-up": "One to use, one on the shelf."
     },
