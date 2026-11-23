@@ -1,0 +1,162 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About story, owner's round of notes on the real store (DECISIONS 360). Copy unchanged. Compact, no empty screens:
+  1 Title + the )( mark with the photo side by side on laptops (one screen), stacked on phones; smaller than before.
+  2 The opening paragraph and the question in ONE section (paragraph left, question right).
+  3 "Not just made here…": the four phrases as one bold display line with the step-colour marks, the rest of the
+    passage directly under it in two columns (no half-empty screen, no staircase).
+  4 "So we created" + the real wordmark (inline brand SVG), the two lines beside it.
+  5 The close on a mint panel with white text; the )( mark as a large shape on the panel's side.
+  Motion: a short rise as each block arrives, fully readable at the end (no word-by-word fading).
+{%- endcomment -%}
+{%- liquid
+  assign img = section.settings.image | default: images['bts-portrait-terrace-wide.jpg']
+  assign s2 = 'about3.s2_p1' | t | split: '. '
+-%}
+<style>
+  .ab5 { --g: clamp(20px, 4.4vw, 64px); overflow: clip; }
+  .ab5 p { margin: 0; }
+  .ab5__w { inline-size: min(100% - 2 * var(--g), 1280px); margin-inline: auto; }
+  .ab5__d { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: 0.9; letter-spacing: -0.005em; }
+  :lang(ar) .ab5__d { text-transform: none; line-height: 1.3; }
+  .ab5__eb { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+  :lang(ar) .ab5__eb { letter-spacing: 0; text-transform: none; font-size: 15px; }
+  .ab5__body { font-size: clamp(17px, 1.3vw, 19px); line-height: 1.6; color: color-mix(in srgb, var(--c-ink) 86%, transparent); }
+
+  /* 1 */
+  .ab5__s1 { display: grid; gap: clamp(28px, 4vw, 48px); align-items: center; padding-block: clamp(48px, 6vw, 96px) clamp(40px, 5vw, 72px); }
+  .ab5__title { margin: 14px 0 0; font-size: clamp(56px, 8.6vw, 132px); }
+  .ab5__title span { display: block; }
+  :lang(ar) .ab5__title { font-size: clamp(52px, 7.6vw, 116px); }
+  .ab5__mark { position: relative; overflow: hidden; inline-size: min(100%, 520px); aspect-ratio: 501 / 547; justify-self: center; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+  .ab5__mark img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 43% 26%; }
+
+  /* 2 */
+  .ab5__s2 { display: grid; gap: clamp(28px, 4vw, 56px); padding-block: clamp(56px, 7vw, 112px); border-block-start: 1px solid var(--c-line); }
+  .ab5__open { font-weight: 500; font-size: clamp(21px, 1.9vw, 28px); line-height: 1.4; letter-spacing: -0.015em; max-inline-size: 30rem; }
+  :lang(ar) .ab5__open { letter-spacing: 0; line-height: 1.65; }
+  .ab5__qwrap { display: grid; gap: 14px; align-content: start; }
+  .ab5__q { font-size: clamp(44px, 5.6vw, 88px); }
+  .ab5__q-em { color: color-mix(in srgb, var(--c-step-1) 55%, var(--c-ink)); }
+
+  /* 3 */
+  .ab5__s3 { padding-block: clamp(56px, 7vw, 112px); border-block-start: 1px solid var(--c-line); }
+  .ab5__s3-lead { font-weight: 700; font-size: clamp(19px, 1.6vw, 23px); letter-spacing: -0.01em; margin-block-end: clamp(18px, 2vw, 28px); }
+  :lang(ar) .ab5__s3-lead { letter-spacing: 0; }
+  .ab5__four { font-size: clamp(40px, 5.6vw, 88px); line-height: 1; }
+  :lang(ar) .ab5__four { line-height: 1.4; font-size: clamp(36px, 4.8vw, 76px); }
+  .ab5__four span { white-space: nowrap; }
+  .ab5__dot { display: inline-block; inline-size: 0.5em; block-size: 0.55em; margin-inline: 0.16em 0.3em; vertical-align: 0.04em; background: var(--sku); -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+  .ab5__s3-copy { display: grid; gap: 1em; margin-block-start: clamp(32px, 4vw, 56px); }
+  .ab5__s3-copy p:first-child { color: var(--c-ink); font-weight: 650; font-size: clamp(19px, 1.6vw, 23px); line-height: 1.4; }
+
+  /* 4 */
+  .ab5__s4 { display: grid; gap: clamp(24px, 3.4vw, 48px); align-items: end; padding-block: clamp(56px, 7vw, 112px); border-block-start: 1px solid var(--c-line); }
+  .ab5__created { font-size: clamp(30px, 3.4vw, 52px); color: color-mix(in srgb, var(--c-step-1) 55%, var(--c-ink)); }
+  .ab5__wm { display: block; margin: clamp(10px, 1.2vw, 16px) 0 0; color: var(--c-ink); inline-size: min(100%, 420px); }
+  .ab5__wm .logo, .ab5__wm svg { display: block; inline-size: 100%; block-size: auto; }
+  .ab5__wm svg * { fill: currentColor; }
+  .ab5__s4-copy { display: grid; gap: 0.8em; max-inline-size: 32rem; }
+  .ab5__s4-copy p:first-child { color: var(--c-ink); font-weight: 650; font-size: clamp(19px, 1.6vw, 23px); line-height: 1.4; }
+
+  /* 5 */
+  .ab5__s5 { padding-block: 0 clamp(56px, 7vw, 112px); }
+  .ab5__panel { position: relative; overflow: hidden; border-radius: var(--radius-l); background: color-mix(in srgb, var(--c-step-1) 75%, var(--c-ink)); color: #fff; padding: clamp(40px, 6vw, 96px) clamp(24px, 5vw, 80px); display: grid; gap: clamp(24px, 3vw, 40px); }
+  .ab5__panel-mark { position: absolute; inset-block: 10%; inset-inline-end: clamp(24px, 5vw, 80px); aspect-ratio: 501 / 547; background: rgba(255, 255, 255, 0.92); -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; pointer-events: none; }
+  .ab5__close { position: relative; font-weight: 700; font-size: clamp(28px, 3.6vw, 56px); line-height: 1.08; letter-spacing: -0.03em; max-inline-size: 15em; }
+  :lang(ar) .ab5__close { letter-spacing: 0; line-height: 1.45; }
+  .ab5__sign { position: relative; font-size: clamp(44px, 6.4vw, 104px); max-inline-size: 9em; }
+
+  @media (min-width: 990px) {
+    .ab5__s1 { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: clamp(32px, 4vw, 64px); }
+    .ab5__mark { inline-size: min(100%, 460px); }
+    .ab5__s2 { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: clamp(40px, 6vw, 96px); align-items: start; }
+    .ab5__s3-copy { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(40px, 6vw, 96px); }
+    .ab5__s3-copy p:first-child { grid-row: span 2; }
+    .ab5__s4 { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: clamp(40px, 6vw, 96px); }
+    .ab5__panel { padding-inline-end: clamp(240px, 28vw, 420px); }
+  }
+  @media (max-width: 989px) {
+    .ab5__wm { inline-size: 72%; }
+    :lang(ar) .ab5__q { font-size: 10.5vw; }
+    .ab5__panel-mark { inset-block: auto; inset-block-start: 20px; block-size: 110px; inset-inline-end: 20px; }
+    .ab5__panel { padding-block-start: 150px; }
+  }
+  /* motion: a short rise, fully readable at the end */
+  .ab5.is-live [data-r] { opacity: 0; transform: translateY(24px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); transition-delay: calc(var(--d, 0) * 1ms); }
+  .ab5.is-live [data-r].is-in { opacity: 1; transform: none; }
+</style>
+<section class="ab5" data-ab5 aria-labelledby="Ab5-{{ section.id }}">
+  <div class="ab5__w ab5__s1">
+    <div data-r>
+      <p class="ab5__eb">{{ 'about3.eyebrow' | t }}</p>
+      <h2 class="ab5__title ab5__d" id="Ab5-{{ section.id }}"><span>{{ 'about3.title_1' | t }}</span><span>{{ 'about3.title_2' | t }}</span></h2>
+    </div>
+    {%- if img != blank and img.width != blank -%}
+      <div class="ab5__mark" data-r style="--d: 250">{{ img | image_url: width: 1200 | image_tag: loading: 'eager', widths: '500,800,1200', sizes: '(min-width: 990px) 460px, 90vw', alt: '' }}</div>
+    {%- endif -%}
+  </div>
+
+  <div class="ab5__w ab5__s2">
+    <p class="ab5__open" data-r>{{ 'about3.p1' | t }}</p>
+    <div class="ab5__qwrap" data-r style="--d: 150">
+      <p class="ab5__eb">{{ 'about4.q_lead' | t }}</p>
+      <p class="ab5__q ab5__d">{{ 'about4.q_1' | t }} {{ 'about4.q_2' | t }} {{ 'about4.q_3a' | t }} <span class="ab5__q-em">{{ 'about4.q_3b' | t }}</span></p>
+    </div>
+  </div>
+
+  <div class="ab5__w ab5__s3">
+    <p class="ab5__s3-lead" data-r>{{ 'about3.s2_head' | t }}</p>
+    {%- if s2.size > 4 -%}
+      <p class="ab5__four ab5__d" data-r style="--d: 120">
+        {%- for k in (0..3) -%}<span>{{ s2[k] }}.<i class="ab5__dot" data-step="{{ k | plus: 1 }}" aria-hidden="true"></i></span>{%- unless forloop.last -%}{{ ' ' }}{%- endunless -%}{%- endfor -%}
+      </p>
+      {%- assign rest = s2 | slice: 4, 20 | join: '. ' -%}
+    {%- else -%}
+      {%- assign rest = 'about3.s2_p1' | t -%}
+    {%- endif -%}
+    <div class="ab5__s3-copy ab5__body" data-r style="--d: 240">
+      <p>{{ rest }}</p>
+      <p>{{ 'about3.s2_p2' | t }}</p>
+      <p>{{ 'about3.s2_p3' | t }}</p>
+    </div>
+  </div>
+
+  <div class="ab5__w ab5__s4">
+    <div data-r>
+      <p class="ab5__created ab5__d">{{ 'about4.created' | t }}</p>
+      <h3 class="ab5__wm">{%- render 'logo', variant: 'wordmark' -%}</h3>
+    </div>
+    <div class="ab5__s4-copy ab5__body" data-r style="--d: 200">
+      <p>{{ 'about3.s3_p1' | t }}</p>
+      <p>{{ 'about3.s3_p2' | t }}</p>
+    </div>
+  </div>
+
+  <div class="ab5__w ab5__s5">
+    <div class="ab5__panel" data-r>
+      <span class="ab5__panel-mark" aria-hidden="true"></span>
+      <p class="ab5__close">{{ 'about3.close' | t }}</p>
+      <p class="ab5__sign ab5__d">{{ 'about3.close_2' | t }}</p>
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    if (!root || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+    root.classList.add('is-live');
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    root.querySelectorAll('[data-r]').forEach((el) => io.observe(el));
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "About · story (compact)",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo inside the mark", "info": "Empty = the terrace portrait (stand-in until the shoot)." }
+  ]
+}
+{% endschema %}

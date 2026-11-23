@@ -1,0 +1,40 @@
+{
+  "sections": {
+    "sky": {
+      "type": "about-space",
+      "settings": {}
+    },
+    "routine": {
+      "type": "about-shelf",
+      "settings": {
+        "look": "texture"
+      }
+    },
+    "made": {
+      "type": "about-here",
+      "settings": {}
+    },
+    "rules": {
+      "type": "about-manifesto",
+      "settings": {}
+    },
+    "close": {
+      "type": "about-close",
+      "settings": {
+        "copy_v2": true
+      }
+    },
+    "story": {
+      "type": "about-story5",
+      "settings": {}
+    }
+  },
+  "order": [
+    "sky",
+    "story",
+    "routine",
+    "made",
+    "rules",
+    "close"
+  ]
+}
