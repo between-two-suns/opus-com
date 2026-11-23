@@ -672,29 +672,43 @@
 .ab-st__line > span { display: inline-block; }
 .ab-st__line--2 { padding-inline-start: 18%; }
 :lang(ar) .ab-st__title { text-transform: none; line-height: 1.25; font-size: clamp(54px, 10vw, 168px); }
-.ab-st__intro { max-inline-size: 30rem; justify-self: end; font-size: clamp(17px, 1.35vw, 21px); line-height: 1.6; color: color-mix(in srgb, var(--c-ink) 80%, transparent); }
-/* B — pivot */
-.ab-st__b { position: relative; margin: clamp(56px, 8vw, 120px) 0 0; padding-inline: clamp(12px, 2vw, 28px); }
-.ab-st__photo { position: relative; overflow: hidden; border-radius: var(--radius-l); block-size: min(88vh, 900px); background: var(--c-paper); }
-.ab-st__img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 60% 35%; transform-origin: 50% 40%; }
-.ab-st__photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(14, 16, 30, 0.62) 0%, rgba(14, 16, 30, 0.18) 42%, rgba(14, 16, 30, 0) 64%); }
-[dir='rtl'] .ab-st__img { transform: scaleX(1); }
-.ab-st__q { position: absolute; z-index: 1; inset-inline-start: clamp(36px, 5vw, 88px); inset-block-end: clamp(32px, 5vw, 80px); display: grid; gap: 14px; color: #fff; inline-size: min(46%, 760px); }
-/* The photo isn't mirrored in Arabic, so the question stays on its left, over the wall, away from her face. */
-@media (min-width: 990px) { [dir='rtl'] .ab-st__q { inset-inline-start: auto; left: clamp(36px, 5vw, 88px); } }
-.ab-st__q-lead { font-size: clamp(14px, 1.1vw, 17px); letter-spacing: 0.02em; opacity: 0.86; }
-.ab-st__q-text { font-weight: 700; font-size: clamp(38px, 5.2vw, 88px); line-height: 1.02; letter-spacing: -0.025em; text-wrap: balance; }
-:lang(ar) .ab-st__q-text { letter-spacing: 0; line-height: 1.3; font-size: clamp(34px, 4.4vw, 72px); }
-/* C — story: one consistent layout. Lead line left, reading column right, a hairline between passages (DECISIONS 351). */
-.ab-st__c { display: grid; margin-block-start: clamp(64px, 9vw, 140px); }
-.ab-st__pass { display: grid; gap: clamp(18px, 2.4vw, 28px); padding-block: clamp(36px, 5vw, 72px); border-block-start: 1px solid color-mix(in srgb, var(--c-ink) 14%, transparent); }
-.ab-st__pass:first-child { border-block-start: 0; padding-block-start: 0; }
-.ab-st__lead { font-weight: 700; font-size: clamp(30px, 3.4vw, 54px); line-height: 1.06; letter-spacing: -0.02em; max-inline-size: 12em; text-wrap: balance; }
+.ab-st__intro { max-inline-size: 30rem; justify-self: end; font-size: clamp(17px, 1.35vw, 21px); line-height: 1.6; color: color-mix(in srgb, var(--c-ink) 86%, transparent); }
+/* B — the question, alone and huge (DECISIONS 352). */
+.ab-st__b { display: grid; gap: clamp(16px, 2vw, 28px); padding-block: clamp(96px, 13vw, 200px) clamp(64px, 8vw, 128px); }
+.ab-st__q-lead { font-size: clamp(15px, 1.2vw, 18px); color: color-mix(in srgb, var(--c-ink) 66%, transparent); }
+.ab-st__q-text { font-weight: 700; font-size: clamp(44px, 7.4vw, 128px); line-height: 0.98; letter-spacing: -0.035em; max-inline-size: 11.5em; text-wrap: balance; }
+:lang(ar) .ab-st__q-text { letter-spacing: 0; line-height: 1.3; font-size: clamp(38px, 6vw, 104px); }
+/* C — the life it was made for: lead, four photo tiles, then the passage. */
+.ab-st__c { display: grid; gap: clamp(28px, 3.6vw, 56px); padding-block-start: clamp(48px, 6vw, 96px); border-block-start: 1px solid color-mix(in srgb, var(--c-ink) 14%, transparent); }
+.ab-st__lead { font-weight: 700; font-size: clamp(32px, 4.2vw, 68px); line-height: 1.02; letter-spacing: -0.025em; max-inline-size: 13em; text-wrap: balance; }
 :lang(ar) .ab-st__lead { letter-spacing: 0; line-height: 1.35; }
-.ab-st__body { display: grid; gap: 1.05em; max-inline-size: 34rem; font-size: clamp(17px, 1.3vw, 20px); line-height: 1.65; color: color-mix(in srgb, var(--c-ink) 78%, transparent); }
+.ab-st [role='list'].ab-st__tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(8px, 1.2vw, 16px); margin: 0; padding: 0; list-style: none; }
+.ab-st__tile { position: relative; overflow: hidden; aspect-ratio: 3 / 4; border-radius: var(--radius-l); background: var(--c-paper); }
+.ab-st__tile-img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.ab-st__tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(14, 16, 30, 0.66) 0%, rgba(14, 16, 30, 0) 52%); }
+.ab-st__tile-t { position: absolute; z-index: 1; inset-inline: clamp(14px, 1.6vw, 24px); inset-block-end: clamp(14px, 1.6vw, 24px); color: #fff; font-weight: 700; font-size: clamp(22px, 2.3vw, 36px); line-height: 1.05; letter-spacing: -0.02em; }
+:lang(ar) .ab-st__tile-t { letter-spacing: 0; line-height: 1.3; }
+.ab-st__body { display: grid; gap: 1em; max-inline-size: 36rem; font-size: clamp(18px, 1.4vw, 21px); line-height: 1.6; color: color-mix(in srgb, var(--c-ink) 84%, transparent); }
 .ab-st__strong { color: var(--c-ink); font-weight: 650; }
+.ab-st__body > .ab-st__strong { font-size: 1.14em; line-height: 1.45; }
+/* D — "So we created Between Two Suns.", centred under the mark. */
+.ab-st__e { display: grid; justify-items: center; text-align: center; gap: clamp(16px, 2vw, 24px); padding-block: clamp(96px, 13vw, 200px) 0; font-size: clamp(18px, 1.4vw, 21px); line-height: 1.6; }
+.ab-st__e-mark { inline-size: 44px; block-size: 48px; background: var(--c-step-2); -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+.ab-st__e-head { font-weight: 700; font-size: clamp(36px, 5.6vw, 96px); line-height: 1; letter-spacing: -0.03em; max-inline-size: 10em; text-wrap: balance; margin-block-end: clamp(4px, 1vw, 12px); }
+:lang(ar) .ab-st__e-head { letter-spacing: 0; line-height: 1.35; }
+.ab-st__e-body { max-inline-size: 32rem; color: color-mix(in srgb, var(--c-ink) 84%, transparent); }
+@media (min-width: 990px) {
+  .ab-st [role='list'].ab-st__tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .ab-st__body { grid-template-columns: 1.15fr 1fr 1fr; column-gap: clamp(32px, 4vw, 72px); max-inline-size: none; margin-block-start: clamp(8px, 1.5vw, 24px); }
+}
+/* motion for B–D */
+.ab-st.is-live .ab-st__b > *, .ab-st.is-live .ab-st__lead, .ab-st.is-live .ab-st__body, .ab-st.is-live .ab-st__e > * { opacity: 0; transform: translateY(28px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+.ab-st.is-live .ab-st__q-text { transition-delay: 0.15s; }
+.ab-st.is-live .ab-st__b.is-in > *, .ab-st.is-live .ab-st__c.is-in .ab-st__lead, .ab-st.is-live .ab-st__tiles.is-in ~ .ab-st__body, .ab-st.is-live .ab-st__e.is-in > * { opacity: 1; transform: none; }
+.ab-st.is-live .ab-st__tile { opacity: 0; transform: translateY(40px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); transition-delay: calc(var(--i) * 0.1s); }
+.ab-st.is-live .ab-st__tiles.is-in .ab-st__tile { opacity: 1; transform: none; }
 /* D — close: a full-width night band, the chapter's strongest moment. */
-.ab-st__d { margin-block-start: clamp(48px, 6vw, 96px); background: var(--c-ink); color: #fff; padding-block: clamp(88px, 12vw, 190px); }
+.ab-st__d { margin-block-start: clamp(96px, 12vw, 180px); background: var(--c-ink); color: #fff; padding-block: clamp(88px, 12vw, 190px); }
 .ab-st { padding-block-end: 0; }
 .ab-st__d-in { display: grid; gap: clamp(32px, 4.5vw, 64px); }
 .ab-st__close { font-weight: 700; font-size: clamp(34px, 5.4vw, 92px); line-height: 1.06; letter-spacing: -0.03em; max-inline-size: 16em; }
@@ -705,16 +719,10 @@
 @media (min-width: 990px) {
   .ab-st__a { grid-template-columns: minmax(0, 1fr); }
   .ab-st__intro { justify-self: start; margin-inline-start: 18%; }
-  .ab-st__pass { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: start; column-gap: clamp(40px, 6vw, 110px); }
 }
 @media (max-width: 989px) {
   .ab-st__line--2 { padding-inline-start: 0; }
   .ab-st__intro { justify-self: start; }
-  .ab-st__photo { block-size: auto; aspect-ratio: 4 / 5; }
-  /* Phones: the question sits under the photo, so it never covers the face. */
-  .ab-st__photo::after { display: none; }
-  .ab-st__q { position: static; inline-size: auto; color: var(--c-ink); padding: 24px 8px 0; }
-  .ab-st__q-lead { opacity: 0.7; }
 }
 /* Motion (JS adds .is-live; without it, or with reduced motion, everything is simply shown) */
 .ab-st.is-live .ab-st__line > span { transform: translateY(105%); transition: transform 1.1s var(--ease-out); }
@@ -722,12 +730,6 @@
 .ab-st.is-live .ab-st__a.is-in .ab-st__line > span { transform: none; }
 .ab-st.is-live .ab-st__intro { opacity: 0; transform: translateY(18px); transition: opacity 0.9s var(--ease-out) 0.35s, transform 0.9s var(--ease-out) 0.35s; }
 .ab-st.is-live .ab-st__a.is-in .ab-st__intro { opacity: 1; transform: none; }
-.ab-st.is-live .ab-st__img { transform: scale(calc(1.14 - var(--p, 0) * 0.14)); will-change: transform; }
-.ab-st.is-live .ab-st__q > * { opacity: 0; transform: translateY(24px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
-.ab-st.is-live .ab-st__q-text { transition-delay: 0.15s; }
-.ab-st.is-live .ab-st__q.is-in > * { opacity: 1; transform: none; }
-.ab-st.is-live .ab-st__pass { opacity: 0; transform: translateY(32px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
-.ab-st.is-live .ab-st__pass.is-in { opacity: 1; transform: none; }
 .ab-st.is-live .ab-st__w { opacity: 0.22; transition: opacity 0.35s linear; }
 .ab-st.is-live .ab-st__w.is-on { opacity: 1; }
 .ab-st.is-live .ab-st__sign { opacity: 0; transform: translateY(20px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
