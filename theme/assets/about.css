@@ -685,27 +685,27 @@
 .ab-st__q-lead { font-size: clamp(14px, 1.1vw, 17px); letter-spacing: 0.02em; opacity: 0.86; }
 .ab-st__q-text { font-weight: 700; font-size: clamp(38px, 5.2vw, 88px); line-height: 1.02; letter-spacing: -0.025em; text-wrap: balance; }
 :lang(ar) .ab-st__q-text { letter-spacing: 0; line-height: 1.3; font-size: clamp(34px, 4.4vw, 72px); }
-/* C — story */
-.ab-st__c { display: grid; gap: clamp(56px, 8vw, 120px); margin-block-start: clamp(72px, 10vw, 150px); }
-.ab-st__pass { display: grid; gap: clamp(20px, 3vw, 40px); }
-.ab-st__lead { font-weight: 700; font-size: clamp(30px, 3.6vw, 56px); line-height: 1.06; letter-spacing: -0.02em; max-inline-size: 13em; text-wrap: balance; }
+/* C — story: one consistent layout. Lead line left, reading column right, a hairline between passages (DECISIONS 351). */
+.ab-st__c { display: grid; margin-block-start: clamp(64px, 9vw, 140px); }
+.ab-st__pass { display: grid; gap: clamp(18px, 2.4vw, 28px); padding-block: clamp(36px, 5vw, 72px); border-block-start: 1px solid color-mix(in srgb, var(--c-ink) 14%, transparent); }
+.ab-st__pass:first-child { border-block-start: 0; padding-block-start: 0; }
+.ab-st__lead { font-weight: 700; font-size: clamp(30px, 3.4vw, 54px); line-height: 1.06; letter-spacing: -0.02em; max-inline-size: 12em; text-wrap: balance; }
 :lang(ar) .ab-st__lead { letter-spacing: 0; line-height: 1.35; }
-.ab-st__body { display: grid; gap: 1.1em; max-inline-size: 31rem; font-size: clamp(17px, 1.3vw, 20px); line-height: 1.65; color: color-mix(in srgb, var(--c-ink) 78%, transparent); }
+.ab-st__body { display: grid; gap: 1.05em; max-inline-size: 34rem; font-size: clamp(17px, 1.3vw, 20px); line-height: 1.65; color: color-mix(in srgb, var(--c-ink) 78%, transparent); }
 .ab-st__strong { color: var(--c-ink); font-weight: 650; }
-/* D — close */
-.ab-st__d { display: grid; gap: clamp(28px, 4vw, 56px); margin-block-start: clamp(96px, 13vw, 200px); }
-.ab-st__close { font-weight: 700; font-size: clamp(36px, 5.6vw, 96px); line-height: 1.04; letter-spacing: -0.03em; max-inline-size: 15.5em; }
-:lang(ar) .ab-st__close { letter-spacing: 0; line-height: 1.35; font-size: clamp(32px, 4.6vw, 78px); }
-.ab-st__sign { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 0 0.22em; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(56px, 11.2vw, 196px); line-height: 0.86; color: color-mix(in srgb, var(--c-step-2) 58%, var(--c-ink)); }
-/* The chapter ends where it began: the sign-off is set as big as "From here.", so the two bookend the story. */
-:lang(ar) .ab-st__sign { text-transform: none; line-height: 1.25; font-size: clamp(48px, 9vw, 150px); }
-.ab-st__mark { inline-size: 0.62em; block-size: 0.7em; margin-block-end: 0.08em; background: currentColor; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+/* D — close: a full-width night band, the chapter's strongest moment. */
+.ab-st__d { margin-block-start: clamp(48px, 6vw, 96px); background: var(--c-ink); color: #fff; padding-block: clamp(88px, 12vw, 190px); }
+.ab-st { padding-block-end: 0; }
+.ab-st__d-in { display: grid; gap: clamp(32px, 4.5vw, 64px); }
+.ab-st__close { font-weight: 700; font-size: clamp(34px, 5.4vw, 92px); line-height: 1.06; letter-spacing: -0.03em; max-inline-size: 16em; }
+:lang(ar) .ab-st__close { letter-spacing: 0; line-height: 1.4; font-size: clamp(30px, 4.4vw, 74px); }
+.ab-st__sign { display: block; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(44px, 7.6vw, 132px); line-height: 0.92; text-wrap: balance; max-inline-size: 11em; color: color-mix(in srgb, var(--c-step-2) 80%, #fff); }
+:lang(ar) .ab-st__sign { text-transform: none; line-height: 1.3; font-size: clamp(40px, 7vw, 120px); }
+.ab-st__mark { display: inline-block; vertical-align: -0.06em; margin-inline-end: 0.22em; inline-size: 0.62em; block-size: 0.7em; background: currentColor; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
 @media (min-width: 990px) {
   .ab-st__a { grid-template-columns: minmax(0, 1fr); }
   .ab-st__intro { justify-self: start; margin-inline-start: 18%; }
-  .ab-st__pass { grid-template-columns: minmax(0, 5fr) minmax(0, 5fr); align-items: start; column-gap: clamp(40px, 7vw, 120px); }
-  .ab-st__pass:nth-child(2) .ab-st__lead { order: 2; }
-  .ab-st__lead { position: sticky; top: calc(var(--hdr, 84px) + 40px); }
+  .ab-st__pass { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: start; column-gap: clamp(40px, 6vw, 110px); }
 }
 @media (max-width: 989px) {
   .ab-st__line--2 { padding-inline-start: 0; }
@@ -728,7 +728,7 @@
 .ab-st.is-live .ab-st__q.is-in > * { opacity: 1; transform: none; }
 .ab-st.is-live .ab-st__pass { opacity: 0; transform: translateY(32px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
 .ab-st.is-live .ab-st__pass.is-in { opacity: 1; transform: none; }
-.ab-st.is-live .ab-st__w { opacity: 0.14; transition: opacity 0.35s linear; }
+.ab-st.is-live .ab-st__w { opacity: 0.22; transition: opacity 0.35s linear; }
 .ab-st.is-live .ab-st__w.is-on { opacity: 1; }
 .ab-st.is-live .ab-st__sign { opacity: 0; transform: translateY(20px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
 .ab-st.is-live .ab-st__sign.is-in { opacity: 1; transform: none; }

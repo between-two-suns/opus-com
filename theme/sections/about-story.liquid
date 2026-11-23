@@ -60,10 +60,11 @@
     </div>
   </div>
 
-  <div class="container ab-st__d">
-    <p class="ab-st__close">{%- for w in close_words -%}<span class="ab-st__w" style="--i: {{ forloop.index0 }}">{{ w }}</span>{% unless forloop.last %} {% endunless %}{%- endfor -%}</p>
-    <p class="ab-st__sign"><span class="ab-st__mark" aria-hidden="true"></span><span>{{ 'about3.close_2' | t }}</span></p>
-  </div>
+  <div class="ab-st__d"><div class="container ab-st__d-in">
+    {%- comment -%} The space is printed with {{ ' ' }}: Shopify's whitespace trimming removes a literal space between the tags (DECISIONS 351). {%- endcomment -%}
+    <p class="ab-st__close">{%- for w in close_words -%}<span class="ab-st__w">{{ w }}</span>{%- unless forloop.last -%}{{ ' ' }}{%- endunless -%}{%- endfor -%}</p>
+    <p class="ab-st__sign"><span class="ab-st__mark" aria-hidden="true"></span>{{ 'about3.close_2' | t }}</p>
+  </div></div>
 </section>
 <script>
   (() => {
