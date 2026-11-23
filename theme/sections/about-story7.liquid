@@ -87,6 +87,9 @@
   }
   .ab7.is-live [data-r] { opacity: 0; transform: translateY(22px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); transition-delay: calc(var(--d, 0) * 1ms); }
   .ab7.is-live [data-r].is-in { opacity: 1; transform: none; }
+  /* The question fills word by word from pale to full colour as she scrolls (owner: one section, transparent to colour). */
+  .ab7.is-live [data-fill] .w { opacity: 0.14; transition: opacity 0.3s linear; }
+  .ab7.is-live [data-fill] .w.is-on { opacity: 1; }
 </style>
 <section class="ab7" aria-labelledby="Ab7-{{ section.id }}">
   <div class="ab7__w ab7__s1">
@@ -104,7 +107,7 @@
   <div class="ab7__w ab7__row ab7__row--q" data-r>
     <div>
       <p class="ab7__eb">{{ 'about5.asking' | t }}</p>
-      <p class="ab7__q ab7__d"><span>{{ 'about4.q_1' | t }}</span> <span>{{ 'about4.q_2' | t }} {{ 'about4.q_3a' | t }}</span> <span class="ab7__mint">{{ 'about4.q_3b' | t }}</span></p>
+      <p class="ab7__q ab7__d" data-fill><span>{{ 'about4.q_1' | t }}</span> <span>{{ 'about4.q_2' | t }} {{ 'about4.q_3a' | t }}</span> <span class="ab7__mint">{{ 'about4.q_3b' | t }}</span></p>
     </div>
     <span class="ab7__rule" aria-hidden="true"></span>
     {%- if s2.size > 4 -%}
@@ -146,6 +149,16 @@
     root.classList.add('is-live');
     const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
     root.querySelectorAll('[data-r]').forEach((el) => io.observe(el));
+    const fills = [...root.querySelectorAll('[data-fill]')].map((el) => {
+      const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); const nodes = []; while (walk.nextNode()) nodes.push(walk.currentNode);
+      nodes.forEach((n) => { const f = document.createDocumentFragment(); n.textContent.split(/(\s+)/).forEach((t) => { if (!t) return; if (/^\s+$/.test(t)) f.append(t); else { const w = document.createElement('span'); w.className = 'w'; w.textContent = t; f.append(w); } }); n.replaceWith(f); });
+      return { el, words: [...el.querySelectorAll('.w')] };
+    });
+    let ticking = false;
+    // Starts when the question's top reaches 85% of the screen; fully coloured by the time it reaches the middle.
+    const tick = () => { ticking = false; const h = innerHeight; fills.forEach(({ el, words }) => { const r = el.getBoundingClientRect(); const p = Math.min(1, Math.max(0, (h * 0.85 - r.top) / (h * 0.35))); const n = p * words.length; words.forEach((w, i) => w.classList.toggle('is-on', i < n)); }); };
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }, { passive: true });
+    addEventListener('resize', tick); tick();
   })();
 </script>
 
