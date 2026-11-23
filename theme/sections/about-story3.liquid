@@ -1,0 +1,143 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About story, concept "The mark" (DECISIONS 355, local mock-up until the owner approves).
+  Owner's references: TrueKind (a photo inside the brand's own shape, a thin line crossing the page) and a page whose
+  centred paragraph fills in word by word as you scroll.
+  A — the title, cut by the )( mark filled with a photo; a thin arc (the sun's path) crosses behind.
+  B — the story as centred paragraphs that fill word by word with scroll; tiny )( marks in the four step colours sit
+      inline after "The long days. The sun. The dust. The air-con."
+  C — "So we created Between Two Suns.", then the night close.
+  Without JS or with reduced motion: all words shown at full strength.
+{%- endcomment -%}
+{%- liquid
+  assign img = section.settings.image | default: images['bts-portrait-terrace-wide.jpg']
+  assign s2 = 'about3.s2_p1' | t | split: '. '
+-%}
+<style>
+  .ab3 { overflow: clip; }
+  .ab3 p { margin: 0; }
+  /* A */
+  .ab3__a { position: relative; padding-block: clamp(56px, 7vw, 110px) clamp(40px, 5vw, 80px); }
+  .ab3__eyebrow { position: relative; z-index: 2; }
+  .ab3__title { position: relative; z-index: 2; margin: clamp(14px, 2vw, 24px) 0 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: 0.9; font-size: min(15.5vw, 236px); letter-spacing: -0.005em; }
+  .ab3__title span { display: block; }
+  .ab3__title span + span { text-align: end; }
+  :lang(ar) .ab3__title { text-transform: none; line-height: 1.2; font-size: min(15vw, 200px); }
+  .ab3__shape { position: relative; overflow: hidden; z-index: 1; margin: calc(min(15.5vw, 236px) * -0.7) auto 0; inline-size: min(70vw, 960px); aspect-ratio: 501 / 547; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+  .ab3__shape img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 48% 28%; display: block; transform: scale(1.08); }
+  .ab3.is-live .ab3__a.is-in .ab3__shape img { transform: scale(1); }
+  .ab3__line { position: absolute; z-index: 0; inset-inline: 0; inset-block-start: 46%; inline-size: 100%; block-size: 40%; color: color-mix(in srgb, var(--c-ink) 22%, transparent); pointer-events: none; }
+  /* B */
+  .ab3__b { display: grid; justify-items: center; gap: clamp(88px, 12vw, 180px); padding-block: clamp(72px, 10vw, 160px); text-align: center; }
+  .ab3__fill { font-weight: 500; font-size: clamp(24px, 2.9vw, 46px); line-height: 1.28; letter-spacing: -0.02em; max-inline-size: 22em; text-wrap: balance; }
+  :lang(ar) .ab3__fill { letter-spacing: 0; line-height: 1.6; }
+  .ab3__q { font-weight: 700; font-size: clamp(36px, 5.4vw, 92px); line-height: 1.02; letter-spacing: -0.035em; max-inline-size: 11em; }
+  :lang(ar) .ab3__q { line-height: 1.35; letter-spacing: 0; }
+  .ab3__label { font-size: clamp(13px, 1vw, 15px); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-block-end: clamp(16px, 2vw, 28px); }
+  :lang(ar) .ab3__label { letter-spacing: 0; text-transform: none; font-size: 16px; }
+  .ab3__group { display: grid; justify-items: center; }
+  .ab3__dot { display: inline-block; inline-size: 0.62em; block-size: 0.68em; margin-inline: 0.12em 0.32em; vertical-align: -0.04em; background: var(--sku); -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+  .ab3__small { margin-block-start: clamp(28px, 3vw, 44px); font-size: clamp(17px, 1.3vw, 20px); line-height: 1.65; max-inline-size: 36rem; color: color-mix(in srgb, var(--c-ink) 80%, transparent); display: grid; gap: 1em; }
+  .ab3__brand { font-weight: 700; font-size: clamp(34px, 4.6vw, 76px); line-height: 1.02; letter-spacing: -0.035em; max-inline-size: 10em; text-wrap: balance; }
+  :lang(ar) .ab3__brand { letter-spacing: 0; line-height: 1.35; }
+  .ab3__brand-mark { inline-size: 40px; block-size: 44px; margin-block-end: clamp(18px, 2vw, 28px); background: var(--c-step-2); -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+  /* word fill */
+  .ab3.is-live .ab3 .w, .ab3.is-live [data-fill] .w { opacity: 0.16; transition: opacity 0.4s linear; }
+  .ab3.is-live [data-fill] .w.is-on { opacity: 1; }
+  .ab3.is-live .ab3__shape { opacity: 0; transition: opacity 1.2s var(--ease-out); }
+  .ab3.is-live .ab3__a.is-in .ab3__shape { opacity: 1; }
+  @media (max-width: 749px) {
+    .ab3__shape { inline-size: 118vw; margin-inline: -9vw; margin-block-start: calc(15.5vw * -0.6); }
+  }
+</style>
+<section class="ab3 ab-st" data-ab3>
+  <div class="ab3__a">
+    <svg class="ab3__line" viewBox="0 0 1000 200" preserveAspectRatio="none" aria-hidden="true"><path d="M-10 180 C 250 -40, 750 -40, 1010 150" fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>
+    <div class="container">
+      <p class="t-eyebrow ab3__eyebrow">{{ 'about3.eyebrow' | t }}</p>
+      <h2 class="ab3__title"><span>{{ 'about3.title_1' | t }}</span><span>{{ 'about3.title_2' | t }}</span></h2>
+    </div>
+    {%- if img != blank and img.width != blank -%}
+      <div class="ab3__shape">{{ img | image_url: width: 1400 | image_tag: loading: 'eager', widths: '600,900,1200,1400', sizes: '(min-width: 990px) 620px, 78vw', alt: '' }}</div>
+    {%- endif -%}
+  </div>
+
+  <div class="container ab3__b">
+    <p class="ab3__fill" data-fill>{{ 'about3.p1' | t }}</p>
+
+    <div class="ab3__group">
+      <p class="ab3__label">{{ 'about3.q_lead' | t }}</p>
+      <p class="ab3__q" data-fill>{{ 'about3.q' | t }}</p>
+    </div>
+
+    <div class="ab3__group">
+      <p class="ab3__label">{{ 'about3.s2_head' | t }}</p>
+      <p class="ab3__fill" data-fill>
+        {%- if s2.size > 4 -%}
+          {%- for k in (0..3) -%}{{ s2[k] }}.<span class="ab3__dot" data-step="{{ k | plus: 1 }}" aria-hidden="true"></span>{%- endfor -%}
+          {{ s2 | slice: 4, 20 | join: '. ' }}
+        {%- else -%}
+          {{ 'about3.s2_p1' | t }}
+        {%- endif -%}
+      </p>
+      <div class="ab3__small"><p>{{ 'about3.s2_p2' | t }}</p><p>{{ 'about3.s2_p3' | t }}</p></div>
+    </div>
+
+    <div class="ab3__group">
+      <span class="ab3__brand-mark" aria-hidden="true"></span>
+      <p class="ab3__brand" data-fill>{{ 'about3.s3_head' | t }}</p>
+      <div class="ab3__small"><p><strong>{{ 'about3.s3_p1' | t }}</strong></p><p>{{ 'about3.s3_p2' | t }}</p></div>
+    </div>
+  </div>
+
+  <div class="ab-st__d" style="margin-block-start: 0"><div class="container ab-st__d-in">
+    <p class="ab-st__close" data-fill>{{ 'about3.close' | t }}</p>
+    <p class="ab-st__sign"><span class="ab-st__mark" aria-hidden="true"></span>{{ 'about3.close_2' | t }}</p>
+  </div></div>
+</section>
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    if (!root || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+    // Wrap each word of [data-fill] text in a span (text nodes only, so the inline marks stay put).
+    const fills = [...root.querySelectorAll('[data-fill]')].map((el) => {
+      const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      const nodes = []; while (walk.nextNode()) nodes.push(walk.currentNode);
+      nodes.forEach((n) => {
+        const parts = n.textContent.split(/(\s+)/);
+        const frag = document.createDocumentFragment();
+        parts.forEach((p) => { if (!p) return; if (/^\s+$/.test(p)) frag.append(p); else { const s = document.createElement('span'); s.className = 'w'; s.textContent = p; frag.append(s); } });
+        n.replaceWith(frag);
+      });
+      return { el, words: [...el.querySelectorAll('.w')] };
+    });
+    root.classList.add('is-live');
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    io.observe(root.querySelector('.ab3__a')); root.querySelectorAll('.ab-st__sign').forEach((el) => io.observe(el));
+    let ticking = false;
+    const tick = () => {
+      ticking = false;
+      const h = innerHeight;
+      fills.forEach(({ el, words }) => {
+        const r = el.getBoundingClientRect();
+        // Starts filling when the paragraph's top reaches 85% of the screen, done when its bottom reaches 55%.
+        const p = Math.min(1, Math.max(0, (h * 0.85 - r.top) / (h * 0.3 + r.height)));
+        const n = p * words.length;
+        words.forEach((w, i) => w.classList.toggle('is-on', i < n));
+      });
+    };
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }, { passive: true });
+    addEventListener('resize', tick);
+    tick();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "About · our story (mark)",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo inside the mark", "info": "Empty = the terrace portrait (stand-in until the shoot)." }
+  ]
+}
+{% endschema %}
