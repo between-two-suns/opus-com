@@ -1,0 +1,173 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  ab6 = about-story5 with the owner's split top (DECISIONS 365): title + opening paragraph + lead-in left, photo mark + question right, all filling from pale to colour; step-colour numbers on the four phrases.
+  About story, owner's round of notes on the real store (DECISIONS 360). Copy unchanged. Compact, no empty screens:
+  1 Title + the )( mark with the photo side by side on laptops (one screen), stacked on phones; smaller than before.
+  2 The opening paragraph and the question in ONE section (paragraph left, question right).
+  3 "Not just made here…": the four phrases as one bold display line with the step-colour marks, the rest of the
+    passage directly under it in two columns (no half-empty screen, no staircase).
+  4 "So we created" + the real wordmark (inline brand SVG), the two lines beside it.
+  5 The close on a mint panel with white text; the )( mark as a large shape on the panel's side.
+  Motion: a short rise as each block arrives, fully readable at the end (no word-by-word fading).
+{%- endcomment -%}
+{%- liquid
+  assign img = section.settings.image | default: images['bts-portrait-terrace-wide.jpg']
+  assign s2 = 'about3.s2_p1' | t | split: '. '
+-%}
+<style>
+  .ab6 { --g: clamp(20px, 4.4vw, 64px); overflow: clip; }
+  .ab6 p { margin: 0; }
+  .ab6__w { inline-size: min(100% - 2 * var(--g), 1280px); margin-inline: auto; }
+  .ab6__d { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: 0.9; letter-spacing: -0.005em; }
+  :lang(ar) .ab6__d { text-transform: none; line-height: 1.3; }
+  .ab6__eb { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+  :lang(ar) .ab6__eb { letter-spacing: 0; text-transform: none; font-size: 15px; }
+  .ab6__body { font-size: clamp(17px, 1.3vw, 19px); line-height: 1.6; color: color-mix(in srgb, var(--c-ink) 86%, transparent); }
+
+  /* 1 — split: title, opening paragraph and the lead-in on the left; the photo mark and the question on the right */
+  .ab6__s1 { display: grid; gap: clamp(32px, 4vw, 56px); padding-block: clamp(32px, 4vw, 64px) clamp(48px, 6vw, 96px); }
+  .ab6__left { display: grid; gap: clamp(16px, 1.8vw, 24px); align-content: start; }
+  .ab6__title { margin: 4px 0 6px; font-size: clamp(48px, 6.4vw, 100px); }
+  .ab6__title span { display: block; }
+  :lang(ar) .ab6__title { font-size: clamp(46px, 5.8vw, 90px); }
+  .ab6__open { font-weight: 500; font-size: clamp(19px, 1.6vw, 24px); line-height: 1.45; letter-spacing: -0.01em; max-inline-size: 30rem; }
+  :lang(ar) .ab6__open { letter-spacing: 0; line-height: 1.65; }
+  .ab6__lead { font-weight: 700; font-size: clamp(19px, 1.6vw, 24px); line-height: 1.4; max-inline-size: 30rem; }
+  .ab6__right { display: grid; gap: clamp(20px, 2.4vw, 32px); justify-items: center; text-align: center; align-content: start; }
+  .ab6__mark { position: relative; overflow: hidden; inline-size: min(52vw, 300px); aspect-ratio: 501 / 547; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+  .ab6__mark img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 43% 26%; }
+  .ab6__q { font-size: clamp(34px, 3.6vw, 58px); max-inline-size: 11em; }
+  :lang(ar) .ab6__q { font-size: clamp(30px, 3.2vw, 50px); }
+  .ab6__q-em { color: var(--c-step-1); }
+
+  /* 3 */
+  .ab6__s3 { padding-block: clamp(56px, 7vw, 112px); border-block-start: 1px solid var(--c-line); }
+  .ab6__s3-lead { font-weight: 700; font-size: clamp(19px, 1.6vw, 23px); letter-spacing: -0.01em; margin-block-end: clamp(20px, 2.4vw, 32px); }
+  :lang(ar) .ab6__s3-lead { letter-spacing: 0; }
+  .ab6 [role='list'].ab6__four { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; border-block-start: 2px solid var(--c-ink); }
+  .ab6__four li { padding: clamp(16px, 1.8vw, 24px) clamp(12px, 1.6vw, 24px) clamp(18px, 2vw, 28px) 0; border-block-end: 1px solid var(--c-line); }
+  .ab6__four-n { display: block; font-family: var(--font-display); font-size: clamp(22px, 2vw, 30px); font-weight: 700; color: var(--sku); margin-block-end: clamp(14px, 2vw, 28px); font-variant-numeric: tabular-nums; }
+  .ab6__four-t { display: block; font-size: clamp(30px, 3.2vw, 50px); white-space: nowrap; }
+  :lang(ar) .ab6__four-t { font-size: clamp(30px, 3.2vw, 50px); white-space: normal; }
+  .ab6__s3-copy { display: grid; gap: 1em; margin-block-start: clamp(32px, 4vw, 56px); }
+  .ab6__s3-copy p:first-child { color: var(--c-ink); font-weight: 650; font-size: clamp(19px, 1.6vw, 23px); line-height: 1.4; }
+
+  /* 4 */
+  .ab6__s4 { display: grid; gap: clamp(24px, 3.4vw, 48px); align-items: end; padding-block: clamp(56px, 7vw, 112px); border-block-start: 1px solid var(--c-line); }
+  .ab6__created { font-size: clamp(30px, 3.4vw, 52px); color: var(--c-step-1); }
+  .ab6__wm { display: block; margin: clamp(10px, 1.2vw, 16px) 0 0; color: var(--c-ink); inline-size: min(100%, 420px); }
+  .ab6__wm .logo, .ab6__wm svg { display: block; inline-size: 100%; block-size: auto; }
+  .ab6__wm svg * { fill: currentColor; }
+  .ab6__s4-copy { display: grid; gap: 0.9em; max-inline-size: 36rem; font-size: clamp(19px, 1.55vw, 23px); line-height: 1.55; color: color-mix(in srgb, var(--c-ink) 86%, transparent); }
+  .ab6__s4-copy p:first-child { color: var(--c-ink); font-weight: 700; font-size: clamp(26px, 2.5vw, 38px); line-height: 1.2; letter-spacing: -0.02em; }
+  :lang(ar) .ab6__s4-copy p:first-child { letter-spacing: 0; line-height: 1.45; }
+
+  /* 5 */
+  .ab6__s5 { padding-block: 0 clamp(56px, 7vw, 112px); }
+  .ab6__panel { position: relative; overflow: hidden; border-radius: var(--radius-l); background: var(--c-step-1); color: #fff; padding: clamp(40px, 6vw, 96px) clamp(24px, 5vw, 80px); display: grid; gap: clamp(24px, 3vw, 40px); }
+  .ab6__close { position: relative; font-weight: 400; font-size: clamp(24px, 2.8vw, 42px); line-height: 1.25; letter-spacing: -0.02em; max-inline-size: 20em; }
+  :lang(ar) .ab6__close { letter-spacing: 0; line-height: 1.45; }
+  .ab6__sign { position: relative; color: #fff; font-size: clamp(48px, 7.4vw, 120px); line-height: 1.02; letter-spacing: 0.01em; max-inline-size: 11em; text-wrap: balance; }
+  :lang(ar) .ab6__sign { line-height: 1.4; letter-spacing: 0; }
+
+  @media (min-width: 990px) {
+    .ab6__s1 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(40px, 6vw, 96px); align-items: center; }
+    .ab6__s3-copy { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(40px, 6vw, 96px); }
+    .ab6__s3-copy p:first-child { grid-row: span 2; }
+    .ab6__s4 { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: clamp(40px, 6vw, 96px); }
+    .ab6 [role='list'].ab6__four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .ab6__four li + li { padding-inline-start: clamp(12px, 1.6vw, 24px); border-inline-start: 1px solid var(--c-line); }
+  }
+  @media (max-width: 989px) {
+    .ab6__wm { inline-size: 72%; }
+    .ab6__four li:nth-child(even) { padding-inline-start: clamp(12px, 3vw, 24px); border-inline-start: 1px solid var(--c-line); }
+  }
+  /* motion: a short rise, fully readable at the end */
+  .ab6.is-live [data-r] { opacity: 0; transform: translateY(24px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); transition-delay: calc(var(--d, 0) * 1ms); }
+  .ab6.is-live [data-r].is-in { opacity: 1; transform: none; }
+  /* the opening paragraph and the question fill from pale to full colour as she scrolls (owner: "like we used to") */
+  .ab6.is-live [data-fill] .w { opacity: 0.18; transition: opacity 0.35s linear; }
+  .ab6.is-live [data-fill] .w.is-on { opacity: 1; }
+</style>
+<section class="ab6" data-ab6 aria-labelledby="Ab6-{{ section.id }}">
+  <div class="ab6__w ab6__s1" data-fillsec>
+    <div class="ab6__left">
+      <p class="ab6__eb">{{ 'about3.eyebrow' | t }}</p>
+      <h2 class="ab6__title ab6__d" data-fill id="Ab6-{{ section.id }}"><span>{{ 'about3.title_1' | t }}</span><span>{{ 'about3.title_2' | t }}</span></h2>
+      <p class="ab6__open" data-fill>{{ 'about3.p1' | t }}</p>
+      <p class="ab6__lead" data-fill>{{ 'about4.q_lead' | t }}</p>
+    </div>
+    <div class="ab6__right">
+      {%- if img != blank and img.width != blank -%}
+        <div class="ab6__mark">{{ img | image_url: width: 1000 | image_tag: loading: 'eager', widths: '400,700,1000', sizes: '(min-width: 990px) 340px, 70vw', alt: '' }}</div>
+      {%- endif -%}
+      <p class="ab6__q ab6__d" data-fill>{{ 'about4.q_1' | t }} {{ 'about4.q_2' | t }} {{ 'about4.q_3a' | t }} <span class="ab6__q-em">{{ 'about4.q_3b' | t }}</span></p>
+    </div>
+  </div>
+
+  <div class="ab6__w ab6__s3">
+    <p class="ab6__s3-lead" data-r>{{ 'about3.s2_head' | t }}</p>
+    {%- if s2.size > 4 -%}
+      <ul class="ab6__four" role="list">
+        {%- for k in (0..3) -%}
+          <li data-r data-step="{{ k | plus: 1 }}" style="--d: {{ k | times: 100 }}"><span class="ab6__four-n">0{{ k | plus: 1 }}</span><span class="ab6__four-t ab6__d">{{ s2[k] }}.</span></li>
+        {%- endfor -%}
+      </ul>
+      {%- assign rest = s2 | slice: 4, 20 | join: '. ' -%}
+    {%- else -%}
+      {%- assign rest = 'about3.s2_p1' | t -%}
+    {%- endif -%}
+    <div class="ab6__s3-copy ab6__body" data-r style="--d: 240">
+      <p>{{ rest }}</p>
+      <p>{{ 'about3.s2_p2' | t }}</p>
+      <p>{{ 'about3.s2_p3' | t }}</p>
+    </div>
+  </div>
+
+  <div class="ab6__w ab6__s4">
+    <div data-r>
+      <p class="ab6__created ab6__d">{{ 'about4.created' | t }}</p>
+      <h3 class="ab6__wm">{%- render 'logo', variant: 'wordmark' -%}</h3>
+    </div>
+    <div class="ab6__s4-copy ab6__body" data-r style="--d: 200">
+      <p>{{ 'about3.s3_p1' | t }}</p>
+      <p>{{ 'about3.s3_p2' | t }}</p>
+    </div>
+  </div>
+
+  <div class="ab6__w ab6__s5">
+    <div class="ab6__panel" data-r>
+      <p class="ab6__close">{{ 'about3.close' | t }}</p>
+      <p class="ab6__sign ab6__d">{{ 'about3.close_2' | t }}</p>
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    if (!root || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+    root.classList.add('is-live');
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    root.querySelectorAll('[data-r]').forEach((el) => io.observe(el));
+    // Word fill: wrap each word of [data-fill] (text nodes only) and light them up with scroll.
+    const fills = [...root.querySelectorAll('[data-fill]')].map((el) => {
+      const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); const nodes = []; while (walk.nextNode()) nodes.push(walk.currentNode);
+      nodes.forEach((n) => { const f = document.createDocumentFragment(); n.textContent.split(/(\s+)/).forEach((p) => { if (!p) return; if (/^\s+$/.test(p)) f.append(p); else { const s = document.createElement('span'); s.className = 'w'; s.textContent = p; f.append(s); } }); n.replaceWith(f); });
+      return { el, words: [...el.querySelectorAll('.w')] };
+    });
+    let t = false;
+    const tick = () => { t = false; const h = innerHeight; fills.forEach(({ el, words }) => { const r = el.getBoundingClientRect(); const p = Math.min(1, Math.max(0, (h * 0.9 - r.top) / (h * 0.35 + r.height))); const n = p * words.length; words.forEach((w, i) => w.classList.toggle('is-on', i < n)); }); };
+    addEventListener('scroll', () => { if (!t) { t = true; requestAnimationFrame(tick); } }, { passive: true });
+    addEventListener('resize', tick); tick();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "About · story (split)",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo inside the mark", "info": "Empty = the terrace portrait (stand-in until the shoot)." }
+  ]
+}
+{% endschema %}
