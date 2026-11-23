@@ -1,0 +1,241 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About story V9 (DECISIONS 359), from the owner's "About page V9" brief. One directed story in five scenes:
+  01 THE AMBITION — "From here. On our terms." in the display face, the )( mark filled with a photo (her face in the
+     left curve); headline reveals first, then the mark; a gentle scroll-linked drift on the photo.
+  02 THE PERSONAL CONTEXT — 12-column editorial spread: the opening paragraph (sentence by sentence) beside a 4:5 photo
+     offset 80px down.
+  03 THE QUESTION — centred, three fixed lines, "felt like us?" carrying the emphasis; one coordinated reveal.
+  04 LIFE HERE — the four phrases as one compact row (2×2 on phones) with the step-colour marks, staggered; the rest of
+     the passage beneath in two columns.
+  05 THE ANSWER — the background turns from white to ink, the )( symbol grows behind, "So we created" then the real
+     wordmark (inline brand SVG, not redrawn), then the four packs (approved front shots), the two lines, and the
+     closing sentence with the sign-off.
+  Motion is CSS transitions on opacity/transform, triggered once by IntersectionObserver; reduced motion or no JS =
+  everything shown, final colours. No word-by-word fading (brief: sentences, no pale end states).
+{%- endcomment -%}
+{%- liquid
+  assign img = section.settings.image | default: images['bts-portrait-terrace-wide.jpg']
+  assign img2 = section.settings.image_2 | default: images['bts-portrait-window-tall.jpg']
+  assign p1 = 'about3.p1' | t | split: '. '
+  assign s2 = 'about3.s2_p1' | t | split: '. '
+  assign handles = 'daily-reset-cleanser,clarity-serum,daily-barrier-moisturizing-cream,daily-defense-sunscreen-spf-50' | split: ','
+-%}
+<style>
+  .ab4 { overflow: clip; }
+  .ab4 p { margin: 0; }
+  .ab4__wrap { inline-size: min(100% - 2 * var(--ab4-g), 1280px); margin-inline: auto; }
+  .ab4 { --ab4-g: clamp(20px, 4.4vw, 64px); }
+  .ab4__disp { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: 0.9; letter-spacing: -0.005em; }
+  :lang(ar) .ab4__disp { text-transform: none; line-height: 1.25; }
+  .ab4__eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+  :lang(ar) .ab4__eyebrow { letter-spacing: 0; text-transform: none; font-size: 15px; }
+  .ab4__eyebrow::before { content: ''; inline-size: 13px; block-size: 14px; background: currentColor; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+
+  /* 01 — the ambition */
+  .ab4__s1 { padding-block: clamp(72px, 9vw, 128px) clamp(56px, 7vw, 112px); }
+  .ab4__title { margin: clamp(16px, 2vw, 24px) 0 0; font-size: clamp(64px, 10vw, 152px); position: relative; z-index: 2; }
+  .ab4__title > span { display: block; overflow: hidden; padding-block-end: 0.03em; }
+  .ab4__title > span > span { display: block; }
+  .ab4__title > span + span { text-align: end; }
+  :lang(ar) .ab4__title { font-size: clamp(58px, 9vw, 136px); }
+  :lang(ar) .ab4__title > span { padding-block-end: 0.22em; margin-block-end: -0.12em; }
+  .ab4__mark { position: relative; z-index: 1; inline-size: min(58vw, 760px); aspect-ratio: 501 / 547; margin: clamp(-120px, -6vw, -32px) auto 0; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; overflow: hidden; }
+  .ab4__mark img { position: absolute; inset: -6% 0; inline-size: 100%; block-size: 112%; object-fit: cover; object-position: 43% 26%; transform: translate3d(0, calc(var(--py, 0) * 1px), 0); will-change: transform; }
+
+  /* 02 — the personal context */
+  .ab4__s2 { padding-block: clamp(56px, 8vw, 144px); }
+  .ab4__s2-grid { display: grid; gap: clamp(36px, 6vw, 56px); align-items: start; }
+  .ab4__open { font-weight: 500; font-size: clamp(22px, 2vw, 30px); line-height: 1.35; letter-spacing: -0.015em; max-inline-size: 510px; }
+  :lang(ar) .ab4__open { letter-spacing: 0; line-height: 1.6; }
+  .ab4__open span { display: inline; }
+  .ab4__photo { margin: 0; aspect-ratio: 4 / 5; border-radius: var(--radius-l); overflow: hidden; background: var(--c-paper); }
+  .ab4__photo img { inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 55% 35%; }
+
+  /* 03 — the question */
+  .ab4__s3 { display: grid; justify-items: center; text-align: center; gap: clamp(18px, 2vw, 28px); padding-block: clamp(72px, 10vw, 160px); }
+  .ab4__q { font-size: clamp(48px, 7vw, 104px); max-inline-size: 1100px; }
+  .ab4__q > span { display: block; }
+  .ab4__em { color: color-mix(in srgb, var(--c-step-2) 45%, var(--c-ink)); }
+  .ab4__q > span:last-child { font-size: 1.12em; }
+  .ab4__s3 .ab4__eyebrow::before { display: none; }
+
+  /* 04 — life here */
+  .ab4__s4 { padding-block: clamp(56px, 8vw, 128px); border-block-start: 1px solid var(--c-line); }
+  .ab4__s4-lead { font-weight: 700; font-size: clamp(20px, 1.8vw, 26px); letter-spacing: -0.015em; margin-block-end: clamp(28px, 3.4vw, 48px); }
+  :lang(ar) .ab4__s4-lead { letter-spacing: 0; }
+  .ab4 [role='list'].ab4__four { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin: 0; padding: 0; list-style: none; background: var(--c-line); border: 1px solid var(--c-line); border-radius: var(--radius-l); overflow: hidden; }
+  .ab4__four li { background: #fff; display: grid; gap: 14px; align-content: space-between; min-block-size: clamp(150px, 15vw, 240px); padding: clamp(18px, 2vw, 32px); }
+  .ab4__four-dot { inline-size: 26px; block-size: 28px; background: var(--sku); -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+  .ab4__four-t { font-size: clamp(26px, 3vw, 46px); }
+  :lang(ar) .ab4__four-t { font-size: clamp(28px, 3.2vw, 48px); }
+  .ab4__s4-copy { display: grid; gap: 1em; margin-block-start: clamp(36px, 4.4vw, 64px); font-size: clamp(16px, 1.3vw, 19px); line-height: 1.6; color: color-mix(in srgb, var(--c-ink) 86%, transparent); }
+  .ab4__s4-copy p:first-child { color: var(--c-ink); font-weight: 650; font-size: clamp(19px, 1.6vw, 24px); line-height: 1.4; }
+
+  /* 05 — the answer */
+  .ab4__s5 { position: relative; overflow: hidden; color: #fff; background: var(--c-ink); padding-block: clamp(96px, 13vw, 200px) clamp(72px, 9vw, 140px); }
+  .ab4__sym { position: absolute; z-index: 0; inset-block-start: clamp(24px, 4vw, 64px); inset-inline-end: -12vw; block-size: min(100vh, 900px); aspect-ratio: 501 / 547; background: color-mix(in srgb, var(--c-step-2) 22%, var(--c-ink)); -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; pointer-events: none; }
+  .ab4__s5 .ab4__wrap { position: relative; z-index: 1; }
+  .ab4__created { font-size: clamp(36px, 5vw, 76px); color: color-mix(in srgb, var(--c-step-2) 75%, #fff); }
+  .ab4__wordmark { display: block; color: #fff; inline-size: min(100%, 820px); margin-block-start: clamp(12px, 1.6vw, 24px); }
+  .ab4__wordmark .logo, .ab4__wordmark svg { display: block; inline-size: 100%; block-size: auto; }
+  .ab4__wordmark svg * { fill: currentColor; }
+  .ab4__lines { display: grid; gap: 0.8em; max-inline-size: 36rem; margin-block-start: clamp(36px, 4vw, 56px); font-size: clamp(17px, 1.4vw, 20px); line-height: 1.6; color: rgba(255, 255, 255, 0.86); }
+  .ab4__lines p:first-child { color: #fff; font-weight: 650; font-size: clamp(20px, 1.8vw, 26px); line-height: 1.35; }
+  .ab4 [role='list'].ab4__packs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(10px, 1.4vw, 20px); margin: clamp(48px, 6vw, 88px) 0 0; padding: 0; list-style: none; }
+  .ab4__pack a { display: grid; gap: 12px; color: inherit; text-decoration: none; }
+  .ab4__pack-media { aspect-ratio: 3 / 4; border-radius: var(--radius-l); background: color-mix(in srgb, var(--sku) 32%, var(--c-ink)); display: grid; place-items: center; overflow: hidden; }
+  .ab4__pack-media img { inline-size: 78%; block-size: 88%; object-fit: contain; transition: transform 0.6s var(--ease-out); }
+  .ab4__pack a:hover img { transform: translateY(-6px); }
+  .ab4__pack-name { font-size: clamp(14px, 1.1vw, 16px); font-weight: 600; line-height: 1.35; }
+  .ab4__close { margin-block-start: clamp(88px, 11vw, 170px); display: grid; gap: clamp(24px, 3vw, 44px); }
+  .ab4__close-t { font-weight: 700; font-size: clamp(30px, 4.4vw, 72px); line-height: 1.06; letter-spacing: -0.03em; max-inline-size: 17em; }
+  :lang(ar) .ab4__close-t { letter-spacing: 0; line-height: 1.4; }
+  .ab4__sign { font-size: clamp(44px, 7vw, 120px); color: color-mix(in srgb, var(--c-step-2) 80%, #fff); max-inline-size: 11em; text-wrap: balance; }
+  .ab4__sign-mark { display: inline-block; vertical-align: -0.06em; margin-inline-end: 0.22em; inline-size: 0.62em; block-size: 0.7em; background: currentColor; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+
+  @media (min-width: 990px) {
+    .ab4__s2-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; }
+    .ab4__open { grid-column: 1 / span 5; align-self: center; }
+    .ab4__photo { grid-column: 8 / span 5; margin-block-start: 80px; }
+    .ab4 [role='list'].ab4__four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .ab4__s4-copy { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; }
+    .ab4__s4-copy p:first-child { grid-column: 1 / span 5; grid-row: 1 / span 2; }
+    .ab4__s4-copy p:not(:first-child) { grid-column: 7 / span 6; }
+    .ab4 [role='list'].ab4__packs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .ab4__s5-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; }
+    .ab4__lines { grid-column: 7 / span 6; }
+  }
+  @media (max-width: 749px) {
+    .ab4__mark { inline-size: 112vw; margin-inline: -6vw; margin-block-start: -18px; }
+    .ab4__title { font-size: 16.4vw; }
+    :lang(ar) .ab4__title { font-size: 15vw; }
+    :lang(ar) .ab4__q { font-size: 11vw; }
+    .ab4__sym { block-size: 70vh; inset-inline-end: -40vw; }
+  }
+
+  /* motion */
+  .ab4.is-live .ab4__title > span > span { transform: translateY(105%); transition: transform 0.95s var(--ease-out); }
+  .ab4.is-live .ab4__title > span + span > span { transition-delay: 0.12s; }
+  .ab4.is-live .ab4__s1.is-in .ab4__title > span > span { transform: none; }
+  .ab4.is-live .ab4__mark { opacity: 0; transform: scale(0.94); transition: opacity 1.1s var(--ease-out) 0.7s, transform 1.4s var(--ease-out) 0.7s; }
+  .ab4.is-live .ab4__s1.is-in .ab4__mark { opacity: 1; transform: none; }
+  .ab4.is-live [data-r] { opacity: 0; transform: translateY(22px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); transition-delay: calc(var(--d, 0) * 1ms); }
+  .ab4.is-live .is-in [data-r], .ab4.is-live [data-r].is-in { opacity: 1; transform: none; }
+  .ab4.is-live [data-r2] { opacity: 0; transform: translateY(22px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); transition-delay: calc(var(--d, 0) * 1ms); }
+  .ab4.is-live .is-in > [data-r2] { opacity: 1; transform: none; }
+  .ab4.is-live .ab4__s5 { background: #fff; transition: background-color 1.1s var(--ease-out); }
+  .ab4.is-live .ab4__s5.is-in { background: var(--c-ink); }
+  .ab4.is-live .ab4__sym { opacity: 0; transform: scale(0.82) rotate(-4deg); transition: opacity 1.2s var(--ease-out) 0.2s, transform 1.4s var(--ease-out) 0.2s; }
+  .ab4.is-live .ab4__s5.is-in .ab4__sym { opacity: 1; transform: none; }
+</style>
+<section class="ab4" data-ab4 aria-labelledby="Ab4-{{ section.id }}">
+  {%- comment -%} 01 THE AMBITION {%- endcomment -%}
+  <div class="ab4__s1">
+    <div class="ab4__wrap">
+      <p class="ab4__eyebrow">{{ 'about3.eyebrow' | t }}</p>
+      <h2 class="ab4__title ab4__disp" id="Ab4-{{ section.id }}"><span><span>{{ 'about3.title_1' | t }}</span></span><span><span>{{ 'about3.title_2' | t }}</span></span></h2>
+    </div>
+    {%- if img != blank and img.width != blank -%}
+      <div class="ab4__mark">{{ img | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '700,1000,1300,1600', sizes: '(min-width: 990px) 760px, 112vw', alt: '' }}</div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} 02 THE PERSONAL CONTEXT {%- endcomment -%}
+  <div class="ab4__s2" data-io>
+    <div class="ab4__wrap ab4__s2-grid">
+      <p class="ab4__open">
+        {%- for t in p1 -%}<span data-r style="--d: {{ forloop.index0 | times: 220 }}">{{ t }}{%- unless forloop.last -%}.{%- endunless -%}</span>{%- unless forloop.last -%}{{ ' ' }}{%- endunless -%}{%- endfor -%}
+      </p>
+      {%- if img2 != blank and img2.width != blank -%}
+        <figure class="ab4__photo" data-r style="--d: 200">{{ img2 | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,600,800,1000', sizes: '(min-width: 990px) 40vw, calc(100vw - 40px)', alt: '' }}</figure>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} 03 THE QUESTION {%- endcomment -%}
+  <div class="ab4__wrap ab4__s3" data-io>
+    <p class="ab4__eyebrow" data-r>{{ 'about4.q_lead' | t }}</p>
+    <p class="ab4__q ab4__disp" data-r style="--d: 120"><span>{{ 'about4.q_1' | t }}</span><span>{{ 'about4.q_2' | t }}</span><span>{{ 'about4.q_3a' | t }} <span class="ab4__em">{{ 'about4.q_3b' | t }}</span></span></p>
+  </div>
+
+  {%- comment -%} 04 LIFE HERE {%- endcomment -%}
+  <div class="ab4__wrap ab4__s4" data-io>
+    <p class="ab4__s4-lead" data-r>{{ 'about3.s2_head' | t }}</p>
+    {%- if s2.size > 4 -%}
+      <ul class="ab4__four" role="list">
+        {%- for k in (0..3) -%}
+          <li data-step="{{ k | plus: 1 }}" data-r style="--d: {{ k | times: 100 }}"><span class="ab4__four-dot" aria-hidden="true"></span><span class="ab4__four-t ab4__disp">{{ s2[k] }}.</span></li>
+        {%- endfor -%}
+      </ul>
+      {%- assign rest = s2 | slice: 4, 20 | join: '. ' -%}
+    {%- else -%}
+      {%- assign rest = 'about3.s2_p1' | t -%}
+    {%- endif -%}
+    <div class="ab4__s4-copy" data-r style="--d: 450">
+      <p>{{ rest }}</p>
+      <p>{{ 'about3.s2_p2' | t }}</p>
+      <p>{{ 'about3.s2_p3' | t }}</p>
+    </div>
+  </div>
+
+  {%- comment -%} 05 THE ANSWER {%- endcomment -%}
+  <div class="ab4__s5" data-io>
+    <span class="ab4__sym" aria-hidden="true"></span>
+    <div class="ab4__wrap">
+      <p class="ab4__created ab4__disp" data-r style="--d: 500">{{ 'about4.created' | t }}</p>
+      <h3 class="ab4__wordmark" data-r style="--d: 750">{%- render 'logo', variant: 'wordmark' -%}</h3>
+      <div class="ab4__s5-grid">
+        <div class="ab4__lines" data-r style="--d: 1100">
+          <p>{{ 'about3.s3_p1' | t }}</p>
+          <p>{{ 'about3.s3_p2' | t }}</p>
+        </div>
+      </div>
+      <ul class="ab4__packs" role="list" data-io>
+        {%- for h in handles -%}
+          {%- assign pr = all_products[h] -%}
+          {%- assign fk = 'bts-' | append: h | append: '-front.png' -%}
+          {%- assign pi = images[fk] -%}
+          <li class="ab4__pack" data-step="{{ forloop.index }}" data-r2 style="--d: {{ forloop.index0 | times: 110 }}">
+            <a href="{{ pr.url | default: '#' }}">
+              <span class="ab4__pack-media">{%- if pi != blank and pi.width != blank -%}{{ pi | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,450,600', sizes: '(min-width: 990px) 22vw, 44vw', alt: pr.title }}{%- endif -%}</span>
+              <span class="ab4__pack-name">{{ pr.title }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <div class="ab4__close" data-io>
+        <p class="ab4__close-t" data-r2>{{ 'about3.close' | t }}</p>
+        <p class="ab4__sign ab4__disp" data-r2 style="--d: 250"><span class="ab4__sign-mark" aria-hidden="true"></span>{{ 'about3.close_2' | t }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    if (!root || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+    root.classList.add('is-live');
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -15% 0px' });
+    root.querySelectorAll('.ab4__s1, [data-io]').forEach((el) => io.observe(el));
+    // A gentle, controlled drift of the photo inside the mark while the opening scene is on screen.
+    const mark = root.querySelector('.ab4__mark');
+    if (mark) {
+      let t = false;
+      const tick = () => { t = false; const r = mark.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; const p = (r.top + r.height / 2 - innerHeight / 2) / innerHeight; mark.style.setProperty('--py', (p * -40).toFixed(1)); };
+      addEventListener('scroll', () => { if (!t) { t = true; requestAnimationFrame(tick); } }, { passive: true });
+      tick();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "About · story V9",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo inside the mark", "info": "Empty = the terrace portrait (stand-in until the shoot)." },
+    { "type": "image_picker", "id": "image_2", "label": "Photo beside the opening paragraph (4:5)", "info": "Empty = the window portrait (stand-in until the shoot)." }
+  ]
+}
+{% endschema %}

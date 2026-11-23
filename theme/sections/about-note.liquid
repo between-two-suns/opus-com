@@ -1,0 +1,56 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About · a note from the founders (DECISIONS 359, owner's V9 brief, section 06). The owner's draft note, signed by
+  "The founders of Between Two Suns" (no names until the owner approves them). Photo: only a real photo of the
+  founders, picked in the editor. Until then the left side is a brand panel (the )( mark on soft lilac), never a
+  stand-in person. Desktop ≈45% photo / 55% note; phones: photo above the note.
+{%- endcomment -%}
+<style>
+  .ab-note { background: color-mix(in srgb, var(--c-step-3) 22%, #fff); padding-block: clamp(64px, 9vw, 144px); }
+  .ab-note p { margin: 0; }
+  .ab-note__grid { inline-size: min(100% - 2 * clamp(20px, 4.4vw, 64px), 1280px); margin-inline: auto; display: grid; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .ab-note__media { margin: 0; aspect-ratio: 4 / 5; border-radius: var(--radius-l); overflow: hidden; background: color-mix(in srgb, var(--c-step-3) 55%, #fff); display: grid; place-items: center; }
+  .ab-note__media img { inline-size: 100%; block-size: 100%; object-fit: cover; }
+  .ab-note__panel-mark { inline-size: 42%; aspect-ratio: 501 / 547; background: #fff; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+  .ab-note__copy { display: grid; gap: 1em; max-inline-size: 560px; font-size: clamp(17px, 1.35vw, 20px); line-height: 1.6; color: color-mix(in srgb, var(--c-ink) 88%, transparent); }
+  .ab-note__eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-ink); }
+  :lang(ar) .ab-note__eyebrow { letter-spacing: 0; text-transform: none; font-size: 15px; }
+  .ab-note__head { margin: 0; font-weight: 700; color: var(--c-ink); font-size: clamp(28px, 3vw, 44px); line-height: 1.08; letter-spacing: -0.025em; margin-block-end: 0.3em; }
+  :lang(ar) .ab-note__head { letter-spacing: 0; line-height: 1.4; }
+  .ab-note__last { color: var(--c-ink); font-weight: 650; }
+  .ab-note__sign { margin-block-start: 0.6em; color: var(--c-ink); font-weight: 600; }
+  @media (max-width: 989px) { .ab-note__media--panel { aspect-ratio: 16 / 9; } .ab-note__media--panel .ab-note__panel-mark { inline-size: auto; block-size: 52%; } }
+  @media (min-width: 990px) { .ab-note__grid { grid-template-columns: 45fr 55fr; } .ab-note__copy { justify-self: center; } }
+</style>
+<section class="ab-note" aria-labelledby="AbNote-{{ section.id }}">
+  <div class="ab-note__grid">
+    <figure class="ab-note__media{% if section.settings.image == blank %} ab-note__media--panel{% endif %}">
+      {%- if section.settings.image != blank -%}
+        {%- assign nalt = 'about4.note_sign' | t -%}
+        {%- if section.settings.image.alt != blank -%}{%- assign nalt = section.settings.image.alt -%}{%- endif -%}
+        {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '500,800,1200', sizes: '(min-width: 990px) 45vw, calc(100vw - 40px)', alt: nalt }}
+      {%- else -%}
+        <span class="ab-note__panel-mark" aria-hidden="true"></span>
+      {%- endif -%}
+    </figure>
+    <div class="ab-note__copy">
+      <p class="ab-note__eyebrow">{{ 'about4.note_eyebrow' | t }}</p>
+      <h2 class="ab-note__head" id="AbNote-{{ section.id }}">{{ 'about4.note_head' | t }}</h2>
+      <p>{{ 'about4.note_1' | t }}</p>
+      <p>{{ 'about4.note_2' | t }}</p>
+      <p>{{ 'about4.note_3' | t }}</p>
+      <p class="ab-note__last">{{ 'about4.note_4' | t }}</p>
+      <p class="ab-note__sign">— {{ 'about4.note_sign' | t }}</p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About · founders' note",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo of the founders", "info": "Only a real photo of the founders. Empty = a brand panel with the mark." }
+  ]
+}
+{% endschema %}

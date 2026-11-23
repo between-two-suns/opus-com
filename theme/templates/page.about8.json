@@ -14,10 +14,6 @@
       "type": "about-here",
       "settings": {}
     },
-    "founder": {
-      "type": "about-founder",
-      "settings": {}
-    },
     "rules": {
       "type": "about-manifesto",
       "settings": {}
@@ -29,16 +25,20 @@
       }
     },
     "story": {
-      "type": "about-story3",
+      "type": "about-story4",
+      "settings": {}
+    },
+    "note": {
+      "type": "about-note",
       "settings": {}
     }
   },
   "order": [
     "sky",
     "story",
+    "note",
     "routine",
     "made",
-    "founder",
     "rules",
     "close"
   ]
