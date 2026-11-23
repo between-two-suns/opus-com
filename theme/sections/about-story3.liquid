@@ -1,32 +1,30 @@
 {{ 'about.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
   About story, concept "The mark" (DECISIONS 355–356, local mock-up until the owner approves).
-  A — poster title: "FROM HERE." in the display face, "on our terms." in an italic serif accent (Instrument Serif,
-      OFL, self-hosted); the )( mark filled with a photo below it, her face framed inside the left curve.
+  A — poster title in the site's long bold display face, second line to the right; the )( mark filled with a photo
+      below it, her face framed inside the left curve.
   B — the story with a left/right rhythm; key paragraphs fill word by word as she scrolls:
-      1 opening paragraph, left · 2 the question, right, last two words in the italic · 3 the four phrases as a
-      stepped cascade in the italic with tiny )( marks in the step colours, the rest of the passage in a right
+      1 opening paragraph, left · 2 the question, right, in the display face · 3 the four phrases as a stepped
+      cascade in the display face with tiny )( marks in the step colours, the rest of the passage in a right
       column · 4 "So we created Between Two Suns." centred under the mark.
-  C — the night close. Arabic: no italic (the accent becomes colour); the layout mirrors.
+  C — the night close. Arabic: the Arabic display face; the layout mirrors.
   Without JS or with reduced motion: everything shown at full strength.
 {%- endcomment -%}
 {%- liquid
   assign img = section.settings.image | default: images['bts-portrait-terrace-wide.jpg']
   assign s2 = 'about3.s2_p1' | t | split: '. '
-  assign qw = 'about3.q' | t | split: ' '
-  assign qn = qw.size | minus: 2
 -%}
 <style>
-  @font-face { font-family: 'BTS Accent'; src: url('{{ 'instrument-serif-italic.woff2' | asset_url }}') format('woff2'); font-style: italic; font-weight: 400; font-display: swap; }
-  .ab3 { overflow: clip; --it: 'BTS Accent', 'Times New Roman', serif; }
+  .ab3 { overflow: clip; }
   .ab3 p { margin: 0; }
-  .ab3__it { font-family: var(--it); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: -0.01em; }
-  :lang(ar) .ab3__it { font-family: inherit; font-style: normal; font-weight: inherit; color: color-mix(in srgb, var(--c-step-2) 85%, var(--c-ink)); }
+  /* The accent is the site's own long bold display face (owner: "we have our long bold text"). */
+  .ab3__it { font-family: var(--font-display); font-style: normal; font-weight: 700; text-transform: uppercase; letter-spacing: -0.005em; line-height: 0.92; }
+  :lang(ar) .ab3__it { text-transform: none; line-height: 1.3; }
   /* A — title + mark */
   .ab3__a { padding-block: clamp(56px, 7vw, 110px) 0; }
   .ab3__title { margin: clamp(14px, 2vw, 24px) 0 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: 0.88; font-size: min(15.5vw, 236px); letter-spacing: -0.005em; position: relative; z-index: 2; }
   .ab3__title > span { display: block; }
-  .ab3__title .ab3__it { display: block; text-align: end; font-size: 0.9em; line-height: 1; margin-block-start: -0.04em; }
+  .ab3__title .ab3__it { display: block; text-align: end; line-height: inherit; }
   :lang(ar) .ab3__title { text-transform: none; line-height: 1.2; font-size: min(15vw, 200px); }
   .ab3__shape { position: relative; z-index: 1; overflow: hidden; margin: calc(min(15.5vw, 236px) * -0.5) auto 0; inline-size: min(66vw, 900px); aspect-ratio: 501 / 547; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
   .ab3__shape img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: var(--fx, 43%) 26%; transform: scale(1.06); transition: transform 1.8s var(--ease-out); }
@@ -37,15 +35,14 @@
   .ab3__qwrap { display: grid; justify-items: end; text-align: end; gap: clamp(14px, 1.6vw, 22px); }
   .ab3__small-lead { font-size: clamp(13px, 1vw, 15px); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
   :lang(ar) .ab3__small-lead { letter-spacing: 0; text-transform: none; font-size: 16px; }
-  .ab3__q { font-weight: 700; font-size: clamp(40px, 6vw, 104px); line-height: 1; letter-spacing: -0.04em; max-inline-size: 10em; }
-  .ab3__q .ab3__it { font-size: 1.12em; letter-spacing: -0.02em; }
-  :lang(ar) .ab3__q { letter-spacing: 0; line-height: 1.35; font-size: clamp(36px, 5.2vw, 88px); }
+  .ab3__q { font-size: clamp(52px, 8vw, 138px); max-inline-size: 8.4em; }
+  :lang(ar) .ab3__q { font-size: clamp(40px, 6vw, 100px); }
   .ab3__life { display: grid; gap: clamp(20px, 2.4vw, 36px); }
   .ab3 [role='list'].ab3__cascade { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.02em; font-size: clamp(52px, 8.4vw, 150px); line-height: 1; }
   .ab3__cascade li:nth-child(2) { padding-inline-start: 1.2em; }
   .ab3__cascade li:nth-child(3) { padding-inline-start: 2.4em; }
   .ab3__cascade li:nth-child(4) { padding-inline-start: 3.6em; }
-  :lang(ar) .ab3 [role='list'].ab3__cascade { font-weight: 700; line-height: 1.35; font-size: clamp(44px, 7vw, 120px); }
+  :lang(ar) .ab3 [role='list'].ab3__cascade { line-height: 1.3; font-size: clamp(44px, 7vw, 120px); }
   .ab3__dot { display: inline-block; inline-size: 0.42em; block-size: 0.46em; margin-inline-start: 0.14em; vertical-align: 0.02em; background: var(--sku); -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
   .ab3__rest { display: grid; gap: 1em; max-inline-size: 31rem; justify-self: end; font-size: clamp(18px, 1.4vw, 21px); line-height: 1.6; color: color-mix(in srgb, var(--c-ink) 86%, transparent); margin-block-start: clamp(24px, 4vw, 64px); }
   .ab3__rest p:first-child { color: var(--c-ink); font-weight: 600; font-size: 1.12em; line-height: 1.45; }
@@ -60,6 +57,9 @@
   .ab3.is-live [data-fill] .w.is-on { opacity: 1; }
   @media (max-width: 749px) {
     .ab3__shape { inline-size: 116vw; margin-inline: -8vw; margin-block-start: calc(15.5vw * -0.45); }
+    .ab3 [role='list'].ab3__cascade { font-size: 11vw; }
+    :lang(ar) .ab3 [role='list'].ab3__cascade { font-size: 11vw; }
+    .ab3__cascade li { white-space: nowrap; }
     .ab3__cascade li:nth-child(2) { padding-inline-start: 0.6em; }
     .ab3__cascade li:nth-child(3) { padding-inline-start: 1.2em; }
     .ab3__cascade li:nth-child(4) { padding-inline-start: 1.8em; }
@@ -69,7 +69,7 @@
   <div class="ab3__a">
     <div class="container">
       <p class="t-eyebrow">{{ 'about3.eyebrow' | t }}</p>
-      <h2 class="ab3__title"><span>{{ 'about3.title_1' | t }}</span><em class="ab3__it">{{ 'about3.title_2' | t }}</em></h2>
+      <h2 class="ab3__title"><span>{{ 'about3.title_1' | t }}</span><span class="ab3__it">{{ 'about3.title_2' | t }}</span></h2>
     </div>
     {%- if img != blank and img.width != blank -%}
       <div class="ab3__shape">{{ img | image_url: width: 1600 | image_tag: loading: 'eager', widths: '700,1000,1300,1600', sizes: '(min-width: 990px) 900px, 116vw', alt: '' }}</div>
@@ -81,7 +81,7 @@
 
     <div class="ab3__qwrap">
       <p class="ab3__small-lead">{{ 'about3.q_lead' | t }}</p>
-      <p class="ab3__q" data-fill>{%- for w in qw -%}{%- if forloop.index0 == qn -%}<em class="ab3__it">{%- endif -%}{{ w }}{%- if forloop.last -%}</em>{%- else -%}{{ ' ' }}{%- endif -%}{%- endfor -%}</p>
+      <p class="ab3__q ab3__it" data-fill>{{ 'about3.q' | t }}</p>
     </div>
 
     <div class="ab3__life">
