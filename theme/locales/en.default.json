@@ -1542,7 +1542,21 @@
     "v2_p3": "We won’t tell you that you need every product.",
     "v2_p4": "We won’t make skincare harder to understand than it needs to be.",
     "v2_close_text": "We believe good skincare should make everyday life easier, not more complicated. That’s why we focus on useful steps, considered formulas and products that feel good to use.",
-    "v2_close_line": "Made for the days you actually have."
+    "v2_close_line": "Made for the days you actually have.",
+    "lb_eyebrow": "Read the label",
+    "lb_heading": "Nothing to hide. Read the label with us.",
+    "lb_1_t": "The key ingredients, up front.",
+    "lb_1_b": "Niacinamide and Tranexamic Acid are named on the front, not hidden in the small print.",
+    "lb_2_t": "What it does, in plain words.",
+    "lb_2_b": "Controls oil. Evens skin tone. Hydrates. The same short lines you’ll read on our site.",
+    "lb_3_t": "Our mark.",
+    "lb_3_b": "Two suns, and the space between them. You’ll find it on every pack.",
+    "lb_4_t": "In English and Arabic.",
+    "lb_4_b": "The directions are printed in both languages, so nothing gets lost.",
+    "lb_5_t": "Every ingredient, in order.",
+    "lb_5_b": "The full list, from the largest amount down. It’s on every product page too, with what each one does.",
+    "lb_6_t": "Made in Egypt.",
+    "lb_6_b": "Manufactured by Integrated Cosmetics Industries, here at home."
   },
   "finder": {
     "eyebrow": "Find your routine",
