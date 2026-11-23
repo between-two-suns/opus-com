@@ -3,8 +3,9 @@
   About, "From here. On our terms." (DECISIONS 350–352). The founding story as one editorial chapter, all copy as written:
   A — the statement: oversized two-line headline, the opening paragraph under it.
   B — the question, set huge on its own (no second portrait: the hero above already has one).
-  C — "Not just made here": the lead line, then the life it was made for as four photo tiles (the first four short
-      sentences of s2_p1: the long days, the sun, the dust, the air-con), then the rest of the passage.
+  C — "Not just made here": the lead line, then the life it was made for as four drawn colour tiles, no photos (the
+      first four short sentences of s2_p1: the long days = dawn-to-dusk sky, the sun = a low sun, the dust = sand
+      grain, the air-con = cool vent lines), then the rest of the passage.
   D — "So we created Between Two Suns.": centred, under the )( mark.
   E — the close: a full-width night band; the sentence fills word by word on scroll, then the sign-off.
   Reduced motion or no JS: everything shown, still. Arabic mirrors.
@@ -12,8 +13,6 @@
 {%- liquid
   assign close_words = 'about3.close' | t | split: ' '
   assign s2 = 'about3.s2_p1' | t | split: '. '
-  assign tile_imgs = 'bts-climate-sun-tall.jpg,bts-editorial-walk.png,bts-climate-city-tall.jpg,bts-climate-ac-tall.jpg' | split: ','
-  assign tile_pos = '50% 50%,40% 30%,55% 50%,45% 40%' | split: ','
 -%}
 <section class="ab-st" data-ab-st aria-labelledby="AbSt-{{ section.id }}">
   <div class="container ab-st__a">
@@ -37,12 +36,8 @@
     {%- if s2.size > 4 -%}
       <ul class="ab-st__tiles" role="list">
         {%- for k in (0..3) -%}
-          {%- assign im = images[tile_imgs[k]] -%}
-          {%- assign st = 'object-position: ' | append: tile_pos[k] -%}
-          <li class="ab-st__tile" style="--i: {{ k }}">
-            {%- if im != blank and im.width != blank -%}
-              {{ im | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400,600,900', sizes: '(min-width: 990px) 24vw, 46vw', alt: '', class: 'ab-st__tile-img', style: st }}
-            {%- endif -%}
+          <li class="ab-st__tile ab-st__tile--{{ k | plus: 1 }}" style="--i: {{ k }}">
+            <span class="ab-st__tile-art" aria-hidden="true"></span>
             <span class="ab-st__tile-t">{{ s2[k] }}.</span>
           </li>
         {%- endfor -%}

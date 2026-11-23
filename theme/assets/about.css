@@ -683,10 +683,20 @@
 .ab-st__lead { font-weight: 700; font-size: clamp(32px, 4.2vw, 68px); line-height: 1.02; letter-spacing: -0.025em; max-inline-size: 13em; text-wrap: balance; }
 :lang(ar) .ab-st__lead { letter-spacing: 0; line-height: 1.35; }
 .ab-st [role='list'].ab-st__tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(8px, 1.2vw, 16px); margin: 0; padding: 0; list-style: none; }
-.ab-st__tile { position: relative; overflow: hidden; aspect-ratio: 3 / 4; border-radius: var(--radius-l); background: var(--c-paper); }
-.ab-st__tile-img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
-.ab-st__tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(14, 16, 30, 0.66) 0%, rgba(14, 16, 30, 0) 52%); }
-.ab-st__tile-t { position: absolute; z-index: 1; inset-inline: clamp(14px, 1.6vw, 24px); inset-block-end: clamp(14px, 1.6vw, 24px); color: #fff; font-weight: 700; font-size: clamp(22px, 2.3vw, 36px); line-height: 1.05; letter-spacing: -0.02em; }
+.ab-st__tile { position: relative; overflow: hidden; aspect-ratio: 3 / 4; border-radius: var(--radius-l); color: var(--c-ink); isolation: isolate; }
+.ab-st__tile-art { position: absolute; inset: 0; z-index: -1; }
+/* The long days: a sky from first light to dusk. */
+.ab-st__tile--1 { background: linear-gradient(180deg, #fbf1dc 0%, #f6d7b0 38%, #e9a98a 66%, #6f6a8f 100%); color: #fff; }
+/* The sun: a low sun, cropped by the tile. */
+.ab-st__tile--2 { background: color-mix(in srgb, var(--c-step-4) 34%, #fff6e6); }
+.ab-st__tile--2 .ab-st__tile-art { background: radial-gradient(circle at 70% 30%, #fffaf0 0 12%, #ffe2bd 14%, color-mix(in srgb, var(--c-step-4) 75%, #ffcf9a) 24%, color-mix(in srgb, var(--c-step-4) 30%, transparent) 42%, transparent 66%); }
+/* The dust: warm sand with a fine grain. */
+.ab-st__tile--3 { background: #dcc6a2; }
+.ab-st__tile--3 .ab-st__tile-art { opacity: 0.55; mix-blend-mode: multiply; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.36 0 0 0 0 0.25 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"), linear-gradient(160deg, transparent 40%, rgba(120, 90, 55, 0.25)); }
+/* The air-con: cool air through vent lines. */
+.ab-st__tile--4 { background: linear-gradient(180deg, color-mix(in srgb, var(--c-step-2) 40%, #fff) 0%, color-mix(in srgb, var(--c-step-2) 70%, #fff) 100%); }
+.ab-st__tile--4 .ab-st__tile-art { background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0 2px, transparent 2px 22px); -webkit-mask: linear-gradient(180deg, #000 0 46%, transparent 72%); mask: linear-gradient(180deg, #000 0 46%, transparent 72%); }
+.ab-st__tile-t { position: absolute; z-index: 1; inset-inline: clamp(14px, 1.6vw, 24px); inset-block-end: clamp(14px, 1.6vw, 24px); font-weight: 700; font-size: clamp(22px, 2.3vw, 36px); line-height: 1.05; letter-spacing: -0.02em; }
 :lang(ar) .ab-st__tile-t { letter-spacing: 0; line-height: 1.3; }
 .ab-st__body { display: grid; gap: 1em; max-inline-size: 36rem; font-size: clamp(18px, 1.4vw, 21px); line-height: 1.6; color: color-mix(in srgb, var(--c-ink) 84%, transparent); }
 .ab-st__strong { color: var(--c-ink); font-weight: 650; }
