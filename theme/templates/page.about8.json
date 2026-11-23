@@ -25,18 +25,13 @@
       }
     },
     "story": {
-      "type": "about-story4",
-      "settings": {}
-    },
-    "note": {
-      "type": "about-note",
+      "type": "about-story5",
       "settings": {}
     }
   },
   "order": [
     "sky",
     "story",
-    "note",
     "routine",
     "made",
     "rules",
