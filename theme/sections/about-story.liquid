@@ -1,0 +1,102 @@
+{{ 'about.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  About, "From here. On our terms." (DECISIONS 350, demo). The founding story as an editorial chapter:
+  A — the statement: oversized two-line headline, the second line offset; the opening paragraph beside it.
+  B — the pivot: one full-bleed editorial photo with the question set large across it.
+  C — the story: two passages, each a big lead line on one side and a narrow reading column on the other.
+  D — the close: a long sentence whose words light up as you read down the page, then the sign-off in the brand face.
+  Motion: lines rise once into view; the photo settles from a slight zoom; the closing words fill with scroll.
+  No pinning. Reduced motion or no JS: everything shown, still. Arabic mirrors.
+{%- endcomment -%}
+{%- liquid
+  assign img = section.settings.image | default: images['bts-portrait-window-wide.jpg']
+  assign img_m = section.settings.image_mobile | default: images['bts-portrait-window-tall.jpg']
+  assign close_words = 'about3.close' | t | split: ' '
+-%}
+<section class="ab-st" data-ab-st aria-labelledby="AbSt-{{ section.id }}">
+  <div class="container ab-st__a">
+    <p class="t-eyebrow ab-st__eyebrow">{{ 'about3.eyebrow' | t }}</p>
+    <h2 class="ab-st__title" id="AbSt-{{ section.id }}">
+      <span class="ab-st__line"><span>{{ 'about3.title_1' | t }}</span></span>
+      <span class="ab-st__line ab-st__line--2"><span>{{ 'about3.title_2' | t }}</span></span>
+    </h2>
+    <div class="ab-st__intro">
+      <p>{{ 'about3.p1' | t }}</p>
+    </div>
+  </div>
+
+  <figure class="ab-st__b">
+    <div class="ab-st__photo">
+      {%- if img != blank and img.width != blank -%}
+        <picture>
+          {%- if img_m != blank and img_m.width != blank -%}
+            <source media="(max-width: 749px)" srcset="{{ img_m | image_url: width: 700 }} 700w, {{ img_m | image_url: width: 1000 }} 1000w, {{ img_m | image_url: width: 1400 }} 1400w" sizes="100vw">
+          {%- endif -%}
+          {{ img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '900,1200,1600,2000,2400', sizes: '100vw', alt: '', class: 'ab-st__img' }}
+        </picture>
+      {%- endif -%}
+    </div>
+    <figcaption class="ab-st__q">
+      <span class="ab-st__q-lead">{{ 'about3.q_lead' | t }}</span>
+      <span class="ab-st__q-text">{{ 'about3.q' | t }}</span>
+    </figcaption>
+  </figure>
+
+  <div class="container ab-st__c">
+    <div class="ab-st__pass">
+      <p class="ab-st__lead">{{ 'about3.s2_head' | t }}</p>
+      <div class="ab-st__body">
+        <p>{{ 'about3.s2_p1' | t }}</p>
+        <p>{{ 'about3.s2_p2' | t }}</p>
+        <p>{{ 'about3.s2_p3' | t }}</p>
+      </div>
+    </div>
+    <div class="ab-st__pass">
+      <p class="ab-st__lead">{{ 'about3.s3_head' | t }}</p>
+      <div class="ab-st__body">
+        <p class="ab-st__strong">{{ 'about3.s3_p1' | t }}</p>
+        <p>{{ 'about3.s3_p2' | t }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container ab-st__d">
+    <p class="ab-st__close">{%- for w in close_words -%}<span class="ab-st__w" style="--i: {{ forloop.index0 }}">{{ w }}</span>{% unless forloop.last %} {% endunless %}{%- endfor -%}</p>
+    <p class="ab-st__sign"><span class="ab-st__mark" aria-hidden="true"></span><span>{{ 'about3.close_2' | t }}</span></p>
+  </div>
+</section>
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    if (!root || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+    root.classList.add('is-live');
+    // Lines and passages rise once, the first time they come into view.
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
+    root.querySelectorAll('.ab-st__a, .ab-st__q, .ab-st__pass, .ab-st__sign').forEach((el) => io.observe(el));
+    // The photo settles from a slight zoom, and the closing sentence fills word by word, both tied to scroll.
+    const photo = root.querySelector('.ab-st__photo');
+    const close = root.querySelector('.ab-st__close');
+    const words = [...root.querySelectorAll('.ab-st__w')];
+    let ticking = false;
+    const prog = (el, a, b) => { const r = el.getBoundingClientRect(), h = innerHeight; return Math.min(1, Math.max(0, (h * a - r.top) / (h * a - h * b + r.height * 0.5))); };
+    const tick = () => {
+      ticking = false;
+      if (photo) photo.style.setProperty('--p', prog(photo, 1, 0.15).toFixed(3));
+      if (close) { const p = prog(close, 0.85, 0.35) * words.length; words.forEach((w, i) => w.classList.toggle('is-on', i < p)); }
+    };
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }, { passive: true });
+    addEventListener('resize', tick);
+    tick();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "About · our story",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo (laptops)", "info": "Wide editorial photo, at least 2400 px. Empty = the window portrait (placeholder until the shoot)." },
+    { "type": "image_picker", "id": "image_mobile", "label": "Photo (phones)", "info": "Tall photo (4:5). Empty = the tall window portrait." }
+  ]
+}
+{% endschema %}

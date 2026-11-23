@@ -660,3 +660,75 @@
 @media (prefers-reduced-motion: reduce) {
   .ab-lb__pack, .ab-lb__img, .ab-lb__spot, .ab-lb__note { transition: none !important; }
 }
+
+/* About · our story, "From here. On our terms." (DECISIONS 350, demo) */
+.ab-st { padding-block: clamp(72px, 11vw, 160px) clamp(64px, 9vw, 140px); overflow: clip; }
+.ab-st p { margin: 0; }
+/* A — statement */
+.ab-st__a { display: grid; gap: clamp(20px, 2.4vw, 32px); }
+.ab-st__title { margin: 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: 0.86; letter-spacing: -0.005em;
+  font-size: clamp(64px, 13.4vw, 228px); display: grid; }
+.ab-st__line { display: block; overflow: hidden; padding-block-end: 0.04em; }
+.ab-st__line > span { display: inline-block; }
+.ab-st__line--2 { padding-inline-start: 18%; }
+:lang(ar) .ab-st__title { text-transform: none; line-height: 1.25; font-size: clamp(54px, 10vw, 168px); }
+.ab-st__intro { max-inline-size: 30rem; justify-self: end; font-size: clamp(17px, 1.35vw, 21px); line-height: 1.6; color: color-mix(in srgb, var(--c-ink) 80%, transparent); }
+/* B — pivot */
+.ab-st__b { position: relative; margin: clamp(56px, 8vw, 120px) 0 0; padding-inline: clamp(12px, 2vw, 28px); }
+.ab-st__photo { position: relative; overflow: hidden; border-radius: var(--radius-l); block-size: min(88vh, 900px); background: var(--c-paper); }
+.ab-st__img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 60% 35%; transform-origin: 50% 40%; }
+.ab-st__photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(14, 16, 30, 0.62) 0%, rgba(14, 16, 30, 0.18) 42%, rgba(14, 16, 30, 0) 64%); }
+[dir='rtl'] .ab-st__img { transform: scaleX(1); }
+.ab-st__q { position: absolute; z-index: 1; inset-inline-start: clamp(36px, 5vw, 88px); inset-block-end: clamp(32px, 5vw, 80px); display: grid; gap: 14px; color: #fff; inline-size: min(46%, 760px); }
+/* The photo isn't mirrored in Arabic, so the question stays on its left, over the wall, away from her face. */
+@media (min-width: 990px) { [dir='rtl'] .ab-st__q { inset-inline-start: auto; left: clamp(36px, 5vw, 88px); } }
+.ab-st__q-lead { font-size: clamp(14px, 1.1vw, 17px); letter-spacing: 0.02em; opacity: 0.86; }
+.ab-st__q-text { font-weight: 700; font-size: clamp(38px, 5.2vw, 88px); line-height: 1.02; letter-spacing: -0.025em; text-wrap: balance; }
+:lang(ar) .ab-st__q-text { letter-spacing: 0; line-height: 1.3; font-size: clamp(34px, 4.4vw, 72px); }
+/* C — story */
+.ab-st__c { display: grid; gap: clamp(56px, 8vw, 120px); margin-block-start: clamp(72px, 10vw, 150px); }
+.ab-st__pass { display: grid; gap: clamp(20px, 3vw, 40px); }
+.ab-st__lead { font-weight: 700; font-size: clamp(30px, 3.6vw, 56px); line-height: 1.06; letter-spacing: -0.02em; max-inline-size: 13em; text-wrap: balance; }
+:lang(ar) .ab-st__lead { letter-spacing: 0; line-height: 1.35; }
+.ab-st__body { display: grid; gap: 1.1em; max-inline-size: 31rem; font-size: clamp(17px, 1.3vw, 20px); line-height: 1.65; color: color-mix(in srgb, var(--c-ink) 78%, transparent); }
+.ab-st__strong { color: var(--c-ink); font-weight: 650; }
+/* D — close */
+.ab-st__d { display: grid; gap: clamp(28px, 4vw, 56px); margin-block-start: clamp(96px, 13vw, 200px); }
+.ab-st__close { font-weight: 700; font-size: clamp(36px, 5.6vw, 96px); line-height: 1.04; letter-spacing: -0.03em; max-inline-size: 15.5em; }
+:lang(ar) .ab-st__close { letter-spacing: 0; line-height: 1.35; font-size: clamp(32px, 4.6vw, 78px); }
+.ab-st__sign { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 0 0.22em; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(56px, 11.2vw, 196px); line-height: 0.86; color: color-mix(in srgb, var(--c-step-2) 58%, var(--c-ink)); }
+/* The chapter ends where it began: the sign-off is set as big as "From here.", so the two bookend the story. */
+:lang(ar) .ab-st__sign { text-transform: none; line-height: 1.25; font-size: clamp(48px, 9vw, 150px); }
+.ab-st__mark { inline-size: 0.62em; block-size: 0.7em; margin-block-end: 0.08em; background: currentColor; -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; }
+@media (min-width: 990px) {
+  .ab-st__a { grid-template-columns: minmax(0, 1fr); }
+  .ab-st__intro { justify-self: start; margin-inline-start: 18%; }
+  .ab-st__pass { grid-template-columns: minmax(0, 5fr) minmax(0, 5fr); align-items: start; column-gap: clamp(40px, 7vw, 120px); }
+  .ab-st__pass:nth-child(2) .ab-st__lead { order: 2; }
+  .ab-st__lead { position: sticky; top: calc(var(--hdr, 84px) + 40px); }
+}
+@media (max-width: 989px) {
+  .ab-st__line--2 { padding-inline-start: 0; }
+  .ab-st__intro { justify-self: start; }
+  .ab-st__photo { block-size: auto; aspect-ratio: 4 / 5; }
+  /* Phones: the question sits under the photo, so it never covers the face. */
+  .ab-st__photo::after { display: none; }
+  .ab-st__q { position: static; inline-size: auto; color: var(--c-ink); padding: 24px 8px 0; }
+  .ab-st__q-lead { opacity: 0.7; }
+}
+/* Motion (JS adds .is-live; without it, or with reduced motion, everything is simply shown) */
+.ab-st.is-live .ab-st__line > span { transform: translateY(105%); transition: transform 1.1s var(--ease-out); }
+.ab-st.is-live .ab-st__line--2 > span { transition-delay: 0.12s; }
+.ab-st.is-live .ab-st__a.is-in .ab-st__line > span { transform: none; }
+.ab-st.is-live .ab-st__intro { opacity: 0; transform: translateY(18px); transition: opacity 0.9s var(--ease-out) 0.35s, transform 0.9s var(--ease-out) 0.35s; }
+.ab-st.is-live .ab-st__a.is-in .ab-st__intro { opacity: 1; transform: none; }
+.ab-st.is-live .ab-st__img { transform: scale(calc(1.14 - var(--p, 0) * 0.14)); will-change: transform; }
+.ab-st.is-live .ab-st__q > * { opacity: 0; transform: translateY(24px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+.ab-st.is-live .ab-st__q-text { transition-delay: 0.15s; }
+.ab-st.is-live .ab-st__q.is-in > * { opacity: 1; transform: none; }
+.ab-st.is-live .ab-st__pass { opacity: 0; transform: translateY(32px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+.ab-st.is-live .ab-st__pass.is-in { opacity: 1; transform: none; }
+.ab-st.is-live .ab-st__w { opacity: 0.14; transition: opacity 0.35s linear; }
+.ab-st.is-live .ab-st__w.is-on { opacity: 1; }
+.ab-st.is-live .ab-st__sign { opacity: 0; transform: translateY(20px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+.ab-st.is-live .ab-st__sign.is-in { opacity: 1; transform: none; }
