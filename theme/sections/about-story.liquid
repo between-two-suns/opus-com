@@ -1,17 +1,19 @@
 {{ 'about.css' | asset_url | stylesheet_tag }}
 {%- comment -%}
-  About, "From here. On our terms." (DECISIONS 350, demo). The founding story as an editorial chapter:
-  A — the statement: oversized two-line headline, the second line offset; the opening paragraph beside it.
-  B — the pivot: one full-bleed editorial photo with the question set large across it.
-  C — the story: two passages, each a big lead line on one side and a narrow reading column on the other.
-  D — the close: a long sentence whose words light up as you read down the page, then the sign-off in the brand face.
-  Motion: lines rise once into view; the photo settles from a slight zoom; the closing words fill with scroll.
-  No pinning. Reduced motion or no JS: everything shown, still. Arabic mirrors.
+  About, "From here. On our terms." (DECISIONS 350–352). The founding story as one editorial chapter, all copy as written:
+  A — the statement: oversized two-line headline, the opening paragraph under it.
+  B — the question, set huge on its own (no second portrait: the hero above already has one).
+  C — "Not just made here": the lead line, then the life it was made for as four photo tiles (the first four short
+      sentences of s2_p1: the long days, the sun, the dust, the air-con), then the rest of the passage.
+  D — "So we created Between Two Suns.": centred, under the )( mark.
+  E — the close: a full-width night band; the sentence fills word by word on scroll, then the sign-off.
+  Reduced motion or no JS: everything shown, still. Arabic mirrors.
 {%- endcomment -%}
 {%- liquid
-  assign img = section.settings.image | default: images['bts-portrait-window-wide.jpg']
-  assign img_m = section.settings.image_mobile | default: images['bts-portrait-window-tall.jpg']
   assign close_words = 'about3.close' | t | split: ' '
+  assign s2 = 'about3.s2_p1' | t | split: '. '
+  assign tile_imgs = 'bts-climate-sun-tall.jpg,bts-editorial-walk.png,bts-climate-city-tall.jpg,bts-climate-ac-tall.jpg' | split: ','
+  assign tile_pos = '50% 50%,40% 30%,55% 50%,45% 40%' | split: ','
 -%}
 <section class="ab-st" data-ab-st aria-labelledby="AbSt-{{ section.id }}">
   <div class="container ab-st__a">
@@ -25,39 +27,42 @@
     </div>
   </div>
 
-  <figure class="ab-st__b">
-    <div class="ab-st__photo">
-      {%- if img != blank and img.width != blank -%}
-        <picture>
-          {%- if img_m != blank and img_m.width != blank -%}
-            <source media="(max-width: 749px)" srcset="{{ img_m | image_url: width: 700 }} 700w, {{ img_m | image_url: width: 1000 }} 1000w, {{ img_m | image_url: width: 1400 }} 1400w" sizes="100vw">
-          {%- endif -%}
-          {{ img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '900,1200,1600,2000,2400', sizes: '100vw', alt: '', class: 'ab-st__img' }}
-        </picture>
-      {%- endif -%}
-    </div>
-    <figcaption class="ab-st__q">
-      <span class="ab-st__q-lead">{{ 'about3.q_lead' | t }}</span>
-      <span class="ab-st__q-text">{{ 'about3.q' | t }}</span>
-    </figcaption>
-  </figure>
+  <div class="container ab-st__b">
+    <p class="ab-st__q-lead">{{ 'about3.q_lead' | t }}</p>
+    <p class="ab-st__q-text">{{ 'about3.q' | t }}</p>
+  </div>
 
   <div class="container ab-st__c">
-    <div class="ab-st__pass">
-      <p class="ab-st__lead">{{ 'about3.s2_head' | t }}</p>
-      <div class="ab-st__body">
-        <p>{{ 'about3.s2_p1' | t }}</p>
-        <p>{{ 'about3.s2_p2' | t }}</p>
-        <p>{{ 'about3.s2_p3' | t }}</p>
-      </div>
+    <p class="ab-st__lead">{{ 'about3.s2_head' | t }}</p>
+    {%- if s2.size > 4 -%}
+      <ul class="ab-st__tiles" role="list">
+        {%- for k in (0..3) -%}
+          {%- assign im = images[tile_imgs[k]] -%}
+          {%- assign st = 'object-position: ' | append: tile_pos[k] -%}
+          <li class="ab-st__tile" style="--i: {{ k }}">
+            {%- if im != blank and im.width != blank -%}
+              {{ im | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400,600,900', sizes: '(min-width: 990px) 24vw, 46vw', alt: '', class: 'ab-st__tile-img', style: st }}
+            {%- endif -%}
+            <span class="ab-st__tile-t">{{ s2[k] }}.</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+      {%- assign rest = s2 | slice: 4, 20 | join: '. ' -%}
+    {%- else -%}
+      {%- assign rest = 'about3.s2_p1' | t -%}
+    {%- endif -%}
+    <div class="ab-st__body">
+      <p class="ab-st__strong">{{ rest }}</p>
+      <p>{{ 'about3.s2_p2' | t }}</p>
+      <p>{{ 'about3.s2_p3' | t }}</p>
     </div>
-    <div class="ab-st__pass">
-      <p class="ab-st__lead">{{ 'about3.s3_head' | t }}</p>
-      <div class="ab-st__body">
-        <p class="ab-st__strong">{{ 'about3.s3_p1' | t }}</p>
-        <p>{{ 'about3.s3_p2' | t }}</p>
-      </div>
-    </div>
+  </div>
+
+  <div class="container ab-st__e">
+    <span class="ab-st__e-mark" aria-hidden="true"></span>
+    <p class="ab-st__e-head">{{ 'about3.s3_head' | t }}</p>
+    <p class="ab-st__strong">{{ 'about3.s3_p1' | t }}</p>
+    <p class="ab-st__e-body">{{ 'about3.s3_p2' | t }}</p>
   </div>
 
   <div class="ab-st__d"><div class="container ab-st__d-in">
@@ -73,16 +78,14 @@
     root.classList.add('is-live');
     // Lines and passages rise once, the first time they come into view.
     const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
-    root.querySelectorAll('.ab-st__a, .ab-st__q, .ab-st__pass, .ab-st__sign').forEach((el) => io.observe(el));
-    // The photo settles from a slight zoom, and the closing sentence fills word by word, both tied to scroll.
-    const photo = root.querySelector('.ab-st__photo');
+    root.querySelectorAll('.ab-st__a, .ab-st__b, .ab-st__c, .ab-st__tiles, .ab-st__e, .ab-st__sign').forEach((el) => io.observe(el));
+    // The closing sentence fills word by word, tied to scroll.
     const close = root.querySelector('.ab-st__close');
     const words = [...root.querySelectorAll('.ab-st__w')];
     let ticking = false;
     const prog = (el, a, b) => { const r = el.getBoundingClientRect(), h = innerHeight; return Math.min(1, Math.max(0, (h * a - r.top) / (h * a - h * b + r.height * 0.5))); };
     const tick = () => {
       ticking = false;
-      if (photo) photo.style.setProperty('--p', prog(photo, 1, 0.15).toFixed(3));
       if (close) { const p = prog(close, 0.85, 0.35) * words.length; words.forEach((w, i) => w.classList.toggle('is-on', i < p)); }
     };
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }, { passive: true });
@@ -95,9 +98,6 @@
 {
   "name": "About · our story",
   "enabled_on": { "templates": ["page"] },
-  "settings": [
-    { "type": "image_picker", "id": "image", "label": "Photo (laptops)", "info": "Wide editorial photo, at least 2400 px. Empty = the window portrait (placeholder until the shoot)." },
-    { "type": "image_picker", "id": "image_mobile", "label": "Photo (phones)", "info": "Tall photo (4:5). Empty = the tall window portrait." }
-  ]
+  "settings": []
 }
 {% endschema %}
