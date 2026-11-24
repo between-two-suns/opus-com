@@ -30,10 +30,9 @@
 
   /* 1 */
   .ab7__s1 { display: grid; gap: clamp(20px, 3vw, 40px); padding-block: 0; }
-  .ab7__title { margin: 14px 0 0; font-size: clamp(56px, 8vw, 116px); line-height: 0.9; }
+  .ab7__title { margin: 14px 0 0; font-size: clamp(46px, 6.2vw, 92px); line-height: 0.9; }
+  .ab7__title > span { white-space: nowrap; }
   .ab7__title > span { display: block; }
-  .ab7__t2 { max-inline-size: 3.6em; }
-  :lang(ar) .ab7__t2 { max-inline-size: none; }
   .ab7__intro { display: grid; gap: 14px; align-content: center; max-inline-size: 32rem; }
 
   /* 2 */
@@ -45,7 +44,8 @@
   /* 3 */
   .ab7__s3 { display: grid; gap: clamp(36px, 5vw, 56px); padding-block: 0; }
   .ab7__col { display: grid; gap: 16px; align-content: start; }
-  .ab7__lead { font-weight: 700; font-size: clamp(24px, 2.6vw, 38px); line-height: 1.2; letter-spacing: -0.02em; color: var(--c-ink); }
+  .ab7__col > .ab7__body { font-size: clamp(16px, 1.55vw, 21px); }
+  .ab7__lead { font-weight: 700; font-size: clamp(28px, 3.1vw, 46px); line-height: 1.2; letter-spacing: -0.02em; color: var(--c-ink); }
   .ab7__lead span { display: block; }
   :lang(ar) .ab7__lead { letter-spacing: 0; line-height: 1.45; }
   .ab7__created { font-size: clamp(22px, 2.2vw, 32px); }
@@ -70,6 +70,7 @@
     .ab7__s2 { padding-inline-start: calc(var(--gutter) + 10%); }
     .ab7__s3 { grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr); column-gap: clamp(40px, 5vw, 80px); }
     .ab7__vline { background: var(--c-step-1); }
+    :lang(en) .ab7__lead span { white-space: nowrap; }
     .ab7__card { padding-inline-end: clamp(280px, 30vw, 440px); }
   }
   @media (max-width: 989px) {
@@ -101,7 +102,7 @@
   <div class="container ab7__s2">
     <p class="ab7__q ab7__d" data-fill>{{ 'about4.q_1' | t }} {{ 'about4.q_2' | t }} {{ 'about4.q_3a' | t }} <span class="ab7__mint">{{ 'about4.q_3b' | t }}</span></p>
     {%- if s2.size > 4 -%}
-      <ul class="ab7__four" role="list" data-r>{%- for k in (0..3) -%}<li>{{ s2[k] }}.</li>{%- endfor -%}</ul>
+      <ul class="ab7__four" role="list" data-fill>{%- for k in (0..3) -%}<li>{{ s2[k] }}.</li>{%- endfor -%}</ul>
     {%- endif -%}
   </div>
 
