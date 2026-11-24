@@ -652,13 +652,59 @@
         "extract": "Plant extract"
       },
       "jump_label": "On this page",
-      "ref_eyebrow": "Nothing hidden",
-      "ref_heading": "Every ingredient, A to Z.",
-      "ref_text": "All of them, by their label (INCI) name, with what each one is there to do and which products contain it.",
-      "ref_open": "Open the full list",
+      "ref_eyebrow": "The full list",
+      "ref_heading": "Every ingredient. A to Z.",
+      "ref_text": "What it is, why it’s there and which products you’ll find it in. Every ingredient listed by its official name (INCI), exactly as it appears on the pack.",
+      "ref_open": "Explore all ingredients",
       "ref_close": "Close the list",
-      "built_around": "What does it",
-      "benefits_label": "What each formula does for your skin"
+      "built_around": "Key ingredients",
+      "benefits_label": "What each formula does for your skin",
+      "p1": {
+        "tab": "Remove excess oil",
+        "lead": "Removes excess oil.",
+        "rest": "Maintains hydration. Leaves skin feeling fresh.",
+        "i1_name": "Zinc PCA",
+        "i1_role": "Helps balance excess oil.",
+        "i2_name": "Panthenol",
+        "i2_role": "Pro-vitamin B5 that helps skin retain moisture.",
+        "i3_name": "Centella Asiatica",
+        "i3_role": "A botanical ingredient known for its soothing properties."
+      },
+      "p2": {
+        "tab": "Even skin tone",
+        "lead": "Helps even skin tone.",
+        "rest": "Balances excess oil. Hydrates.",
+        "i1_name": "Niacinamide",
+        "i1_role": "Vitamin B3 that helps balance excess oil and improve the appearance of uneven skin tone.",
+        "i2_name": "Tranexamic Acid",
+        "i2_role": "Targets the appearance of dark spots and pigmentation.",
+        "i3_name": "Sodium Hyaluronate",
+        "i3_role": "A form of hyaluronic acid that attracts water to help keep skin hydrated."
+      },
+      "p3": {
+        "tab": "Support the skin barrier",
+        "lead": "Supports the skin barrier.",
+        "rest": "Helps balance excess oil. Lightweight hydration.",
+        "i1_name": "Ceramides",
+        "i1_role": "Essential skin lipids that help reinforce the skin’s protective barrier and reduce moisture loss.",
+        "i2_name": "Niacinamide",
+        "i2_role": "Vitamin B3 that helps support healthy skin barrier function.",
+        "i3_name": "Zinc PCA",
+        "i3_role": "Helps balance excess oil."
+      },
+      "p4": {
+        "tab": "Protect from the sun",
+        "lead": "Broad-spectrum protection.",
+        "rest": "No white cast. Lightweight finish.",
+        "i1_name": "UVA + UVB filters",
+        "i1_role": "A combination of UV filters designed to protect skin against UVA and UVB rays.",
+        "i2_name": "Niacinamide",
+        "i2_role": "Helps support the skin barrier alongside daily sun protection.",
+        "i3_name": "Panthenol",
+        "i3_role": "Helps maintain skin hydration.",
+        "i4_name": "Bisabolol",
+        "i4_role": "Helps soothe and comfort skin."
+      }
     },
     "routines": {
       "am_title": "Morning",
@@ -894,6 +940,30 @@
       "cr_reply": {
         "q": "When will I hear back?",
         "a": "Within 7 days, by email. We read every application."
+      },
+      "ing_together": {
+        "q": "Can I use these products together?",
+        "a": "Our four products are designed to work together as a simple daily skincare routine. Each has a different role: cleanse, treat, moisturize and protect. You can also choose individual products based on what your skin needs."
+      },
+      "ing_skin": {
+        "q": "Which skin types are the products suitable for?",
+        "a": "The cleanser and the moisturizer are made for oily to combination skin. The sunscreen suits all skin types. The Clarity Serum is a daily serum for excess oil and uneven tone."
+      },
+      "ing_percent": {
+        "q": "Does a higher ingredient percentage mean better results?",
+        "a": "Not necessarily. A well-formulated product is about more than the percentage of a single ingredient. The combination of ingredients, their concentrations and how the overall formula works together all matter."
+      },
+      "ing_multi": {
+        "q": "Why do some ingredients appear in more than one product?",
+        "a": "Some ingredients have more than one function. We select ingredients based on what each formula needs, so the same ingredient can serve different purposes across your routine."
+      },
+      "ing_inci": {
+        "q": "What is INCI?",
+        "a": "INCI stands for International Nomenclature of Cosmetic Ingredients. It’s the standardized naming system used on cosmetic ingredient lists, so you can identify and compare ingredients across products."
+      },
+      "ing_water": {
+        "q": "Why is water (Aqua) often listed first?",
+        "a": "Water is the base of many skincare formulas, helping dissolve and distribute other ingredients. It’s often the ingredient used in the largest amount, which is why you’ll usually see it first."
       }
     },
     "eyebrow": "Good to know",
@@ -919,8 +989,8 @@
     },
     "ingredients": {
       "eyebrow": "Ingredients",
-      "heading": "What’s inside, and what it does.",
-      "text": "Every ingredient has a reason to be here. Start with what each formula does for you; the full list is below, exactly as printed on the pack."
+      "heading": "What’s inside. What it does.",
+      "text": "Every ingredient has a purpose. Here’s what goes into our formulas, why it’s there and what it means for your skin."
     },
     "climate": {
       "eyebrow": "Made for life here",

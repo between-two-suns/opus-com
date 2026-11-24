@@ -17,6 +17,8 @@
             {%- assign ps = ps | strip | plus: 0 -%}
             {%- if ps == s -%}
               {%- assign lead = p.metafields.bts.benefit.value | default: p.title | split: '. ' | first | remove: '.' -%}
+              {%- assign tabk = 'pages.ingredients.p' | append: s | append: '.tab' -%}{%- assign tabt = tabk | t -%}
+              {%- unless tabt contains 'ranslation missing' -%}{%- assign lead = tabt -%}{%- endunless -%}
               <li data-step="{{ s }}"><a class="chip ibn__chip" href="#ibn-{{ s }}"><span class="bundle__dot" aria-hidden="true"></span>{{ lead | escape }}</a></li>
               {%- break -%}
             {%- endif -%}
@@ -46,6 +48,19 @@
             endif
             assign kis = p.metafields.bts.key_ingredients.value
             assign label = p.metafields.bts.step_label.value
+            # Owner-approved page copy (DECISIONS 377) overrides the pack line and the glossary roles when present.
+            assign pk = 'pages.ingredients.p' | append: s
+            assign ck = pk | append: '.lead'
+            assign cl = ck | t
+            assign copy_ok = true
+            if cl contains 'ranslation missing'
+              assign copy_ok = false
+            endif
+            if copy_ok
+              assign lead = cl | remove: '.'
+              assign rk = pk | append: '.rest'
+              assign rest = rk | t
+            endif
           -%}
           <article class="ibn__ch" id="ibn-{{ s }}" data-step="{{ s }}" aria-labelledby="IbnH-{{ s }}">
             <div class="ibn__media">
@@ -56,7 +71,17 @@
               <p class="step-tag">{{ 'product.step' | t: number: s }}{% if label != blank %} · {{ label | escape }}{% endif %}</p>
               <h2 class="ibn__lead" id="IbnH-{{ s }}">{{ lead | escape }}.</h2>
               {%- if rest != blank -%}<p class="ibn__rest">{{ rest | escape }}</p>{%- endif -%}
-              {%- if kis.size > 0 -%}
+              {%- if copy_ok -%}
+                <p class="ibn__built">{% if section.settings.t_pages_ingredients_built_around != blank %}{{ section.settings.t_pages_ingredients_built_around }}{% else %}{{ 'pages.ingredients.built_around' | t }}{% endif %}</p>
+                <ul class="ibn__ings" role="list">
+                  {%- for n in (1..4) -%}
+                    {%- assign nk = pk | append: '.i' | append: n | append: '_name' -%}{%- assign nn = nk | t -%}
+                    {%- if nn contains 'ranslation missing' -%}{%- continue -%}{%- endif -%}
+                    {%- assign rk2 = pk | append: '.i' | append: n | append: '_role' -%}
+                    <li><span class="ibn__ing-name">{{ nn }}</span><span class="ibn__ing-role">{{ rk2 | t }}</span></li>
+                  {%- endfor -%}
+                </ul>
+              {%- elsif kis.size > 0 -%}
                 <p class="ibn__built">{% if section.settings.t_pages_ingredients_built_around != blank %}{{ section.settings.t_pages_ingredients_built_around }}{% else %}{{ 'pages.ingredients.built_around' | t }}{% endif %}</p>
                 <ul class="ibn__ings" role="list">
                   {%- for ki in kis -%}
@@ -114,7 +139,7 @@
       "type": "text",
       "id": "t_pages_ingredients_built_around",
       "label": "Built around",
-      "info": "Now: “What does it”. Leave empty to keep it (English and Arabic)."
+      "info": "Now: “Key ingredients”. Leave empty to keep it (English and Arabic)."
     }
   ],
   "presets": [

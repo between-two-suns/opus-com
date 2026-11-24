@@ -19,31 +19,43 @@
         "q0": {
           "type": "qa",
           "settings": {
-            "preset": "inci_what"
+            "preset": "ing_together"
           }
         },
         "q1": {
           "type": "qa",
           "settings": {
-            "preset": "ingredients_order"
+            "preset": "ing_skin"
           }
         },
         "q2": {
           "type": "qa",
           "settings": {
-            "preset": "inci"
+            "preset": "ing_percent"
           }
         },
         "q3": {
           "type": "qa",
           "settings": {
-            "preset": "fragrance"
+            "preset": "ing_multi"
           }
         },
         "q4": {
           "type": "qa",
           "settings": {
-            "preset": "skin_type"
+            "preset": "inci"
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "preset": "ing_inci"
+          }
+        },
+        "q6": {
+          "type": "qa",
+          "settings": {
+            "preset": "ing_water"
           }
         }
       },
@@ -52,7 +64,9 @@
         "q1",
         "q2",
         "q3",
-        "q4"
+        "q4",
+        "q5",
+        "q6"
       ],
       "settings": {
         "compact": true,
