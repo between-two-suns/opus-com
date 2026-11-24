@@ -4,7 +4,7 @@ You are continuing a long-running build. This file is the handover: who the owne
 what was done and why, and exactly what to do next. **DECISIONS.md** (numbered log, newest at the bottom) and **STATUS.md**
 (current state, restore points, launch checklist) hold the detail; this file tells you how to use them.
 
-**Next DECISIONS entry number: 375.** Add one entry per round of work and keep STATUS.md current.
+**Next DECISIONS entry number: 376.** Add one entry per round of work and keep STATUS.md current.
 
 ---
 

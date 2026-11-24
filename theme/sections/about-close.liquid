@@ -33,6 +33,27 @@
     </div>
   </div>
 </section>
+<script>
+  // Tomorrow's sun rises as she scrolls. Chrome does it in CSS (animation-timeline); Safari and Firefox on laptops
+  // don't support that yet, so the same motion is done here (DECISIONS 375). Reduced motion: no movement.
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    const sun = root && root.querySelector('.ab-close__sun');
+    if (!sun || matchMedia('(prefers-reduced-motion: reduce)').matches || (window.CSS && CSS.supports('animation-timeline: view()'))) return;
+    let ticking = false;
+    const tick = () => {
+      ticking = false;
+      const r = root.getBoundingClientRect(), h = innerHeight;
+      // Same range as the CSS: from 10% into the screen until the section is 60% scrolled through.
+      const start = h - r.height * 0.1, end = h - (h + r.height) * 0.6;
+      const p = Math.min(1, Math.max(0, (start - r.top) / (start - end)));
+      sun.style.transform = 'translateY(' + ((1 - p) * 26).toFixed(2) + '%)';
+    };
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }, { passive: true });
+    addEventListener('resize', tick);
+    tick();
+  })();
+</script>
 
 {% schema %}
 {

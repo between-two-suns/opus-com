@@ -225,7 +225,8 @@
 /* ---------- 6 · Until the next sun ---------- */
 .ab-close {
   position: relative; overflow: clip; isolation: isolate; text-align: center;
-  padding-block: var(--section-y) clamp(170px, 24vw, 340px);
+  /* Top padding 0: the section before it already ends with --section-y, so the gap matches the rest of the page (DECISIONS 375). */
+  padding-block: 0 clamp(170px, 24vw, 340px);
   background: linear-gradient(180deg, transparent 0%, #edf0f8 68%, #e3e9f6 100%);
 }
 .ab-close__sun { --cs: clamp(300px, 56vw, 820px); z-index: -1; inset-inline-start: 50%; inset-block-end: calc(var(--cs) * -.5); inline-size: var(--cs); translate: -50% 0; }
