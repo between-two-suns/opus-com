@@ -2717,3 +2717,13 @@ Final creative principle:
 Make her feel understood. Show her a result she genuinely wants. Explain why the product makes sense. Make buying feel simple.
 
 Between Two Suns should feel like skincare that belongs in her life — not another brand asking her to build her life around skincare.
+
+---
+
+## About page — final copy (owner, 24 Nov 2026; DECISIONS 368)
+Full text EN + AR as approved: review/about-page-copy-final.md. Owner's choices: rule 03 "We won't sell you products you
+don't need." / "مش هنبيعلك منتجات مش محتاجاها."; closing AR "معمولة عشان تناسب يومك، زي ما هو."; "تصميم مميز";
+sunscreen "Every morning · Reapply every 2 hours" / "كل يوم الصبح · جدّدي كل ساعتين" (pack wording); no "من مصر" on
+the mint card; Made in Egypt: no "two languages" fact, maker + brand owner as a quiet credit line.
+Positioning to protect: don't ask her to love the brand because it's Egyptian; challenge the idea that a brand she
+loves has to come from somewhere else. Never position it as a cheaper alternative to imported skincare.

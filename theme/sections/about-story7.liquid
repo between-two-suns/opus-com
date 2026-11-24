@@ -106,23 +106,20 @@
 
   <div class="ab7__w ab7__row ab7__row--q" data-r>
     <div>
-      <p class="ab7__eb">{{ 'about5.asking' | t }}</p>
       <p class="ab7__q ab7__d" data-fill><span>{{ 'about4.q_1' | t }}</span> <span>{{ 'about4.q_2' | t }} {{ 'about4.q_3a' | t }}</span> <span class="ab7__mint">{{ 'about4.q_3b' | t }}</span></p>
     </div>
     <span class="ab7__rule" aria-hidden="true"></span>
     {%- if s2.size > 4 -%}
       <ul class="ab7__four" role="list">{%- for k in (0..3) -%}<li>{{ s2[k] }}.</li>{%- endfor -%}</ul>
-      {%- assign rest = s2 | slice: 4, 20 | join: '. ' -%}
     {%- else -%}
       <span></span>
-      {%- assign rest = 'about3.s2_p1' | t -%}
     {%- endif -%}
   </div>
 
   <div class="ab7__w ab7__row" data-r>
     <p class="ab7__lead">{%- for l in lead -%}<span>{{ l }}{%- unless forloop.last -%}.{%- endunless -%}</span>{%- endfor -%}</p>
     <span class="ab7__rule" aria-hidden="true"></span>
-    <div class="ab7__copy ab7__body"><p>{{ rest }}</p><p>{{ 'about5.wanted' | t }}</p></div>
+    <div class="ab7__copy ab7__body"><p>{{ 'about6.mind_1' | t }}</p><p>{{ 'about6.mind_2' | t }}</p></div>
   </div>
 
   <div class="ab7__w ab7__row" data-r>
@@ -131,7 +128,7 @@
       <h3 class="ab7__name ab7__d">{{ 'about5.name' | t }}</h3>
     </div>
     <span class="ab7__rule" aria-hidden="true"></span>
-    <div class="ab7__copy ab7__copy--big ab7__body"><p>{{ 'about3.s3_p1' | t }}</p><p>{{ 'about3.s3_p2' | t }}</p></div>
+    <div class="ab7__copy ab7__copy--big ab7__body"><p>{{ 'about3.s3_p1' | t }}</p></div>
   </div>
 
   <div class="ab7__w ab7__s5">

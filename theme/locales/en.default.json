@@ -1484,7 +1484,7 @@
     "routine_heading": "A routine, not a cabinet.",
     "routine_text": "Four products, one job each, used in the same order every time. Mornings take all four. Nights take three, without the sunscreen.",
     "mode_label": "Time of day",
-    "am_only": "Mornings only",
+    "am_only": "Every morning · Reapply every 2 hours",
     "am_pm": "Morning and night",
     "photo_am": "The four products on a bathroom counter in the morning light.",
     "photo_pm": "Three of the products on the counter at night. The sunscreen waits for the morning.",
@@ -1536,12 +1536,12 @@
     "sh_off": "Not tonight",
     "stamp": "Made in Egypt · Cairo · ",
     "sh_comma": ",",
-    "v2_routine_text": "More products don’t automatically mean better skincare. We believe in clear steps, purposeful formulas and knowing why you’re using what you’re using.",
+    "v2_routine_text": "More products don’t automatically mean better skincare. We believe in clear steps, purposeful formulas and knowing why every product belongs in your routine.",
     "v2_p1": "We won’t promise overnight transformations.",
-    "v2_p2": "We won’t make up reviews, numbers or results.",
-    "v2_p3": "We won’t tell you that you need every product.",
-    "v2_p4": "We won’t make skincare harder to understand than it needs to be.",
-    "v2_close_text": "We believe good skincare should make everyday life easier, not more complicated. That’s why we focus on useful steps, considered formulas and products that feel good to use.",
+    "v2_p2": "We won’t invent reviews, numbers or results.",
+    "v2_p3": "We won’t sell you products you don’t need.",
+    "v2_p4": "We won’t make skincare more complicated than it needs to be.",
+    "v2_close_text": "Good skincare should fit into your life, not the other way around.",
     "v2_close_line": "Made for the days you actually have.",
     "lb_eyebrow": "Read the label",
     "lb_heading": "Nothing to hide. Read the label with us.",
@@ -1827,5 +1827,10 @@
     "asking": "But we kept asking",
     "wanted": "We wanted the thoughtful formulas, the beautiful design, the whole experience. Everything we admired about the brands we grew up loving, without the unnecessary complexity.",
     "name": "Between Two Suns."
+  },
+  "about6": {
+    "mind_1": "We wanted thoughtful formulas, beautiful design and products that felt as good on our skin as they looked on our shelves.",
+    "mind_2": "Everything we loved about skincare, without the unnecessary complexity.",
+    "made_lead": "The full ingredient list, exactly as printed on the pack, on every product page."
   }
 }
