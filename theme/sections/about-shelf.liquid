@@ -50,7 +50,7 @@
               <span class="ab-sh__pfoot">
                 <span class="ab-sh__pverb">{{ nk | t }}</span>
                 <span class="ab-sh__pname">{{ p.title | escape }}</span>
-                <span class="ab-sh__pwhen">{%- if i == 4 -%}{% render 'icon', name: 'sun', class: 'icon--sm' %} {{ 'about2.am_only' | t }}{%- else -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}{% render 'icon', name: 'moon', class: 'icon--sm' %} {{ 'about2.am_pm' | t }}{%- endif -%}</span>
+                <span class="ab-sh__pwhen">{%- if i == 4 -%}{% render 'icon', name: 'sun', class: 'icon--sm' %} {{ 'about2.am_only' | t | replace: ' · ', '<br>' }}{%- else -%}{% render 'icon', name: 'sun', class: 'icon--sm' %}{% render 'icon', name: 'moon', class: 'icon--sm' %} {{ 'about2.am_pm' | t }}{%- endif -%}</span>
               </span>
               <span class="ab-sh__ppack" style="--h: {{ pack_h[i] }}" aria-hidden="true">{%- render 'cut-img', handle: p.handle, sizes: '120px', widths: '120,180,240', class: 'ab-sh__ppack-img' -%}</span>
             </a>

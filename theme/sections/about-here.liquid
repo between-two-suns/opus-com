@@ -8,7 +8,6 @@
 {%- liquid
   assign img = section.settings.image | default: images['bts-scene-home-city.jpg']
   assign glossary_url = routes.root_url | append: '/pages/ingredients' | replace: '//', '/'
-  assign facts = 'made_by,made_for,made_inci,made_lang' | split: ','
   assign alt = img.alt | default: ''
   if alt == blank
     assign alt = 'about2.made_alt' | t
@@ -34,13 +33,9 @@
     <div class="ab-here__card">
       <p class="t-eyebrow">{% if section.settings.t_about2_made_eyebrow != blank %}{{ section.settings.t_about2_made_eyebrow }}{% else %}{{ 'about2.made_eyebrow' | t }}{% endif %}</p>
       <h2 class="t-display-m" id="AbHere-{{ section.id }}">{% if section.settings.t_about2_made_heading != blank %}{{ section.settings.t_about2_made_heading }}{% else %}{{ 'about2.made_heading' | t }}{% endif %}</h2>
-      <dl class="ab-here__facts">
-        {%- for f in facts -%}
-          {%- assign fk = 'about2.' | append: f | append: '_k' -%}
-          {%- assign fv = 'about2.' | append: f | append: '_v' -%}
-          <div class="ab-here__fact"><dt>{{ fk | t }}</dt><dd>{{ fv | t }}</dd></div>
-        {%- endfor -%}
-      </dl>
+      {%- comment -%} Owner (DECISIONS 368): the ingredient promise leads; maker and brand owner sit underneath as a quiet credit line. No "two languages" fact. {%- endcomment -%}
+      <p class="ab-here__lead">{{ 'about6.made_lead' | t }}</p>
+      <p class="ab-here__credit"><span>{{ 'about2.made_by_k' | t }}</span> {{ 'about2.made_by_v' | t }}<br><span>{{ 'about2.made_for_k' | t }}</span> {{ 'about2.made_for_v' | t }}</p>
       <a class="btn" href="{{ glossary_url }}">{% if section.settings.t_about2_made_link != blank %}{{ section.settings.t_about2_made_link }}{% else %}{{ 'about2.made_link' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</a>
     </div>
   </div>
