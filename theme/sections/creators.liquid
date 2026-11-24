@@ -26,7 +26,7 @@
   assign grows = 'keep:refresh,featured:globe,top:arrow-up' | split: ','
   assign ideas = 'review:chat:bts-portrait-window-tall.jpg,morning:sun:bts-climate-heat-tall.jpg,night:moon:bts-demo-night.jpg,texture:layers:bts-clarity-serum-application-2.jpg,grwm:scan:bts-daily-defense-sunscreen-spf-50-application-2.jpg,unboxing:truck:bts-the-full-ritual.jpg' | split: ','
 -%}
-<div class="creators">
+<div class="creators{% if section.settings.v2 %} creators--v2{% endif %}">
   <section class="cr-hero grain" aria-labelledby="CrTitle-{{ section.id }}">
     <span class="cr-hero__mark" aria-hidden="true"></span>
     <div class="container cr-hero__inner">
@@ -88,6 +88,7 @@
         {%- endfor -%}
       </ol>
       <div class="cr-grow">
+        <span class="cr-grow__mark" aria-hidden="true"></span>
         <h3 class="cr-grow__title">{% if section.settings.t_creators_grow_heading != blank %}{{ section.settings.t_creators_grow_heading }}{% else %}{{ 'creators.grow_heading' | t }}{% endif %}</h3>
         <ul class="cr-grow__list" role="list">
           {%- for g in grows -%}
@@ -126,6 +127,15 @@
       {%- endfor -%}
     </ul>
     <div class="container">
+      {%- if section.settings.v2 -%}
+        <p class="cr-rules-line"><strong>{% if section.settings.t_creators_rules_heading != blank %}{{ section.settings.t_creators_rules_heading }}{% else %}{{ 'creators.rules_heading' | t }}{% endif %}</strong>
+          {%- for n in (1..4) -%}
+            {%- assign rk = 'creators.rules.r' | append: n -%}
+            {%- assign rshort = rk | t | split: '.' | first -%}
+            <span>{{ rshort }}</span>
+          {%- endfor -%}
+        </p>
+      {%- else -%}
       <div class="cr-rules">
         <h3 class="cr-rules__title">{% if section.settings.t_creators_rules_heading != blank %}{{ section.settings.t_creators_rules_heading }}{% else %}{{ 'creators.rules_heading' | t }}{% endif %}</h3>
         <ul class="cr-rules__list" role="list">
@@ -135,6 +145,7 @@
           {%- endfor -%}
         </ul>
       </div>
+      {%- endif -%}
     </div>
   </section>
 
@@ -149,6 +160,7 @@
 {
   "name": "t:sections.creators.name",
   "settings": [
+    { "type": "checkbox", "id": "v2", "label": "New look (demo)", "default": false },
     {
       "type": "paragraph",
       "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
