@@ -30,7 +30,9 @@
 
   /* 1 */
   .ab7__s1 { display: grid; gap: clamp(20px, 3vw, 40px); padding-block: 0; }
-  .ab7__title { margin: 14px 0 0; font-size: clamp(46px, 6.2vw, 92px); line-height: 0.9; }
+  /* Owner: the title uses the same font as "Not just made here…" so it doesn't clash with the tall question below. */
+  .ab7__title { margin: 14px 0 0; font-weight: 700; font-size: clamp(38px, 4.6vw, 68px); line-height: 1.08; letter-spacing: -0.03em; color: var(--c-ink); }
+  :lang(ar) .ab7__title { letter-spacing: 0; line-height: 1.4; }
   .ab7__title > span { white-space: nowrap; }
   .ab7__title > span { display: block; }
   .ab7__intro { display: grid; gap: 14px; align-content: center; max-inline-size: 32rem; }
@@ -91,7 +93,7 @@
   <div class="container ab7__s1">
     <div data-r>
       <p class="t-eyebrow">{{ 'about3.eyebrow' | t }}</p>
-      <h2 class="ab7__title ab7__d" id="Ab7-{{ section.id }}"><span>{{ 'about3.title_1' | t }}</span> <span class="ab7__t2">{{ 'about3.title_2' | t }}</span></h2>
+      <h2 class="ab7__title" id="Ab7-{{ section.id }}"><span>{{ 'about3.title_1' | t }}</span> <span class="ab7__t2">{{ 'about3.title_2' | t }}</span></h2>
     </div>
     <div class="ab7__intro" data-r style="--d: 150">
       <p class="ab7__body">{{ 'about3.p1' | t }}</p>
