@@ -87,7 +87,7 @@
           </li>
         {%- endfor -%}
       </ol>
-      <div class="cr-grow">
+      <div class="cr-grow{% if section.settings.v2 %} cr-grow--{{ section.settings.grow_look | default: 'mint' }}{% endif %}">
         <span class="cr-grow__mark" aria-hidden="true"></span>
         <h3 class="cr-grow__title">{% if section.settings.t_creators_grow_heading != blank %}{{ section.settings.t_creators_grow_heading }}{% else %}{{ 'creators.grow_heading' | t }}{% endif %}</h3>
         <ul class="cr-grow__list" role="list">
@@ -161,6 +161,7 @@
   "name": "t:sections.creators.name",
   "settings": [
     { "type": "checkbox", "id": "v2", "label": "New look (demo)", "default": false },
+    { "type": "select", "id": "grow_look", "label": "Perks block look (demo)", "options": [ { "value": "mint", "label": "Mint card" }, { "value": "words", "label": "Big words" }, { "value": "glow", "label": "Brand glow" }, { "value": "reels", "label": "Reel cards" } ], "default": "mint" },
     {
       "type": "paragraph",
       "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
