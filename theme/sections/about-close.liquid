@@ -19,7 +19,6 @@
       <p class="t-lead ab-close__text">{{ section.settings.t_about2_close_text }}</p>
     {%- elsif section.settings.copy_v2 -%}
       <p class="t-lead ab-close__text">{{ 'about2.v2_close_text' | t }}</p>
-      <p class="ab-close__line">{{ 'about2.v2_close_line' | t }}</p>
     {%- else -%}
       <p class="t-lead ab-close__text">{{ 'about2.close_text' | t }}</p>
     {%- endif -%}
@@ -64,7 +63,7 @@
     ]
   },
   "settings": [
-    { "type": "checkbox", "id": "copy_v2", "label": "Use the copy master text", "default": false, "info": "On: the copy master's closing paragraph and line (“Made for the days you actually have.”)." },
+    { "type": "checkbox", "id": "copy_v2", "label": "Use the copy master text", "default": false, "info": "On: the copy master's closing paragraph (the line “Made for the days you actually have.” was removed by the owner, DECISIONS 376)." },
     {
       "type": "paragraph",
       "content": "Every text box starts empty and shows the site's built-in English and Arabic text. Type to replace it, then add the Arabic in Translate & Adapt (free Shopify app), or Arabic visitors will see your English."
