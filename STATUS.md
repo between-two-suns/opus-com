@@ -20,6 +20,7 @@ Full OS 2.0 theme is built and deployed to an **unpublished** staging theme, wit
 ## Later (owner parked, 2026-11-18)
 - Arabic read-aloud test with 3–5 target customers (home + one product page); then rewrite what makes them pause.
 - ICI confirmations: claims sheet, "lasts about" figures, shipping/returns text, founder quote, cash-order refund method.
+- Version 1.2 is fully in sync with the repo (DECISIONS 378); the new About page is the real /pages/about there. Before launch, delete the demo templates page.about2–about12 (Online Store → Themes → Version 1.2 → ⋯ → Edit code).
 - ICI, Ingredients page (DECISIONS 377): serum skin type; final sunscreen filters + SPF 50+ / broad-spectrum test; no-white-cast wording; ceramides + Sodium Hyaluronate on final INCI; no Bisabolol sourcing claim.
 - Optional: re-save the home SEO title with "in Egypt" (Online Store → Preferences).
 
