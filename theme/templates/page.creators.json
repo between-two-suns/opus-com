@@ -2,7 +2,11 @@
   "sections": {
     "main": {
       "type": "creators",
-      "settings": {}
+      "settings": {
+        "v2": true,
+        "grow_look": "campaign",
+        "creative_lab_portrait": "shopify://shop_images/bts-creative-lab-creator-cutout.png"
+      }
     },
     "apply": {
       "type": "creator-apply",
