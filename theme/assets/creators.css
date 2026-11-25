@@ -263,19 +263,32 @@
 }
 @media (max-width: 989px) { .cr-grow--lab::before { inset-block-start: -150px; inset-inline-end: -90px; inline-size: 300px; } }
 
-/* E · Campaign block (owner's creative-lab design, DECISIONS 382). Phone fixes only: the big word sits clear above the
-   portrait (never behind her head), and the headline sits under the artwork at full width. Laptop unchanged. */
+/* E · Campaign block (owner's creative-lab design, DECISIONS 382–383). Laptop (990px+) is the owner's design as is.
+   Below 990px it is laid out again, mobile first, sized to the card's own width (cqi):
+   the big word across the top; the headline in the open space beside her; she sits inside the peach sun, which is cut
+   flat at the bottom of the picture like a sun on the horizon; the three perks under the picture. */
 @media (max-width: 989px) {
-  .creators--v2 .cl-grow { display: block; }
-  .creators--v2 .cl-grow__visual { block-size: clamp(320px, 92vw, 460px); }
-  .creators--v2 .cl-grow__type { inset-block-start: 5%; }
-  .creators--v2 .cl-grow__portrait { inset-block-start: 29%; block-size: 71%; inline-size: 58%; inset-inline-end: 0; }
-  .creators--v2 .cl-grow__portrait img { object-fit: contain; object-position: center bottom; }
-  .creators--v2 .cl-grow__arc--peach { inset-block-end: -6%; }
-  .creators--v2 .cl-grow__copy, .creators--v2 .cl-grow:lang(ar) .cl-grow__copy { display: block; margin-block-start: 0; padding: 20px var(--cl-pad) var(--cl-pad); }
-  .creators--v2 .cl-grow__heading, .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { display: block; inline-size: auto; max-inline-size: 100%; min-block-size: 0; margin: 0 0 18px; font-size: clamp(24px, 6.8vw, 32px); line-height: 1.15; }
-  .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { line-height: 1.45; }
-  .creators--v2 .cl-grow:lang(ar) .cl-grow__benefits { margin: 0; padding-block-start: 0; }
-  .creators--v2 .cl-grow:lang(ar) .cl-grow__visual { block-size: clamp(300px, 86vw, 440px); }
-  .creators--v2 .cl-grow:lang(ar) .cl-grow__portrait { inset-block-start: 24%; block-size: 76%; }
+  .creators--v2 .cl-grow, .creators--v2 .cl-grow:lang(ar) { display: block; position: relative; container-type: inline-size; }
+  .creators--v2 .cl-grow__visual, .creators--v2 .cl-grow:lang(ar) .cl-grow__visual { position: relative; overflow: hidden; block-size: auto; aspect-ratio: 1 / 1; }
+  .creators--v2 .cl-grow__type { inset-block-start: 5cqi; inset-inline-start: 6cqi; inline-size: 88cqi; }
+  .creators--v2 .cl-grow__type-ar { font-size: 9.6cqi; line-height: 1.2; white-space: nowrap; transform: none; }
+  .creators--v2 .cl-grow__arc--peach, .creators--v2 .cl-grow:lang(ar) .cl-grow__arc--peach { rotate: 0deg; inline-size: 90cqi; block-size: 90cqi; inset-inline-end: -18cqi; inset-block-end: -40cqi; }
+  .creators--v2 .cl-grow__arc--peach { z-index: 1; }
+  .creators--v2 .cl-grow__portrait { z-index: 3; inset-block: auto 0; inset-inline-end: 1cqi; inline-size: 56cqi; block-size: 72cqi; -webkit-mask-image: none; mask-image: none; }
+  .creators--v2 .cl-grow__portrait img, .creators--v2 .cl-grow:lang(ar) .cl-grow__portrait img { object-fit: contain; object-position: center bottom; }
+  .creators--v2 .cl-grow__copy, .creators--v2 .cl-grow:lang(ar) .cl-grow__copy { display: block; position: static; margin: 0; padding: 22px 6cqi 6cqi; }
+  .creators--v2 .cl-grow__heading, .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { position: absolute; z-index: 4; inset-block-start: 36cqi; inset-inline-start: 6cqi; inline-size: 40cqi; max-inline-size: none; min-block-size: 0; margin: 0; display: block; font-size: 6.6cqi; line-height: 1.1; letter-spacing: -0.03em; text-wrap: balance; }
+  .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { inset-block-start: 28cqi; line-height: 1.4; letter-spacing: 0; font-size: 6.4cqi; }
+  .creators--v2 .cl-grow:lang(ar) .cl-grow__benefits { margin: 0; padding: 0; }
+}
+/* tablets and narrow laptop windows: a wider picture, the perks in three columns */
+@media (min-width: 640px) and (max-width: 989px) {
+  .creators--v2 .cl-grow__visual, .creators--v2 .cl-grow:lang(ar) .cl-grow__visual { aspect-ratio: 16 / 10; }
+  .creators--v2 .cl-grow__type { inset-block-start: 4cqi; inline-size: 54cqi; }
+  .creators--v2 .cl-grow__type-ar { font-size: 7cqi; }
+  .creators--v2 .cl-grow__arc--peach, .creators--v2 .cl-grow:lang(ar) .cl-grow__arc--peach { inline-size: 58cqi; block-size: 58cqi; inset-inline-end: -8cqi; inset-block-end: -26cqi; }
+  .creators--v2 .cl-grow__portrait { inline-size: 40cqi; block-size: 54cqi; inset-inline-end: 1cqi; }
+  .creators--v2 .cl-grow__heading, .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { inset-block-start: 24cqi; inline-size: 46cqi; font-size: 5.6cqi; }
+  .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { inset-block-start: 21cqi; font-size: 5.2cqi; }
+  .creators--v2 .cl-grow__copy, .creators--v2 .cl-grow:lang(ar) .cl-grow__copy { padding: 26px 5cqi 5cqi; }
 }
