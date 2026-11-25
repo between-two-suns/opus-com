@@ -340,3 +340,6 @@
 :lang(ar) .cr-rules-v2__list li { line-height: 1.75; }
 @media (min-width: 640px) { .creators [role='list'].cr-rules-v2__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 990px) { .creators [role='list'].cr-rules-v2__list { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* Apply form without the grey card (owner, DECISIONS 390): the form sits on the page like every other section. */
+.creators-apply-flat .cr-apply__card, .cr-apply .cr-apply__card { background: transparent; box-shadow: none; padding: 0; border-radius: 0; }
