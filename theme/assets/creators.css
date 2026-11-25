@@ -269,16 +269,17 @@
    behind her head and shoulders; the headline in the open space beside her; the perks separated by space, no lines. */
 @media (max-width: 989px) {
   .creators--v2 .cl-grow, .creators--v2 .cl-grow:lang(ar) { display: block; position: relative; container-type: inline-size; }
-  .creators--v2 .cl-grow__visual, .creators--v2 .cl-grow:lang(ar) .cl-grow__visual { position: relative; overflow: hidden; block-size: auto; aspect-ratio: 1 / 1.04; }
+  .creators--v2 .cl-grow__visual, .creators--v2 .cl-grow:lang(ar) .cl-grow__visual { position: relative; overflow: hidden; block-size: auto; aspect-ratio: 1 / 0.98; }
   .creators--v2 .cl-grow__type { z-index: 2; inset-block-start: 5cqi; inset-inline-start: 6cqi; inline-size: 88cqi; }
-  .creators--v2 .cl-grow__type-ar { font-size: 9.6cqi; line-height: 1.2; white-space: nowrap; transform: none; }
+  .creators--v2 .cl-grow__type-ar { font-size: 10.6cqi; line-height: 1.2; white-space: nowrap; transform: none; }
+  .creators--v2 .cl-grow:lang(ar) .cl-grow__type { inset-block-start: 11cqi; }
   .creators--v2 .cl-grow__arc--peach, .creators--v2 .cl-grow:lang(ar) .cl-grow__arc--peach { z-index: 1; rotate: 0deg; inline-size: 66cqi; block-size: 66cqi; inset-inline-end: -10cqi; inset-block-end: 14cqi; }
-  .creators--v2 .cl-grow__portrait { z-index: 3; inset-block: auto 0; inset-inline-end: -2cqi; inline-size: 65cqi; block-size: 88cqi;
+  .creators--v2 .cl-grow__portrait { z-index: 3; inset-block: auto 0; inset-inline-end: -1cqi; inline-size: 60cqi; block-size: 82cqi;
     -webkit-mask-image: linear-gradient(#000 0 74%, transparent 98%); mask-image: linear-gradient(#000 0 74%, transparent 98%); }
   .creators--v2 .cl-grow__portrait img, .creators--v2 .cl-grow:lang(ar) .cl-grow__portrait img { object-fit: contain; object-position: center bottom; }
   .creators--v2 .cl-grow__copy, .creators--v2 .cl-grow:lang(ar) .cl-grow__copy { display: block; position: static; margin: 0; padding: 4px 6cqi 7cqi; }
-  .creators--v2 .cl-grow__heading, .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { position: absolute; z-index: 4; inset-block-start: 42cqi; inset-inline-start: 6cqi; inline-size: 36cqi; max-inline-size: none; min-block-size: 0; margin: 0; display: block; font-size: 6.8cqi; line-height: 1.1; letter-spacing: -0.03em; text-wrap: balance; }
-  .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { inset-block-start: 34cqi; inline-size: 42cqi; line-height: 1.4; letter-spacing: 0; font-size: 6.4cqi; }
+  .creators--v2 .cl-grow__heading, .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { position: absolute; z-index: 4; inset-block-start: 50cqi; inset-inline-start: 6cqi; inline-size: 36cqi; max-inline-size: none; min-block-size: 0; margin: 0; display: block; font-size: 6.8cqi; line-height: 1.1; letter-spacing: -0.03em; text-wrap: balance; }
+  .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { inset-block-start: 46cqi; inline-size: 42cqi; line-height: 1.4; letter-spacing: 0; font-size: 6.4cqi; }
   .creators--v2 .cl-grow__benefits, .creators--v2 .cl-grow:lang(ar) .cl-grow__benefits { margin: 0; padding: 0; gap: 22px; }
   .creators--v2 .cl-grow__benefits li + li, .creators--v2 .cl-grow:lang(ar) .cl-grow__benefits li + li { border: 0; padding-block-start: 0; }
 }
