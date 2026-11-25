@@ -1254,7 +1254,8 @@
       "humidity": "Humidity",
       "ac": "Air-con",
       "sun": "Sun"
-    }
+    },
+    "grow_vertical": "CREATE · ON · YOUR · OWN · TERMS"
   },
   "bundle_inside": {
     "eyebrow": "Inside the set",

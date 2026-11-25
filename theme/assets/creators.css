@@ -263,39 +263,70 @@
 }
 @media (max-width: 989px) { .cr-grow--lab::before { inset-block-start: -150px; inset-inline-end: -90px; inline-size: 300px; } }
 
-/* E · Campaign block (owner's creative-lab design, DECISIONS 382–384). Laptop (990px+) is the owner's design as is.
-   Below 990px, mobile first, sized to the card's own width (cqi): the big word across the top; her head overlaps it a
-   little (poster depth, word still readable); she fades out at the bottom (owner liked this); a clean round peach sun
-   behind her head and shoulders; the headline in the open space beside her; the perks separated by space, no lines. */
-@media (max-width: 989px) {
-  .creators--v2 .cl-grow, .creators--v2 .cl-grow:lang(ar) { display: block; position: relative; container-type: inline-size; }
-  .creators--v2 .cl-grow__visual, .creators--v2 .cl-grow:lang(ar) .cl-grow__visual { position: relative; overflow: hidden; block-size: auto; aspect-ratio: 1 / 0.98; }
-  .creators--v2 .cl-grow__type { z-index: 2; inset-block-start: 5cqi; inset-inline-start: 6cqi; inline-size: 88cqi; }
-  .creators--v2 .cl-grow__type-ar { font-size: 10.6cqi; line-height: 1.2; white-space: nowrap; transform: none; }
-  .creators--v2 .cl-grow:lang(ar) .cl-grow__type { inset-block-start: 11cqi; }
-  .creators--v2 .cl-grow__arc--peach, .creators--v2 .cl-grow:lang(ar) .cl-grow__arc--peach { z-index: 1; rotate: 0deg; inline-size: 66cqi; block-size: 66cqi; inset-inline-end: -10cqi; inset-block-end: 14cqi; }
-  .creators--v2 .cl-grow__portrait { z-index: 3; inset-block: auto 0; inset-inline-end: -1cqi; inline-size: 60cqi; block-size: 82cqi;
-    -webkit-mask-image: linear-gradient(#000 0 74%, transparent 98%); mask-image: linear-gradient(#000 0 74%, transparent 98%); }
-  .creators--v2 .cl-grow__portrait img, .creators--v2 .cl-grow:lang(ar) .cl-grow__portrait img { object-fit: contain; object-position: center bottom; }
-  .creators--v2 .cl-grow__copy, .creators--v2 .cl-grow:lang(ar) .cl-grow__copy { display: block; position: static; margin: 0; padding: 4px 6cqi 7cqi; }
-  .creators--v2 .cl-grow__heading, .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { position: absolute; z-index: 4; inset-block-start: 50cqi; inset-inline-start: 6cqi; inline-size: 36cqi; max-inline-size: none; min-block-size: 0; margin: 0; display: block; font-size: 6.8cqi; line-height: 1.1; letter-spacing: -0.03em; text-wrap: balance; }
-  .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { inset-block-start: 46cqi; inline-size: 42cqi; line-height: 1.4; letter-spacing: 0; font-size: 6.4cqi; }
-  .creators--v2 .cl-grow__benefits, .creators--v2 .cl-grow:lang(ar) .cl-grow__benefits { margin: 0; padding: 0; gap: 22px; }
-  .creators--v2 .cl-grow__benefits li + li, .creators--v2 .cl-grow:lang(ar) .cl-grow__benefits li + li { border: 0; padding-block-start: 0; }
+/* E · Campaign block (owner's creative-lab design reworked with the owner, DECISIONS 382–389).
+   Owner's reference: big tone-on-tone type BEHIND the person. Pale sky blue (the serum pack's blue, not the aqua token)
+   and a deep purple; no mint, no peach. The giant word sits behind her and her head covers its last letters; the
+   headline is small bold uppercase purple; perks are numbered 01–03 without icons; on laptops a small vertical line of
+   text runs up the edge. Phones/tablets are laid out on their own (container units), mobile first. */
+.cl-vert { display: none; }
+.creators.creators--v2 .cl-grow { --pale: #CFE3F4; --deep: color-mix(in srgb, var(--c-step-3) 45%, #6a2aa8); background: var(--pale); container-type: inline-size; position: relative; }
+.creators.creators--v2 .cl-grow .cl-grow__arc { display: none; }
+.creators.creators--v2 .cl-grow .cl-grow__type { z-index: 2; color: var(--deep); }
+.creators.creators--v2 .cl-grow .cl-grow__type-ar, .creators.creators--v2 .cl-grow .cl-grow__type-ar-desktop { color: var(--deep); transform: none; }
+.creators.creators--v2 .cl-grow .cl-grow__portrait { z-index: 3; }
+.creators.creators--v2 .cl-grow .cl-grow__heading { color: var(--deep); text-transform: uppercase; letter-spacing: 0.01em; font-weight: 800; }
+.creators.creators--v2 .cl-grow:lang(ar) .cl-grow__heading { text-transform: none; letter-spacing: 0; }
+.creators.creators--v2 .cl-grow [role='list'].cl-grow__benefits { counter-reset: perk; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+.creators.creators--v2 .cl-grow .cl-grow__benefits li, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__benefits li { counter-increment: perk; display: block; padding: 0; border: 0; }
+.creators.creators--v2 .cl-grow .cl-grow__benefits li > span[aria-hidden] { display: none; }
+.creators.creators--v2 .cl-grow .cl-grow__benefits strong { color: var(--deep); text-transform: uppercase; letter-spacing: 0.06em; font-size: 14px; margin-block-end: 4px; }
+.creators.creators--v2 .cl-grow:lang(ar) .cl-grow__benefits strong { text-transform: none; letter-spacing: 0; font-size: 17px; }
+.creators.creators--v2 .cl-grow .cl-grow__benefits strong::before { content: '0' counter(perk) '\00a0\00a0'; font-variant-numeric: tabular-nums; }
+
+@media (min-width: 1200px) {
+  .creators.creators--v2 .cl-grow, .creators.creators--v2 .cl-grow:lang(ar) { display: block; min-block-size: 0; }
+  .creators.creators--v2 .cl-grow .cl-grow__visual { position: absolute; inset: 0; block-size: auto; }
+  .creators.creators--v2 .cl-grow .cl-grow__type { inline-size: 90cqi; inset-inline-start: 3cqi; inset-block-start: 2.5cqi; }
+  .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__visual .cl-grow__type { display: block; }
+  .creators.creators--v2 .cl-grow .cl-grow__type-ar-desktop { display: none; }
+  .creators.creators--v2 .cl-grow .cl-grow__type-ar { font-size: 9.4cqi; line-height: 1.15; white-space: nowrap; }
+  .creators.creators--v2 .cl-grow .cl-grow__portrait { inline-size: 40cqi; block-size: auto; inset-block: 6cqi 0; inset-inline-end: 4cqi; -webkit-mask-image: none; mask-image: none; }
+  .creators.creators--v2 .cl-grow .cl-grow__portrait img { object-fit: contain; object-position: center bottom; }
+  .creators.creators--v2 .cl-grow .cl-grow__copy, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__copy { position: relative; z-index: 4; display: block; inline-size: 56%; padding: 29cqi var(--cl-pad) var(--cl-pad); }
+  .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__copy { padding-block-start: 22cqi; }
+  .creators.creators--v2 .cl-grow .cl-grow__heading, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__heading { font-size: clamp(22px, 2.2vw, 32px); line-height: 1.12; max-inline-size: none; margin: 0 0 clamp(16px, 1.6vw, 24px); }
+  .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__heading { line-height: 1.45; }
+  .creators.creators--v2 .cl-grow [role='list'].cl-grow__benefits { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(16px, 2vw, 28px); }
+  .creators.creators--v2 .cl-grow .cl-grow__benefits li + li, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__benefits li + li { border-inline-start: 1px solid color-mix(in srgb, var(--deep) 30%, transparent); padding-inline-start: clamp(16px, 2vw, 28px); }
+  .creators.creators--v2 .cl-grow .cl-vert { display: block; position: absolute; z-index: 5; top: 50%; right: 12px; transform: translateY(-50%); writing-mode: vertical-rl; white-space: nowrap; font-weight: 800; font-size: 11px; letter-spacing: 0.3em; color: var(--deep); pointer-events: none; }
+  [dir='rtl'] .creators.creators--v2 .cl-grow .cl-vert { right: auto; left: 12px; letter-spacing: 0; font-size: 13px; }
 }
-/* tablets and narrow laptop windows: a wider picture, the perks in three columns */
-@media (min-width: 640px) and (max-width: 989px) {
-  .creators--v2 .cl-grow__visual, .creators--v2 .cl-grow:lang(ar) .cl-grow__visual { aspect-ratio: 16 / 10; }
-  .creators--v2 .cl-grow__type { inset-block-start: 4cqi; inline-size: 58cqi; }
-  .creators--v2 .cl-grow__type-ar { font-size: 7cqi; }
-  .creators--v2 .cl-grow__arc--peach, .creators--v2 .cl-grow:lang(ar) .cl-grow__arc--peach { inline-size: 44cqi; block-size: 44cqi; inset-inline-end: -4cqi; inset-block-end: 6cqi; }
-  .creators--v2 .cl-grow__portrait { inline-size: 44cqi; block-size: 56cqi; inset-inline-end: 1cqi; }
-  .creators--v2 .cl-grow__heading, .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { inset-block-start: 25cqi; inline-size: 46cqi; font-size: 5.6cqi; }
-  .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { inset-block-start: 21cqi; font-size: 5.2cqi; }
-  .creators--v2 .cl-grow__benefits, .creators--v2 .cl-grow:lang(ar) .cl-grow__benefits { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 4cqi; }
-  .creators--v2 .cl-grow__benefits li, .creators--v2 .cl-grow:lang(ar) .cl-grow__benefits li { display: block; padding: 0; border: 0; }
-  .creators--v2 .cl-grow__benefits .icon { margin-block-end: 8px; }
-  .creators--v2 .cl-grow__copy, .creators--v2 .cl-grow:lang(ar) .cl-grow__copy { padding: 8px 5cqi 5cqi; }
+@media (max-width: 1199px) {
+  .creators.creators--v2 .cl-grow, .creators.creators--v2 .cl-grow:lang(ar) { display: block; }
+  .creators.creators--v2 .cl-grow .cl-grow__visual, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__visual { position: relative; overflow: hidden; block-size: auto; aspect-ratio: 1 / 0.98; }
+  .creators.creators--v2 .cl-grow .cl-grow__type { inline-size: 96cqi; inset-inline-start: 2cqi; inset-block-start: 3cqi; }
+  .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__type { inset-block-start: 2cqi; }
+  .creators.creators--v2 .cl-grow .cl-grow__type-ar { font-size: 15cqi; line-height: 1.05; white-space: normal; inline-size: 62cqi; }
+  .creators.creators--v2 .cl-grow .cl-grow__portrait { inset-block: auto 0; inset-inline-end: -4cqi; inline-size: 66cqi; block-size: 84cqi;
+    -webkit-mask-image: linear-gradient(#000 0 74%, transparent 98%); mask-image: linear-gradient(#000 0 74%, transparent 98%); }
+  .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__portrait { inline-size: 58cqi; inset-inline-end: -2cqi; }
+  .creators.creators--v2 .cl-grow .cl-grow__portrait img, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__portrait img { object-fit: contain; object-position: center bottom; }
+  .creators.creators--v2 .cl-grow .cl-grow__copy, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__copy { display: block; position: static; inline-size: auto; margin: 0; padding: 4px 6cqi 7cqi; }
+  .creators.creators--v2 .cl-grow .cl-grow__type-ar-desktop { display: none; }
+  .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__visual .cl-grow__type { display: block; }
+  .creators.creators--v2 .cl-grow .cl-grow__heading, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__heading { position: absolute; z-index: 4; inset-block-start: 46cqi; inset-inline-start: 6cqi; inline-size: 36cqi; max-inline-size: none; min-block-size: 0; margin: 0; display: block; font-size: 6cqi; line-height: 1.12; text-wrap: balance; }
+  .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__heading { inset-block-start: 50cqi; inline-size: 42cqi; font-size: 6.4cqi; line-height: 1.4; }
+  .creators.creators--v2 .cl-grow:lang(ar) [role='list'].cl-grow__benefits { margin: 0; padding: 0; }
+}
+@media (min-width: 640px) and (max-width: 1199px) {
+  .creators.creators--v2 .cl-grow .cl-grow__visual, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__visual { aspect-ratio: 16 / 8.2; }
+  .creators.creators--v2 .cl-grow .cl-grow__type { inline-size: 80cqi; inset-block-start: 3cqi; }
+  .creators.creators--v2 .cl-grow .cl-grow__type-ar { font-size: 9cqi; white-space: nowrap; inline-size: auto; }
+  .creators.creators--v2 .cl-grow .cl-grow__portrait, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__portrait { inline-size: 40cqi; block-size: 47cqi; inset-inline-end: 3cqi; }
+  .creators.creators--v2 .cl-grow .cl-grow__heading, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__heading { inset-block-start: 25cqi; inline-size: 50cqi; font-size: 4.4cqi; }
+  .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__heading { inset-block-start: 17cqi; font-size: 4.4cqi; }
+  .creators.creators--v2 .cl-grow [role='list'].cl-grow__benefits { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 4cqi; }
+  .creators.creators--v2 .cl-grow .cl-grow__copy, .creators.creators--v2 .cl-grow:lang(ar) .cl-grow__copy { padding: 8px 5cqi 5cqi; }
 }
 
 /* Rules under the ideas (DECISIONS 387): a heading and four short principles, each "Title. One line." No box, no lines.
