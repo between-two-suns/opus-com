@@ -2736,7 +2736,7 @@ Source of truth for the live text: locales `creators.*`, `faq.items.cr_*`. Summa
 - Reel captions: The everyday reset. · Keeping it light. · From nine to five. · SPF on repeat. (AR card 3 shortened to "طول يوم الشغل.")
 - How it works: "Let's get started." Steps: Introduce yourself / Let's connect / Make it part of your day / Create and earn.
 - Campaign block: "Let's make it more than a one-off." / "خلّينا نكمّل سوا."
-- Ideas: "A little creative freedom." Night card: "Taking off the day."
+- Ideas: "A little creative freedom." Night card: "Washing off the day." / "تغسلي اليوم عن بشرتك." (owner, replacing "Taking off the day.")
 - Rules: "A few things we believe in." Keep it honest · Keep skin real · Keep it grounded · Keep it yours (shown as title + one line).
 - Apply: "Create with us." + "You don't need a huge following. You need a point of view."
 - Offer: 10% customer discount and 10% commission are approved for now (may change before launch). Arabic commission wording: "على كل عملية شرا بكودك" (not the legal-sounding "المستوفية للشروط").
