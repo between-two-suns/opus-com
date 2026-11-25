@@ -262,3 +262,20 @@
   .cr-grow__photo { align-self: end; inline-size: 100%; max-inline-size: 440px; margin: 0; }
 }
 @media (max-width: 989px) { .cr-grow--lab::before { inset-block-start: -150px; inset-inline-end: -90px; inline-size: 300px; } }
+
+/* E · Campaign block (owner's creative-lab design, DECISIONS 382). Phone fixes only: the big word sits clear above the
+   portrait (never behind her head), and the headline sits under the artwork at full width. Laptop unchanged. */
+@media (max-width: 989px) {
+  .creators--v2 .cl-grow { display: block; }
+  .creators--v2 .cl-grow__visual { block-size: clamp(320px, 92vw, 460px); }
+  .creators--v2 .cl-grow__type { inset-block-start: 5%; }
+  .creators--v2 .cl-grow__portrait { inset-block-start: 29%; block-size: 71%; inline-size: 58%; inset-inline-end: 0; }
+  .creators--v2 .cl-grow__portrait img { object-fit: contain; object-position: center bottom; }
+  .creators--v2 .cl-grow__arc--peach { inset-block-end: -6%; }
+  .creators--v2 .cl-grow__copy, .creators--v2 .cl-grow:lang(ar) .cl-grow__copy { display: block; margin-block-start: 0; padding: 20px var(--cl-pad) var(--cl-pad); }
+  .creators--v2 .cl-grow__heading, .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { display: block; inline-size: auto; max-inline-size: 100%; min-block-size: 0; margin: 0 0 18px; font-size: clamp(24px, 6.8vw, 32px); line-height: 1.15; }
+  .creators--v2 .cl-grow:lang(ar) .cl-grow__heading { line-height: 1.45; }
+  .creators--v2 .cl-grow:lang(ar) .cl-grow__benefits { margin: 0; padding-block-start: 0; }
+  .creators--v2 .cl-grow:lang(ar) .cl-grow__visual { block-size: clamp(300px, 86vw, 440px); }
+  .creators--v2 .cl-grow:lang(ar) .cl-grow__portrait { inset-block-start: 24%; block-size: 76%; }
+}

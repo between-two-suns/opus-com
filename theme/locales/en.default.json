@@ -1245,7 +1245,8 @@
     },
     "bar_note": "We reply within 7 days",
     "form_steps": "Step {{ n }} of {{ total }}",
-    "privacy": "Privacy policy"
+    "privacy": "Privacy policy",
+    "grow_display": "CREATORS"
   },
   "bundle_inside": {
     "eyebrow": "Inside the set",

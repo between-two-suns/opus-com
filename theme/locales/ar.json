@@ -1245,7 +1245,8 @@
     },
     "bar_note": "بنرد خلال 7 أيام",
     "form_steps": "خطوة {{ n }} من {{ total }}",
-    "privacy": "سياسة الخصوصية"
+    "privacy": "سياسة الخصوصية",
+    "grow_display": "صانعات المحتوى"
   },
   "bundle_inside": {
     "eyebrow": "جوّه المجموعة",

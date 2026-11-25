@@ -1,0 +1,266 @@
+/* Creative Lab V3 — campaign composition, not a scaled-down poster. */
+.cl-grow {
+  --cl-lilac: var(--c-step-3); --cl-mint: var(--c-step-1); --cl-peach: var(--c-step-4);
+  --cl-pad: clamp(20px, 3.2vw, 44px);
+  position: relative; isolation: isolate; overflow: hidden; margin-block-start: clamp(28px, 4vw, 48px);
+  border-radius: var(--radius-l); background: var(--cl-lilac); color: var(--c-ink);
+}
+.cl-grow__visual { position: relative; isolation: isolate; pointer-events: none; block-size: clamp(218px, 64vw, 340px); }
+.cl-grow__arc { position: absolute; display: block; border-radius: 50%; pointer-events: none; }
+.cl-grow__arc--mint { background: var(--cl-mint); inline-size: 91%; block-size: 96%; inset-inline-start: -30%; inset-block-start: -50%; rotate: -25deg; z-index: 0; }
+.cl-grow__arc--peach { background: var(--cl-peach); inline-size: 78%; block-size: 62%; inset-inline-end: -31%; inset-block-end: 0%; rotate: -27deg; z-index: 1; }
+.cl-grow__type { position: absolute; inset-inline-start: 4%; inset-block-start: 4%; inline-size: 92%; z-index: 2; color: #fff; }
+.cl-grow__type svg { display: block; inline-size: 100%; block-size: auto; overflow: visible; }
+.cl-grow__type text { font-family: var(--font-display); font-weight: 700; fill: currentColor; }
+.cl-grow__type-ar { display: block; font-family: var(--font-display); font-weight: 900; font-size: clamp(32px, 9.3vw, 61px); line-height: 1.2; text-align: start; }
+.cl-grow__portrait { position: absolute; z-index: 3; inset-inline-end: 0; inset-block-start: 15%; block-size: 85%; inline-size: 60%; overflow: hidden; -webkit-mask-image: linear-gradient(#000 0 88%, transparent 100%); mask-image: linear-gradient(#000 0 88%, transparent 100%); }
+.cl-grow__portrait img { display: block; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: center top; }
+.cl-grow__portrait--fallback img { object-fit: cover; border-radius: 50% 50% 0 0; }
+.cl-grow__copy { position: relative; z-index: 4; min-inline-size: 0; padding: 10px var(--cl-pad) var(--cl-pad); }
+.cl-grow__heading { font-family: var(--font-sans); font-size: clamp(24px, 2.7vw, 37px); line-height: 1.12; font-weight: 800; letter-spacing: -.035em; max-inline-size: 25ch; margin: 0 0 clamp(16px, 1.8vw, 24px); text-wrap: balance; }
+.cl-grow__benefits { display: grid; gap: 12px; list-style: none; padding: 0; margin: 0; }
+.cl-grow__benefits li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; color: var(--c-ink); min-inline-size: 0; }
+.cl-grow__benefits li + li { border-block-start: 1px solid color-mix(in srgb, var(--c-ink) 23%, transparent); padding-block-start: 12px; }
+.cl-grow__benefits .icon { inline-size: 22px; block-size: 22px; color: var(--c-ink); margin-block-start: 2px; }
+.cl-grow__benefits strong { display: block; font-weight: 800; font-size: clamp(16px, 1.4vw, 19px); line-height: 1.3; margin-block-end: 3px; }
+.cl-grow__benefits p { font-size: 14px; line-height: 1.48; text-wrap: pretty; margin: 0; }
+.cl-grow:lang(ar) .cl-grow__heading { line-height: 1.36; letter-spacing: 0; max-inline-size: 24ch; }
+.cl-grow:lang(ar) .cl-grow__benefits p { line-height: 1.65; }
+[dir="rtl"] .cl-grow__arc--mint, [dir="rtl"] .cl-grow__arc--peach { rotate: 27deg; }
+[dir="rtl"] .cl-grow__portrait img { transform: scaleX(-1); }
+@media (max-width: 639px) {
+  .cl-grow__portrait { inline-size: 60%; }
+  .cl-grow__copy { padding-block-start: 4px; }
+}
+@media (min-width: 640px) and (max-width: 989px) {
+  .cl-grow__visual { block-size: clamp(245px, 34vw, 320px); }
+  .cl-grow__type { inline-size: 68%; inset-block-start: 9%; }
+  .cl-grow__type-ar { font-size: clamp(48px, 7.4vw, 76px); }
+  .cl-grow__portrait { block-size: 100%; inline-size: 48%; inset-block-start: 0; }
+  .cl-grow__arc--mint { inline-size: 74%; block-size: 116%; inset-inline-start: -30%; inset-block-start: -70%; }
+  .cl-grow__arc--peach { inline-size: 54%; block-size: 70%; inset-inline-end: -18%; inset-block-end: -8%; }
+}
+@media (min-width: 640px) {
+  .cl-grow__benefits { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 0; }
+  .cl-grow__benefits li { display: block; padding-inline: clamp(12px, 1.8vw, 22px); }
+  .cl-grow__benefits li:first-child { padding-inline-start: 0; }
+  .cl-grow__benefits li:last-child { padding-inline-end: 0; }
+  .cl-grow__benefits li + li { border-block-start: 0; padding-block-start: 0; border-inline-start: 1px solid color-mix(in srgb, var(--c-ink) 23%, transparent); }
+  .cl-grow__benefits .icon { margin-block-end: 8px; }
+}
+@media (min-width: 990px) {
+  .cl-grow { display: flex; flex-direction: column; justify-content: end; min-block-size: clamp(340px, 30vw, 430px); }
+  .cl-grow__visual { position: absolute; inset: 0; block-size: auto; }
+  .cl-grow__type { inline-size: 59%; inset-inline-start: 2.8%; inset-block-start: 3%; }
+  .cl-grow__type-ar { font-size: clamp(63px, 7.3vw, 105px); line-height: 1.12; }
+  .cl-grow__portrait { block-size: 100%; inline-size: 46%; inset-block-start: 0; inset-inline-end: 3%; -webkit-mask-image: none; mask-image: none; }
+  .cl-grow__portrait img { object-fit: contain; object-position: center bottom; }
+  .cl-grow__arc--mint { inline-size: 70%; block-size: 106%; inset-inline-start: -29%; inset-block-start: -65%; }
+  .cl-grow__arc--peach { inline-size: 48%; block-size: 76%; inset-inline-end: -15%; inset-block-end: -33%; }
+  .cl-grow__copy { inline-size: 60%; padding-block-start: clamp(170px, 16.8vw, 235px); padding-inline-end: 8px; }
+  .cl-grow__benefits p { font-size: clamp(13px, 1.02vw, 15px); }
+  .cl-grow:lang(ar) .cl-grow__copy { padding-block-start: clamp(138px, 14vw, 200px); }
+}
+
+/* V4: use the vacant side of the artwork for the headline, and let Arabic
+   desktop display lettering take up real layout space instead of overlapping. */
+.cl-grow__type-ar-desktop { display: none; }
+@media (max-width: 989px) {
+  .cl-grow__copy { margin-block-start: -82px; padding-block-start: 0; }
+  .cl-grow__heading {
+    max-inline-size: 44%;
+    min-block-size: 82px;
+    margin-block-end: 14px;
+    display: flex;
+    align-items: flex-end;
+    text-wrap: pretty;
+  }
+  .cl-grow:lang(ar) .cl-grow__heading { max-inline-size: 44%; }
+  .cl-grow__portrait {
+    -webkit-mask-image: linear-gradient(#000 0 93%, transparent 100%);
+    mask-image: linear-gradient(#000 0 93%, transparent 100%);
+  }
+}
+@media (max-width: 639px) {
+  .cl-grow__copy { margin-block-start: -96px; }
+  .cl-grow__heading {
+    max-inline-size: 42%;
+    min-block-size: 96px;
+    font-size: clamp(19px, 5.5vw, 25px);
+    line-height: 1.15;
+  }
+  .cl-grow:lang(ar) .cl-grow__heading { max-inline-size: 42%; line-height: 1.4; }
+  .cl-grow__portrait { inline-size: 57%; }
+  .cl-grow__portrait img { object-fit: cover; object-position: center top; }
+}
+@media (min-width: 640px) and (max-width: 989px) {
+  .cl-grow__copy { margin-block-start: -88px; }
+  .cl-grow__heading { min-block-size: 88px; font-size: clamp(24px, 3.5vw, 32px); }
+}
+@media (min-width: 990px) {
+  .cl-grow:lang(ar) .cl-grow__visual .cl-grow__type { display: none; }
+  .cl-grow:lang(ar) .cl-grow__copy { padding-block-start: var(--cl-pad); }
+  .cl-grow__type-ar-desktop {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(49px, 5.7vw, 83px);
+    line-height: 1.18;
+    color: #fff;
+    letter-spacing: normal;
+    text-align: start;
+    text-wrap: balance;
+    margin-block-end: clamp(12px, 1.5vw, 22px);
+  }
+  .cl-grow:lang(ar) .cl-grow__heading { max-inline-size: 100%; margin-block-end: 20px; }
+}
+@media (max-width: 989px) {
+  .cl-grow__heading { align-items: flex-start; }
+}
+/* On the narrowest phones leave a dedicated line for long translated copy. */
+@media (max-width: 350px) {
+  .cl-grow__copy { margin-block-start: -72px; }
+  .cl-grow__heading { min-block-size: 72px; font-size: 18px; }
+  .cl-grow:lang(ar) .cl-grow__heading { font-size: 18px; }
+}
+
+/* V5 — responsive typography polish; existing palette and artwork unchanged. */
+@media (max-width: 639px) {
+  .cl-grow__portrait { inline-size: 52%; inset-inline-end: -2%; }
+  .cl-grow__heading, .cl-grow:lang(ar) .cl-grow__heading {
+    max-inline-size: 51%; display: block; text-wrap: balance;
+    font-size: clamp(18px, 5.25vw, 24px);
+  }
+  .cl-grow__type-ar { font-size: clamp(29px, 8.7vw, 56px); line-height: 1.17; transform: scaleY(1.12); transform-origin: top; }
+  .cl-grow:lang(ar) .cl-grow__heading { line-height: 1.4; }
+}
+@media (max-width: 350px) {
+  .cl-grow__heading, .cl-grow:lang(ar) .cl-grow__heading { font-size: 18px; max-inline-size: 51%; }
+}
+@media (min-width: 640px) and (max-width: 989px) {
+  .cl-grow__type { inline-size: 56%; inset-block-start: 8%; }
+  .cl-grow__portrait { inline-size: 44%; inset-inline-end: -1%; block-size: 96%; inset-block-start: 4%; }
+  .cl-grow__heading, .cl-grow:lang(ar) .cl-grow__heading { max-inline-size: 52%; display: block; text-wrap: balance; }
+  .cl-grow__type-ar { font-size: clamp(34px, 5.5vw, 55px); line-height: 1.17; transform: scaleY(1.12); transform-origin: top; }
+}
+@media (min-width: 990px) {
+  .cl-grow:lang(ar) .cl-grow__copy { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; }
+  .cl-grow__type-ar-desktop { font-size: clamp(56px, 6.3vw, 94px); line-height: 1.17; transform: scaleY(1.08); transform-origin: center; margin-block-end: clamp(17px, 1.7vw, 25px); }
+}
+
+/* V6 — Arabic display uses the available column width; preserve the approved composition. */
+@media (min-width: 990px) {
+  .cl-grow__benefits p { font-size: clamp(14px, 1.1vw, 16px); }
+  .cl-grow:lang(ar) .cl-grow__copy { container-type: inline-size; }
+  .cl-grow__type-ar-desktop {
+    font-size: clamp(42px, 4.9vw, 74px);
+    font-size: clamp(36px, 11.2cqi, 94px);
+    line-height: 1.65;
+    white-space: normal;
+    text-wrap: balance;
+    transform: scaleY(1.42);
+    transform-origin: center;
+    margin-block-end: clamp(18px, 1.8vw, 26px);
+  }
+}
+
+/* V7 — preserve the original Arabic typeface and natural glyph proportions. */
+.cl-grow__type-ar,
+.cl-grow__type-ar-desktop {
+  font-family: var(--font-display);
+  transform: none;
+}
+@media (min-width: 990px) {
+  .cl-grow__type-ar-desktop {
+    line-height: 1.65;
+  }
+}
+
+/* V8 — Arabic supporting headline: readable size and breathing room
+   at intermediate widths, without altering the display type or palette. */
+@media (min-width: 640px) and (max-width: 989px) {
+  .cl-grow:lang(ar) .cl-grow__copy { margin-block-start: -124px; }
+  .cl-grow:lang(ar) .cl-grow__heading {
+    display: block;
+    max-inline-size: 55%;
+    min-block-size: 124px;
+    font-size: clamp(26px, 3.7vw, 35px);
+    line-height: 1.52;
+    margin-block-end: 22px;
+    text-wrap: balance;
+  }
+}
+@media (max-width: 639px) {
+  .cl-grow:lang(ar) .cl-grow__heading {
+    font-size: clamp(19px, 5.7vw, 27px);
+    line-height: 1.5;
+    margin-block-end: 20px;
+  }
+}
+@media (min-width: 990px) and (max-width: 1199px) {
+  .cl-grow:lang(ar) .cl-grow__heading {
+    font-size: clamp(29px, 2.8vw, 35px);
+    line-height: 1.5;
+    margin-block-end: 24px;
+  }
+}
+
+/* V9 — Arabic responsive layout: headline and artwork share a reserved grid row;
+   benefits always begin below the entire portrait, with a consistent bottom inset. */
+@media (max-width: 989px) {
+  .cl-grow:lang(ar) { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; }
+  .cl-grow:lang(ar) .cl-grow__visual { grid-area: 1 / 1; block-size: clamp(250px, 65vw, 350px); }
+  .cl-grow:lang(ar) .cl-grow__copy { display: contents; }
+  .cl-grow:lang(ar) .cl-grow__heading {
+    grid-area: 1 / 1; position: relative; z-index: 4; align-self: center; justify-self: start;
+    inline-size: 46%; max-inline-size: none; min-block-size: 0;
+    margin: clamp(45px, 8vw, 80px) var(--cl-pad) 0 0;
+    font-size: clamp(24px, 5.8vw, 30px); line-height: 1.45;
+    text-wrap: balance; text-align: start;
+  }
+  .cl-grow:lang(ar) .cl-grow__benefits {
+    grid-area: 2 / 1; position: relative; z-index: 4; min-inline-size: 0;
+    margin: 0 var(--cl-pad) 32px; padding-block-start: 14px;
+  }
+  .cl-grow:lang(ar) .cl-grow__benefits strong { font-size: 18px; line-height: 1.4; margin-block-end: 5px; }
+  .cl-grow:lang(ar) .cl-grow__benefits p { font-size: 15px; line-height: 1.72; }
+  .cl-grow:lang(ar) .cl-grow__type-ar { transform: none; }
+}
+@media (max-width: 739px) {
+  .cl-grow:lang(ar) .cl-grow__benefits { grid-template-columns: minmax(0,1fr); gap: 16px; }
+  .cl-grow:lang(ar) .cl-grow__benefits li { display: grid; grid-template-columns: 22px minmax(0,1fr); gap: 12px; padding: 0; }
+  .cl-grow:lang(ar) .cl-grow__benefits li + li { border-inline-start: 0; border-block-start: 1px solid color-mix(in srgb, var(--c-ink) 23%, transparent); padding-block-start: 16px; }
+  .cl-grow:lang(ar) .cl-grow__benefits .icon { margin-block-end: 0; }
+}
+@media (min-width: 640px) and (max-width: 989px) {
+  .cl-grow:lang(ar) .cl-grow__heading { inline-size: 49%; font-size: clamp(29px, 3.9vw, 36px); margin-block-start: 56px; }
+  .cl-grow:lang(ar) .cl-grow__visual { block-size: clamp(300px, 38vw, 330px); }
+  .cl-grow:lang(ar) .cl-grow__arc--peach { inset-block-end: 9%; }
+  .cl-grow:lang(ar) .cl-grow__portrait img { object-fit: contain; object-position: center bottom; }
+}
+@media (max-width: 639px) {
+  .cl-grow:lang(ar) .cl-grow__arc--peach { inset-block-end: 3%; }
+}
+@media (max-width: 359px) {
+  .cl-grow:lang(ar) { grid-template-rows: auto auto auto; }
+  .cl-grow:lang(ar) .cl-grow__visual { block-size: 220px; }
+  .cl-grow:lang(ar) .cl-grow__heading { grid-area: 2 / 1; inline-size: auto; justify-self: stretch; margin: 12px var(--cl-pad) 12px; font-size: 24px; }
+  .cl-grow:lang(ar) .cl-grow__benefits { grid-area: 3 / 1; }
+}
+
+/* V10 — tighten Arabic headline-to-benefit rhythm without reducing type
+   size or the bottom inset. Keep the headline anchored near the artwork base. */
+@media (min-width: 360px) and (max-width: 989px) {
+  .cl-grow:lang(ar) .cl-grow__heading {
+    align-self: end;
+    margin-block-start: 0;
+    margin-block-end: clamp(18px, 3.6vw, 32px);
+  }
+  .cl-grow:lang(ar) .cl-grow__benefits { padding-block-start: 10px; }
+}
+@media (min-width: 360px) and (max-width: 639px) {
+  .cl-grow:lang(ar) .cl-grow__visual { block-size: clamp(240px, 60vw, 320px); }
+}
+@media (min-width: 640px) and (max-width: 989px) {
+  .cl-grow:lang(ar) .cl-grow__visual { block-size: clamp(280px, 34vw, 310px); }
+}

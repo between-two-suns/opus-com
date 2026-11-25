@@ -52,9 +52,11 @@
   const hero = document.querySelector('.cr-hero');
   const apply = document.getElementById('CreatorApply');
   if (bar && hero && apply && 'IntersectionObserver' in window) {
-    let pastHero = false, onForm = false;
-    const set = () => bar.classList.toggle('is-on', pastHero && !onForm);
+    let pastHero = false, onForm = false, onCampaign = false;
+    const set = () => bar.classList.toggle('is-on', pastHero && !onForm && !onCampaign);
     new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting && e.boundingClientRect.top < 0; set(); }).observe(hero);
     new IntersectionObserver(([e]) => { onForm = e.isIntersecting; set(); }, { rootMargin: '0px 0px -30% 0px' }).observe(apply);
+    const campaign = document.querySelector('.cl-grow');
+    if (campaign) new IntersectionObserver(([e]) => { onCampaign = e.isIntersecting; set(); }, { rootMargin: '0px 0px -10% 0px' }).observe(campaign);
   }
 })();

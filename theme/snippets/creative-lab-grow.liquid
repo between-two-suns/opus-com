@@ -1,0 +1,58 @@
+{%- comment -%}
+  "The more you create, the more you get" as a campaign block (owner's design from the "ChatGPT - creative lab" theme,
+  169130459394; DECISIONS 382). Lilac panel, mint and peach arcs, the big white display word, the cut-out portrait,
+  then the heading and three perks. Fixes for Version 1.2 live in creators.css (".creators--v2 .cl-grow").
+{%- endcomment -%}
+{%- liquid
+  assign portrait = section.settings.creative_lab_portrait
+  if portrait == blank
+    assign portrait = images['bts-creative-lab-creator-cutout.png']
+  endif
+  assign fallback = false
+  if portrait == blank
+    assign portrait = images['bts-portrait-window-tall.jpg']
+    assign fallback = true
+  endif
+  assign display_copy = 'creators.grow_display' | t
+  assign is_ar = false
+  if request.locale.iso_code contains 'ar'
+    assign is_ar = true
+  endif
+-%}
+<div class="cl-grow">
+  <div class="cl-grow__visual" aria-hidden="true">
+    <span class="cl-grow__arc cl-grow__arc--mint"></span>
+    <div class="cl-grow__type">
+      {%- if is_ar -%}
+        <span class="cl-grow__type-ar">{{ display_copy | escape }}</span>
+      {%- else -%}
+        <svg viewBox="0 0 780 205" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <text x="38" y="184" font-size="205" textLength="715" lengthAdjust="spacingAndGlyphs" transform="skewX(-8)">{{ display_copy | escape }}</text>
+        </svg>
+      {%- endif -%}
+    </div>
+    {%- if portrait != blank -%}
+      <div class="cl-grow__portrait{% if fallback %} cl-grow__portrait--fallback{% endif %}">
+        {{ portrait | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '360,540,720,960,1200', sizes: '(min-width: 990px) 48vw, (min-width: 600px) 56vw, 75vw', alt: '' }}
+      </div>
+    {%- endif -%}
+    <span class="cl-grow__arc cl-grow__arc--peach"></span>
+  </div>
+  <div class="cl-grow__copy">
+    {%- if is_ar -%}<div class="cl-grow__type-ar-desktop" aria-hidden="true">{{ display_copy | escape }}</div>{%- endif -%}
+    <h3 class="cl-grow__heading">{% if section.settings.t_creators_grow_heading != blank %}{{ section.settings.t_creators_grow_heading | escape }}{% else %}{{ 'creators.grow_heading' | t }}{% endif %}</h3>
+    <ul class="cl-grow__benefits" role="list">
+      {%- for g in grows -%}
+        {%- liquid
+          assign parts = g | split: ':'
+          assign tk = 'creators.grow.' | append: parts[0] | append: '.title'
+          assign bk = 'creators.grow.' | append: parts[0] | append: '.text'
+        -%}
+        <li>
+          <span aria-hidden="true">{% render 'icon', name: parts[1] %}</span>
+          <div><strong>{{ tk | t }}</strong><p>{{ bk | t }}</p></div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
