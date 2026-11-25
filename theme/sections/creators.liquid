@@ -45,7 +45,7 @@
           {%- assign parts = f | split: ':' -%}
           {%- assign p = all_products[parts[0]] -%}
           {%- assign cut = p.metafields.bts.cutout.value -%}
-          {%- assign ck = 'sections.forecast.conditions.' | append: parts[1] -%}
+          {%- assign ck = 'creators.chips.' | append: parts[1] -%}
           {%- assign cap = 'creators.reel_captions.' | append: parts[1] -%}
           {%- assign shot = p.media[1] -%}
           <li class="cr-reel{% if shot %} cr-reel--photo{% endif %}" style="--sku: var(--c-step-{{ parts[3] }}); --sku-tint: var(--c-step-{{ parts[3] }}-tint); --i: {{ forloop.index0 }}">
@@ -140,13 +140,17 @@
     </ul>
     <div class="container">
       {%- if section.settings.v2 -%}
-        <p class="cr-rules-line"><strong>{% if section.settings.t_creators_rules_heading != blank %}{{ section.settings.t_creators_rules_heading }}{% else %}{{ 'creators.rules_heading' | t }}{% endif %}</strong>
-          {%- for n in (1..4) -%}
-            {%- assign rk = 'creators.rules.r' | append: n -%}
-            {%- assign rshort = rk | t | split: '.' | first -%}
-            <span>{{ rshort }}</span>
-          {%- endfor -%}
-        </p>
+        <div class="cr-rules-v2">
+          <h3 class="cr-rules-v2__title">{% if section.settings.t_creators_rules_heading != blank %}{{ section.settings.t_creators_rules_heading }}{% else %}{{ 'creators.rules_heading' | t }}{% endif %}</h3>
+          <ol class="cr-rules-v2__list" role="list">
+            {%- for n in (1..4) -%}
+              {%- assign rk = 'creators.rules.r' | append: n -%}
+              {%- assign rparts = rk | t | split: '. ' -%}
+              {%- assign rrest = rparts | slice: 1, 9 | join: '. ' -%}
+              <li><strong>{{ rparts[0] }}.</strong> {{ rrest }}</li>
+            {%- endfor -%}
+          </ol>
+        </div>
       {%- else -%}
       <div class="cr-rules">
         <h3 class="cr-rules__title">{% if section.settings.t_creators_rules_heading != blank %}{{ section.settings.t_creators_rules_heading }}{% else %}{{ 'creators.rules_heading' | t }}{% endif %}</h3>

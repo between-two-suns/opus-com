@@ -839,19 +839,19 @@
       },
       "cr_followers": {
         "q": "Do I need a lot of followers?",
-        "a": "No. We look at how honest and well-made your content is, not just the numbers."
+        "a": "Not at all. We care more about your perspective, creativity and the quality of your content than the size of your following."
       },
       "cr_rights": {
         "q": "Can you use my content?",
-        "a": "Only with your permission. If we’d like to use a piece on our site, channels or ads, we ask first and agree how, where and for how long."
+        "a": "Only with your permission. If we’d like to feature your work on our website, social channels or in an ad, we’ll ask first and agree on how, where and for how long it can be used."
       },
       "cr_post": {
         "q": "Do I have to post?",
-        "a": "We ask for honest content after you’ve used the products for a while. What and when, we agree together. We never script your opinion."
+        "a": "We ask for honest content after you’ve had time to experience the products. We’ll agree on what to create and when, together, before the collaboration begins. We never script your opinion."
       },
       "cr_disclose": {
-        "q": "Do I need to mark posts as an ad?",
-        "a": "Yes. Mark gifted or paid posts the way your platform asks, for example with the paid-partnership label or #ad."
+        "q": "Do I need to disclose our collaboration?",
+        "a": "Yes. Always clearly disclose gifted products, affiliate relationships and paid collaborations, using the labels your platform provides and the rules that apply."
       },
       "spf_last": {
         "q": "Where does sunscreen go in my routine?",
@@ -931,15 +931,15 @@
       },
       "cr_box": {
         "q": "What will you send me?",
-        "a": "Free products, chosen for your skin and your channel. Keep posting and we send the rest of the routine, then refills when you run out."
+        "a": "Free products, selected with your skin and content in mind. Keep creating with us to discover more of the routine and receive refills, as we agree together."
       },
       "cr_earn": {
         "q": "How do I earn?",
-        "a": "Your followers get 10% off with your code, and you earn 10% commission on every sale it brings, paid monthly. Our top creators get a higher rate and paid collaborations."
+        "a": "Your community gets 10% off with your personal code, and you earn 10% commission on qualifying sales through it, paid monthly. Selected creators can access higher commissions and paid collaborations."
       },
       "cr_reply": {
         "q": "When will I hear back?",
-        "a": "Within 7 days, by email. We read every application."
+        "a": "Within 7 days, by email. We review every application."
       },
       "ing_together": {
         "q": "Can I use these products together?",
@@ -1112,60 +1112,60 @@
   },
   "creators": {
     "eyebrow": "Creators",
-    "heading": "Film the space between.",
-    "text": "Sun at noon, AC by two, dust on the commute. If you make honest, good-looking content about real skin in our region’s real weather, let’s make things together.",
+    "heading": "Create on your own terms.",
+    "text": "Your skin, your perspective, your way of creating. We’re looking for people who love skincare, have an eye for detail and something real to say.",
     "cta": "Apply to join",
     "how_link": "How it works",
     "reel_captions": {
-      "city": "the commute reset",
-      "humidity": "humid day, light layers",
-      "ac": "8 hours of office AC",
-      "sun": "38° and reapplying"
+      "city": "The everyday reset.",
+      "humidity": "Keeping it light.",
+      "ac": "From nine to five.",
+      "sun": "SPF on repeat."
     },
     "how_eyebrow": "How it works",
-    "how_heading": "From application to your first post",
+    "how_heading": "Let’s get started.",
     "steps": {
       "s1": {
-        "title": "Apply",
-        "text": "Two minutes. Tell us who you are and what you make. Any follower count."
+        "title": "Introduce yourself.",
+        "text": "Tell us a little about yourself and what you create. Any follower count is welcome."
       },
       "s2": {
-        "title": "Hear back in 7 days",
-        "text": "We read every application and reply by email within 7 days. If it’s a fit, we agree the details with you."
+        "title": "Let’s connect.",
+        "text": "We review every application and get back to you within 7 days. If it’s a fit, we’ll work out the details together."
       },
       "s3": {
-        "title": "Get your products",
-        "text": "Free, and chosen for your skin and your channel. Use them in your real weather before you film."
+        "title": "Make it part of your day.",
+        "text": "We’ll send you products to try, selected with your skin in mind. Get to know them before you create."
       },
       "s4": {
-        "title": "Post and earn",
-        "text": "Your followers get 10% off with your code, and you earn 10% of every sale it brings."
+        "title": "Create and earn.",
+        "text": "Share your experience your way. Give your community 10% off and earn 10% commission on qualifying sales through your personal code."
       }
     },
     "ideas_eyebrow": "What we love",
-    "ideas_heading": "Simple ideas, real skin",
-    "ideas_text": "No studio needed. Film your real routine, on a real day.",
+    "ideas_heading": "A little creative freedom.",
+    "ideas_text": "No studio. No perfect skin. No script. Just your perspective and your own way of telling the story.",
     "ideas": {
-      "review": "An honest review after two weeks",
-      "morning": "Your morning routine, step by step",
-      "night": "Your night routine in 60 seconds",
-      "texture": "Close-up textures and how they feel",
-      "grwm": "Get ready with me: a reel of your routine",
-      "unboxing": "Unboxing and first impressions"
+      "review": "Two weeks in. Your honest thoughts.",
+      "morning": "Your morning, your routine.",
+      "night": "Taking off the day.",
+      "texture": "Skincare, up close.",
+      "grwm": "Get ready with me.",
+      "unboxing": "First try. First thoughts."
     },
-    "rules_heading": "The few rules",
+    "rules_heading": "A few things we believe in.",
     "rules": {
-      "r1": "Be honest. Say what you really think, and mark posts as gifted or #ad as your platform requires.",
-      "r2": "Real skin. No filters or edits on skin results.",
-      "r3": "No medical claims. Talk about how it feels and how it fits your day.",
-      "r4": "Your content stays yours. We only reuse it with your permission, on terms we agree first."
+      "r1": "Keep it honest. Share what you really think. Always disclose gifted products, affiliate relationships and paid collaborations.",
+      "r2": "Keep skin real. No filters or retouching that misrepresent skin texture or product results.",
+      "r3": "Keep it grounded. Talk about your experience. No medical claims or unsupported promises.",
+      "r4": "Keep it yours. Your content belongs to you. We only use it with your permission, on terms we agree together."
     },
     "apply_eyebrow": "Apply",
-    "apply_heading": "Create with us",
-    "apply_text": "Any follower count. We care more about honest, well-made content than numbers.",
+    "apply_heading": "Create with us.",
+    "apply_text": "You don’t need a huge following. You need a point of view. If skincare is your thing and creating is what you love, we’d love to hear from you.",
     "apply_note": "We reply by email within 7 days.",
-    "success_heading": "Application received",
-    "success_text": "Thank you. We read every application, and if it’s a fit we’ll reach out by email.",
+    "success_heading": "Application received.",
+    "success_text": "Thank you for applying. We’ll review your application and get back to you by email within 7 days.",
     "form": {
       "about": "About you",
       "name": "Full name",
@@ -1196,7 +1196,7 @@
         "photo": "Photos",
         "review": "Reviews",
         "tutorial": "Tutorials & routines",
-        "ugc": "UGC for brands"
+        "ugc": "Content for brands (UGC)"
       },
       "best": "Link to a piece you’re proud of",
       "skin": "Your skin type",
@@ -1211,21 +1211,23 @@
       "why": "Why Between Two Suns?",
       "why_hint": "A few lines are plenty.",
       "consent": "I agree that Between Two Suns can contact me about this application.",
-      "submit": "Send my application"
+      "submit": "Send my application",
+      "next": "Next",
+      "back": "Back"
     },
-    "grow_heading": "The more you create, the more you get",
+    "grow_heading": "Let’s make it more than a one-off.",
     "grow": {
       "keep": {
-        "title": "Keep posting",
-        "text": "We send the rest of the routine, and refills when you run out."
+        "title": "Keep creating.",
+        "text": "More products to discover, the rest of your routine and refills of your favourites."
       },
       "featured": {
-        "title": "Get featured",
-        "text": "Your best work on our site and channels, always credited and only with your permission."
+        "title": "Get featured.",
+        "text": "Your work across our website and social channels. Always credited, always with your permission."
       },
       "top": {
-        "title": "Grow with us",
-        "text": "Our top creators get a higher commission and paid collaborations."
+        "title": "Grow with us.",
+        "text": "Higher commissions, paid collaborations and more opportunities to create together for selected creators."
       }
     },
     "tags": {
@@ -1246,7 +1248,13 @@
     "bar_note": "We reply within 7 days",
     "form_steps": "Step {{ n }} of {{ total }}",
     "privacy": "Privacy policy",
-    "grow_display": "CREATORS"
+    "grow_display": "CREATORS",
+    "chips": {
+      "city": "City & dust",
+      "humidity": "Humidity",
+      "ac": "Air-con",
+      "sun": "Sun"
+    }
   },
   "bundle_inside": {
     "eyebrow": "Inside the set",

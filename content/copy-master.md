@@ -2727,3 +2727,18 @@ sunscreen "Every morning · Reapply every 2 hours" / "كل يوم الصبح · 
 the mint card; Made in Egypt: no "two languages" fact, maker + brand owner as a quiet credit line.
 Positioning to protect: don't ask her to love the brand because it's Egyptian; challenge the idea that a brand she
 loves has to come from somewhere else. Never position it as a cheaper alternative to imported skincare.
+
+---
+
+## Appendix: Creators page final copy (owner's refinement brief + my six fixes, 25 Nov 2026; DECISIONS 387)
+Source of truth for the live text: locales `creators.*`, `faq.items.cr_*`. Summary of the decisions:
+- Top: "Create on your own terms." / "اعملي محتوى بطريقتك." (echoes About's "From here. On our terms."); the climate list is removed from this page; the brief's closing line "Let's create together." is dropped because the Apply heading says the same.
+- Reel captions: The everyday reset. · Keeping it light. · From nine to five. · SPF on repeat. (AR card 3 shortened to "طول يوم الشغل.")
+- How it works: "Let's get started." Steps: Introduce yourself / Let's connect / Make it part of your day / Create and earn.
+- Campaign block: "Let's make it more than a one-off." / "خلّينا نكمّل سوا."
+- Ideas: "A little creative freedom." Night card: "Taking off the day."
+- Rules: "A few things we believe in." Keep it honest · Keep skin real · Keep it grounded · Keep it yours (shown as title + one line).
+- Apply: "Create with us." + "You don't need a huge following. You need a point of view."
+- Offer: 10% customer discount and 10% commission are approved for now (may change before launch). Arabic commission wording: "على كل عملية شرا بكودك" (not the legal-sounding "المستوفية للشروط").
+- Every applicant gets a reply within 7 days (owner confirmed), so the confirmation promises that.
+- FAQ refill answer: "as we agree together" (there is no public program-terms page).

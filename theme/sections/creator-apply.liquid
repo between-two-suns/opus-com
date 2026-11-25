@@ -145,8 +145,8 @@
           <div class="cr-form__foot">
             <p class="cr-form__of" aria-live="polite" data-cr-of></p>
             <div class="cr-form__nav">
-              <button type="button" class="cr-form__back" data-cr-back hidden>{% render 'icon', name: 'arrow', class: 'icon--sm' %}{% if section.settings.t_skin_check_back != blank %}{{ section.settings.t_skin_check_back }}{% else %}{{ 'skin_check.back' | t }}{% endif %}</button>
-              <button type="button" class="btn cr-form__next" data-cr-next hidden>{% if section.settings.t_skin_check_next != blank %}{{ section.settings.t_skin_check_next }}{% else %}{{ 'skin_check.next' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
+              <button type="button" class="cr-form__back" data-cr-back hidden>{% render 'icon', name: 'arrow', class: 'icon--sm' %}{% if section.settings.t_skin_check_back != blank %}{{ section.settings.t_skin_check_back }}{% else %}{{ 'creators.form.back' | t }}{% endif %}</button>
+              <button type="button" class="btn cr-form__next" data-cr-next hidden>{% if section.settings.t_skin_check_next != blank %}{{ section.settings.t_skin_check_next }}{% else %}{{ 'creators.form.next' | t }}{% endif %} {% render 'icon', name: 'arrow', class: 'icon--sm icon--flip' %}</button>
               <button type="submit" class="btn cr-form__send" data-cr-send data-magnetic>{% if section.settings.t_creators_form_submit != blank %}{{ section.settings.t_creators_form_submit }}{% else %}{{ 'creators.form.submit' | t }}{% endif %}</button>
             </div>
           </div>
